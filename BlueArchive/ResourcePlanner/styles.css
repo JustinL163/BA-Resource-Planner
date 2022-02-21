@@ -1,0 +1,86 @@
+* {
+    /* Here we set the margin and padding  0 */
+      margin: 0; 
+      
+        padding: 0;
+    }
+      
+    .navbar {
+        display: flex;
+      
+    /* This is used to make the navbar sticky, So that the
+        navbar stays at the top part even if we scroll */
+        position: sticky; 
+        align-items: center;
+        justify-content: center;
+        top: 0px;
+    }
+      
+    .nav-list {
+        margin-left: 10%;
+        width: 90%;
+        display: flex;
+    }
+      
+    .nav-list li {
+        list-style: none;
+        /*padding: 26px 30px; */
+    }
+      
+    .nav-list li a {
+        text-decoration: none;
+        color: white;
+        font-size: min(max(16px,2vh), 30px);
+        display: block;
+        padding: 20px 20px;
+    }
+
+    .nav-list li a.active  {
+        text-decoration: none;
+        color: rgb(250, 250, 135);
+        background-color: #454858;
+    }
+      
+    .nav-list li a:hover:not(.active) {
+        color: rgb(216, 195, 255);     
+        background-color: black;   
+        cursor: pointer;
+    }
+      
+    .rightNav {
+        width: 50%;
+        text-align: right;
+    }
+      
+    #search {
+        padding: 5px;
+        font-size: 17px;
+        border: 2px solid grey;
+        border-radius: 9px;
+    }
+      
+    .navbground {
+        background: #282a35;
+        background-blend-mode: darken;
+        background-size: cover;
+    }
+
+    .background {
+        background: rgb(175, 183, 202);
+    }
+
+    .bodyText {
+        padding-left: 6%;
+        padding-top: 3%;
+        padding-right: 6%;
+    }
+
+    .logo {
+        padding-left: 2%; 
+        color: rgb(255, 157, 225);
+        font-size: min(max(16px,2vh), 30px);
+    }
+
+    p {
+        font-size: min(max(16px,2vh), 30px);
+    }
