@@ -18,6 +18,8 @@ var saveTime = 0;
 var toastCooldownTime = 0;
 var toastCooldownMsg = "";
 
+var charMode = "Edit";
+
 var misc_data, charlist;
 
 let charMap;
@@ -103,6 +105,22 @@ function init() {
     container.appendChild(newDiv);
 
 
+    if (window.matchMedia("(pointer: coarse)").matches) {
+        // touchscreen
+        let modeDiv = document.createElement("div");
+        modeDiv.className = "charBox";
+        modeDiv.id = "modeButton";
+
+        let modeP = document.createElement("p");
+        modeP.innerText = "Edit Mode";
+        modeDiv.onclick = modeChange;
+
+        modeDiv.appendChild(modeP);
+
+        container.appendChild(modeDiv);
+    }
+
+
     // generate resource modal tables
     createTable("school-mat-table", ["BD_4", "BD_3", "BD_2", "BD_1", "TN_4", "TN_3", "TN_2", "TN_1"],
         ["Abydos", "Gehenna", "Millennium", "Trinity", "Hyakkiyako", "Shanhaijing", "Red Winter", "Valkyrie"],
@@ -140,7 +158,26 @@ function init() {
             }
 
             inputElement.addEventListener('input', (event) => {
-                let result = validateInput(key, false);
+                let result = validateInput(key, false, false);
+
+                if (result != "validated" && (Date.now() > toastCooldownTime || toastCooldownMsg != result)) {
+
+                    toastCooldownTime = Date.now() + 1000 * 10;
+                    toastCooldownMsg = result;
+
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        title: 'Invalid input',
+                        text: result,
+                        showConfirmButton: false,
+                        timer: 4000
+                    })
+                }
+            })
+
+            inputElement.addEventListener('focusout', (event) => {
+                let result = validateInput(key, false, true);
 
                 if (result != "validated" && (Date.now() > toastCooldownTime || toastCooldownMsg != result)) {
 
@@ -221,7 +258,24 @@ function init() {
 
 }
 
-function validateInput(key, checkonly) {
+function modeChange() {
+
+    let modeButton = document.getElementById('modeButton');
+
+    if (charMode == "Edit") {
+        charMode = "Disable"
+        modeButton.classList.add('mode-disable');
+    }
+    else if (charMode = "Disable") {
+        charMode = "Edit"
+        modeButton.classList.remove('mode-disable')
+    }
+
+    modeButton.children[0].innerText = charMode + " Mode";
+
+}
+
+function validateInput(key, checkonly, verbose) {
 
     if (inputValidation[key] != undefined) {
 
@@ -365,9 +419,9 @@ function validateInput(key, checkonly) {
                         return minMessage;
                     }
                 }
-                else if (compareMode == 'direct') {
+                else if (verbose && compareMode == 'direct') {
 
-                    let result = validateInput(reqKey, true);
+                    let result = validateInput(reqKey, true, verbose);
 
                     if (result != "validated") {
                         return result;
@@ -383,7 +437,7 @@ function validateInput(key, checkonly) {
                         }
                     }
                     else if (compareType == "equal_lesser") {
-                        if (inputElement.value > compareVal) {
+                        if (parseInt(inputElement.value) > compareVal) {
                             if (!checkonly && sanitise) {
                                 inputElement.value = compareVal;
                             }
@@ -566,7 +620,7 @@ function openModal(e) {
         fromChar = true;
     }
 
-    if (e.ctrlKey && fromChar == true) {
+    if (charMode == "Disable" || (e.ctrlKey && fromChar == true)) {
         var charSelected = this.id.substring(5);
 
         let charId = charMap.get(charSelected)
@@ -727,7 +781,7 @@ function saveCharChanges() {
 
     for (let key in inputValidation) {
         if (inputValidation[key].location == "characterModal") {
-            let result = validateInput(key, true);
+            let result = validateInput(key, true, true);
             if (result != "validated") {
                 //invalidMessages.push(result);
                 invalidMessages += result + "<br>";
@@ -1329,7 +1383,7 @@ function calcSkillCost(characterObj, skill, current, target, matDict) {
     let skillObj = characterObj["Skills"]?.[skill];
     if (skillObj == undefined) { return null; }
 
-    for (let s = current; s < target; s++) {
+    for (let s = parseInt(current); s < parseInt(target); s++) {
 
         let levelObj = skillObj["Level" + s];
         if (levelObj == undefined) {
@@ -1674,7 +1728,9 @@ function createCharBox(newChar, charId) {
     newDiv.appendChild(newContent);
     newDiv.onclick = openModal
 
-    container.insertBefore(newDiv, container.lastChild);
+    let lastNode = document.getElementById('addCharButton')
+
+    container.insertBefore(newDiv, lastNode);
 
     updateInfoDisplay(newChar, charId);
     updateStarDisplay(newChar + "-star-container", newChar, charId, "star-display", false);

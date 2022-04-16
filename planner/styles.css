@@ -145,7 +145,26 @@
         overflow: hidden;
         border: solid white;
         border-radius: 15%;
+        border-width: 4px;
         position: relative;
+    }
+
+    #modeButton {
+        border: grey dashed 2px;
+        border-radius: 15%;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    }
+
+    #modeButton p {
+        position: absolute;
+        text-align: center;
+        font-size: 2em;
+    }
+
+    .mode-disable {
+        background: repeating-linear-gradient( 45deg, transparent, transparent 7px, #8989893d 11px, #c1afafb3 11px );
     }
 
     .deselected {
