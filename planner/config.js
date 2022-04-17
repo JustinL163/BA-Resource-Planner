@@ -2,9 +2,11 @@ class TwoWayMap {
     constructor(map) {
         this.map = map;
         this.reverseMap = {};
+        this.keys = [];
         for (const key in map) {
             const value = map[key];
             this.reverseMap[value] = key;
+            this.keys.push(key);
         }
     }
     get(key) { return this.map[key]; }
@@ -168,7 +170,7 @@ var inputValidation = {
                 type: "input",
                 compare: "equal_greater",
                 mode: "direct",
-                sanitise: false
+                sanitise: true
             }
         }
     },
@@ -242,7 +244,7 @@ var inputValidation = {
                 type: "input",
                 compare: "equal_greater",
                 mode: "direct",
-                sanitise: false
+                sanitise: true
             }
         }
     },
@@ -308,7 +310,7 @@ var inputValidation = {
                 type: "input",
                 compare: "equal_greater",
                 mode: "direct",
-                sanitise: false
+                sanitise: true
             }
         }
     },
@@ -332,7 +334,7 @@ var inputValidation = {
                 type: "input",
                 compare: "equal_greater",
                 mode: "direct",
-                sanitise: false
+                sanitise: true
             }
         }
     },
@@ -356,7 +358,7 @@ var inputValidation = {
                 type: "input",
                 compare: "equal_greater",
                 mode: "direct",
-                sanitise: false
+                sanitise: true
             }
         }
     },
@@ -414,7 +416,7 @@ var inputValidation = {
                 type: "input",
                 compare: "equal_greater",
                 mode: "direct",
-                sanitise: false
+                sanitise: true
             }
         }
     },
@@ -472,7 +474,7 @@ var inputValidation = {
                 type: "input",
                 compare: "equal_greater",
                 mode: "direct",
-                sanitise: false
+                sanitise: true
             }
         }
     },
@@ -496,7 +498,7 @@ var inputValidation = {
                 type: "input",
                 compare: "equal_greater",
                 mode: "direct",
-                sanitise: false
+                sanitise: true
             }
         }
     },
@@ -554,7 +556,7 @@ var inputValidation = {
                 type: "input",
                 compare: "equal_greater",
                 mode: "direct",
-                sanitise: false
+                sanitise: true
             }
         }
     },
@@ -612,7 +614,7 @@ var inputValidation = {
                 type: "input",
                 compare: "equal_greater",
                 mode: "direct",
-                sanitise: false
+                sanitise: true
             }
         }
     },
@@ -620,721 +622,841 @@ var inputValidation = {
         "id": "input-BD_1_Abydos",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_1_Gehenna": {
         "id": "input-BD_1_Gehenna",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_1_Millennium": {
         "id": "input-BD_1_Millennium",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_1_Trinity": {
         "id": "input-BD_1_Trinity",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_1_Hyakkiyako": {
         "id": "input-BD_1_Hyakkiyako",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_1_Shanhaijing": {
         "id": "input-BD_1_Shanhaijing",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_1_RedWinter": {
         "id": "input-BD_1_RedWinter",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_1_Valkyrie": {
         "id": "input-BD_1_Valkyrie",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_2_Abydos": {
         "id": "input-BD_2_Abydos",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_2_Gehenna": {
         "id": "input-BD_2_Gehenna",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_2_Millennium": {
         "id": "input-BD_2_Millennium",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_2_Trinity": {
         "id": "input-BD_2_Trinity",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_2_Hyakkiyako": {
         "id": "input-BD_2_Hyakkiyako",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_2_Shanhaijing": {
         "id": "input-BD_2_Shanhaijing",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_2_RedWinter": {
         "id": "input-BD_2_RedWinter",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_2_Valkyrie": {
         "id": "input-BD_2_Valkyrie",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_3_Abydos": {
         "id": "input-BD_3_Abydos",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_3_Gehenna": {
         "id": "input-BD_3_Gehenna",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_3_Millennium": {
         "id": "input-BD_3_Millennium",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_3_Trinity": {
         "id": "input-BD_3_Trinity",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_3_Hyakkiyako": {
         "id": "input-BD_3_Hyakkiyako",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_3_Shanhaijing": {
         "id": "input-BD_3_Shanhaijing",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_3_RedWinter": {
         "id": "input-BD_3_RedWinter",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_3_Valkyrie": {
         "id": "input-BD_3_Valkyrie",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_4_Abydos": {
         "id": "input-BD_4_Abydos",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_4_Gehenna": {
         "id": "input-BD_4_Gehenna",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_4_Millennium": {
         "id": "input-BD_4_Millennium",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_4_Trinity": {
         "id": "input-BD_4_Trinity",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_4_Hyakkiyako": {
         "id": "input-BD_4_Hyakkiyako",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_4_Shanhaijing": {
         "id": "input-BD_4_Shanhaijing",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_4_RedWinter": {
         "id": "input-BD_4_RedWinter",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "BD_4_Valkyrie": {
         "id": "input-BD_4_Valkyrie",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_1_Abydos": {
         "id": "input-TN_1_Abydos",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_1_Gehenna": {
         "id": "input-TN_1_Gehenna",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_1_Millennium": {
         "id": "input-TN_1_Millennium",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_1_Trinity": {
         "id": "input-TN_1_Trinity",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_1_Hyakkiyako": {
         "id": "input-TN_1_Hyakkiyako",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_1_Shanhaijing": {
         "id": "input-TN_1_Shanhaijing",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_1_RedWinter": {
         "id": "input-TN_1_RedWinter",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_1_Valkyrie": {
         "id": "input-TN_1_Valkyrie",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_2_Abydos": {
         "id": "input-TN_2_Abydos",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_2_Gehenna": {
         "id": "input-TN_2_Gehenna",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_2_Millennium": {
         "id": "input-TN_2_Millennium",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_2_Trinity": {
         "id": "input-TN_2_Trinity",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_2_Hyakkiyako": {
         "id": "input-TN_2_Hyakkiyako",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_2_Shanhaijing": {
         "id": "input-TN_2_Shanhaijing",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_2_RedWinter": {
         "id": "input-TN_2_RedWinter",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_2_Valkyrie": {
         "id": "input-TN_2_Valkyrie",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_3_Abydos": {
         "id": "input-TN_3_Abydos",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_3_Gehenna": {
         "id": "input-TN_3_Gehenna",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_3_Millennium": {
         "id": "input-TN_3_Millennium",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_3_Trinity": {
         "id": "input-TN_3_Trinity",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_3_Hyakkiyako": {
         "id": "input-TN_3_Hyakkiyako",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_3_Shanhaijing": {
         "id": "input-TN_3_Shanhaijing",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_3_RedWinter": {
         "id": "input-TN_3_RedWinter",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_3_Valkyrie": {
         "id": "input-TN_3_Valkyrie",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_4_Abydos": {
         "id": "input-TN_4_Abydos",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_4_Gehenna": {
         "id": "input-TN_4_Gehenna",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_4_Millennium": {
         "id": "input-TN_4_Millennium",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_4_Trinity": {
         "id": "input-TN_4_Trinity",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_4_Hyakkiyako": {
         "id": "input-TN_4_Hyakkiyako",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_4_Shanhaijing": {
         "id": "input-TN_4_Shanhaijing",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_4_RedWinter": {
         "id": "input-TN_4_RedWinter",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "TN_4_Valkyrie": {
         "id": "input-TN_4_Valkyrie",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "resourceTable"
     },
     "Nebra_1": {
         "id": "input-Nebra_1",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Nebra_2": {
         "id": "input-Nebra_2",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Nebra_3": {
         "id": "input-Nebra_3",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Nebra_4": {
         "id": "input-Nebra_4",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Phaistos_1": {
         "id": "input-Phaistos_1",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Phaistos_2": {
         "id": "input-Phaistos_2",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Phaistos_3": {
         "id": "input-Phaistos_3",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Phaistos_4": {
         "id": "input-Phaistos_4",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Wolfsegg_1": {
         "id": "input-Wolfsegg_1",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Wolfsegg_2": {
         "id": "input-Wolfsegg_2",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Wolfsegg_3": {
         "id": "input-Wolfsegg_3",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Wolfsegg_4": {
         "id": "input-Wolfsegg_4",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Nimrud_1": {
         "id": "input-Nimrud_1",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Nimrud_2": {
         "id": "input-Nimrud_2",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Nimrud_3": {
         "id": "input-Nimrud_3",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Nimrud_4": {
         "id": "input-Nimrud_4",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Mandragora_1": {
         "id": "input-Mandragora_1",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Mandragora_2": {
         "id": "input-Mandragora_2",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Mandragora_3": {
         "id": "input-Mandragora_3",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Mandragora_4": {
         "id": "input-Mandragora_4",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Rohonc_1": {
         "id": "input-Rohonc_1",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Rohonc_2": {
         "id": "input-Rohonc_2",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Rohonc_3": {
         "id": "input-Rohonc_3",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Rohonc_4": {
         "id": "input-Rohonc_4",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Aether_1": {
         "id": "input-Aether_1",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Aether_2": {
         "id": "input-Aether_2",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Aether_3": {
         "id": "input-Aether_3",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Aether_4": {
         "id": "input-Aether_4",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Antikythera_1": {
         "id": "input-Antikythera_1",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Antikythera_2": {
         "id": "input-Antikythera_2",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Antikythera_3": {
         "id": "input-Antikythera_3",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Antikythera_4": {
         "id": "input-Antikythera_4",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Voynich_1": {
         "id": "input-Voynich_1",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Voynich_2": {
         "id": "input-Voynich_2",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Voynich_3": {
         "id": "input-Voynich_3",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Voynich_4": {
         "id": "input-Voynich_4",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Haniwa_1": {
         "id": "input-Haniwa_1",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Haniwa_2": {
         "id": "input-Haniwa_2",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Haniwa_3": {
         "id": "input-Haniwa_3",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Haniwa_4": {
         "id": "input-Haniwa_4",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Baghdad_1": {
         "id": "input-Baghdad_1",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Baghdad_2": {
         "id": "input-Baghdad_2",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Baghdad_3": {
         "id": "input-Baghdad_3",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Baghdad_4": {
         "id": "input-Baghdad_4",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Totem_1": {
         "id": "input-Totem_1",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Totem_2": {
         "id": "input-Totem_2",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Totem_3": {
         "id": "input-Totem_3",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Totem_4": {
         "id": "input-Totem_4",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Fleece_1": {
         "id": "input-Fleece_1",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Fleece_2": {
         "id": "input-Fleece_2",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Fleece_3": {
         "id": "input-Fleece_3",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Fleece_4": {
         "id": "input-Fleece_4",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Kikuko_1": {
         "id": "input-Kikuko_1",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Kikuko_2": {
         "id": "input-Kikuko_2",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Kikuko_3": {
         "id": "input-Kikuko_3",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Kikuko_4": {
         "id": "input-Kikuko_4",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "resourceTable"
     },
     "Credit": {
         "id": "input-Credit",

@@ -22,7 +22,13 @@ var charMode = "Edit";
 
 var misc_data, charlist;
 
-let charMap;
+let charMap, inputMap;
+
+let focusedInput;
+let navigationObjects = {};
+
+let preInput;
+
 
 function loadResources() {
 
@@ -120,17 +126,27 @@ function init() {
         container.appendChild(modeDiv);
     }
 
+    let tableNavigation = [];
 
     // generate resource modal tables
-    createTable("school-mat-table", ["BD_4", "BD_3", "BD_2", "BD_1", "TN_4", "TN_3", "TN_2", "TN_1"],
-        ["Abydos", "Gehenna", "Millennium", "Trinity", "Hyakkiyako", "Shanhaijing", "Red Winter", "Valkyrie"],
-        document.getElementById("table-parent-1"), false);
-    createTable("artifact-table-1", ["4", "3", "2", "1"],
-        ["Nebra", "Phaistos", "Wolfsegg", "Nimrud", "Mandragora", "Rohonc", "Aether"],
-        document.getElementById("table-parent-2"), true);
-    createTable("artifact-table-2", ["4", "3", "2", "1"],
-        ["Antikythera", "Voynich", "Haniwa", "Baghdad", "Totem", "Fleece", "Kikuko"],
-        document.getElementById("table-parent-3"), true);
+    createTable("school-mat-table", ["BD_4", "BD_3", "BD_2", "BD_1", "TN_4", "TN_3", "TN_2", "TN_1"], 0,
+        ["Hyakkiyako", "Red Winter", "Trinity", "Gehenna", "Abydos", "Millennium", "Shanhaijing", "Valkyrie"], 0,
+        tableNavigation, document.getElementById("table-parent-1"), false);
+    createTable("artifact-table-1", ["4", "3", "2", "1"], 0,
+        ["Nebra", "Phaistos", "Wolfsegg", "Nimrud", "Mandragora", "Rohonc", "Aether"], 8,
+        tableNavigation, document.getElementById("table-parent-2"), true);
+    createTable("artifact-table-2", ["4", "3", "2", "1"], 4,
+        ["Antikythera", "Voynich", "Haniwa", "Baghdad", "Totem", "Fleece", "Kikuko"], 8,
+        tableNavigation, document.getElementById("table-parent-3"), true);
+
+    let navObj = {};
+    for (x in tableNavigation) {
+        for (y in tableNavigation[x]) {
+            navObj[x + "|" + y] = tableNavigation[x][y];
+        }
+    }
+
+    navigationObjects["resourceTable"] = { "type": "table", "object": new TwoWayMap(navObj) };
 
     // colour the table rows
     colourTableRows("school-mat-table");
@@ -139,12 +155,15 @@ function init() {
 
     // set input validation
 
+    inputMap = new Map();
+
     for (let key in inputValidation) {
 
         let inputElement = null;
 
         if (inputValidation[key].id != undefined) {
             inputElement = document.getElementById(inputValidation[key].id);
+            inputMap.set(inputValidation[key].id, key);
         }
 
         if (inputElement != null) {
@@ -176,6 +195,14 @@ function init() {
                 }
             })
 
+            inputElement.addEventListener('focusin', (event) => {
+                event.target.select();
+            })
+
+            inputElement.addEventListener('beforeinput', (event) => {
+                preInput = event.target.value;
+            })
+
             inputElement.addEventListener('focusout', (event) => {
                 let result = validateInput(key, false, true);
 
@@ -197,6 +224,15 @@ function init() {
 
         }
 
+    }
+
+    var sectionNames = document.getElementsByClassName('section-name');
+
+    for (i = 0; i < sectionNames.length; i++) {
+
+        sectionNames[i].addEventListener('click', (event) => {
+            sectionQuickSet(event.target.innerText);
+        })
     }
 
 
@@ -256,6 +292,283 @@ function init() {
         }
     }, 300);
 
+    var keyPressed = {};
+    document.addEventListener('keydown', function (e) {
+
+        keyPressed[e.key] = true; //+ e.location] = true;
+
+        handleKeydown(e, keyPressed);
+
+    }, false);
+
+    document.addEventListener('keyup', function (e) {
+        delete (keyPressed[e.key]) // = false //+ e.location] = false;
+
+        if (keyPressed.Control == true || keyPressed.Shift == true) {
+
+        }
+        else {
+
+            keyPressed = {};
+        }
+
+    }, false);
+
+}
+
+function handleKeydown(e, keyPressed) {
+
+    let keycount = Object.keys(keyPressed).length;
+
+    if (focusedInput) {
+        if (keyPressed.Tab == true) {
+            e.preventDefault()
+        }
+        else if (keyPressed.Enter == true) {
+            e.preventDefault()
+        }
+        else if (keyPressed.ArrowDown == true && keyPressed.Control == true) {
+            e.preventDefault()
+        }
+        else if (keyPressed.ArrowUp == true && keyPressed.Control == true) {
+            e.preventDefault()
+        }
+    }
+
+    if (keycount == 2 && ((keyPressed.Control == true && keyPressed.ArrowLeft == true) || (keyPressed.Shift == true && keyPressed.Tab == true))) {
+        inputNavigate('Left')
+        keyPressed = {};
+    }
+    else if ((keycount == 2 && keyPressed.Control == true && keyPressed.ArrowRight == true) || (keycount == 1 && keyPressed.Tab == true)) {
+        inputNavigate('Right')
+        keyPressed = {};
+    }
+    else if (keycount == 2 && ((keyPressed.Control == true && keyPressed.ArrowUp == true) || (keyPressed.Shift == true && keyPressed.Enter == true))) {
+        inputNavigate('Up')
+        keyPressed = {};
+    }
+    else if ((keycount == 2 && keyPressed.Control == true && keyPressed.ArrowDown == true) || (keycount == 1 && keyPressed.Enter == true)) {
+        inputNavigate('Down')
+        keyPressed = {};
+    }
+}
+
+async function sectionQuickSet(section) {
+
+    optionData = {
+        "Gear": {
+            " 666": {
+                "6 6 6 6 6 6": "Both",
+                "- 6 - 6 - 6": "Target"
+            },
+            " 555": {
+                "5 5 5 5 5 5": "Both",
+                "- 5 - 5 - 5": "Target"
+            },
+            " 444": {
+                "4 4 4 4 4 4": "Both",
+                "- 4 - 4 - 4": "Target"
+            },
+            " 333": {
+                "3 3 3 3 3 3": "Both",
+                "- 3 - 3 - 3": "Target"
+            },
+            " 222": {
+                "2 2 2 2 2 2": "Both",
+                "- 2 - 2 - 2": "Target"
+            },
+            " 111": {
+                "1 1 1 1 1 1": "Both",
+                "- 1 - 1 - 1": "Target"
+            }
+        },
+        "Skills": {
+            " MMMM": {
+                "5 5 10 10 10 10 10 10": "Both",
+                "- 5 - 10 - 10 - 10": "Target"
+            },
+            " M777": {
+                "5 5 7 7 7 7 7 7": "Both",
+                "- 5 - 7 - 7 - 7": "Target"
+            },
+            " M444": {
+                "5 5 4 4 4 4 4 4": "Both",
+                "- 5 - 4 - 4 - 4": "Target"
+            },
+            " 3777": {
+                "3 3 7 7 7 7 7 7": "Both",
+                "- 3 - 7 - 7 - 7": "Target"
+            },
+            " 3444": {
+                "3 3 4 4 4 4 4 4": "Both",
+                "- 3 - 4 - 4 - 4": "Target",
+            },
+            " 1444": {
+                "1 1 4 4 4 4 4 4": "Both",
+                "- 1 - 4 - 4 - 4": "Target",
+            },
+            " 1111": {
+                "1 1 1 1 1 1 1 1": "Both",
+                "- 1 - 1 - 1 - 1": "Target"
+            }
+        },
+        "Level": {
+            " 78": {
+                "78 78": "Both",
+                "- 78": "Target"
+            },
+            " 75": {
+                "75 75": "Both",
+                "- 75": "Target"
+            },
+            " 73": {
+                "73 73": "Both",
+                "- 73": "Target"
+            },
+            " 70": {
+                "70 70": "Both",
+                "- 70": "Target"
+            },
+            " 35": {
+                "35 35": "Both",
+                "- 35": "Target"
+            }
+        }
+    }
+
+    inputIds = {
+        "Gear": [
+            "input_gear1_current",
+            "input_gear1_target",
+            "input_gear2_current",
+            "input_gear2_target",
+            "input_gear3_current",
+            "input_gear3_target"
+        ],
+        "Skills": [
+            "input_ex_current",
+            "input_ex_target",
+            "input_basic_current",
+            "input_basic_target",
+            "input_enhanced_current",
+            "input_enhanced_target",
+            "input_sub_current",
+            "input_sub_target"
+        ],
+        "Level": [
+            "input_level_current",
+            "input_level_target"
+        ]
+    }
+
+    if (optionData[section] != undefined) {
+
+        const { value: newData } = await Swal.fire({
+            title: 'Quick data select',
+            input: 'select',
+            inputOptions: optionData[section],
+            inputPlaceholder: 'Select an option',
+            showCancelButton: true
+        })
+
+        if (newData) {
+            let inputs = inputIds[section];
+
+            let values = newData.split(' ');
+
+            for (let i = 0; i < inputs.length; i++) {
+                let input = document.getElementById(inputs[i]);
+
+                if (input && values[i] != "-") {
+                    input.value = values[i];
+                }
+            }
+
+            for (let i = 0; i < inputs.length; i++) {
+                let property = inputs[i].replace("input_", '').replace("_current", '');
+
+                validateInput(property, false, true);
+            }
+        }
+    }
+
+}
+
+function inputNavigate(direction) {
+
+    if (focusedInput) {
+
+        let targetCell;
+
+        let property = inputMap.get(focusedInput);
+
+        if (property && inputValidation[property]?.navigation) {
+
+            if (inputValidation[property].navigation == "direct") {
+
+            }
+            else {
+                let navObj = navigationObjects[inputValidation[property].navigation];
+
+                if (navObj.type == "table") {
+
+                    let cell = navObj.object.revGet(focusedInput);
+
+                    let targetPos = findPosString(cell, direction);
+                    targetCell = navObj.object.get(targetPos);
+                }
+            }
+        }
+
+        if (targetCell) {
+
+            let targetInput = document.getElementById(targetCell);
+
+            targetInput.classList.add('focused');
+            targetInput.focus();
+            targetInput.select();
+        }
+    }
+
+}
+
+function findPosString(string, direction) {
+
+    let positions = string.split('|');
+    let targetPos;
+
+    if (direction == "Up") {
+        positions[0] = parseInt(positions[0]) - 1;
+    }
+    else if (direction == "Down") {
+        positions[0] = parseInt(positions[0]) + 1;
+    }
+    else if (direction == "Left") {
+        let keys = navigationObjects.resourceTable.object.keys;
+        let index = keys.indexOf(string) - 1;
+        if (index >= 0) {
+            targetPos = keys[index];
+        }
+        else {
+            targetPos = "none";
+        }
+    }
+    else if (direction == "Right") {
+        let keys = navigationObjects.resourceTable.object.keys;
+        let index = keys.indexOf(string) + 1;
+        if (index < keys.length + 1) {
+            targetPos = keys[index];
+        }
+        else {
+            targetPos = "none";
+        }
+    }
+
+    if (!targetPos) {
+        targetPos = positions.join('|');
+    }
+
+    return targetPos;
 }
 
 function modeChange() {
@@ -300,7 +613,12 @@ function validateInput(key, checkonly, verbose) {
             if (checkonly) {
                 return "too_long";
             }
-            inputElement.value = val.max;
+            if (preInput || preInput == 0) {
+                inputElement.value = preInput;
+            }
+            else {
+                inputElement.value = val.max;
+            }
         }
 
         if (parseInt(inputElement.value) > parseInt(val.max)) {
@@ -570,7 +888,7 @@ function deleteClicked() {
 function deleteChar(character) {
 
     if (character) {
-        
+
         let charId = charMap.get(character)
         var charObject = data.characters.find(obj => { return obj.id == charId });
         var index = data.characters.indexOf(charObject);
@@ -1026,7 +1344,7 @@ function updateStarDisplay(id, character, charId, type, fromTemp) {
             }
             else if (star_target > s) {
                 starContainer.children[s].style.visibility = "";
-                starContainer.children[s].style.filter = "grayscale(0) hue-rotate(300deg) saturate(0.9)";
+                starContainer.children[s].style.filter = "grayscale(0.5) contrast(0.5)";
             }
             else {
                 starContainer.children[s].style.visibility = "hidden";
@@ -1039,7 +1357,7 @@ function updateStarDisplay(id, character, charId, type, fromTemp) {
             }
             else if (ue_target > s) {
                 starContainer.children[s].style.visibility = "";
-                starContainer.children[s].style.filter = "grayscale(0) hue-rotate(40deg) saturate(0.8)";
+                starContainer.children[s].style.filter = "grayscale(0.5) hue-rotate(150deg) contrast(0.5)";
             }
             else {
                 starContainer.children[s].style.visibility = "hidden";
@@ -1199,7 +1517,7 @@ function hideEmptyCell(id) {
     }
 }
 
-function createTable(id, columns, rows, parent, reorder) {
+function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, parent, reorder) {
 
     const newTable = document.createElement("table");
     newTable.className = "resource-table";
@@ -1212,6 +1530,8 @@ function createTable(id, columns, rows, parent, reorder) {
     for (row = 0; row < rows.length; row++) {
         const newRow = document.createElement("tr");
         newRow.id = "row-" + rows[row];
+
+        tableNavigation[row + rowOffset] ??= [];
 
         for (col = 0; col < columns.length + 1; col++) {
             const newCell = document.createElement("td");
@@ -1251,16 +1571,21 @@ function createTable(id, columns, rows, parent, reorder) {
                 newInput.addEventListener('focusin', (event) => {
                     event.target.className = "resource-input focused";
                     event.target.parentElement.classList.add("focused");
+                    focusedInput = event.target.id;
                 })
                 newInput.addEventListener('focusout', (event) => {
                     event.target.className = "resource-input";
                     event.target.parentElement.classList.remove("focused");
+                    focusedInput = null;
                 })
                 if (reorder) {
                     newInput.id = ("input-" + rows[row] + "_" + columns[col - 1]).replace(/ /g, '');
                 }
                 else {
                     newInput.id = ("input-" + columns[col - 1] + "_" + rows[row]).replace(/ /g, '');
+                }
+                if (matLookup.revGet(newP.id)) {
+                    tableNavigation[row + rowOffset][col + colOffset] = newInput.id;
                 }
 
                 newCell.appendChild(newImg);
@@ -1594,6 +1919,20 @@ async function getImportData() {
 
         localStorage.setItem("save-data", importData);
         data = JSON.parse(importData);
+
+        ownedMatDict = {};
+        if (data != null) {
+            if (data.owned_materials != undefined) {
+                for (key in data.owned_materials) {
+                    ownedMatDict[key] = data.owned_materials[key];
+                }
+            }
+
+            if (data.disabled_characters != undefined) {
+                disabledChars = data.disabled_characters;
+            }
+        }
+
         refreshAllChars();
     }
 }
@@ -1649,6 +1988,11 @@ function createCharBox(newChar, charId) {
 
     if (disabledChars.includes(newChar)) {
         newDiv.classList.add("deselected");
+    }
+
+    if (window.matchMedia("(pointer: fine)").matches) {
+        // touchscreen
+        newDiv.title = "Ctrl+click to disable/enable"
     }
 
     const newContent = document.createElement("div");
