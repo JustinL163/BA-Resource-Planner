@@ -610,6 +610,76 @@ div.resource-box.editable.focused p {
     font-size: 1.5em;
 }
 
+.char-resource-img {
+    max-width: 100px;
+    max-height: 100px;
+}
+
+.char-resource-wrapper {
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+}
+
+.char-mats-wrapper {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: row-reverse;
+}
+
+.char-schoolmats-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.char-artifacts-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.char-miscresource-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+div.char-misc-box .char-misc-text {
+    font-size: 1.5em;
+    font-family: sans-serif;
+}
+
+div.char-resource-wrapper .resource-count-text {
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    font-size: 25px;
+    font-weight: bold;
+    font-family: sans-serif;
+    text-shadow: -1px -1px 0 #ffffff,
+        0px -1px 0 #fff,
+        1px -1px 0 #fff,
+        -1px 1px 0 #fff,
+        0px 1px 0 #fff,
+        1px 1px 0 #fff;
+}
+
+.char-misc-box {
+    display: flex;
+    max-width: 250px;
+    background-color: #f3f3f3;
+    border-radius: 15px;
+    padding-right: 10px;
+    margin-right: 20px;
+    box-shadow: 3px 3px #bbbbbb;
+}
+
+#char-resource-section {
+    border-top: 2px solid gainsboro;
+    margin-top: 20px;
+    padding-top: 10px;
+}
+
 .changelog-section {
     background-color: rgb(196, 205, 228);
     padding-left: 15px;

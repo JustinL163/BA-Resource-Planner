@@ -58,7 +58,7 @@ function checkResources() {
 
             for (var i = 0; i < data.characters.length; i++) {
 
-                calculateCharResources(data.characters[i]);
+                calculateCharResources(data.characters[i], false);
             }
         }
 
@@ -111,20 +111,20 @@ function init() {
     container.appendChild(newDiv);
 
 
-    if (window.matchMedia("(pointer: coarse)").matches) {
-        // touchscreen
-        let modeDiv = document.createElement("div");
-        modeDiv.className = "charBox";
-        modeDiv.id = "modeButton";
+    //if (window.matchMedia("(pointer: coarse)").matches) {
+    // touchscreen
+    let modeDiv = document.createElement("div");
+    modeDiv.className = "charBox";
+    modeDiv.id = "modeButton";
 
-        let modeP = document.createElement("p");
-        modeP.innerText = "Edit Mode";
-        modeDiv.onclick = modeChange;
+    let modeP = document.createElement("p");
+    modeP.innerText = "Edit Mode";
+    modeDiv.onclick = modeChange;
 
-        modeDiv.appendChild(modeP);
+    modeDiv.appendChild(modeP);
 
-        container.appendChild(modeDiv);
-    }
+    container.appendChild(modeDiv);
+    //}
 
     let tableNavigation = [];
 
@@ -152,6 +152,19 @@ function init() {
     colourTableRows("school-mat-table");
     colourTableRows("artifact-table-1");
     colourTableRows("artifact-table-2");
+
+    if ("1.0.3".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+        var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
+            "If still having issues, contact me on Discord, Justin163#7721");
+        Swal.fire({
+            title: "Updated to Version 1.0.3",
+            html: updateMessage
+        })
+
+        data.site_version = "1.0.3";
+        saveToLocalStorage(false);
+    }
+
 
     // set input validation
 
@@ -203,6 +216,8 @@ function init() {
                 preInput = event.target.value;
             })
 
+            let location = inputValidation[key].location;
+
             inputElement.addEventListener('focusout', (event) => {
                 let result = validateInput(key, false, true);
 
@@ -219,6 +234,10 @@ function init() {
                         showConfirmButton: false,
                         timer: 4000
                     })
+                }
+
+                if (location == "characterModal" && result == "validated") {
+                    populateCharResources(modalChar)
                 }
             })
 
@@ -287,7 +306,7 @@ function init() {
             if (Date.now() > saveTime) {
                 saveTime = 0
                 data.owned_materials = ownedMatDict;
-                saveToLocalStorage();
+                saveToLocalStorage(true);
             }
         }
     }, 300);
@@ -808,7 +827,7 @@ async function newCharClicked() {
 
         data.characters.push(newCharObj);
 
-        saveToLocalStorage();
+        saveToLocalStorage(true);
 
         createCharBox(character, charId);
 
@@ -984,6 +1003,8 @@ function openModal(e) {
 
         populateCharModal(charSelected);
 
+        populateCharResources(charSelected);
+
         var displayImg = document.getElementById("displayImg");
         displayImg.src = "icons/Icon_" + charMap.get(charSelected) + ".png";
 
@@ -1036,7 +1057,6 @@ function closeModal(animated) {
         displayChar.style = "display:inline-flex;";
 
         var modalWrapper = document.getElementsByClassName("modal-content-wrapper")[0]
-        modalWrapper.style.overflow = "visible"
 
         document.getElementById('character-modal-wrapper').style.visibility = "";
         modal.style.visibility = "hidden";
@@ -1054,7 +1074,6 @@ function closeModal(animated) {
 
     //setTimeout(() => {
     var modalWrapper = document.getElementsByClassName("modal-content-wrapper")[0]
-    modalWrapper.style.overflow = "visible"
 
     document.getElementById('character-modal-wrapper').style.visibility = "hidden";
 
@@ -1079,17 +1098,19 @@ function closeModal(animated) {
 
 }
 
-async function saveToLocalStorage() {
+async function saveToLocalStorage(notify) {
     saveTime = 0;
     localStorage.setItem("save-data", JSON.stringify(data));
 
-    Swal.fire({
-        toast: true,
-        position: 'top-start',
-        title: 'Data saved',
-        showConfirmButton: false,
-        timer: 1500
-    })
+    if (notify) {
+        Swal.fire({
+            toast: true,
+            position: 'top-start',
+            title: 'Data saved',
+            showConfirmButton: false,
+            timer: 1500
+        })
+    }
 }
 
 function saveCharChanges() {
@@ -1154,10 +1175,10 @@ function saveCharChanges() {
         charData.ue = modalStars.ue;
         charData.ue_target = modalStars.ue_target;
 
-        saveToLocalStorage();
+        saveToLocalStorage(true);
     }
 
-    calculateCharResources(charData);
+    calculateCharResources(charData, false);
 
     updateInfoDisplay(charName, charId);
 
@@ -1219,6 +1240,144 @@ function populateCharModal(character) {
 
 
     updateStarDisplays(character, true);
+
+}
+
+function charDataFromModal(character) {
+
+    let charData = {};
+
+    charData.name = character;
+
+    charData.level = document.getElementById("input_level_current").value;
+    charData.level_target = document.getElementById("input_level_target").value;
+
+    charData.ue_level = document.getElementById("input_ue_level_current").value;
+    charData.ue_level_target = document.getElementById("input_ue_level_target").value;
+
+    charData.bond = document.getElementById("input_bond_current").value;
+    charData.bond_target = document.getElementById("input_bond_target").value;
+
+    charData.ex = document.getElementById("input_ex_current").value;
+    charData.ex_target = document.getElementById("input_ex_target").value;
+    charData.basic = document.getElementById("input_basic_current").value;
+    charData.basic_target = document.getElementById("input_basic_target").value;
+    charData.passive = document.getElementById("input_enhanced_current").value;
+    charData.passive_target = document.getElementById("input_enhanced_target").value;
+    charData.sub = document.getElementById("input_sub_current").value;
+    charData.sub_target = document.getElementById("input_sub_target").value;
+
+    charData.gear1 = document.getElementById("input_gear1_current").value;
+    charData.gear1_target = document.getElementById("input_gear1_target").value;
+    charData.gear2 = document.getElementById("input_gear2_current").value;
+    charData.gear2_target = document.getElementById("input_gear2_target").value;
+    charData.gear3 = document.getElementById("input_gear3_current").value;
+    charData.gear3_target = document.getElementById("input_gear3_target").value;
+
+    charData.star = modalStars.star;
+    charData.star_target = modalStars.star_target;
+    charData.ue = modalStars.ue;
+    charData.ue_target = modalStars.ue_target;
+
+    return charData;
+
+}
+
+function populateCharResources(character) {
+
+    let mainartisWrapper = document.getElementById('char-mainartis-wrapper');
+    let subartisWrapper = document.getElementById('char-subartis-wrapper');
+    let bdWrapper = document.getElementById('char-bds-wrapper');
+    let tnWrapper = document.getElementById('char-tns-wrapper');
+
+    while (mainartisWrapper.children.length > 0) {
+        mainartisWrapper.children[0].remove();
+    }
+    while (subartisWrapper.children.length > 0) {
+        subartisWrapper.children[0].remove();
+    }
+    while (bdWrapper.children.length > 0) {
+        bdWrapper.children[0].remove();
+    }
+    while (tnWrapper.children.length > 0) {
+        tnWrapper.children[0].remove();
+    }
+
+    let resources = calculateCharResources(charDataFromModal(character), true);
+
+    if (resources) {
+
+        let mainMatId = charlist[charMap.get(character)]?.Skills?.Ex?.Level1?.LevelUpMats?.Items[1]?.ItemId;
+        let mainMat = matLookup.get(mainMatId);
+        if (mainMat) {
+            mainMat = mainMat.substring(0, mainMat.indexOf('_'));
+        }
+
+        for (key in resources) {
+
+            let matName = matLookup.get(key);
+
+            if (matName && matName != "Secret") {
+                const wrapDiv = document.createElement('div');
+                wrapDiv.className = "char-resource-wrapper";
+
+                const resourceImg = document.createElement('img');
+                resourceImg.className = "char-resource-img";
+                resourceImg.src = "icons/" + matName + ".webp";
+
+                const resourceText = document.createElement('p');
+                resourceText.className = "resource-count-text";
+                resourceText.innerText = resources[key];
+
+                wrapDiv.appendChild(resourceImg);
+                wrapDiv.appendChild(resourceText);
+
+                if (matName.includes("BD")) {
+                    bdWrapper.appendChild(wrapDiv);
+                }
+                else if (matName.includes("TN")) {
+                    tnWrapper.appendChild(wrapDiv);
+                }
+                else if (matName.includes(mainMat)) {
+                    mainartisWrapper.appendChild(wrapDiv);
+                }
+                else {
+                    subartisWrapper.appendChild(wrapDiv);
+                }
+            }
+
+        }
+
+        let creditText = document.getElementById('char-Credit');
+
+        if (resources["Credit"] > 0) {
+            creditText.innerText = commafy(resources["Credit"]);
+            creditText.parentElement.style.display = "";
+        }
+        else {
+            creditText.parentElement.style.display = "none";
+        }
+
+        let secretText = document.getElementById('char-Secret');
+
+        if (resources["9999"] > 0) {
+            secretText.innerText = resources["9999"];
+            secretText.parentElement.style.display = "";
+        }
+        else {
+            secretText.parentElement.style.display = "none";
+        }
+
+        let xpText = document.getElementById('char-XP');
+
+        if (resources["Xp"] > 0) {
+            xpText.innerText = commafy(resources["Xp"]);
+            xpText.parentElement.style.display = "";
+        }
+        else {
+            xpText.parentElement.style.display = "none";
+        }
+    }
 
 }
 
@@ -1404,6 +1563,9 @@ function updateCells(dict, editable) {
 
         if (matId) {
             updateMatDisplay(mat, dict[matId] ?? 0, editable, 'normal');
+        }
+        else if (dict[mat] != undefined) {
+            updateMatDisplay(mat, dict[mat], editable, 'normal');
         }
 
     }
@@ -1680,7 +1842,7 @@ function updateNeededMat(mat) {
     neededMatDict[mat] = Math.max((requiredMatDict[mat] ?? 0) - (ownedMatDict[mat] ?? 0), 0);
 }
 
-function calculateCharResources(charData) {
+function calculateCharResources(charData, output) {
 
     let charMatDict = {};
 
@@ -1699,7 +1861,12 @@ function calculateCharResources(charData) {
 
     calcMysticCost(charData.star, charData.star_target, charMatDict);
 
-    charMatDicts[charData.name] = charMatDict;
+    if (output) {
+        return charMatDict;
+    }
+    else {
+        charMatDicts[charData.name] = charMatDict;
+    }
 
 }
 
@@ -1949,7 +2116,7 @@ function refreshAllChars() {
 
         createCharBox(data.characters[i].name, data.characters[i].id);
 
-        calculateCharResources(data.characters[i]);
+        calculateCharResources(data.characters[i], false);
     }
 
 }
@@ -2096,8 +2263,7 @@ function getOffset(el) {
 
 // function debugCharCalc(char) {
 //     var charData = data.characters.find(obj => { return obj.name == char });
-//     calculateCharResources(charData);
-//     console.log(charMatDicts[char]);
+//     console.log(calculateCharResources(charData, true));
 // }
 
 // function debugGetDicts() {

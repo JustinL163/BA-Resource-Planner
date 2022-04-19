@@ -26,225 +26,262 @@
         </div>
     </div>
     <div class="modal" id="characterModal">
-        <div class="modal-content-wrapper" id="character-modal-wrapper">
-            <div class="charBox" id="displayChar">
-                <div class="charBoxwrap">
-                    <div class="main-box-content">
-                        <img draggable="false" id="displayImg">
-                        <div class="nameBar">
-                            <p id="displayName"></p>
+        <div class="modal-content-wrapper" id="character-modal-wrapper" style="display: block;">
+            <div style="display: flex; flex-wrap: wrap; overflow-y: auto; overflow-x: clip; max-height: 65vh;">
+                <div class="charBox" id="displayChar">
+                    <div class="charBoxwrap">
+                        <div class="main-box-content">
+                            <img draggable="false" id="displayImg">
+                            <div class="nameBar">
+                                <p id="displayName"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-content-section" style="min-width: 30px; margin: initial;">
+                    <img class="action-icon" src="icons/cross.svg" onclick="deleteClicked()" style="max-width: 25px;">
+                </div>
+                <div class="modal-content-section" style="width: 20%; min-width: 180px;">
+                    <p>School</p>
+                    <p id="display_school"></p>
+                    <br>
+                    <p>Type</p>
+                    <p id="display_type"></p>
+                </div>
+                <div class="modal-content-section" style="width: 10%; min-width: 80px;">
+                    <p>Role</p>
+                    <p id="display_role"></p>
+                    <br>
+                    <p>Position</p>
+                    <p id="display_position"></p>
+                    <br>
+                    <p>Gun</p>
+                    <p id="display_gun"></p>
+                </div>
+                <div class="modal-content-section" style="width:15%; min-width: 100px;">
+                    <p>Attack Type</p>
+                    <p id="display_attack_type"></p>
+                    <br>
+                    <p>Defense Type</p>
+                    <p id="display_defense_type"></p>
+                </div>
+                <div class="modal-content-section"
+                    style="width: 25%; min-width: 150px; display: flex; visibility: hidden;">
+                    <div>
+                        Urban
+                    </div>
+                    <div>
+                        Outdoor
+                    </div>
+                    <div>
+                        Indoor
+                    </div>
+                </div>
+                <div class="modal-content-section" style="width: 15%; min-width: 185px; display: flex;">
+                    <div class="content-section-wrapper" style="padding: 6% 7% 6% 0;">
+                        <div class="section-label">
+                            <p class="section-name" title="Click for presets">Level</p>
+                        </div>
+                        <div>
+                            <p>Current</p>
+                            <input id="input_level_current" type="number" class="two_digit_input">
+                            <p>Target</p>
+                            <input id="input_level_target" type="number" class="two_digit_input">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-content-section" style="width: 20%; min-width: 250px; display: flex;">
+                    <div class="content-section-wrapper" style="padding: 3% 5% 3% 0;">
+                        <div class="section-label">
+                            <p class="section-name">Stars</p>
+                        </div>
+                        <div>
+                            <p>Current</p>
+                            <div id="star-current-container" style="display: flex;">
+                                <img draggable="false" id="star-current-1" class="star-icon" src="icons/star.png">
+                                <img draggable="false" id="star-current-2" class="star-icon" src="icons/star.png">
+                                <img draggable="false" id="star-current-3" class="star-icon" src="icons/star.png">
+                                <img draggable="false" id="star-current-4" class="star-icon" src="icons/star.png">
+                                <img draggable="false" id="star-current-5" class="star-icon" src="icons/star.png">
+                            </div>
+                            <p>Target</p>
+                            <div id="star-target-container" style="display: flex;">
+                                <img draggable="false" id="star-target-1" class="star-icon" src="icons/star.png">
+                                <img draggable="false" id="star-target-2" class="star-icon" src="icons/star.png">
+                                <img draggable="false" id="star-target-3" class="star-icon" src="icons/star.png">
+                                <img draggable="false" id="star-target-4" class="star-icon" src="icons/star.png">
+                                <img draggable="false" id="star-target-5" class="star-icon" src="icons/star.png">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-content-section" style="width: 20%; min-width: 280px; display: flex;">
+                    <div class="content-section-wrapper" style="padding: 3% 5% 3% 0;">
+                        <div class="section-label">
+                            <p class="section-name">UE</p>
+                        </div>
+                        <div>
+                            <p>Current</p>
+                            <div id="ue-current-container" style="display: flex;">
+                                <img draggable="false" id="ue-current-1" class="star-icon" src="icons/star.png">
+                                <img draggable="false" id="ue-current-2" class="star-icon" src="icons/star.png">
+                                <img draggable="false" id="ue-current-3" class="star-icon" src="icons/star.png">
+                                <img draggable="false" id="ue-current-4" class="star-icon" src="icons/star.png" style="visibility: hidden;">
+                                <img draggable="false" id="ue-current-5" class="star-icon" src="icons/star.png" style="visibility: hidden;">
+                            </div>
+                            <p>Target</p>
+                            <div id="ue-target-container" style="display: flex;">
+                                <img draggable="false" id="ue-target-1" class="star-icon" src="icons/star.png">
+                                <img draggable="false" id="ue-target-2" class="star-icon" src="icons/star.png">
+                                <img draggable="false" id="ue-target-3" class="star-icon" src="icons/star.png">
+                                <img draggable="false" id="ue-target-4" class="star-icon" src="icons/star.png" style="visibility: hidden;">
+                                <img draggable="false" id="ue-target-5" class="star-icon" src="icons/star.png" style="visibility: hidden;">
+                            </div>
+                        </div>
+                        <div style="margin-left: 10px;">
+                            <br>
+                            <input id="input_ue_level_current" type="number" class="two_digit_input">
+                            <br><br>
+                            <input id="input_ue_level_target" type="number" class="two_digit_input">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-content-section" style="width: 15%; min-width: 183px; display: flex;">
+                    <div class="content-section-wrapper" style="padding: 6% 7% 6% 0;">
+                        <div class="section-label">
+                            <p class="section-name">Bond</p>
+                        </div>
+                        <div>
+                            <img draggable="false">
+                        </div>
+                        <div>
+                            <p>Current</p>
+                            <input id="input_bond_current" type="number" class="two_digit_input">
+                            <p>Target</p>
+                            <input id="input_bond_target" type="number" class="two_digit_input">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-content-section"
+                    style="width: 45%; min-width: 400px; display: flex; margin-top: 10px;">
+                    <div class="content-section-wrapper" style="padding-right: 15%; padding-top: 2%;">
+                        <div class="section-label">
+                            <p class="section-name" title="Click for presets">Skills</p>
+                        </div>
+                        <div>
+                            <br>
+                            <p>Current</p>
+                            <br>
+                            <p>Target</p>
+                            <br>
+                        </div>
+                        <div class="sub-skill">
+                            <p>EX</p>
+                            <input id="input_ex_current" type="number" class="two_digit_input">
+                            <br>
+                            <img draggable="false" height="15px">
+                            <br>
+                            <input id="input_ex_target" type="number" class="two_digit_input">
+                        </div>
+                        <div class="sub-skill">
+                            <p>Basic</p>
+                            <input id="input_basic_current" type="number" class="two_digit_input">
+                            <br>
+                            <img draggable="false" height="15px">
+                            <br>
+                            <input id="input_basic_target" type="number" class="two_digit_input">
+                        </div>
+                        <div class="sub-skill">
+                            <p>Enhanced</p>
+                            <input id="input_enhanced_current" type="number" class="two_digit_input">
+                            <br>
+                            <img draggable="false" height="15px">
+                            <br>
+                            <input id="input_enhanced_target" type="number" class="two_digit_input">
+                        </div>
+                        <div class="sub-skill">
+                            <p>Sub</p>
+                            <input id="input_sub_current" type="number" class="two_digit_input">
+                            <br>
+                            <img draggable="false" height="15px">
+                            <br>
+                            <input id="input_sub_target" type="number" class="two_digit_input">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-content-section"
+                    style="width: 45%; min-width: 400px; display: flex; margin-top: 10px; justify-content: left;">
+                    <div class="content-section-wrapper" style="padding: 1% 10% 1% 0;">
+                        <div class="section-label">
+                            <p class="section-name" title="Click for presets">Gear</p>
+                        </div>
+                        <div>
+                            <br>
+                            <p>Current</p>
+                            <br>
+                            <p>Target</p>
+                            <br>
+                        </div>
+                        <div class="sub-gear">
+                            <br>
+                            <input id="input_gear1_current" type="number" class="two_digit_input">
+                            <br>
+                            <img draggable="false" height="15px">
+                            <br>
+                            <input id="input_gear1_target" type="number" class="two_digit_input">
+                        </div>
+                        <div class="sub-gear">
+                            <br>
+                            <input id="input_gear2_current" type="number" class="two_digit_input">
+                            <br>
+                            <img draggable="false" height="15px">
+                            <br>
+                            <input id="input_gear2_target" type="number" class="two_digit_input">
+                        </div>
+                        <div class="sub-gear">
+                            <br>
+                            <input id="input_gear3_current" type="number" class="two_digit_input">
+                            <br>
+                            <img draggable="false" height="15px">
+                            <br>
+                            <input id="input_gear3_target" type="number" class="two_digit_input">
+                        </div>
+                    </div>
+                </div>
+                <div id="char-resource-section" style="width: 100%; padding-bottom: 10px;">
+                    <div class="modal-content-section" style="overflow-y: auto; max-height: 200px;">
+                        <div class="char-schoolmats-wrapper">
+                            <div class="char-mats-wrapper" id="char-bds-wrapper"></div>
+                            <div class="char-mats-wrapper" id="char-tns-wrapper"></div>
+                        </div>
+                        <div class="char-artifacts-wrapper">
+                            <div class="char-mats-wrapper" id="char-mainartis-wrapper"></div>
+                            <div class="char-mats-wrapper" id="char-subartis-wrapper"></div>
+                        </div>
+                    </div>
+                    <div class="modal-content-section">
+                        <div class="char-miscresource-wrapper">
+                            <div class="char-misc-box" style="display: none;">
+                                <img draggable="false" src="icons/Credit.webp"
+                                    style="max-width: 80px; max-height: 80px;">
+                                <p id="char-Credit" class="char-misc-text" style="align-self: center;"></p>
+                            </div>
+                            <div class="char-misc-box" style="display: none;">
+                                <img draggable="false" src="icons/TN_Secret.webp"
+                                    style="max-width: 80px; max-height: 80px;">
+                                <p id="char-Secret" class="char-misc-text" style="align-self: center;"></p>
+                            </div>
+                            <div class="char-misc-box" style="display: none;">
+                                <img draggable="false" src="icons/exp.png"
+                                    style="max-width: 80px; height: fit-content; align-self: center; padding: 0px 10px;">
+                                <p id="char-XP" class="char-misc-text" style="align-self: center;"></p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="modal-content-section" style="min-width: 30px; margin: initial;">
-                <img class="action-icon" src="icons/cross.svg" onclick="deleteClicked()" style="max-width: 25px;">
-            </div>
-            <div class="modal-content-section" style="width: 20%; min-width: 180px;">
-                <p>School</p>
-                <p id="display_school"></p>
-                <br>
-                <p>Type</p>
-                <p id="display_type"></p>
-            </div>
-            <div class="modal-content-section" style="width: 10%; min-width: 80px;">
-                <p>Role</p>
-                <p id="display_role"></p>
-                <br>
-                <p>Position</p>
-                <p id="display_position"></p>
-                <br>
-                <p>Gun</p>
-                <p id="display_gun"></p>
-            </div>
-            <div class="modal-content-section" style="width:15%; min-width: 100px;">
-                <p>Attack Type</p>
-                <p id="display_attack_type"></p>
-                <br>
-                <p>Defense Type</p>
-                <p id="display_defense_type"></p>
-            </div>
-            <div class="modal-content-section" style="width: 25%; min-width: 150px; display: flex; visibility: hidden;">
-                <div>
-                    Urban
-                </div>
-                <div>
-                    Outdoor
-                </div>
-                <div>
-                    Indoor
-                </div>
-            </div>
-            <div class="modal-content-section" style="width: 15%; min-width: 185px; display: flex;">
-                <div class="content-section-wrapper" style="padding: 6% 7% 6% 0;">
-                    <div class="section-label">
-                        <p class="section-name" title="Click for presets">Level</p>
-                    </div>
-                    <div>
-                        <p>Current</p>
-                        <input id="input_level_current" type="number" class="two_digit_input">
-                        <p>Target</p>
-                        <input id="input_level_target" type="number" class="two_digit_input">
-                    </div>
-                </div>
-            </div>
-            <div class="modal-content-section" style="width: 20%; min-width: 250px; display: flex;">
-                <div class="content-section-wrapper" style="padding: 3% 5% 3% 0;">
-                    <div class="section-label">
-                        <p class="section-name">Stars</p>
-                    </div>
-                    <div>
-                        <p>Current</p>
-                        <div id="star-current-container" style="display: flex;">
-                            <img draggable="false" id="star-current-1" class="star-icon" src="icons/star.png">
-                            <img draggable="false" id="star-current-2" class="star-icon" src="icons/star.png">
-                            <img draggable="false" id="star-current-3" class="star-icon" src="icons/star.png">
-                            <img draggable="false" id="star-current-4" class="star-icon" src="icons/star.png">
-                            <img draggable="false" id="star-current-5" class="star-icon" src="icons/star.png">
-                        </div>
-                        <p>Target</p>
-                        <div id="star-target-container" style="display: flex;">
-                            <img draggable="false" id="star-target-1" class="star-icon" src="icons/star.png">
-                            <img draggable="false" id="star-target-2" class="star-icon" src="icons/star.png">
-                            <img draggable="false" id="star-target-3" class="star-icon" src="icons/star.png">
-                            <img draggable="false" id="star-target-4" class="star-icon" src="icons/star.png">
-                            <img draggable="false" id="star-target-5" class="star-icon" src="icons/star.png">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-content-section" style="width: 20%; min-width: 280px; display: flex;">
-                <div class="content-section-wrapper" style="padding: 3% 5% 3% 0;">
-                    <div class="section-label">
-                        <p class="section-name">UE</p>
-                    </div>
-                    <div>
-                        <p>Current</p>
-                        <div id="ue-current-container" style="display: flex;">
-                            <img draggable="false" id="ue-current-1" class="star-icon" src="icons/star.png">
-                            <img draggable="false" id="ue-current-2" class="star-icon" src="icons/star.png">
-                            <img draggable="false" id="ue-current-3" class="star-icon" src="icons/star.png">
-                            <img draggable="false" id="ue-current-4" class="star-icon" src="icons/star.png">
-                            <img draggable="false" id="ue-current-5" class="star-icon" src="icons/star.png">
-                        </div>
-                        <p>Target</p>
-                        <div id="ue-target-container" style="display: flex;">
-                            <img draggable="false" id="ue-target-1" class="star-icon" src="icons/star.png">
-                            <img draggable="false" id="ue-target-2" class="star-icon" src="icons/star.png">
-                            <img draggable="false" id="ue-target-3" class="star-icon" src="icons/star.png">
-                            <img draggable="false" id="ue-target-4" class="star-icon" src="icons/star.png">
-                            <img draggable="false" id="ue-target-5" class="star-icon" src="icons/star.png">
-                        </div>
-                    </div>
-                    <div style="margin-left: 10px;">
-                        <br>
-                        <input id="input_ue_level_current" type="number" class="two_digit_input">
-                        <br><br>
-                        <input id="input_ue_level_target" type="number" class="two_digit_input">
-                    </div>
-                </div>
-            </div>
-            <div class="modal-content-section" style="width: 15%; min-width: 183px; display: flex;">
-                <div class="content-section-wrapper" style="padding: 6% 7% 6% 0;">
-                    <div class="section-label">
-                        <p class="section-name">Bond</p>
-                    </div>
-                    <div>
-                        <img draggable="false">
-                    </div>
-                    <div>
-                        <p>Current</p>
-                        <input id="input_bond_current" type="number" class="two_digit_input">
-                        <p>Target</p>
-                        <input id="input_bond_target" type="number" class="two_digit_input">
-                    </div>
-                </div>
-            </div>
-            <div class="modal-content-section" style="width: 45%; min-width: 400px; display: flex; margin-top: 10px;">
-                <div class="content-section-wrapper" style="padding-right: 15%; padding-top: 2%;">
-                    <div class="section-label">
-                        <p class="section-name" title="Click for presets">Skills</p>
-                    </div>
-                    <div>
-                        <br>
-                        <p>Current</p>
-                        <br>
-                        <p>Target</p>
-                        <br>
-                    </div>
-                    <div class="sub-skill">
-                        <p>EX</p>
-                        <input id="input_ex_current" type="number" class="two_digit_input">
-                        <br>
-                        <img draggable="false" height="15px">
-                        <br>
-                        <input id="input_ex_target" type="number" class="two_digit_input">
-                    </div>
-                    <div class="sub-skill">
-                        <p>Basic</p>
-                        <input id="input_basic_current" type="number" class="two_digit_input">
-                        <br>
-                        <img draggable="false" height="15px">
-                        <br>
-                        <input id="input_basic_target" type="number" class="two_digit_input">
-                    </div>
-                    <div class="sub-skill">
-                        <p>Enhanced</p>
-                        <input id="input_enhanced_current" type="number" class="two_digit_input">
-                        <br>
-                        <img draggable="false" height="15px">
-                        <br>
-                        <input id="input_enhanced_target" type="number" class="two_digit_input">
-                    </div>
-                    <div class="sub-skill">
-                        <p>Sub</p>
-                        <input id="input_sub_current" type="number" class="two_digit_input">
-                        <br>
-                        <img draggable="false" height="15px">
-                        <br>
-                        <input id="input_sub_target" type="number" class="two_digit_input">
-                    </div>
-                </div>
-            </div>
-            <div class="modal-content-section" style="width: 45%; min-width: 400px; display: flex; margin-top: 10px; justify-content: left;">
-                <div class="content-section-wrapper" style="padding: 1% 10% 1% 0;">
-                    <div class="section-label">
-                        <p class="section-name" title="Click for presets">Gear</p>
-                    </div>
-                    <div>
-                        <br>
-                        <p>Current</p>
-                        <br>
-                        <p>Target</p>
-                        <br>
-                    </div>
-                    <div class="sub-gear">
-                        <br>
-                        <input id="input_gear1_current" type="number" class="two_digit_input">
-                        <br>
-                        <img draggable="false" height="15px">
-                        <br>
-                        <input id="input_gear1_target" type="number" class="two_digit_input">
-                    </div>
-                    <div class="sub-gear">
-                        <br>
-                        <input id="input_gear2_current" type="number" class="two_digit_input">
-                        <br>
-                        <img draggable="false" height="15px">
-                        <br>
-                        <input id="input_gear2_target" type="number" class="two_digit_input">
-                    </div>
-                    <div class="sub-gear">
-                        <br>
-                        <input id="input_gear3_current" type="number" class="two_digit_input">
-                        <br>
-                        <img draggable="false" height="15px">
-                        <br>
-                        <input id="input_gear3_target" type="number" class="two_digit_input">
-                    </div>
-                </div>
-            </div>
-            <div class="modal-content-section" style="width: 100%; display: flex; justify-content: center; margin-top: 15px;">
+            <div class="modal-content-section"
+                style="width: 100%; display: flex; justify-content: center; margin-top: 15px;">
                 <button id="cancel-button-resource" class="resource-modal-button"
                     onclick="cancelCharModal()">Cancel</button>
                 <button id="save-button-resource" class="resource-modal-button" onclick="saveCharChanges()">Save and
