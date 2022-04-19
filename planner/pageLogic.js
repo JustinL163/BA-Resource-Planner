@@ -1321,6 +1321,19 @@ function populateCharResources(character) {
                 const wrapDiv = document.createElement('div');
                 wrapDiv.className = "char-resource-wrapper";
 
+                let extraClassName = "";
+                
+                if(matName[2] === "_")
+                {
+                    extraClassName = " char-resource-rarity-" + matName[3];
+                }
+                else
+                {
+                    extraClassName = " char-resource-rarity-" + matName.substring(matName.length - 1);
+                }
+
+                wrapDiv.className += extraClassName;
+
                 const resourceImg = document.createElement('img');
                 resourceImg.className = "char-resource-img";
                 resourceImg.src = "icons/" + matName + ".webp";

@@ -619,6 +619,24 @@ div.resource-box.editable.focused p {
     position: relative;
     width: fit-content;
     height: fit-content;
+    background-size: 100px;
+    background-repeat: no-repeat;
+}
+
+.char-resource-wrapper.char-resource-rarity-4 {
+    background-image: url(./icons/background_ssr.png);
+}
+
+.char-resource-wrapper.char-resource-rarity-3 {
+    background-image: url(./icons/background_sr.png);
+}
+
+.char-resource-wrapper.char-resource-rarity-2 {
+    background-image: url(./icons/background_r.png);
+}
+
+.char-resource-wrapper.char-resource-rarity-1 {
+    background-image: url(./icons/background_n.png);
 }
 
 .char-mats-wrapper {
