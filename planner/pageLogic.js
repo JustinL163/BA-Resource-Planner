@@ -1609,7 +1609,7 @@ function updateMatDisplay(matName, matValue, editable, type) {
             textElement.innerText = matValue;
         }
         inputElement.value = textElement.innerText;
-        if (editable && !matName.includes("XP_")) {
+        if (editable || matName.includes("XP_")) {
             textElement.parentElement.classList.add("editable");
         }
         else {
