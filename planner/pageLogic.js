@@ -69,7 +69,7 @@ function checkResources() {
 
 function init() {
 
-    data = JSON.parse(localStorage.getItem('save-data'));
+    data = tryParseJSON(localStorage.getItem('save-data'));
 
     loadResources();
 
@@ -2076,6 +2076,14 @@ function transferDialog() {
 
 }
 
+function tryParseJSON(source) {
+    try {
+        return JSON.parse(source);
+    } catch (e) {
+        return null;
+    }
+}
+
 async function getImportData() {
     const { value: importData } = await Swal.fire({
         input: 'textarea',
@@ -2085,9 +2093,9 @@ async function getImportData() {
     })
 
     if (importData) {
-        try {
-            JSON.parse(importData);
-        } catch (e) {
+        data = tryParseJSON(importData);
+
+        if (!data) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -2098,7 +2106,6 @@ async function getImportData() {
         }
 
         localStorage.setItem("save-data", importData);
-        data = JSON.parse(importData);
 
         ownedMatDict = {};
         if (data != null) {
