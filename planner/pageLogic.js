@@ -1487,7 +1487,7 @@ function updateStarDisplay(id, character, charId, type, fromTemp) {
         var charData = data.characters.find(obj => { return obj.id == charId });
 
         star = charData.current?.star;
-        star_target = charData.target?.current;
+        star_target = charData.target?.star;
         ue = charData.current?.ue;
         ue_target = charData.target?.ue;
     }
@@ -2053,8 +2053,8 @@ function updateInfoDisplay(character, charId) {
     document.getElementById(character + "-gear-current").innerText = gearCurrent;
     document.getElementById(character + "-gear-target").innerText = gearTarget;
 
-    document.getElementById(character + "-level-current").innerText = formatLevel("Level", charData.level);
-    document.getElementById(character + "-level-target").innerText = formatLevel("Level", charData.level_target);
+    document.getElementById(character + "-level-current").innerText = formatLevel("Level", charData.current.level);
+    document.getElementById(character + "-level-target").innerText = formatLevel("Level", charData.target.level);
 
 }
 
@@ -2097,6 +2097,7 @@ function tryParseJSON(source) {
                     data.characters[i] = Student.FromVersion1Data(data.characters[i]);
                 }
                 data.exportVersion = 2;
+                localStorage.setItem("save-data", JSON.stringify(data));
             }
             // incremental
             // Note: if, not else if
@@ -2134,7 +2135,7 @@ async function getImportData() {
             return false;
         }
 
-        localStorage.setItem("save-data", importData);
+        localStorage.setItem("save-data", JSON.stringify(data));
 
         ownedMatDict = {};
         if (data != null) {
