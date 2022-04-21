@@ -186,7 +186,7 @@ class Student {
 
 class StudentInvestment {
     level = 1
-    bond = 0
+    bond = 1
     star = 1
     ue = 0
     ue_level = 0
@@ -218,7 +218,7 @@ class StudentInvestment {
     static Default(characterInfo) {
         var data = [
             1,
-            0,
+            1,
             characterInfo?.BaseStar ?? 1,
             0,
             0,
