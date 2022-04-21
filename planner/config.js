@@ -165,8 +165,7 @@ class Student {
     }
 
     static FromVersion1Data(version1) {
-        var charData = charlist[version1.id];
-        var student = new Student(charData);
+        var student = new Student(version1);
         student.enabled = version1.enabled;
 
         const props = ['level', 'bond', 'star', 'ue', 'ue_level', 'ex', 'basic', 'passive', 'sub', 'gear1', 'gear2', 'gear3']
