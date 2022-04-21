@@ -147,9 +147,119 @@ var rowColours = {
     "Voynich": "#84b28066", "Haniwa": "#e7bef466", "Baghdad": "#d179a066", "Totem": "#b77e6166", "Fleece": "#faf69f66", "Kikuko": "#ef957f66"
 };
 
+const exportDataVersion = 2;
 // perhaps need to move this to JSON file later lmao, is probably getting a bit big
 // also perhaps later add functionality to set validation for a whole class of inputs rather than just invidually
-var inputValidation = {
+class Student {
+    name = ""
+    id = ""
+    current = null
+    target = null
+    enabled = true
+    
+    constructor(characterInfo) {
+        this.id = characterInfo.Id;
+        this.name = characterInfo.Name;
+        this.current = StudentInvestment.Default(characterInfo);
+        this.target = StudentInvestment.DefaultTarget(characterInfo);
+    }
+
+    static FromVersion1Data(version1) {
+        
+        var student = new Student({
+            Id: version1.id,
+            Name: version1.name
+        });
+        student.enabled = version1.enabled;
+
+        const props = ['level', 'bond', 'star', 'ue', 'ue_level', 'ex', 'basic', 'passive', 'sub', 'gear1', 'gear2', 'gear3']
+        var cur = [];
+        var tar = [];
+        for(var prop of props) {
+            cur.push(version1[prop]);
+            tar.push(version1[prop+"_target"]);
+        }
+
+        student.current = new StudentInvestment(...cur);
+        student.target = new StudentInvestment(...tar);
+
+        return student;
+    }
+}
+
+class StudentInvestment {
+    level = 1
+    bond = 1
+    star = 1
+    ue = 0
+    ue_level = 0
+    
+    ex = 1
+    basic = 1
+    passive = 0
+    sub = 0
+
+    gear1 = 0
+    gear2 = 0
+    gear3 = 0
+
+    constructor(level, bond, star, ue, ue_level, ex, basic, passive, sub, gear1, gear2, gear3) {
+        this.level = level;
+        this.bond = bond;
+        this.star = star;
+        this.ue = ue;
+        this.ue_level = ue_level;
+        this.ex = ex;
+        this.basic = basic;
+        this.passive = passive;
+        this.sub = sub;
+        this.gear1 = gear1;
+        this.gear2 = gear2;
+        this.gear3 = gear3;
+    }
+
+    static Default(characterInfo) {
+        var data = [
+            1,
+            1,
+            characterInfo?.BaseStar ?? 1,
+            0,
+            0,
+            
+            1,
+            1,
+            0,
+            0,
+        
+            0,
+            0,
+            0
+        ];
+
+        return new StudentInvestment(...data);
+    }
+
+    static DefaultTarget(characterInfo) {
+        var defaultTarget = StudentInvestment.Default(characterInfo);
+        defaultTarget.ex = inputValidation.ex_target.default;
+        defaultTarget.basic = inputValidation.basic_target.default;
+        defaultTarget.passive = inputValidation.passive_target.default;
+        defaultTarget.sub = inputValidation.sub_target.default;
+
+        defaultTarget.bond = inputValidation.bond_target.default;
+        defaultTarget.level = inputValidation.level_target.default;
+        defaultTarget.star = characterInfo?.BaseStar ?? 1;
+        defaultTarget.ue = 0;
+        defaultTarget.ue_level = inputValidation.ue_level_target.default;
+        
+        defaultTarget.gear1 = inputValidation.gear1_target.default;
+        defaultTarget.gear2 = inputValidation.gear2_target.default;
+        defaultTarget.gear2 = inputValidation.gear2_target.default;
+
+        return defaultTarget
+    }
+}
+const inputValidation = {
     "level": {
         id: "input_level_current",
         location: "characterModal",

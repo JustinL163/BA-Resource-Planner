@@ -74,7 +74,7 @@ function init() {
     loadResources();
 
     if (data == null) {
-        data = { characters: [], disabled_characters: [], owned_materials: {} };
+        data = { exportVersion: exportDataVersion, characters: [], disabled_characters: [], owned_materials: {} };
         localStorage.setItem("save-data", JSON.stringify(data));
     }
 
@@ -813,17 +813,19 @@ async function newCharClicked() {
 
         let charInfoObj = charlist[charId];
 
-        let newCharObj = { name: character, id: charId, star: charInfoObj?.BaseStar ?? 1, star_target: charInfoObj?.BaseStar ?? 1, ue: 0, ue_target: 0 }
+        let newCharObj = new Student(charInfoObj);
 
-        defProperties = ['level', 'level_target', 'ue_level', 'ue_level_target', 'bond', 'bond_target', 'ex', 'ex_target', 'basic', 'basic_target', 'passive',
-            'passive_target', 'sub', 'sub_target', 'gear1', 'gear1_target', 'gear2', 'gear2_target', 'gear3', 'gear3_target'];
+        // let newCharObj = { name: character, id: charId, star: charInfoObj?.BaseStar ?? 1, star_target: charInfoObj?.BaseStar ?? 1, ue: 0, ue_target: 0 }
 
-        for (let i = 0; i < defProperties.length; i++) {
-            let defValue = inputValidation[defProperties[i]].default;
-            if (defValue || defValue === 0) {
-                newCharObj[defProperties[i]] = defValue;
-            }
-        }
+        // defProperties = ['level', 'level_target', 'ue_level', 'ue_level_target', 'bond', 'bond_target', 'ex', 'ex_target', 'basic', 'basic_target', 'passive',
+        //     'passive_target', 'sub', 'sub_target', 'gear1', 'gear1_target', 'gear2', 'gear2_target', 'gear3', 'gear3_target'];
+
+        // for (let i = 0; i < defProperties.length; i++) {
+        //     let defValue = inputValidation[defProperties[i]].default;
+        //     if (defValue || defValue === 0) {
+        //         newCharObj[defProperties[i]] = defValue;
+        //     }
+        // }
 
         data.characters.push(newCharObj);
 
@@ -1145,35 +1147,38 @@ function saveCharChanges() {
 
     if (charData != undefined) {
 
-        charData.level = document.getElementById("input_level_current").value;
-        charData.level_target = document.getElementById("input_level_target").value;
+        charData.current = {};
+        charData.target = {};
 
-        charData.ue_level = document.getElementById("input_ue_level_current").value;
-        charData.ue_level_target = document.getElementById("input_ue_level_target").value;
+        charData.current.level = document.getElementById("input_level_current").value;
+        charData.target.level = document.getElementById("input_level_target").value;
 
-        charData.bond = document.getElementById("input_bond_current").value;
-        charData.bond_target = document.getElementById("input_bond_target").value;
+        charData.current.ue_level = document.getElementById("input_ue_level_current").value;
+        charData.target.ue_level = document.getElementById("input_ue_level_target").value;
 
-        charData.ex = document.getElementById("input_ex_current").value;
-        charData.ex_target = document.getElementById("input_ex_target").value;
-        charData.basic = document.getElementById("input_basic_current").value;
-        charData.basic_target = document.getElementById("input_basic_target").value;
-        charData.passive = document.getElementById("input_enhanced_current").value;
-        charData.passive_target = document.getElementById("input_enhanced_target").value;
-        charData.sub = document.getElementById("input_sub_current").value;
-        charData.sub_target = document.getElementById("input_sub_target").value;
+        charData.current.bond = document.getElementById("input_bond_current").value;
+        charData.target.bond = document.getElementById("input_bond_target").value;
 
-        charData.gear1 = document.getElementById("input_gear1_current").value;
-        charData.gear1_target = document.getElementById("input_gear1_target").value;
-        charData.gear2 = document.getElementById("input_gear2_current").value;
-        charData.gear2_target = document.getElementById("input_gear2_target").value;
-        charData.gear3 = document.getElementById("input_gear3_current").value;
-        charData.gear3_target = document.getElementById("input_gear3_target").value;
+        charData.current.ex = document.getElementById("input_ex_current").value;
+        charData.target.ex = document.getElementById("input_ex_target").value;
+        charData.current.basic = document.getElementById("input_basic_current").value;
+        charData.target.basic = document.getElementById("input_basic_target").value;
+        charData.current.passive = document.getElementById("input_enhanced_current").value;
+        charData.target.passive = document.getElementById("input_enhanced_target").value;
+        charData.current.sub = document.getElementById("input_sub_current").value;
+        charData.target.sub = document.getElementById("input_sub_target").value;
 
-        charData.star = modalStars.star;
-        charData.star_target = modalStars.star_target;
-        charData.ue = modalStars.ue;
-        charData.ue_target = modalStars.ue_target;
+        charData.current.gear1 = document.getElementById("input_gear1_current").value;
+        charData.target.gear1 = document.getElementById("input_gear1_target").value;
+        charData.current.gear2 = document.getElementById("input_gear2_current").value;
+        charData.target.gear2 = document.getElementById("input_gear2_target").value;
+        charData.current.gear3 = document.getElementById("input_gear3_current").value;
+        charData.target.gear3 = document.getElementById("input_gear3_target").value;
+
+        charData.current.star = modalStars.star;
+        charData.target.star = modalStars.star_target;
+        charData.current.ue = modalStars.ue;
+        charData.target.ue = modalStars.ue_target;
 
         saveToLocalStorage(true);
     }
@@ -1206,41 +1211,38 @@ function populateCharModal(character) {
         document.getElementById("display_defense_type").innerText = charInfo.DefenseType;
 
 
-        document.getElementById("input_level_current").value = charData.level;
-        document.getElementById("input_level_target").value = charData.level_target;
+        document.getElementById("input_level_current").value = charData.current?.level;
+        document.getElementById("input_level_target").value = charData.target?.level;
 
-        document.getElementById("input_ue_level_current").value = charData.ue_level;
-        document.getElementById("input_ue_level_target").value = charData.ue_level_target;
+        document.getElementById("input_ue_level_current").value = charData.current?.ue_level;
+        document.getElementById("input_ue_level_target").value = charData.target?.ue_level;
 
-        document.getElementById("input_bond_current").value = charData.bond;
-        document.getElementById("input_bond_target").value = charData.bond_target;
+        document.getElementById("input_bond_current").value = charData.current?.bond;
+        document.getElementById("input_bond_target").value = charData.target?.bond;
 
-        document.getElementById("input_ex_current").value = charData.ex;
-        document.getElementById("input_ex_target").value = charData.ex_target;
-        document.getElementById("input_basic_current").value = charData.basic;
-        document.getElementById("input_basic_target").value = charData.basic_target;
-        document.getElementById("input_enhanced_current").value = charData.passive;
-        document.getElementById("input_enhanced_target").value = charData.passive_target;
-        document.getElementById("input_sub_current").value = charData.sub;
-        document.getElementById("input_sub_target").value = charData.sub_target
+        document.getElementById("input_ex_current").value = charData.current?.ex;
+        document.getElementById("input_ex_target").value = charData.target?.ex;
+        document.getElementById("input_basic_current").value = charData.current?.basic;
+        document.getElementById("input_basic_target").value = charData.target?.basic;
+        document.getElementById("input_enhanced_current").value = charData.current?.passive;
+        document.getElementById("input_enhanced_target").value = charData.target?.passive;
+        document.getElementById("input_sub_current").value = charData.current?.sub;
+        document.getElementById("input_sub_target").value = charData.target?.sub;
 
-        document.getElementById("input_gear1_current").value = charData.gear1;
-        document.getElementById("input_gear1_target").value = charData.gear1_target;
-        document.getElementById("input_gear2_current").value = charData.gear2;
-        document.getElementById("input_gear2_target").value = charData.gear2_target;
-        document.getElementById("input_gear3_current").value = charData.gear3;
-        document.getElementById("input_gear3_target").value = charData.gear3_target;
+        document.getElementById("input_gear1_current").value = charData.current?.gear1;
+        document.getElementById("input_gear1_target").value = charData.target?.gear1;
+        document.getElementById("input_gear2_current").value = charData.current?.gear2;
+        document.getElementById("input_gear2_target").value = charData.target?.gear2;
+        document.getElementById("input_gear3_current").value = charData.current?.gear3;
+        document.getElementById("input_gear3_target").value = charData.target?.gear3;
 
-        modalStars.star = charData.star;
-        modalStars.star_target = charData.star_target;
-        modalStars.ue = charData.ue;
-        modalStars.ue_target = charData.ue_target;
-
+        modalStars.star = charData.current?.star;
+        modalStars.star_target = charData.target?.star;
+        modalStars.ue = charData.current?.ue;
+        modalStars.ue_target = charData.target?.ue;
     }
 
-
     updateStarDisplays(character, true);
-
 }
 
 function charDataFromModal(character) {
@@ -1249,35 +1251,38 @@ function charDataFromModal(character) {
 
     charData.name = character;
 
-    charData.level = document.getElementById("input_level_current").value;
-    charData.level_target = document.getElementById("input_level_target").value;
+    charData.current = {};
+    charData.target = {};
 
-    charData.ue_level = document.getElementById("input_ue_level_current").value;
-    charData.ue_level_target = document.getElementById("input_ue_level_target").value;
+    charData.current.level = document.getElementById("input_level_current").value;
+    charData.target.level = document.getElementById("input_level_target").value;
 
-    charData.bond = document.getElementById("input_bond_current").value;
-    charData.bond_target = document.getElementById("input_bond_target").value;
+    charData.current.ue_level = document.getElementById("input_ue_level_current").value;
+    charData.target.ue_level = document.getElementById("input_ue_level_target").value;
 
-    charData.ex = document.getElementById("input_ex_current").value;
-    charData.ex_target = document.getElementById("input_ex_target").value;
-    charData.basic = document.getElementById("input_basic_current").value;
-    charData.basic_target = document.getElementById("input_basic_target").value;
-    charData.passive = document.getElementById("input_enhanced_current").value;
-    charData.passive_target = document.getElementById("input_enhanced_target").value;
-    charData.sub = document.getElementById("input_sub_current").value;
-    charData.sub_target = document.getElementById("input_sub_target").value;
+    charData.current.bond = document.getElementById("input_bond_current").value;
+    charData.target.bond = document.getElementById("input_bond_target").value;
 
-    charData.gear1 = document.getElementById("input_gear1_current").value;
-    charData.gear1_target = document.getElementById("input_gear1_target").value;
-    charData.gear2 = document.getElementById("input_gear2_current").value;
-    charData.gear2_target = document.getElementById("input_gear2_target").value;
-    charData.gear3 = document.getElementById("input_gear3_current").value;
-    charData.gear3_target = document.getElementById("input_gear3_target").value;
+    charData.current.ex = document.getElementById("input_ex_current").value;
+    charData.target.ex = document.getElementById("input_ex_target").value;
+    charData.current.basic = document.getElementById("input_basic_current").value;
+    charData.target.basic = document.getElementById("input_basic_target").value;
+    charData.current.passive = document.getElementById("input_enhanced_current").value;
+    charData.target.passive = document.getElementById("input_enhanced_target").value;
+    charData.current.sub = document.getElementById("input_sub_current").value;
+    charData.target.sub = document.getElementById("input_sub_target").value;
 
-    charData.star = modalStars.star;
-    charData.star_target = modalStars.star_target;
-    charData.ue = modalStars.ue;
-    charData.ue_target = modalStars.ue_target;
+    charData.current.gear1 = document.getElementById("input_gear1_current").value;
+    charData.target.gear1 = document.getElementById("input_gear1_target").value;
+    charData.current.gear2 = document.getElementById("input_gear2_current").value;
+    charData.target.gear2 = document.getElementById("input_gear2_target").value;
+    charData.current.gear3 = document.getElementById("input_gear3_current").value;
+    charData.target.gear3 = document.getElementById("input_gear3_target").value;
+
+    charData.current.star = modalStars.star;
+    charData.target.star = modalStars.star_target;
+    charData.current.ue = modalStars.ue;
+    charData.target.ue = modalStars.ue_target;
 
     return charData;
 
@@ -1481,10 +1486,10 @@ function updateStarDisplay(id, character, charId, type, fromTemp) {
     else {
         var charData = data.characters.find(obj => { return obj.id == charId });
 
-        star = charData.star;
-        star_target = charData.star_target;
-        ue = charData.ue;
-        ue_target = charData.ue_target;
+        star = charData.current?.star;
+        star_target = charData.target?.star;
+        ue = charData.current?.ue;
+        ue_target = charData.target?.ue;
     }
 
     for (s = 0; s < 5; s++) {
@@ -1861,18 +1866,18 @@ function calculateCharResources(charData, output) {
 
     let charObj = charlist[charMap.get(charData.name)];
 
-    calcSkillCost(charObj, "Ex", charData.ex, charData.ex_target, charMatDict);
-    calcSkillCost(charObj, "Skill1", charData.basic, charData.basic_target, charMatDict);
-    calcSkillCost(charObj, "Skill2", charData.passive, charData.passive_target, charMatDict);
-    calcSkillCost(charObj, "Skill3", charData.sub, charData.sub_target, charMatDict);
+    calcSkillCost(charObj, "Ex", charData.current?.ex, charData.target?.ex, charMatDict);
+    calcSkillCost(charObj, "Skill1", charData.current?.basic, charData.target?.basic, charMatDict);
+    calcSkillCost(charObj, "Skill2", charData.current?.passive, charData.target?.passive, charMatDict);
+    calcSkillCost(charObj, "Skill3", charData.current?.sub, charData.target?.sub, charMatDict);
 
-    calcXpCost(charData.level, charData.level_target, charMatDict);
+    calcXpCost(charData.current?.level, charData.target?.level, charMatDict);
 
-    calcGearCost(charObj, charData.gear1, charData.gear1_target, 1, charMatDict);
-    calcGearCost(charObj, charData.gear2, charData.gear2_target, 2, charMatDict);
-    calcGearCost(charObj, charData.gear3, charData.gear3_target, 3, charMatDict);
+    calcGearCost(charObj, charData.current?.gear1, charData.target?.gear1, 1, charMatDict);
+    calcGearCost(charObj, charData.current?.gear2, charData.target?.gear2, 2, charMatDict);
+    calcGearCost(charObj, charData.current?.gear3, charData.target?.gear3, 3, charMatDict);
 
-    calcMysticCost(charData.star, charData.star_target, charMatDict);
+    calcMysticCost(charData.current?.star, charData.target?.star, charMatDict);
 
     if (output) {
         return charMatDict;
@@ -2032,15 +2037,15 @@ function updateInfoDisplay(character, charId) {
 
     var charData = data.characters.find(obj => { return obj.id == charId });
 
-    var skillCurrent = formatLevel("Ex", charData.ex) + formatLevel("Other", charData.basic) +
-        formatLevel("Other", charData.passive) + formatLevel("Other", charData.sub);
+    var skillCurrent = formatLevel("Ex", charData.current?.ex) + formatLevel("Other", charData.current?.basic) +
+        formatLevel("Other", charData.current?.passive) + formatLevel("Other", charData.current?.sub);
 
-    var skillTarget = formatLevel("Ex", charData.ex_target) + formatLevel("Other", charData.basic_target) +
-        formatLevel("Other", charData.passive_target) + formatLevel("Other", charData.sub_target);
+    var skillTarget = formatLevel("Ex", charData.target?.ex) + formatLevel("Other", charData.target?.basic) +
+        formatLevel("Other", charData.target?.passive) + formatLevel("Other", charData.target?.sub);
 
-    var gearCurrent = formatLevel("Gear", charData.gear1) + formatLevel("Gear", charData.gear2) + formatLevel("Gear", charData.gear3);
-    var gearTarget = formatLevel("Gear", charData.gear1_target) + formatLevel("Gear", charData.gear2_target) +
-        formatLevel("Gear", charData.gear3_target);
+    var gearCurrent = formatLevel("Gear", charData.current?.gear1) + formatLevel("Gear", charData.current?.gear2) + formatLevel("Gear", charData.current?.gear3);
+    var gearTarget = formatLevel("Gear", charData.target?.gear1) + formatLevel("Gear", charData.target?.gear2) +
+        formatLevel("Gear", charData.target?.gear3);
 
     document.getElementById(character + "-skill-current").innerText = skillCurrent;
     document.getElementById(character + "-skill-target").innerText = skillTarget;
@@ -2048,8 +2053,8 @@ function updateInfoDisplay(character, charId) {
     document.getElementById(character + "-gear-current").innerText = gearCurrent;
     document.getElementById(character + "-gear-target").innerText = gearTarget;
 
-    document.getElementById(character + "-level-current").innerText = formatLevel("Level", charData.level);
-    document.getElementById(character + "-level-target").innerText = formatLevel("Level", charData.level_target);
+    document.getElementById(character + "-level-current").innerText = formatLevel("Level", charData.current.level);
+    document.getElementById(character + "-level-target").innerText = formatLevel("Level", charData.target.level);
 
 }
 
@@ -2078,8 +2083,33 @@ function transferDialog() {
 
 function tryParseJSON(source) {
     try {
-        return JSON.parse(source);
+        var data = JSON.parse(source);
+        if(!!!data) return null;
+
+        if (!!!data.exportVersion || data.exportVersion < exportDataVersion) {
+            data.exportVersion = data?.exportVersion ?? 1;
+            // old data structure used. convert it to new one.
+            // ideally structure does not change much.
+            // update this in case 
+            if (data.exportVersion < 2) {
+                // convert version 1 to version 2
+                for(let i in data.characters) {
+                    data.characters[i] = Student.FromVersion1Data(data.characters[i]);
+                }
+                data.exportVersion = 2;
+                localStorage.setItem("save-data", JSON.stringify(data));
+            }
+            // incremental
+            // Note: if, not else if
+            if (data.exportVersion < 3){
+                // convert version 2 to version 3
+                // not used yet
+            }
+        }
+
+        return data;
     } catch (e) {
+        console.log(e);
         return null;
     }
 }
@@ -2095,7 +2125,7 @@ async function getImportData() {
     if (importData) {
         data = tryParseJSON(importData);
 
-        if (!data) {
+        if (!!!data) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -2105,7 +2135,7 @@ async function getImportData() {
             return false;
         }
 
-        localStorage.setItem("save-data", importData);
+        localStorage.setItem("save-data", JSON.stringify(data));
 
         ownedMatDict = {};
         if (data != null) {
