@@ -369,7 +369,7 @@ function handleKeydown(e, keyPressed) {
     else if ((keycount == 2 && keyPressed.Control == true && keyPressed.ArrowDown == true) || (keycount == 1 && keyPressed.Enter == true)) {
         inputNavigate('Down')
         keyPressed = {};
-    }
+    } 
 }
 
 async function sectionQuickSet(section) {
@@ -831,8 +831,8 @@ async function newCharClicked() {
 
         saveToLocalStorage(true);
 
-        createCharBox(character, charId);
-
+        const charbox = createCharBox(character, charId);
+        charbox.click();
         generateCharOptions();
     }
 }
@@ -2071,7 +2071,16 @@ function transferDialog() {
         if (result.isConfirmed) {
             Swal.fire({
                 title: 'Exported data',
-                html: '<textarea style="width: 400px; height: 250px; resize: none;" readonly>' + localStorage.getItem('save-data') + '</textarea>'
+                showDenyButton: true,
+                denyButtonText: 'Copy export data',
+                denyButtonColor: 'green',
+                html: '<textarea id="export-data" style="width: 400px; height: 250px; resize: none;" readonly>' + localStorage.getItem('save-data') + '</textarea>'
+            }).then((result) => {
+                if (result.isDenied) {
+                    // copy text
+                    document.querySelector('textarea#export-data').select();
+                    document.execCommand('copy');
+                }
             })
         }
         else if (result.isDenied) {
@@ -2296,6 +2305,8 @@ function createCharBox(newChar, charId) {
     updateInfoDisplay(newChar, charId);
     updateStarDisplay(newChar + "-star-container", newChar, charId, "star-display", false);
     updateStarDisplay(newChar + "-ue-container", newChar, charId, "ue-display", false);
+
+    return newDiv;
 }
 
 function getOffset(el) {
