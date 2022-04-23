@@ -266,7 +266,10 @@ const inputValidation = {
         min: "1",
         max: "78",
         default: "1",
-        name: "Level"
+        name: "Level",
+        "navigation": "direct",
+        "Down": "input_level_target",
+        "Right": "input_level_target"
     },
     "level_target": {
         id: "input_level_target",
@@ -282,7 +285,12 @@ const inputValidation = {
                 mode: "direct",
                 sanitise: true
             }
-        }
+        },
+        "navigation": "direct",
+        "Up": "input_level_current",
+        "Left": "input_level_current",
+        "Down": "input_ex_current",
+        "Right": "input_ue_level_current"
     },
     "ue_level": {
         id: "input_ue_level_current",
@@ -316,7 +324,12 @@ const inputValidation = {
                     }
                 ]
             }
-        }
+        },
+        "navigation": "direct",
+        "Up": "input_level_target",
+        "Left": "input_level_target",
+        "Down": "input_ue_level_target",
+        "Right": "input_ue_level_target"
     },
     "ue_level_target": {
         id: "input_ue_level_target",
@@ -356,7 +369,12 @@ const inputValidation = {
                 mode: "direct",
                 sanitise: true
             }
-        }
+        },
+        "navigation": "direct",
+        "Up": "input_ue_level_current",
+        "Left": "input_ue_level_current",
+        "Down": "input_bond_current",
+        "Right": "input_bond_current"
     },
     "bond": {
         id: "input_bond_current",
@@ -386,7 +404,12 @@ const inputValidation = {
                     }
                 ]
             }
-        }
+        },
+        "navigation": "direct",
+        "Up": "input_ue_level_target",
+        "Left": "input_ue_level_target",
+        "Down": "input_bond_target",
+        "Right": "input_bond_target"
     },
     "bond_target": {
         id: "input_bond_target",
@@ -422,7 +445,12 @@ const inputValidation = {
                 mode: "direct",
                 sanitise: true
             }
-        }
+        },
+        "navigation": "direct",
+        "Up": "input_bond_current",
+        "Left": "input_bond_current",
+        "Down": "input_ex_current",
+        "Right": "input_ex_current"
     },
     "ex": {
         id: "input_ex_current",
@@ -430,7 +458,12 @@ const inputValidation = {
         min: "1",
         max: "5",
         default: "1",
-        name: "EX"
+        name: "EX",
+        "navigation": "direct",
+        "Up": "input_level_target",
+        "Left": "input_level_target",
+        "Down": "input_ex_target",
+        "Right": "input_basic_current"
     },
     "ex_target": {
         id: "input_ex_target",
@@ -446,7 +479,12 @@ const inputValidation = {
                 mode: "direct",
                 sanitise: true
             }
-        }
+        },
+        "navigation": "direct",
+        "Up": "input_ex_current",
+        "Left": "input_sub_current",
+        "Down": "input_basic_current",
+        "Right": "input_basic_target"
     },
     "basic": {
         id: "input_basic_current",
@@ -454,7 +492,12 @@ const inputValidation = {
         min: "1",
         max: "10",
         default: "1",
-        name: "Basic"
+        name: "Basic",
+        "navigation": "direct",
+        "Up": "input_ex_target",
+        "Left": "input_ex_current",
+        "Down": "input_basic_target",
+        "Right": "input_enhanced_current"
     },
     "basic_target": {
         id: "input_basic_target",
@@ -470,7 +513,12 @@ const inputValidation = {
                 mode: "direct",
                 sanitise: true
             }
-        }
+        },
+        "navigation": "direct",
+        "Up": "input_basic_current",
+        "Left": "input_ex_target",
+        "Down": "input_enhanced_current",
+        "Right": "input_enhanced_target"
     },
     "passive": {
         id: "input_enhanced_current",
@@ -496,7 +544,12 @@ const inputValidation = {
                     }
                 ]
             }
-        }
+        },
+        "navigation": "direct",
+        "Up": "input_basic_target",
+        "Left": "input_basic_current",
+        "Down": "input_enhanced_target",
+        "Right": "input_sub_current"
     },
     "passive_target": {
         id: "input_enhanced_target",
@@ -528,7 +581,12 @@ const inputValidation = {
                 mode: "direct",
                 sanitise: true
             }
-        }
+        },
+        "navigation": "direct",
+        "Up": "input_enhanced_current",
+        "Left": "input_basic_target",
+        "Down": "input_sub_current",
+        "Right": "input_sub_target"
     },
     "sub": {
         id: "input_sub_current",
@@ -554,7 +612,12 @@ const inputValidation = {
                     }
                 ]
             }
-        }
+        },
+        "navigation": "direct",
+        "Up": "input_enhanced_target",
+        "Left": "input_enhanced_current",
+        "Down": "input_sub_target",
+        "Right": "input_ex_target"
     },
     "sub_target": {
         id: "input_sub_target",
@@ -586,7 +649,12 @@ const inputValidation = {
                 mode: "direct",
                 sanitise: true
             }
-        }
+        },
+        "navigation": "direct",
+        "Up": "input_sub_current",
+        "Left": "input_enhanced_target",
+        "Down": "input_gear1_current",
+        "Right": "input_gear1_current"
     },
     "gear1": {
         id: "input_gear1_current",
@@ -594,7 +662,12 @@ const inputValidation = {
         min: "0",
         max: "6",
         default: "0",
-        name: "Gear 1"
+        name: "Gear 1",
+        "navigation": "direct",
+        "Up": "input_sub_target",
+        "Left": "input_sub_target",
+        "Down": "input_gear1_target",
+        "Right": "input_gear2_current"
     },
     "gear1_target": {
         id: "input_gear1_target",
@@ -610,7 +683,12 @@ const inputValidation = {
                 mode: "direct",
                 sanitise: true
             }
-        }
+        },
+        "navigation": "direct",
+        "Up": "input_gear1_current",
+        "Left": "input_gear3_current",
+        "Down": "input_gear2_current",
+        "Right": "input_gear2_target"
     },
     "gear2": {
         id: "input_gear2_current",
@@ -636,7 +714,12 @@ const inputValidation = {
                     }
                 ]
             }
-        }
+        },
+        "navigation": "direct",
+        "Up": "input_gear1_target",
+        "Left": "input_gear1_current",
+        "Down": "input_gear2_target",
+        "Right": "input_gear3_current"
     },
     "gear2_target": {
         id: "input_gear2_target",
@@ -668,7 +751,12 @@ const inputValidation = {
                 mode: "direct",
                 sanitise: true
             }
-        }
+        },
+        "navigation": "direct",
+        "Up": "input_gear2_current",
+        "Left": "input_gear1_target",
+        "Down": "input_gear3_current",
+        "Right": "input_gear3_target"
     },
     "gear3": {
         id: "input_gear3_current",
@@ -694,7 +782,12 @@ const inputValidation = {
                     }
                 ]
             }
-        }
+        },
+        "navigation": "direct",
+        "Up": "input_gear2_target",
+        "Left": "input_gear2_current",
+        "Down": "input_gear3_target",
+        "Right": "input_gear1_target"
     },
     "gear3_target": {
         id: "input_gear3_target",
@@ -726,7 +819,11 @@ const inputValidation = {
                 mode: "direct",
                 sanitise: true
             }
-        }
+        },
+        "navigation": "direct",
+        "Up": "input_gear3_current",
+        "Left": "input_gear2_target",
+        "Down": "input_ue_level_current"
     },
     "BD_1_Abydos": {
         "id": "input-BD_1_Abydos",
@@ -1572,36 +1669,62 @@ const inputValidation = {
         "id": "input-Credit",
         "location": "resourceModal",
         "min": "0",
-        "max": "10000000000"
+        "max": "10000000000",
+        "navigation": "direct",
+        "Right": "input-XP_4",
+        "Down": "input-XP_4"
     },
     "Secret": {
         "id": "input-Secret",
         "location": "resourceModal",
         "min": "0",
-        "max": "20"
+        "max": "20",
+        "navigation": "direct",
+        "Left": "input-XP_4",
+        "Up": "input-XP_4"
     },
     "XP_4": {
         "id": "input-XP_4",
         "location": "resourceModal",
         "min": "0",
-        "max": "999"
+        "max": "999",
+        "navigation": "direct",
+        "Right": "input-XP_3",
+        "Left": "input-Credit",
+        "Up": "input-Credit",
+        "Down": "input-XP_3"
     },
     "XP_3": {
         "id": "input-XP_3",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "direct",
+        "Right": "input-XP_2",
+        "Left": "input-XP_4",
+        "Up": "input-Credit",
+        "Down": "input-XP_2"
     },
     "XP_2": {
         "id": "input-XP_2",
         "location": "resourceModal",
         "min": "0",
-        "max": "9999"
+        "max": "9999",
+        "navigation": "direct",
+        "Right": "input-XP_1",
+        "Left": "input-XP_3",
+        "Up": "input-Credit",
+        "Down": "input-XP_1"
     },
     "XP_1": {
         "id": "input-XP_1",
         "location": "resourceModal",
         "min": "0",
-        "max": "99999"
+        "max": "99999",
+        "navigation": "direct",
+        "Right": "input-Secret",
+        "Left": "input-XP_2",
+        "Up": "input-Credit",
+        "Down": "input-Secret"
     }
 }
