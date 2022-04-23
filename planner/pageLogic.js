@@ -22,13 +22,17 @@ var charMode = "Edit";
 
 var misc_data, charlist;
 
-let charMap, inputMap;
+let charMap, charNames, inputMap;
 
 let focusedInput;
 let navigationObjects = {};
 
 let preInput;
 
+let keyPressed = {};
+let modalOpen = "";
+let pageTheme = "dark";
+let alertColour = "#e1e1e1";
 
 function loadResources() {
 
@@ -49,9 +53,11 @@ function checkResources() {
     if (charlist && misc_data) {
 
         charMap = new Map()
+        charNames = new Map()
 
         for (key in charlist) {
             charMap.set(charlist[key].Name, key);
+            charNames.set(key, charlist[key].Name);
         }
 
         if (data != null) {
@@ -83,15 +89,31 @@ function init() {
             disabledChars = data.disabled_characters;
         }
 
+        if (data.character_order) {
+            for (let i = 0; i < data.character_order.length; i++) {
+                let char = data.characters.find(obj => { return obj.id == data.character_order[i] });
+
+                if (char) {
+                    createCharBox(char.name, char.id);
+                }
+            }
+        }
+
         for (var i = 0; i < data.characters.length; i++) {
 
-            createCharBox(data.characters[i].name, data.characters[i].id);
+            if (document.getElementById('char_' + data.characters[i].id) == undefined) {
+                createCharBox(data.characters[i].name, data.characters[i].id);
+            }
         }
 
         if (data.owned_materials != undefined) {
             for (key in data.owned_materials) {
                 ownedMatDict[key] = data.owned_materials[key];
             }
+        }
+
+        if (data.page_theme != undefined) {
+            setTheme(data.page_theme);
         }
     }
 
@@ -126,6 +148,27 @@ function init() {
     container.appendChild(modeDiv);
     //}
 
+    const sortable = new Draggable.Sortable(document.getElementsByClassName('charsContainer')[0], {
+        draggable: 'div.main-display-char',
+        delay: {
+            mouse: 0,
+            drag: 0,
+            touch: 100
+        }
+    })
+
+    sortable.on("sortable:start", (e) => {
+        if (charMode != "Move" && keyPressed.Shift != true) {
+            e.cancel()
+        }
+    })
+
+    sortable.on("sortable:stop", (e) => {
+        keyPressed.Shift = false;
+
+        saveTime = Date.now() + 5 * 1000;
+    })
+
     let tableNavigation = [];
 
     // generate resource modal tables
@@ -153,15 +196,16 @@ function init() {
     colourTableRows("artifact-table-1");
     colourTableRows("artifact-table-2");
 
-    if ("1.0.3".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.0.4".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.0.3",
+            title: "Updated to Version 1.0.4",
+            color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.0.3";
+        data.site_version = "1.0.4";
         saveToLocalStorage(false);
     }
 
@@ -209,6 +253,7 @@ function init() {
             })
 
             inputElement.addEventListener('focusin', (event) => {
+                focusedInput = event.target.id;
                 event.target.select();
             })
 
@@ -219,6 +264,7 @@ function init() {
             let location = inputValidation[key].location;
 
             inputElement.addEventListener('focusout', (event) => {
+                focusedInput = null;
                 let result = validateInput(key, false, true);
 
                 if (result != "validated" && (Date.now() > toastCooldownTime || toastCooldownMsg != result)) {
@@ -311,7 +357,6 @@ function init() {
         }
     }, 300);
 
-    var keyPressed = {};
     document.addEventListener('keydown', function (e) {
 
         keyPressed[e.key] = true; //+ e.location] = true;
@@ -352,6 +397,12 @@ function handleKeydown(e, keyPressed) {
         else if (keyPressed.ArrowUp == true && keyPressed.Control == true) {
             e.preventDefault()
         }
+        else if (keyPressed.ArrowLeft == true && keyPressed.Control == true) {
+            e.preventDefault()
+        }
+        else if (keyPressed.ArrowRight == true && keyPressed.Control == true) {
+            e.preventDefault()
+        }
     }
 
     if (keycount == 2 && ((keyPressed.Control == true && keyPressed.ArrowLeft == true) || (keyPressed.Shift == true && keyPressed.Tab == true))) {
@@ -369,7 +420,16 @@ function handleKeydown(e, keyPressed) {
     else if ((keycount == 2 && keyPressed.Control == true && keyPressed.ArrowDown == true) || (keycount == 1 && keyPressed.Enter == true)) {
         inputNavigate('Down')
         keyPressed = {};
-    } 
+    }
+
+    if (keycount == 1 && keyPressed.Escape == true) {
+        if (modalOpen == "characterModal") {
+            closeModal(true);
+        }
+        else if (modalOpen == "resourceModal") {
+            closeResourceModal();
+        }
+    }
 }
 
 async function sectionQuickSet(section) {
@@ -524,7 +584,7 @@ function inputNavigate(direction) {
         if (property && inputValidation[property]?.navigation) {
 
             if (inputValidation[property].navigation == "direct") {
-
+                targetCell = inputValidation[property][direction];
             }
             else {
                 let navObj = navigationObjects[inputValidation[property].navigation];
@@ -544,6 +604,7 @@ function inputNavigate(direction) {
             let targetInput = document.getElementById(targetCell);
 
             targetInput.classList.add('focused');
+            targetInput.parentElement.classList.add('focused');
             targetInput.focus();
             targetInput.select();
         }
@@ -598,9 +659,14 @@ function modeChange() {
         charMode = "Disable"
         modeButton.classList.add('mode-disable');
     }
-    else if (charMode = "Disable") {
-        charMode = "Edit"
+    else if (charMode == "Disable") {
+        charMode = "Move"
         modeButton.classList.remove('mode-disable')
+        modeButton.classList.add('mode-move')
+    }
+    else if (charMode == "Move") {
+        charMode = "Edit"
+        modeButton.classList.remove('mode-move')
     }
 
     modeButton.children[0].innerText = charMode + " Mode";
@@ -625,7 +691,12 @@ function validateInput(key, checkonly, verbose) {
 
 
         if (inputElement.value == '') {
-            inputElement.value = '';
+            if ((preInput || preInput == 0) && keyPressed.Delete != true && keyPressed.Backspace != true) {
+                inputElement.value = preInput;
+            }
+            else {
+                inputElement.value = '';
+            }
         }
 
         if (inputElement.value.length > val.max.length) {
@@ -644,7 +715,12 @@ function validateInput(key, checkonly, verbose) {
             if (checkonly) {
                 return "too_large";
             }
-            inputElement.value = val.max;
+            if (preInput || preInput == 0) {
+                inputElement.value = preInput;
+            }
+            else {
+                inputElement.value = val.max;
+            }
         }
 
         if (parseInt(inputElement.value) < parseInt(val.min)) {
@@ -829,10 +905,10 @@ async function newCharClicked() {
 
         data.characters.push(newCharObj);
 
-        saveToLocalStorage(true);
-
+        
         const charbox = createCharBox(character, charId);
         charbox.click();
+        saveToLocalStorage(true);
         generateCharOptions();
     }
 }
@@ -893,6 +969,7 @@ function deleteClicked() {
     Swal.fire({
         title: 'Are you sure?',
         text: 'This will remove the selected character and all data associated with it.',
+        color: alertColour,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
@@ -901,7 +978,7 @@ function deleteClicked() {
     }).then((result) => {
         if (result.isConfirmed) {
             deleteChar(modalChar);
-            closeModal(false);
+            closeModal(false, true);
         }
     })
 }
@@ -924,7 +1001,7 @@ function deleteChar(character) {
 
         data.disabled_characters = disabledChars;
 
-        var charBox = document.getElementById("char_" + character);
+        var charBox = document.getElementById("char_" + charId);
         if (charBox != null) {
             charBox.remove();
         }
@@ -960,9 +1037,9 @@ function openModal(e) {
     }
 
     if (charMode == "Disable" || (e.ctrlKey && fromChar == true)) {
-        var charSelected = this.id.substring(5);
+        var charId = this.id.substring(5);
 
-        let charId = charMap.get(charSelected)
+        let charSelected = charNames.get(charId);
         var charData = data.characters.find(obj => { return obj.id == charId });
 
 
@@ -987,19 +1064,24 @@ function openModal(e) {
         return;
     }
 
+    if (charMode == "Move" || keyPressed.Shift == true) {
+        return;
+    }
+
     var modal = document.getElementById("characterModal");
 
 
     modalCharID = this.id;
 
     if (fromChar) {
+        modalOpen = "characterModal";
         this.style = "visibility:hidden";
 
         modal.style.visibility = "visible";
 
         document.getElementById('character-modal-wrapper').style.visibility = "hidden";
 
-        var charSelected = this.id.substring(5);
+        var charSelected = charNames.get(this.id.substring(5));
 
         modalChar = charSelected;
 
@@ -1039,17 +1121,37 @@ function openModal(e) {
 
     }
 
-    // modal.onclick = function (event) {
-    //     if (event.target == modal) {
-    //         closeModal(fromChar);
-    //     }
-    // };
+    modal.onclick = function (event) {
+        if (event.target == modal) {
+            closeModal(fromChar);
+        }
+    };
 }
 
-function closeModal(animated) {
+function closeModal(animated, forced) {
+
+    if (!forced && isCharModalDirty()) {
+        Swal.fire({
+            title: 'Unsaved Changes',
+            showDenyButton: true,
+            confirmButtonText: 'Go back',
+            denyButtonText: 'Discard changes',
+            denyButtonColor: '#d33'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+            }
+            else if (result.isDenied) {
+                closeModal(animated, true);
+            }
+        })
+
+        return;
+    }
+
+    modalOpen = "";
 
     var modal = document.getElementById("characterModal");
-
     //document.getElementById("new-char").value = ""
 
 
@@ -1102,6 +1204,8 @@ function closeModal(animated) {
 
 async function saveToLocalStorage(notify) {
     saveTime = 0;
+    data.character_order = getOrder();
+
     localStorage.setItem("save-data", JSON.stringify(data));
 
     if (notify) {
@@ -1288,6 +1392,41 @@ function charDataFromModal(character) {
 
 }
 
+function isCharModalDirty() {
+
+    let charData = data.characters.find(obj => { return obj.id == charMap.get(modalChar) });
+    let modalData = charDataFromModal();
+
+    if (compareObjects(charData.current, modalData.current) != true) {
+        return true;
+    }
+    else if (compareObjects(charData.target, modalData.target) != true) {
+        return true;
+    }
+
+    return false;
+}
+
+function compareObjects(obj1, obj2) {
+
+    let keyCount = 0;
+    for (key in obj1) {
+
+        if (obj1[key] != obj2[key]) {
+            return false;
+        }
+
+        keyCount++;
+    }
+
+    if (keyCount != Object.keys(obj2).length) {
+        return false;
+    }
+
+    return true;
+
+}
+
 function populateCharResources(character) {
 
     let mainartisWrapper = document.getElementById('char-mainartis-wrapper');
@@ -1327,13 +1466,11 @@ function populateCharResources(character) {
                 wrapDiv.className = "char-resource-wrapper";
 
                 let extraClassName = "";
-                
-                if(matName[2] === "_")
-                {
+
+                if (matName[2] === "_") {
                     extraClassName = " char-resource-rarity-" + matName[3];
                 }
-                else
-                {
+                else {
                     extraClassName = " char-resource-rarity-" + matName.substring(matName.length - 1);
                 }
 
@@ -1546,6 +1683,8 @@ function updateStarDisplay(id, character, charId, type, fromTemp) {
 
 function openResourceModal() {
 
+    modalOpen = "resourceModal";
+
     var modal = document.getElementById("resourceModal");
 
     modal.style.visibility = "visible";
@@ -1641,6 +1780,8 @@ function closeResourceModal() {
     var modal = document.getElementById("resourceModal");
 
     modal.style.visibility = "hidden";
+
+    modalOpen = "";
 
 }
 
@@ -1751,12 +1892,10 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
                 newInput.addEventListener('focusin', (event) => {
                     event.target.className = "resource-input focused";
                     event.target.parentElement.classList.add("focused");
-                    focusedInput = event.target.id;
                 })
                 newInput.addEventListener('focusout', (event) => {
                     event.target.className = "resource-input";
                     event.target.parentElement.classList.remove("focused");
-                    focusedInput = null;
                 })
                 if (reorder) {
                     newInput.id = ("input-" + rows[row] + "_" + columns[col - 1]).replace(/ /g, '');
@@ -2093,7 +2232,7 @@ function transferDialog() {
 function tryParseJSON(source) {
     try {
         var data = JSON.parse(source);
-        if(!!!data) return null;
+        if (!!!data) return null;
 
         if (!!!data.exportVersion || data.exportVersion < exportDataVersion) {
             data.exportVersion = data?.exportVersion ?? 1;
@@ -2102,7 +2241,7 @@ function tryParseJSON(source) {
             // update this in case 
             if (data.exportVersion < 2) {
                 // convert version 1 to version 2
-                for(let i in data.characters) {
+                for (let i in data.characters) {
                     data.characters[i] = Student.FromVersion1Data(data.characters[i]);
                 }
                 data.exportVersion = 2;
@@ -2110,7 +2249,7 @@ function tryParseJSON(source) {
             }
             // incremental
             // Note: if, not else if
-            if (data.exportVersion < 3){
+            if (data.exportVersion < 3) {
                 // convert version 2 to version 3
                 // not used yet
             }
@@ -2127,6 +2266,7 @@ async function getImportData() {
     const { value: importData } = await Swal.fire({
         input: 'textarea',
         inputLabel: 'Import data',
+        color: alertColour,
         inputPlaceholder: 'Paste your previously exported data here',
         showCancelButton: true
     })
@@ -2138,7 +2278,8 @@ async function getImportData() {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: "That wasn't valid json, couldn't import it"
+                text: "That wasn't valid json, couldn't import it",
+                color: alertColour
             })
 
             return false;
@@ -2171,11 +2312,101 @@ function refreshAllChars() {
         charBoxes[0].remove();
     }
 
+    if (data.character_order) {
+
+        for (let i = 0; i < data.character_order.length; i++) {
+            let char = data.characters.find(obj => { return obj.id == data.character_order[i] });
+
+            if (char) {
+                createCharBox(char.name, char.id);
+                calculateCharResources(char, false);
+            }
+        }
+    }
+
     for (var i = 0; i < data.characters.length; i++) {
 
-        createCharBox(data.characters[i].name, data.characters[i].id);
+        if (document.getElementById('char_' + data.characters[i].id) == undefined) {
 
-        calculateCharResources(data.characters[i], false);
+            createCharBox(data.characters[i].name, data.characters[i].id);
+
+            calculateCharResources(data.characters[i], false);
+        }
+    }
+
+
+}
+
+function getOrder() {
+
+    let characters = document.getElementsByClassName("main-display-char");
+
+    let charOrder = [];
+
+    for (let i = 0; i < characters.length; i++) {
+        charOrder.push(characters[i].id.substring(5));
+    }
+
+    return charOrder;
+
+}
+
+function switchTheme() {
+
+    if (pageTheme == "dark") {
+        setTheme("light");
+        data.page_theme = "light";
+        saveTime = Date.now() + 5 * 1000;
+    }
+    else if (pageTheme == "light") {
+        setTheme("dark");
+        data.page_theme = "dark";
+        saveTime = Date.now() + 5 * 1000;
+    }
+
+}
+
+function setTheme(theme) {
+
+    let image = document.getElementById('theme-button');
+
+    if (theme == "light") {
+        image.src = "icons/moon-black.svg";
+        pageTheme = "light";
+        document.body.classList.remove('dark-theme');
+        alertColour = "black"
+        switchStylesheets("light")
+    }
+    else if (theme == "dark") {
+        image.src = "icons/sun.svg";
+        pageTheme = "dark";
+        document.body.classList.add('dark-theme');
+        alertColour = "#e1e1e1"
+        switchStylesheets("dark");
+    }
+}
+
+function switchStylesheets(theme) {
+
+    let sheets = document.styleSheets;
+
+    for (let i = 0; i < sheets.length; i++) {
+        if (sheets[i].href == "https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css") {
+            if (theme == "dark") {
+                sheets[i].disabled = false;
+            }
+            else {
+                sheets[i].disabled = true;
+            }
+        }
+        else if (sheets[i].href == "https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css") {
+            if (theme == "dark") {
+                sheets[i].disabled = true;
+            }
+            else {
+                sheets[i].disabled = false;
+            }
+        }
     }
 
 }
@@ -2210,15 +2441,15 @@ function createCharBox(newChar, charId) {
 
     const newDiv = document.createElement("div");
     newDiv.className = "charBox main-display-char";
-    newDiv.id = "char_" + newChar;
+    newDiv.id = "char_" + charId;
 
     if (disabledChars.includes(newChar)) {
         newDiv.classList.add("deselected");
     }
 
     if (window.matchMedia("(pointer: fine)").matches) {
-        // touchscreen
-        newDiv.title = "Ctrl+click to disable/enable"
+        newDiv.title = `Ctrl+click to disable/enable
+        Shift+drag to move`
     }
 
     const newContent = document.createElement("div");
@@ -2293,9 +2524,9 @@ function createCharBox(newChar, charId) {
 
     newContent.appendChild(newContentBox);
 
+    newDiv.appendChild(newContent);
     newDiv.appendChild(newStarContainer);
     newDiv.appendChild(newUEContainer);
-    newDiv.appendChild(newContent);
     newDiv.onclick = openModal
 
     let lastNode = document.getElementById('addCharButton')

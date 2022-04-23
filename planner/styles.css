@@ -82,10 +82,10 @@
     display: flex;
     justify-content: center;
 
-
 }
 
 .boxesContainer {
+    margin-bottom: 100px;
     min-width: 90%;
     max-width: 1200px;
     background-color: rgb(196, 205, 228);
@@ -118,19 +118,19 @@
 .star-container {
     display: flex;
     position: absolute;
-    top: -5%;
+    top: -7%;
     left: 5%;
     /*width: 100%;*/
-    z-index: 1;
+    /*z-index: 1;*/
 }
 
 .ue-container {
     display: flex;
     position: absolute;
-    top: 7%;
+    top: 5%;
     left: 5%;
     /*width: 100%;*/
-    z-index: 1;
+    /*z-index: 1;*/
 }
 
 .display-star {
@@ -139,14 +139,14 @@
 
 .main-box-content {
     overflow: hidden;
-    border: solid white;
+    outline: solid white 4px;
     border-radius: 15%;
-    border-width: 4px;
     position: relative;
 }
 
 #modeButton {
-    border: grey dashed 2px;
+    min-height: 100px;
+    border: 0.15rem dashed grey;
     border-radius: 15%;
     justify-content: center;
     align-items: center;
@@ -163,8 +163,12 @@
     background: repeating-linear-gradient(45deg, transparent, transparent 7px, #8989893d 11px, #c1afafb3 11px);
 }
 
+.mode-move {
+    background-color: #95f1d24a;
+}
+
 .deselected {
-    filter: grayscale(1);
+    filter: grayscale(0.8) brightness(0.5);
 }
 
 #addCharButton {
@@ -187,6 +191,14 @@
     text-align: center;
     width: 100%;
     min-width: 50px;
+}
+
+.charBox * {
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 
 label {
@@ -284,8 +296,7 @@ label {
     border-radius: 15%;
     overflow: hidden;
     cursor: default;
-    padding-left: 5px;
-    padding-top: 5px;
+    padding: 10px 5px 5px 10px;
 
     /*border: solid white;*/
     /*border-width: 0.3rem;*/
@@ -294,7 +305,7 @@ label {
 }
 
 .modal-content-wrapper .main-box-content {
-    border: solid black;
+    outline: solid black 4px;
 }
 
 .modal-content-section {
@@ -341,12 +352,13 @@ label {
 .section-label p {
     padding: 20px 15px;
     backdrop-filter: brightness(0.95);
+    background-color: #dbdbf1;
     border-radius: 15px;
     overflow: hidden;
 }
 
 .section-label p:hover {
-    backdrop-filter: brightness(0.9);
+    background-color: #cfcfe6;
 }
 
 .sub-skill {
@@ -696,6 +708,83 @@ div.char-resource-wrapper .resource-count-text {
     border-top: 2px solid gainsboro;
     margin-top: 20px;
     padding-top: 10px;
+}
+
+.dark-theme.background {
+    background-color: rgb(36 36 36);
+}
+
+.dark-theme .boxesContainer {
+    background-color: rgb(47 47 47);
+}
+
+.dark-theme .charBox {
+    filter: brightness(0.8);
+}
+
+.dark-theme .deselected {
+    filter: brightness(0.3) grayscale(0.7);
+}
+
+.dark-theme .modal-content-wrapper {
+    background-color: #3d3d3d;
+    color: #efefef;
+}
+
+.dark-theme .content-section-wrapper {
+    background-color: #323234;
+}
+
+.dark-theme .char-resource-wrapper {
+    color: black;
+}
+
+.dark-theme .two_digit_input {
+    background-color: dimgray;
+    color: white;
+}
+
+.dark-theme .char-mats-wrapper {
+    filter: brightness(0.8);
+}
+
+.dark-theme .char-misc-box {
+    background-color: #535353;
+}
+
+.dark-theme .resource-count-text {
+    color: black;
+}
+
+.dark-theme .resource-table td {
+    filter: brightness(0.8);
+}
+
+.dark-theme .modal-content-section p {
+    filter: brightness(0.8);
+}
+
+.dark-theme div.char-resource-wrapper .resource-count-text {
+    filter: none;
+}
+
+.dark-theme .section-label p {
+    background-color: #323234;
+}
+
+.dark-theme .section-label p:hover {
+    background-color: #28282b;
+}
+
+.dark-theme #star-current-container, .dark-theme #star-target-container, 
+.dark-theme #ue-current-container, .dark-theme #ue-target-container {
+    filter: brightness(0.8);
+}
+
+#theme-button {
+    max-width: 40px;
+    margin-right: 100px;
+    cursor: pointer;
 }
 
 .changelog-section {
