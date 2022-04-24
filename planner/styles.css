@@ -431,6 +431,11 @@ label {
     max-height: 60px;
 }
 
+.gear-icon {
+    max-width: 80px;
+    max-height: 80px;
+}
+
 .artifact-icon {
     max-width: 60px;
     max-height: 60px;
@@ -450,7 +455,7 @@ label {
     padding-right: 5.65px;
 }
 
-.resource-count-text {
+.resource-count-text, .gear-count-text, .resource-display-text {
     top: 50%;
     left: 50%;
     position: absolute;
@@ -464,9 +469,11 @@ label {
         -1px 1px 0 #fff,
         0px 1px 0 #fff,
         1px 1px 0 #fff;
+    padding-bottom: 1px;
+    padding-top: 1px;
 }
 
-div.editable .resource-count-text {
+div.editable .resource-count-text, div.editable .gear-count-text, div.editable .resource-display-text {
     font-size: 20px;
 }
 
@@ -576,14 +583,14 @@ div.editable.empty-resource:hover {
     background-color: #42a4f84d;
 }
 
-#button-switch-display {
+#button-switch-display, #gear-switch-display {
     background-color: #c8e6f5;
     width: 100%;
     font-size: 1.5em;
     font-family: monospace;
 }
 
-#button-switch-display:hover {
+#button-switch-display:hover, #gear-switch-display:hover {
     filter: brightness(0.95);
 }
 
@@ -678,7 +685,8 @@ div.char-misc-box .char-misc-text {
     font-family: sans-serif;
 }
 
-div.char-resource-wrapper .resource-count-text {
+div.char-resource-wrapper .resource-count-text, div.char-resource-wrapper .gear-count-text, 
+div.char-resource-wrapper .resource-display-text {
     top: 50%;
     left: 50%;
     position: absolute;
@@ -692,6 +700,8 @@ div.char-resource-wrapper .resource-count-text {
         -1px 1px 0 #fff,
         0px 1px 0 #fff,
         1px 1px 0 #fff;
+    padding-bottom: 1px;
+    padding-top: 1px;
 }
 
 .char-misc-box {
@@ -752,7 +762,7 @@ div.char-resource-wrapper .resource-count-text {
     background-color: #535353;
 }
 
-.dark-theme .resource-count-text {
+.dark-theme .resource-count-text, .dark-theme .gear-count-text, .dark-theme .resource-display-text {
     color: black;
 }
 
@@ -764,7 +774,8 @@ div.char-resource-wrapper .resource-count-text {
     filter: brightness(0.8);
 }
 
-.dark-theme div.char-resource-wrapper .resource-count-text {
+.dark-theme div.char-resource-wrapper .resource-count-text, .dark-theme div.char-resource-wrapper .gear-count-text,
+.dark-theme div.char-resource-wrapper .resource-display-text {
     filter: none;
 }
 
@@ -845,11 +856,19 @@ input[type=number] {
         width: auto !important;
     }
 
+    .modal-section-wrapper.gear-section {
+        width: 100% !important;
+    }
+
     #table-parent-1 {
         width: 100%;
     }
 
     #school-mat-table {
+        margin: auto;
+    }
+
+    #gear-table {
         margin: auto;
     }
 

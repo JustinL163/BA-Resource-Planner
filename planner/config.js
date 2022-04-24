@@ -140,11 +140,18 @@ const matLookup = new TwoWayMap({
     9999: "Secret"
 });
 
+const gearLookup = ["T2_Hat", "T2_Gloves", "T2_Shoes", "T2_Bag", "T2_Badge", "T2_Hairpin", "T2_Charm", "T2_Watch", "T2_Necklace",
+    "T3_Hat", "T3_Gloves", "T3_Shoes", "T3_Bag", "T3_Badge", "T3_Hairpin", "T3_Charm", "T3_Watch", "T3_Necklace",
+    "T4_Hat", "T4_Gloves", "T4_Shoes", "T4_Bag", "T4_Badge", "T4_Hairpin", "T4_Charm", "T4_Watch", "T4_Necklace",
+    "T5_Hat", "T5_Gloves", "T5_Shoes", "T5_Bag", "T5_Badge", "T5_Hairpin", "T5_Charm", "T5_Watch", "T5_Necklace",
+    "T6_Hat", "T6_Gloves", "T6_Shoes", "T6_Bag", "T6_Badge", "T6_Hairpin", "T6_Charm", "T6_Watch", "T6_Necklace"]
+
 var rowColours = {
     "Abydos": "#9ce4fc66", "Gehenna": "#ec7d7966", "Millennium": "#9ebdfa66", "Trinity": "#fcd19c66", "Hyakkiyako": "#f0a8c466",
     "Shanhaijing": "#b4feca66", "Red Winter": "#d98c9e66", "Valkyrie": "#a1a9e166", "Nebra": "#99919466", "Phaistos": "#fdf7e766", "Wolfsegg": "#93a5f266",
     "Nimrud": "#67e4ef66", "Mandragora": "#a1ede566", "Rohonc": "#c9ab9366", "Aether": "#ca96e066", "Antikythera": "#f7e28866",
-    "Voynich": "#84b28066", "Haniwa": "#e7bef466", "Baghdad": "#d179a066", "Totem": "#b77e6166", "Fleece": "#faf69f66", "Kikuko": "#ef957f66"
+    "Voynich": "#84b28066", "Haniwa": "#e7bef466", "Baghdad": "#d179a066", "Totem": "#b77e6166", "Fleece": "#faf69f66", "Kikuko": "#ef957f66",
+    "Gloves": "#84848436", "Bag": "#84848436", "Hairpin": "#84848436", "Watch": "#84848436"
 };
 
 const exportDataVersion = 2;
@@ -156,7 +163,7 @@ class Student {
     current = null
     target = null
     enabled = true
-    
+
     constructor(characterInfo) {
         this.id = characterInfo.Id;
         this.name = characterInfo.Name;
@@ -165,7 +172,7 @@ class Student {
     }
 
     static FromVersion1Data(version1) {
-        
+
         var student = new Student({
             Id: version1.id,
             Name: version1.name
@@ -175,9 +182,9 @@ class Student {
         const props = ['level', 'bond', 'star', 'ue', 'ue_level', 'ex', 'basic', 'passive', 'sub', 'gear1', 'gear2', 'gear3']
         var cur = [];
         var tar = [];
-        for(var prop of props) {
+        for (var prop of props) {
             cur.push(version1[prop]);
-            tar.push(version1[prop+"_target"]);
+            tar.push(version1[prop + "_target"]);
         }
 
         student.current = new StudentInvestment(...cur);
@@ -193,7 +200,7 @@ class StudentInvestment {
     star = 1
     ue = 0
     ue_level = 0
-    
+
     ex = 1
     basic = 1
     passive = 0
@@ -225,12 +232,12 @@ class StudentInvestment {
             characterInfo?.BaseStar ?? 1,
             0,
             0,
-            
+
             1,
             1,
             0,
             0,
-        
+
             0,
             0,
             0
@@ -251,7 +258,7 @@ class StudentInvestment {
         defaultTarget.star = characterInfo?.BaseStar ?? 1;
         defaultTarget.ue = 0;
         defaultTarget.ue_level = inputValidation.ue_level_target.default;
-        
+
         defaultTarget.gear1 = inputValidation.gear1_target.default;
         defaultTarget.gear2 = inputValidation.gear2_target.default;
         defaultTarget.gear2 = inputValidation.gear2_target.default;
@@ -1726,5 +1733,320 @@ const inputValidation = {
         "Left": "input-XP_2",
         "Up": "input-Credit",
         "Down": "input-Secret"
+    },
+    "T2_Hat": {
+        "id": "input-T2_Hat",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T2_Gloves": {
+        "id": "input-T2_Gloves",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T2_Shoes": {
+        "id": "input-T2_Shoes",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T2_Bag": {
+        "id": "input-T2_Bag",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T2_Badge": {
+        "id": "input-T2_Badge",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T2_Hairpin": {
+        "id": "input-T2_Hairpin",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T2_Charm": {
+        "id": "input-T2_Charm",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T2_Watch": {
+        "id": "input-T2_Watch",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T2_Necklace": {
+        "id": "input-T2_Necklace",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T3_Hat": {
+        "id": "input-T3_Hat",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T3_Gloves": {
+        "id": "input-T3_Gloves",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T3_Shoes": {
+        "id": "input-T3_Shoes",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T3_Bag": {
+        "id": "input-T3_Bag",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T3_Badge": {
+        "id": "input-T3_Badge",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T3_Hairpin": {
+        "id": "input-T3_Hairpin",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T3_Charm": {
+        "id": "input-T3_Charm",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T3_Watch": {
+        "id": "input-T3_Watch",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T3_Necklace": {
+        "id": "input-T3_Necklace",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T4_Hat": {
+        "id": "input-T4_Hat",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T4_Gloves": {
+        "id": "input-T4_Gloves",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T4_Shoes": {
+        "id": "input-T4_Shoes",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T4_Bag": {
+        "id": "input-T4_Bag",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T4_Badge": {
+        "id": "input-T4_Badge",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T4_Hairpin": {
+        "id": "input-T4_Hairpin",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T4_Charm": {
+        "id": "input-T4_Charm",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T4_Watch": {
+        "id": "input-T4_Watch",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T4_Necklace": {
+        "id": "input-T4_Necklace",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T5_Hat": {
+        "id": "input-T5_Hat",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T5_Gloves": {
+        "id": "input-T5_Gloves",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T5_Shoes": {
+        "id": "input-T5_Shoes",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T5_Bag": {
+        "id": "input-T5_Bag",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T5_Badge": {
+        "id": "input-T5_Badge",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T5_Hairpin": {
+        "id": "input-T5_Hairpin",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T5_Charm": {
+        "id": "input-T5_Charm",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T5_Watch": {
+        "id": "input-T5_Watch",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T5_Necklace": {
+        "id": "input-T5_Necklace",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T6_Hat": {
+        "id": "input-T6_Hat",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T6_Gloves": {
+        "id": "input-T6_Gloves",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T6_Shoes": {
+        "id": "input-T6_Shoes",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T6_Bag": {
+        "id": "input-T6_Bag",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T6_Badge": {
+        "id": "input-T6_Badge",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T6_Hairpin": {
+        "id": "input-T6_Hairpin",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T6_Charm": {
+        "id": "input-T6_Charm",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T6_Watch": {
+        "id": "input-T6_Watch",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T6_Necklace": {
+        "id": "input-T6_Necklace",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
     }
 }

@@ -3,15 +3,15 @@
 
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?2">
     <title>Resource Planner</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.12/lib/draggable.bundle.js"></script>
-    <script src="config.js"></script>
-    <script src="pageLogic.js"></script>
+    <script src="config.js?2"></script>
+    <script src="pageLogic.js?2"></script>
 </head>
 
 <body class="background dark-theme" onload="init()">
@@ -130,16 +130,20 @@
                                 <img draggable="false" id="ue-current-1" class="star-icon" src="icons/star.png">
                                 <img draggable="false" id="ue-current-2" class="star-icon" src="icons/star.png">
                                 <img draggable="false" id="ue-current-3" class="star-icon" src="icons/star.png">
-                                <img draggable="false" id="ue-current-4" class="star-icon" src="icons/star.png" style="visibility: hidden;">
-                                <img draggable="false" id="ue-current-5" class="star-icon" src="icons/star.png" style="visibility: hidden;">
+                                <img draggable="false" id="ue-current-4" class="star-icon" src="icons/star.png"
+                                    style="visibility: hidden;">
+                                <img draggable="false" id="ue-current-5" class="star-icon" src="icons/star.png"
+                                    style="visibility: hidden;">
                             </div>
                             <p>Target</p>
                             <div id="ue-target-container" style="display: flex;">
                                 <img draggable="false" id="ue-target-1" class="star-icon" src="icons/star.png">
                                 <img draggable="false" id="ue-target-2" class="star-icon" src="icons/star.png">
                                 <img draggable="false" id="ue-target-3" class="star-icon" src="icons/star.png">
-                                <img draggable="false" id="ue-target-4" class="star-icon" src="icons/star.png" style="visibility: hidden;">
-                                <img draggable="false" id="ue-target-5" class="star-icon" src="icons/star.png" style="visibility: hidden;">
+                                <img draggable="false" id="ue-target-4" class="star-icon" src="icons/star.png"
+                                    style="visibility: hidden;">
+                                <img draggable="false" id="ue-target-5" class="star-icon" src="icons/star.png"
+                                    style="visibility: hidden;">
                             </div>
                         </div>
                         <div style="margin-left: 10px;">
@@ -349,12 +353,28 @@
             </div>
         </div>
     </div>
+    <div class="modal" id="gearModal">
+        <div class="modal-content-wrapper" style="width: 80%;">
+            <div class="modal-section-wrapper gear-section">
+                <div id="table-parent-4" style="width: 100%;"></div>
+            </div>
+            <div id="other-resource-wrapper">
+                <div class="resource-box" style="border: none;">
+                    <button id="gear-switch-display" onclick="switchGearDisplay()">Switch to Owned</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <datalist id="char-options">
     </datalist>
     <div class="footer-resource">
         <div class="footer-button" onclick="openResourceModal()" style="display: flex; align-items: center;">
             <img draggable="false" src="icons/resourceBtn.png">
             <p>Resources</p>
+        </div>
+        <div class="footer-button" onclick="openGearModal()" style="display: flex; align-items: center;">
+            <img draggable="false" src="icons/T6_Badge.webp">
+            <p>Gear</p>
         </div>
         <div class="footer-button" onclick="transferDialog()">
             <p>Transfer</p>

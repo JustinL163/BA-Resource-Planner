@@ -10,6 +10,7 @@ var neededMatDict = {};
 var ownedMatDict = {};
 var charMatDicts = {};
 var resourceDisplay = "Needed";
+var gearDisplay = "Needed";
 
 var charOptions = {};
 var disabledChars = [];
@@ -36,7 +37,7 @@ let alertColour = "#e1e1e1";
 
 function loadResources() {
 
-    $.getJSON('misc_data.json').done(function (json) {
+    $.getJSON('misc_data.json?2').done(function (json) {
         misc_data = json;
         checkResources();
     });
@@ -174,38 +175,53 @@ function init() {
     // generate resource modal tables
     createTable("school-mat-table", ["BD_4", "BD_3", "BD_2", "BD_1", "TN_4", "TN_3", "TN_2", "TN_1"], 0,
         ["Hyakkiyako", "Red Winter", "Trinity", "Gehenna", "Abydos", "Millennium", "Shanhaijing", "Valkyrie"], 0,
-        tableNavigation, document.getElementById("table-parent-1"), false);
+        tableNavigation, document.getElementById("table-parent-1"), false, "resource");
     createTable("artifact-table-1", ["4", "3", "2", "1"], 0,
         ["Nebra", "Phaistos", "Wolfsegg", "Nimrud", "Mandragora", "Rohonc", "Aether"], 8,
-        tableNavigation, document.getElementById("table-parent-2"), true);
+        tableNavigation, document.getElementById("table-parent-2"), true, "resource");
     createTable("artifact-table-2", ["4", "3", "2", "1"], 4,
         ["Antikythera", "Voynich", "Haniwa", "Baghdad", "Totem", "Fleece", "Kikuko"], 8,
-        tableNavigation, document.getElementById("table-parent-3"), true);
+        tableNavigation, document.getElementById("table-parent-3"), true, "resource");
+
+    let gearNavigation = [];
+    createTable("gear-table", ["T6", "T5", "T4", "T3", "T2"], 0, ["Hat", "Gloves", "Shoes", "Bag", "Badge", "Hairpin", "Charm", "Watch", "Necklace"],
+        0, gearNavigation, document.getElementById('table-parent-4'), false, "gear");
 
     let navObj = {};
-    for (x in tableNavigation) {
-        for (y in tableNavigation[x]) {
+    for (let x in tableNavigation) {
+        for (let y in tableNavigation[x]) {
             navObj[x + "|" + y] = tableNavigation[x][y];
         }
     }
 
     navigationObjects["resourceTable"] = { "type": "table", "object": new TwoWayMap(navObj) };
 
+    let navGearObj = {};
+    for (let x in gearNavigation) {
+        for (let y in gearNavigation[x]) {
+            navGearObj[x + "|" + y] = gearNavigation[x][y];
+        }
+    }
+
+    navigationObjects["gearTable"] = { "type": "table", "object": new TwoWayMap(navGearObj) };
+
     // colour the table rows
     colourTableRows("school-mat-table");
     colourTableRows("artifact-table-1");
     colourTableRows("artifact-table-2");
 
-    if ("1.0.4".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    colourTableRows("gear-table");
+
+    if ("1.0.5".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.0.4",
+            title: "Updated to Version 1.0.5",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.0.4";
+        data.site_version = "1.0.5";
         saveToLocalStorage(false);
     }
 
@@ -429,6 +445,9 @@ function handleKeydown(e, keyPressed) {
         else if (modalOpen == "resourceModal") {
             closeResourceModal();
         }
+        else if (modalOpen == "gearModal") {
+            closeGearModal();
+        }
     }
 }
 
@@ -583,17 +602,19 @@ function inputNavigate(direction) {
 
         if (property && inputValidation[property]?.navigation) {
 
-            if (inputValidation[property].navigation == "direct") {
+            let navValue = inputValidation[property].navigation;
+
+            if (navValue == "direct") {
                 targetCell = inputValidation[property][direction];
             }
             else {
-                let navObj = navigationObjects[inputValidation[property].navigation];
+                let navObj = navigationObjects[navValue];
 
                 if (navObj.type == "table") {
 
                     let cell = navObj.object.revGet(focusedInput);
 
-                    let targetPos = findPosString(cell, direction);
+                    let targetPos = findPosString(cell, direction, navValue);
                     targetCell = navObj.object.get(targetPos);
                 }
             }
@@ -612,7 +633,7 @@ function inputNavigate(direction) {
 
 }
 
-function findPosString(string, direction) {
+function findPosString(string, direction, tableName) {
 
     let positions = string.split('|');
     let targetPos;
@@ -624,7 +645,7 @@ function findPosString(string, direction) {
         positions[0] = parseInt(positions[0]) + 1;
     }
     else if (direction == "Left") {
-        let keys = navigationObjects.resourceTable.object.keys;
+        let keys = navigationObjects[tableName].object.keys;
         let index = keys.indexOf(string) - 1;
         if (index >= 0) {
             targetPos = keys[index];
@@ -634,7 +655,7 @@ function findPosString(string, direction) {
         }
     }
     else if (direction == "Right") {
-        let keys = navigationObjects.resourceTable.object.keys;
+        let keys = navigationObjects[tableName].object.keys;
         let index = keys.indexOf(string) + 1;
         if (index < keys.length + 1) {
             targetPos = keys[index];
@@ -1481,7 +1502,7 @@ function populateCharResources(character) {
                 resourceImg.src = "icons/" + matName + ".webp";
 
                 const resourceText = document.createElement('p');
-                resourceText.className = "resource-count-text";
+                resourceText.className = "resource-display-text";
                 resourceText.innerText = resources[key];
 
                 wrapDiv.appendChild(resourceImg);
@@ -1692,10 +1713,10 @@ function openResourceModal() {
     updateAggregateCount();
 
     if (resourceDisplay == "Needed") {
-        updateCells(neededMatDict, false);
+        updateCells(neededMatDict, false, 'resource-count-text', 'misc-resource');
     }
     else if (resourceDisplay == "Owned") {
-        updateCells(ownedMatDict, true);
+        updateCells(ownedMatDict, true, 'resource-count-text', 'misc-resource');
     }
 
     hideEmpty();
@@ -1709,9 +1730,36 @@ function openResourceModal() {
 
 }
 
-function updateCells(dict, editable) {
+function openGearModal() {
 
-    let cellElements = document.getElementsByClassName('resource-count-text');
+    modalOpen = "gearModal";
+
+    var modal = document.getElementById("gearModal");
+
+    modal.style.visibility = "visible";
+
+    updateAggregateCount();
+
+    if (gearDisplay == "Needed") {
+        updateCells(neededMatDict, false, 'gear-count-text', 'misc-resource');
+    }
+    else if (gearDisplay == "Owned") {
+        updateCells(ownedMatDict, true, 'gear-count-text', 'miscsdasjda');
+    }
+
+    hideEmptyGear();
+    
+    modal.onclick = function (event) {
+        if (event.target == modal) {
+            closeGearModal();
+        }
+    };
+
+}
+
+function updateCells(dict, editable, cellClass, miscClass) {
+
+    let cellElements = document.getElementsByClassName(cellClass);
 
     for (i = 0; i < cellElements.length; i++) {
 
@@ -1724,10 +1772,13 @@ function updateCells(dict, editable) {
         else if (dict[mat] != undefined) {
             updateMatDisplay(mat, dict[mat], editable, 'normal');
         }
+        else {
+            updateMatDisplay(mat, 0, editable, 'normal');
+        }
 
     }
 
-    cellElements = document.getElementsByClassName('misc-resource');
+    cellElements = document.getElementsByClassName(miscClass);
 
     for (i = 0; i < cellElements.length; i++) {
 
@@ -1785,6 +1836,16 @@ function closeResourceModal() {
 
 }
 
+function closeGearModal() {
+
+    var modal = document.getElementById("gearModal");
+
+    modal.style.visibility = "hidden";
+
+    modalOpen = "";
+
+}
+
 // function getCharByID(id) {
 
 //     for (i = 0; i < data.characters.length; i++) {
@@ -1808,6 +1869,13 @@ function hideEmpty() {
     hideEmptyCell("XP_2");
     hideEmptyCell("XP_3");
     hideEmptyCell("XP_4");
+}
+
+function hideEmptyGear() {
+    
+    var gearTable = document.getElementById('gear-table');
+
+    hideEmptyCells(gearTable);
 }
 
 function hideEmptyCells(table) {
@@ -1838,7 +1906,7 @@ function hideEmptyCell(id) {
     }
 }
 
-function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, parent, reorder) {
+function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, parent, reorder, type) {
 
     const newTable = document.createElement("table");
     newTable.className = "resource-table";
@@ -1864,7 +1932,7 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
             else {
                 const newImg = document.createElement("img");
                 newImg.draggable = false;
-                newImg.className = "resource-icon";
+                newImg.className = type + "-icon";
                 if (reorder) {
                     newImg.src = ("icons/" + rows[row] + "_" + columns[col - 1] + ".webp").replace(/ /g, '');
                 }
@@ -1873,7 +1941,7 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
                 }
 
                 const newP = document.createElement("p");
-                newP.className = "resource-count-text";
+                newP.className = type + "-count-text";
                 //newP.id = id + "-p_" + cellId;
                 if (reorder) {
                     newP.id = (rows[row] + "_" + columns[col - 1]).replace(/ /g, '');
@@ -1904,6 +1972,9 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
                     newInput.id = ("input-" + columns[col - 1] + "_" + rows[row]).replace(/ /g, '');
                 }
                 if (matLookup.revGet(newP.id)) {
+                    tableNavigation[row + rowOffset][col + colOffset] = newInput.id;
+                }
+                else if (gearLookup.includes(newP.id)) {
                     tableNavigation[row + rowOffset][col + colOffset] = newInput.id;
                 }
 
@@ -2093,6 +2164,22 @@ function calcGearCost(charObj, gear, gearTarget, slotNum, matDict) {
                 matDict["Credit"] ??= 0;
                 matDict["Credit"] += targetGearObj.credit - gearObj.credit;
             }
+
+            if (charObj?.Equipment) {
+                let gearName = charObj.Equipment["Slot" + slotNum];
+
+                for (let i = 2; i <= 6; i++) {
+
+                    let currentBP = gearObj["T" + i] ?? 0;
+                    let targetBP = targetGearObj["T" + i];
+                    let diff = targetBP - currentBP;
+
+                    if (targetBP && (diff > 0)) {
+                        matDict["T" + i + "_" + gearName] ??= 0
+                        matDict["T" + i + "_" + gearName] += diff;
+                    }
+                }
+            }
         }
     }
 
@@ -2151,7 +2238,7 @@ function switchResourceDisplay() {
         btn.style.backgroundColor = "#f5c8dd";
         xpDisplay.style.display = "none";
         xpInputs.style.display = "";
-        updateCells(ownedMatDict, true);
+        updateCells(ownedMatDict, true, 'resource-count-text', 'misc-resource');
         for (i = 0; i < inputs.length; i++) {
             inputs[i].parentElement.classList.add("editable");
         }
@@ -2162,13 +2249,35 @@ function switchResourceDisplay() {
         btn.style.backgroundColor = "#c8e6f5";
         xpDisplay.style.display = "";
         xpInputs.style.display = "none";
-        updateCells(neededMatDict, false);
+        updateCells(neededMatDict, false, 'resource-count-text', 'misc-resource');
         for (i = 0; i < inputs.length; i++) {
             inputs[i].parentElement.classList.remove("editable");
         }
     }
 
     hideEmpty();
+
+}
+
+function switchGearDisplay() {
+
+    var btn = document.getElementById("gear-switch-display");
+    //var inputs = document.getElementsByClassName("input-wrapper");
+
+    if (gearDisplay == "Needed") {
+        gearDisplay = "Owned";
+        btn.innerText = "Switch to Needed";
+        btn.style.backgroundColor = "#f5c8dd";
+        updateCells(ownedMatDict, true, 'gear-count-text', 'miscasdjashdkja');
+    }
+    else if (gearDisplay == "Owned") {
+        gearDisplay = "Needed";
+        btn.innerText = "Switch to Owned";
+        btn.style.backgroundColor = "#c8e6f5";
+        updateCells(neededMatDict, false, 'gear-count-text', 'miscasdasdasd');
+    }
+
+    hideEmptyGear();
 
 }
 
