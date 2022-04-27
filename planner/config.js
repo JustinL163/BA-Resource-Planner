@@ -154,6 +154,14 @@ var rowColours = {
     "Gloves": "#84848436", "Bag": "#84848436", "Hairpin": "#84848436", "Watch": "#84848436"
 };
 
+const propertyColours = {
+    "Explosive": "#ec242487", "Piercing": "#fff10099", "Mystic": "#1070a5c2",
+    "Light": "#ec242487", "Heavy": "#fff10099", "Special": "#1070a5c2",
+    "Striker": "#ec242487",
+    "Abydos": "#9ce4fc66", "Gehenna": "#ec7d7966", "Millennium": "#9ebdfa66", "Trinity": "#fcd19c66", "Hyakkiyako": "#f0a8c466",
+    "Shanhaijing": "#b4feca66", "Red Winter": "#d98c9e66", "Valkyrie": "#a1a9e166"
+}
+
 const exportDataVersion = 2;
 // perhaps need to move this to JSON file later lmao, is probably getting a bit big
 // also perhaps later add functionality to set validation for a whole class of inputs rather than just invidually

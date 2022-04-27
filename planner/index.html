@@ -3,15 +3,15 @@
 
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="styles.css?2">
+    <link rel="stylesheet" href="styles.css?3">
     <title>Resource Planner</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.12/lib/draggable.bundle.js"></script>
-    <script src="config.js?2"></script>
-    <script src="pageLogic.js?2"></script>
+    <script src="config.js?3"></script>
+    <script src="pageLogic.js?3"></script>
 </head>
 
 <body class="background dark-theme" onload="init()">
@@ -47,10 +47,10 @@
                 </div>
                 <div class="modal-content-section" style="width: 20%; min-width: 180px;">
                     <p>School</p>
-                    <p id="display_school"></p>
+                    <p id="display_school" class="char-info-text"></p>
                     <br>
                     <p>Type</p>
-                    <p id="display_type"></p>
+                    <p id="display_type" class="char-info-text"></p>
                 </div>
                 <div class="modal-content-section" style="width: 10%; min-width: 80px;">
                     <p>Role</p>
@@ -64,10 +64,10 @@
                 </div>
                 <div class="modal-content-section" style="width:15%; min-width: 100px;">
                     <p>Attack Type</p>
-                    <p id="display_attack_type"></p>
+                    <p id="display_attack_type" class="char-info-text"></p>
                     <br>
                     <p>Defense Type</p>
-                    <p id="display_defense_type"></p>
+                    <p id="display_defense_type" class="char-info-text"></p>
                 </div>
                 <div class="modal-content-section"
                     style="width: 25%; min-width: 150px; display: flex; visibility: hidden;">
@@ -179,7 +179,7 @@
                         <div>
                             <br>
                             <p>Current</p>
-                            <br>
+                            <br><br><br>
                             <p>Target</p>
                             <br>
                         </div>
@@ -187,7 +187,7 @@
                             <p>EX</p>
                             <input id="input_ex_current" type="number" class="two_digit_input">
                             <br>
-                            <img draggable="false" height="15px">
+                            <img id="ex-img" class="skill-img" draggable="false">
                             <br>
                             <input id="input_ex_target" type="number" class="two_digit_input">
                         </div>
@@ -195,7 +195,7 @@
                             <p>Basic</p>
                             <input id="input_basic_current" type="number" class="two_digit_input">
                             <br>
-                            <img draggable="false" height="15px">
+                            <img id="basic-img" class="skill-img" draggable="false">
                             <br>
                             <input id="input_basic_target" type="number" class="two_digit_input">
                         </div>
@@ -203,7 +203,7 @@
                             <p>Enhanced</p>
                             <input id="input_enhanced_current" type="number" class="two_digit_input">
                             <br>
-                            <img draggable="false" height="15px">
+                            <img id="enhanced-img" class="skill-img" draggable="false">
                             <br>
                             <input id="input_enhanced_target" type="number" class="two_digit_input">
                         </div>
@@ -211,7 +211,7 @@
                             <p>Sub</p>
                             <input id="input_sub_current" type="number" class="two_digit_input">
                             <br>
-                            <img draggable="false" height="15px">
+                            <img id="sub-img" class="skill-img" draggable="false">
                             <br>
                             <input id="input_sub_target" type="number" class="two_digit_input">
                         </div>
@@ -226,7 +226,7 @@
                         <div>
                             <br>
                             <p>Current</p>
-                            <br>
+                            <br><br><br>
                             <p>Target</p>
                             <br>
                         </div>
@@ -234,7 +234,7 @@
                             <br>
                             <input id="input_gear1_current" type="number" class="two_digit_input">
                             <br>
-                            <img draggable="false" height="15px">
+                            <img id="gear1-img" class="gear-display" draggable="false">
                             <br>
                             <input id="input_gear1_target" type="number" class="two_digit_input">
                         </div>
@@ -242,7 +242,7 @@
                             <br>
                             <input id="input_gear2_current" type="number" class="two_digit_input">
                             <br>
-                            <img draggable="false" height="15px">
+                            <img id="gear2-img" class="gear-display" draggable="false">
                             <br>
                             <input id="input_gear2_target" type="number" class="two_digit_input">
                         </div>
@@ -250,7 +250,7 @@
                             <br>
                             <input id="input_gear3_current" type="number" class="two_digit_input">
                             <br>
-                            <img draggable="false" height="15px">
+                            <img id="gear3-img" class="gear-display" draggable="false">
                             <br>
                             <input id="input_gear3_target" type="number" class="two_digit_input">
                         </div>

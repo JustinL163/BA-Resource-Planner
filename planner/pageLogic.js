@@ -212,16 +212,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.0.5".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.0.6".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.0.5",
+            title: "Updated to Version 1.0.6",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.0.5";
+        data.site_version = "1.0.6";
         saveToLocalStorage(false);
     }
 
@@ -262,6 +262,7 @@ function init() {
                         position: 'top-end',
                         title: 'Invalid input',
                         text: result,
+                        color: alertColour,
                         showConfirmButton: false,
                         timer: 4000
                     })
@@ -300,6 +301,36 @@ function init() {
 
                 if (location == "characterModal" && result == "validated") {
                     populateCharResources(modalChar)
+
+                    if (event.target.id == "input_gear1_current" || event.target.id == "input_gear2_current" || event.target.id == "input_gear3_current") {
+
+                        if (event.target.value != "0") {
+
+                            let charInfo = charlist[charMap.get(modalChar)];
+
+                            if (event.target.id == "input_gear1_current") {
+                                document.getElementById("gear1-img").src = "icons/T" + event.target.value + "_" + charInfo.Equipment.Slot1 + ".webp";
+                            }
+                            else if (event.target.id == "input_gear2_current") {
+                                document.getElementById("gear2-img").src = "icons/T" + event.target.value + "_" + charInfo.Equipment.Slot2 + ".webp";
+                            }
+                            else if (event.target.id == "input_gear3_current") {
+                                document.getElementById("gear3-img").src = "icons/T" + event.target.value + "_" + charInfo.Equipment.Slot3 + ".webp";
+                            }
+                        }
+                        else {
+                            if (event.target.id == "input_gear1_current") {
+                                document.getElementById("gear1-img").src = "icons/T1_" + charInfo.Equipment.Slot1 + ".webp";
+                            }
+                            else if (event.target.id == "input_gear2_current") {
+                                document.getElementById("gear2-img").src = "icons/T1_" + charInfo.Equipment.Slot2 + ".webp";
+                            }
+                            else if (event.target.id == "input_gear3_current") {
+                                document.getElementById("gear3-img").src = "icons/T1_" + charInfo.Equipment.Slot3 + ".webp";
+                            }
+                        }
+
+                    }
                 }
             })
 
@@ -1259,7 +1290,8 @@ function saveCharChanges() {
     if (allValid == false) {
         Swal.fire({
             title: 'Invalid inputs',
-            html: invalidMessages
+            html: invalidMessages,
+            color: alertColour
         })
 
         return false;
@@ -1318,6 +1350,16 @@ function saveCharChanges() {
     closeModal(true);
 }
 
+function updateTextBackground(id, property) {
+
+    let textElement = document.getElementById(id);
+
+    if (textElement) {
+        textElement.style.backgroundColor = propertyColours[property];
+    }
+
+}
+
 function populateCharModal(character) {
 
     let charId = charMap.get(character)
@@ -1328,12 +1370,16 @@ function populateCharModal(character) {
     if (charData != undefined) {
 
         document.getElementById("display_school").innerText = charInfo.School;
+        updateTextBackground("display_school", charInfo.School);
         document.getElementById("display_type").innerText = charInfo.Type;
+        updateTextBackground("display_type", charInfo.Type);
         document.getElementById("display_role").innerText = "No data";//charInfo.role;
         document.getElementById("display_position").innerText = "No data";//charInfo.position;
         document.getElementById("display_gun").innerText = "No data";//charInfo.gun;
         document.getElementById("display_attack_type").innerText = charInfo.DamageType;
+        updateTextBackground("display_attack_type", charInfo.DamageType);
         document.getElementById("display_defense_type").innerText = charInfo.DefenseType;
+        updateTextBackground("display_defense_type", charInfo.DefenseType);
 
 
         document.getElementById("input_level_current").value = charData.current?.level;
@@ -1360,6 +1406,31 @@ function populateCharModal(character) {
         document.getElementById("input_gear2_target").value = charData.target?.gear2;
         document.getElementById("input_gear3_current").value = charData.current?.gear3;
         document.getElementById("input_gear3_target").value = charData.target?.gear3;
+
+        if (charData.current?.gear1 != "0") {
+            document.getElementById("gear1-img").src = "icons/T" + charData.current?.gear1 + "_" + charInfo.Equipment.Slot1 + ".webp";
+        }
+        else {
+            document.getElementById("gear1-img").src = "icons/T1_" + charInfo.Equipment.Slot1 + ".webp";
+        }
+        if (charData.current?.gear2 != "0") {
+            document.getElementById("gear2-img").src = "icons/T" + charData.current?.gear2 + "_" + charInfo.Equipment.Slot2 + ".webp";
+        }
+        else {
+            document.getElementById("gear2-img").src = "icons/T1_" + charInfo.Equipment.Slot2 + ".webp";
+        }
+        if (charData.current?.gear3 != "0") {
+            document.getElementById("gear3-img").src = "icons/T" + charData.current?.gear3 + "_" + charInfo.Equipment.Slot3 + ".webp";
+        }
+        else {
+            document.getElementById("gear3-img").src = "icons/T1_" + charInfo.Equipment.Slot3 + ".webp";
+        }
+
+        document.getElementById("ex-img").src = "icons/" + charInfo.Skills.Ex.Level1.Icon + ".png";
+        document.getElementById("basic-img").src = "icons/" + charInfo.Skills.Skill1.Level1.Icon + ".png";
+        document.getElementById("enhanced-img").src = "icons/" + charInfo.Skills.Skill2.Level1.Icon + ".png";
+        document.getElementById("sub-img").src = "icons/" + charInfo.Skills.Skill3.Level1.Icon + ".png";
+
 
         modalStars.star = charData.current?.star;
         modalStars.star_target = charData.target?.star;
@@ -1748,7 +1819,7 @@ function openGearModal() {
     }
 
     hideEmptyGear();
-    
+
     modal.onclick = function (event) {
         if (event.target == modal) {
             closeGearModal();
@@ -1872,7 +1943,7 @@ function hideEmpty() {
 }
 
 function hideEmptyGear() {
-    
+
     var gearTable = document.getElementById('gear-table');
 
     hideEmptyCells(gearTable);
@@ -2304,6 +2375,9 @@ function updateInfoDisplay(character, charId) {
     document.getElementById(character + "-level-current").innerText = formatLevel("Level", charData.current.level);
     document.getElementById(character + "-level-target").innerText = formatLevel("Level", charData.target.level);
 
+    document.getElementById(character + "-bond-current").innerText = charData.current?.bond;
+    document.getElementById(character + "-bond-target").innerText = charData.target?.bond;
+
 }
 
 function transferDialog() {
@@ -2562,6 +2636,25 @@ function createCharBox(newChar, charId) {
     newStarContainer.className = "star-container";
     newStarContainer.id = newChar + "-star-container";
 
+    const newBondContainer = document.createElement("div");
+    newBondContainer.className = "char-heart-container";
+
+    const newBondImg = document.createElement("img");
+    newBondImg.src = "icons/bond.png";
+    newBondImg.draggable = false;
+
+    const newBondP = document.createElement("p");
+    newBondP.id = newChar + "-bond-current";
+    newBondP.style = "transform: translate(-50%, -95%)";
+
+    const newBondP2 = document.createElement("p");
+    newBondP2.id = newChar + "-bond-target";
+    newBondP2.style = "transform: translate(-50%, -25%)";
+
+    newBondContainer.appendChild(newBondImg);
+    newBondContainer.appendChild(newBondP);
+    newBondContainer.appendChild(newBondP2);
+
     for (i = 0; i < 5; i++) {
         const newStar = document.createElement("img");
         newStar.draggable = false;
@@ -2627,6 +2720,7 @@ function createCharBox(newChar, charId) {
     newDiv.appendChild(newContent);
     newDiv.appendChild(newStarContainer);
     newDiv.appendChild(newUEContainer);
+    newDiv.appendChild(newBondContainer);
     newDiv.onclick = openModal
 
     let lastNode = document.getElementById('addCharButton')
