@@ -402,6 +402,9 @@ function init() {
     document.getElementById('switch-gear-total').innerText = 'Switch to\nTotal Needed';
     document.getElementById('switch-gear-remaining').innerText = 'Switch to\nRemaining Needed';
 
+    document.getElementById('current-resource-display').innerText = "Remaining Needed";
+    document.getElementById('current-gear-display').innerText = "Remaining Needed";
+
     setInterval(() => {
         if (saveTime != 0) {
             if (Date.now() > saveTime) {
@@ -643,10 +646,9 @@ function inputNavigate(direction) {
 
             let navValue = inputValidation[property].navigation;
 
-            if (navValue == "direct") {
-                targetCell = inputValidation[property][direction];
-            }
-            else {
+            targetCell = inputValidation[property][direction];
+
+            if (!targetCell) {
                 let navObj = navigationObjects[navValue];
 
                 if (navObj.type == "table") {
@@ -2326,6 +2328,7 @@ function switchResourceDisplay(displayType) {
     let btnOwned = document.getElementById("switch-resource-owned");
     let btnTotal = document.getElementById("switch-resource-total");
     let btnRemaining = document.getElementById("switch-resource-remaining");
+    let displayText = document.getElementById("current-resource-display");
     var xpDisplay = document.getElementById("xp-display-wrapper");
     var xpInputs = document.getElementById("xp-input-wrapper");
     var inputs = document.getElementsByClassName("input-wrapper");
@@ -2335,6 +2338,7 @@ function switchResourceDisplay(displayType) {
         btnOwned.parentElement.style.display = "none";
         btnTotal.parentElement.style.display = "";
         btnRemaining.parentElement.style.display = "";
+        displayText.innerText = "Owned";
         xpDisplay.style.display = "none";
         xpInputs.style.display = "";
         updateCells(ownedMatDict, true, 'resource-count-text', 'misc-resource');
@@ -2347,6 +2351,7 @@ function switchResourceDisplay(displayType) {
         btnOwned.parentElement.style.display = "";
         btnTotal.parentElement.style.display = "none";
         btnRemaining.parentElement.style.display = "";
+        displayText.innerText = "Total Needed"
         xpDisplay.style.display = "";
         xpInputs.style.display = "none";
         updateCells(requiredMatDict, false, 'resource-count-text', 'misc-resource');
@@ -2359,6 +2364,7 @@ function switchResourceDisplay(displayType) {
         btnOwned.parentElement.style.display = "";
         btnTotal.parentElement.style.display = "";
         btnRemaining.parentElement.style.display = "none";
+        displayText.innerText = "Remaining Needed";
         xpDisplay.style.display = "";
         xpInputs.style.display = "none";
         updateCells(neededMatDict, false, 'resource-count-text', 'misc-resource');
@@ -2376,6 +2382,7 @@ function switchGearDisplay(displayType) {
     let btnOwned = document.getElementById("switch-gear-owned");
     let btnTotal = document.getElementById("switch-gear-total");
     let btnRemaining = document.getElementById("switch-gear-remaining");
+    let displayText = document.getElementById("current-gear-display");
     //var inputs = document.getElementsByClassName("input-wrapper");
 
     if (displayType == "Owned") {
@@ -2383,6 +2390,7 @@ function switchGearDisplay(displayType) {
         btnOwned.parentElement.style.display = "none";
         btnTotal.parentElement.style.display = "";
         btnRemaining.parentElement.style.display = "";
+        displayText.innerText = "Owned";
         updateCells(ownedMatDict, true, 'gear-count-text', 'miscasdjashdkja');
     }
     else if (displayType == "Remaining") {
@@ -2390,6 +2398,7 @@ function switchGearDisplay(displayType) {
         btnOwned.parentElement.style.display = "";
         btnTotal.parentElement.style.display = "";
         btnRemaining.parentElement.style.display = "none";
+        displayText.innerText = "Remaining Needed";
         updateCells(neededMatDict, false, 'gear-count-text', 'miscasdasdasd');
     }
     else if (displayType == "Total") {
@@ -2397,6 +2406,7 @@ function switchGearDisplay(displayType) {
         btnOwned.parentElement.style.display = "";
         btnTotal.parentElement.style.display = "none";
         btnRemaining.parentElement.style.display = "";
+        displayText.innerText = "Total Needed";
         updateCells(requiredMatDict, false, 'gear-count-text', 'misczdsdasd');
     }
 

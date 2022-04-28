@@ -10,8 +10,8 @@
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.12/lib/draggable.bundle.js"></script>
-    <script src="config.js?4"></script>
-    <script src="pageLogic.js?4"></script>
+    <script src="config.js?5"></script>
+    <script src="pageLogic.js?5"></script>
 </head>
 
 <body class="background dark-theme" onload="init()">
@@ -362,6 +362,7 @@
                 <div class="resource-box" style="border: none;">
                     <button id="switch-resource-total" class="button-switch-display" style="background-color: #c8f5e0;" onclick="switchResourceDisplay('Total')"></button>
                 </div>
+                <div class="resource-box"><p id="current-resource-display" style="align-self: center; font-size: 1.75em;"></p></div>
             </div>
         </div>
     </div>
@@ -380,6 +381,7 @@
                 <div class="resource-box" style="border: none;">
                     <button id="switch-gear-total" class="button-switch-display" style="background-color: #c8f5e0;" onclick="switchGearDisplay('Total')"></button>
                 </div>
+                <div class="resource-box"><p id="current-gear-display" style="align-self: center; font-size: 1.75em;"></p></div>
             </div>
         </div>
     </div>

@@ -854,56 +854,66 @@ const inputValidation = {
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-BD_4_Millennium"
     },
     "BD_1_Gehenna": {
         "id": "input-BD_1_Gehenna",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-BD_4_Abydos"
     },
     "BD_1_Millennium": {
         "id": "input-BD_1_Millennium",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-BD_4_Shanhaijing"
     },
     "BD_1_Trinity": {
         "id": "input-BD_1_Trinity",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-BD_4_Gehenna"
     },
     "BD_1_Hyakkiyako": {
         "id": "input-BD_1_Hyakkiyako",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-BD_4_RedWinter",
+        "Up": "input-BD_2_Valkyrie"
     },
     "BD_1_Shanhaijing": {
         "id": "input-BD_1_Shanhaijing",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-BD_4_Valkyrie"
     },
     "BD_1_RedWinter": {
         "id": "input-BD_1_RedWinter",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-BD_4_Trinity"
     },
     "BD_1_Valkyrie": {
         "id": "input-BD_1_Valkyrie",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-TN_4_Hyakkiyako",
+        "Down": "input-TN_4_Hyakkiyako"
     },
     "BD_2_Abydos": {
         "id": "input-BD_2_Abydos",
@@ -938,7 +948,8 @@ const inputValidation = {
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Up": "input-BD_3_Valkyrie"
     },
     "BD_2_Shanhaijing": {
         "id": "input-BD_2_Shanhaijing",
@@ -959,7 +970,8 @@ const inputValidation = {
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Down": "input-BD_1_Hyakkiyako"
     },
     "BD_3_Abydos": {
         "id": "input-BD_3_Abydos",
@@ -994,7 +1006,8 @@ const inputValidation = {
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Up": "input-BD_4_Valkyrie"
     },
     "BD_3_Shanhaijing": {
         "id": "input-BD_3_Shanhaijing",
@@ -1015,35 +1028,40 @@ const inputValidation = {
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Down": "input-BD_2_Hyakkiyako"
     },
     "BD_4_Abydos": {
         "id": "input-BD_4_Abydos",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-BD_1_Gehenna"
     },
     "BD_4_Gehenna": {
         "id": "input-BD_4_Gehenna",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-BD_1_Trinity"
     },
     "BD_4_Millennium": {
         "id": "input-BD_4_Millennium",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-BD_1_Abydos"
     },
     "BD_4_Trinity": {
         "id": "input-BD_4_Trinity",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-BD_1_RedWinter"
     },
     "BD_4_Hyakkiyako": {
         "id": "input-BD_4_Hyakkiyako",
@@ -1057,77 +1075,91 @@ const inputValidation = {
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-BD_1_Millennium"
     },
     "BD_4_RedWinter": {
         "id": "input-BD_4_RedWinter",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-BD_1_Hyakkiyako"
     },
     "BD_4_Valkyrie": {
         "id": "input-BD_4_Valkyrie",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-BD_1_Shanhaijing",
+        "Down": "input-BD_3_Hyakkiyako"
     },
     "TN_1_Abydos": {
         "id": "input-TN_1_Abydos",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-TN_4_Millennium"
     },
     "TN_1_Gehenna": {
         "id": "input-TN_1_Gehenna",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-TN_4_Abydos"
     },
     "TN_1_Millennium": {
         "id": "input-TN_1_Millennium",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-TN_4_Shanhaijing"
     },
     "TN_1_Trinity": {
         "id": "input-TN_1_Trinity",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-TN_4_Gehenna"
     },
     "TN_1_Hyakkiyako": {
         "id": "input-TN_1_Hyakkiyako",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-TN_4_RedWinter",
+        "Up": "input-TN_2_Valkyrie"
     },
     "TN_1_Shanhaijing": {
         "id": "input-TN_1_Shanhaijing",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-TN_4_Valkyrie"
     },
     "TN_1_RedWinter": {
         "id": "input-TN_1_RedWinter",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-TN_4_Trinity"
     },
     "TN_1_Valkyrie": {
         "id": "input-TN_1_Valkyrie",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-Nebra_4",
+        "Down": "input-Nebra_4"
     },
     "TN_2_Abydos": {
         "id": "input-TN_2_Abydos",
@@ -1162,7 +1194,8 @@ const inputValidation = {
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Up": "input-TN_3_Valkyrie"
     },
     "TN_2_Shanhaijing": {
         "id": "input-TN_2_Shanhaijing",
@@ -1183,7 +1216,8 @@ const inputValidation = {
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Down": "input-TN_1_Hyakkiyako"
     },
     "TN_3_Abydos": {
         "id": "input-TN_3_Abydos",
@@ -1218,7 +1252,8 @@ const inputValidation = {
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Up": "input-TN_4_Valkyrie"
     },
     "TN_3_Shanhaijing": {
         "id": "input-TN_3_Shanhaijing",
@@ -1239,98 +1274,115 @@ const inputValidation = {
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Down": "input-TN_2_Hyakkiyako"
     },
     "TN_4_Abydos": {
         "id": "input-TN_4_Abydos",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-TN_1_Gehenna"
     },
     "TN_4_Gehenna": {
         "id": "input-TN_4_Gehenna",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-TN_1_Trinity"
     },
     "TN_4_Millennium": {
         "id": "input-TN_4_Millennium",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-TN_1_Abydos"
     },
     "TN_4_Trinity": {
         "id": "input-TN_4_Trinity",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-TN_1_RedWinter"
     },
     "TN_4_Hyakkiyako": {
         "id": "input-TN_4_Hyakkiyako",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-BD_1_Valkyrie",
+        "Up": "input-BD_1_Valkyrie"
     },
     "TN_4_Shanhaijing": {
         "id": "input-TN_4_Shanhaijing",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-TN_1_Millennium"
     },
     "TN_4_RedWinter": {
         "id": "input-TN_4_RedWinter",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-TN_1_Hyakkiyako"
     },
     "TN_4_Valkyrie": {
         "id": "input-TN_4_Valkyrie",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-TN_1_Shanhaijing",
+        "Down": "input-TN_3_Hyakkiyako"
     },
     "Nebra_1": {
         "id": "input-Nebra_1",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-Phaistos_4",
+        "Up": "input-Aether_2"
     },
     "Nebra_2": {
         "id": "input-Nebra_2",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Up": "input-Aether_3"
     },
     "Nebra_3": {
         "id": "input-Nebra_3",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Up": "input-Aether_4"
     },
     "Nebra_4": {
         "id": "input-Nebra_4",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Up": "input-TN_1_Valkyrie"
     },
     "Phaistos_1": {
         "id": "input-Phaistos_1",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-Wolfsegg_4"
     },
     "Phaistos_2": {
         "id": "input-Phaistos_2",
@@ -1351,14 +1403,16 @@ const inputValidation = {
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-Nebra_1"
     },
     "Wolfsegg_1": {
         "id": "input-Wolfsegg_1",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-Nimrud_4"
     },
     "Wolfsegg_2": {
         "id": "input-Wolfsegg_2",
@@ -1379,14 +1433,16 @@ const inputValidation = {
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-Phaistos_1"
     },
     "Nimrud_1": {
         "id": "input-Nimrud_1",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-Mandragora_4"
     },
     "Nimrud_2": {
         "id": "input-Nimrud_2",
@@ -1407,14 +1463,16 @@ const inputValidation = {
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-Wolfsegg_1"
     },
     "Mandragora_1": {
         "id": "input-Mandragora_1",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-Rohonc_4"
     },
     "Mandragora_2": {
         "id": "input-Mandragora_2",
@@ -1435,14 +1493,16 @@ const inputValidation = {
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-Nimrud_1"
     },
     "Rohonc_1": {
         "id": "input-Rohonc_1",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-Aether_4"
     },
     "Rohonc_2": {
         "id": "input-Rohonc_2",
@@ -1463,70 +1523,84 @@ const inputValidation = {
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-Mandragora_1"
     },
     "Aether_1": {
         "id": "input-Aether_1",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-Antikythera_4",
+        "Down": "input-Antikythera_4"
     },
     "Aether_2": {
         "id": "input-Aether_2",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Down": "input-Nebra_1"
     },
     "Aether_3": {
         "id": "input-Aether_3",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Down": "input-Nebra_2"
     },
     "Aether_4": {
         "id": "input-Aether_4",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-Rohonc_1",
+        "Down": "input-Nebra_3"
     },
     "Antikythera_1": {
         "id": "input-Antikythera_1",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-Voynich_4",
+        "Up": "input-Mystery_2"
     },
     "Antikythera_2": {
         "id": "input-Antikythera_2",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Up": "input-Mystery_3"
     },
     "Antikythera_3": {
         "id": "input-Antikythera_3",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Up": "input-Mystery_4"
     },
     "Antikythera_4": {
         "id": "input-Antikythera_4",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-Aether_1",
+        "Up": "input-Aether_1"
     },
     "Voynich_1": {
         "id": "input-Voynich_1",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-Haniwa_4"
     },
     "Voynich_2": {
         "id": "input-Voynich_2",
@@ -1547,14 +1621,16 @@ const inputValidation = {
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-Antikythera_1"
     },
     "Haniwa_1": {
         "id": "input-Haniwa_1",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-Totem_4"
     },
     "Haniwa_2": {
         "id": "input-Haniwa_2",
@@ -1575,14 +1651,16 @@ const inputValidation = {
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-Voynich_1"
     },
     "Baghdad_1": {
         "id": "input-Baghdad_1",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-Colgante_4"
     },
     "Baghdad_2": {
         "id": "input-Baghdad_2",
@@ -1603,14 +1681,16 @@ const inputValidation = {
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-Totem_1"
     },
     "Totem_1": {
         "id": "input-Totem_1",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-Baghdad_4"
     },
     "Totem_2": {
         "id": "input-Totem_2",
@@ -1631,7 +1711,8 @@ const inputValidation = {
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-Haniwa_1"
     },
     "Fleece_1": {
         "id": "input-Fleece_1",
@@ -1688,6 +1769,68 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable"
+    },
+    "Colgante_1": {
+        "id": "input-Colgante_1",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "resourceTable",
+        "Right": "input-Mystery_4"
+    },
+    "Colgante_2": {
+        "id": "input-Colgante_2",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "resourceTable"
+    },
+    "Colgante_3": {
+        "id": "input-Colgante_3",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "resourceTable"
+    },
+    "Colgante_4": {
+        "id": "input-Colgante_4",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "resourceTable",
+        "Left": "input-Baghdad_1"
+    },
+    "Mystery_1": {
+        "id": "input-Mystery_1",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "resourceTable"
+    },
+    "Mystery_2": {
+        "id": "input-Mystery_2",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "resourceTable",
+        "Down": "input-Antikythera_1"
+    },
+    "Mystery_3": {
+        "id": "input-Mystery_3",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "resourceTable",
+        "Down": "input-Antikythera_2"
+    },
+    "Mystery_4": {
+        "id": "input-Mystery_4",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "resourceTable",
+        "Left": "input-Colgante_1",
+        "Down": "input-Antikythera_3"
     },
     "Credit": {
         "id": "input-Credit",
