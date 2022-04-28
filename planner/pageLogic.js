@@ -9,8 +9,8 @@ var requiredMatDict = {};
 var neededMatDict = {};
 var ownedMatDict = {};
 var charMatDicts = {};
-var resourceDisplay = "Needed";
-var gearDisplay = "Needed";
+var resourceDisplay = "Remaining";
+var gearDisplay = "Remaining";
 
 var charOptions = {};
 var disabledChars = [];
@@ -42,7 +42,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('charlist.json').done(function (json) {
+    $.getJSON('charlist.json?2').done(function (json) {
         charlist = json;
         checkResources();
     });
@@ -180,7 +180,7 @@ function init() {
         ["Nebra", "Phaistos", "Wolfsegg", "Nimrud", "Mandragora", "Rohonc", "Aether"], 8,
         tableNavigation, document.getElementById("table-parent-2"), true, "resource");
     createTable("artifact-table-2", ["4", "3", "2", "1"], 4,
-        ["Antikythera", "Voynich", "Haniwa", "Baghdad", "Totem", "Fleece", "Kikuko"], 8,
+        ["Antikythera", "Voynich", "Haniwa", "Totem", "Baghdad", "Colgante", "Mystery"], 8,
         tableNavigation, document.getElementById("table-parent-3"), true, "resource");
 
     let gearNavigation = [];
@@ -212,16 +212,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.0.6".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.0.7".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.0.6",
+            title: "Updated to Version 1.0.7",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.0.6";
+        data.site_version = "1.0.7";
         saveToLocalStorage(false);
     }
 
@@ -393,6 +393,14 @@ function init() {
             starClicked(type, mode, pos);
         })
     }
+
+    document.getElementById('switch-resource-owned').innerText = 'Switch to\nOwned';
+    document.getElementById('switch-resource-total').innerText = 'Switch to\nTotal Needed';
+    document.getElementById('switch-resource-remaining').innerText = 'Switch to\nRemaining Needed';
+
+    document.getElementById('switch-gear-owned').innerText = 'Switch to\nOwned';
+    document.getElementById('switch-gear-total').innerText = 'Switch to\nTotal Needed';
+    document.getElementById('switch-gear-remaining').innerText = 'Switch to\nRemaining Needed';
 
     setInterval(() => {
         if (saveTime != 0) {
@@ -1381,6 +1389,9 @@ function populateCharModal(character) {
         document.getElementById("display_defense_type").innerText = charInfo.DefenseType;
         updateTextBackground("display_defense_type", charInfo.DefenseType);
 
+        document.getElementById('mood-Urban').src = "icons/Mood_" + charInfo.Affinities.Urban + ".webp";
+        document.getElementById('mood-Outdoors').src = "icons/Mood_" + charInfo.Affinities.Outdoors + ".webp";
+        document.getElementById('mood-Indoors').src = "icons/Mood_" + charInfo.Affinities.Indoors + ".webp";
 
         document.getElementById("input_level_current").value = charData.current?.level;
         document.getElementById("input_level_target").value = charData.target?.level;
@@ -1644,7 +1655,7 @@ function starClicked(type, mode, pos) {
                 }
             }
         }
-        else if (type == "ue" && modalStars.star_target >= 5) {
+        else if (type == "ue") {
             if (pos <= ueStarCap) {
                 if (pos == 1 && modalStars.ue == 1) {
                     modalStars.ue = 0;
@@ -1654,6 +1665,10 @@ function starClicked(type, mode, pos) {
 
                     if (pos > modalStars.ue_target) {
                         modalStars.ue_target = pos;
+                    }
+
+                    if (modalStars.star_target != 5) {
+                        modalStars.star_target = 5;
                     }
                 }
             }
@@ -1670,13 +1685,17 @@ function starClicked(type, mode, pos) {
                 }
             }
         }
-        else if (type == "ue" && modalStars.star_target >= 5) {
+        else if (type == "ue") {
             if (pos <= ueStarCap && pos >= modalStars.ue) {
                 if (pos == 1 && modalStars.ue_target == 1) {
                     modalStars.ue_target = 0;
                 }
                 else {
                     modalStars.ue_target = pos;
+
+                    if (modalStars.star_target != 5) {
+                        modalStars.star_target = 5;
+                    }
                 }
             }
         }
@@ -1783,11 +1802,14 @@ function openResourceModal() {
 
     updateAggregateCount();
 
-    if (resourceDisplay == "Needed") {
+    if (resourceDisplay == "Remaining") {
         updateCells(neededMatDict, false, 'resource-count-text', 'misc-resource');
     }
     else if (resourceDisplay == "Owned") {
         updateCells(ownedMatDict, true, 'resource-count-text', 'misc-resource');
+    }
+    else if (resourceDisplay == "Total") {
+        updateCells(requiredMatDict, false, 'resource-count-text', 'misc-resource');
     }
 
     hideEmpty();
@@ -1811,11 +1833,14 @@ function openGearModal() {
 
     updateAggregateCount();
 
-    if (gearDisplay == "Needed") {
+    if (gearDisplay == "Remaining") {
         updateCells(neededMatDict, false, 'gear-count-text', 'misc-resource');
     }
     else if (gearDisplay == "Owned") {
         updateCells(ownedMatDict, true, 'gear-count-text', 'miscsdasjda');
+    }
+    else if (gearDisplay == "Total") {
+        updateCells(requiredMatDict, false, 'gear-count-text', 'miscsdasjda');
     }
 
     hideEmptyGear();
@@ -2296,17 +2321,20 @@ function updateAggregateCount() {
     updateXP();
 }
 
-function switchResourceDisplay() {
+function switchResourceDisplay(displayType) {
 
-    var btn = document.getElementById("button-switch-display");
+    let btnOwned = document.getElementById("switch-resource-owned");
+    let btnTotal = document.getElementById("switch-resource-total");
+    let btnRemaining = document.getElementById("switch-resource-remaining");
     var xpDisplay = document.getElementById("xp-display-wrapper");
     var xpInputs = document.getElementById("xp-input-wrapper");
     var inputs = document.getElementsByClassName("input-wrapper");
 
-    if (resourceDisplay == "Needed") {
+    if (displayType == "Owned") {
         resourceDisplay = "Owned";
-        btn.innerText = "Switch to Needed";
-        btn.style.backgroundColor = "#f5c8dd";
+        btnOwned.parentElement.style.display = "none";
+        btnTotal.parentElement.style.display = "";
+        btnRemaining.parentElement.style.display = "";
         xpDisplay.style.display = "none";
         xpInputs.style.display = "";
         updateCells(ownedMatDict, true, 'resource-count-text', 'misc-resource');
@@ -2314,10 +2342,23 @@ function switchResourceDisplay() {
             inputs[i].parentElement.classList.add("editable");
         }
     }
-    else if (resourceDisplay == "Owned") {
-        resourceDisplay = "Needed";
-        btn.innerText = "Switch to Owned";
-        btn.style.backgroundColor = "#c8e6f5";
+    else if (displayType == "Total") {
+        resourceDisplay = "Total";
+        btnOwned.parentElement.style.display = "";
+        btnTotal.parentElement.style.display = "none";
+        btnRemaining.parentElement.style.display = "";
+        xpDisplay.style.display = "";
+        xpInputs.style.display = "none";
+        updateCells(requiredMatDict, false, 'resource-count-text', 'misc-resource');
+        for (i = 0; i < inputs.length; i++) {
+            inputs[i].parentElement.classList.remove("editable");
+        }
+    }
+    else if (displayType == "Remaining") {
+        resourceDisplay = "Remaining";
+        btnOwned.parentElement.style.display = "";
+        btnTotal.parentElement.style.display = "";
+        btnRemaining.parentElement.style.display = "none";
         xpDisplay.style.display = "";
         xpInputs.style.display = "none";
         updateCells(neededMatDict, false, 'resource-count-text', 'misc-resource');
@@ -2330,22 +2371,33 @@ function switchResourceDisplay() {
 
 }
 
-function switchGearDisplay() {
+function switchGearDisplay(displayType) {
 
-    var btn = document.getElementById("gear-switch-display");
+    let btnOwned = document.getElementById("switch-gear-owned");
+    let btnTotal = document.getElementById("switch-gear-total");
+    let btnRemaining = document.getElementById("switch-gear-remaining");
     //var inputs = document.getElementsByClassName("input-wrapper");
 
-    if (gearDisplay == "Needed") {
+    if (displayType == "Owned") {
         gearDisplay = "Owned";
-        btn.innerText = "Switch to Needed";
-        btn.style.backgroundColor = "#f5c8dd";
+        btnOwned.parentElement.style.display = "none";
+        btnTotal.parentElement.style.display = "";
+        btnRemaining.parentElement.style.display = "";
         updateCells(ownedMatDict, true, 'gear-count-text', 'miscasdjashdkja');
     }
-    else if (gearDisplay == "Owned") {
-        gearDisplay = "Needed";
-        btn.innerText = "Switch to Owned";
-        btn.style.backgroundColor = "#c8e6f5";
+    else if (displayType == "Remaining") {
+        gearDisplay = "Remaining";
+        btnOwned.parentElement.style.display = "";
+        btnTotal.parentElement.style.display = "";
+        btnRemaining.parentElement.style.display = "none";
         updateCells(neededMatDict, false, 'gear-count-text', 'miscasdasdasd');
+    }
+    else if (displayType == "Total") {
+        gearDisplay = "Total";
+        btnOwned.parentElement.style.display = "";
+        btnTotal.parentElement.style.display = "none";
+        btnRemaining.parentElement.style.display = "";
+        updateCells(requiredMatDict, false, 'gear-count-text', 'misczdsdasd');
     }
 
     hideEmptyGear();

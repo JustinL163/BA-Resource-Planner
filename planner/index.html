@@ -3,15 +3,15 @@
 
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="styles.css?3">
+    <link rel="stylesheet" href="styles.css?4">
     <title>Resource Planner</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.12/lib/draggable.bundle.js"></script>
-    <script src="config.js?3"></script>
-    <script src="pageLogic.js?3"></script>
+    <script src="config.js?4"></script>
+    <script src="pageLogic.js?4"></script>
 </head>
 
 <body class="background dark-theme" onload="init()">
@@ -21,7 +21,7 @@
             <li><a class="active">Resource Planner</a></li>
             <li><a href="changelog.html">Changelog</a></li>
         </ul>
-        <img src="icons/sun.svg" id="theme-button" onclick="switchTheme()" style="max-width: 40px;">
+        <img src="icons/sun.svg" id="theme-button" onclick="switchTheme()" style="max-width: 40px; filter: invert(1);">
     </nav>
     <div class="bodyContainer">
         <div class="boxesContainer">
@@ -70,15 +70,21 @@
                     <p id="display_defense_type" class="char-info-text"></p>
                 </div>
                 <div class="modal-content-section"
-                    style="width: 25%; min-width: 150px; display: flex; visibility: hidden;">
-                    <div>
-                        Urban
+                    style="width: 25%; min-width: 150px; display: flex;">
+                    <div class="mood-wrapper">
+                        <p>Urban</p>
+                        <img src="icons/Terrain_Urban.webp" class="terrain-icon"></img>
+                        <img id="mood-Urban" class="mood-icon"></img>
                     </div>
-                    <div>
-                        Outdoor
+                    <div class="mood-wrapper">
+                        <p>Outdoors</p>
+                        <img src="icons/Terrain_Outdoors.webp" class="terrain-icon"></img>
+                        <img id="mood-Outdoors" class="mood-icon"></img>
                     </div>
-                    <div>
-                        Indoor
+                    <div class="mood-wrapper">
+                        <p>Indoors</p>
+                        <img src="icons/Terrain_Indoors.webp" class="terrain-icon"></img>
+                        <img id="mood-Indoors" class="mood-icon"></img>
                     </div>
                 </div>
                 <div class="modal-content-section" style="width: 15%; min-width: 185px; display: flex;">
@@ -348,7 +354,13 @@
                     </div>
                 </div>
                 <div class="resource-box" style="border: none;">
-                    <button id="button-switch-display" onclick="switchResourceDisplay()">Switch to Owned</button>
+                    <button id="switch-resource-owned" class="button-switch-display" style="background-color: #c8e6f5" onclick="switchResourceDisplay('Owned')"></button>
+                </div>
+                <div class="resource-box" style="border: none; display: none;">
+                    <button id="switch-resource-remaining" class="button-switch-display" style="background-color: #f5c8dd;" onclick="switchResourceDisplay('Remaining')"></button>
+                </div>
+                <div class="resource-box" style="border: none;">
+                    <button id="switch-resource-total" class="button-switch-display" style="background-color: #c8f5e0;" onclick="switchResourceDisplay('Total')"></button>
                 </div>
             </div>
         </div>
@@ -360,7 +372,13 @@
             </div>
             <div id="other-resource-wrapper">
                 <div class="resource-box" style="border: none;">
-                    <button id="gear-switch-display" onclick="switchGearDisplay()">Switch to Owned</button>
+                    <button id="switch-gear-owned" class="button-switch-display" style="background-color: #c8e6f5" onclick="switchGearDisplay('Owned')"></button>
+                </div>
+                <div class="resource-box" style="border: none; display: none;">
+                    <button id="switch-gear-remaining" class="button-switch-display" style="background-color: #f5c8dd;" onclick="switchGearDisplay('Remaining')"></button>
+                </div>
+                <div class="resource-box" style="border: none;">
+                    <button id="switch-gear-total" class="button-switch-display" style="background-color: #c8f5e0;" onclick="switchGearDisplay('Total')"></button>
                 </div>
             </div>
         </div>

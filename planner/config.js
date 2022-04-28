@@ -62,6 +62,14 @@ const matLookup = new TwoWayMap({
     211: "Baghdad_2",
     212: "Baghdad_3",
     213: "Baghdad_4",
+    240: "Colgante_1",
+    241: "Colgante_2",
+    242: "Colgante_3",
+    243: "Colgante_4",
+    290: "Mystery_1",
+    291: "Mystery_2",
+    292: "Mystery_3",
+    293: "Mystery_4",
 
     3000: "BD_1_Hyakkiyako",
     3001: "BD_2_Hyakkiyako",
@@ -151,6 +159,7 @@ var rowColours = {
     "Shanhaijing": "#b4feca66", "Red Winter": "#d98c9e66", "Valkyrie": "#a1a9e166", "Nebra": "#99919466", "Phaistos": "#fdf7e766", "Wolfsegg": "#93a5f266",
     "Nimrud": "#67e4ef66", "Mandragora": "#a1ede566", "Rohonc": "#c9ab9366", "Aether": "#ca96e066", "Antikythera": "#f7e28866",
     "Voynich": "#84b28066", "Haniwa": "#e7bef466", "Baghdad": "#d179a066", "Totem": "#b77e6166", "Fleece": "#faf69f66", "Kikuko": "#ef957f66",
+    "Colgante": "#c2cdfe70", "Mystery": "#305c894a",
     "Gloves": "#84848436", "Bag": "#84848436", "Hairpin": "#84848436", "Watch": "#84848436"
 };
 
