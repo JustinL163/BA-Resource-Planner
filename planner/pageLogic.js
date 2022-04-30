@@ -212,16 +212,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.0.7".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.0.8".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.0.7",
+            title: "Updated to Version 1.0.8",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.0.7";
+        data.site_version = "1.0.8";
         saveToLocalStorage(false);
     }
 
@@ -309,24 +309,27 @@ function init() {
                             let charInfo = charlist[charMap.get(modalChar)];
 
                             if (event.target.id == "input_gear1_current") {
-                                document.getElementById("gear1-img").src = "icons/T" + event.target.value + "_" + charInfo.Equipment.Slot1 + ".webp";
+                                document.getElementById("gear1-img").src = "icons/T" + event.target.value + "_" + charInfo.Equipment.Slot1 + ".png";
                             }
                             else if (event.target.id == "input_gear2_current") {
-                                document.getElementById("gear2-img").src = "icons/T" + event.target.value + "_" + charInfo.Equipment.Slot2 + ".webp";
+                                document.getElementById("gear2-img").src = "icons/T" + event.target.value + "_" + charInfo.Equipment.Slot2 + ".png";
                             }
                             else if (event.target.id == "input_gear3_current") {
-                                document.getElementById("gear3-img").src = "icons/T" + event.target.value + "_" + charInfo.Equipment.Slot3 + ".webp";
+                                document.getElementById("gear3-img").src = "icons/T" + event.target.value + "_" + charInfo.Equipment.Slot3 + ".png";
                             }
                         }
                         else {
+
+                            let charInfo = charlist[charMap.get(modalChar)];
+                            
                             if (event.target.id == "input_gear1_current") {
-                                document.getElementById("gear1-img").src = "icons/T1_" + charInfo.Equipment.Slot1 + ".webp";
+                                document.getElementById("gear1-img").src = "icons/T1_" + charInfo.Equipment.Slot1 + ".png";
                             }
                             else if (event.target.id == "input_gear2_current") {
-                                document.getElementById("gear2-img").src = "icons/T1_" + charInfo.Equipment.Slot2 + ".webp";
+                                document.getElementById("gear2-img").src = "icons/T1_" + charInfo.Equipment.Slot2 + ".png";
                             }
                             else if (event.target.id == "input_gear3_current") {
-                                document.getElementById("gear3-img").src = "icons/T1_" + charInfo.Equipment.Slot3 + ".webp";
+                                document.getElementById("gear3-img").src = "icons/T1_" + charInfo.Equipment.Slot3 + ".png";
                             }
                         }
 
@@ -989,12 +992,18 @@ function generateCharOptions() {
 
             if (school) {
 
-                charOptions[school] ??= {};
+                if (!charOptions[school]) {
+                    charOptions[school] = {};
+                }
+
                 charOptions[school][charName] = charName;
             }
             else {
 
-                charOptions["Unassigned"] ??= {};
+                if (!charOptions["Unassigned"]) {
+                    charOptions["Unassigned"] = {};
+                }
+
                 charOptions["Unassigned"][charName] = charName;
             }
         }
@@ -1391,9 +1400,9 @@ function populateCharModal(character) {
         document.getElementById("display_defense_type").innerText = charInfo.DefenseType;
         updateTextBackground("display_defense_type", charInfo.DefenseType);
 
-        document.getElementById('mood-Urban').src = "icons/Mood_" + charInfo.Affinities.Urban + ".webp";
-        document.getElementById('mood-Outdoors').src = "icons/Mood_" + charInfo.Affinities.Outdoors + ".webp";
-        document.getElementById('mood-Indoors').src = "icons/Mood_" + charInfo.Affinities.Indoors + ".webp";
+        document.getElementById('mood-Urban').src = "icons/Mood_" + charInfo.Affinities.Urban + ".png";
+        document.getElementById('mood-Outdoors').src = "icons/Mood_" + charInfo.Affinities.Outdoors + ".png";
+        document.getElementById('mood-Indoors').src = "icons/Mood_" + charInfo.Affinities.Indoors + ".png";
 
         document.getElementById("input_level_current").value = charData.current?.level;
         document.getElementById("input_level_target").value = charData.target?.level;
@@ -1421,22 +1430,22 @@ function populateCharModal(character) {
         document.getElementById("input_gear3_target").value = charData.target?.gear3;
 
         if (charData.current?.gear1 != "0") {
-            document.getElementById("gear1-img").src = "icons/T" + charData.current?.gear1 + "_" + charInfo.Equipment.Slot1 + ".webp";
+            document.getElementById("gear1-img").src = "icons/T" + charData.current?.gear1 + "_" + charInfo.Equipment.Slot1 + ".png";
         }
         else {
-            document.getElementById("gear1-img").src = "icons/T1_" + charInfo.Equipment.Slot1 + ".webp";
+            document.getElementById("gear1-img").src = "icons/T1_" + charInfo.Equipment.Slot1 + ".png";
         }
         if (charData.current?.gear2 != "0") {
-            document.getElementById("gear2-img").src = "icons/T" + charData.current?.gear2 + "_" + charInfo.Equipment.Slot2 + ".webp";
+            document.getElementById("gear2-img").src = "icons/T" + charData.current?.gear2 + "_" + charInfo.Equipment.Slot2 + ".png";
         }
         else {
-            document.getElementById("gear2-img").src = "icons/T1_" + charInfo.Equipment.Slot2 + ".webp";
+            document.getElementById("gear2-img").src = "icons/T1_" + charInfo.Equipment.Slot2 + ".png";
         }
         if (charData.current?.gear3 != "0") {
-            document.getElementById("gear3-img").src = "icons/T" + charData.current?.gear3 + "_" + charInfo.Equipment.Slot3 + ".webp";
+            document.getElementById("gear3-img").src = "icons/T" + charData.current?.gear3 + "_" + charInfo.Equipment.Slot3 + ".png";
         }
         else {
-            document.getElementById("gear3-img").src = "icons/T1_" + charInfo.Equipment.Slot3 + ".webp";
+            document.getElementById("gear3-img").src = "icons/T1_" + charInfo.Equipment.Slot3 + ".png";
         }
 
         document.getElementById("ex-img").src = "icons/" + charInfo.Skills.Ex.Level1.Icon + ".png";
@@ -1583,7 +1592,7 @@ function populateCharResources(character) {
 
                 const resourceImg = document.createElement('img');
                 resourceImg.className = "char-resource-img";
-                resourceImg.src = "icons/" + matName + ".webp";
+                resourceImg.src = "icons/" + matName + ".png";
 
                 const resourceText = document.createElement('p');
                 resourceText.className = "resource-display-text";
@@ -2018,7 +2027,9 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
         const newRow = document.createElement("tr");
         newRow.id = "row-" + rows[row];
 
-        tableNavigation[row + rowOffset] ??= [];
+        if (!tableNavigation[row + rowOffset]) {
+            tableNavigation[row + rowOffset] = [];
+        }
 
         for (col = 0; col < columns.length + 1; col++) {
             const newCell = document.createElement("td");
@@ -2032,10 +2043,10 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
                 newImg.draggable = false;
                 newImg.className = type + "-icon";
                 if (reorder) {
-                    newImg.src = ("icons/" + rows[row] + "_" + columns[col - 1] + ".webp").replace(/ /g, '');
+                    newImg.src = ("icons/" + rows[row] + "_" + columns[col - 1] + ".png").replace(/ /g, '');
                 }
                 else {
-                    newImg.src = ("icons/" + columns[col - 1] + "_" + rows[row] + ".webp").replace(/ /g, '');
+                    newImg.src = ("icons/" + columns[col - 1] + "_" + rows[row] + ".png").replace(/ /g, '');
                 }
 
                 const newP = document.createElement("p");
@@ -2201,7 +2212,13 @@ function calcSkillCost(characterObj, skill, current, target, matDict) {
     let skillObj = characterObj["Skills"]?.[skill];
     if (skillObj == undefined) { return null; }
 
-    for (let s = parseInt(current); s < parseInt(target); s++) {
+    let curLevel = parseInt(current);
+    let tarLevel = parseInt(target);
+    if (curLevel == 0 && tarLevel > 0) {
+        curLevel = 1;
+    }
+
+    for (let s = curLevel; s < tarLevel; s++) {
 
         let levelObj = skillObj["Level" + s];
         if (levelObj == undefined) {
@@ -2217,14 +2234,20 @@ function calcSkillCost(characterObj, skill, current, target, matDict) {
 
             if (item["ItemId"] != undefined && item["Quantity"] != undefined) {
 
-                matDict[item["ItemId"]] ??= 0;
+                if (!matDict[item["ItemId"]]) {
+                    matDict[item["ItemId"]] = 0;
+                }
+
                 matDict[item["ItemId"]] += item["Quantity"];
             }
         }
 
         if (costObj["Currency"] != undefined) {
 
-            matDict["Credit"] ??= 0;
+            if (!matDict["Credit"]) {
+                matDict["Credit"] = 0;
+            }
+
             matDict["Credit"] += costObj["Currency"];
 
         }
@@ -2239,7 +2262,10 @@ function calcXpCost(level, levelTarget, matDict) {
         var xpNeeded = Math.max(misc_data.level_xp[parseInt(levelTarget) - 1] - misc_data.level_xp[parseInt(level) - 1], 0);
         matDict["Xp"] = xpNeeded;
 
-        matDict["Credit"] ??= 0;
+        if (!matDict["Credit"]) {
+            matDict["Credit"] = 0;
+        }
+
         matDict["Credit"] += xpNeeded * 7;
     }
 }
@@ -2259,7 +2285,10 @@ function calcGearCost(charObj, gear, gearTarget, slotNum, matDict) {
 
             if ((gearObj.credit || gearObj.credit == 0) && targetGearObj.credit) {
 
-                matDict["Credit"] ??= 0;
+                if (!matDict["Credit"]) {
+                    matDict["Credit"] = 0;
+                }
+
                 matDict["Credit"] += targetGearObj.credit - gearObj.credit;
             }
 
@@ -2273,7 +2302,11 @@ function calcGearCost(charObj, gear, gearTarget, slotNum, matDict) {
                     let diff = targetBP - currentBP;
 
                     if (targetBP && (diff > 0)) {
-                        matDict["T" + i + "_" + gearName] ??= 0
+                        
+                        if (!matDict["T" + i + "_" + gearName]) {
+                            matDict["T" + i + "_" + gearName] = 0;
+                        }
+
                         matDict["T" + i + "_" + gearName] += diff;
                     }
                 }
@@ -2294,7 +2327,10 @@ function calcMysticCost(star, starTarget, matDict) {
 
             if ((currentStar.credit || currentStar.credit == 0) && targetStar.credit) {
 
-                matDict["Credit"] ??= 0;
+                if (!matDict["Credit"]) {
+                    matDict["Credit"] = 0;
+                }
+            
                 matDict["Credit"] += targetStar.credit - currentStar.credit;
             }
         }
@@ -2310,7 +2346,11 @@ function updateAggregateCount() {
     for (character in charMatDicts) {
         if (!disabledChars.includes(character)) {
             for (matName in charMatDicts[character]) {
-                requiredMatDict[matName] ??= 0
+
+                if (!requiredMatDict[matName]) {
+                    requiredMatDict[matName] = 0;
+                }
+
                 requiredMatDict[matName] += charMatDicts[character][matName];
             }
         }

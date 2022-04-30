@@ -175,17 +175,13 @@ const exportDataVersion = 2;
 // perhaps need to move this to JSON file later lmao, is probably getting a bit big
 // also perhaps later add functionality to set validation for a whole class of inputs rather than just invidually
 class Student {
-    name = ""
-    id = ""
-    current = null
-    target = null
-    enabled = true
 
     constructor(characterInfo) {
         this.id = characterInfo.Id;
         this.name = characterInfo.Name;
         this.current = StudentInvestment.Default(characterInfo);
         this.target = StudentInvestment.DefaultTarget(characterInfo);
+        this.enabled = true;
     }
 
     static FromVersion1Data(version1) {
@@ -212,20 +208,6 @@ class Student {
 }
 
 class StudentInvestment {
-    level = 1
-    bond = 1
-    star = 1
-    ue = 0
-    ue_level = 0
-
-    ex = 1
-    basic = 1
-    passive = 0
-    sub = 0
-
-    gear1 = 0
-    gear2 = 0
-    gear3 = 0
 
     constructor(level, bond, star, ue, ue_level, ex, basic, passive, sub, gear1, gear2, gear3) {
         this.level = level;
