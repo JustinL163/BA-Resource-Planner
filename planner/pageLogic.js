@@ -42,7 +42,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('charlist.json?2').done(function (json) {
+    $.getJSON('charlist.json?3').done(function (json) {
         charlist = json;
         checkResources();
     });
@@ -212,16 +212,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.0.8".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.0.9".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.0.8",
+            title: "Updated to Version 1.0.9",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.0.8";
+        data.site_version = "1.0.9";
         saveToLocalStorage(false);
     }
 
@@ -799,6 +799,10 @@ function validateInput(key, checkonly, verbose) {
             if (checkonly) {
                 return "not_number";
             }
+        }
+
+        if (inputElement.value.length > 1 && inputElement.value[0] == 0) {
+            inputElement.value = parseInt(inputElement.value)
         }
 
         if (val.requisite != undefined) {
