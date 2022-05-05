@@ -212,16 +212,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.0.9".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.0.10".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.0.9",
+            title: "Updated to Version 1.0.10",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.0.9";
+        data.site_version = "1.0.10";
         saveToLocalStorage(false);
     }
 
@@ -1901,7 +1901,6 @@ function updateCells(dict, editable, cellClass, miscClass) {
         }
         else {
             updateMatDisplay(mat, dict[mat] ?? 0, editable, 'misc');
-
         }
 
     }
@@ -2364,7 +2363,50 @@ function updateAggregateCount() {
         updateNeededMat(key);
     }
 
+    calculateRaidCoins();
+
     updateXP();
+}
+
+function calculateRaidCoins() {
+
+    let raidCoins = 0;
+
+    for (key in neededMatDict) {
+        if (key[0] == 3 && key.length == 4) {
+            if (key[3] == 0) {
+                raidCoins += 10 * neededMatDict[key];
+            }
+            else if (key[3] == 1) {
+                raidCoins += 20 * neededMatDict[key];
+            }
+            else if (key[3] == 2) {
+                raidCoins += 50 * neededMatDict[key];
+            }
+            else if (key[3] == 3) {
+                raidCoins += 100 * neededMatDict[key];
+            }
+        }
+        else if (key[0] == 4 && key.length == 4) {
+            if (key[3] == 0) {
+                raidCoins += 3 * neededMatDict[key];
+            }
+            else if (key[3] == 1) {
+                raidCoins += 5 * neededMatDict[key];
+            }
+            else if (key[3] == 2) {
+                raidCoins += 10 * neededMatDict[key];
+            }
+            else if (key[3] == 3) {
+                raidCoins += 25 * neededMatDict[key];
+            }
+        }
+        else if (key == "9999") {
+            raidCoins += 500 * neededMatDict[key];
+        }
+    }
+
+    neededMatDict["RaidTokenCost"] = raidCoins;
 }
 
 function switchResourceDisplay(displayType) {
@@ -2374,6 +2416,7 @@ function switchResourceDisplay(displayType) {
     let btnRemaining = document.getElementById("switch-resource-remaining");
     let displayText = document.getElementById("current-resource-display");
     var xpDisplay = document.getElementById("xp-display-wrapper");
+    var raidTokenDisplay = document.getElementById("raid-token-display-wrapper");
     var xpInputs = document.getElementById("xp-input-wrapper");
     var inputs = document.getElementsByClassName("input-wrapper");
 
@@ -2385,6 +2428,7 @@ function switchResourceDisplay(displayType) {
         displayText.innerText = "Owned";
         xpDisplay.style.display = "none";
         xpInputs.style.display = "";
+        raidTokenDisplay.style.display = "none";
         updateCells(ownedMatDict, true, 'resource-count-text', 'misc-resource');
         for (i = 0; i < inputs.length; i++) {
             inputs[i].parentElement.classList.add("editable");
@@ -2398,12 +2442,14 @@ function switchResourceDisplay(displayType) {
         displayText.innerText = "Total Needed"
         xpDisplay.style.display = "";
         xpInputs.style.display = "none";
+        raidTokenDisplay.style.display = "none";
         updateCells(requiredMatDict, false, 'resource-count-text', 'misc-resource');
         for (i = 0; i < inputs.length; i++) {
             inputs[i].parentElement.classList.remove("editable");
         }
     }
     else if (displayType == "Remaining") {
+        calculateRaidCoins();
         resourceDisplay = "Remaining";
         btnOwned.parentElement.style.display = "";
         btnTotal.parentElement.style.display = "";
@@ -2411,6 +2457,7 @@ function switchResourceDisplay(displayType) {
         displayText.innerText = "Remaining Needed";
         xpDisplay.style.display = "";
         xpInputs.style.display = "none";
+        raidTokenDisplay.style.display = "";
         updateCells(neededMatDict, false, 'resource-count-text', 'misc-resource');
         for (i = 0; i < inputs.length; i++) {
             inputs[i].parentElement.classList.remove("editable");
