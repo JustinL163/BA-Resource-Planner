@@ -2,9 +2,18 @@
 <html>
 
 <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3XZ18739WF"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-3XZ18739WF');
+    </script>
     <meta charset="utf-8">
     <link rel="stylesheet" href="styles.css?5">
-    <title>Resource Planner</title>
+    <title>Blue Archive Resource Planner</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
@@ -20,6 +29,7 @@
         <ul class="nav-list">
             <li><a class="active">Resource Planner</a></li>
             <li><a href="changelog.html">Changelog</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
         </ul>
         <img src="icons/sun.svg" id="theme-button" onclick="switchTheme()" style="max-width: 40px; filter: invert(1);">
     </nav>
@@ -69,8 +79,7 @@
                     <p>Defense Type</p>
                     <p id="display_defense_type" class="char-info-text"></p>
                 </div>
-                <div class="modal-content-section"
-                    style="width: 25%; min-width: 150px; display: flex;">
+                <div class="modal-content-section" style="width: 25%; min-width: 150px; display: flex;">
                     <div class="mood-wrapper">
                         <p>Urban</p>
                         <img src="icons/Terrain_Urban.png" class="terrain-icon"></img>
@@ -320,8 +329,7 @@
                     </div>
                 </div>
                 <div id="xp-display-wrapper" class="resource-box">
-                    <img draggable="false" src="icons/exp.png"
-                        style="max-width: 80px; align-self: center;">
+                    <img draggable="false" src="icons/exp.png" style="max-width: 80px; align-self: center;">
                     <p id="Xp" class="misc-resource no-input" style="align-self: center; margin-left: 10px;"></p>
                 </div>
                 <div id="xp-input-wrapper" class="resource-box" style="align-items: center; display: none;">
@@ -354,19 +362,24 @@
                     </div>
                 </div>
                 <div class="resource-box" style="border: none;">
-                    <button id="switch-resource-owned" class="button-switch-display" style="background-color: #c8e6f5" onclick="switchResourceDisplay('Owned')"></button>
+                    <button id="switch-resource-owned" class="button-switch-display" style="background-color: #c8e6f5"
+                        onclick="switchResourceDisplay('Owned')"></button>
                 </div>
                 <div class="resource-box" style="border: none; display: none;">
-                    <button id="switch-resource-remaining" class="button-switch-display" style="background-color: #f5c8dd;" onclick="switchResourceDisplay('Remaining')"></button>
+                    <button id="switch-resource-remaining" class="button-switch-display"
+                        style="background-color: #f5c8dd;" onclick="switchResourceDisplay('Remaining')"></button>
                 </div>
                 <div class="resource-box" style="border: none;">
-                    <button id="switch-resource-total" class="button-switch-display" style="background-color: #c8f5e0;" onclick="switchResourceDisplay('Total')"></button>
+                    <button id="switch-resource-total" class="button-switch-display" style="background-color: #c8f5e0;"
+                        onclick="switchResourceDisplay('Total')"></button>
                 </div>
-                <div class="resource-box"><p id="current-resource-display" style="align-self: center; font-size: 1.75em;"></p></div>
+                <div class="resource-box">
+                    <p id="current-resource-display" style="align-self: center; font-size: 1.75em;"></p>
+                </div>
                 <div id="raid-token-display-wrapper" class="resource-box">
-                    <img draggable="false" src="icons/RaidToken.png"
-                        style="max-width: 80px; align-self: center;">
-                    <p id="RaidTokenCost" class="misc-resource no-input" style="align-self: center; margin-left: 10px;"></p>
+                    <img draggable="false" src="icons/RaidToken.png" style="max-width: 80px; align-self: center;">
+                    <p id="RaidTokenCost" class="misc-resource no-input" style="align-self: center; margin-left: 10px;">
+                    </p>
                 </div>
             </div>
         </div>
@@ -378,15 +391,20 @@
             </div>
             <div id="other-resource-wrapper">
                 <div class="resource-box" style="border: none;">
-                    <button id="switch-gear-owned" class="button-switch-display" style="background-color: #c8e6f5" onclick="switchGearDisplay('Owned')"></button>
+                    <button id="switch-gear-owned" class="button-switch-display" style="background-color: #c8e6f5"
+                        onclick="switchGearDisplay('Owned')"></button>
                 </div>
                 <div class="resource-box" style="border: none; display: none;">
-                    <button id="switch-gear-remaining" class="button-switch-display" style="background-color: #f5c8dd;" onclick="switchGearDisplay('Remaining')"></button>
+                    <button id="switch-gear-remaining" class="button-switch-display" style="background-color: #f5c8dd;"
+                        onclick="switchGearDisplay('Remaining')"></button>
                 </div>
                 <div class="resource-box" style="border: none;">
-                    <button id="switch-gear-total" class="button-switch-display" style="background-color: #c8f5e0;" onclick="switchGearDisplay('Total')"></button>
+                    <button id="switch-gear-total" class="button-switch-display" style="background-color: #c8f5e0;"
+                        onclick="switchGearDisplay('Total')"></button>
                 </div>
-                <div class="resource-box"><p id="current-gear-display" style="align-self: center; font-size: 1.75em;"></p></div>
+                <div class="resource-box">
+                    <p id="current-gear-display" style="align-self: center; font-size: 1.75em;"></p>
+                </div>
             </div>
         </div>
     </div>
