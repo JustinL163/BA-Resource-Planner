@@ -212,16 +212,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.0.10".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.0.11".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.0.10",
+            title: "Updated to Version 1.0.11",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.0.10";
+        data.site_version = "1.0.11";
         saveToLocalStorage(false);
     }
 
@@ -321,7 +321,7 @@ function init() {
                         else {
 
                             let charInfo = charlist[charMap.get(modalChar)];
-                            
+
                             if (event.target.id == "input_gear1_current") {
                                 document.getElementById("gear1-img").src = "icons/T1_" + charInfo.Equipment.Slot1 + ".png";
                             }
@@ -1462,6 +1462,18 @@ function populateCharModal(character) {
         modalStars.star_target = charData.target?.star;
         modalStars.ue = charData.current?.ue;
         modalStars.ue_target = charData.target?.ue;
+
+        gtag('event', 'character_viewed', {
+            'event_label': character,
+            'character_name': character,
+            'character_id': charId,
+            'character_star': charData.current?.star,
+            'character_level': charData.current?.level,
+            'character_ex': charData.current?.ex,
+            'character_ex': charData.current?.basic,
+            'character_ex': charData.current?.passive,
+            'character_ex': charData.current?.sub
+        })
     }
 
     updateStarDisplays(character, true);
@@ -1836,6 +1848,11 @@ function openResourceModal() {
         }
     };
 
+    gtag('event', 'modal_view', {
+        'event_label': 'resource',
+        'modal_name': 'resource'
+    })
+
 }
 
 function openGearModal() {
@@ -1865,6 +1882,11 @@ function openGearModal() {
             closeGearModal();
         }
     };
+
+    gtag('event', 'modal_view', {
+        'event_label': 'gear',
+        'modal_name': 'gear'
+    })
 
 }
 
@@ -2305,7 +2327,7 @@ function calcGearCost(charObj, gear, gearTarget, slotNum, matDict) {
                     let diff = targetBP - currentBP;
 
                     if (targetBP && (diff > 0)) {
-                        
+
                         if (!matDict["T" + i + "_" + gearName]) {
                             matDict["T" + i + "_" + gearName] = 0;
                         }
@@ -2333,7 +2355,7 @@ function calcMysticCost(star, starTarget, matDict) {
                 if (!matDict["Credit"]) {
                     matDict["Credit"] = 0;
                 }
-            
+
                 matDict["Credit"] += targetStar.credit - currentStar.credit;
             }
         }
@@ -2520,17 +2542,36 @@ function updateInfoDisplay(character, charId) {
         formatLevel("Gear", charData.target?.gear3);
 
     document.getElementById(character + "-skill-current").innerText = skillCurrent;
-    document.getElementById(character + "-skill-target").innerText = skillTarget;
+    if (skillCurrent != skillTarget) {
+        document.getElementById(character + "-skill-target").innerText = skillTarget;
+    }
+    else {
+        document.getElementById(character + "-skill-target").innerText = "";
+    }
 
     document.getElementById(character + "-gear-current").innerText = gearCurrent;
-    document.getElementById(character + "-gear-target").innerText = gearTarget;
+    if (gearCurrent != gearTarget) {
+        document.getElementById(character + "-gear-target").innerText = gearTarget;
+    }
+    else {
+        document.getElementById(character + "-gear-target").innerText = "";
+    }
 
     document.getElementById(character + "-level-current").innerText = formatLevel("Level", charData.current.level);
-    document.getElementById(character + "-level-target").innerText = formatLevel("Level", charData.target.level);
+    if (charData.current.level != charData.target.level) {
+        document.getElementById(character + "-level-target").innerText = formatLevel("Level", charData.target.level);
+    }
+    else {
+        document.getElementById(character + "-level-target").innerText = "";
+    }
 
     document.getElementById(character + "-bond-current").innerText = charData.current?.bond;
-    document.getElementById(character + "-bond-target").innerText = charData.target?.bond;
-
+    if (charData.current?.bond != charData.target?.bond) {
+        document.getElementById(character + "-bond-target").innerText = charData.target?.bond;
+    }
+    else {
+        document.getElementById(character + "-bond-target").innerText = "";
+    }
 }
 
 function transferDialog() {
@@ -2628,6 +2669,8 @@ async function getImportData() {
         }
 
         refreshAllChars();
+
+        gtag('event', 'action_import');
     }
 }
 
