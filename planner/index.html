@@ -411,16 +411,27 @@
     <datalist id="char-options">
     </datalist>
     <div class="footer-resource">
-        <div class="footer-button" onclick="openResourceModal()" style="display: flex; align-items: center;">
-            <img draggable="false" src="icons/resourceBtn.png">
-            <p>Resources</p>
+
+        <div class="footer-buttons-wrapper">
+            <div class="footer-button" onclick="openResourceModal()" style="display: flex; align-items: center;">
+                <img draggable="false" src="icons/resourceBtn.png">
+                <p>Resources</p>
+            </div>
+            <div class="footer-button" onclick="openGearModal()" style="display: flex; align-items: center;">
+                <img draggable="false" src="icons/T6_Badge.png">
+                <p>Gear</p>
+            </div>
+            <div class="footer-button" onclick="transferDialog()">
+                <p>Transfer</p>
+            </div>
         </div>
-        <div class="footer-button" onclick="openGearModal()" style="display: flex; align-items: center;">
-            <img draggable="false" src="icons/T6_Badge.png">
-            <p>Gear</p>
-        </div>
-        <div class="footer-button" onclick="transferDialog()">
-            <p>Transfer</p>
+        <div class="footer-button">
+            <p onclick="gtag('event', 'contest_click')"><a
+                    href="https://bluearchive.nexon.com/events/2022/05/contest/885" target="_blank">Contest
+                    Submission</a></p>
+            <p onclick="gtag('event', 'contest_click')" style="font-size: 1em;"><a
+                    href="https://bluearchive.nexon.com/events/2022/05/contest/885" target="_blank">(Vote for me?
+                    :P)</a></p>
         </div>
     </div>
 </body>

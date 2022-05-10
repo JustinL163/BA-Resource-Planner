@@ -392,6 +392,7 @@ label {
 .footer-resource {
     position: fixed;
     display: flex;
+    flex-wrap: wrap;
     left: 25%;
     bottom: 0;
     width: 50%;
@@ -402,11 +403,30 @@ label {
     justify-content: center;
 }
 
+.footer-buttons-wrapper {
+    display: flex;
+    left: 25%;
+    bottom: 0;
+    width: 50%;
+    min-height: 50px;
+    color: white;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-button a {
+    color: white;
+}
+
+.footer-button a:hover {
+    color: rgb(186, 186, 186);
+}
+
 .footer-button {
     cursor: pointer;
     margin-right: 1%;
     padding-right: 1%;
-    padding-left: 0.5%;
+    padding-left: 10px;
 }
 
 .footer-button p {
