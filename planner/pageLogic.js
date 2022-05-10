@@ -225,6 +225,24 @@ function init() {
         saveToLocalStorage(false);
     }
 
+    var dayC = localStorage.getItem("contest-alert-day");
+
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var yyyy = today.getFullYear();
+
+    today = mm + '/' + dd + '/' + yyyy;
+    
+    if (dayC != today) {
+        localStorage.setItem("contest-alert-day", today);
+        var textprompt = "<a href='https://bluearchive.nexon.com/events/2022/05/contest/885' target='_blank' onclick=\"gtag('event','contest_click')\" style='color: white; font-size: 1.5em'>My Submission</a><br><br><p>(Showing this alert max once per day, will stop with voting phase end)</p>";
+        Swal.fire({
+            title: "Consider voting for me? :P",
+            color: alertColour,
+            html: textprompt
+        })
+    }
 
     // set input validation
 
