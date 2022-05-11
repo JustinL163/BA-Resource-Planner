@@ -42,7 +42,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('charlist.json?3').done(function (json) {
+    $.getJSON('charlist.json?4').done(function (json) {
         charlist = json;
         checkResources();
     });
@@ -212,36 +212,37 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.0.11".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.0.12".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.0.11",
+            title: "Updated to Version 1.0.12",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.0.11";
+        data.site_version = "1.0.12";
         saveToLocalStorage(false);
     }
+    else {
+        var dayC = localStorage.getItem("contest-alert-day");
 
-    var dayC = localStorage.getItem("contest-alert-day");
-
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0');
-    var yyyy = today.getFullYear();
-
-    today = mm + '/' + dd + '/' + yyyy;
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        var yyyy = today.getFullYear();
     
-    if (dayC != today) {
-        localStorage.setItem("contest-alert-day", today);
-        var textprompt = "<a href='https://bluearchive.nexon.com/events/2022/05/contest/885' target='_blank' onclick=\"gtag('event','contest_click')\" style='color: white; font-size: 1.5em'>My Submission</a><br><br><p>(Showing this alert max once per day, will stop with voting phase end)</p>";
-        Swal.fire({
-            title: "Consider voting for me? :P",
-            color: alertColour,
-            html: textprompt
-        })
+        today = mm + '/' + dd + '/' + yyyy;
+        
+        if (dayC != today) {
+            localStorage.setItem("contest-alert-day", today);
+            var textprompt = "<a href='https://bluearchive.nexon.com/events/2022/05/contest/885' target='_blank' onclick=\"gtag('event','contest_click')\" style='color: white; font-size: 1.5em'>My Submission</a><br><br><p>(Showing this alert max once per day, will stop with voting phase end)</p>";
+            Swal.fire({
+                title: "Consider voting for me? :P",
+                color: alertColour,
+                html: textprompt
+            })
+        }
     }
 
     // set input validation

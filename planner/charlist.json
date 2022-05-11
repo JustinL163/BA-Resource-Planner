@@ -35839,6 +35839,902 @@
             }
         }
     },
+    "10040": {
+        "Id": 10040,
+        "DevName": "CH0114",
+        "JpOnly": true,
+        "Name": "Tsukuyo",
+        "BaseStar": 3,
+        "Icon": "Student_Portrait_CH0114_Collection",
+        "Rarity": "SSR",
+        "Type": "Striker",
+        "School": "Hyakkiyako",
+        "DamageType": "Mystic",
+        "DefenseType": "Light",
+        "WeaponType": "SMG",
+        "TacticRole": "Tanker",
+        "TacticRange": "Front",
+        "CombatStats": {
+            "HP1": 2722,
+            "HP100": 45510,
+            "Attack1": 134,
+            "Attack100": 1341,
+            "Defense1": 27,
+            "Defense100": 163,
+            "Heal1": 1529,
+            "Heal100": 4587,
+            "Evasion": 1307,
+            "Accuracy": 109,
+            "Critical": 218,
+            "CriticalResist": 100,
+            "CriticalDamageRate": 20000,
+            "CriticalDamageResistRate": 5000,
+            "Stability": 1268,
+            "Range": 350,
+            "AmmoCount": 32,
+            "AmmoCost": 4
+        },
+        "Affinities": {
+            "Urban": "B",
+            "Outdoors": "D",
+            "Indoors": "S"
+        },
+        "Equipment": {
+            "Slot1": "Shoes",
+            "Slot2": "Badge",
+            "Slot3": "Charm"
+        },
+        "Skills": {
+            "Ex": {
+                "Name": "ツクヨ流、忍法……！",
+                "Level1": {
+                    "Description": "攻撃を受ける度に、治癒力の[c][007eff]7%[-][/c]分の回復をする効果を付与（[c][007eff]30秒[-][/c]間）\n（最大で[c][007eff]100回[-][/c]分まで適用されます）/\nさらに攻撃力を[c][007eff]28.8%[-][/c]減少（[c][007eff]30秒[-][/c]間）",
+                    "Cost": 3,
+                    "LevelUpMats": {
+                        "Id": 10040100,
+                        "Currency": 80000,
+                        "Items": [
+                            {
+                                "ItemId": 3000,
+                                "ItemName": "Beginner Tactical Training Blu-ray (Hyakkiyako)",
+                                "Quantity": 12
+                            },
+                            {
+                                "ItemId": 100,
+                                "ItemName": "Nebra Sky Disk Piece",
+                                "Quantity": 17
+                            }
+                        ]
+                    },
+                    "Icon": "SKILLICON_CH0114_EXSKILL"
+                },
+                "Level2": {
+                    "Description": "攻撃を受ける度に、治癒力の[c][007eff]8%[-][/c]分の回復をする効果を付与（[c][007eff]30秒[-][/c]間）\n（最大で[c][007eff]100回[-][/c]分まで適用されます）/\nさらに攻撃力を[c][007eff]28.8%[-][/c]減少（[c][007eff]30秒[-][/c]間）",
+                    "Cost": 3,
+                    "LevelUpMats": {
+                        "Id": 10040101,
+                        "Currency": 500000,
+                        "Items": [
+                            {
+                                "ItemId": 3001,
+                                "ItemName": "Normal Tactical Training Blu-ray (Hyakkiyako)",
+                                "Quantity": 12
+                            },
+                            {
+                                "ItemId": 3000,
+                                "ItemName": "Beginner Tactical Training Blu-ray (Hyakkiyako)",
+                                "Quantity": 18
+                            },
+                            {
+                                "ItemId": 101,
+                                "ItemName": "Broken Nebra Sky Disk",
+                                "Quantity": 14
+                            },
+                            {
+                                "ItemId": 140,
+                                "ItemName": "Mandrake Seed",
+                                "Quantity": 30
+                            }
+                        ]
+                    },
+                    "Icon": "SKILLICON_CH0114_EXSKILL"
+                },
+                "Level3": {
+                    "Description": "攻撃を受ける度に、治癒力の[c][007eff]9.1%[-][/c]分の回復をする効果を付与（[c][007eff]30秒[-][/c]間）\n（最大で[c][007eff]100回[-][/c]分まで適用されます）/\nさらに攻撃力を[c][007eff]24.5%[-][/c]減少（[c][007eff]30秒[-][/c]間）",
+                    "Cost": 3,
+                    "LevelUpMats": {
+                        "Id": 10040102,
+                        "Currency": 3000000,
+                        "Items": [
+                            {
+                                "ItemId": 3002,
+                                "ItemName": "Advanced Tactical Training Blu-ray (Hyakkiyako)",
+                                "Quantity": 12
+                            },
+                            {
+                                "ItemId": 3001,
+                                "ItemName": "Normal Tactical Training Blu-ray (Hyakkiyako)",
+                                "Quantity": 18
+                            },
+                            {
+                                "ItemId": 102,
+                                "ItemName": "Damaged Nebra Sky Disk",
+                                "Quantity": 12
+                            },
+                            {
+                                "ItemId": 141,
+                                "ItemName": "Mandrake Sprout",
+                                "Quantity": 25
+                            }
+                        ]
+                    },
+                    "Icon": "SKILLICON_CH0114_EXSKILL"
+                },
+                "Level4": {
+                    "Description": "攻撃を受ける度に、治癒力の[c][007eff]10.1%[-][/c]分の回復をする効果を付与（[c][007eff]30秒[-][/c]間）\n（最大で[c][007eff]100回[-][/c]分まで適用されます）/\nさらに攻撃力を[c][007eff]24.5%[-][/c]減少（[c][007eff]30秒[-][/c]間）",
+                    "Cost": 3,
+                    "LevelUpMats": {
+                        "Id": 10040103,
+                        "Currency": 10000000,
+                        "Items": [
+                            {
+                                "ItemId": 3003,
+                                "ItemName": "Superior Tactical Training Blu-ray (Hyakkiyako)",
+                                "Quantity": 8
+                            },
+                            {
+                                "ItemId": 3002,
+                                "ItemName": "Advanced Tactical Training Blu-ray (Hyakkiyako)",
+                                "Quantity": 18
+                            },
+                            {
+                                "ItemId": 103,
+                                "ItemName": "Intact Nebra Sky Disk",
+                                "Quantity": 7
+                            },
+                            {
+                                "ItemId": 142,
+                                "ItemName": "Mandrake Juice",
+                                "Quantity": 21
+                            }
+                        ]
+                    },
+                    "Icon": "SKILLICON_CH0114_EXSKILL"
+                },
+                "Level5": {
+                    "Description": "攻撃を受ける度に、治癒力の[c][007eff]11.2%[-][/c]分の回復をする効果を付与（[c][007eff]30秒[-][/c]間）\n（最大で[c][007eff]100回[-][/c]分まで適用されます）/\nさらに攻撃力を[c][007eff]20.2%[-][/c]減少（[c][007eff]30秒[-][/c]間）",
+                    "Cost": 3,
+                    "LevelUpMats": {
+                        "Id": 1,
+                        "Currency": 10000,
+                        "Items": [
+                            {
+                                "ItemId": 23,
+                                "ItemName": "Eligma",
+                                "Quantity": 999
+                            }
+                        ]
+                    },
+                    "Icon": "SKILLICON_CH0114_EXSKILL"
+                }
+            },
+            "Skill1": {
+                "Name": "たくさん、練習しましたので……！",
+                "Level1": {
+                    "Description": "通常攻撃[c][007eff]7回[-][/c]毎に、敵1人に対して攻撃力の[c][007eff]418%[-][/c]分のダメージ\n/その敵が中型の場合、さらに防御力を[c][007eff]38.9%[-][/c]減少（[c][007eff]20秒[-][/c]間）",
+                    "LevelUpMats": {
+                        "Id": 10040200,
+                        "Currency": 5000,
+                        "Items": [
+                            {
+                                "ItemId": 4000,
+                                "ItemName": "Beginner Tech Notes (Hyakkiyako)",
+                                "Quantity": 5
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_TARGET"
+                },
+                "Level2": {
+                    "Description": "通常攻撃[c][007eff]7回[-][/c]毎に、敵1人に対して攻撃力の[c][007eff]439%[-][/c]分のダメージ\n/その敵が中型の場合、さらに防御力を[c][007eff]38.9%[-][/c]減少（[c][007eff]20秒[-][/c]間）",
+                    "LevelUpMats": {
+                        "Id": 10040201,
+                        "Currency": 7500,
+                        "Items": [
+                            {
+                                "ItemId": 4000,
+                                "ItemName": "Beginner Tech Notes (Hyakkiyako)",
+                                "Quantity": 8
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_TARGET"
+                },
+                "Level3": {
+                    "Description": "通常攻撃[c][007eff]7回[-][/c]毎に、敵1人に対して攻撃力の[c][007eff]460%[-][/c]分のダメージ\n/その敵が中型の場合、さらに防御力を[c][007eff]38.9%[-][/c]減少（[c][007eff]20秒[-][/c]間）",
+                    "LevelUpMats": {
+                        "Id": 10040202,
+                        "Currency": 60000,
+                        "Items": [
+                            {
+                                "ItemId": 4001,
+                                "ItemName": "Normal Tech Notes (Hyakkiyako)",
+                                "Quantity": 5
+                            },
+                            {
+                                "ItemId": 4000,
+                                "ItemName": "Beginner Tech Notes (Hyakkiyako)",
+                                "Quantity": 12
+                            },
+                            {
+                                "ItemId": 100,
+                                "ItemName": "Nebra Sky Disk Piece",
+                                "Quantity": 6
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_TARGET"
+                },
+                "Level4": {
+                    "Description": "通常攻撃[c][007eff]7回[-][/c]毎に、敵1人に対して攻撃力の[c][007eff]502%[-][/c]分のダメージ\n/その敵が中型の場合、さらに防御力を[c][007eff]42.8%[-][/c]減少（[c][007eff]20秒[-][/c]間）",
+                    "LevelUpMats": {
+                        "Id": 10040203,
+                        "Currency": 90000,
+                        "Items": [
+                            {
+                                "ItemId": 4001,
+                                "ItemName": "Normal Tech Notes (Hyakkiyako)",
+                                "Quantity": 8
+                            },
+                            {
+                                "ItemId": 101,
+                                "ItemName": "Broken Nebra Sky Disk",
+                                "Quantity": 6
+                            },
+                            {
+                                "ItemId": 140,
+                                "ItemName": "Mandrake Seed",
+                                "Quantity": 12
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_TARGET"
+                },
+                "Level5": {
+                    "Description": "通常攻撃[c][007eff]7回[-][/c]毎に、敵1人に対して攻撃力の[c][007eff]523%[-][/c]分のダメージ\n/その敵が中型の場合、さらに防御力を[c][007eff]42.8%[-][/c]減少（[c][007eff]20秒[-][/c]間）",
+                    "LevelUpMats": {
+                        "Id": 10040204,
+                        "Currency": 300000,
+                        "Items": [
+                            {
+                                "ItemId": 4002,
+                                "ItemName": "Advanced Tech Notes (Hyakkiyako)",
+                                "Quantity": 5
+                            },
+                            {
+                                "ItemId": 4001,
+                                "ItemName": "Normal Tech Notes (Hyakkiyako)",
+                                "Quantity": 12
+                            },
+                            {
+                                "ItemId": 101,
+                                "ItemName": "Broken Nebra Sky Disk",
+                                "Quantity": 11
+                            },
+                            {
+                                "ItemId": 140,
+                                "ItemName": "Mandrake Seed",
+                                "Quantity": 18
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_TARGET"
+                },
+                "Level6": {
+                    "Description": "通常攻撃[c][007eff]7回[-][/c]毎に、敵1人に対して攻撃力の[c][007eff]543%[-][/c]分のダメージ\n/その敵が中型の場合、さらに防御力を[c][007eff]42.8%[-][/c]減少（[c][007eff]20秒[-][/c]間）",
+                    "LevelUpMats": {
+                        "Id": 10040205,
+                        "Currency": 450000,
+                        "Items": [
+                            {
+                                "ItemId": 4002,
+                                "ItemName": "Advanced Tech Notes (Hyakkiyako)",
+                                "Quantity": 8
+                            },
+                            {
+                                "ItemId": 102,
+                                "ItemName": "Damaged Nebra Sky Disk",
+                                "Quantity": 3
+                            },
+                            {
+                                "ItemId": 141,
+                                "ItemName": "Mandrake Sprout",
+                                "Quantity": 16
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_TARGET"
+                },
+                "Level7": {
+                    "Description": "通常攻撃[c][007eff]7回[-][/c]毎に、敵1人に対して攻撃力の[c][007eff]585%[-][/c]分のダメージ\n/その敵が中型の場合、さらに防御力を[c][007eff]46.7%[-][/c]減少（[c][007eff]20秒[-][/c]間）",
+                    "LevelUpMats": {
+                        "Id": 10040206,
+                        "Currency": 1500000,
+                        "Items": [
+                            {
+                                "ItemId": 4003,
+                                "ItemName": "Superior Tech Notes (Hyakkiyako)",
+                                "Quantity": 8
+                            },
+                            {
+                                "ItemId": 4002,
+                                "ItemName": "Advanced Tech Notes (Hyakkiyako)",
+                                "Quantity": 12
+                            },
+                            {
+                                "ItemId": 103,
+                                "ItemName": "Intact Nebra Sky Disk",
+                                "Quantity": 4
+                            },
+                            {
+                                "ItemId": 142,
+                                "ItemName": "Mandrake Juice",
+                                "Quantity": 8
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_TARGET"
+                },
+                "Level8": {
+                    "Description": "通常攻撃[c][007eff]7回[-][/c]毎に、敵1人に対して攻撃力の[c][007eff]606%[-][/c]分のダメージ\n/その敵が中型の場合、さらに防御力を[c][007eff]46.7%[-][/c]減少（[c][007eff]20秒[-][/c]間）",
+                    "LevelUpMats": {
+                        "Id": 10040207,
+                        "Currency": 2400000,
+                        "Items": [
+                            {
+                                "ItemId": 4003,
+                                "ItemName": "Superior Tech Notes (Hyakkiyako)",
+                                "Quantity": 12
+                            },
+                            {
+                                "ItemId": 103,
+                                "ItemName": "Intact Nebra Sky Disk",
+                                "Quantity": 8
+                            },
+                            {
+                                "ItemId": 142,
+                                "ItemName": "Mandrake Juice",
+                                "Quantity": 13
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_TARGET"
+                },
+                "Level9": {
+                    "Description": "通常攻撃[c][007eff]7回[-][/c]毎に、敵1人に対して攻撃力の[c][007eff]617%[-][/c]分のダメージ\n/その敵が中型の場合、さらに防御力を[c][007eff]47.7%[-][/c]減少（[c][007eff]20秒[-][/c]間）",
+                    "LevelUpMats": {
+                        "Id": 99999208,
+                        "Currency": 4000000,
+                        "Items": [
+                            {
+                                "ItemId": 9999,
+                                "ItemName": "Secret Tech Sheet",
+                                "Quantity": 1
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_TARGET"
+                },
+                "Level10": {
+                    "Description": "通常攻撃[c][007eff]7回[-][/c]毎に、敵1人に対して攻撃力の[c][007eff]659%[-][/c]分のダメージ\n/その敵が中型の場合、さらに防御力を[c][007eff]51.6%[-][/c]減少（[c][007eff]20秒[-][/c]間）",
+                    "LevelUpMats": {
+                        "Id": 1,
+                        "Currency": 10000,
+                        "Items": [
+                            {
+                                "ItemId": 23,
+                                "ItemName": "Eligma",
+                                "Quantity": 999
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_TARGET"
+                }
+            },
+            "Skill2": {
+                "Name": "生まれ持った素質",
+                "Level1": {
+                    "Description": "HPを[c][007eff]14%[-][/c]増加",
+                    "LevelUpMats": {
+                        "Id": 10040200,
+                        "Currency": 5000,
+                        "Items": [
+                            {
+                                "ItemId": 4000,
+                                "ItemName": "Beginner Tech Notes (Hyakkiyako)",
+                                "Quantity": 5
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_STATBUFF"
+                },
+                "Level2": {
+                    "Description": "HPを[c][007eff]14.7%[-][/c]増加",
+                    "LevelUpMats": {
+                        "Id": 10040201,
+                        "Currency": 7500,
+                        "Items": [
+                            {
+                                "ItemId": 4000,
+                                "ItemName": "Beginner Tech Notes (Hyakkiyako)",
+                                "Quantity": 8
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_STATBUFF"
+                },
+                "Level3": {
+                    "Description": "HPを[c][007eff]15.4%[-][/c]増加",
+                    "LevelUpMats": {
+                        "Id": 10040202,
+                        "Currency": 60000,
+                        "Items": [
+                            {
+                                "ItemId": 4001,
+                                "ItemName": "Normal Tech Notes (Hyakkiyako)",
+                                "Quantity": 5
+                            },
+                            {
+                                "ItemId": 4000,
+                                "ItemName": "Beginner Tech Notes (Hyakkiyako)",
+                                "Quantity": 12
+                            },
+                            {
+                                "ItemId": 100,
+                                "ItemName": "Nebra Sky Disk Piece",
+                                "Quantity": 6
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_STATBUFF"
+                },
+                "Level4": {
+                    "Description": "HPを[c][007eff]18.2%[-][/c]増加",
+                    "LevelUpMats": {
+                        "Id": 10040203,
+                        "Currency": 90000,
+                        "Items": [
+                            {
+                                "ItemId": 4001,
+                                "ItemName": "Normal Tech Notes (Hyakkiyako)",
+                                "Quantity": 8
+                            },
+                            {
+                                "ItemId": 101,
+                                "ItemName": "Broken Nebra Sky Disk",
+                                "Quantity": 6
+                            },
+                            {
+                                "ItemId": 140,
+                                "ItemName": "Mandrake Seed",
+                                "Quantity": 12
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_STATBUFF"
+                },
+                "Level5": {
+                    "Description": "HPを[c][007eff]18.9%[-][/c]増加",
+                    "LevelUpMats": {
+                        "Id": 10040204,
+                        "Currency": 300000,
+                        "Items": [
+                            {
+                                "ItemId": 4002,
+                                "ItemName": "Advanced Tech Notes (Hyakkiyako)",
+                                "Quantity": 5
+                            },
+                            {
+                                "ItemId": 4001,
+                                "ItemName": "Normal Tech Notes (Hyakkiyako)",
+                                "Quantity": 12
+                            },
+                            {
+                                "ItemId": 101,
+                                "ItemName": "Broken Nebra Sky Disk",
+                                "Quantity": 11
+                            },
+                            {
+                                "ItemId": 140,
+                                "ItemName": "Mandrake Seed",
+                                "Quantity": 18
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_STATBUFF"
+                },
+                "Level6": {
+                    "Description": "HPを[c][007eff]19.6%[-][/c]増加",
+                    "LevelUpMats": {
+                        "Id": 10040205,
+                        "Currency": 450000,
+                        "Items": [
+                            {
+                                "ItemId": 4002,
+                                "ItemName": "Advanced Tech Notes (Hyakkiyako)",
+                                "Quantity": 8
+                            },
+                            {
+                                "ItemId": 102,
+                                "ItemName": "Damaged Nebra Sky Disk",
+                                "Quantity": 3
+                            },
+                            {
+                                "ItemId": 141,
+                                "ItemName": "Mandrake Sprout",
+                                "Quantity": 16
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_STATBUFF"
+                },
+                "Level7": {
+                    "Description": "HPを[c][007eff]22.4%[-][/c]増加",
+                    "LevelUpMats": {
+                        "Id": 10040206,
+                        "Currency": 1500000,
+                        "Items": [
+                            {
+                                "ItemId": 4003,
+                                "ItemName": "Superior Tech Notes (Hyakkiyako)",
+                                "Quantity": 8
+                            },
+                            {
+                                "ItemId": 4002,
+                                "ItemName": "Advanced Tech Notes (Hyakkiyako)",
+                                "Quantity": 12
+                            },
+                            {
+                                "ItemId": 103,
+                                "ItemName": "Intact Nebra Sky Disk",
+                                "Quantity": 4
+                            },
+                            {
+                                "ItemId": 142,
+                                "ItemName": "Mandrake Juice",
+                                "Quantity": 8
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_STATBUFF"
+                },
+                "Level8": {
+                    "Description": "HPを[c][007eff]23.1%[-][/c]増加",
+                    "LevelUpMats": {
+                        "Id": 10040207,
+                        "Currency": 2400000,
+                        "Items": [
+                            {
+                                "ItemId": 4003,
+                                "ItemName": "Superior Tech Notes (Hyakkiyako)",
+                                "Quantity": 12
+                            },
+                            {
+                                "ItemId": 103,
+                                "ItemName": "Intact Nebra Sky Disk",
+                                "Quantity": 8
+                            },
+                            {
+                                "ItemId": 142,
+                                "ItemName": "Mandrake Juice",
+                                "Quantity": 13
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_STATBUFF"
+                },
+                "Level9": {
+                    "Description": "HPを[c][007eff]23.8%[-][/c]増加",
+                    "LevelUpMats": {
+                        "Id": 99999208,
+                        "Currency": 4000000,
+                        "Items": [
+                            {
+                                "ItemId": 9999,
+                                "ItemName": "Secret Tech Sheet",
+                                "Quantity": 1
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_STATBUFF"
+                },
+                "Level10": {
+                    "Description": "HPを[c][007eff]26.6%[-][/c]増加",
+                    "LevelUpMats": {
+                        "Id": 1,
+                        "Currency": 10000,
+                        "Items": [
+                            {
+                                "ItemId": 23,
+                                "ItemName": "Eligma",
+                                "Quantity": 999
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_STATBUFF"
+                }
+            },
+            "Skill3": {
+                "Name": "まだ、倒れる、わけには……！",
+                "Level1": {
+                    "Description": "自身がCC状態になった時、治癒力の[c][007eff]97.5%[-][/c]分の回復",
+                    "LevelUpMats": {
+                        "Id": 10040200,
+                        "Currency": 5000,
+                        "Items": [
+                            {
+                                "ItemId": 4000,
+                                "ItemName": "Beginner Tech Notes (Hyakkiyako)",
+                                "Quantity": 5
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_HEAL"
+                },
+                "Level2": {
+                    "Description": "自身がCC状態になった時、治癒力の[c][007eff]102%[-][/c]分の回復",
+                    "LevelUpMats": {
+                        "Id": 10040201,
+                        "Currency": 7500,
+                        "Items": [
+                            {
+                                "ItemId": 4000,
+                                "ItemName": "Beginner Tech Notes (Hyakkiyako)",
+                                "Quantity": 8
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_HEAL"
+                },
+                "Level3": {
+                    "Description": "自身がCC状態になった時、治癒力の[c][007eff]107%[-][/c]分の回復",
+                    "LevelUpMats": {
+                        "Id": 10040202,
+                        "Currency": 60000,
+                        "Items": [
+                            {
+                                "ItemId": 4001,
+                                "ItemName": "Normal Tech Notes (Hyakkiyako)",
+                                "Quantity": 5
+                            },
+                            {
+                                "ItemId": 4000,
+                                "ItemName": "Beginner Tech Notes (Hyakkiyako)",
+                                "Quantity": 12
+                            },
+                            {
+                                "ItemId": 100,
+                                "ItemName": "Nebra Sky Disk Piece",
+                                "Quantity": 6
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_HEAL"
+                },
+                "Level4": {
+                    "Description": "自身がCC状態になった時、治癒力の[c][007eff]126%[-][/c]分の回復",
+                    "LevelUpMats": {
+                        "Id": 10040203,
+                        "Currency": 90000,
+                        "Items": [
+                            {
+                                "ItemId": 4001,
+                                "ItemName": "Normal Tech Notes (Hyakkiyako)",
+                                "Quantity": 8
+                            },
+                            {
+                                "ItemId": 101,
+                                "ItemName": "Broken Nebra Sky Disk",
+                                "Quantity": 6
+                            },
+                            {
+                                "ItemId": 140,
+                                "ItemName": "Mandrake Seed",
+                                "Quantity": 12
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_HEAL"
+                },
+                "Level5": {
+                    "Description": "自身がCC状態になった時、治癒力の[c][007eff]131%[-][/c]分の回復",
+                    "LevelUpMats": {
+                        "Id": 10040204,
+                        "Currency": 300000,
+                        "Items": [
+                            {
+                                "ItemId": 4002,
+                                "ItemName": "Advanced Tech Notes (Hyakkiyako)",
+                                "Quantity": 5
+                            },
+                            {
+                                "ItemId": 4001,
+                                "ItemName": "Normal Tech Notes (Hyakkiyako)",
+                                "Quantity": 12
+                            },
+                            {
+                                "ItemId": 101,
+                                "ItemName": "Broken Nebra Sky Disk",
+                                "Quantity": 11
+                            },
+                            {
+                                "ItemId": 140,
+                                "ItemName": "Mandrake Seed",
+                                "Quantity": 18
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_HEAL"
+                },
+                "Level6": {
+                    "Description": "自身がCC状態になった時、治癒力の[c][007eff]136%[-][/c]分の回復",
+                    "LevelUpMats": {
+                        "Id": 10040205,
+                        "Currency": 450000,
+                        "Items": [
+                            {
+                                "ItemId": 4002,
+                                "ItemName": "Advanced Tech Notes (Hyakkiyako)",
+                                "Quantity": 8
+                            },
+                            {
+                                "ItemId": 102,
+                                "ItemName": "Damaged Nebra Sky Disk",
+                                "Quantity": 3
+                            },
+                            {
+                                "ItemId": 141,
+                                "ItemName": "Mandrake Sprout",
+                                "Quantity": 16
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_HEAL"
+                },
+                "Level7": {
+                    "Description": "自身がCC状態になった時、治癒力の[c][007eff]156%[-][/c]分の回復",
+                    "LevelUpMats": {
+                        "Id": 10040206,
+                        "Currency": 1500000,
+                        "Items": [
+                            {
+                                "ItemId": 4003,
+                                "ItemName": "Superior Tech Notes (Hyakkiyako)",
+                                "Quantity": 8
+                            },
+                            {
+                                "ItemId": 4002,
+                                "ItemName": "Advanced Tech Notes (Hyakkiyako)",
+                                "Quantity": 12
+                            },
+                            {
+                                "ItemId": 103,
+                                "ItemName": "Intact Nebra Sky Disk",
+                                "Quantity": 4
+                            },
+                            {
+                                "ItemId": 142,
+                                "ItemName": "Mandrake Juice",
+                                "Quantity": 8
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_HEAL"
+                },
+                "Level8": {
+                    "Description": "自身がCC状態になった時、治癒力の[c][007eff]160%[-][/c]分の回復",
+                    "LevelUpMats": {
+                        "Id": 10040207,
+                        "Currency": 2400000,
+                        "Items": [
+                            {
+                                "ItemId": 4003,
+                                "ItemName": "Superior Tech Notes (Hyakkiyako)",
+                                "Quantity": 12
+                            },
+                            {
+                                "ItemId": 103,
+                                "ItemName": "Intact Nebra Sky Disk",
+                                "Quantity": 8
+                            },
+                            {
+                                "ItemId": 142,
+                                "ItemName": "Mandrake Juice",
+                                "Quantity": 13
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_HEAL"
+                },
+                "Level9": {
+                    "Description": "自身がCC状態になった時、治癒力の[c][007eff]165%[-][/c]分の回復",
+                    "LevelUpMats": {
+                        "Id": 99999208,
+                        "Currency": 4000000,
+                        "Items": [
+                            {
+                                "ItemId": 9999,
+                                "ItemName": "Secret Tech Sheet",
+                                "Quantity": 1
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_HEAL"
+                },
+                "Level10": {
+                    "Description": "自身がCC状態になった時、治癒力の[c][007eff]185%[-][/c]分の回復",
+                    "LevelUpMats": {
+                        "Id": 1,
+                        "Currency": 10000,
+                        "Items": [
+                            {
+                                "ItemId": 23,
+                                "ItemName": "Eligma",
+                                "Quantity": 999
+                            }
+                        ]
+                    },
+                    "Icon": "COMMON_SKILLICON_HEAL"
+                }
+            }
+        },
+        "CharacterWeapon": {
+            "Icon": "Weapon_Icon_CH0114",
+            "Skill2Upgrade": {
+                "Name": "生まれ持った素質+",
+                "Level1": {
+                    "Description": "HPを[c][007eff]4356[-][/c]増加/\nさらにHPを[c][007eff]14%[-][/c]増加"
+                },
+                "Level2": {
+                    "Description": "HPを[c][007eff]4573[-][/c]増加/\nさらにHPを[c][007eff]14.7%[-][/c]増加"
+                },
+                "Level3": {
+                    "Description": "HPを[c][007eff]4791[-][/c]増加/\nさらにHPを[c][007eff]15.4%[-][/c]増加"
+                },
+                "Level4": {
+                    "Description": "HPを[c][007eff]5662[-][/c]増加/\nさらにHPを[c][007eff]18.2%[-][/c]増加"
+                },
+                "Level5": {
+                    "Description": "HPを[c][007eff]5880[-][/c]増加/\nさらにHPを[c][007eff]18.9%[-][/c]増加"
+                },
+                "Level6": {
+                    "Description": "HPを[c][007eff]6098[-][/c]増加/\nさらにHPを[c][007eff]19.6%[-][/c]増加"
+                },
+                "Level7": {
+                    "Description": "HPを[c][007eff]6969[-][/c]増加/\nさらにHPを[c][007eff]22.4%[-][/c]増加"
+                },
+                "Level8": {
+                    "Description": "HPを[c][007eff]7187[-][/c]増加/\nさらにHPを[c][007eff]23.1%[-][/c]増加"
+                },
+                "Level9": {
+                    "Description": "HPを[c][007eff]7404[-][/c]増加/\nさらにHPを[c][007eff]23.8%[-][/c]増加"
+                },
+                "Level10": {
+                    "Description": "HPを[c][007eff]8275[-][/c]増加/\nさらにHPを[c][007eff]26.6%[-][/c]増加"
+                }
+            },
+            "AffinityBoost": "Indoors",
+            "AffinityBoostAmount": 1,
+            "CombatStats": {
+                "HP1": 1290,
+                "HP100": 12896,
+                "Attack1": 59,
+                "Attack100": 589,
+                "Heal1": 180,
+                "Heal100": 1797
+            }
+        }
+    },
     "13000": {
         "Id": 13000,
         "DevName": "Akane_default",
