@@ -21,6 +21,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.12/lib/draggable.bundle.js"></script>
     <script src="config.js?6"></script>
     <script src="pageLogic.js?11"></script>
+    <style id="toggleViewStyle" class="modifyable"></style>
 </head>
 
 <body class="background dark-theme" onload="init()">
@@ -423,6 +424,9 @@
             </div>
             <div class="footer-button" onclick="transferDialog()">
                 <p>Transfer</p>
+            </div>
+            <div class="footer-button" onclick="toggleView()">
+                <p>Toggle Display</p>
             </div>
         </div>
         <div class="footer-button">
