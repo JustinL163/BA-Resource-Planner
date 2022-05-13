@@ -34,6 +34,26 @@ let keyPressed = {};
 let modalOpen = "";
 let pageTheme = "dark";
 let alertColour = "#e1e1e1";
+let VIEW_MODE = 1;
+
+function toggleView() {
+    console.log("TEST");
+    let style = $("style#toggleViewStyle");
+    switch (VIEW_MODE) {
+        case 1: // default -> hide unselected
+            style.html("div.charBox.main-display-char.deselected { display: none; }");
+            VIEW_MODE = 2;
+            break;
+        case 2: // hide unselected -> show unselected, hide selected
+            style.html("div.charBox.main-display-char:not(.deselected) { display: none; }");
+            VIEW_MODE = 3;
+            break;
+        case 3: // hide selected -> default
+            style.html("");
+            VIEW_MODE = 1;
+            break;
+    }
+}
 
 function loadResources() {
 
@@ -993,10 +1013,10 @@ async function newCharClicked() {
 
         data.characters.push(newCharObj);
 
-        createCharBox(character, charId);
-
+        
+        const charbox = createCharBox(character, charId);
+        charbox.click();
         saveToLocalStorage(true);
-
         generateCharOptions();
     }
 }
@@ -2606,7 +2626,16 @@ function transferDialog() {
         if (result.isConfirmed) {
             Swal.fire({
                 title: 'Exported data',
-                html: '<textarea style="width: 400px; height: 250px; resize: none;" readonly>' + localStorage.getItem('save-data') + '</textarea>'
+                showDenyButton: true,
+                denyButtonText: 'Copy export data',
+                denyButtonColor: 'green',
+                html: '<textarea id="export-data" style="width: 400px; height: 250px; resize: none;" readonly>' + localStorage.getItem('save-data') + '</textarea>'
+            }).then((result) => {
+                if (result.isDenied) {
+                    // copy text
+                    document.querySelector('textarea#export-data').select();
+                    document.execCommand('copy');
+                }
             })
         }
         else if (result.isDenied) {
@@ -2945,6 +2974,8 @@ function createCharBox(newChar, charId) {
     updateInfoDisplay(newChar, charId);
     updateStarDisplay(newChar + "-star-container", newChar, charId, "star-display", false);
     updateStarDisplay(newChar + "-ue-container", newChar, charId, "ue-display", false);
+
+    return newDiv;
 }
 
 function getOffset(el) {
