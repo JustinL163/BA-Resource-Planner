@@ -37,7 +37,6 @@ let alertColour = "#e1e1e1";
 let VIEW_MODE = 1;
 
 function toggleView() {
-    console.log("TEST");
     let style = $("style#toggleViewStyle");
     switch (VIEW_MODE) {
         case 1: // default -> hide unselected
