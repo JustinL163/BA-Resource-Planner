@@ -34,6 +34,25 @@ let keyPressed = {};
 let modalOpen = "";
 let pageTheme = "dark";
 let alertColour = "#e1e1e1";
+let VIEW_MODE = 1;
+
+function toggleView() {
+    let style = $("style#toggleViewStyle");
+    switch (VIEW_MODE) {
+        case 1: // default -> hide unselected
+            style.html("div.charBox.main-display-char.deselected { display: none; }");
+            VIEW_MODE = 2;
+            break;
+        case 2: // hide unselected -> show unselected, hide selected
+            style.html("div.charBox.main-display-char:not(.deselected) { display: none; }");
+            VIEW_MODE = 3;
+            break;
+        case 3: // hide selected -> default
+            style.html("");
+            VIEW_MODE = 1;
+            break;
+    }
+}
 
 function loadResources() {
 

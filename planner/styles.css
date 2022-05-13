@@ -389,13 +389,21 @@ label {
     opacity: 0.5;
 }
 
-.footer-resource {
+.footer-wrapper {
     position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer-resource {
+    margin-left: auto;
+    margin-right: auto;
+    position: static;
     display: flex;
     flex-wrap: wrap;
-    left: 25%;
     bottom: 0;
-    width: 50%;
+    width: 75%;
+    max-width: 1200px;
     min-height: 50px;
     background-color: #282a35;
     color: white;
@@ -408,6 +416,7 @@ label {
     left: 25%;
     bottom: 0;
     width: 50%;
+    min-width: fit-content;
     min-height: 50px;
     color: white;
     align-items: center;
