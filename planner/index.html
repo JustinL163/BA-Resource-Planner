@@ -2,16 +2,25 @@
 <html>
 
 <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3XZ18739WF"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-3XZ18739WF');
+    </script>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="styles.css">
-    <title>Resource Planner</title>
+    <link rel="stylesheet" href="styles.css?7">
+    <title>Blue Archive Resource Planner</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.12/lib/draggable.bundle.js"></script>
-    <script src="config.js"></script>
-    <script src="pageLogic.js"></script>
+    <script src="config.js?6"></script>
+    <script src="pageLogic.js?11"></script>
 </head>
 
 <body class="background dark-theme" onload="init()">
@@ -20,8 +29,9 @@
         <ul class="nav-list">
             <li><a class="active">Resource Planner</a></li>
             <li><a href="changelog.html">Changelog</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
         </ul>
-        <img src="icons/sun.svg" id="theme-button" onclick="switchTheme()" style="max-width: 40px;">
+        <img src="icons/sun.svg" id="theme-button" onclick="switchTheme()" style="max-width: 40px; filter: invert(1);">
     </nav>
     <div class="bodyContainer">
         <div class="boxesContainer">
@@ -47,10 +57,10 @@
                 </div>
                 <div class="modal-content-section" style="width: 20%; min-width: 180px;">
                     <p>School</p>
-                    <p id="display_school"></p>
+                    <p id="display_school" class="char-info-text"></p>
                     <br>
                     <p>Type</p>
-                    <p id="display_type"></p>
+                    <p id="display_type" class="char-info-text"></p>
                 </div>
                 <div class="modal-content-section" style="width: 10%; min-width: 80px;">
                     <p>Role</p>
@@ -64,21 +74,26 @@
                 </div>
                 <div class="modal-content-section" style="width:15%; min-width: 100px;">
                     <p>Attack Type</p>
-                    <p id="display_attack_type"></p>
+                    <p id="display_attack_type" class="char-info-text"></p>
                     <br>
                     <p>Defense Type</p>
-                    <p id="display_defense_type"></p>
+                    <p id="display_defense_type" class="char-info-text"></p>
                 </div>
-                <div class="modal-content-section"
-                    style="width: 25%; min-width: 150px; display: flex; visibility: hidden;">
-                    <div>
-                        Urban
+                <div class="modal-content-section" style="width: 25%; min-width: 150px; display: flex;">
+                    <div class="mood-wrapper">
+                        <p>Urban</p>
+                        <img src="icons/Terrain_Urban.png" class="terrain-icon"></img>
+                        <img id="mood-Urban" class="mood-icon"></img>
                     </div>
-                    <div>
-                        Outdoor
+                    <div class="mood-wrapper">
+                        <p>Outdoors</p>
+                        <img src="icons/Terrain_Outdoors.png" class="terrain-icon"></img>
+                        <img id="mood-Outdoors" class="mood-icon"></img>
                     </div>
-                    <div>
-                        Indoor
+                    <div class="mood-wrapper">
+                        <p>Indoors</p>
+                        <img src="icons/Terrain_Indoors.png" class="terrain-icon"></img>
+                        <img id="mood-Indoors" class="mood-icon"></img>
                     </div>
                 </div>
                 <div class="modal-content-section" style="width: 15%; min-width: 185px; display: flex;">
@@ -130,16 +145,20 @@
                                 <img draggable="false" id="ue-current-1" class="star-icon" src="icons/star.png">
                                 <img draggable="false" id="ue-current-2" class="star-icon" src="icons/star.png">
                                 <img draggable="false" id="ue-current-3" class="star-icon" src="icons/star.png">
-                                <img draggable="false" id="ue-current-4" class="star-icon" src="icons/star.png" style="visibility: hidden;">
-                                <img draggable="false" id="ue-current-5" class="star-icon" src="icons/star.png" style="visibility: hidden;">
+                                <img draggable="false" id="ue-current-4" class="star-icon" src="icons/star.png"
+                                    style="visibility: hidden;">
+                                <img draggable="false" id="ue-current-5" class="star-icon" src="icons/star.png"
+                                    style="visibility: hidden;">
                             </div>
                             <p>Target</p>
                             <div id="ue-target-container" style="display: flex;">
                                 <img draggable="false" id="ue-target-1" class="star-icon" src="icons/star.png">
                                 <img draggable="false" id="ue-target-2" class="star-icon" src="icons/star.png">
                                 <img draggable="false" id="ue-target-3" class="star-icon" src="icons/star.png">
-                                <img draggable="false" id="ue-target-4" class="star-icon" src="icons/star.png" style="visibility: hidden;">
-                                <img draggable="false" id="ue-target-5" class="star-icon" src="icons/star.png" style="visibility: hidden;">
+                                <img draggable="false" id="ue-target-4" class="star-icon" src="icons/star.png"
+                                    style="visibility: hidden;">
+                                <img draggable="false" id="ue-target-5" class="star-icon" src="icons/star.png"
+                                    style="visibility: hidden;">
                             </div>
                         </div>
                         <div style="margin-left: 10px;">
@@ -175,7 +194,7 @@
                         <div>
                             <br>
                             <p>Current</p>
-                            <br>
+                            <br><br><br>
                             <p>Target</p>
                             <br>
                         </div>
@@ -183,7 +202,7 @@
                             <p>EX</p>
                             <input id="input_ex_current" type="number" class="two_digit_input">
                             <br>
-                            <img draggable="false" height="15px">
+                            <img id="ex-img" class="skill-img" draggable="false">
                             <br>
                             <input id="input_ex_target" type="number" class="two_digit_input">
                         </div>
@@ -191,7 +210,7 @@
                             <p>Basic</p>
                             <input id="input_basic_current" type="number" class="two_digit_input">
                             <br>
-                            <img draggable="false" height="15px">
+                            <img id="basic-img" class="skill-img" draggable="false">
                             <br>
                             <input id="input_basic_target" type="number" class="two_digit_input">
                         </div>
@@ -199,7 +218,7 @@
                             <p>Enhanced</p>
                             <input id="input_enhanced_current" type="number" class="two_digit_input">
                             <br>
-                            <img draggable="false" height="15px">
+                            <img id="enhanced-img" class="skill-img" draggable="false">
                             <br>
                             <input id="input_enhanced_target" type="number" class="two_digit_input">
                         </div>
@@ -207,7 +226,7 @@
                             <p>Sub</p>
                             <input id="input_sub_current" type="number" class="two_digit_input">
                             <br>
-                            <img draggable="false" height="15px">
+                            <img id="sub-img" class="skill-img" draggable="false">
                             <br>
                             <input id="input_sub_target" type="number" class="two_digit_input">
                         </div>
@@ -222,7 +241,7 @@
                         <div>
                             <br>
                             <p>Current</p>
-                            <br>
+                            <br><br><br>
                             <p>Target</p>
                             <br>
                         </div>
@@ -230,7 +249,7 @@
                             <br>
                             <input id="input_gear1_current" type="number" class="two_digit_input">
                             <br>
-                            <img draggable="false" height="15px">
+                            <img id="gear1-img" class="gear-display" draggable="false">
                             <br>
                             <input id="input_gear1_target" type="number" class="two_digit_input">
                         </div>
@@ -238,7 +257,7 @@
                             <br>
                             <input id="input_gear2_current" type="number" class="two_digit_input">
                             <br>
-                            <img draggable="false" height="15px">
+                            <img id="gear2-img" class="gear-display" draggable="false">
                             <br>
                             <input id="input_gear2_target" type="number" class="two_digit_input">
                         </div>
@@ -246,7 +265,7 @@
                             <br>
                             <input id="input_gear3_current" type="number" class="two_digit_input">
                             <br>
-                            <img draggable="false" height="15px">
+                            <img id="gear3-img" class="gear-display" draggable="false">
                             <br>
                             <input id="input_gear3_target" type="number" class="two_digit_input">
                         </div>
@@ -266,18 +285,18 @@
                     <div class="modal-content-section">
                         <div class="char-miscresource-wrapper">
                             <div class="char-misc-box" style="display: none;">
-                                <img draggable="false" src="icons/Credit.webp"
+                                <img draggable="false" src="icons/Credit.png"
                                     style="max-width: 80px; max-height: 80px;">
                                 <p id="char-Credit" class="char-misc-text" style="align-self: center;"></p>
                             </div>
                             <div class="char-misc-box" style="display: none;">
-                                <img draggable="false" src="icons/TN_Secret.webp"
+                                <img draggable="false" src="icons/TN_Secret.png"
                                     style="max-width: 80px; max-height: 80px;">
                                 <p id="char-Secret" class="char-misc-text" style="align-self: center;"></p>
                             </div>
                             <div class="char-misc-box" style="display: none;">
                                 <img draggable="false" src="icons/exp.png"
-                                    style="max-width: 80px; height: fit-content; align-self: center; padding: 0px 10px;">
+                                    style="max-width: 80px; align-self: center; padding: 0px 10px;">
                                 <p id="char-XP" class="char-misc-text" style="align-self: center;"></p>
                             </div>
                         </div>
@@ -303,48 +322,88 @@
             </div>
             <div id="other-resource-wrapper">
                 <div class="resource-box">
-                    <img draggable="false" src="icons/Credit.webp" style="max-width: 80px; max-height: 80px;">
+                    <img draggable="false" src="icons/Credit.png" style="max-width: 80px; max-height: 80px;">
                     <p id="Credit" class="misc-resource" style="align-self: center;"></p>
                     <div class="input-wrapper" style="width: 60%;">
                         <input id="input-Credit" class="resource-input" type="number" style="position:absolute;">
                     </div>
                 </div>
                 <div id="xp-display-wrapper" class="resource-box">
-                    <img draggable="false" src="icons/exp.png"
-                        style="max-width: 80px; height: fit-content; align-self: center;">
+                    <img draggable="false" src="icons/exp.png" style="max-width: 80px; align-self: center;">
                     <p id="Xp" class="misc-resource no-input" style="align-self: center; margin-left: 10px;"></p>
                 </div>
                 <div id="xp-input-wrapper" class="resource-box" style="align-items: center; display: none;">
                     <div class="xp-wrapper editable">
-                        <img draggable="false" class="xp-icon" src="icons/XP_4.webp">
+                        <img draggable="false" class="xp-icon" src="icons/XP_4.png">
                         <p id="XP_4" class="resource-count-text"></p>
                         <input id="input-XP_4" class="resource-input xp-input" type="number">
                     </div>
                     <div class="xp-wrapper editable">
-                        <img draggable="false" class="xp-icon" src="icons/XP_3.webp">
+                        <img draggable="false" class="xp-icon" src="icons/XP_3.png">
                         <p id="XP_3" class="resource-count-text"></p>
                         <input id="input-XP_3" class="resource-input xp-input" type="number">
                     </div>
                     <div class="xp-wrapper editable">
-                        <img draggable="false" class="xp-icon" src="icons/XP_2.webp">
+                        <img draggable="false" class="xp-icon" src="icons/XP_2.png">
                         <p id="XP_2" class="resource-count-text"></p>
                         <input id="input-XP_2" class="resource-input xp-input" type="number">
                     </div>
                     <div class="xp-wrapper editable">
-                        <img draggable="false" class="xp-icon" src="icons/XP_1.webp">
+                        <img draggable="false" class="xp-icon" src="icons/XP_1.png">
                         <p id="XP_1" class="resource-count-text"></p>
                         <input id="input-XP_1" class="resource-input xp-input" type="number">
                     </div>
                 </div>
                 <div class="resource-box">
-                    <img draggable="false" src="icons/SecretTech.webp" style="max-width: 80px; max-height: 80px;">
+                    <img draggable="false" src="icons/SecretTech.png" style="max-width: 80px; max-height: 80px;">
                     <p id="Secret" class="misc-resource" style="align-self: center;"></p>
                     <div class="input-wrapper" style="width: 60%;">
                         <input id="input-Secret" class="resource-input" type="number" style="position:absolute;">
                     </div>
                 </div>
                 <div class="resource-box" style="border: none;">
-                    <button id="button-switch-display" onclick="switchResourceDisplay()">Switch to Owned</button>
+                    <button id="switch-resource-owned" class="button-switch-display" style="background-color: #c8e6f5"
+                        onclick="switchResourceDisplay('Owned')"></button>
+                </div>
+                <div class="resource-box" style="border: none; display: none;">
+                    <button id="switch-resource-remaining" class="button-switch-display"
+                        style="background-color: #f5c8dd;" onclick="switchResourceDisplay('Remaining')"></button>
+                </div>
+                <div class="resource-box" style="border: none;">
+                    <button id="switch-resource-total" class="button-switch-display" style="background-color: #c8f5e0;"
+                        onclick="switchResourceDisplay('Total')"></button>
+                </div>
+                <div class="resource-box">
+                    <p id="current-resource-display" style="align-self: center; font-size: 1.75em;"></p>
+                </div>
+                <div id="raid-token-display-wrapper" class="resource-box">
+                    <img draggable="false" src="icons/RaidToken.png" style="max-width: 80px; align-self: center;">
+                    <p id="RaidTokenCost" class="misc-resource no-input" style="align-self: center; margin-left: 10px;">
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="gearModal">
+        <div class="modal-content-wrapper" style="width: 80%; max-height: 80%; overflow-y: auto;">
+            <div class="modal-section-wrapper gear-section">
+                <div id="table-parent-4" style="width: 100%;"></div>
+            </div>
+            <div id="other-resource-wrapper">
+                <div class="resource-box" style="border: none;">
+                    <button id="switch-gear-owned" class="button-switch-display" style="background-color: #c8e6f5"
+                        onclick="switchGearDisplay('Owned')"></button>
+                </div>
+                <div class="resource-box" style="border: none; display: none;">
+                    <button id="switch-gear-remaining" class="button-switch-display" style="background-color: #f5c8dd;"
+                        onclick="switchGearDisplay('Remaining')"></button>
+                </div>
+                <div class="resource-box" style="border: none;">
+                    <button id="switch-gear-total" class="button-switch-display" style="background-color: #c8f5e0;"
+                        onclick="switchGearDisplay('Total')"></button>
+                </div>
+                <div class="resource-box">
+                    <p id="current-gear-display" style="align-self: center; font-size: 1.75em;"></p>
                 </div>
             </div>
         </div>
@@ -352,12 +411,27 @@
     <datalist id="char-options">
     </datalist>
     <div class="footer-resource">
-        <div class="footer-button" onclick="openResourceModal()" style="display: flex; align-items: center;">
-            <img draggable="false" src="icons/resourceBtn.png">
-            <p>Resources</p>
+
+        <div class="footer-buttons-wrapper">
+            <div class="footer-button" onclick="openResourceModal()" style="display: flex; align-items: center;">
+                <img draggable="false" src="icons/resourceBtn.png">
+                <p>Resources</p>
+            </div>
+            <div class="footer-button" onclick="openGearModal()" style="display: flex; align-items: center;">
+                <img draggable="false" src="icons/T6_Badge.png">
+                <p>Gear</p>
+            </div>
+            <div class="footer-button" onclick="transferDialog()">
+                <p>Transfer</p>
+            </div>
         </div>
-        <div class="footer-button" onclick="transferDialog()">
-            <p>Transfer</p>
+        <div class="footer-button">
+            <p onclick="gtag('event', 'contest_click')"><a
+                    href="https://bluearchive.nexon.com/events/2022/05/contest/885" target="_blank">Contest
+                    Submission</a></p>
+            <p onclick="gtag('event', 'contest_click')" style="font-size: 1em;"><a
+                    href="https://bluearchive.nexon.com/events/2022/05/contest/885" target="_blank">(Vote for me?
+                    :P)</a></p>
         </div>
     </div>
 </body>

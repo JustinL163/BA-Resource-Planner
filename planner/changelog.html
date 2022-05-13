@@ -2,6 +2,15 @@
 <html>
 
 <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3XZ18739WF"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-3XZ18739WF');
+    </script>
     <meta charset="utf-8">
     <link rel="stylesheet" href="styles.css">
     <title>Changelog</title>
@@ -13,18 +22,127 @@
         <ul class="nav-list">
             <li><a href="index.html">Resource Planner</a></li>
             <li><a class="active">Changelog</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
         </ul>
     </nav>
     <div class="bodyText">
+        <div class="changelog-section">
+            <h2>Version 1.0.12</h2>
+            <br>
+            <h3>Changes</h3>
+            <ul>
+                <li>Added new character Tsukuyo</li>
+            </ul>
+            <br>
+        </div>
+        <br><br>
+        <div class="changelog-section">
+            <h2>Version 1.0.11</h2>
+            <br>
+            <h3>Changes</h3>
+            <ul>
+                <li>Target skill/gear/bond/level will now only show on character boxes if target is different to current for each</li>
+                <li>Changed styling of displayed skill/gear etc levels on character boxes to have better contrast</li>
+            </ul>
+            <br>
+        </div>
+        <br><br>
+        <div class="changelog-section">
+            <h2>Version 1.0.10</h2>
+            <br>
+            <h3>Changes</h3>
+            <ul>
+                <li>Added display showing Raid Coins required to buy all remaining needed BDs/TNs/Secret Notes</li>
+            </ul>
+            <br>
+        </div>
+        <br><br>
+        <div class="changelog-section">
+            <h2>Version 1.0.9</h2>
+            <br>
+            <h3>Fixed Issues</h3>
+            <ul>
+                <li>Mimori and Marina didn't have any skill material data</li>
+                <li>Number inputs could be set to values like "01" instead of being parsed to just "1"</li>
+            </ul>
+            <br>
+        </div>
+        <br><br>
+        <div class="changelog-section">
+            <h2>Version 1.0.8</h2>
+            <br>
+            <h3>Fixed Issues</h3>
+            <ul>
+                <li>Skill resources wouldn't calculate if current was set to 0</li>
+                <li>Gear modal wouldn't scroll if overflowing</li>
+                <li>Website wasn't working on safari (still looks a bit weird, but at least works on Safari 13.1.3,
+                    didn't test lower than that)</li>
+            </ul>
+            <br>
+        </div>
+        <br><br>
+        <div class="changelog-section">
+            <h2>Version 1.0.7</h2>
+            <br>
+            <h3>Changes</h3>
+            <ul>
+                <li>Added new characters Michiru, Kaede and Iroha, as well as the new artifacts they use</li>
+                <li>Added button in resource and gear modal to see Total Needed resources, instead of only Remaining
+                    Needed</li>
+                <li>Terrain Moods display added to character modal</li>
+                <li>Changed UE star behaviour, now will automatically set normal star target to 5, instead of ignoring
+                    input</li>
+                <li>Inverted colour of skill icons when in light theme</li>
+                <li>Inverted colour of theme change button</li>
+                <li>Added text to resource/gear modal to display the current view mode</li>
+                <li>Optimised tabbing order for resource input</li>
+            </ul>
+            <br>
+            <h3>Fixed Issues</h3>
+            <ul>
+                <li>Some skill icons were missing</li>
+            </ul>
+            <br>
+        </div>
+        <br><br>
+        <div class="changelog-section">
+            <h2>Version 1.0.6</h2>
+            <br>
+            <h3>Changes</h3>
+            <ul>
+                <li>Added colour to info fields in the character modal</li>
+                <li>Added skill icon and gear icon images to the character modal</li>
+                <li>Added bond display to main screen character boxes</li>
+            </ul>
+            <br>
+        </div>
+        <br><br>
+        <div class="changelog-section">
+            <h2>Version 1.0.5</h2>
+            <br>
+            <h3>Changes</h3>
+            <ul>
+                <li>Added Gear modal, with needed bps calculation and owned gear input</li>
+            </ul>
+            <br>
+            <h3>Fixed Bugs</h3>
+            <ul>
+                <li>Bottom of outline on resource count texts were missing</li>
+            </ul>
+            <br>
+        </div>
+        <br><br>
         <div class="changelog-section">
             <h2>Version 1.0.4</h2>
             <br>
             <h3>Changes</h3>
             <ul>
-                <li>Characters can now be repositioned, either by holding shift and dragging on desktop, or cycling mode button to "Move Mode"</li>
+                <li>Characters can now be repositioned, either by holding shift and dragging on desktop, or cycling mode
+                    button to "Move Mode"</li>
                 <li>Added dark theme, use button on right of navbar to change theme</li>
                 <li>Changed the way disabled characters are displayed, now also dimmed instead of solely grayscaled</li>
-                <li>Modals can be closed with escape key now, and character modal by clicking outside the modal also</li>
+                <li>Modals can be closed with escape key now, and character modal by clicking outside the modal also
+                </li>
                 <li>If the character modal has unsaved fields, it will prompt before closing</li>
                 <li>Rarity backgrounds added to resources in character modal (goldcrater)</li>
                 <li>Added navigation for credit/xp/secret tech fields in resource modal</li>
@@ -47,10 +165,13 @@
             <br>
             <h3>Changes</h3>
             <ul>
-                <li>Added total resource used display to character modal to reach target level (doesn't subtract owned amounts)</li>
+                <li>Added total resource used display to character modal to reach target level (doesn't subtract owned
+                    amounts)</li>
                 <li>Disabled 4th and 5th UE star in character modal for now, as it's not needed yet</li>
-                <li>Changed the edit/disable mode button from being visible on mobile only to always visible (so the disable feature is more obvious)</li>
-                <li>Added update version to the save file, and notification for first time loading the site on a new version</li>
+                <li>Changed the edit/disable mode button from being visible on mobile only to always visible (so the
+                    disable feature is more obvious)</li>
+                <li>Added update version to the save file, and notification for first time loading the site on a new
+                    version</li>
             </ul>
             <br>
             <h3>Fixed Bugs</h3>
@@ -65,14 +186,21 @@
             <br>
             <h3>Changes</h3>
             <ul>
-                <li>Added input navigation for resource tables, can use either Tab/Shift+Tab/Enter/Shift+Enter or Ctrl+Arrows to navigate between inputs</li>
-                <li>Added the ability to set sections in the character modal to predefined presets, clicking on the section label brings up the choices</li>
+                <li>Added input navigation for resource tables, can use either Tab/Shift+Tab/Enter/Shift+Enter or
+                    Ctrl+Arrows to navigate between inputs</li>
+                <li>Added the ability to set sections in the character modal to predefined presets, clicking on the
+                    section label brings up the choices</li>
                 <li>Adjusted order of school mats on resource modal, to match default ingame sort</li>
-                <li>Changed validation behaviour for target inputs, now sanitises the target to match current upon moving focus from the input</li>
-                <li>Changed sanitising behaviour when the value in an input is too long, now just blocks extra input instead of setting to max value</li>
-                <li>Updated the visuals of the character modal, it also expands to take full screen width on small devices now instead of 80% width</li>
-                <li>Added temporary tooltip on section labels and character boxes, to inform about ctrl+click to disable, and presets</li>
-                <li>Adjusted star colouring for displaying target star/ue on main screen, now dims target stars instead of using separate colour</li>
+                <li>Changed validation behaviour for target inputs, now sanitises the target to match current upon
+                    moving focus from the input</li>
+                <li>Changed sanitising behaviour when the value in an input is too long, now just blocks extra input
+                    instead of setting to max value</li>
+                <li>Updated the visuals of the character modal, it also expands to take full screen width on small
+                    devices now instead of 80% width</li>
+                <li>Added temporary tooltip on section labels and character boxes, to inform about ctrl+click to
+                    disable, and presets</li>
+                <li>Adjusted star colouring for displaying target star/ue on main screen, now dims target stars instead
+                    of using separate colour</li>
             </ul>
             <br>
             <h3>Fixed Bugs</h3>
@@ -88,7 +216,8 @@
             <br>
             <h3>Changes</h3>
             <ul>
-                <li>Timing of notifications about target level being lower than current level adjusted to be less annoying</li>
+                <li>Timing of notifications about target level being lower than current level adjusted to be less
+                    annoying</li>
                 <li>Added an extra button on mobile for disabling characters from calculation</li>
             </ul>
             <br>

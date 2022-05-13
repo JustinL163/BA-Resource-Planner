@@ -9,7 +9,8 @@ var requiredMatDict = {};
 var neededMatDict = {};
 var ownedMatDict = {};
 var charMatDicts = {};
-var resourceDisplay = "Needed";
+var resourceDisplay = "Remaining";
+var gearDisplay = "Remaining";
 
 var charOptions = {};
 var disabledChars = [];
@@ -36,12 +37,12 @@ let alertColour = "#e1e1e1";
 
 function loadResources() {
 
-    $.getJSON('misc_data.json').done(function (json) {
+    $.getJSON('misc_data.json?2').done(function (json) {
         misc_data = json;
         checkResources();
     });
 
-    $.getJSON('charlist.json').done(function (json) {
+    $.getJSON('charlist.json?4').done(function (json) {
         charlist = json;
         checkResources();
     });
@@ -174,41 +175,75 @@ function init() {
     // generate resource modal tables
     createTable("school-mat-table", ["BD_4", "BD_3", "BD_2", "BD_1", "TN_4", "TN_3", "TN_2", "TN_1"], 0,
         ["Hyakkiyako", "Red Winter", "Trinity", "Gehenna", "Abydos", "Millennium", "Shanhaijing", "Valkyrie"], 0,
-        tableNavigation, document.getElementById("table-parent-1"), false);
+        tableNavigation, document.getElementById("table-parent-1"), false, "resource");
     createTable("artifact-table-1", ["4", "3", "2", "1"], 0,
         ["Nebra", "Phaistos", "Wolfsegg", "Nimrud", "Mandragora", "Rohonc", "Aether"], 8,
-        tableNavigation, document.getElementById("table-parent-2"), true);
+        tableNavigation, document.getElementById("table-parent-2"), true, "resource");
     createTable("artifact-table-2", ["4", "3", "2", "1"], 4,
-        ["Antikythera", "Voynich", "Haniwa", "Baghdad", "Totem", "Fleece", "Kikuko"], 8,
-        tableNavigation, document.getElementById("table-parent-3"), true);
+        ["Antikythera", "Voynich", "Haniwa", "Totem", "Baghdad", "Colgante", "Mystery"], 8,
+        tableNavigation, document.getElementById("table-parent-3"), true, "resource");
+
+    let gearNavigation = [];
+    createTable("gear-table", ["T6", "T5", "T4", "T3", "T2"], 0, ["Hat", "Gloves", "Shoes", "Bag", "Badge", "Hairpin", "Charm", "Watch", "Necklace"],
+        0, gearNavigation, document.getElementById('table-parent-4'), false, "gear");
 
     let navObj = {};
-    for (x in tableNavigation) {
-        for (y in tableNavigation[x]) {
+    for (let x in tableNavigation) {
+        for (let y in tableNavigation[x]) {
             navObj[x + "|" + y] = tableNavigation[x][y];
         }
     }
 
     navigationObjects["resourceTable"] = { "type": "table", "object": new TwoWayMap(navObj) };
 
+    let navGearObj = {};
+    for (let x in gearNavigation) {
+        for (let y in gearNavigation[x]) {
+            navGearObj[x + "|" + y] = gearNavigation[x][y];
+        }
+    }
+
+    navigationObjects["gearTable"] = { "type": "table", "object": new TwoWayMap(navGearObj) };
+
     // colour the table rows
     colourTableRows("school-mat-table");
     colourTableRows("artifact-table-1");
     colourTableRows("artifact-table-2");
 
-    if ("1.0.4".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    colourTableRows("gear-table");
+
+    if ("1.0.12".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.0.4",
+            title: "Updated to Version 1.0.12",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.0.4";
+        data.site_version = "1.0.12";
         saveToLocalStorage(false);
     }
+    else {
+        var dayC = localStorage.getItem("contest-alert-day");
 
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        var yyyy = today.getFullYear();
+    
+        today = mm + '/' + dd + '/' + yyyy;
+        
+        if (dayC != today) {
+            localStorage.setItem("contest-alert-day", today);
+            var textprompt = "<a href='https://bluearchive.nexon.com/events/2022/05/contest/885' target='_blank' onclick=\"gtag('event','contest_click')\" style='color: white; font-size: 1.5em'>My Submission</a><br><br><p>(Showing this alert max once per day, will stop with voting phase end)</p>";
+            Swal.fire({
+                title: "Consider voting for me? :P",
+                color: alertColour,
+                html: textprompt
+            })
+        }
+    }
 
     // set input validation
 
@@ -246,6 +281,7 @@ function init() {
                         position: 'top-end',
                         title: 'Invalid input',
                         text: result,
+                        color: alertColour,
                         showConfirmButton: false,
                         timer: 4000
                     })
@@ -284,6 +320,39 @@ function init() {
 
                 if (location == "characterModal" && result == "validated") {
                     populateCharResources(modalChar)
+
+                    if (event.target.id == "input_gear1_current" || event.target.id == "input_gear2_current" || event.target.id == "input_gear3_current") {
+
+                        if (event.target.value != "0") {
+
+                            let charInfo = charlist[charMap.get(modalChar)];
+
+                            if (event.target.id == "input_gear1_current") {
+                                document.getElementById("gear1-img").src = "icons/T" + event.target.value + "_" + charInfo.Equipment.Slot1 + ".png";
+                            }
+                            else if (event.target.id == "input_gear2_current") {
+                                document.getElementById("gear2-img").src = "icons/T" + event.target.value + "_" + charInfo.Equipment.Slot2 + ".png";
+                            }
+                            else if (event.target.id == "input_gear3_current") {
+                                document.getElementById("gear3-img").src = "icons/T" + event.target.value + "_" + charInfo.Equipment.Slot3 + ".png";
+                            }
+                        }
+                        else {
+
+                            let charInfo = charlist[charMap.get(modalChar)];
+
+                            if (event.target.id == "input_gear1_current") {
+                                document.getElementById("gear1-img").src = "icons/T1_" + charInfo.Equipment.Slot1 + ".png";
+                            }
+                            else if (event.target.id == "input_gear2_current") {
+                                document.getElementById("gear2-img").src = "icons/T1_" + charInfo.Equipment.Slot2 + ".png";
+                            }
+                            else if (event.target.id == "input_gear3_current") {
+                                document.getElementById("gear3-img").src = "icons/T1_" + charInfo.Equipment.Slot3 + ".png";
+                            }
+                        }
+
+                    }
                 }
             })
 
@@ -346,6 +415,17 @@ function init() {
             starClicked(type, mode, pos);
         })
     }
+
+    document.getElementById('switch-resource-owned').innerText = 'Switch to\nOwned';
+    document.getElementById('switch-resource-total').innerText = 'Switch to\nTotal Needed';
+    document.getElementById('switch-resource-remaining').innerText = 'Switch to\nRemaining Needed';
+
+    document.getElementById('switch-gear-owned').innerText = 'Switch to\nOwned';
+    document.getElementById('switch-gear-total').innerText = 'Switch to\nTotal Needed';
+    document.getElementById('switch-gear-remaining').innerText = 'Switch to\nRemaining Needed';
+
+    document.getElementById('current-resource-display').innerText = "Remaining Needed";
+    document.getElementById('current-gear-display').innerText = "Remaining Needed";
 
     setInterval(() => {
         if (saveTime != 0) {
@@ -428,6 +508,9 @@ function handleKeydown(e, keyPressed) {
         }
         else if (modalOpen == "resourceModal") {
             closeResourceModal();
+        }
+        else if (modalOpen == "gearModal") {
+            closeGearModal();
         }
     }
 }
@@ -583,17 +666,18 @@ function inputNavigate(direction) {
 
         if (property && inputValidation[property]?.navigation) {
 
-            if (inputValidation[property].navigation == "direct") {
-                targetCell = inputValidation[property][direction];
-            }
-            else {
-                let navObj = navigationObjects[inputValidation[property].navigation];
+            let navValue = inputValidation[property].navigation;
+
+            targetCell = inputValidation[property][direction];
+
+            if (!targetCell) {
+                let navObj = navigationObjects[navValue];
 
                 if (navObj.type == "table") {
 
                     let cell = navObj.object.revGet(focusedInput);
 
-                    let targetPos = findPosString(cell, direction);
+                    let targetPos = findPosString(cell, direction, navValue);
                     targetCell = navObj.object.get(targetPos);
                 }
             }
@@ -612,7 +696,7 @@ function inputNavigate(direction) {
 
 }
 
-function findPosString(string, direction) {
+function findPosString(string, direction, tableName) {
 
     let positions = string.split('|');
     let targetPos;
@@ -624,7 +708,7 @@ function findPosString(string, direction) {
         positions[0] = parseInt(positions[0]) + 1;
     }
     else if (direction == "Left") {
-        let keys = navigationObjects.resourceTable.object.keys;
+        let keys = navigationObjects[tableName].object.keys;
         let index = keys.indexOf(string) - 1;
         if (index >= 0) {
             targetPos = keys[index];
@@ -634,7 +718,7 @@ function findPosString(string, direction) {
         }
     }
     else if (direction == "Right") {
-        let keys = navigationObjects.resourceTable.object.keys;
+        let keys = navigationObjects[tableName].object.keys;
         let index = keys.indexOf(string) + 1;
         if (index < keys.length + 1) {
             targetPos = keys[index];
@@ -734,6 +818,10 @@ function validateInput(key, checkonly, verbose) {
             if (checkonly) {
                 return "not_number";
             }
+        }
+
+        if (inputElement.value.length > 1 && inputElement.value[0] == 0) {
+            inputElement.value = parseInt(inputElement.value)
         }
 
         if (val.requisite != undefined) {
@@ -927,12 +1015,18 @@ function generateCharOptions() {
 
             if (school) {
 
-                charOptions[school] ??= {};
+                if (!charOptions[school]) {
+                    charOptions[school] = {};
+                }
+
                 charOptions[school][charName] = charName;
             }
             else {
 
-                charOptions["Unassigned"] ??= {};
+                if (!charOptions["Unassigned"]) {
+                    charOptions["Unassigned"] = {};
+                }
+
                 charOptions["Unassigned"][charName] = charName;
             }
         }
@@ -1238,7 +1332,8 @@ function saveCharChanges() {
     if (allValid == false) {
         Swal.fire({
             title: 'Invalid inputs',
-            html: invalidMessages
+            html: invalidMessages,
+            color: alertColour
         })
 
         return false;
@@ -1297,6 +1392,16 @@ function saveCharChanges() {
     closeModal(true);
 }
 
+function updateTextBackground(id, property) {
+
+    let textElement = document.getElementById(id);
+
+    if (textElement) {
+        textElement.style.backgroundColor = propertyColours[property];
+    }
+
+}
+
 function populateCharModal(character) {
 
     let charId = charMap.get(character)
@@ -1307,13 +1412,20 @@ function populateCharModal(character) {
     if (charData != undefined) {
 
         document.getElementById("display_school").innerText = charInfo.School;
+        updateTextBackground("display_school", charInfo.School);
         document.getElementById("display_type").innerText = charInfo.Type;
+        updateTextBackground("display_type", charInfo.Type);
         document.getElementById("display_role").innerText = "No data";//charInfo.role;
         document.getElementById("display_position").innerText = "No data";//charInfo.position;
         document.getElementById("display_gun").innerText = "No data";//charInfo.gun;
         document.getElementById("display_attack_type").innerText = charInfo.DamageType;
+        updateTextBackground("display_attack_type", charInfo.DamageType);
         document.getElementById("display_defense_type").innerText = charInfo.DefenseType;
+        updateTextBackground("display_defense_type", charInfo.DefenseType);
 
+        document.getElementById('mood-Urban').src = "icons/Mood_" + charInfo.Affinities.Urban + ".png";
+        document.getElementById('mood-Outdoors').src = "icons/Mood_" + charInfo.Affinities.Outdoors + ".png";
+        document.getElementById('mood-Indoors').src = "icons/Mood_" + charInfo.Affinities.Indoors + ".png";
 
         document.getElementById("input_level_current").value = charData.current?.level;
         document.getElementById("input_level_target").value = charData.target?.level;
@@ -1340,10 +1452,47 @@ function populateCharModal(character) {
         document.getElementById("input_gear3_current").value = charData.current?.gear3;
         document.getElementById("input_gear3_target").value = charData.target?.gear3;
 
+        if (charData.current?.gear1 != "0") {
+            document.getElementById("gear1-img").src = "icons/T" + charData.current?.gear1 + "_" + charInfo.Equipment.Slot1 + ".png";
+        }
+        else {
+            document.getElementById("gear1-img").src = "icons/T1_" + charInfo.Equipment.Slot1 + ".png";
+        }
+        if (charData.current?.gear2 != "0") {
+            document.getElementById("gear2-img").src = "icons/T" + charData.current?.gear2 + "_" + charInfo.Equipment.Slot2 + ".png";
+        }
+        else {
+            document.getElementById("gear2-img").src = "icons/T1_" + charInfo.Equipment.Slot2 + ".png";
+        }
+        if (charData.current?.gear3 != "0") {
+            document.getElementById("gear3-img").src = "icons/T" + charData.current?.gear3 + "_" + charInfo.Equipment.Slot3 + ".png";
+        }
+        else {
+            document.getElementById("gear3-img").src = "icons/T1_" + charInfo.Equipment.Slot3 + ".png";
+        }
+
+        document.getElementById("ex-img").src = "icons/" + charInfo.Skills.Ex.Level1.Icon + ".png";
+        document.getElementById("basic-img").src = "icons/" + charInfo.Skills.Skill1.Level1.Icon + ".png";
+        document.getElementById("enhanced-img").src = "icons/" + charInfo.Skills.Skill2.Level1.Icon + ".png";
+        document.getElementById("sub-img").src = "icons/" + charInfo.Skills.Skill3.Level1.Icon + ".png";
+
+
         modalStars.star = charData.current?.star;
         modalStars.star_target = charData.target?.star;
         modalStars.ue = charData.current?.ue;
         modalStars.ue_target = charData.target?.ue;
+
+        gtag('event', 'character_viewed', {
+            'event_label': character,
+            'character_name': character,
+            'character_id': charId,
+            'character_star': charData.current?.star,
+            'character_level': charData.current?.level,
+            'character_ex': charData.current?.ex,
+            'character_ex': charData.current?.basic,
+            'character_ex': charData.current?.passive,
+            'character_ex': charData.current?.sub
+        })
     }
 
     updateStarDisplays(character, true);
@@ -1478,10 +1627,10 @@ function populateCharResources(character) {
 
                 const resourceImg = document.createElement('img');
                 resourceImg.className = "char-resource-img";
-                resourceImg.src = "icons/" + matName + ".webp";
+                resourceImg.src = "icons/" + matName + ".png";
 
                 const resourceText = document.createElement('p');
-                resourceText.className = "resource-count-text";
+                resourceText.className = "resource-display-text";
                 resourceText.innerText = resources[key];
 
                 wrapDiv.appendChild(resourceImg);
@@ -1552,7 +1701,7 @@ function starClicked(type, mode, pos) {
                 }
             }
         }
-        else if (type == "ue" && modalStars.star_target >= 5) {
+        else if (type == "ue") {
             if (pos <= ueStarCap) {
                 if (pos == 1 && modalStars.ue == 1) {
                     modalStars.ue = 0;
@@ -1562,6 +1711,10 @@ function starClicked(type, mode, pos) {
 
                     if (pos > modalStars.ue_target) {
                         modalStars.ue_target = pos;
+                    }
+
+                    if (modalStars.star_target != 5) {
+                        modalStars.star_target = 5;
                     }
                 }
             }
@@ -1578,13 +1731,17 @@ function starClicked(type, mode, pos) {
                 }
             }
         }
-        else if (type == "ue" && modalStars.star_target >= 5) {
+        else if (type == "ue") {
             if (pos <= ueStarCap && pos >= modalStars.ue) {
                 if (pos == 1 && modalStars.ue_target == 1) {
                     modalStars.ue_target = 0;
                 }
                 else {
                     modalStars.ue_target = pos;
+
+                    if (modalStars.star_target != 5) {
+                        modalStars.star_target = 5;
+                    }
                 }
             }
         }
@@ -1691,11 +1848,14 @@ function openResourceModal() {
 
     updateAggregateCount();
 
-    if (resourceDisplay == "Needed") {
-        updateCells(neededMatDict, false);
+    if (resourceDisplay == "Remaining") {
+        updateCells(neededMatDict, false, 'resource-count-text', 'misc-resource');
     }
     else if (resourceDisplay == "Owned") {
-        updateCells(ownedMatDict, true);
+        updateCells(ownedMatDict, true, 'resource-count-text', 'misc-resource');
+    }
+    else if (resourceDisplay == "Total") {
+        updateCells(requiredMatDict, false, 'resource-count-text', 'misc-resource');
     }
 
     hideEmpty();
@@ -1707,11 +1867,51 @@ function openResourceModal() {
         }
     };
 
+    gtag('event', 'modal_view', {
+        'event_label': 'resource',
+        'modal_name': 'resource'
+    })
+
 }
 
-function updateCells(dict, editable) {
+function openGearModal() {
 
-    let cellElements = document.getElementsByClassName('resource-count-text');
+    modalOpen = "gearModal";
+
+    var modal = document.getElementById("gearModal");
+
+    modal.style.visibility = "visible";
+
+    updateAggregateCount();
+
+    if (gearDisplay == "Remaining") {
+        updateCells(neededMatDict, false, 'gear-count-text', 'misc-resource');
+    }
+    else if (gearDisplay == "Owned") {
+        updateCells(ownedMatDict, true, 'gear-count-text', 'miscsdasjda');
+    }
+    else if (gearDisplay == "Total") {
+        updateCells(requiredMatDict, false, 'gear-count-text', 'miscsdasjda');
+    }
+
+    hideEmptyGear();
+
+    modal.onclick = function (event) {
+        if (event.target == modal) {
+            closeGearModal();
+        }
+    };
+
+    gtag('event', 'modal_view', {
+        'event_label': 'gear',
+        'modal_name': 'gear'
+    })
+
+}
+
+function updateCells(dict, editable, cellClass, miscClass) {
+
+    let cellElements = document.getElementsByClassName(cellClass);
 
     for (i = 0; i < cellElements.length; i++) {
 
@@ -1724,10 +1924,13 @@ function updateCells(dict, editable) {
         else if (dict[mat] != undefined) {
             updateMatDisplay(mat, dict[mat], editable, 'normal');
         }
+        else {
+            updateMatDisplay(mat, 0, editable, 'normal');
+        }
 
     }
 
-    cellElements = document.getElementsByClassName('misc-resource');
+    cellElements = document.getElementsByClassName(miscClass);
 
     for (i = 0; i < cellElements.length; i++) {
 
@@ -1739,7 +1942,6 @@ function updateCells(dict, editable) {
         }
         else {
             updateMatDisplay(mat, dict[mat] ?? 0, editable, 'misc');
-
         }
 
     }
@@ -1785,6 +1987,16 @@ function closeResourceModal() {
 
 }
 
+function closeGearModal() {
+
+    var modal = document.getElementById("gearModal");
+
+    modal.style.visibility = "hidden";
+
+    modalOpen = "";
+
+}
+
 // function getCharByID(id) {
 
 //     for (i = 0; i < data.characters.length; i++) {
@@ -1808,6 +2020,13 @@ function hideEmpty() {
     hideEmptyCell("XP_2");
     hideEmptyCell("XP_3");
     hideEmptyCell("XP_4");
+}
+
+function hideEmptyGear() {
+
+    var gearTable = document.getElementById('gear-table');
+
+    hideEmptyCells(gearTable);
 }
 
 function hideEmptyCells(table) {
@@ -1838,7 +2057,7 @@ function hideEmptyCell(id) {
     }
 }
 
-function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, parent, reorder) {
+function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, parent, reorder, type) {
 
     const newTable = document.createElement("table");
     newTable.className = "resource-table";
@@ -1852,7 +2071,9 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
         const newRow = document.createElement("tr");
         newRow.id = "row-" + rows[row];
 
-        tableNavigation[row + rowOffset] ??= [];
+        if (!tableNavigation[row + rowOffset]) {
+            tableNavigation[row + rowOffset] = [];
+        }
 
         for (col = 0; col < columns.length + 1; col++) {
             const newCell = document.createElement("td");
@@ -1864,16 +2085,16 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
             else {
                 const newImg = document.createElement("img");
                 newImg.draggable = false;
-                newImg.className = "resource-icon";
+                newImg.className = type + "-icon";
                 if (reorder) {
-                    newImg.src = ("icons/" + rows[row] + "_" + columns[col - 1] + ".webp").replace(/ /g, '');
+                    newImg.src = ("icons/" + rows[row] + "_" + columns[col - 1] + ".png").replace(/ /g, '');
                 }
                 else {
-                    newImg.src = ("icons/" + columns[col - 1] + "_" + rows[row] + ".webp").replace(/ /g, '');
+                    newImg.src = ("icons/" + columns[col - 1] + "_" + rows[row] + ".png").replace(/ /g, '');
                 }
 
                 const newP = document.createElement("p");
-                newP.className = "resource-count-text";
+                newP.className = type + "-count-text";
                 //newP.id = id + "-p_" + cellId;
                 if (reorder) {
                     newP.id = (rows[row] + "_" + columns[col - 1]).replace(/ /g, '');
@@ -1904,6 +2125,9 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
                     newInput.id = ("input-" + columns[col - 1] + "_" + rows[row]).replace(/ /g, '');
                 }
                 if (matLookup.revGet(newP.id)) {
+                    tableNavigation[row + rowOffset][col + colOffset] = newInput.id;
+                }
+                else if (gearLookup.includes(newP.id)) {
                     tableNavigation[row + rowOffset][col + colOffset] = newInput.id;
                 }
 
@@ -2032,7 +2256,13 @@ function calcSkillCost(characterObj, skill, current, target, matDict) {
     let skillObj = characterObj["Skills"]?.[skill];
     if (skillObj == undefined) { return null; }
 
-    for (let s = parseInt(current); s < parseInt(target); s++) {
+    let curLevel = parseInt(current);
+    let tarLevel = parseInt(target);
+    if (curLevel == 0 && tarLevel > 0) {
+        curLevel = 1;
+    }
+
+    for (let s = curLevel; s < tarLevel; s++) {
 
         let levelObj = skillObj["Level" + s];
         if (levelObj == undefined) {
@@ -2048,14 +2278,20 @@ function calcSkillCost(characterObj, skill, current, target, matDict) {
 
             if (item["ItemId"] != undefined && item["Quantity"] != undefined) {
 
-                matDict[item["ItemId"]] ??= 0;
+                if (!matDict[item["ItemId"]]) {
+                    matDict[item["ItemId"]] = 0;
+                }
+
                 matDict[item["ItemId"]] += item["Quantity"];
             }
         }
 
         if (costObj["Currency"] != undefined) {
 
-            matDict["Credit"] ??= 0;
+            if (!matDict["Credit"]) {
+                matDict["Credit"] = 0;
+            }
+
             matDict["Credit"] += costObj["Currency"];
 
         }
@@ -2070,7 +2306,10 @@ function calcXpCost(level, levelTarget, matDict) {
         var xpNeeded = Math.max(misc_data.level_xp[parseInt(levelTarget) - 1] - misc_data.level_xp[parseInt(level) - 1], 0);
         matDict["Xp"] = xpNeeded;
 
-        matDict["Credit"] ??= 0;
+        if (!matDict["Credit"]) {
+            matDict["Credit"] = 0;
+        }
+
         matDict["Credit"] += xpNeeded * 7;
     }
 }
@@ -2090,8 +2329,31 @@ function calcGearCost(charObj, gear, gearTarget, slotNum, matDict) {
 
             if ((gearObj.credit || gearObj.credit == 0) && targetGearObj.credit) {
 
-                matDict["Credit"] ??= 0;
+                if (!matDict["Credit"]) {
+                    matDict["Credit"] = 0;
+                }
+
                 matDict["Credit"] += targetGearObj.credit - gearObj.credit;
+            }
+
+            if (charObj?.Equipment) {
+                let gearName = charObj.Equipment["Slot" + slotNum];
+
+                for (let i = 2; i <= 6; i++) {
+
+                    let currentBP = gearObj["T" + i] ?? 0;
+                    let targetBP = targetGearObj["T" + i];
+                    let diff = targetBP - currentBP;
+
+                    if (targetBP && (diff > 0)) {
+
+                        if (!matDict["T" + i + "_" + gearName]) {
+                            matDict["T" + i + "_" + gearName] = 0;
+                        }
+
+                        matDict["T" + i + "_" + gearName] += diff;
+                    }
+                }
             }
         }
     }
@@ -2109,7 +2371,10 @@ function calcMysticCost(star, starTarget, matDict) {
 
             if ((currentStar.credit || currentStar.credit == 0) && targetStar.credit) {
 
-                matDict["Credit"] ??= 0;
+                if (!matDict["Credit"]) {
+                    matDict["Credit"] = 0;
+                }
+
                 matDict["Credit"] += targetStar.credit - currentStar.credit;
             }
         }
@@ -2125,7 +2390,11 @@ function updateAggregateCount() {
     for (character in charMatDicts) {
         if (!disabledChars.includes(character)) {
             for (matName in charMatDicts[character]) {
-                requiredMatDict[matName] ??= 0
+
+                if (!requiredMatDict[matName]) {
+                    requiredMatDict[matName] = 0;
+                }
+
                 requiredMatDict[matName] += charMatDicts[character][matName];
             }
         }
@@ -2135,40 +2404,145 @@ function updateAggregateCount() {
         updateNeededMat(key);
     }
 
+    calculateRaidCoins();
+
     updateXP();
 }
 
-function switchResourceDisplay() {
+function calculateRaidCoins() {
 
-    var btn = document.getElementById("button-switch-display");
+    let raidCoins = 0;
+
+    for (key in neededMatDict) {
+        if (key[0] == 3 && key.length == 4) {
+            if (key[3] == 0) {
+                raidCoins += 10 * neededMatDict[key];
+            }
+            else if (key[3] == 1) {
+                raidCoins += 20 * neededMatDict[key];
+            }
+            else if (key[3] == 2) {
+                raidCoins += 50 * neededMatDict[key];
+            }
+            else if (key[3] == 3) {
+                raidCoins += 100 * neededMatDict[key];
+            }
+        }
+        else if (key[0] == 4 && key.length == 4) {
+            if (key[3] == 0) {
+                raidCoins += 3 * neededMatDict[key];
+            }
+            else if (key[3] == 1) {
+                raidCoins += 5 * neededMatDict[key];
+            }
+            else if (key[3] == 2) {
+                raidCoins += 10 * neededMatDict[key];
+            }
+            else if (key[3] == 3) {
+                raidCoins += 25 * neededMatDict[key];
+            }
+        }
+        else if (key == "9999") {
+            raidCoins += 500 * neededMatDict[key];
+        }
+    }
+
+    neededMatDict["RaidTokenCost"] = raidCoins;
+}
+
+function switchResourceDisplay(displayType) {
+
+    let btnOwned = document.getElementById("switch-resource-owned");
+    let btnTotal = document.getElementById("switch-resource-total");
+    let btnRemaining = document.getElementById("switch-resource-remaining");
+    let displayText = document.getElementById("current-resource-display");
     var xpDisplay = document.getElementById("xp-display-wrapper");
+    var raidTokenDisplay = document.getElementById("raid-token-display-wrapper");
     var xpInputs = document.getElementById("xp-input-wrapper");
     var inputs = document.getElementsByClassName("input-wrapper");
 
-    if (resourceDisplay == "Needed") {
+    if (displayType == "Owned") {
         resourceDisplay = "Owned";
-        btn.innerText = "Switch to Needed";
-        btn.style.backgroundColor = "#f5c8dd";
+        btnOwned.parentElement.style.display = "none";
+        btnTotal.parentElement.style.display = "";
+        btnRemaining.parentElement.style.display = "";
+        displayText.innerText = "Owned";
         xpDisplay.style.display = "none";
         xpInputs.style.display = "";
-        updateCells(ownedMatDict, true);
+        raidTokenDisplay.style.display = "none";
+        updateCells(ownedMatDict, true, 'resource-count-text', 'misc-resource');
         for (i = 0; i < inputs.length; i++) {
             inputs[i].parentElement.classList.add("editable");
         }
     }
-    else if (resourceDisplay == "Owned") {
-        resourceDisplay = "Needed";
-        btn.innerText = "Switch to Owned";
-        btn.style.backgroundColor = "#c8e6f5";
+    else if (displayType == "Total") {
+        resourceDisplay = "Total";
+        btnOwned.parentElement.style.display = "";
+        btnTotal.parentElement.style.display = "none";
+        btnRemaining.parentElement.style.display = "";
+        displayText.innerText = "Total Needed"
         xpDisplay.style.display = "";
         xpInputs.style.display = "none";
-        updateCells(neededMatDict, false);
+        raidTokenDisplay.style.display = "none";
+        updateCells(requiredMatDict, false, 'resource-count-text', 'misc-resource');
+        for (i = 0; i < inputs.length; i++) {
+            inputs[i].parentElement.classList.remove("editable");
+        }
+    }
+    else if (displayType == "Remaining") {
+        calculateRaidCoins();
+        resourceDisplay = "Remaining";
+        btnOwned.parentElement.style.display = "";
+        btnTotal.parentElement.style.display = "";
+        btnRemaining.parentElement.style.display = "none";
+        displayText.innerText = "Remaining Needed";
+        xpDisplay.style.display = "";
+        xpInputs.style.display = "none";
+        raidTokenDisplay.style.display = "";
+        updateCells(neededMatDict, false, 'resource-count-text', 'misc-resource');
         for (i = 0; i < inputs.length; i++) {
             inputs[i].parentElement.classList.remove("editable");
         }
     }
 
     hideEmpty();
+
+}
+
+function switchGearDisplay(displayType) {
+
+    let btnOwned = document.getElementById("switch-gear-owned");
+    let btnTotal = document.getElementById("switch-gear-total");
+    let btnRemaining = document.getElementById("switch-gear-remaining");
+    let displayText = document.getElementById("current-gear-display");
+    //var inputs = document.getElementsByClassName("input-wrapper");
+
+    if (displayType == "Owned") {
+        gearDisplay = "Owned";
+        btnOwned.parentElement.style.display = "none";
+        btnTotal.parentElement.style.display = "";
+        btnRemaining.parentElement.style.display = "";
+        displayText.innerText = "Owned";
+        updateCells(ownedMatDict, true, 'gear-count-text', 'miscasdjashdkja');
+    }
+    else if (displayType == "Remaining") {
+        gearDisplay = "Remaining";
+        btnOwned.parentElement.style.display = "";
+        btnTotal.parentElement.style.display = "";
+        btnRemaining.parentElement.style.display = "none";
+        displayText.innerText = "Remaining Needed";
+        updateCells(neededMatDict, false, 'gear-count-text', 'miscasdasdasd');
+    }
+    else if (displayType == "Total") {
+        gearDisplay = "Total";
+        btnOwned.parentElement.style.display = "";
+        btnTotal.parentElement.style.display = "none";
+        btnRemaining.parentElement.style.display = "";
+        displayText.innerText = "Total Needed";
+        updateCells(requiredMatDict, false, 'gear-count-text', 'misczdsdasd');
+    }
+
+    hideEmptyGear();
 
 }
 
@@ -2187,14 +2561,36 @@ function updateInfoDisplay(character, charId) {
         formatLevel("Gear", charData.target?.gear3);
 
     document.getElementById(character + "-skill-current").innerText = skillCurrent;
-    document.getElementById(character + "-skill-target").innerText = skillTarget;
+    if (skillCurrent != skillTarget) {
+        document.getElementById(character + "-skill-target").innerText = skillTarget;
+    }
+    else {
+        document.getElementById(character + "-skill-target").innerText = "";
+    }
 
     document.getElementById(character + "-gear-current").innerText = gearCurrent;
-    document.getElementById(character + "-gear-target").innerText = gearTarget;
+    if (gearCurrent != gearTarget) {
+        document.getElementById(character + "-gear-target").innerText = gearTarget;
+    }
+    else {
+        document.getElementById(character + "-gear-target").innerText = "";
+    }
 
     document.getElementById(character + "-level-current").innerText = formatLevel("Level", charData.current.level);
-    document.getElementById(character + "-level-target").innerText = formatLevel("Level", charData.target.level);
+    if (charData.current.level != charData.target.level) {
+        document.getElementById(character + "-level-target").innerText = formatLevel("Level", charData.target.level);
+    }
+    else {
+        document.getElementById(character + "-level-target").innerText = "";
+    }
 
+    document.getElementById(character + "-bond-current").innerText = charData.current?.bond;
+    if (charData.current?.bond != charData.target?.bond) {
+        document.getElementById(character + "-bond-target").innerText = charData.target?.bond;
+    }
+    else {
+        document.getElementById(character + "-bond-target").innerText = "";
+    }
 }
 
 function transferDialog() {
@@ -2301,6 +2697,8 @@ async function getImportData() {
         }
 
         refreshAllChars();
+
+        gtag('event', 'action_import');
     }
 }
 
@@ -2462,6 +2860,25 @@ function createCharBox(newChar, charId) {
     newStarContainer.className = "star-container";
     newStarContainer.id = newChar + "-star-container";
 
+    const newBondContainer = document.createElement("div");
+    newBondContainer.className = "char-heart-container";
+
+    const newBondImg = document.createElement("img");
+    newBondImg.src = "icons/bond.png";
+    newBondImg.draggable = false;
+
+    const newBondP = document.createElement("p");
+    newBondP.id = newChar + "-bond-current";
+    newBondP.style = "transform: translate(-50%, -95%)";
+
+    const newBondP2 = document.createElement("p");
+    newBondP2.id = newChar + "-bond-target";
+    newBondP2.style = "transform: translate(-50%, -25%)";
+
+    newBondContainer.appendChild(newBondImg);
+    newBondContainer.appendChild(newBondP);
+    newBondContainer.appendChild(newBondP2);
+
     for (i = 0; i < 5; i++) {
         const newStar = document.createElement("img");
         newStar.draggable = false;
@@ -2527,6 +2944,7 @@ function createCharBox(newChar, charId) {
     newDiv.appendChild(newContent);
     newDiv.appendChild(newStarContainer);
     newDiv.appendChild(newUEContainer);
+    newDiv.appendChild(newBondContainer);
     newDiv.onclick = openModal
 
     let lastNode = document.getElementById('addCharButton')
