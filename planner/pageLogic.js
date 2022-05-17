@@ -1359,6 +1359,7 @@ function teamsToggle() {
         boxesContainer.style.display = "none";
         teamsEditorContainer.style.display = "";
         buttonText.innerText = "Characters"
+        generateTeamCharOptions();
     }
     else if (mainDisplay == "Teams") {
         mainDisplay = "Characters";
@@ -1380,23 +1381,24 @@ function generateTeamBorrowOptions() {
         let charName = charNames.get(key);
 
         let school = charlist[key].School;
+        let damageType = charlist[key].DamageType;
         let type = charlist[key].Type;
 
-        if (school) {
+        if (damageType) {
 
             if (type == "Striker") {
-                if (!groupStrikerBorrows[school]) {
-                    groupStrikerBorrows[school] = {};
+                if (!groupStrikerBorrows[damageType]) {
+                    groupStrikerBorrows[damageType] = {};
                 }
 
-                groupStrikerBorrows[school][charName] = charName;
+                groupStrikerBorrows[damageType][charName] = charName;
             }
             else if (type == "Special") {
-                if (!groupSpecialBorrows[school]) {
-                    groupSpecialBorrows[school] = {};
+                if (!groupSpecialBorrows[damageType]) {
+                    groupSpecialBorrows[damageType] = {};
                 }
 
-                groupSpecialBorrows[school][charName] = charName;
+                groupSpecialBorrows[damageType][charName] = charName;
             }
         }
         else {
@@ -1445,23 +1447,24 @@ function generateTeamCharOptions() {
             let charId = charMap.get(existing[i]);
 
             let school = charlist[charId].School;
+            let damageType = charlist[charId].DamageType;
             let type = charlist[charId].Type;
 
-            if (school) {
+            if (damageType) {
 
                 if (type == "Striker") {
-                    if (!groupStrikerOptions[school]) {
-                        groupStrikerOptions[school] = {};
+                    if (!groupStrikerOptions[damageType]) {
+                        groupStrikerOptions[damageType] = {};
                     }
 
-                    groupStrikerOptions[school][existing[i]] = existing[i];
+                    groupStrikerOptions[damageType][existing[i]] = existing[i];
                 }
                 else if (type == "Special") {
-                    if (!groupSpecialOptions[school]) {
-                        groupSpecialOptions[school] = {};
+                    if (!groupSpecialOptions[damageType]) {
+                        groupSpecialOptions[damageType] = {};
                     }
 
-                    groupSpecialOptions[school][existing[i]] = existing[i];
+                    groupSpecialOptions[damageType][existing[i]] = existing[i];
                 }
             }
             else {
