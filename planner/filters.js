@@ -78,7 +78,7 @@ function buildFilterList() {
             optionElements.push(buildFilterElement(prefix, option));
         }
 
-        return `<div class="filter-view-group"><label class="char-action-label">${label}</label>${optionElements.join("\n")}</div>`;
+        return `<div class="filter-view-group"><label class="char-action-label filter-group-header">${label}</label>${optionElements.join("\n")}</div>`;
     }
     function buildFilterElement(prefix, label) {
         // <input class="filter-option" filter-target="test" type="checkbox"> TEST
