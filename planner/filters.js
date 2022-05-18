@@ -86,7 +86,7 @@ function buildFilterList() {
         let attr = label.toLowerCase().replaceAll(" ", "_");
         let target = `${prefix}${attr}`;
 
-        return `<label for="${target}"><input class="filter-option" name="${target}" filter-target="${target}" type="checkbox"> ${label}</label>`;
+        return `<label class="filter-option-item" for="${target}"><input class="filter-option" name="${target}" filter-target="${target}" type="checkbox"> ${label}</label>`;
     }
 
     function getAcceptedDynamicFilters() {
