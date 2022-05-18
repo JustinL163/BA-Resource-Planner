@@ -2374,12 +2374,31 @@ function charactersToggle(value) {
     saveTime = Date.now() + (1000 * 5);
 }
 
-function getTextFormattedGroup() {
-
+function getTextGroup() {
+    
     if (currentGroup == "") {
         basicAlert("Select group first");
         return;
     }
+
+    Swal.fire({
+        title: 'Text format',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Monospaced',
+        denyButtonText: 'Normal',
+        denyButtonColor: '#dc9641'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            getTextFormattedGroup(true);
+        }
+        else if (result.isDenied) {
+            getTextFormattedGroup(false);
+        }
+    })
+}
+
+function getTextFormattedGroup(monospaced) {
 
     let group = getCharsInGroup();
     let textOutput = "";
@@ -2414,7 +2433,7 @@ function getTextFormattedGroup() {
 
                 charDataString += charData.current.star + "★  ";
                 charDataString += charData.current.level + "  ";
-                if (charData.current.level.length == 1) {
+                if (charData.current.level.length == 1 && monospaced) {
                     charDataString += " ";
                 }
                 charDataString += formatLevel("Ex", charData.current.ex) + formatLevel("Other", charData.current.basic) +
@@ -2435,7 +2454,12 @@ function getTextFormattedGroup() {
         }
     }
 
-    textOutput += "Name" + " ".repeat(longest - 4) + "Star Lvl Skill Gear Bond\n";
+    if (monospaced) {
+        textOutput += "Name" + " ".repeat(longest - 4) + "Star Lvl Skill Gear Bond\n";
+    }
+    else {
+        textOutput += "Name   Star Lvl Skill Gear Bond\n";
+    }
 
     for (let i = 0; i < names.length; i++) {
         if (names[i].substring(0, 5) == "Team ") {
@@ -2445,7 +2469,12 @@ function getTextFormattedGroup() {
             textOutput += names[i] + "\n";
         }
         else {
-            textOutput += names[i] + " ".repeat(longest - names[i].length + 1) + levels[i] + "\n";
+            if (monospaced) {
+                textOutput += names[i] + " ".repeat(longest - names[i].length + 1) + levels[i] + "\n";
+            }
+            else {
+                textOutput += names[i] + " " + levels[i] + "\n";
+            }
         }
     }
 
