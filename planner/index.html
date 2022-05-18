@@ -12,7 +12,7 @@
         gtag('config', 'G-3XZ18739WF');
     </script>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="styles.css?7">
+    <link rel="stylesheet" href="styles.css?9">
     <title>Blue Archive Resource Planner</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css" rel="stylesheet">
@@ -20,7 +20,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.12/lib/draggable.bundle.js"></script>
     <script src="config.js?6"></script>
-    <script src="pageLogic.js?11"></script>
+    <script src="pageLogic.js?16"></script>
     <style id="toggleViewStyle" class="modifyable"></style>
 </head>
 
@@ -35,8 +35,32 @@
         <img src="icons/sun.svg" id="theme-button" onclick="switchTheme()" style="max-width: 40px; filter: invert(1);">
     </nav>
     <div class="bodyContainer">
-        <div class="boxesContainer">
-            <div class="charsContainer">
+        <div id="boxesContainer" class="mainContainer">
+            <div id="charsContainerActions">
+                <label class="char-action-label">Group</label>
+                <select name="filter-groups" id="filter-groups" onchange="filterChanged('group')">
+                </select>
+                <button class="charEditorButton" onclick="resetFilters()">Reset Filters</button>
+                <button class="charEditorButton" onclick="charactersToggle('enable')">Enable All</button>
+                <button class="charEditorButton" onclick="charactersToggle('disable')">Disable All</button>
+            </div>
+            <div id="charsContainer">
+            </div>
+        </div>
+        <div id="teamsEditorContainer" class="mainContainer" style="display: none;">
+            <div id="teamEditorActions">
+                <select name="groups" id="select-groups" onchange="groupSelected()">
+                    <option hidden disabled selected value="blankselect">--Select group--</option>
+                </select>
+                <button class="teamEditorButton" onclick="addNewGroup()">New Group</button>
+                <button class="teamEditorButton" onclick="renameGroup()">Rename Group</button>
+                <button class="teamEditorButton" onclick="deleteGroup()">Delete Group</button>
+                <button class="teamEditorButton" onclick="addNewTeam([null,null,null,null,null,null])">Add Team</button>
+                <button id="group-move-mode" class="teamEditorButton" onclick="groupEditorMode('Move')">Add/Move</button>
+                <button id="group-remove-mode" class="teamEditorButton" onclick="groupEditorMode('Remove')">Remove</button>
+                <button class="teamEditorButton" onclick="getTextGroup()">Text Form</button>
+            </div>
+            <div id="teamsContainer">
             </div>
         </div>
     </div>
@@ -329,10 +353,6 @@
                         <input id="input-Credit" class="resource-input" type="number" style="position:absolute;">
                     </div>
                 </div>
-                <div id="xp-display-wrapper" class="resource-box">
-                    <img draggable="false" src="icons/exp.png" style="max-width: 80px; align-self: center;">
-                    <p id="Xp" class="misc-resource no-input" style="align-self: center; margin-left: 10px;"></p>
-                </div>
                 <div id="xp-input-wrapper" class="resource-box" style="align-items: center; display: none;">
                     <div class="xp-wrapper editable">
                         <img draggable="false" class="xp-icon" src="icons/XP_4.png">
@@ -354,6 +374,10 @@
                         <p id="XP_1" class="resource-count-text"></p>
                         <input id="input-XP_1" class="resource-input xp-input" type="number">
                     </div>
+                </div>
+                <div id="xp-display-wrapper" class="resource-box">
+                    <img draggable="false" src="icons/exp.png" style="max-width: 80px; align-self: center;">
+                    <p id="Xp" class="misc-resource no-input" style="align-self: center; margin-left: 10px;"></p>
                 </div>
                 <div class="resource-box">
                     <img draggable="false" src="icons/SecretTech.png" style="max-width: 80px; max-height: 80px;">
@@ -411,31 +435,39 @@
     </div>
     <datalist id="char-options">
     </datalist>
-    <div class="footer-resource">
+    <div class="footer-wrapper">
+        <div class="footer-resource">
 
-        <div class="footer-buttons-wrapper">
-            <div class="footer-button" onclick="openResourceModal()" style="display: flex; align-items: center;">
-                <img draggable="false" src="icons/resourceBtn.png">
-                <p>Resources</p>
+            <div class="footer-buttons-wrapper">
+                <div class="footer-button" onclick="openResourceModal()" style="display: flex; align-items: center;">
+                    <img draggable="false" src="icons/resourceBtn.png">
+                    <p>Resources</p>
+                </div>
+                <div class="footer-button" onclick="openGearModal()" style="display: flex; align-items: center;">
+                    <img draggable="false" src="icons/T6_Badge.png">
+                    <p>Gear</p>
+                </div>
+                <div class="footer-button" onclick="teamsToggle()">
+                    <p id="teamsEditorButton">Teams Editor</p>
+                </div>
+                <div class="footer-button" onclick="toggleView()">
+                    <p>Toggle Display</p>
+                </div>
+                <div class="footer-button" onclick="transferDialog()">
+                    <p>Transfer</p>
+                </div>
             </div>
-            <div class="footer-button" onclick="openGearModal()" style="display: flex; align-items: center;">
-                <img draggable="false" src="icons/T6_Badge.png">
-                <p>Gear</p>
-            </div>
-            <div class="footer-button" onclick="transferDialog()">
-                <p>Transfer</p>
+            <div class="footer-button">
+                <p onclick="gtag('event', 'contest_click')"><a
+                        href="https://bluearchive.nexon.com/events/2022/05/contest/885" target="_blank">Contest
+                        Submission</a></p>
+                <p onclick="gtag('event', 'contest_click')" style="font-size: 1em;"><a
+                        href="https://bluearchive.nexon.com/events/2022/05/contest/885" target="_blank">(Vote for me?
+                        :P)</a></p>
             </div>
             <div class="footer-button" onclick="toggleView()">
                 <p>Toggle Display</p>
             </div>
-        </div>
-        <div class="footer-button">
-            <p onclick="gtag('event', 'contest_click')"><a
-                    href="https://bluearchive.nexon.com/events/2022/05/contest/885" target="_blank">Contest
-                    Submission</a></p>
-            <p onclick="gtag('event', 'contest_click')" style="font-size: 1em;"><a
-                    href="https://bluearchive.nexon.com/events/2022/05/contest/885" target="_blank">(Vote for me?
-                    :P)</a></p>
         </div>
     </div>
 </body>

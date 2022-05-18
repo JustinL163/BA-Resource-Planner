@@ -84,14 +84,14 @@
 
 }
 
-.boxesContainer {
+.mainContainer {
     margin-bottom: 100px;
     min-width: 90%;
     max-width: 1200px;
     background-color: rgb(196, 205, 228);
 }
 
-.charsContainer {
+#charsContainer {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -220,6 +220,25 @@ label {
 }
 
 .nameBar p {
+    font-size: 150%;
+    font-family: monospace;
+    text-shadow: -1px -1px 0 #000, 0px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.borrowBar {
+    box-sizing: border-box;
+    position: absolute;
+    /*line-height: min(2vw, 1.5rem);*/
+    margin: 0;
+    top: 0px;
+    width: 100%;
+    padding: 0.2rem 0;
+    text-align: center;
+    color: white;
+    background-color: rgba(0, 9, 56, 0.6);
+}
+
+.borrowBar p {
     font-size: 150%;
     font-family: monospace;
     text-shadow: -1px -1px 0 #000, 0px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0px 1px 0 #000, 1px 1px 0 #000;
@@ -389,13 +408,21 @@ label {
     opacity: 0.5;
 }
 
-.footer-resource {
+.footer-wrapper {
     position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer-resource {
+    margin-left: auto;
+    margin-right: auto;
+    position: static;
     display: flex;
     flex-wrap: wrap;
-    left: 25%;
     bottom: 0;
-    width: 50%;
+    width: 75%;
+    max-width: 1200px;
     min-height: 50px;
     background-color: #282a35;
     color: white;
@@ -408,6 +435,7 @@ label {
     left: 25%;
     bottom: 0;
     width: 50%;
+    min-width: fit-content;
     min-height: 50px;
     color: white;
     align-items: center;
@@ -808,11 +836,110 @@ div.char-resource-wrapper .resource-display-text {
         1px 1px 0 #fff;
 }
 
+#charsContainerActions {
+    min-height: 6vh;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.filtered-out {
+    display: none !important;
+}
+
+.char-action-label {
+    align-self: center;
+    font-size: 1.75em;
+    margin-left: 10px;
+}
+
+.charEditorButton {
+    height: 4vh;
+    width: 150px;
+    margin: 10px;
+    font-size: 1.25em;
+}
+
+#filter-groups {
+    height: 4vh;
+    width: 200px;
+    font-size: 1.5em;
+    margin: 10px;
+}
+
+#teamEditorActions {
+    min-height: 6vh;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#select-groups {
+    height: 4vh;
+    width: 200px;
+    font-size: 1.5em;
+    margin: 10px;
+}
+
+.teamEditorButton {
+    height: 4vh;
+    width: 150px;
+    margin: 10px;
+    font-size: 1.25em;
+}
+
+.team-wrapper {
+    display: flex;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 40px;
+}
+
+.team-slot {
+    margin-inline: 7px;
+}
+
+.team-label {
+    position: absolute;
+    font-size: 2em;
+    transform: translate(0, -40px);
+}
+
+.team-label:hover {
+    background-color: #e5ecff;
+}
+
+.striker-wrapper {
+    display: flex;
+}
+
+.special-wrapper {
+    display: flex;
+}
+
+.team-slot .charBox {
+    width: 100%;
+}
+
+.team-slot-add {
+    filter: opacity(0.2);
+}
+
+#teamsContainer.move-mode .team-slot-add:hover {
+    filter: none;
+}
+
+#teamsContainer.remove-mode .teams-display-char:hover {
+    filter: opacity(0.5);
+}
+
+.draggable-mirror {
+    z-index: 1;
+}
+
 .dark-theme.background {
     background-color: rgb(36 36 36);
 }
 
-.dark-theme .boxesContainer {
+.dark-theme .mainContainer {
     background-color: rgb(47 47 47);
 }
 
@@ -888,6 +1015,22 @@ div.char-resource-wrapper .resource-display-text {
 .dark-theme .skill-img {
     -webkit-filter: none;
     filter: none;
+}
+
+.dark-theme .charBox.team-slot-add {
+    filter: opacity(0.4);
+}
+
+.dark-theme .team-label {
+    color: #efefef;
+}
+
+.dark-theme .team-label:hover {
+    background-color: #5e5e5e;
+}
+
+.dark-theme label {
+    color: #efefef;
 }
 
 #theme-button {
