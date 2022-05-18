@@ -158,6 +158,22 @@ function init() {
         }
     }
 
+    // remove later
+    for (key in data.groups) {
+
+        for (let i = 0; i < data.groups[key].length; i++) {
+
+            for (let ii = 0; ii < 6; ii++) {
+                if (data.groups[key][i][ii] && typeof (data.groups[key][i][ii]) != "object" && data.groups[key][i][ii].includes('borrow')) {
+                    data.groups[key][i][ii] = null;
+                    saveToLocalStorage(false);
+                }
+            }
+
+        }
+
+    }
+
     // add add button
     var container = document.getElementById("charsContainer");
     const newDiv = document.createElement("div");
@@ -252,16 +268,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.1.0".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.1.1".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.1.0",
+            title: "Updated to Version 1.1.1",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.1.0";
+        data.site_version = "1.1.1";
         saveToLocalStorage(false);
     }
     else {
@@ -1504,13 +1520,7 @@ function generateTeamCharOptions() {
 function addNewTeam(team) {
 
     if (currentGroup == "") {
-        Swal.fire({
-            toast: true,
-            position: 'top-start',
-            title: 'Select group first',
-            showConfirmButton: false,
-            timer: 1500
-        })
+        basicAlert("Select group first");
         return;
     }
 
@@ -1673,7 +1683,7 @@ function removeTeam(teamDiv) {
         if (teamChars[i] == null) {
             continue;
         }
-        else if (typeof(teamChars[i]) == 'object') {
+        else if (typeof (teamChars[i]) == 'object') {
             borrowed = false;
             continue;
         }
@@ -2000,7 +2010,7 @@ function getCharsInTeam(teamId) {
 
             if (slotCharId) {
                 if (slotCharId.includes('borrow')) {
-                    inGroup[spe + 4] = "borrow_" + slotCharId.substring(12);
+                    inGroup[spe + 4] = { id: slotCharId.substring(12) };
                 }
                 else {
                     inGroup[spe + 4] = slotCharId.substring(11);
@@ -2096,14 +2106,8 @@ function loadGroup(groupName) {
 function deleteGroup() {
 
     if (currentGroup == "") {
-        Swal.fire({
-            toast: true,
-            position: 'top-start',
-            title: 'Select group first',
-            showConfirmButton: false,
-            timer: 1500
-        })
-        return false;
+        basicAlert("Select group first");
+        return;
     }
 
     Swal.fire({
@@ -2139,14 +2143,8 @@ function deleteGroup() {
 async function renameGroup() {
 
     if (currentGroup == "") {
-        Swal.fire({
-            toast: true,
-            position: 'top-start',
-            title: 'Select group first',
-            showConfirmButton: false,
-            timer: 1500
-        })
-        return false;
+        basicAlert("Select group first");
+        return;
     }
 
     if (defaultGroups.includes(currentGroup)) {
@@ -2330,7 +2328,7 @@ function charsFromGroup(group) {
 
             for (let i = 0; i < team.length; i++) {
 
-                if (team[i] != null && typeof(team[i] != "object")) {
+                if (team[i] != null && typeof (team[i] != "object")) {
                     inGroup.push(team[i]);
                 }
             }
@@ -2374,6 +2372,98 @@ function charactersToggle(value) {
     data.disabled_characters = disabledChars;
 
     saveTime = Date.now() + (1000 * 5);
+}
+
+function getTextFormattedGroup() {
+
+    if (currentGroup == "") {
+        basicAlert("Select group first");
+        return;
+    }
+
+    let group = getCharsInGroup();
+    let textOutput = "";
+
+    let names = [];
+    let levels = [];
+
+    for (let i = 0; i < group.length; i++) {
+
+        names.push("Team " + (i + 1));
+        levels.push("");
+
+        for (let c = 0; c < group[i].length; c++) {
+
+            if (group[i][c] != null) {
+
+                let charDataString = "";
+                let charId;
+                if (typeof (group[i][c]) == "object") {
+                    charId = group[i][c].id;
+                    names.push(charNames.get(charId));
+                    levels.push("(Borrowed)");
+                    continue;
+                }
+                else {
+                    charId = group[i][c];
+                }
+
+                let charData = data.characters.find(obj => { return obj.id == charId });
+
+                names.push(charData.name);
+
+                charDataString += charData.current.star + "★  ";
+                charDataString += charData.current.level + "  ";
+                if (charData.current.level.length == 1) {
+                    charDataString += " ";
+                }
+                charDataString += formatLevel("Ex", charData.current.ex) + formatLevel("Other", charData.current.basic) +
+                    formatLevel("Other", charData.current.passive) + formatLevel("Other", charData.current.sub) + "  ";
+                charDataString += charData.current.gear1 + charData.current.gear2 + charData.current.gear3 + "  ";
+                charDataString += charData.current.bond;
+
+                levels.push(charDataString);
+            }
+
+        }
+    }
+
+    let longest = 0;
+    for (let i = 0; i < names.length; i++) {
+        if (names[i].length > longest) {
+            longest = names[i].length;
+        }
+    }
+
+    textOutput += "Name" + " ".repeat(longest - 4) + "Star Lvl Skill Gear Bond\n";
+
+    for (let i = 0; i < names.length; i++) {
+        if (names[i].substring(0, 5) == "Team ") {
+            if (i != 0) {
+                textOutput += "\n";
+            }
+            textOutput += names[i] + "\n";
+        }
+        else {
+            textOutput += names[i] + " ".repeat(longest - names[i].length + 1) + levels[i] + "\n";
+        }
+    }
+
+    Swal.fire({
+        title: 'Text representation',
+        html: '<textarea style="width: 400px; height: 250px; resize: none; padding: 10px;" readonly>' + textOutput + '</textarea>'
+    })
+
+}
+
+function basicAlert(alertText) {
+    Swal.fire({
+        toast: true,
+        position: 'top-start',
+        title: alertText,
+        showConfirmButton: false,
+        timer: 1500
+    })
 }
 
 async function saveToLocalStorage(notify) {
