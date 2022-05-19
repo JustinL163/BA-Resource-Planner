@@ -161,6 +161,10 @@ function init() {
     // remove later
     for (key in data.groups) {
 
+        if (!data.groups[key]) {
+            continue;
+        }
+
         for (let i = 0; i < data.groups[key].length; i++) {
 
             for (let ii = 0; ii < 6; ii++) {
