@@ -1206,6 +1206,7 @@ input[type=number] {
 div#viewFilters { 
     background-color: #282a35;
     vertical-align: middle;
+    height: fit-content;
 }
 div.filter-view-group { 
     text-align: left;
@@ -1213,6 +1214,7 @@ div.filter-view-group {
 }
 label.filter-group-header { 
     font-size: 24px;
+    color: #efefef;
 }
 div.filter-option-container {
     display:flex;
@@ -1222,10 +1224,18 @@ label.filter-option-item {
     margin-left: 10px;
     height: 30px;
     min-width: 50px;
+    padding: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #efefef;
+}
+label.filter-option-item:hover {
+    background-color: #767ea1;
 }
 
 label.filter-option-item[ischecked="true"] {
-    background-color: #454858;
+    background-color: #626576;
 }
 /* label.filter-option-item[checked="true"] {
     background-color: white;

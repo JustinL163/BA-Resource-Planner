@@ -22,7 +22,7 @@ let whitelist = {
         return toreturn;
     }
 };
-let VIEW_MODE = 1;
+
 let style = null;
 let isFiltersBuilt = false;
 $(document).ready(function () {
@@ -36,12 +36,10 @@ function toggleViewFilters() {
 
 function buildFilterList() {
     if (!charlist) return;
-    console.log("Building filters...");
     if (isFiltersBuilt) return;
     
     isFiltersBuilt = true;
     let filters = getAcceptedDynamicFilters();
-    console.log(filters);
 
     let filterGroupElements = [
         buildFilterGroup("", {
@@ -61,13 +59,11 @@ function buildFilterList() {
         let target = filter.attr("filter-target");
         const grouping = target.startsWith("filter_") ? target.split('_').splice(0,2).join("_") : "special";
         if (filter[0].checked) {
-            console.log("Add Filter");
             filter.closest("label.filter-option-item").attr("ischecked", "true");
             if (whitelist[grouping].indexOf(target) < 0) {
                 whitelist[grouping].push(target);
             }
         } else {
-            console.log("Remove Filter");
             filter.closest("label.filter-option-item").attr("ischecked", "false");
             whitelist[grouping] = whitelist[grouping].filter(filtered => filtered != target);
         }
@@ -83,8 +79,7 @@ function buildFilterList() {
         return `<div class="filter-view-group"><label class="char-action-label filter-group-header">${label}</label><div class="filter-option-container">${optionElements.join("\n")}</div></div>`;
     }
     function buildFilterElement(prefix, label) {
-        // <input class="filter-option" filter-target="test" type="checkbox"> TEST
-        // console.log(label);
+        // <input class="filter-option" filter-target="test" type="checkbox"> TEST;
         let attr = label.toLowerCase().replaceAll(" ", "_");
         let target = `${prefix}${attr}`;
 
@@ -128,7 +123,6 @@ function buildFilterList() {
             filterTypes.filter_weapon.options.push(char.WeaponType);
             filterTypes.filter_star.options.push(char.BaseStar.toString());
         }
-        console.log(filterTypes);
         for(const i in filterTypes) {
             // remove duplicates
             filterTypes[i].options = [...new Set(filterTypes[i].options)];
@@ -139,7 +133,6 @@ function buildFilterList() {
 }
 
 function assignClassFilters() {
-    console.log("Assigning Class Filters...");
     for(const char of $("div.main-display-char.charBox:not(.added-filters)")) {
         const id = char.id.substring(5);
         const charInfo = charlist[id];
@@ -169,7 +162,6 @@ function rebuildViewFilters() {
             // "div.charBox.main-display-char."+whitelist.join(".")+" { display: block; }"
         ];
         const combos = cartesian(...whitelist.getNonEmpty());
-        console.log(whitelist, combos);
         for(const combo of combos) {
             if (Array.isArray(combo))
                 styles.push("div.charBox.main-display-char."+combo.join(".")+" { display: block; }");
@@ -182,19 +174,32 @@ function rebuildViewFilters() {
     }
 }
 
-function toggleView() {
-    switch (VIEW_MODE) {
-        case 1: // default -> hide unselected
-            style.html("div.charBox.main-display-char.deselected { display: none; }");
-            VIEW_MODE = 2;
-            break;
-        case 2: // hide unselected -> show unselected, hide selected
-            style.html("div.charBox.main-display-char:not(.deselected) { display: none; }");
-            VIEW_MODE = 3;
-            break;
-        case 3: // hide selected -> default
-            style.html("");
-            VIEW_MODE = 1;
-            break;
+function resetViewFilters() {
+
+    let filterLabels = document.getElementsByClassName("filter-option-item");
+    let filterCheckboxes = document.getElementsByClassName("filter-option");
+
+    for (let i = 0; i < filterLabels.length; i++) {
+
+        if (filterLabels[i].getAttribute('ischecked')) {
+            filterLabels[i].setAttribute('ischecked','false');
+        }
     }
+
+    for (let i = 0; i < filterCheckboxes.length; i++) {
+
+        if (filterCheckboxes[i].checked) {
+            filterCheckboxes[i].checked = false;
+        }
+    }
+
+    whitelist.special = [];
+    whitelist.filter_type = [];
+    whitelist.filter_atk = [];
+    whitelist.filter_def = [];
+    whitelist.filter_star = [];
+    whitelist.filter_school = [];
+    whitelist.filter_weapon = [];
+
+    rebuildViewFilters();
 }

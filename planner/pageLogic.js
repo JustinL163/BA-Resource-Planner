@@ -142,6 +142,10 @@ function init() {
     // remove later
     for (key in data.groups) {
 
+        if (!data.groups[key]) {
+            continue;
+        }
+
         for (let i = 0; i < data.groups[key].length; i++) {
 
             for (let ii = 0; ii < 6; ii++) {
@@ -249,16 +253,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.1.1".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.1.2".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.1.1",
+            title: "Updated to Version 1.1.2",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.1.1";
+        data.site_version = "1.1.2";
         saveToLocalStorage(false);
     }
     else {
@@ -1357,6 +1361,7 @@ function teamsToggle() {
         teamsEditorContainer.style.display = "";
         buttonText.innerText = "Characters"
         generateTeamCharOptions();
+        $("div#viewFilters")[0].style.display = 'none';
     }
     else if (mainDisplay == "Teams") {
         mainDisplay = "Characters";
@@ -2293,8 +2298,7 @@ function resetFilters() {
 
     filterChanged('group');
 
-    $("style#toggleViewStyle").html("");
-    VIEW_MODE = 1;
+    resetViewFilters();
 }
 
 function charsFromGroup(group) {
