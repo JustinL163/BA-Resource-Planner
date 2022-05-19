@@ -1,10 +1,10 @@
 let whitelist = {
     special: [],
+    filter_type: [],
     filter_atk: [],
     filter_def: [],
     filter_star: [],
     filter_school: [],
-    filter_type: [],
     filter_weapon: [],
     length() {
         return this.special.length + this.filter_atk.length + this.filter_def.length + this.filter_school.length + this.filter_star.length + this.filter_type.length + this.filter_weapon.length;
@@ -62,11 +62,13 @@ function buildFilterList() {
         const grouping = target.startsWith("filter_") ? target.split('_').splice(0,2).join("_") : "special";
         if (filter[0].checked) {
             console.log("Add Filter");
+            filter.closest("label.filter-option-item").attr("ischecked", "true");
             if (whitelist[grouping].indexOf(target) < 0) {
                 whitelist[grouping].push(target);
             }
         } else {
             console.log("Remove Filter");
+            filter.closest("label.filter-option-item").attr("ischecked", "false");
             whitelist[grouping] = whitelist[grouping].filter(filtered => filtered != target);
         }
         rebuildViewFilters();
@@ -78,7 +80,7 @@ function buildFilterList() {
             optionElements.push(buildFilterElement(prefix, option));
         }
 
-        return `<div class="filter-view-group"><label class="char-action-label filter-group-header">${label}</label>${optionElements.join("\n")}</div>`;
+        return `<div class="filter-view-group"><label class="char-action-label filter-group-header">${label}</label><div class="filter-option-container">${optionElements.join("\n")}</div></div>`;
     }
     function buildFilterElement(prefix, label) {
         // <input class="filter-option" filter-target="test" type="checkbox"> TEST
@@ -86,7 +88,7 @@ function buildFilterList() {
         let attr = label.toLowerCase().replaceAll(" ", "_");
         let target = `${prefix}${attr}`;
 
-        return `<label class="filter-option-item" for="${target}"><input class="filter-option" id="${target}" filter-target="${target}" type="checkbox"> ${label}</label>`;
+        return `<label class="filter-option-item" checked="false" for="${target}"><input class="filter-option" id="${target}" filter-target="${target}" type="checkbox"> ${label}</label>`;
     }
 
     function getAcceptedDynamicFilters() {
