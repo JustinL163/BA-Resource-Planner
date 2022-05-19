@@ -1203,3 +1203,45 @@ input[type=number] {
         transform: scale(1, 1);
     }
 }
+div#viewFilters { 
+    background-color: #282a35;
+    vertical-align: middle;
+    height: fit-content;
+}
+div.filter-view-group { 
+    text-align: left;
+    padding-top: 10px;
+}
+label.filter-group-header { 
+    font-size: 24px;
+    color: #efefef;
+}
+div.filter-option-container {
+    display:flex;
+    flex-wrap: wrap;
+}
+label.filter-option-item {
+    margin-left: 10px;
+    height: 30px;
+    min-width: 50px;
+    padding: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #efefef;
+}
+label.filter-option-item:hover {
+    background-color: #767ea1;
+}
+
+label.filter-option-item[ischecked="true"] {
+    background-color: #626576;
+}
+/* label.filter-option-item[checked="true"] {
+    background-color: white;
+} */
+input.filter-option {
+    display: none;
+    /* transform: scale(2); */
+    /* height: 20px; */
+}

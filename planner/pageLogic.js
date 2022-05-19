@@ -48,25 +48,6 @@ let keyPressed = {};
 let modalOpen = "";
 let pageTheme = "dark";
 let alertColour = "#e1e1e1";
-let VIEW_MODE = 1;
-
-function toggleView() {
-    let style = $("style#toggleViewStyle");
-    switch (VIEW_MODE) {
-        case 1: // default -> hide unselected
-            style.html("div.charBox.main-display-char.deselected { display: none; }");
-            VIEW_MODE = 2;
-            break;
-        case 2: // hide unselected -> show unselected, hide selected
-            style.html("div.charBox.main-display-char:not(.deselected) { display: none; }");
-            VIEW_MODE = 3;
-            break;
-        case 3: // hide selected -> default
-            style.html("");
-            VIEW_MODE = 1;
-            break;
-    }
-}
 
 function loadResources() {
 
@@ -272,16 +253,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.1.1".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.1.2".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.1.1",
+            title: "Updated to Version 1.1.2",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.1.1";
+        data.site_version = "1.1.2";
         saveToLocalStorage(false);
     }
     else {
@@ -1380,6 +1361,7 @@ function teamsToggle() {
         teamsEditorContainer.style.display = "";
         buttonText.innerText = "Characters"
         generateTeamCharOptions();
+        $("div#viewFilters")[0].style.display = 'none';
     }
     else if (mainDisplay == "Teams") {
         mainDisplay = "Characters";
@@ -2316,8 +2298,7 @@ function resetFilters() {
 
     filterChanged('group');
 
-    $("style#toggleViewStyle").html("");
-    VIEW_MODE = 1;
+    resetViewFilters();
 }
 
 function charsFromGroup(group) {
@@ -4066,6 +4047,8 @@ function createCharBox(newChar, charId, container, location) {
     if (location == "main") {
         if (disabledChars.includes(newChar)) {
             newDiv.classList.add("deselected");
+        } else {
+            newDiv.classList.add("selected");
         }
 
         if (window.matchMedia("(pointer: fine)").matches) {
