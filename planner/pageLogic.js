@@ -51,12 +51,12 @@ let alertColour = "#e1e1e1";
 
 function loadResources() {
 
-    $.getJSON('misc_data.json?2').done(function (json) {
+    $.getJSON('misc_data.json?3').done(function (json) {
         misc_data = json;
         checkResources();
     });
 
-    $.getJSON('charlist.json?4').done(function (json) {
+    $.getJSON('charlist.json?5').done(function (json) {
         charlist = json;
         checkResources();
     });
@@ -215,17 +215,17 @@ function init() {
 
     // generate resource modal tables
     createTable("school-mat-table", ["BD_4", "BD_3", "BD_2", "BD_1", "TN_4", "TN_3", "TN_2", "TN_1"], 0,
-        ["Hyakkiyako", "Red Winter", "Trinity", "Gehenna", "Abydos", "Millennium", "Shanhaijing", "Valkyrie"], 0,
+        ["Hyakkiyako", "Red Winter", "Trinity", "Gehenna", "Abydos", "Millennium", "Arius", "Shanhaijing", "Valkyrie"], 0,
         tableNavigation, document.getElementById("table-parent-1"), false, "resource");
     createTable("artifact-table-1", ["4", "3", "2", "1"], 0,
-        ["Nebra", "Phaistos", "Wolfsegg", "Nimrud", "Mandragora", "Rohonc", "Aether"], 8,
+        ["Nebra", "Phaistos", "Wolfsegg", "Nimrud", "Mandragora", "Rohonc", "Aether"], 9,
         tableNavigation, document.getElementById("table-parent-2"), true, "resource");
     createTable("artifact-table-2", ["4", "3", "2", "1"], 4,
-        ["Antikythera", "Voynich", "Haniwa", "Totem", "Baghdad", "Colgante", "Mystery"], 8,
+        ["Antikythera", "Voynich", "Haniwa", "Totem", "Baghdad", "Colgante", "Mystery"], 9,
         tableNavigation, document.getElementById("table-parent-3"), true, "resource");
 
     let gearNavigation = [];
-    createTable("gear-table", ["T6", "T5", "T4", "T3", "T2"], 0, ["Hat", "Gloves", "Shoes", "Bag", "Badge", "Hairpin", "Charm", "Watch", "Necklace"],
+    createTable("gear-table", ["T7", "T6", "T5", "T4", "T3", "T2"], 0, ["Hat", "Gloves", "Shoes", "Bag", "Badge", "Hairpin", "Charm", "Watch", "Necklace"],
         0, gearNavigation, document.getElementById('table-parent-4'), false, "gear");
 
     let navObj = {};
@@ -253,16 +253,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.1.2".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.1.3".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.1.2",
+            title: "Updated to Version 1.1.3",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.1.2";
+        data.site_version = "1.1.3";
         saveToLocalStorage(false);
     }
 
@@ -701,7 +701,7 @@ function inputNavigate(direction) {
             if (!targetCell) {
                 let navObj = navigationObjects[navValue];
 
-                if (navObj.type == "table") {
+                if (navObj && navObj.type == "table") {
 
                     let cell = navObj.object.revGet(focusedInput);
 
@@ -2845,6 +2845,16 @@ function populateCharResources(character) {
         else {
             xpText.parentElement.style.display = "none";
         }
+
+        let gxpText = document.getElementById('char-GXP');
+
+        if (resources["GearXp"] > 0) {
+            gxpText.innerText = commafy(resources["GearXp"]);
+            gxpText.parentElement.style.display = "";
+        }
+        else {
+            gxpText.parentElement.style.display = "none";
+        }
     }
 
 }
@@ -3049,13 +3059,13 @@ function openGearModal() {
     updateAggregateCount();
 
     if (gearDisplay == "Remaining") {
-        updateCells(neededMatDict, false, 'gear-count-text', 'misc-resource');
+        updateCells(neededMatDict, false, 'gear-count-text', 'misc-gear');
     }
     else if (gearDisplay == "Owned") {
-        updateCells(ownedMatDict, true, 'gear-count-text', 'miscsdasjda');
+        updateCells(ownedMatDict, true, 'gear-count-text', 'misc-gear');
     }
     else if (gearDisplay == "Total") {
-        updateCells(requiredMatDict, false, 'gear-count-text', 'miscsdasjda');
+        updateCells(requiredMatDict, false, 'gear-count-text', 'misc-gear');
     }
 
     hideEmptyGear();
@@ -3191,6 +3201,11 @@ function hideEmptyGear() {
     var gearTable = document.getElementById('gear-table');
 
     hideEmptyCells(gearTable);
+
+    hideEmptyCell("GXP_1");
+    hideEmptyCell("GXP_2");
+    hideEmptyCell("GXP_3");
+    hideEmptyCell("GXP_4");
 }
 
 function hideEmptyCells(table) {
@@ -3356,6 +3371,10 @@ function updatedResource() {
         updateXP();
         updateMatDisplay('Xp', ownedMatDict['Xp'], false, 'misc');
     }
+    else if (dictKey.substring(0, 4) == "GXP_") {
+        updateGearXP();
+        updateMatDisplay('GearXp', ownedMatDict['GearXp'], false, 'misc');
+    }
     else {
         updateNeededMat(dictKey);
     }
@@ -3383,6 +3402,20 @@ function updateXP() {
     }
     else {
         neededMatDict["Xp"] = 0;
+    }
+}
+
+function updateGearXP() {
+
+    var gxpOwned = parseInt(ownedMatDict["GXP_1"] ?? 0) * 90 + parseInt(ownedMatDict["GXP_2"] ?? 0) * 360 +
+        parseInt(ownedMatDict["GXP_3"] ?? 0) * 1440 + parseInt(ownedMatDict["GXP_4"] ?? 0) * 5760;
+
+    ownedMatDict["GearXp"] = gxpOwned;
+    if (requiredMatDict["GearXp"] != undefined) {
+        neededMatDict["GearXp"] = Math.max(requiredMatDict["GearXp"] - gxpOwned, 0);
+    }
+    else {
+        neededMatDict["GearXp"] = 0;
     }
 }
 
@@ -3491,7 +3524,13 @@ function calcGearCost(charObj, gear, gearTarget, slotNum, matDict) {
 
         if (gearObj && targetGearObj) {
 
-            if (gearObj.xp && targetGearObj.xp) {
+            if ((gearObj.xp || gearObj.xp == 0) && targetGearObj.xp) {
+
+                if (!matDict["GearXp"]) {
+                    matDict["GearXp"] = 0;
+                }
+
+                matDict["GearXp"] += targetGearObj.xp - gearObj.xp;
             }
 
             if ((gearObj.credit || gearObj.credit == 0) && targetGearObj.credit) {
@@ -3506,7 +3545,7 @@ function calcGearCost(charObj, gear, gearTarget, slotNum, matDict) {
             if (charObj?.Equipment) {
                 let gearName = charObj.Equipment["Slot" + slotNum];
 
-                for (let i = 2; i <= 6; i++) {
+                for (let i = 2; i <= 7; i++) {
 
                     let currentBP = gearObj["T" + i] ?? 0;
                     let targetBP = targetGearObj["T" + i];
@@ -3574,6 +3613,8 @@ function updateAggregateCount() {
     calculateRaidCoins();
 
     updateXP();
+
+    updateGearXP();
 }
 
 function calculateRaidCoins() {
@@ -3678,6 +3719,7 @@ function switchGearDisplay(displayType) {
     let btnTotal = document.getElementById("switch-gear-total");
     let btnRemaining = document.getElementById("switch-gear-remaining");
     let displayText = document.getElementById("current-gear-display");
+    let gxpInputs = document.getElementById("gear-xp-input-wrapper");
     //var inputs = document.getElementsByClassName("input-wrapper");
 
     if (displayType == "Owned") {
@@ -3685,24 +3727,27 @@ function switchGearDisplay(displayType) {
         btnOwned.parentElement.style.display = "none";
         btnTotal.parentElement.style.display = "";
         btnRemaining.parentElement.style.display = "";
+        gxpInputs.style.display = "";
         displayText.innerText = "Owned";
-        updateCells(ownedMatDict, true, 'gear-count-text', 'miscasdjashdkja');
+        updateCells(ownedMatDict, true, 'gear-count-text', 'misc-gear');
     }
     else if (displayType == "Remaining") {
         gearDisplay = "Remaining";
         btnOwned.parentElement.style.display = "";
         btnTotal.parentElement.style.display = "";
         btnRemaining.parentElement.style.display = "none";
+        gxpInputs.style.display = "none";
         displayText.innerText = "Remaining Needed";
-        updateCells(neededMatDict, false, 'gear-count-text', 'miscasdasdasd');
+        updateCells(neededMatDict, false, 'gear-count-text', 'misc-gear');
     }
     else if (displayType == "Total") {
         gearDisplay = "Total";
         btnOwned.parentElement.style.display = "";
         btnTotal.parentElement.style.display = "none";
         btnRemaining.parentElement.style.display = "";
+        gxpInputs.style.display = "none";
         displayText.innerText = "Total Needed";
-        updateCells(requiredMatDict, false, 'gear-count-text', 'misczdsdasd');
+        updateCells(requiredMatDict, false, 'gear-count-text', 'misc-gear');
     }
 
     hideEmptyGear();

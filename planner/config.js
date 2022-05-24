@@ -132,10 +132,10 @@ const matLookup = new TwoWayMap({
     4051: "TN_2_Millennium",
     4052: "TN_3_Millennium",
     4053: "TN_4_Millennium",
-    4060: "BD_1_Arius",
-    4061: "BD_2_Arius",
-    4062: "BD_3_Arius",
-    4063: "BD_4_Arius",
+    4060: "TN_1_Arius",
+    4061: "TN_2_Arius",
+    4062: "TN_3_Arius",
+    4063: "TN_4_Arius",
     4070: "TN_1_Shanhaijing",
     4071: "TN_2_Shanhaijing",
     4072: "TN_3_Shanhaijing",
@@ -152,10 +152,11 @@ const gearLookup = ["T2_Hat", "T2_Gloves", "T2_Shoes", "T2_Bag", "T2_Badge", "T2
     "T3_Hat", "T3_Gloves", "T3_Shoes", "T3_Bag", "T3_Badge", "T3_Hairpin", "T3_Charm", "T3_Watch", "T3_Necklace",
     "T4_Hat", "T4_Gloves", "T4_Shoes", "T4_Bag", "T4_Badge", "T4_Hairpin", "T4_Charm", "T4_Watch", "T4_Necklace",
     "T5_Hat", "T5_Gloves", "T5_Shoes", "T5_Bag", "T5_Badge", "T5_Hairpin", "T5_Charm", "T5_Watch", "T5_Necklace",
-    "T6_Hat", "T6_Gloves", "T6_Shoes", "T6_Bag", "T6_Badge", "T6_Hairpin", "T6_Charm", "T6_Watch", "T6_Necklace"]
+    "T6_Hat", "T6_Gloves", "T6_Shoes", "T6_Bag", "T6_Badge", "T6_Hairpin", "T6_Charm", "T6_Watch", "T6_Necklace",
+    "T7_Hat", "T7_Gloves", "T7_Shoes", "T7_Bag", "T7_Badge", "T7_Hairpin", "T7_Charm", "T7_Watch", "T7_Necklace"]
 
 var rowColours = {
-    "Abydos": "#9ce4fc66", "Gehenna": "#ec7d7966", "Millennium": "#9ebdfa66", "Trinity": "#fcd19c66", "Hyakkiyako": "#f0a8c466",
+    "Abydos": "#9ce4fc66", "Gehenna": "#ec7d7966", "Millennium": "#9ebdfa66", "Trinity": "#fcd19c66", "Hyakkiyako": "#f0a8c466", "Arius": "#dbdad85e",
     "Shanhaijing": "#b4feca66", "Red Winter": "#d98c9e66", "Valkyrie": "#a1a9e166", "Nebra": "#99919466", "Phaistos": "#fdf7e766", "Wolfsegg": "#93a5f266",
     "Nimrud": "#67e4ef66", "Mandragora": "#a1ede566", "Rohonc": "#c9ab9366", "Aether": "#ca96e066", "Antikythera": "#f7e28866",
     "Voynich": "#84b28066", "Haniwa": "#e7bef466", "Baghdad": "#d179a066", "Totem": "#b77e6166", "Fleece": "#faf69f66", "Kikuko": "#ef957f66",
@@ -168,7 +169,7 @@ const propertyColours = {
     "Light": "#ec242487", "Heavy": "#fff10099", "Special": "#1070a5c2",
     "Striker": "#ec242487",
     "Abydos": "#9ce4fc66", "Gehenna": "#ec7d7966", "Millennium": "#9ebdfa66", "Trinity": "#fcd19c66", "Hyakkiyako": "#f0a8c466",
-    "Shanhaijing": "#b4feca66", "Red Winter": "#d98c9e66", "Valkyrie": "#a1a9e166"
+    "Arius": "#dbdad85e", "Shanhaijing": "#b4feca66", "Red Winter": "#d98c9e66", "Valkyrie": "#a1a9e166"
 }
 
 const exportDataVersion = 2;
@@ -270,7 +271,7 @@ const inputValidation = {
         id: "input_level_current",
         location: "characterModal",
         min: "1",
-        max: "78",
+        max: "80",
         default: "1",
         name: "Level",
         "navigation": "direct",
@@ -281,7 +282,7 @@ const inputValidation = {
         id: "input_level_target",
         location: "characterModal",
         min: "1",
-        max: "78",
+        max: "80",
         default: "1",
         name: "Level Target",
         requisite: {
@@ -666,7 +667,7 @@ const inputValidation = {
         id: "input_gear1_current",
         location: "characterModal",
         min: "0",
-        max: "6",
+        max: "7",
         default: "0",
         name: "Gear 1",
         "navigation": "direct",
@@ -679,7 +680,7 @@ const inputValidation = {
         id: "input_gear1_target",
         location: "characterModal",
         min: "0",
-        max: "6",
+        max: "7",
         default: "0",
         name: "Gear 1 Target",
         requisite: {
@@ -700,7 +701,7 @@ const inputValidation = {
         id: "input_gear2_current",
         location: "characterModal",
         min: "0",
-        max: "6",
+        max: "7",
         default: "0",
         name: "Gear 2",
         requisite: {
@@ -713,7 +714,7 @@ const inputValidation = {
                 levels: [
                     {
                         required: "15",
-                        max: "6"
+                        max: "7"
                     },
                     {
                         max: "0"
@@ -731,7 +732,7 @@ const inputValidation = {
         id: "input_gear2_target",
         location: "characterModal",
         min: "0",
-        max: "6",
+        max: "7",
         default: "0",
         name: "Gear 2 Target",
         requisite: {
@@ -744,7 +745,7 @@ const inputValidation = {
                 levels: [
                     {
                         required: "15",
-                        max: "6"
+                        max: "7"
                     },
                     {
                         max: "0"
@@ -768,7 +769,7 @@ const inputValidation = {
         id: "input_gear3_current",
         location: "characterModal",
         min: "0",
-        max: "6",
+        max: "7",
         default: "0",
         name: "Gear 3",
         requisite: {
@@ -781,7 +782,7 @@ const inputValidation = {
                 levels: [
                     {
                         required: "35",
-                        max: "6"
+                        max: "7"
                     },
                     {
                         max: "0"
@@ -799,7 +800,7 @@ const inputValidation = {
         id: "input_gear3_target",
         location: "characterModal",
         min: "0",
-        max: "6",
+        max: "7",
         default: "0",
         name: "Gear 3 Target",
         requisite: {
@@ -812,7 +813,7 @@ const inputValidation = {
                 levels: [
                     {
                         required: "35",
-                        max: "6"
+                        max: "7"
                     },
                     {
                         max: "0"
@@ -853,7 +854,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Right": "input-BD_4_Shanhaijing"
+        "Right": "input-BD_4_Arius"
     },
     "BD_1_Trinity": {
         "id": "input-BD_1_Trinity",
@@ -879,6 +880,14 @@ const inputValidation = {
         "max": "999",
         "navigation": "resourceTable",
         "Right": "input-BD_4_Valkyrie"
+    },
+    "BD_1_Arius": {
+        "id": "input-BD_1_Arius",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "999",
+        "navigation": "resourceTable",
+        "Right": "input-BD_4_Shanhaijing"
     },
     "BD_1_RedWinter": {
         "id": "input-BD_1_RedWinter",
@@ -940,6 +949,13 @@ const inputValidation = {
         "max": "999",
         "navigation": "resourceTable"
     },
+    "BD_2_Arius": {
+        "id": "input-BD_2_Arius",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "999",
+        "navigation": "resourceTable"
+    },
     "BD_2_RedWinter": {
         "id": "input-BD_2_RedWinter",
         "location": "resourceModal",
@@ -993,6 +1009,13 @@ const inputValidation = {
     },
     "BD_3_Shanhaijing": {
         "id": "input-BD_3_Shanhaijing",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "999",
+        "navigation": "resourceTable"
+    },
+    "BD_3_Arius": {
+        "id": "input-BD_3_Arius",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
@@ -1058,6 +1081,14 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
+        "Left": "input-BD_1_Arius"
+    },
+    "BD_4_Arius": {
+        "id": "input-BD_4_Arius",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "999",
+        "navigation": "resourceTable",
         "Left": "input-BD_1_Millennium"
     },
     "BD_4_RedWinter": {
@@ -1099,7 +1130,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Right": "input-TN_4_Shanhaijing"
+        "Right": "input-TN_4_Arius"
     },
     "TN_1_Trinity": {
         "id": "input-TN_1_Trinity",
@@ -1125,6 +1156,14 @@ const inputValidation = {
         "max": "999",
         "navigation": "resourceTable",
         "Right": "input-TN_4_Valkyrie"
+    },
+    "TN_1_Arius": {
+        "id": "input-TN_1_Arius",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "999",
+        "navigation": "resourceTable",
+        "Right": "input-TN_4_Shanhaijing"
     },
     "TN_1_RedWinter": {
         "id": "input-TN_1_RedWinter",
@@ -1181,6 +1220,13 @@ const inputValidation = {
     },
     "TN_2_Shanhaijing": {
         "id": "input-TN_2_Shanhaijing",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "999",
+        "navigation": "resourceTable"
+    },
+    "TN_2_Arius": {
+        "id": "input-TN_2_Arius",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
@@ -1244,6 +1290,13 @@ const inputValidation = {
         "max": "999",
         "navigation": "resourceTable"
     },
+    "TN_3_Arius": {
+        "id": "input-TN_3_Arius",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "999",
+        "navigation": "resourceTable"
+    },
     "TN_3_RedWinter": {
         "id": "input-TN_3_RedWinter",
         "location": "resourceModal",
@@ -1302,6 +1355,14 @@ const inputValidation = {
     },
     "TN_4_Shanhaijing": {
         "id": "input-TN_4_Shanhaijing",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "999",
+        "navigation": "resourceTable",
+        "Left": "input-TN_1_Arius"
+    },
+    "TN_4_Arius": {
+        "id": "input-TN_4_Arius",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
@@ -2190,5 +2251,108 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "gearTable"
-    }
+    },
+    "T7_Hat": {
+        "id": "input-T7_Hat",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T7_Gloves": {
+        "id": "input-T7_Gloves",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T7_Shoes": {
+        "id": "input-T7_Shoes",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T7_Bag": {
+        "id": "input-T7_Bag",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T7_Badge": {
+        "id": "input-T7_Badge",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T7_Hairpin": {
+        "id": "input-T7_Hairpin",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T7_Charm": {
+        "id": "input-T7_Charm",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T7_Watch": {
+        "id": "input-T7_Watch",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T7_Necklace": {
+        "id": "input-T7_Necklace",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "GXP_4": {
+        "id": "input-GXP_4",
+        "location": "gearModal",
+        "min": "0",
+        "max": "999",
+        "navigation": "direct",
+        "Right": "input-GXP_3",
+        "Down": "input-GXP_3"
+    },
+    "GXP_3": {
+        "id": "input-GXP_3",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "direct",
+        "Right": "input-GXP_2",
+        "Left": "input-GXP_4",
+        "Down": "input-GXP_2",
+        "Up": "input-GXP_4"
+    },
+    "GXP_2": {
+        "id": "input-GXP_2",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "direct",
+        "Right": "input-GXP_1",
+        "Left": "input-GXP_3",
+        "Down": "input-GXP_1",
+        "Up": "input-GXP_3"
+    },
+    "GXP_1": {
+        "id": "input-GXP_1",
+        "location": "gearModal",
+        "min": "0",
+        "max": "99999",
+        "navigation": "direct",
+        "Left": "input-GXP_2",
+        "Up": "input-GXP_2"
+    },
 }

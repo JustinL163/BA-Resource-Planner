@@ -12,7 +12,7 @@
         gtag('config', 'G-3XZ18739WF');
     </script>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="styles.css?10">
+    <link rel="stylesheet" href="styles.css?11">
     <title>Blue Archive Resource Planner</title>
     <style id="toggleViewStyle" class="modifyable"></style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -20,8 +20,8 @@
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.12/lib/draggable.bundle.js"></script>
-    <script src="config.js?6"></script>
-    <script src="pageLogic.js?19"></script>
+    <script src="config.js?7"></script>
+    <script src="pageLogic.js?20"></script>
     <script src="filters.js?1"></script>
     <style id="toggleViewStyle" class="modifyable"></style>
 </head>
@@ -329,6 +329,11 @@
                                     style="max-width: 80px; align-self: center; padding: 0px 10px;">
                                 <p id="char-XP" class="char-misc-text" style="align-self: center;"></p>
                             </div>
+                            <div class="char-misc-box" style="display: none;">
+                                <img draggable="false" src="icons/gxp.png"
+                                    style="max-width: 80px; align-self: center; padding: 0px 10px;">
+                                <p id="char-GXP" class="char-misc-text" style="align-self: center;"></p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -420,6 +425,32 @@
                 <div id="table-parent-4" style="width: 100%;"></div>
             </div>
             <div id="other-resource-wrapper">
+                <div id="gear-xp-input-wrapper" class="resource-box" style="align-items: center; display: none;">
+                    <div class="xp-wrapper editable">
+                        <img draggable="false" class="xp-icon" src="icons/GXP_4.png">
+                        <p id="GXP_4" class="gear-count-text"></p>
+                        <input id="input-GXP_4" class="resource-input xp-input" type="number">
+                    </div>
+                    <div class="xp-wrapper editable">
+                        <img draggable="false" class="xp-icon" src="icons/GXP_3.png">
+                        <p id="GXP_3" class="gear-count-text"></p>
+                        <input id="input-GXP_3" class="resource-input xp-input" type="number">
+                    </div>
+                    <div class="xp-wrapper editable">
+                        <img draggable="false" class="xp-icon" src="icons/GXP_2.png">
+                        <p id="GXP_2" class="gear-count-text"></p>
+                        <input id="input-GXP_2" class="resource-input xp-input" type="number">
+                    </div>
+                    <div class="xp-wrapper editable">
+                        <img draggable="false" class="xp-icon" src="icons/GXP_1.png">
+                        <p id="GXP_1" class="gear-count-text"></p>
+                        <input id="input-GXP_1" class="resource-input xp-input" type="number">
+                    </div>
+                </div>
+                <div id="xp-display-wrapper" class="resource-box">
+                    <img draggable="false" src="icons/gxp.png" style="max-width: 80px; align-self: center;">
+                    <p id="GearXp" class="misc-gear no-input" style="align-self: center; margin-left: 10px;"></p>
+                </div>
                 <div class="resource-box" style="border: none;">
                     <button id="switch-gear-owned" class="button-switch-display" style="background-color: #c8e6f5"
                         onclick="switchGearDisplay('Owned')"></button>
