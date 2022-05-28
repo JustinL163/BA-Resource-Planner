@@ -314,6 +314,8 @@ function init() {
                         timer: 4000
                     })
                 }
+
+                updateTooltip(modalChar, key);
             })
 
             inputElement.addEventListener('focusin', (event) => {
@@ -2692,21 +2694,38 @@ function populateCharModal(character) {
 
     updateStarDisplays(character, true);
 
-    tooltips[0].setProps({
-        content: getSkillFormatted(charId, "Ex", charData.current?.ex, charData.target?.ex)
-    })
+    updateTooltip(character, "ex");
+    updateTooltip(character, "basic");
+    updateTooltip(character, "passive");
+    updateTooltip(character, "sub");
 
-    tooltips[1].setProps({
-        content: getSkillFormatted(charId, "Skill1", charData.current?.basic, charData.target?.basic)
-    })
+}
 
-    tooltips[2].setProps({
-        content: getSkillFormatted(charId, "Skill2", charData.current?.passive, charData.target?.passive)
-    })
-    
-    tooltips[3].setProps({
-        content: getSkillFormatted(charId, "Skill3", charData.current?.sub, charData.target?.sub)
-    })
+function updateTooltip(charName, skill) {
+
+    let charId = charMap.get(charName);
+    let charData = charDataFromModal(charName);
+
+    if (skill == "ex" || skill == "ex_target") {
+        tooltips[0].setProps({
+            content: getSkillFormatted(charId, "Ex", charData.current?.ex, charData.target?.ex)
+        })
+    }
+    else if (skill == "basic" || skill == "basic_target") { 
+        tooltips[1].setProps({
+            content: getSkillFormatted(charId, "Skill1", charData.current?.basic, charData.target?.basic)
+        })
+    }
+    else if (skill == "passive" || skill == "passive_target") { 
+        tooltips[2].setProps({
+            content: getSkillFormatted(charId, "Skill2", charData.current?.passive, charData.target?.passive)
+        })
+    }
+    else if (skill == "sub" || skill == "sub_target") { 
+        tooltips[3].setProps({
+            content: getSkillFormatted(charId, "Skill3", charData.current?.sub, charData.target?.sub)
+        })
+    }
 }
 
 function getSkillFormatted(charId, skill, level, targetLevel) {
