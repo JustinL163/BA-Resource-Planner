@@ -58,7 +58,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('skillinfo.json?1').done(function (json) {
+    $.getJSON('skillinfo.json?2').done(function (json) {
         skillinfo = json;
         checkResources();
     });
