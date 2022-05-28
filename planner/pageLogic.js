@@ -35,7 +35,7 @@ var toastCooldownMsg = "";
 
 var charMode = "Edit";
 
-var misc_data, charlist;
+var misc_data, charlist, skillinfo;
 
 let charMap, charNames, inputMap;
 
@@ -43,6 +43,8 @@ let focusedInput;
 let navigationObjects = {};
 
 let preInput;
+
+let tooltips = [];
 
 let keyPressed = {};
 let modalOpen = "";
@@ -56,6 +58,11 @@ function loadResources() {
         checkResources();
     });
 
+    $.getJSON('skillinfo.json?1').done(function (json) {
+        skillinfo = json;
+        checkResources();
+    });
+
     $.getJSON('charlist.json?5').done(function (json) {
         charlist = json;
         checkResources();
@@ -65,7 +72,7 @@ function loadResources() {
 
 function checkResources() {
 
-    if (charlist && misc_data) {
+    if (charlist && misc_data && skillinfo) {
 
         charMap = new Map()
         charNames = new Map()
@@ -253,16 +260,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.1.3".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.1.4".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.1.3",
+            title: "Updated to Version 1.1.4",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.1.3";
+        data.site_version = "1.1.4";
         saveToLocalStorage(false);
     }
 
@@ -454,6 +461,30 @@ function init() {
 
     rebuildFilters();
     document.getElementById('filter-groups').value = "All";
+
+    tooltips[0] = tippy('#ex-img', {
+        content: "",
+        allowHTML: true,
+        theme: 'light',
+    })[0];
+
+    tooltips[1] = tippy('#basic-img', {
+        content: "",
+        allowHTML: true,
+        theme: 'light',
+    })[0];
+
+    tooltips[2] = tippy('#enhanced-img', {
+        content: "",
+        allowHTML: true,
+        theme: 'light',
+    })[0];
+
+    tooltips[3] = tippy('#sub-img', {
+        content: "",
+        allowHTML: true,
+        theme: 'light',
+    })[0];
 
     setInterval(() => {
         if (saveTime != 0) {
@@ -2660,6 +2691,71 @@ function populateCharModal(character) {
     }
 
     updateStarDisplays(character, true);
+
+    tooltips[0].setProps({
+        content: getSkillFormatted(charId, "Ex", charData.current?.ex, charData.target?.ex)
+    })
+
+    tooltips[1].setProps({
+        content: getSkillFormatted(charId, "Skill1", charData.current?.basic, charData.target?.basic)
+    })
+
+    tooltips[2].setProps({
+        content: getSkillFormatted(charId, "Skill2", charData.current?.passive, charData.target?.passive)
+    })
+    
+    tooltips[3].setProps({
+        content: getSkillFormatted(charId, "Skill3", charData.current?.sub, charData.target?.sub)
+    })
+}
+
+function getSkillFormatted(charId, skill, level, targetLevel) {
+
+    if (level == 0) {
+        level = 1;
+    }
+    if (targetLevel == 0) {
+        targetLevel = 1;
+    }
+
+    let desc = skillinfo[charId].Skills[skill].DescEn;
+    let params = skillinfo[charId].Skills[skill].Parameters;
+    let cost = skillinfo[charId].Skills[skill].Cost;
+
+    let paramCount = 1;
+    while (true) {
+
+        let paramString = "<?" + paramCount + ">";
+
+        if (desc.includes(paramString)) {
+            
+            let paramFilled = '<span style="color: #008c9b;">' + params[paramCount - 1][level - 1] + "</span>";
+
+            if (level != targetLevel) {
+                paramFilled += '/<span style="color: #588f00;">' + params[paramCount - 1][targetLevel - 1] + "</span>";
+            }
+
+            desc = desc.replaceAll(paramString, paramFilled);
+
+            paramCount++;
+        }
+        else {
+            break;
+        }
+    }
+
+    if (skill == "Ex") {
+        
+        let costText = 'Cost: <span style="color: #008c9b;">' + cost[level - 1] + "</span>";
+
+        if (level != targetLevel && cost[level - 1] != cost[targetLevel - 1]) {
+            costText += '/<span style="color: #588f00;">' + cost[targetLevel - 1] + "</span>";
+        }
+
+        desc = costText + "<br>" + desc;
+    }
+
+    return desc;
 }
 
 function charDataFromModal(character) {
