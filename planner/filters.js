@@ -32,6 +32,12 @@ $(document).ready(function () {
 function toggleViewFilters() {
     buildFilterList();
     $("div#viewFilters").toggle();
+    if (window.matchMedia("(max-width: 800px)").matches) {
+        $("#charsContainerActions").toggle()
+    }
+    else {
+        $("#charsContainerActions").show()
+    }
 }
 
 function buildFilterList() {
@@ -42,6 +48,7 @@ function buildFilterList() {
     let filters = getAcceptedDynamicFilters();
 
     let filterGroupElements = [
+        '<button id="button-filters-close" onclick="toggleViewFilters()">Close</button>',
         buildFilterGroup("", {
             label: "Basic",
             options: ["Selected", "Deselected"]

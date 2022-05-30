@@ -260,16 +260,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.1.4".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.1.5".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.1.4",
+            title: "Updated to Version 1.1.5",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.1.4";
+        data.site_version = "1.1.5";
         saveToLocalStorage(false);
     }
 
@@ -1189,7 +1189,21 @@ function colourTableRows(tableId) {
 
 }
 
+function freezeBody(mode) {
+    
+    if (mode) {
+        let top = $("body").scrollTop(); 
+        $("body").css('position','fixed').css('overflow','hidden').css('top',-top).css('width','100%');
+    }
+    else {
+        let top = $("body").position().top; 
+        $("body").css('position','relative').css('overflow','auto').css('top',0).scrollTop(-top);
+    }
+}
+
 function openModal(e) {
+
+    freezeBody(true);
 
     var fromChar = false;
     if (this.id.substring(0, 5) == "char_") {
@@ -1290,6 +1304,8 @@ function openModal(e) {
 
 function closeModal(animated, forced) {
 
+    freezeBody(false);
+
     if (!forced && isCharModalDirty()) {
         Swal.fire({
             title: 'Unsaved Changes',
@@ -1375,6 +1391,11 @@ function teamsToggle() {
         buttonText.innerText = "Characters"
         generateTeamCharOptions();
         $("div#viewFilters")[0].style.display = 'none';
+        if (currentGroup) {
+            clearTeams();
+            borrowed = false;
+            loadGroup(currentGroup);
+        }
     }
     else if (mainDisplay == "Teams") {
         mainDisplay = "Characters";
@@ -3129,6 +3150,8 @@ function updateStarDisplay(id, character, charId, type, fromTemp) {
 
 function openResourceModal() {
 
+    freezeBody(true);
+
     modalOpen = "resourceModal";
 
     var modal = document.getElementById("resourceModal");
@@ -3164,6 +3187,8 @@ function openResourceModal() {
 }
 
 function openGearModal() {
+
+    freezeBody(true);
 
     modalOpen = "gearModal";
 
@@ -3268,6 +3293,8 @@ function updateMatDisplay(matName, matValue, editable, type) {
 
 function closeResourceModal() {
 
+    freezeBody(false);
+
     var modal = document.getElementById("resourceModal");
 
     modal.style.visibility = "hidden";
@@ -3277,6 +3304,8 @@ function closeResourceModal() {
 }
 
 function closeGearModal() {
+
+    freezeBody(false);
 
     var modal = document.getElementById("gearModal");
 
@@ -4015,6 +4044,9 @@ async function getImportData() {
         refreshAllChars();
         rebuildGroups();
         rebuildFilters();
+
+        generateCharOptions();
+        generateTeamBorrowOptions();
 
         gtag('event', 'action_import');
     }
