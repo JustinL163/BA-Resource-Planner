@@ -1203,8 +1203,6 @@ function freezeBody(mode) {
 
 function openModal(e) {
 
-    freezeBody(true);
-
     var fromChar = false;
     if (this.id.substring(0, 5) == "char_") {
         fromChar = true;
@@ -1248,6 +1246,7 @@ function openModal(e) {
     modalCharID = this.id;
 
     if (fromChar) {
+        freezeBody(true);
         modalOpen = "characterModal";
         this.style = "visibility:hidden";
 
