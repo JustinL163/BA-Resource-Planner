@@ -493,7 +493,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "Deals an additional <?1> damage to enemies not in cover.",
+                "DescEn": "Deals <?1> damage as an additional hit to enemies not in cover.",
                 "Parameters": [
                     [
                         "2.7%",
@@ -706,7 +706,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "Deals an additional <?1> damage to enemies when Iori is not taking cover.",
+                "DescEn": "Deals <?1> damage as an additional hit to enemies when Iori is not taking cover.",
                 "Parameters": [
                     [
                         "22.6%",
@@ -816,7 +816,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "Deals an additional <?1> damage to enemies marked by Maki.",
+                "DescEn": "Deals <?1> damage as an additional hit to enemies marked by Maki.",
                 "Parameters": [
                     [
                         "14.9%",
@@ -1036,7 +1036,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "Deals between <?1> ~ <?2> additional damage based on Izumi's current HP.",
+                "DescEn": "Deals between <?1> ~ <?2> damage as an additional hit to enemies damage based on Izumi's current HP.",
                 "Parameters": [
                     [
                         "0.4%",
@@ -1254,7 +1254,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "Deals an additional <?1> damage to medium-sized enemies.",
+                "DescEn": "Deals <?1> damage as an additional hit to <b>medium</b> sized enemies.",
                 "Parameters": [
                     [
                         "50.7%",
@@ -2013,7 +2013,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "When Yuzu uses either her Normal or EX Skill, increases CRIT.DMG by <?1> for 6s.",
+                "DescEn": "When Yuzu uses either her Basic or EX Skill, increases CRIT.DMG by <?1> for 6s.",
                 "Parameters": [
                     [
                         "22.3%",
@@ -2128,7 +2128,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "Deals an additional <?1> damage to enemies inflicted with a debuff.",
+                "DescEn": "Deals <?1> damage as an additional hit to enemies inflicted with a debuff.",
                 "Parameters": [
                     [
                         "46.6%",
@@ -2688,7 +2688,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "Deals an additional <?1> damage to enemies inflicted with a debuff.",
+                "DescEn": "Deals <?1> damage as an additional hit to enemies inflicted with a debuff.",
                 "Parameters": [
                     [
                         "3.8%",
@@ -2915,7 +2915,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "Deals an additional <?1> damage to medium-sized enemies.",
+                "DescEn": "Deals <?1> damage as an additional hit to <b>medium</b> sized enemies.",
                 "Parameters": [
                     [
                         "3.2%",
@@ -3045,10 +3045,10 @@
                         "14.2%",
                         "16.7%",
                         "17.4%",
-                        "18.1%",
+                        "18%",
                         "20.6%",
                         "21.3%",
-                        "22%",
+                        "21.9%",
                         "24.5%"
                     ]
                 ]
@@ -3216,7 +3216,7 @@
                 ]
             },
             "Skill1": {
-                "DescEn": "Every 30s, increases the ATK of an ally by <?1> for 20s. Effect can bounce to additional nearby allies who have not received the buff yet, up to 3 times (cannot affect Natsu).",
+                "DescEn": "Every 30s, throws a pie to the nearest ally, increasing their ATK by <?1> for 20s. The pie can bounce and give this effect to additional allies who have not yet received it, up to 3 times (cannot affect Natsu).",
                 "Parameters": [
                     [
                         "8.5%",
@@ -3260,7 +3260,7 @@
                         "9.8%",
                         "10.1%",
                         "11.6%",
-                        "12%",
+                        "11.9%",
                         "12.3%",
                         "13.8%"
                     ]
@@ -3410,7 +3410,7 @@
                     6,
                     6
                 ],
-                "DescEn": "Consumes all stacks of misdeeds, generating <?1> units of skill cost for each stack consumed and dealing <?2> damage to one enemy that ricochets to nearby enemies, up to 11 times.",
+                "DescEn": "Consumes all misdeeds stacks, generating <?1> units of skill cost for each stack consumed and dealing <?2> damage to one enemy that ricochets to nearby enemies, up to 11 times.",
                 "Parameters": [
                     [
                         "0.5",
@@ -3463,7 +3463,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "Every 6 enemies defeated by allies, Aru gains one stack of misdeeds. Aru's DEF is decreased by <?1> for each stack held, and she can hold a maximum of <?2> stacks.",
+                "DescEn": "For every 6 enemies defeated by allies, Aru gains one misdeeds stack. Aru's defense is decreased by <?1> per stack held and she can hold a maximum of <?2> stacks.",
                 "Parameters": [
                     [
                         "26.8%",
@@ -3544,7 +3544,7 @@
                 ]
             },
             "Skill1": {
-                "DescEn": "Every 50s, deals <?1> damage to enemies in a straight line. If Mutsuki has 6 stacks of little devils, the damage is increased by <?2>.",
+                "DescEn": "Every 50s, deals <?1> damage to enemies in a straight line. If Mutsuki has 6 little devils stacks, deals an additional <?2> damage.",
                 "Parameters": [
                     [
                         "217%",
@@ -3590,7 +3590,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "For every 3 hits from Mutsuki's EX Skill, she gains one stack of little devils, lasting for 56s. Mutsuki's CRIT.DMG is increased by <?1> for each stack held, and she can hold a maximum of 6 stacks.",
+                "DescEn": "Every <b>3</b> times that Mutsuki's EX Skill hits an enemy, she gains one little devils stack, lasting for 56s. Mutsuki's critical damage is increased by <?1> per stack held, and she can hold a maximum of 6 stacks. The duration of existing stacks is not refreshed upon gaining a new stack.",
                 "Parameters": [
                     [
                         "2.1%",
@@ -3647,7 +3647,7 @@
                     4,
                     4
                 ],
-                "DescEn": "Deals <?1> damage to one enemy and inflicts damage accumulation for 10s. For the duration of the debuff, all damage taken from allies will be accumulated and dealt as additional <b class='ba-col-mystic'>Mystic</b> damage once it expires, up to a maximum of <?2> of Wakamo's attack. (This additional damage cannot critically hit.)",
+                "DescEn": "Deals <?1> damage to one enemy and inflicts damage accumulation for 10s. For the duration of the debuff, all damage taken from allies will be accumulated and dealt again as <b class='ba-col-mystic'>Mystic</b> damage once it expires, up to a maximum of <?2> of Wakamo's attack. (This additional damage cannot critically hit.)",
                 "Parameters": [
                     [
                         "203%",
@@ -3700,7 +3700,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "Deals an additional <?1> damage to bosses.",
+                "DescEn": "Deals <?1> damage as an additional hit to BOSS enemies.",
                 "Parameters": [
                     [
                         "15.6%",
@@ -3860,7 +3860,7 @@
                     4,
                     3
                 ],
-                "DescEn": "Reduces the EX Cost of an ally's next <b>two</b> EX skills by 50% (reduction is rounded down to the nearest whole number) and increases their ATK by <?1> for 46s. Cannot target self.",
+                "DescEn": "Reduces the EX Cost of an ally's next <b>two</b> EX skills by 50% (reduction is rounded down to the nearest whole number) and increases their ATK by <?1> for 46s. Cannot target self or tactical support vehicles.",
                 "Parameters": [
                     [
                         "10%",
@@ -4009,7 +4009,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "Deals an additional <?1> damage to medium-sized enemies.",
+                "DescEn": "Deals <?1> damage as an additional hit to <b>medium</b> sized enemies.",
                 "Parameters": [
                     [
                         "21.8%",
@@ -4079,7 +4079,7 @@
                         "23.9%",
                         "27.5%",
                         "34.7%",
-                        "38.8%",
+                        "38.3%",
                         "45.5%"
                     ]
                 ]
@@ -4142,7 +4142,7 @@
                         "4343",
                         "4560",
                         "4777",
-                        "5654",
+                        "5646",
                         "5863",
                         "6080",
                         "6948",
@@ -4229,7 +4229,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "Reduces damage taken by <?1> for 16s after Miyako uses her EX skill.",
+                "DescEn": "Increases damage taken by <?1> for 16s after Miyako uses her EX skill.",
                 "Parameters": [
                     [
                         "19%",
@@ -4408,7 +4408,7 @@
                 ]
             },
             "Skill1": {
-                "DescEn": "Every 7 normal attacks, deals <?1> damage to one enemy. If the enemy is medium-sized, decreases their DEF by <?2> for 20s.",
+                "DescEn": "Every 7 normal attacks, deals <?1> damage to one enemy. If the enemy is <b>medium</b> sized, decreases their DEF by <?2> for 20s.",
                 "Parameters": [
                     [
                         "418%",
@@ -4557,7 +4557,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "Deals an additional <?1>/<?2>/<?3>/<?4>/<?5> damage to enemies depending on the number of debuffs inflicted on them (up to a maximum of 5).",
+                "DescEn": "Deals <?1>/<?2>/<?3>/<?4>/<?5> damage as an additional hit to enemies depending on the number of debuffs inflicted on them (up to a maximum of 5).",
                 "Parameters": [
                     [
                         "1.1%",
@@ -4635,6 +4635,109 @@
                         "1088",
                         "1120",
                         "1252"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            }
+        }
+    },
+    "10042": {
+        "Skills": {
+            "Ex": {
+                "Cost": [
+                    4,
+                    4,
+                    4,
+                    4,
+                    4
+                ],
+                "DescEn": "Continuously restores the HP of allies in a circular area around Atsuko by <?1> of healing every 5s for 30s.",
+                "Parameters": [
+                    [
+                        "28.4%",
+                        "32.6%",
+                        "41.1%",
+                        "45.4%",
+                        "53.9%"
+                    ]
+                ]
+            },
+            "Skill1": {
+                "DescEn": "Every 30s, creates a smokescreen at Atsuko's location that increases the EVA of allies inside it by <?1> for 20s.",
+                "Parameters": [
+                    [
+                        "20.5%",
+                        "21.6%",
+                        "22.6%",
+                        "26.7%",
+                        "27.7%",
+                        "28.8%",
+                        "32.9%",
+                        "33.9%",
+                        "34.9%",
+                        "39.1%"
+                    ]
+                ]
+            },
+            "Skill2": {
+                "DescEn": "Increases EVA by <?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            },
+            "Skill3": {
+                "DescEn": "Increases EVA by <?1> when under 30% HP.",
+                "Parameters": [
+                    [
+                        "24.2%",
+                        "25.4%",
+                        "26.6%",
+                        "31.4%",
+                        "32.6%",
+                        "33.8%",
+                        "38.7%",
+                        "39.9%",
+                        "41.1%",
+                        "45.9%"
+                    ]
+                ]
+            },
+            "Skill4": {
+                "DescEn": "Increases HEAL by <?1> and EVA by <?2>.",
+                "Parameters": [
+                    [
+                        "606",
+                        "637",
+                        "667",
+                        "788",
+                        "819",
+                        "849",
+                        "970",
+                        "1000",
+                        "1031",
+                        "1152"
                     ],
                     [
                         "14%",
@@ -5127,7 +5230,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "Deals an additional <?1> damage to large-sized enemies.",
+                "DescEn": "Deals <?1> damage as an additional hit to <b>large</b> sized enemies.",
                 "Parameters": [
                     [
                         "6.7%",
@@ -5237,7 +5340,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "Deals an additional <?1> damage to enemies inflicted with a crowd-control effect.",
+                "DescEn": "Deals <?1> damage as an additional hit to enemies inflicted with a crowd-control effect.",
                 "Parameters": [
                     [
                         "74.8%",
@@ -5443,7 +5546,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "Deals between <?1> ~ <?2> additional damage based on Junko's missing HP.",
+                "DescEn": "Deals between <?1> ~ <?2> damage as an additional hit to enemies based on Junko's missing HP.",
                 "Parameters": [
                     [
                         "0.9%",
@@ -5634,7 +5737,7 @@
                 ]
             },
             "Skill1": {
-                "DescEn": "When HP falls below 30% restores own HP by <?1> of healing once per battle.",
+                "DescEn": "When HP falls below 30%, restores own HP by <?1> of healing once per battle.",
                 "Parameters": [
                     [
                         "349%",
@@ -5668,7 +5771,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "Reduces damage taken by <?1> while reloading.",
+                "DescEn": "Increases damage taken by <?1> while reloading.",
                 "Parameters": [
                     [
                         "24%",
@@ -5976,7 +6079,7 @@
                 ]
             },
             "Skill1": {
-                "DescEn": "Every 20s, deals <?1> damage to the furthest enemy in Kirino's attack range and decreases their ACC by <?2> for 13s.",
+                "DescEn": "Every 20s, deals <?1> damage to the furthest enemy and decreases their ACC by <?2> for 13s.",
                 "Parameters": [
                     [
                         "199%",
@@ -6441,7 +6544,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "Deals an additional <?1> damage to enemies inflicted with a crowd-control effect.",
+                "DescEn": "Deals <?1> damage as an additional hit to enemies inflicted with a crowd-control effect.",
                 "Parameters": [
                     [
                         "27.5%",
@@ -6608,7 +6711,7 @@
                     3,
                     3
                 ],
-                "DescEn": "Augments normal attacks to deal an additional <?1> damage for <?2>.",
+                "DescEn": "Augments normal attacks to deal <?1> damage as an additional hit for <?2>.",
                 "Parameters": [
                     [
                         "67%",
@@ -6661,7 +6764,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "When Tsurugi uses her Normal Skill, increases ATK SPD by <?1> for 30s.",
+                "DescEn": "When Tsurugi uses her Basic Skill, increases ATK SPD by <?1> for 30s.",
                 "Parameters": [
                     [
                         "16.8%",
@@ -6874,7 +6977,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "Deals an additional <?1> damage to enemies with a barrier.",
+                "DescEn": "Deals <?1> damage as an additional hit to enemies with a barrier.",
                 "Parameters": [
                     [
                         "57.1%",
@@ -7271,7 +7374,7 @@
                     4,
                     4
                 ],
-                "DescEn": "Deals <?1> damage to one enemy. If the target enemy is colossal-sized, deal an additional <?2> damage.",
+                "DescEn": "Deals <?1> damage to one enemy. If the enemy is <b>extra-large</b> sized, deals an additional <?2> damage.",
                 "Parameters": [
                     [
                         "687%",
@@ -7821,7 +7924,7 @@
                     5,
                     5
                 ],
-                "DescEn": "Creates a rectangular zone that continuously deals <?1> damage to enemies inside it for 20s.",
+                "DescEn": "Creates a rectangular zone that continuously deals <?1> damage to enemies inside it every 1s for 20s.",
                 "Parameters": [
                     [
                         "40%",
@@ -7924,7 +8027,7 @@
                     5,
                     5
                 ],
-                "DescEn": "Restores the HP of allies in a circular area by <?1> of healing and summons Miku for 26s. While Miku is on field, increases all nearby allies' ATK by <?2> as long as they stay within range.",
+                "DescEn": "Summons Hatsune Miku to the selected location for 26s, restoring the HP of allies in a circular area by <?1> of healing. While Miku is dancing, increases all nearby allies' ATK by <?2> as long as they stay within range.",
                 "Parameters": [
                     [
                         "111%",
@@ -8053,7 +8156,7 @@
                 ]
             },
             "Skill1": {
-                "DescEn": "Every 45s, restores the HP of one ally by <?1> of healing.",
+                "DescEn": "Every 45s, restores the HP of the ally with the lowest HP by <?1> of healing.",
                 "Parameters": [
                     [
                         "129%",
@@ -8144,7 +8247,7 @@
                     6,
                     6
                 ],
-                "DescEn": "Deploys Cherino riding Mr. Purge No.1 for 50s, with an additional <?1> of Cherino's attack. Every 3 normal attacks, Mr. Purge No.1 activates the skill \"Purge every last one!\", firing a shot that deals <?2> damage to one enemy plus <?3> damage to the target and enemies in a fan-shaped area behind them. Only one tactical support vehicle may be deployed at any given time.",
+                "DescEn": "Deploys Cherino riding Purginator No. 1 for 50s, with an additional <?1> of Cherino's attack. Every 3 normal attacks, Purginator No. 1 activates the skill \"Total Annihilation!\", firing a shot that deals <?2> damage to one enemy plus <?3> damage to the target and enemies in a fan-shaped area behind them. Only one tactical support vehicle may be deployed at any given time.",
                 "Parameters": [
                     [
                         "9%",
@@ -8261,7 +8364,7 @@
                     4,
                     4
                 ],
-                "DescEn": "Deploys Nodoka (Hot Spring) at the selected location for 32s. Every 3s, Nodoka throws one of three snacks that restore HP by different amounts of healing, to the ally with the lowest HP in range.\n<b>Hot Spring Manju</b>: <?1> of healing.\n<b>Corn Stick</b>: <?2> of healing.\n<b>Milk</b>: <?3> of healing.",
+                "DescEn": "Deploys Nodoka (Hot Springs) at the selected location for 32s. Every 3s, Nodoka throws one of three snacks that restore HP by different amounts of healing, to the ally with the lowest HP in range.\n<b>Hot Spring Manju</b>: <?1> of healing.\n<b>Corn Stick</b>: <?2> of healing.\n<b>Milk</b>: <?3> of healing.",
                 "Parameters": [
                     [
                         "20.3%",
@@ -8488,7 +8591,7 @@
                     5,
                     4
                 ],
-                "DescEn": "Deploys Sena riding Emergency Vehicle No.11 for 50s, with an additional <?1> of Sena's healing. Increases the ATK of nearby allies by <?2> and continuously restores their HP by <?3> of healing as long as they stay within range. Only one tactical support vehicle may be deployed at any given time.",
+                "DescEn": "Deploys Sena riding Emergency Vehicle No.11 for 50s, with an additional <?1> of Sena's healing. Emergency Vehicle No.11 increases the ATK of allies in a circular area around it by <?2> and continuously restores their HP by <?3> of healing every 10s as long as they stay within range. Only one tactical support vehicle may be deployed at any given time.",
                 "Parameters": [
                     [
                         "16.2%",
@@ -8605,7 +8708,7 @@
                     3,
                     3
                 ],
-                "DescEn": "Deals <?1> damage to one enemy. If the target is <b class='ba-col-piercing'>Heavy</b> armor type, inflicts STUN for <?2>.",
+                "DescEn": "Deals <?1> damage to one enemy. If the target is <b class='ba-col-pierce'>Heavy</b> armor type, inflicts STUN for <?2>.",
                 "Parameters": [
                     [
                         "257%",
@@ -8734,7 +8837,7 @@
                 ]
             },
             "Skill1": {
-                "DescEn": "Every 35s, deals <?1> damage to one enemy plus an additional <?2> BURN damage over time for 20s.",
+                "DescEn": "Every 35s, deals <?1> damage to the enemy with the lowest HP and an additional <?2> BURN damage over time for 20s.",
                 "Parameters": [
                     [
                         "185%",
@@ -9050,7 +9153,7 @@
                     3,
                     3
                 ],
-                "DescEn": "Fires a bullet in a straight line that deals <?1> damage to the first enemy it hits and decreases their DEF by <?2> if there are fewer than 3 Arius students in team, or <?3> if there are 3 or more.",
+                "DescEn": "Fires a bullet in a straight line that deals <?1> damage to the first enemy it hits and decreases their DEF by <?2> if there are fewer than 3 Arius students in team, or <?3> if there are 3 or more for 30s.",
                 "Parameters": [
                     [
                         "207%",
@@ -9076,7 +9179,7 @@
                 ]
             },
             "Skill1": {
-                "DescEn": "Every 40s, deals <?1> damage to one enemy and decreases their DEF by <?2> for 30s",
+                "DescEn": "Every 40s, deals <?1> damage to one enemy and decreases their DEF by <?2> for 30s.",
                 "Parameters": [
                     [
                         "255%",
@@ -9933,7 +10036,7 @@
                     5,
                     5
                 ],
-                "DescEn": "Creates a circular zone that continuously restores the HP of all allies inside it by <?1> of healing every 2s for 8s.",
+                "DescEn": "Creates a circular zone that continuously restores the HP of all allies inside it by <?1> of healing every 1.8s for 8s.",
                 "Parameters": [
                     [
                         "26.9%",
@@ -10036,7 +10139,7 @@
                     2,
                     2
                 ],
-                "DescEn": "Grants a barrier to one ally with HP equal to <?1> of healing lasting up to 20s and removes 1 debuff.",
+                "DescEn": "Grants a barrier to one ally with HP equal to <?1> of Mari's healing lasting up to 20s and removes 1 debuff from them.",
                 "Parameters": [
                     [
                         "172%",
@@ -10151,14 +10254,14 @@
                     [
                         "",
                         "",
-                        " and removes 1 debuff",
-                        " and removes 1 debuff",
-                        " and removes 1 debuff"
+                        " and removes 1 debuff from them",
+                        " and removes 1 debuff from them",
+                        " and removes 1 debuff from them"
                     ]
                 ]
             },
             "Skill1": {
-                "DescEn": "Every 40s, increases the EVA of the ally with the lowest current HP by <?1> for 30s.",
+                "DescEn": "Every 40s, increases the EVA of the ally with the lowest HP by <?1> for 30s.",
                 "Parameters": [
                     [
                         "50.9%",
