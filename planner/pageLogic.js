@@ -63,7 +63,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('charlist.json?6').done(function (json) {
+    $.getJSON('charlist.json?7').done(function (json) {
         charlist = json;
         checkResources();
     });
