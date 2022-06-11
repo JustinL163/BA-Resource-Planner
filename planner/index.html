@@ -13,7 +13,7 @@
     </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="styles.css?13">
+    <link rel="stylesheet" href="styles.css?14">
     <title>Blue Archive Resource Planner</title>
     <style id="toggleViewStyle" class="modifyable"></style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -23,9 +23,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.12/lib/draggable.bundle.js"></script>
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://unpkg.com/tippy.js@6"></script>
-    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/light.css"/>
-    <script src="config.js?7"></script>
-    <script src="pageLogic.js?26"></script>
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/light.css" />
+    <script src="config.js?8"></script>
+    <script src="pageLogic.js?27"></script>
     <script src="filters.js?2"></script>
     <style id="toggleViewStyle" class="modifyable"></style>
 </head>
@@ -329,14 +329,16 @@
                                 <p id="char-Secret" class="char-misc-text" style="align-self: center;"></p>
                             </div>
                             <div class="char-misc-box" style="display: none;">
-                                <img draggable="false" src="icons/exp.png"
-                                    style="padding: 0px 10px;">
+                                <img draggable="false" src="icons/exp.png" style="padding: 0px 10px;">
                                 <p id="char-XP" class="char-misc-text" style="align-self: center;"></p>
                             </div>
                             <div class="char-misc-box" style="display: none;">
-                                <img draggable="false" src="icons/gxp.png"
-                                    style="padding: 0px 10px;">
+                                <img draggable="false" src="icons/gxp.png" style="padding: 0px 10px;">
                                 <p id="char-GXP" class="char-misc-text" style="align-self: center;"></p>
+                            </div>
+                            <div class="char-misc-box" style="display: none;">
+                                <img draggable="false" src="icons/uexp.png" style="padding: 0px 10px;">
+                                <p id="char-UEXP" class="char-misc-text" style="align-self: center;"></p>
                             </div>
                         </div>
                     </div>
@@ -413,7 +415,8 @@
                         onclick="switchResourceDisplay('Total')"></button>
                 </div>
                 <div class="resource-box">
-                    <p id="current-resource-display" style="align-self: center; font-size: 1.75em; text-align: center;"></p>
+                    <p id="current-resource-display" style="align-self: center; font-size: 1.75em; text-align: center;">
+                    </p>
                 </div>
                 <div id="raid-token-display-wrapper" class="resource-box">
                     <img draggable="false" src="icons/RaidToken.png">
@@ -469,6 +472,245 @@
                 </div>
                 <div class="resource-box">
                     <p id="current-gear-display" style="align-self: center; font-size: 1.75em; text-align: center;"></p>
+                </div>
+            </div>
+            <div class="modal-section-wrapper gear-section" style="width: 100%;">
+                <div id="table-parent-5">
+                    <table class="resource-table" id="ue-table" style="text-align: center;">
+                        <tbody>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th style="padding-right: 10px;">Min XP</th>
+                                <th>Bonus XP</th>
+                            </tr>
+                            <tr id="row-Spring">
+                                <td style="padding-left: 8px;">Spring</td>
+                                <td class="empty-resource editable">
+                                    <img draggable="false" class="ue-icon" src="icons/Spring_4.png">
+                                    <p class="ue-count-text" id="T4_Spring"></p>
+                                    <input class="resource-input ue-input" type="number" id="input-T4_Spring">
+                                </td>
+                                <td class="empty-resource editable">
+                                    <img draggable="false" class="ue-icon" src="icons/Spring_3.png">
+                                    <p class="ue-count-text" id="T3_Spring"></p>
+                                    <input class="resource-input ue-input" type="number" id="input-T3_Spring">
+                                </td>
+                                <td class="empty-resource editable">
+                                    <img draggable="false" class="ue-icon" src="icons/Spring_2.png">
+                                    <p class="ue-count-text" id="T2_Spring"></p>
+                                    <input class="resource-input ue-input" type="number" id="input-T2_Spring">
+                                </td>
+                                <td class="empty-resource editable">
+                                    <img draggable="false" class="ue-icon" src="icons/Spring_1.png">
+                                    <p class="ue-count-text" id="T1_Spring"></p>
+                                    <input class="resource-input ue-input" type="number" id="input-T1_Spring">
+                                </td>
+                                <td style="padding: 1em;">
+                                    <p id="spring-min"></p>
+                                </td>
+                                <td>
+                                    <p id="spring-bonus"></p>
+                                </td>
+                            </tr>
+                            <tr id="row-Hammer" style="background-color: #84848436;">
+                                <td style="padding-left: 8px;">Hammer</td>
+                                <td class="empty-resource editable">
+                                    <img draggable="false" class="ue-icon" src="icons/Hammer_4.png">
+                                    <p class="ue-count-text" id="T4_Hammer"></p>
+                                    <input class="resource-input ue-input" type="number" id="input-T4_Hammer">
+                                </td>
+                                <td class="empty-resource editable">
+                                    <img draggable="false" class="ue-icon" src="icons/Hammer_3.png">
+                                    <p class="ue-count-text" id="T3_Hammer"></p>
+                                    <input class="resource-input ue-input" type="number" id="input-T3_Hammer">
+                                </td>
+                                <td class="empty-resource editable">
+                                    <img draggable="false" class="ue-icon" src="icons/Hammer_2.png">
+                                    <p class="ue-count-text" id="T2_Hammer"></p>
+                                    <input class="resource-input ue-input" type="number" id="input-T2_Hammer">
+                                </td>
+                                <td class="empty-resource editable">
+                                    <img draggable="false" class="ue-icon" src="icons/Hammer_1.png">
+                                    <p class="ue-count-text" id="T1_Hammer"></p>
+                                    <input class="resource-input ue-input" type="number" id="input-T1_Hammer">
+                                </td>
+                                <td style="padding: 1em;">
+                                    <p id="hammer-min"></p>
+                                </td>
+                                <td>
+                                    <p id="hammer-bonus"></p>
+                                </td>
+                            </tr>
+                            <tr id="row-Barrel">
+                                <td style="padding-left: 8px;">Barrel</td>
+                                <td class="empty-resource editable">
+                                    <img draggable="false" class="ue-icon" src="icons/Barrel_4.png">
+                                    <p class="ue-count-text" id="T4_Barrel"></p>
+                                    <input class="resource-input ue-input" type="number" id="input-T4_Barrel">
+                                </td>
+                                <td class="empty-resource editable">
+                                    <img draggable="false" class="ue-icon" src="icons/Barrel_3.png">
+                                    <p class="ue-count-text" id="T3_Barrel"></p>
+                                    <input class="resource-input ue-input" type="number" id="input-T3_Barrel">
+                                </td>
+                                <td class="empty-resource editable">
+                                    <img draggable="false" class="ue-icon" src="icons/Barrel_2.png">
+                                    <p class="ue-count-text" id="T2_Barrel"></p>
+                                    <input class="resource-input ue-input" type="number" id="input-T2_Barrel">
+                                </td>
+                                <td class="empty-resource editable">
+                                    <img draggable="false" class="ue-icon" src="icons/Barrel_1.png">
+                                    <p class="ue-count-text" id="T1_Barrel"></p>
+                                    <input class="resource-input ue-input" type="number" id="input-T1_Barrel">
+                                </td>
+                                <td style="padding: 1em;">
+                                    <p id="barrel-min"></p>
+                                </td>
+                                <td>
+                                    <p id="barrel-bonus"></p>
+                                </td>
+                            </tr>
+                            <tr id="row-Needle" style="background-color: #84848436;">
+                                <td style="padding-left: 8px;">Needle</td>
+                                <td class="empty-resource editable">
+                                    <img draggable="false" class="ue-icon" src="icons/Needle_4.png">
+                                    <p class="ue-count-text" id="T4_Needle"></p>
+                                    <input class="resource-input ue-input" type="number" id="input-T4_Needle">
+                                </td>
+                                <td class="empty-resource editable">
+                                    <img draggable="false" class="ue-icon" src="icons/Needle_3.png">
+                                    <p class="ue-count-text" id="T3_Needle"></p>
+                                    <input class="resource-input ue-input" type="number" id="input-T3_Needle">
+                                </td>
+                                <td class="empty-resource editable">
+                                    <img draggable="false" class="ue-icon" src="icons/Needle_2.png">
+                                    <p class="ue-count-text" id="T2_Needle"></p>
+                                    <input class="resource-input ue-input" type="number" id="input-T2_Needle">
+                                </td>
+                                <td class="empty-resource editable">
+                                    <img draggable="false" class="ue-icon" src="icons/Needle_1.png">
+                                    <p class="ue-count-text" id="T1_Needle"></p>
+                                    <input class="resource-input ue-input" type="number" id="input-T1_Needle">
+                                </td>
+                                <td style="padding: 1em;">
+                                    <p id="needle-min"></p>
+                                </td>
+                                <td>
+                                    <p id="needle-bonus">N/A</p>
+                                </td>
+                            </tr>
+                            <tr id="row-Total">
+                                <td style="padding-left: 8px;">Total</td>
+                                <td class="empty-resource">
+                                </td>
+                                <td class="empty-resource">
+                                </td>
+                                <td class="empty-resource">
+                                </td>
+                                <td class="empty-resource editable">
+                                </td>
+                                <td style="padding: 1em;">
+                                    <p id="total-min"></p>
+                                </td>
+                                <td>
+                                    <p id="total-bonus"></p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="table-parent-6">
+                    <table class="resource-table" id="ue-needed-table" style="border-collapse: collapse;">
+                        <tbody>
+                            <tr id="row-ue-needed-Header">
+                                <th></th>
+                                <th>Owned XP
+                                    (incl Bonus)</th>
+                                <th>Total Needed XP</th>
+                                <th>Remaining Needed XP</th>
+                            </tr>
+                            <tr id="row-Spring-needed">
+                                <td>
+                                    <img draggable="false" class="ue-icon" src="icons/Spring_All.png" id="spring-all">
+                                </td>
+                                <td>
+                                    <p id="owned-spring"></p>
+                                </td>
+                                <td>
+                                    <p id="total-needed-spring"></p>
+                                </td>
+                                <td>
+                                    <p id="remaining-needed-spring"></p>
+                                </td>
+                            </tr>
+                            <tr id="row-Hammer-needed" style="background-color: #84848436;">
+                                <td>
+                                    <img draggable="false" class="ue-icon" src="icons/Hammer_All.png" id="hammer-all">
+                                </td>
+                                <td>
+                                    <p id="owned-hammer"></p>
+                                </td>
+                                <td>
+                                    <p id="total-needed-hammer"></p>
+                                </td>
+                                <td>
+                                    <p id="remaining-needed-hammer"></p>
+                                </td>
+                            </tr>
+                            <tr id="row-Barrel-needed">
+                                <td>
+                                    <img draggable="false" class="ue-icon" src="icons/Barrel_All.png" id="barrel-all">
+                                </td>
+                                <td>
+                                    <p id="owned-barrel"></p>
+                                </td>
+                                <td>
+                                    <p id="total-needed-barrel"></p>
+                                </td>
+                                <td>
+                                    <p id="remaining-needed-barrel"></p>
+                                </td>
+                            </tr>
+                            <tr id="row-Needle-needed" style="border-top: solid #f5f5f58c;">
+                                <td>
+                                    <img draggable="false" class="ue-icon" src="icons/Needle_All.png">
+                                </td>
+                                <td>
+                                    <p id="owned-needle"></p>
+                                </td>
+                                <td>
+                                    <p id="total-needed-needle"></p>
+                                </td>
+                                <td>
+                                    <p id="remaining-needed-needle"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th>Remaining Owned XP</th>
+                                <th>Total Remaining Needed XP</th>
+                                <th>Remaining Needed XP</th>
+                            </tr>
+                            <tr id="row-All-needed">
+                                <td>
+                                    <img draggable="false" class="ue-icon" src="icons/All_All.png">
+                                </td>
+                                <td>
+                                    <p id="owned-all"></p>
+                                </td>
+                                <td>
+                                    <p id="total-needed-all"></p>
+                                </td>
+                                <td>
+                                    <p id="remaining-needed-all"></p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

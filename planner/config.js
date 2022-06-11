@@ -2355,4 +2355,176 @@ const inputValidation = {
         "Left": "input-GXP_2",
         "Up": "input-GXP_2"
     },
+    "T4_Spring": {
+        "id": "input-T4_Spring",
+        "location": "gearModal",
+        "min": "0",
+        "max": "999",
+        "navigation": "direct",
+        "Right": "input-T3_Spring",
+        "Down": "input-T4_Hammer"
+    },
+    "T3_Spring": {
+        "id": "input-T3_Spring",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "direct",
+        "Left": "input-T4_Spring",
+        "Right": "input-T2_Spring",
+        "Down": "input-T3_Hammer",
+        "Up": "input-T4_Needle"
+    },
+    "T2_Spring": {
+        "id": "input-T2_Spring",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "direct",
+        "Left": "input-T3_Spring",
+        "Right": "input-T1_Spring",
+        "Down": "input-T2_Hammer",
+        "Up": "input-T3_Needle"
+    },
+    "T1_Spring": {
+        "id": "input-T1_Spring",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "direct",
+        "Left": "input-T2_Spring",
+        "Right": "input-T4_Hammer",
+        "Down": "input-T1_Hammer",
+        "Up": "input-T2_Needle"
+    },
+    "T4_Hammer": {
+        "id": "input-T4_Hammer",
+        "location": "gearModal",
+        "min": "0",
+        "max": "999",
+        "navigation": "direct",
+        "Left": "input-T1_Spring",
+        "Right": "input-T3_Hammer",
+        "Down": "input-T4_Barrel",
+        "Up": "input-T4_Spring"
+    },
+    "T3_Hammer": {
+        "id": "input-T3_Hammer",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "direct",
+        "Left": "input-T4_Hammer",
+        "Right": "input-T2_Hammer",
+        "Down": "input-T3_Barrel",
+        "Up": "input-T3_Spring"
+    },
+    "T2_Hammer": {
+        "id": "input-T2_Hammer",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "direct",
+        "Left": "input-T3_Hammer",
+        "Right": "input-T1_Hammer",
+        "Down": "input-T2_Barrel",
+        "Up": "input-T2_Spring"
+    },
+    "T1_Hammer": {
+        "id": "input-T1_Hammer",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "direct",
+        "Left": "input-T2_Hammer",
+        "Right": "input-T4_Barrel",
+        "Down": "input-T1_Barrel",
+        "Up": "input-T1_Spring"
+    },
+    "T4_Barrel": {
+        "id": "input-T4_Barrel",
+        "location": "gearModal",
+        "min": "0",
+        "max": "999",
+        "navigation": "direct",
+        "Left": "input-T1_Hammer",
+        "Right": "input-T3_Barrel",
+        "Down": "input-T4_Needle",
+        "Up": "input-T4_Hammer"
+    },
+    "T3_Barrel": {
+        "id": "input-T3_Barrel",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "direct",
+        "Left": "input-T4_Barrel",
+        "Right": "input-T2_Barrel",
+        "Down": "input-T3_Needle",
+        "Up": "input-T3_Hammer"
+    },
+    "T2_Barrel": {
+        "id": "input-T2_Barrel",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "direct",
+        "Left": "input-T3_Barrel",
+        "Right": "input-T1_Barrel",
+        "Down": "input-T2_Needle",
+        "Up": "input-T2_Hammer"
+    },
+    "T1_Barrel": {
+        "id": "input-T1_Barrel",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "direct",
+        "Left": "input-T2_Barrel",
+        "Right": "input-T4_Needle",
+        "Down": "input-T1_Needle",
+        "Up": "input-T1_Hammer"
+    },
+    "T4_Needle": {
+        "id": "input-T4_Needle",
+        "location": "gearModal",
+        "min": "0",
+        "max": "999",
+        "navigation": "direct",
+        "Left": "input-T1_Barrel",
+        "Right": "input-T3_Needle",
+        "Down": "input-T3_Spring",
+        "Up": "input-T4_Barrel"
+    },
+    "T3_Needle": {
+        "id": "input-T3_Needle",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "direct",
+        "Left": "input-T4_Needle",
+        "Right": "input-T2_Needle",
+        "Down": "input-T2_Spring",
+        "Up": "input-T3_Barrel"
+    },
+    "T2_Needle": {
+        "id": "input-T2_Needle",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "direct",
+        "Left": "input-T3_Needle",
+        "Right": "input-T1_Needle",
+        "Down": "input-T1_Spring",
+        "Up": "input-T2_Barrel"
+    },
+    "T1_Needle": {
+        "id": "input-T1_Needle",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "direct",
+        "Left": "input-T2_Needle",
+        "Up": "input-T1_Barrel"
+    }
 }

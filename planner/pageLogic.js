@@ -51,9 +51,11 @@ let modalOpen = "";
 let pageTheme = "dark";
 let alertColour = "#e1e1e1";
 
+let loaded = false;
+
 function loadResources() {
 
-    $.getJSON('misc_data.json?3').done(function (json) {
+    $.getJSON('misc_data.json?4').done(function (json) {
         misc_data = json;
         checkResources();
     });
@@ -92,6 +94,9 @@ function checkResources() {
 
         generateCharOptions();
         generateTeamBorrowOptions();
+        validateData();
+
+        loaded = true;
     }
 
 }
@@ -260,16 +265,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.1.6".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.1.7".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.1.6",
+            title: "Updated to Version 1.1.7",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.1.6";
+        data.site_version = "1.1.7";
         saveToLocalStorage(false);
     }
 
@@ -431,6 +436,20 @@ function init() {
         })
     }
 
+    var ueInputs = document.getElementsByClassName("ue-input");
+
+    for (i = 0; i < ueInputs.length; i++) {
+        ueInputs[i].onchange = updatedResource;
+        ueInputs[i].addEventListener('focusin', (event) => {
+            event.target.classList.add("focused");
+            event.target.parentElement.classList.add("focused");
+        })
+        ueInputs[i].addEventListener('focusout', (event) => {
+            event.target.classList.remove("focused");
+            event.target.parentElement.classList.remove("focused");
+        })
+    }
+
     var starButtons = document.getElementsByClassName("star-icon");
 
     for (i = 0; i < starButtons.length; i++) {
@@ -488,6 +507,31 @@ function init() {
         theme: 'light',
     })[0];
 
+    tippy('#total-needed-needle', {
+        content: "Sum of Remaining Needed XP for the three non universal parts",
+        theme: 'light'
+    });
+
+    tippy('#owned-all', {
+        content: "Leftover XP, (excludes bonus except for universal Needle)",
+        theme: 'light'
+    })
+
+    tippy('#spring-all', {
+        content: "Used for gun types: SMG, SG, HG",
+        theme: 'light'
+    })
+
+    tippy('#hammer-all', {
+        content: "Used for gun types: AR, GL",
+        theme: 'light'
+    })
+
+    tippy('#barrel-all', {
+        content: "Used for gun types: MG, SR, RG, RL, MT",
+        theme: 'light'
+    })
+
     setInterval(() => {
         if (saveTime != 0) {
             if (Date.now() > saveTime) {
@@ -518,6 +562,18 @@ function init() {
         }
 
     }, false);
+
+}
+
+function validateData() {
+
+    for (key in charlist) {
+
+        if (!misc_data.gun_ue_category[charlist[key].WeaponType]) {
+            console.log("misc_data.json missing gun_ue_category value for " + charlist[key].WeaponType);
+        }
+
+    }
 
 }
 
@@ -1190,18 +1246,22 @@ function colourTableRows(tableId) {
 }
 
 function freezeBody(mode) {
-    
+
     if (mode) {
-        let top = $("body").scrollTop(); 
-        $("body").css('position','fixed').css('overflow','hidden').css('top',-top).css('width','100%');
+        let top = $("body").scrollTop();
+        $("body").css('position', 'fixed').css('overflow', 'hidden').css('top', -top).css('width', '100%');
     }
     else {
-        let top = $("body").position().top; 
-        $("body").css('position','relative').css('overflow','auto').css('top',0).scrollTop(-top);
+        let top = $("body").position().top;
+        $("body").css('position', 'relative').css('overflow', 'auto').css('top', 0).scrollTop(-top);
     }
 }
 
 function openModal(e) {
+
+    if (!loaded) {
+        return;
+    }
 
     var fromChar = false;
     if (this.id.substring(0, 5) == "char_") {
@@ -2393,7 +2453,7 @@ function charactersToggle(value) {
 }
 
 function getTextGroup() {
-    
+
     if (currentGroup == "") {
         basicAlert("Select group first");
         return;
@@ -2632,9 +2692,9 @@ function populateCharModal(character) {
         updateTextBackground("display_school", charInfo.School);
         document.getElementById("display_type").innerText = charInfo.Type;
         updateTextBackground("display_type", charInfo.Type);
-        document.getElementById("display_role").innerText = "No data";//charInfo.role;
-        document.getElementById("display_position").innerText = "No data";//charInfo.position;
-        document.getElementById("display_gun").innerText = "No data";//charInfo.gun;
+        document.getElementById("display_role").innerText = charInfo.TacticRole;
+        document.getElementById("display_position").innerText = charInfo.TacticRange;
+        document.getElementById("display_gun").innerText = charInfo.WeaponType;
         document.getElementById("display_attack_type").innerText = charInfo.DamageType;
         updateTextBackground("display_attack_type", charInfo.DamageType);
         document.getElementById("display_defense_type").innerText = charInfo.DefenseType;
@@ -2643,6 +2703,14 @@ function populateCharModal(character) {
         document.getElementById('mood-Urban').src = "icons/Mood_" + charInfo.Affinities.Urban + ".png";
         document.getElementById('mood-Outdoors').src = "icons/Mood_" + charInfo.Affinities.Outdoors + ".png";
         document.getElementById('mood-Indoors').src = "icons/Mood_" + charInfo.Affinities.Indoors + ".png";
+
+        if (charData.current?.ue >= 3) {
+
+            let terrain = charInfo.CharacterWeapon.AffinityBoost;
+            let boostAmt = charInfo.CharacterWeapon.AffinityBoostAmount;
+
+            document.getElementById('mood-' + terrain).src = "icons/Mood_" + boostedMood(charInfo.Affinities[terrain], boostAmt) + ".png";
+        }
 
         document.getElementById("input_level_current").value = charData.current?.level;
         document.getElementById("input_level_target").value = charData.target?.level;
@@ -2721,6 +2789,15 @@ function populateCharModal(character) {
 
 }
 
+function boostedMood(base, boost) {
+
+    let moods = ["D", "C", "B", "A", "S", "SS"];
+
+    let moodValue = moods.indexOf(base);
+
+    return moods[moodValue + boost];
+}
+
 function updateTooltip(charName, skill) {
 
     let charId = charMap.get(charName);
@@ -2731,17 +2808,17 @@ function updateTooltip(charName, skill) {
             content: getSkillFormatted(charId, "Ex", charData.current?.ex, charData.target?.ex)
         })
     }
-    else if (skill == "basic" || skill == "basic_target") { 
+    else if (skill == "basic" || skill == "basic_target") {
         tooltips[1].setProps({
             content: getSkillFormatted(charId, "Skill1", charData.current?.basic, charData.target?.basic)
         })
     }
-    else if (skill == "passive" || skill == "passive_target") { 
+    else if (skill == "passive" || skill == "passive_target") {
         tooltips[2].setProps({
             content: getSkillFormatted(charId, "Skill2", charData.current?.passive, charData.target?.passive)
         })
     }
-    else if (skill == "sub" || skill == "sub_target") { 
+    else if (skill == "sub" || skill == "sub_target") {
         tooltips[3].setProps({
             content: getSkillFormatted(charId, "Skill3", charData.current?.sub, charData.target?.sub)
         })
@@ -2767,7 +2844,7 @@ function getSkillFormatted(charId, skill, level, targetLevel) {
         let paramString = "<?" + paramCount + ">";
 
         if (desc.includes(paramString)) {
-            
+
             let paramFilled = '<span style="color: #008c9b;">' + params[paramCount - 1][level - 1] + "</span>";
 
             if (level != targetLevel) {
@@ -2784,7 +2861,7 @@ function getSkillFormatted(charId, skill, level, targetLevel) {
     }
 
     if (skill == "Ex") {
-        
+
         let costText = 'Cost: <span style="color: #008c9b;">' + cost[level - 1] + "</span>";
 
         if (level != targetLevel && cost[level - 1] != cost[targetLevel - 1]) {
@@ -2990,6 +3067,24 @@ function populateCharResources(character) {
         else {
             gxpText.parentElement.style.display = "none";
         }
+
+        let uexpText = document.getElementById('char-UEXP');
+
+        if (resources["Spring_Xp"] > 0) {
+            uexpText.innerText = commafy(resources["Spring_Xp"]);
+            uexpText.parentElement.style.display = "";
+        }
+        else if (resources["Hammer_Xp"] > 0) {
+            uexpText.innerText = commafy(resources["Hammer_Xp"]);
+            uexpText.parentElement.style.display = "";
+        }
+        else if (resources["Barrel_Xp"] > 0) {
+            uexpText.innerText = commafy(resources["Barrel_Xp"]);
+            uexpText.parentElement.style.display = "";
+        }
+        else {
+            uexpText.parentElement.style.display = "none";
+        }
     }
 
 }
@@ -3008,6 +3103,10 @@ function starClicked(type, mode, pos) {
                 if (pos > modalStars.star_target) {
                     modalStars.star_target = pos;
                 }
+
+                if (modalStars.star < 5) {
+                    modalStars.ue = 0;
+                }
             }
         }
         else if (type == "ue") {
@@ -3024,6 +3123,10 @@ function starClicked(type, mode, pos) {
 
                     if (modalStars.star_target != 5) {
                         modalStars.star_target = 5;
+                    }
+
+                    if (modalStars.star != 5) {
+                        modalStars.star = 5;
                     }
                 }
             }
@@ -3056,7 +3159,22 @@ function starClicked(type, mode, pos) {
         }
     }
 
+    if (modalStars.ue >= 3) {
+
+        let terrain = charInfoObj.CharacterWeapon.AffinityBoost;
+        let boostAmt = charInfoObj.CharacterWeapon.AffinityBoostAmount;
+
+        document.getElementById('mood-' + terrain).src = "icons/Mood_" + boostedMood(charInfoObj.Affinities[terrain], boostAmt) + ".png";
+    }
+    else {
+
+        let terrain = charInfoObj.CharacterWeapon.AffinityBoost;
+
+        document.getElementById('mood-' + terrain).src = "icons/Mood_" + charInfoObj.Affinities[terrain] + ".png";
+    }
+
     updateStarDisplays(modalChar, true);
+    populateCharResources(modalChar);
 }
 
 function cancelCharModal() {
@@ -3149,6 +3267,10 @@ function updateStarDisplay(id, character, charId, type, fromTemp) {
 
 function openResourceModal() {
 
+    if (!loaded) {
+        return;
+    }
+
     freezeBody(true);
 
     modalOpen = "resourceModal";
@@ -3187,6 +3309,10 @@ function openResourceModal() {
 
 function openGearModal() {
 
+    if (!loaded) {
+        return;
+    }
+
     freezeBody(true);
 
     modalOpen = "gearModal";
@@ -3206,6 +3332,9 @@ function openGearModal() {
     else if (gearDisplay == "Total") {
         updateCells(requiredMatDict, false, 'gear-count-text', 'misc-gear');
     }
+
+    updateCells(ownedMatDict, true, 'ue-count-text', 'abrakadabra');
+    updateUeXP();
 
     hideEmptyGear();
 
@@ -3349,6 +3478,10 @@ function hideEmptyGear() {
     hideEmptyCell("GXP_2");
     hideEmptyCell("GXP_3");
     hideEmptyCell("GXP_4");
+
+    let ueTable = document.getElementById('ue-table');
+
+    hideEmptyCells(ueTable);
 }
 
 function hideEmptyCells(table) {
@@ -3357,6 +3490,10 @@ function hideEmptyCells(table) {
 
     for (row = 0; row < rows; row++) {
         for (col = 1; col < cols; col++) {
+            if (!table.children[0].children[row].children[col].children[1]) {
+                continue;
+            }
+
             if (table.children[0].children[row].children[col].children[1].innerText == "") {
 
                 table.children[0].children[row].children[col].classList.add("empty-resource");
@@ -3482,6 +3619,11 @@ function updatedResource() {
         nonCentred = true;
     }
 
+    let isUEinput = false;
+    if (textElement.classList.contains('ue-count-text')) {
+        isUEinput = true;
+    }
+
     if (newCount == 0 && (!nonCentred)) {
         this.value = 0;
         this.parentElement.classList.add("empty-resource");
@@ -3520,6 +3662,10 @@ function updatedResource() {
     }
     else {
         updateNeededMat(dictKey);
+    }
+
+    if (isUEinput) {
+        updateUeXP();
     }
 
     saveTime = Date.now() + (1000 * 5);
@@ -3562,6 +3708,94 @@ function updateGearXP() {
     }
 }
 
+function updateUeXP() {
+
+    let springXP = getTotalUeOfType("Spring");
+    let hammerXP = getTotalUeOfType("Hammer");
+    let barrelXP = getTotalUeOfType("Barrel");
+    let needleXP = getTotalUeOfType("Needle");
+
+    let springMin = document.getElementById('spring-min');
+    let hammerMin = document.getElementById('hammer-min');
+    let barrelMin = document.getElementById('barrel-min');
+    let needleMin = document.getElementById('needle-min');
+    let totalMin = document.getElementById('total-min');
+    let springBonus = document.getElementById('spring-bonus');
+    let hammerBonus = document.getElementById('hammer-bonus');
+    let barrelBonus = document.getElementById('barrel-bonus');
+    let totalBonus = document.getElementById('total-bonus');
+
+    springMin.innerText = commafy(springXP);
+    hammerMin.innerText = commafy(hammerXP);
+    barrelMin.innerText = commafy(barrelXP);
+    needleMin.innerText = commafy(needleXP * 1.5);
+    springBonus.innerText = commafy(springXP * 0.5);
+    hammerBonus.innerText = commafy(hammerXP * 0.5);
+    barrelBonus.innerText = commafy(barrelXP * 0.5);
+
+    totalMin.innerText = commafy(springXP + hammerXP + barrelXP + (needleXP * 1.5));
+    totalBonus.innerText = commafy((springXP + hammerXP + barrelXP) * 0.5);
+
+    let springOwned = document.getElementById('owned-spring');
+    let springNeeded = document.getElementById('total-needed-spring');
+    let springRemaining = document.getElementById('remaining-needed-spring');
+    let hammerOwned = document.getElementById('owned-hammer');
+    let hammerNeeded = document.getElementById('total-needed-hammer');
+    let hammerRemaining = document.getElementById('remaining-needed-hammer');
+    let barrelOwned = document.getElementById('owned-barrel');
+    let barrelNeeded = document.getElementById('total-needed-barrel');
+    let barrelRemaining = document.getElementById('remaining-needed-barrel');
+    let needleOwned = document.getElementById('owned-needle');
+    let needleNeeded = document.getElementById('total-needed-needle');
+    let needleRemaining = document.getElementById('remaining-needed-needle');
+
+    springOwned.innerText = commafy(springXP * 1.5);
+    hammerOwned.innerText = commafy(hammerXP * 1.5);
+    barrelOwned.innerText = commafy(barrelXP * 1.5);
+    needleOwned.innerText = commafy(needleXP * 1.5);
+
+    springNeeded.innerText = commafy(neededMatDict["Spring_Xp"] ?? 0);
+    hammerNeeded.innerText = commafy(neededMatDict["Hammer_Xp"] ?? 0);
+    barrelNeeded.innerText = commafy(neededMatDict["Barrel_Xp"] ?? 0);
+
+    let springRemNeed = Math.max((neededMatDict["Spring_Xp"] ?? 0) - (springXP * 1.5), 0);
+    let hammerRemNeed = Math.max((neededMatDict["Hammer_Xp"] ?? 0) - (hammerXP * 1.5), 0);
+    let barrelRemNeed = Math.max((neededMatDict["Barrel_Xp"] ?? 0) - (barrelXP * 1.5), 0);
+
+    springRemaining.innerText = commafy(springRemNeed);
+    hammerRemaining.innerText = commafy(hammerRemNeed);
+    barrelRemaining.innerText = commafy(barrelRemNeed);
+
+    let needleNeed = springRemNeed + hammerRemNeed + barrelRemNeed;
+
+    needleNeeded.innerText = commafy(needleNeed) + "*";
+
+    let needleRemNeed = Math.max(needleNeed - (needleXP * 1.5), 0);
+
+    needleRemaining.innerText = commafy(needleRemNeed);
+
+    let allOwned = document.getElementById('owned-all');
+    let allNeeded = document.getElementById('total-needed-all');
+    let allRemaining = document.getElementById('remaining-needed-all');
+
+    allNeeded.innerText = commafy(needleRemNeed);
+
+    let remOwned = Math.max(Math.floor(((springXP * 1.5) - (neededMatDict["Spring_Xp"] ?? 0)) / 3 * 2), 0) +
+        Math.max(Math.floor(((hammerXP * 1.5) - (neededMatDict["Hammer_Xp"] ?? 0)) / 3 * 2), 0) +
+        Math.max(Math.floor(((barrelXP * 1.5) - (neededMatDict["Barrel_Xp"] ?? 0)) / 3 * 2), 0) +
+        Math.max(((needleXP * 1.5) - needleNeed), 0);
+
+    allOwned.innerText = commafy(remOwned) + "*";
+
+    allRemaining.innerText = commafy(Math.max(needleRemNeed - remOwned, 0));
+
+}
+
+function getTotalUeOfType(type) {
+    return parseInt(ownedMatDict["T4_" + type] ?? 0) * 1000 + parseInt(ownedMatDict["T3_" + type] ?? 0) * 200
+        + parseInt(ownedMatDict["T2_" + type] ?? 0) * 50 + parseInt(ownedMatDict["T1_" + type] ?? 0) * 10;
+}
+
 function updateNeededMat(mat) {
     neededMatDict[mat] = Math.max((requiredMatDict[mat] ?? 0) - (ownedMatDict[mat] ?? 0), 0);
 }
@@ -3584,6 +3818,8 @@ function calculateCharResources(charData, output) {
     calcGearCost(charObj, charData.current?.gear3, charData.target?.gear3, 3, charMatDict);
 
     calcMysticCost(charData.current?.star, charData.target?.star, charMatDict);
+
+    calcUECost(charObj, charData.current?.ue, charData.target?.ue, charData.current?.ue_level, charData.target?.ue_level, charMatDict);
 
     if (output) {
         return charMatDict;
@@ -3713,8 +3949,8 @@ function calcMysticCost(star, starTarget, matDict) {
 
     if (star && starTarget) {
 
-        var currentStar = misc_data.cumulative_mystic_cost[star + "*"];
-        var targetStar = misc_data.cumulative_mystic_cost[starTarget + "*"];
+        let currentStar = misc_data.cumulative_mystic_cost[star + "*"];
+        let targetStar = misc_data.cumulative_mystic_cost[starTarget + "*"];
 
         if (currentStar && targetStar) {
 
@@ -3729,6 +3965,64 @@ function calcMysticCost(star, starTarget, matDict) {
         }
     }
 
+}
+
+function calcUECost(charObj, star, starTarget, level, levelTarget, matDict) {
+
+    if (star == 0) {
+        star = 1;
+    }
+
+    if (level == 0) {
+        level = 1;
+    }
+    if (levelTarget == 0) {
+        levelTarget = 1;
+    }
+
+    if ((star) && starTarget) {
+
+        let currentStar = misc_data.cumulative_mystic_cost["U" + star + "*"];
+        let targetStar = misc_data.cumulative_mystic_cost["U" + starTarget + "*"];
+
+        if (currentStar && targetStar) {
+
+            if ((currentStar.credit || currentStar.credit == 0) && targetStar.credit) {
+
+                if (!matDict["Credit"]) {
+                    matDict["Credit"] = 0;
+                }
+
+                matDict["Credit"] += targetStar.credit - currentStar.credit;
+            }
+
+        }
+    }
+
+    if ((level || level == 0) && levelTarget) {
+
+        let currentXp = misc_data.ue_xp[level - 1];
+        let targetXp = misc_data.ue_xp[levelTarget - 1];
+
+        if ((currentXp || currentXp == 0) && targetXp) {
+
+            let ue_xp_type = misc_data.gun_ue_category[charObj.WeaponType];
+
+            if (!matDict[ue_xp_type + "_Xp"]) {
+                matDict[ue_xp_type + "_Xp"] = 0;
+            }
+
+            matDict[ue_xp_type + "_Xp"] += targetXp - currentXp;
+
+            if (!matDict["Credit"]) {
+                matDict["Credit"] = 0;
+            }
+
+            matDict["Credit"] += (targetXp - currentXp) * 180;
+
+        }
+
+    }
 }
 
 function updateAggregateCount() {

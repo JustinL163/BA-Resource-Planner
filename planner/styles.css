@@ -510,7 +510,8 @@ label {
 
 .resource-count-text,
 .gear-count-text,
-.resource-display-text {
+.resource-display-text,
+.ue-count-text {
     top: 50%;
     left: 50%;
     position: absolute;
@@ -944,6 +945,11 @@ div.char-resource-wrapper .resource-display-text {
     filter: opacity(0.5);
 }
 
+.ue-icon {
+    max-width: 80px;
+    max-height: 80px;
+}
+
 .draggable-mirror {
     z-index: 1;
 }
@@ -996,7 +1002,8 @@ div.char-resource-wrapper .resource-display-text {
 
 .dark-theme .resource-count-text,
 .dark-theme .gear-count-text,
-.dark-theme .resource-display-text {
+.dark-theme .resource-display-text,
+.dark-theme .ue-count-text {
     color: black;
 }
 
@@ -1141,6 +1148,31 @@ input.filter-option {
     display: none;
 }
 
+#ue-table tr td:last-child {
+    padding-right: 0.5em;
+}
+
+#ue-table {
+    padding-bottom: 1em;
+}
+
+#ue-table tr th {
+    height: 40px;
+}
+
+#ue-needed-table tr th {
+    height: 40px;
+    width: 100px;
+}
+
+#ue-needed-table {
+    text-align: center;
+}
+
+#table-parent-5, #table-parent-6 {
+    width: 50%;
+}
+
 @media (max-width: 1280px) {
 
     #other-resource-wrapper {
@@ -1177,6 +1209,14 @@ input.filter-option {
 
     #table-parent-2 {
         width: 50%;
+    }
+
+    #table-parent-5, #table-parent-6 {
+        width: 100%;
+    }
+
+    #table-parent-5 .resource-table, #table-parent-6 .resource-table {
+        width: 100%;
     }
 
     #artifact-table-1 {
@@ -1276,11 +1316,43 @@ input.filter-option {
         width: 100%;
     }
 
+    .ue-icon {
+        width: 100%;
+    }
+
+    #gear-table {
+        padding-top: 1em;
+    }
+
+    #gear-table tr td:last-child {
+        padding-right: 0.5em;
+    }
+
+    #ue-table p {
+        font-size: 0.75em;
+    }
+
+    #ue-table tr td:first-child {
+        min-width: 30px;
+    }
+
+    #table-parent-5, #table-parent-6 {
+        width: 100%;
+    }
+
+    #ue-needed-table {
+        font-size: 0.75em;
+    }
+
+    #ue-table th {
+        font-size: 0.75em;
+    }
+    
     .resource-count-text {
         font-size: 0.75em;
     }
 
-    .gear-count-text {
+    .gear-count-text, .ue-count-text {
         font-size: 1.2em;
     }
 
