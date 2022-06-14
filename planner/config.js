@@ -182,6 +182,7 @@ class Student {
         this.name = characterInfo.Name;
         this.current = StudentInvestment.Default(characterInfo);
         this.target = StudentInvestment.DefaultTarget(characterInfo);
+        this.eleph = ElephInfo.Default();
         this.enabled = true;
     }
 
@@ -205,6 +206,35 @@ class Student {
         student.target = new StudentInvestment(...tar);
 
         return student;
+    }
+}
+
+class ElephInfo {
+
+    constructor(owned, unlocked, cost, purchasable, farm_nodes, node_refresh, use_eligma, use_shop) {
+        this.owned = owned;
+        this.unlocked = unlocked;
+        this.cost = cost;
+        this.purchasable = purchasable;
+        this.farm_nodes = farm_nodes;
+        this.node_refresh = node_refresh;
+        this.use_eligma = use_eligma;
+        this.use_shop = use_shop;
+    }
+
+    static Default() {
+        var data = [
+            0,
+            true,
+            1,
+            20,
+            0,
+            false,
+            false,
+            false
+        ];
+
+        return new ElephInfo(...data);
     }
 }
 
@@ -2526,5 +2556,37 @@ const inputValidation = {
         "navigation": "direct",
         "Left": "input-T2_Needle",
         "Up": "input-T1_Barrel"
+    },
+    "Eleph_Owned": {
+        "id": "input_eleph_owned",
+        "location": "characterModal",
+        "min": "0",
+        "max": "999"
+    },
+    "Eleph_Cost": {
+        "id": "input_eleph_cost",
+        "location": "characterModal",
+        "min": "1",
+        "max": "5"
+    },
+    "Eleph_Purchasable": {
+        "id": "input_eleph_purchasable",
+        "location": "characterModal",
+        "min": "1",
+        "max": "20"
+    },
+    "Node_Sweeps": {
+        "id": "input_farm_nodes",
+        "location": "characterModal",
+        "min": "0",
+        requisite: {
+            "sweepMax": {
+                type: "object",
+                name: "Node Sweeps",
+                compare: "max",
+                mode: "direct",
+                sanitise: true
+            }
+        }
     }
 }

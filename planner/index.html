@@ -13,7 +13,7 @@
     </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="styles.css?14">
+    <link rel="stylesheet" href="styles.css?15">
     <title>Blue Archive Resource Planner</title>
     <style id="toggleViewStyle" class="modifyable"></style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -24,8 +24,8 @@
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://unpkg.com/tippy.js@6"></script>
     <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/light.css" />
-    <script src="config.js?8"></script>
-    <script src="pageLogic.js?27"></script>
+    <script src="config.js?9"></script>
+    <script src="pageLogic.js?28"></script>
     <script src="filters.js?2"></script>
     <style id="toggleViewStyle" class="modifyable"></style>
 </head>
@@ -38,7 +38,7 @@
             <li><a href="changelog.html">Changelog</a></li>
             <li><a href="privacy.html">Privacy</a></li>
         </ul>
-        <img src="icons/sun.svg" id="theme-button" onclick="switchTheme()">
+        <img src="icons/UI/sun.svg" id="theme-button" onclick="switchTheme()">
     </nav>
     <div class="bodyContainer">
         <div id="boxesContainer" class="mainContainer">
@@ -89,7 +89,8 @@
                     </div>
                 </div>
                 <div class="modal-content-section" style="min-width: 30px; margin: initial;">
-                    <img class="action-icon" src="icons/cross.svg" onclick="deleteClicked()" style="max-width: 25px;">
+                    <img class="action-icon" src="icons/UI/cross.svg" onclick="deleteClicked()"
+                        style="max-width: 25px;">
                 </div>
                 <div class="modal-content-section" id="content-1" style="width: 20%; min-width: 180px;">
                     <p>School</p>
@@ -118,17 +119,17 @@
                 <div class="modal-content-section" id="content-4" style="width: 25%; min-width: 150px; display: flex;">
                     <div class="mood-wrapper">
                         <p>Urban</p>
-                        <img src="icons/Terrain_Urban.png" class="terrain-icon"></img>
+                        <img src="icons/Mood/Terrain_Urban.png" class="terrain-icon"></img>
                         <img id="mood-Urban" class="mood-icon"></img>
                     </div>
                     <div class="mood-wrapper">
                         <p>Outdoors</p>
-                        <img src="icons/Terrain_Outdoors.png" class="terrain-icon"></img>
+                        <img src="icons/Mood/Terrain_Outdoors.png" class="terrain-icon"></img>
                         <img id="mood-Outdoors" class="mood-icon"></img>
                     </div>
                     <div class="mood-wrapper">
                         <p>Indoors</p>
-                        <img src="icons/Terrain_Indoors.png" class="terrain-icon"></img>
+                        <img src="icons/Mood/Terrain_Indoors.png" class="terrain-icon"></img>
                         <img id="mood-Indoors" class="mood-icon"></img>
                     </div>
                 </div>
@@ -153,19 +154,19 @@
                         <div>
                             <p>Current</p>
                             <div id="star-current-container" style="display: flex;">
-                                <img draggable="false" id="star-current-1" class="star-icon" src="icons/star.png">
-                                <img draggable="false" id="star-current-2" class="star-icon" src="icons/star.png">
-                                <img draggable="false" id="star-current-3" class="star-icon" src="icons/star.png">
-                                <img draggable="false" id="star-current-4" class="star-icon" src="icons/star.png">
-                                <img draggable="false" id="star-current-5" class="star-icon" src="icons/star.png">
+                                <img draggable="false" id="star-current-1" class="star-icon" src="icons/Misc/star.png">
+                                <img draggable="false" id="star-current-2" class="star-icon" src="icons/Misc/star.png">
+                                <img draggable="false" id="star-current-3" class="star-icon" src="icons/Misc/star.png">
+                                <img draggable="false" id="star-current-4" class="star-icon" src="icons/Misc/star.png">
+                                <img draggable="false" id="star-current-5" class="star-icon" src="icons/Misc/star.png">
                             </div>
                             <p>Target</p>
                             <div id="star-target-container" style="display: flex;">
-                                <img draggable="false" id="star-target-1" class="star-icon" src="icons/star.png">
-                                <img draggable="false" id="star-target-2" class="star-icon" src="icons/star.png">
-                                <img draggable="false" id="star-target-3" class="star-icon" src="icons/star.png">
-                                <img draggable="false" id="star-target-4" class="star-icon" src="icons/star.png">
-                                <img draggable="false" id="star-target-5" class="star-icon" src="icons/star.png">
+                                <img draggable="false" id="star-target-1" class="star-icon" src="icons/Misc/star.png">
+                                <img draggable="false" id="star-target-2" class="star-icon" src="icons/Misc/star.png">
+                                <img draggable="false" id="star-target-3" class="star-icon" src="icons/Misc/star.png">
+                                <img draggable="false" id="star-target-4" class="star-icon" src="icons/Misc/star.png">
+                                <img draggable="false" id="star-target-5" class="star-icon" src="icons/Misc/star.png">
                             </div>
                         </div>
                     </div>
@@ -178,22 +179,22 @@
                         <div>
                             <p>Current</p>
                             <div id="ue-current-container" style="display: flex;">
-                                <img draggable="false" id="ue-current-1" class="star-icon" src="icons/star.png">
-                                <img draggable="false" id="ue-current-2" class="star-icon" src="icons/star.png">
-                                <img draggable="false" id="ue-current-3" class="star-icon" src="icons/star.png">
-                                <img draggable="false" id="ue-current-4" class="star-icon" src="icons/star.png"
+                                <img draggable="false" id="ue-current-1" class="star-icon" src="icons/Misc/star.png">
+                                <img draggable="false" id="ue-current-2" class="star-icon" src="icons/Misc/star.png">
+                                <img draggable="false" id="ue-current-3" class="star-icon" src="icons/Misc/star.png">
+                                <img draggable="false" id="ue-current-4" class="star-icon" src="icons/Misc/star.png"
                                     style="visibility: hidden;">
-                                <img draggable="false" id="ue-current-5" class="star-icon" src="icons/star.png"
+                                <img draggable="false" id="ue-current-5" class="star-icon" src="icons/Misc/star.png"
                                     style="visibility: hidden;">
                             </div>
                             <p>Target</p>
                             <div id="ue-target-container" style="display: flex;">
-                                <img draggable="false" id="ue-target-1" class="star-icon" src="icons/star.png">
-                                <img draggable="false" id="ue-target-2" class="star-icon" src="icons/star.png">
-                                <img draggable="false" id="ue-target-3" class="star-icon" src="icons/star.png">
-                                <img draggable="false" id="ue-target-4" class="star-icon" src="icons/star.png"
+                                <img draggable="false" id="ue-target-1" class="star-icon" src="icons/Misc/star.png">
+                                <img draggable="false" id="ue-target-2" class="star-icon" src="icons/Misc/star.png">
+                                <img draggable="false" id="ue-target-3" class="star-icon" src="icons/Misc/star.png">
+                                <img draggable="false" id="ue-target-4" class="star-icon" src="icons/Misc/star.png"
                                     style="visibility: hidden;">
-                                <img draggable="false" id="ue-target-5" class="star-icon" src="icons/star.png"
+                                <img draggable="false" id="ue-target-5" class="star-icon" src="icons/Misc/star.png"
                                     style="visibility: hidden;">
                             </div>
                         </div>
@@ -307,6 +308,80 @@
                         </div>
                     </div>
                 </div>
+                <div id="eleph-section" style="width: 100%; display: flex; flex-wrap: wrap;">
+                    <div class="modal-content-section" id="content-11" style="width: 14%; min-width: 165px;">
+                        <div class="content-section-wrapper">
+                            <img draggable="false" id="char-eleph" class="eleph-icon" src="">
+                            <div style="align-self: center;">
+                                <p>Owned</p>
+                                <input id="input_eleph_owned" type="number" class="two_digit_input">
+                                <p id="label_char_unlocked">Unlocked</p>
+                                <input type="checkbox" id="input_char_unlocked" onclick="charUnlockClick()"
+                                    class="checkbox-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-content-section" id="content-12" style="width: 16%; min-width: 190px;">
+                        <div class="content-section-wrapper">
+                            <img draggable="false" class="eleph-icon" src="icons/Misc/Eligma.png">
+                            <div style="align-self: center;">
+                                <p id="label_eleph_cost">Shop Cost</p>
+                                <input id="input_eleph_cost" type="number" class="two_digit_input" oninput="shopCostChange()">
+                                <p id="label_eleph_purchasable">Purchasable</p>
+                                <input id="input_eleph_purchasable" type="number" class="two_digit_input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-content-section" id="content-13"
+                        style="width: 20%; min-width: 230px; display: flex;">
+                        <div class="content-section-wrapper" style="padding: 6% 7% 6% 0; position: relative;">
+                            <div class="section-label">
+                                <p class="section-name">Hard Mode</p>
+                            </div>
+                            <div>
+                                <p style="white-space: nowrap;">Node Sweeps</p>
+                                <div style="display: flex;">
+                                    <input id="input_farm_nodes" type="number" class="two_digit_input">
+                                    <p id="hard-nodes-count" style="margin-left: 10px;"></p>
+                                </div>
+                                <p id="label_node_refresh" style="white-space: nowrap;">Node Refreshing</p>
+                                <input id="input_allow_node_refresh" onclick="nodeRefreshClick()" type="checkbox" class="checkbox-input">
+                            </div>
+                            <div style="position: absolute; right: 0; bottom: 0; padding: 5px">
+                                <p id="hm-server-toggle" class="server-toggle" onclick="serverToggle()"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-content-section" id="content-14" style="width: 13%; min-width: 150px;">
+                        <div class="content-section-wrapper">
+                            <img draggable="false" class="eleph-icon" id="shop-currency-icon" src="">
+                            <div style="align-self: center;">
+                                <p id="char-currency-descriptor"></p>
+                                <p id="char-currency-times"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-content-section" id="content-15" style="width: 21%; min-width: 250px;">
+                        <div class="content-section-wrapper" style="padding: 6% 7% 6% 0%;">
+                            <div class="section-label">
+                                <p class="section-name" style="padding: 10px 15px;">Buy With</p>
+                            </div>
+                            <div style="align-self: center;">
+                                <div style="display: flex;">
+                                    <input type="checkbox" id="option-eligma" onclick="buyTypeClick('Eligma')"
+                                        class="checkbox-input">
+                                    <label for="option-eligma">Eligma</label>
+                                </div>
+                                <div style="display: flex; padding-top: 10px;" id="buy-option-two">
+                                    <input type="checkbox" id="option-shop" onclick="buyTypeClick('Shop')"
+                                        class="checkbox-input">
+                                    <label for="option-shop" id="char-shop-currency"
+                                        style="white-space: nowrap;"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div id="char-resource-section" style="width: 100%; padding-bottom: 10px;">
                     <div class="modal-content-section" style="overflow-y: auto; max-height: 200px;">
                         <div class="char-schoolmats-wrapper">
@@ -321,23 +396,35 @@
                     <div class="modal-content-section">
                         <div class="char-miscresource-wrapper">
                             <div class="char-misc-box" style="display: none;">
-                                <img draggable="false" src="icons/Credit.png">
+                                <img draggable="false" src="icons/Misc/Credit.png">
                                 <p id="char-Credit" class="char-misc-text" style="align-self: center;"></p>
                             </div>
                             <div class="char-misc-box" style="display: none;">
-                                <img draggable="false" src="icons/TN_Secret.png">
+                                <img draggable="false" src="icons/Misc/SecretTech.png">
                                 <p id="char-Secret" class="char-misc-text" style="align-self: center;"></p>
                             </div>
                             <div class="char-misc-box" style="display: none;">
-                                <img draggable="false" src="icons/exp.png" style="padding: 0px 10px;">
+                                <img draggable="false" id="char-eleph-needed-icon" src="">
+                                <p id="char-Eleph" class="char-misc-text" style="align-self: center;"></p>
+                            </div>
+                            <div class="char-misc-box" style="display: none;">
+                                <img draggable="false" src="icons/Misc/Eligma.png">
+                                <p id="char-Eligma" class="char-misc-text" style="align-self: center;"></p>
+                            </div>
+                            <div class="char-misc-box" style="display: none;">
+                                <img draggable="false" id="shop-currency-icon2" src="">
+                                <p id="char-ShopCurrency" class="char-misc-text" style="align-self: center;"></p>
+                            </div>
+                            <div class="char-misc-box" style="display: none;">
+                                <img draggable="false" src="icons/Misc/exp.png" style="padding: 0px 10px;">
                                 <p id="char-XP" class="char-misc-text" style="align-self: center;"></p>
                             </div>
                             <div class="char-misc-box" style="display: none;">
-                                <img draggable="false" src="icons/gxp.png" style="padding: 0px 10px;">
+                                <img draggable="false" src="icons/Misc/gxp.png" style="padding: 0px 10px;">
                                 <p id="char-GXP" class="char-misc-text" style="align-self: center;"></p>
                             </div>
                             <div class="char-misc-box" style="display: none;">
-                                <img draggable="false" src="icons/uexp.png" style="padding: 0px 10px;">
+                                <img draggable="false" src="icons/Misc/uexp.png" style="padding: 0px 10px;">
                                 <p id="char-UEXP" class="char-misc-text" style="align-self: center;"></p>
                             </div>
                         </div>
@@ -363,7 +450,7 @@
             </div>
             <div id="other-resource-wrapper">
                 <div class="resource-box">
-                    <img draggable="false" src="icons/Credit.png">
+                    <img draggable="false" src="icons/Misc/Credit.png">
                     <p id="Credit" class="misc-resource" style="align-self: center;"></p>
                     <div class="input-wrapper" style="width: 60%;">
                         <input id="input-Credit" class="resource-input" type="number" style="position:absolute;">
@@ -371,32 +458,32 @@
                 </div>
                 <div id="xp-input-wrapper" class="resource-box" style="align-items: center; display: none;">
                     <div class="xp-wrapper editable">
-                        <img draggable="false" class="xp-icon" src="icons/XP_4.png">
+                        <img draggable="false" class="xp-icon" src="icons/LevelPart/XP_4.png">
                         <p id="XP_4" class="resource-count-text"></p>
                         <input id="input-XP_4" class="resource-input xp-input" type="number">
                     </div>
                     <div class="xp-wrapper editable">
-                        <img draggable="false" class="xp-icon" src="icons/XP_3.png">
+                        <img draggable="false" class="xp-icon" src="icons/LevelPart/XP_3.png">
                         <p id="XP_3" class="resource-count-text"></p>
                         <input id="input-XP_3" class="resource-input xp-input" type="number">
                     </div>
                     <div class="xp-wrapper editable">
-                        <img draggable="false" class="xp-icon" src="icons/XP_2.png">
+                        <img draggable="false" class="xp-icon" src="icons/LevelPart/XP_2.png">
                         <p id="XP_2" class="resource-count-text"></p>
                         <input id="input-XP_2" class="resource-input xp-input" type="number">
                     </div>
                     <div class="xp-wrapper editable">
-                        <img draggable="false" class="xp-icon" src="icons/XP_1.png">
+                        <img draggable="false" class="xp-icon" src="icons/LevelPart/XP_1.png">
                         <p id="XP_1" class="resource-count-text"></p>
                         <input id="input-XP_1" class="resource-input xp-input" type="number">
                     </div>
                 </div>
                 <div id="xp-display-wrapper" class="resource-box">
-                    <img draggable="false" src="icons/exp.png">
+                    <img draggable="false" src="icons/Misc/exp.png">
                     <p id="Xp" class="misc-resource no-input" style="align-self: center; margin-left: 10px;"></p>
                 </div>
                 <div class="resource-box">
-                    <img draggable="false" src="icons/SecretTech.png">
+                    <img draggable="false" src="icons/Misc/SecretTech.png">
                     <p id="Secret" class="misc-resource" style="align-self: center;"></p>
                     <div class="input-wrapper" style="width: 60%;">
                         <input id="input-Secret" class="resource-input" type="number" style="position:absolute;">
@@ -419,8 +506,33 @@
                     </p>
                 </div>
                 <div id="raid-token-display-wrapper" class="resource-box">
-                    <img draggable="false" src="icons/RaidToken.png">
+                    <img draggable="false" src="icons/Misc/RaidToken.png">
                     <p id="RaidTokenCost" class="misc-resource no-input" style="align-self: center; margin-left: 10px;">
+                    </p>
+                </div>
+                <div id="rare-raid-token-display-wrapper" class="resource-box">
+                    <img draggable="false" src="icons/Misc/RareRaidToken.png">
+                    <p id="RareRaidTokenCost" class="misc-resource no-input" style="align-self: center; margin-left: 10px;">
+                    </p>
+                </div>
+                <div id="eligma-display-wrapper" class="resource-box">
+                    <img draggable="false" src="icons/Misc/Eligma.png">
+                    <p id="Eligma" class="misc-resource no-input" style="align-self: center; margin-left: 10px;">
+                    </p>
+                </div>
+                <div id="arena-coin-display-wrapper" class="resource-box">
+                    <img draggable="false" src="icons/Misc/ArenaCoin.png">
+                    <p id="ArenaCoinCost" class="misc-resource no-input" style="align-self: center; margin-left: 10px;">
+                    </p>
+                </div>
+                <div id="je-coin-display-wrapper" class="resource-box">
+                    <img draggable="false" src="icons/Misc/JECoin.png">
+                    <p id="JECoinCost" class="misc-resource no-input" style="align-self: center; margin-left: 10px;">
+                    </p>
+                </div>
+                <div id="mastery-certificate-display-wrapper" class="resource-box">
+                    <img draggable="false" src="icons/Misc/MasteryCertificate.png">
+                    <p id="MasteryCertificateCost" class="misc-resource no-input" style="align-self: center; margin-left: 10px;">
                     </p>
                 </div>
             </div>
@@ -434,28 +546,28 @@
             <div id="other-resource-wrapper">
                 <div id="gear-xp-input-wrapper" class="resource-box" style="align-items: center; display: none;">
                     <div class="xp-wrapper editable">
-                        <img draggable="false" class="xp-icon" src="icons/GXP_4.png">
+                        <img draggable="false" class="xp-icon" src="icons/LevelPart/GXP_4.png">
                         <p id="GXP_4" class="gear-count-text"></p>
                         <input id="input-GXP_4" class="resource-input xp-input" type="number">
                     </div>
                     <div class="xp-wrapper editable">
-                        <img draggable="false" class="xp-icon" src="icons/GXP_3.png">
+                        <img draggable="false" class="xp-icon" src="icons/LevelPart/GXP_3.png">
                         <p id="GXP_3" class="gear-count-text"></p>
                         <input id="input-GXP_3" class="resource-input xp-input" type="number">
                     </div>
                     <div class="xp-wrapper editable">
-                        <img draggable="false" class="xp-icon" src="icons/GXP_2.png">
+                        <img draggable="false" class="xp-icon" src="icons/LevelPart/GXP_2.png">
                         <p id="GXP_2" class="gear-count-text"></p>
                         <input id="input-GXP_2" class="resource-input xp-input" type="number">
                     </div>
                     <div class="xp-wrapper editable">
-                        <img draggable="false" class="xp-icon" src="icons/GXP_1.png">
+                        <img draggable="false" class="xp-icon" src="icons/LevelPart/GXP_1.png">
                         <p id="GXP_1" class="gear-count-text"></p>
                         <input id="input-GXP_1" class="resource-input xp-input" type="number">
                     </div>
                 </div>
                 <div id="xp-display-wrapper" class="resource-box">
-                    <img draggable="false" src="icons/gxp.png">
+                    <img draggable="false" src="icons/Misc/gxp.png">
                     <p id="GearXp" class="misc-gear no-input" style="align-self: center; margin-left: 10px;"></p>
                 </div>
                 <div class="resource-box" style="border: none;">
@@ -490,22 +602,22 @@
                             <tr id="row-Spring">
                                 <td style="padding-left: 8px;">Spring</td>
                                 <td class="empty-resource editable">
-                                    <img draggable="false" class="ue-icon" src="icons/Spring_4.png">
+                                    <img draggable="false" class="ue-icon" src="icons/LevelPart/Spring_4.png">
                                     <p class="ue-count-text" id="T4_Spring"></p>
                                     <input class="resource-input ue-input" type="number" id="input-T4_Spring">
                                 </td>
                                 <td class="empty-resource editable">
-                                    <img draggable="false" class="ue-icon" src="icons/Spring_3.png">
+                                    <img draggable="false" class="ue-icon" src="icons/LevelPart/Spring_3.png">
                                     <p class="ue-count-text" id="T3_Spring"></p>
                                     <input class="resource-input ue-input" type="number" id="input-T3_Spring">
                                 </td>
                                 <td class="empty-resource editable">
-                                    <img draggable="false" class="ue-icon" src="icons/Spring_2.png">
+                                    <img draggable="false" class="ue-icon" src="icons/LevelPart/Spring_2.png">
                                     <p class="ue-count-text" id="T2_Spring"></p>
                                     <input class="resource-input ue-input" type="number" id="input-T2_Spring">
                                 </td>
                                 <td class="empty-resource editable">
-                                    <img draggable="false" class="ue-icon" src="icons/Spring_1.png">
+                                    <img draggable="false" class="ue-icon" src="icons/LevelPart/Spring_1.png">
                                     <p class="ue-count-text" id="T1_Spring"></p>
                                     <input class="resource-input ue-input" type="number" id="input-T1_Spring">
                                 </td>
@@ -519,22 +631,22 @@
                             <tr id="row-Hammer" style="background-color: #84848436;">
                                 <td style="padding-left: 8px;">Hammer</td>
                                 <td class="empty-resource editable">
-                                    <img draggable="false" class="ue-icon" src="icons/Hammer_4.png">
+                                    <img draggable="false" class="ue-icon" src="icons/LevelPart/Hammer_4.png">
                                     <p class="ue-count-text" id="T4_Hammer"></p>
                                     <input class="resource-input ue-input" type="number" id="input-T4_Hammer">
                                 </td>
                                 <td class="empty-resource editable">
-                                    <img draggable="false" class="ue-icon" src="icons/Hammer_3.png">
+                                    <img draggable="false" class="ue-icon" src="icons/LevelPart/Hammer_3.png">
                                     <p class="ue-count-text" id="T3_Hammer"></p>
                                     <input class="resource-input ue-input" type="number" id="input-T3_Hammer">
                                 </td>
                                 <td class="empty-resource editable">
-                                    <img draggable="false" class="ue-icon" src="icons/Hammer_2.png">
+                                    <img draggable="false" class="ue-icon" src="icons/LevelPart/Hammer_2.png">
                                     <p class="ue-count-text" id="T2_Hammer"></p>
                                     <input class="resource-input ue-input" type="number" id="input-T2_Hammer">
                                 </td>
                                 <td class="empty-resource editable">
-                                    <img draggable="false" class="ue-icon" src="icons/Hammer_1.png">
+                                    <img draggable="false" class="ue-icon" src="icons/LevelPart/Hammer_1.png">
                                     <p class="ue-count-text" id="T1_Hammer"></p>
                                     <input class="resource-input ue-input" type="number" id="input-T1_Hammer">
                                 </td>
@@ -548,22 +660,22 @@
                             <tr id="row-Barrel">
                                 <td style="padding-left: 8px;">Barrel</td>
                                 <td class="empty-resource editable">
-                                    <img draggable="false" class="ue-icon" src="icons/Barrel_4.png">
+                                    <img draggable="false" class="ue-icon" src="icons/LevelPart/Barrel_4.png">
                                     <p class="ue-count-text" id="T4_Barrel"></p>
                                     <input class="resource-input ue-input" type="number" id="input-T4_Barrel">
                                 </td>
                                 <td class="empty-resource editable">
-                                    <img draggable="false" class="ue-icon" src="icons/Barrel_3.png">
+                                    <img draggable="false" class="ue-icon" src="icons/LevelPart/Barrel_3.png">
                                     <p class="ue-count-text" id="T3_Barrel"></p>
                                     <input class="resource-input ue-input" type="number" id="input-T3_Barrel">
                                 </td>
                                 <td class="empty-resource editable">
-                                    <img draggable="false" class="ue-icon" src="icons/Barrel_2.png">
+                                    <img draggable="false" class="ue-icon" src="icons/LevelPart/Barrel_2.png">
                                     <p class="ue-count-text" id="T2_Barrel"></p>
                                     <input class="resource-input ue-input" type="number" id="input-T2_Barrel">
                                 </td>
                                 <td class="empty-resource editable">
-                                    <img draggable="false" class="ue-icon" src="icons/Barrel_1.png">
+                                    <img draggable="false" class="ue-icon" src="icons/LevelPart/Barrel_1.png">
                                     <p class="ue-count-text" id="T1_Barrel"></p>
                                     <input class="resource-input ue-input" type="number" id="input-T1_Barrel">
                                 </td>
@@ -577,22 +689,22 @@
                             <tr id="row-Needle" style="background-color: #84848436;">
                                 <td style="padding-left: 8px;">Needle</td>
                                 <td class="empty-resource editable">
-                                    <img draggable="false" class="ue-icon" src="icons/Needle_4.png">
+                                    <img draggable="false" class="ue-icon" src="icons/LevelPart/Needle_4.png">
                                     <p class="ue-count-text" id="T4_Needle"></p>
                                     <input class="resource-input ue-input" type="number" id="input-T4_Needle">
                                 </td>
                                 <td class="empty-resource editable">
-                                    <img draggable="false" class="ue-icon" src="icons/Needle_3.png">
+                                    <img draggable="false" class="ue-icon" src="icons/LevelPart/Needle_3.png">
                                     <p class="ue-count-text" id="T3_Needle"></p>
                                     <input class="resource-input ue-input" type="number" id="input-T3_Needle">
                                 </td>
                                 <td class="empty-resource editable">
-                                    <img draggable="false" class="ue-icon" src="icons/Needle_2.png">
+                                    <img draggable="false" class="ue-icon" src="icons/LevelPart/Needle_2.png">
                                     <p class="ue-count-text" id="T2_Needle"></p>
                                     <input class="resource-input ue-input" type="number" id="input-T2_Needle">
                                 </td>
                                 <td class="empty-resource editable">
-                                    <img draggable="false" class="ue-icon" src="icons/Needle_1.png">
+                                    <img draggable="false" class="ue-icon" src="icons/LevelPart/Needle_1.png">
                                     <p class="ue-count-text" id="T1_Needle"></p>
                                     <input class="resource-input ue-input" type="number" id="input-T1_Needle">
                                 </td>
@@ -635,7 +747,8 @@
                             </tr>
                             <tr id="row-Spring-needed">
                                 <td>
-                                    <img draggable="false" class="ue-icon" src="icons/Spring_All.png" id="spring-all">
+                                    <img draggable="false" class="ue-icon" src="icons/LevelPart/Spring_All.png"
+                                        id="spring-all">
                                 </td>
                                 <td>
                                     <p id="owned-spring"></p>
@@ -649,7 +762,8 @@
                             </tr>
                             <tr id="row-Hammer-needed" style="background-color: #84848436;">
                                 <td>
-                                    <img draggable="false" class="ue-icon" src="icons/Hammer_All.png" id="hammer-all">
+                                    <img draggable="false" class="ue-icon" src="icons/LevelPart/Hammer_All.png"
+                                        id="hammer-all">
                                 </td>
                                 <td>
                                     <p id="owned-hammer"></p>
@@ -663,7 +777,8 @@
                             </tr>
                             <tr id="row-Barrel-needed">
                                 <td>
-                                    <img draggable="false" class="ue-icon" src="icons/Barrel_All.png" id="barrel-all">
+                                    <img draggable="false" class="ue-icon" src="icons/LevelPart/Barrel_All.png"
+                                        id="barrel-all">
                                 </td>
                                 <td>
                                     <p id="owned-barrel"></p>
@@ -677,7 +792,7 @@
                             </tr>
                             <tr id="row-Needle-needed" style="border-top: solid #f5f5f58c;">
                                 <td>
-                                    <img draggable="false" class="ue-icon" src="icons/Needle_All.png">
+                                    <img draggable="false" class="ue-icon" src="icons/LevelPart/Needle_All.png">
                                 </td>
                                 <td>
                                     <p id="owned-needle"></p>
@@ -697,7 +812,7 @@
                             </tr>
                             <tr id="row-All-needed">
                                 <td>
-                                    <img draggable="false" class="ue-icon" src="icons/All_All.png">
+                                    <img draggable="false" class="ue-icon" src="icons/LevelPart/All_All.png">
                                 </td>
                                 <td>
                                     <p id="owned-all"></p>
@@ -721,11 +836,11 @@
         <div class="footer-resource">
             <div class="footer-buttons-wrapper">
                 <div class="footer-button" onclick="openResourceModal()" style="display: flex; align-items: center;">
-                    <img draggable="false" src="icons/resourceBtn.png">
+                    <img draggable="false" src="icons/UI/resourceBtn.png">
                     <p>Resources</p>
                 </div>
                 <div class="footer-button" onclick="openGearModal()" style="display: flex; align-items: center;">
-                    <img draggable="false" src="icons/T6_Badge.png">
+                    <img draggable="false" src="icons/Gear/T6_Badge.png">
                     <p>Gear</p>
                 </div>
                 <div class="footer-button" onclick="teamsToggle()">

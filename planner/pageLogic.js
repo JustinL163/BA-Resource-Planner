@@ -4,6 +4,7 @@ var modalChar = "";
 var modalStars = { "star": 0, "star_target": 0, "ue": 0, "ue_target": 0 };
 var data;
 const ueStarCap = 3;
+const globalMaxWorld = 16;
 
 var requiredMatDict = {};
 var neededMatDict = {};
@@ -28,6 +29,9 @@ let currentGroup = "";
 let borrowed = false;
 
 const defaultGroups = ["Binah", "Chesed", "Hod", "ShiroKuro", "Perorodzilla", "Hieronymous", "Kaiten"];
+
+var sweepMax = 0;
+let sweepMin = 0;
 
 var saveTime = 0;
 var toastCooldownTime = 0;
@@ -55,7 +59,7 @@ let loaded = false;
 
 function loadResources() {
 
-    $.getJSON('misc_data.json?4').done(function (json) {
+    $.getJSON('misc_data.json?5').done(function (json) {
         misc_data = json;
         checkResources();
     });
@@ -135,6 +139,19 @@ function init() {
 
         for (var i = 0; i < data.characters.length; i++) {
 
+            // remove later maybe
+            if (data.characters[i].eleph == undefined) {
+                let eleph = data.characters[i].eleph = {};
+                eleph.owned = 0;
+                eleph.unlocked = true;
+                eleph.cost = 1;
+                eleph.purchasable = 20;
+                eleph.farm_nodes = 0;
+                eleph.node_refresh = false;
+                eleph.use_eligma = false;
+                eleph.use_shop = false;
+            }
+
             if (document.getElementById('char_' + data.characters[i].id) == undefined) {
                 createCharBox(data.characters[i].name, data.characters[i].id, charsContainer, "main");
             }
@@ -148,6 +165,19 @@ function init() {
 
         if (data.page_theme != undefined) {
             setTheme(data.page_theme);
+        }
+
+        if (data.server == undefined) {
+            data.server = "Global";
+        }
+
+        let serverToggleBtn = document.getElementById('hm-server-toggle');
+
+        if (data.server == "Global") {
+            serverToggleBtn.innerText = "Gbl";
+        }
+        else if (data.server == "JP") {
+            serverToggleBtn.innerText = "JP";
         }
     }
 
@@ -180,7 +210,7 @@ function init() {
     const newContent = document.createElement("div");
     newContent.className = "charBoxwrap";
     const newImg = document.createElement("img");
-    newImg.src = "icons/addIcon.png";
+    newImg.src = "icons/UI/addIcon.png";
     newImg.draggable = false;
     newDiv.appendChild(newContent).appendChild(newImg);
 
@@ -228,17 +258,17 @@ function init() {
     // generate resource modal tables
     createTable("school-mat-table", ["BD_4", "BD_3", "BD_2", "BD_1", "TN_4", "TN_3", "TN_2", "TN_1"], 0,
         ["Hyakkiyako", "Red Winter", "Trinity", "Gehenna", "Abydos", "Millennium", "Arius", "Shanhaijing", "Valkyrie"], 0,
-        tableNavigation, document.getElementById("table-parent-1"), false, "resource");
+        tableNavigation, document.getElementById("table-parent-1"), false, "resource", "icons/SchoolMat/");
     createTable("artifact-table-1", ["4", "3", "2", "1"], 0,
         ["Nebra", "Phaistos", "Wolfsegg", "Nimrud", "Mandragora", "Rohonc", "Aether"], 9,
-        tableNavigation, document.getElementById("table-parent-2"), true, "resource");
+        tableNavigation, document.getElementById("table-parent-2"), true, "resource", "icons/Artifact/");
     createTable("artifact-table-2", ["4", "3", "2", "1"], 4,
         ["Antikythera", "Voynich", "Haniwa", "Totem", "Baghdad", "Colgante", "Mystery"], 9,
-        tableNavigation, document.getElementById("table-parent-3"), true, "resource");
+        tableNavigation, document.getElementById("table-parent-3"), true, "resource", "icons/Artifact/");
 
     let gearNavigation = [];
     createTable("gear-table", ["T7", "T6", "T5", "T4", "T3", "T2"], 0, ["Hat", "Gloves", "Shoes", "Bag", "Badge", "Hairpin", "Charm", "Watch", "Necklace"],
-        0, gearNavigation, document.getElementById('table-parent-4'), false, "gear");
+        0, gearNavigation, document.getElementById('table-parent-4'), false, "gear", "icons/Gear/");
 
     let navObj = {};
     for (let x in tableNavigation) {
@@ -265,16 +295,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.1.7".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.2.0".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.1.7",
+            title: "Updated to Version 1.2.0",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.1.7";
+        data.site_version = "1.2.0";
         saveToLocalStorage(false);
     }
 
@@ -363,13 +393,13 @@ function init() {
                             let charInfo = charlist[charMap.get(modalChar)];
 
                             if (event.target.id == "input_gear1_current") {
-                                document.getElementById("gear1-img").src = "icons/T" + event.target.value + "_" + charInfo.Equipment.Slot1 + ".png";
+                                document.getElementById("gear1-img").src = "icons/Gear/T" + event.target.value + "_" + charInfo.Equipment.Slot1 + ".png";
                             }
                             else if (event.target.id == "input_gear2_current") {
-                                document.getElementById("gear2-img").src = "icons/T" + event.target.value + "_" + charInfo.Equipment.Slot2 + ".png";
+                                document.getElementById("gear2-img").src = "icons/Gear/T" + event.target.value + "_" + charInfo.Equipment.Slot2 + ".png";
                             }
                             else if (event.target.id == "input_gear3_current") {
-                                document.getElementById("gear3-img").src = "icons/T" + event.target.value + "_" + charInfo.Equipment.Slot3 + ".png";
+                                document.getElementById("gear3-img").src = "icons/Gear/T" + event.target.value + "_" + charInfo.Equipment.Slot3 + ".png";
                             }
                         }
                         else {
@@ -377,13 +407,13 @@ function init() {
                             let charInfo = charlist[charMap.get(modalChar)];
 
                             if (event.target.id == "input_gear1_current") {
-                                document.getElementById("gear1-img").src = "icons/T1_" + charInfo.Equipment.Slot1 + ".png";
+                                document.getElementById("gear1-img").src = "icons/Gear/T1_" + charInfo.Equipment.Slot1 + ".png";
                             }
                             else if (event.target.id == "input_gear2_current") {
-                                document.getElementById("gear2-img").src = "icons/T1_" + charInfo.Equipment.Slot2 + ".png";
+                                document.getElementById("gear2-img").src = "icons/Gear/T1_" + charInfo.Equipment.Slot2 + ".png";
                             }
                             else if (event.target.id == "input_gear3_current") {
-                                document.getElementById("gear3-img").src = "icons/T1_" + charInfo.Equipment.Slot3 + ".png";
+                                document.getElementById("gear3-img").src = "icons/Gear/T1_" + charInfo.Equipment.Slot3 + ".png";
                             }
                         }
 
@@ -529,6 +559,31 @@ function init() {
 
     tippy('#barrel-all', {
         content: "Used for gun types: MG, SR, RG, RL, MT",
+        theme: 'light'
+    })
+
+    tippy('#label_char_unlocked', {
+        content: "Whether you actually own the character, otherwise adds to the Eleph needed by the character unlock amount",
+        theme: 'light'
+    })
+
+    tippy('#label_eleph_cost', {
+        content: "Current price per Eleph in Eligma store",
+        theme: 'light'
+    })
+
+    tippy('#label_eleph_purchasable', {
+        content: "Number purchasable at current price tier (check in Eligma store by clicking Max to find the number from 1-20)",
+        theme: 'light'
+    })
+
+    tippy('#label_node_refresh', {
+        content: "If you are pyro resetting nodes for this character, doubles max allowed sweep attempts",
+        theme: 'light'
+    })
+
+    tippy('#hm-server-toggle', {
+        content: "Switch between Global/JP hardmode stages allowed",
         theme: 'light'
     })
 
@@ -903,7 +958,7 @@ function validateInput(key, checkonly, verbose) {
             }
         }
 
-        if (inputElement.value.length > val.max.length) {
+        if (inputElement.value.length > val.max?.length) {
             if (checkonly) {
                 return "too_long";
             }
@@ -1038,6 +1093,34 @@ function validateInput(key, checkonly, verbose) {
                             inputElement.value = checkMin;
                         }
                         return minMessage;
+                    }
+                }
+                else if (valReq.type == "object" && compareMode == "direct") {
+
+                    if (compareType == "equal_greater") {
+                        if (parseInt(inputElement.value) < compareVal) {
+                            if (!checkonly && sanitise) {
+                                inputElement.value = compareVal;
+                            }
+                            message = val.name + " must be greater than or equal to " + compareVal;
+                            return message;
+                        }
+                    }
+                    else if (compareType == "equal_lesser") {
+                        if (parseInt(inputElement.value) > compareVal) {
+                            if (!checkonly && sanitise) {
+                                inputElement.value = compareVal;
+                            }
+                            message = val.name + " must be lesser than or equal to " + compareVal;
+                            return message;
+                        }
+                    }
+                    else if (compareType == "max") {
+                        if (parseInt(inputElement.value) > compareVal) {
+                            inputElement.value = compareVal;
+                            message = val.name + " must be lesser than or equal to " + compareVal;
+                            return "validated";
+                        }
                     }
                 }
                 else if (verbose && compareMode == 'direct') {
@@ -1314,16 +1397,115 @@ function openModal(e) {
 
         document.getElementById('character-modal-wrapper').style.visibility = "hidden";
 
-        var charSelected = charNames.get(this.id.substring(5));
+        let charId = this.id.substring(5);
 
-        modalChar = charSelected;
+        var charSelected = charNames.get(charId);
+
+        document.getElementById('char-eleph').src = "icons/Eleph/Eleph_" + charId + ".png";
+        document.getElementById('char-eleph-needed-icon').src = "icons/Eleph/Eleph_" + charId + ".png";
+
+        let hardModes = misc_data.hard_modes[charId];
+        let shopCharacter = misc_data.shop_characters[charId];
+        let shopCurrency;
+
+        let currencyDescriptorText = document.getElementById('char-currency-descriptor');
+        let charShopCurrencyText = document.getElementById('char-shop-currency');
+        let buyOptionTwo = document.getElementById('buy-option-two');
 
         populateCharModal(charSelected);
 
         populateCharResources(charSelected);
 
+        let cost = document.getElementById('input_eleph_cost').value;
+
+        if (cost == 5) {
+            document.getElementById('label_eleph_purchasable').style.visibility = 'hidden';
+            document.getElementById('input_eleph_purchasable').style.visibility = 'hidden';
+        }
+        else {
+            document.getElementById('label_eleph_purchasable').style.visibility = '';
+            document.getElementById('input_eleph_purchasable').style.visibility = '';
+        }
+
+        if (hardModes) {
+
+            document.getElementById("content-13").style.display = "";
+            document.getElementById("char-ShopCurrency").parentElement.style.display = "none";
+            buyOptionTwo.style.display = "none";
+
+            let hardModeNodes = 0;
+
+            if (data.server == "Global") {
+
+                for (let i = 0; i < hardModes.length; i++) {
+
+                    if (parseInt(hardModes[i].substring(0, hardModes[i].indexOf('-'))) <= globalMaxWorld) {
+                        hardModeNodes++;
+                    }
+                }
+            }
+            else if (data.server == "JP") {
+                hardModeNodes = hardModes.length;
+            }
+
+            sweepMax = hardModeNodes * 3; sweepMin = hardModeNodes * 3;
+            if (document.getElementById('input_allow_node_refresh').checked) {
+                sweepMax = hardModeNodes * 6;
+            }
+
+            document.getElementById("hard-nodes-count").innerText = "/ " + sweepMax;
+
+            currencyDescriptorText.innerText = "Avg Days";
+
+            document.getElementById("shop-currency-icon").src = "icons/Eleph/Eleph_" + charId + ".png";
+
+        }
+        else if (shopCharacter) {
+
+            document.getElementById("content-13").style.display = "none";
+            buyOptionTwo.style.display = "flex";
+
+            document.getElementById("input_farm_nodes").value = 0;
+
+            if (typeof (shopCharacter) == "object") {
+                shopCurrency = shopCharacter.currency;
+            }
+            else {
+                shopCurrency = shopCharacter;
+            }
+
+            if (shopCurrency == "RaidToken") {
+                currencyDescriptorText.innerText = "Min Raids";
+                charShopCurrencyText.innerText = "Raid Tokens";
+            }
+            else if (shopCurrency == "RareRaidToken") {
+                currencyDescriptorText.innerText = "Min Raids";
+                charShopCurrencyText.innerText = "Rare Raid Tokens";
+            }
+            else if (shopCurrency == "ArenaCoin") {
+                currencyDescriptorText.innerText = "Shop Resets";
+                charShopCurrencyText.innerText = "TC Coins";
+            }
+            else if (shopCurrency == "JECoin") {
+                currencyDescriptorText.innerText = "Shop Resets";
+                charShopCurrencyText.innerText = "JE Coins";
+            }
+            else if (shopCurrency == "MasteryCertificate") {
+                currencyDescriptorText.innerText = "Shop Resets";
+                charShopCurrencyText.innerText = "Certificates";
+            }
+
+            document.getElementById("shop-currency-icon").src = "icons/Misc/" + shopCurrency + ".png";
+            document.getElementById("shop-currency-icon2").src = "icons/Misc/" + shopCurrency + ".png";
+        }
+        else {
+            buyOptionTwo.style.display = "none";
+        }
+
+        modalChar = charSelected;
+
         var displayImg = document.getElementById("displayImg");
-        displayImg.src = "icons/Icon_" + charMap.get(charSelected) + ".png";
+        displayImg.src = "icons/Portrait/Icon_" + charMap.get(charSelected) + ".png";
 
         var displayName = document.getElementById("displayName");
         displayName.innerText = charSelected
@@ -1721,7 +1903,7 @@ function groupEmptySlot() {
     new_charBoxwrap.className = "charBoxwrap";
 
     let new_addIcon = document.createElement('img');
-    new_addIcon.src = "icons/addIcon.png";
+    new_addIcon.src = "icons/UI/addIcon.png";
     new_addIcon.draggable = false;
 
     new_charBoxwrap.appendChild(new_addIcon);
@@ -2625,6 +2807,7 @@ function saveCharChanges() {
 
         charData.current = {};
         charData.target = {};
+        charData.eleph = {};
 
         charData.current.level = document.getElementById("input_level_current").value;
         charData.target.level = document.getElementById("input_level_target").value;
@@ -2655,6 +2838,15 @@ function saveCharChanges() {
         charData.target.star = modalStars.star_target;
         charData.current.ue = modalStars.ue;
         charData.target.ue = modalStars.ue_target;
+
+        charData.eleph.owned = document.getElementById("input_eleph_owned").value;
+        charData.eleph.unlocked = document.getElementById("input_char_unlocked").checked;
+        charData.eleph.cost = document.getElementById("input_eleph_cost").value;
+        charData.eleph.purchasable = document.getElementById("input_eleph_purchasable").value;
+        charData.eleph.farm_nodes = document.getElementById("input_farm_nodes").value;
+        charData.eleph.node_refresh = document.getElementById("input_allow_node_refresh").checked;
+        charData.eleph.use_eligma = document.getElementById("option-eligma").checked;
+        charData.eleph.use_shop = document.getElementById("option-shop").checked;
 
         saveToLocalStorage(true);
     }
@@ -2700,16 +2892,16 @@ function populateCharModal(character) {
         document.getElementById("display_defense_type").innerText = charInfo.DefenseType;
         updateTextBackground("display_defense_type", charInfo.DefenseType);
 
-        document.getElementById('mood-Urban').src = "icons/Mood_" + charInfo.Affinities.Urban + ".png";
-        document.getElementById('mood-Outdoors').src = "icons/Mood_" + charInfo.Affinities.Outdoors + ".png";
-        document.getElementById('mood-Indoors').src = "icons/Mood_" + charInfo.Affinities.Indoors + ".png";
+        document.getElementById('mood-Urban').src = "icons/Mood/Mood_" + charInfo.Affinities.Urban + ".png";
+        document.getElementById('mood-Outdoors').src = "icons/Mood/Mood_" + charInfo.Affinities.Outdoors + ".png";
+        document.getElementById('mood-Indoors').src = "icons/Mood/Mood_" + charInfo.Affinities.Indoors + ".png";
 
         if (charData.current?.ue >= 3) {
 
             let terrain = charInfo.CharacterWeapon.AffinityBoost;
             let boostAmt = charInfo.CharacterWeapon.AffinityBoostAmount;
 
-            document.getElementById('mood-' + terrain).src = "icons/Mood_" + boostedMood(charInfo.Affinities[terrain], boostAmt) + ".png";
+            document.getElementById('mood-' + terrain).src = "icons/Mood/Mood_" + boostedMood(charInfo.Affinities[terrain], boostAmt) + ".png";
         }
 
         document.getElementById("input_level_current").value = charData.current?.level;
@@ -2738,34 +2930,43 @@ function populateCharModal(character) {
         document.getElementById("input_gear3_target").value = charData.target?.gear3;
 
         if (charData.current?.gear1 != "0") {
-            document.getElementById("gear1-img").src = "icons/T" + charData.current?.gear1 + "_" + charInfo.Equipment.Slot1 + ".png";
+            document.getElementById("gear1-img").src = "icons/Gear/T" + charData.current?.gear1 + "_" + charInfo.Equipment.Slot1 + ".png";
         }
         else {
-            document.getElementById("gear1-img").src = "icons/T1_" + charInfo.Equipment.Slot1 + ".png";
+            document.getElementById("gear1-img").src = "icons/Gear/T1_" + charInfo.Equipment.Slot1 + ".png";
         }
         if (charData.current?.gear2 != "0") {
-            document.getElementById("gear2-img").src = "icons/T" + charData.current?.gear2 + "_" + charInfo.Equipment.Slot2 + ".png";
+            document.getElementById("gear2-img").src = "icons/Gear/T" + charData.current?.gear2 + "_" + charInfo.Equipment.Slot2 + ".png";
         }
         else {
-            document.getElementById("gear2-img").src = "icons/T1_" + charInfo.Equipment.Slot2 + ".png";
+            document.getElementById("gear2-img").src = "icons/Gear/T1_" + charInfo.Equipment.Slot2 + ".png";
         }
         if (charData.current?.gear3 != "0") {
-            document.getElementById("gear3-img").src = "icons/T" + charData.current?.gear3 + "_" + charInfo.Equipment.Slot3 + ".png";
+            document.getElementById("gear3-img").src = "icons/Gear/T" + charData.current?.gear3 + "_" + charInfo.Equipment.Slot3 + ".png";
         }
         else {
-            document.getElementById("gear3-img").src = "icons/T1_" + charInfo.Equipment.Slot3 + ".png";
+            document.getElementById("gear3-img").src = "icons/Gear/T1_" + charInfo.Equipment.Slot3 + ".png";
         }
 
-        document.getElementById("ex-img").src = "icons/" + charInfo.Skills.Ex.Level1.Icon + ".png";
-        document.getElementById("basic-img").src = "icons/" + charInfo.Skills.Skill1.Level1.Icon + ".png";
-        document.getElementById("enhanced-img").src = "icons/" + charInfo.Skills.Skill2.Level1.Icon + ".png";
-        document.getElementById("sub-img").src = "icons/" + charInfo.Skills.Skill3.Level1.Icon + ".png";
+        document.getElementById("ex-img").src = "icons/SkillIcon/" + charInfo.Skills.Ex.Level1.Icon + ".png";
+        document.getElementById("basic-img").src = "icons/SkillIcon/" + charInfo.Skills.Skill1.Level1.Icon + ".png";
+        document.getElementById("enhanced-img").src = "icons/SkillIcon/" + charInfo.Skills.Skill2.Level1.Icon + ".png";
+        document.getElementById("sub-img").src = "icons/SkillIcon/" + charInfo.Skills.Skill3.Level1.Icon + ".png";
 
 
         modalStars.star = charData.current?.star;
         modalStars.star_target = charData.target?.star;
         modalStars.ue = charData.current?.ue;
         modalStars.ue_target = charData.target?.ue;
+
+        document.getElementById("input_eleph_owned").value = charData.eleph?.owned;
+        document.getElementById("input_char_unlocked").checked = charData.eleph?.unlocked;
+        document.getElementById("input_eleph_cost").value = charData.eleph?.cost;
+        document.getElementById("input_eleph_purchasable").value = charData.eleph?.purchasable;
+        document.getElementById("input_farm_nodes").value = charData.eleph?.farm_nodes;
+        document.getElementById("input_allow_node_refresh").checked = charData.eleph?.node_refresh;
+        document.getElementById("option-eligma").checked = charData.eleph?.use_eligma;
+        document.getElementById("option-shop").checked = charData.eleph?.use_shop;
 
         gtag('event', 'character_viewed', {
             'event_label': character,
@@ -2787,6 +2988,73 @@ function populateCharModal(character) {
     updateTooltip(character, "passive");
     updateTooltip(character, "sub");
 
+}
+
+function charUnlockClick() {
+
+    let state = document.getElementById("input_char_unlocked").checked;
+
+    if (state == false) {
+
+        let charInfoObj = charlist[charMap.get(modalChar)];
+
+        if (modalStars.star > charInfoObj.BaseStar) {
+
+            modalStars.star = charInfoObj.BaseStar;
+
+            if (modalStars.ue > 0) {
+                modalStars.ue = 0;
+
+                let terrain = charInfoObj.CharacterWeapon.AffinityBoost;
+
+                document.getElementById('mood-' + terrain).src = "icons/Mood/Mood_" + charInfoObj.Affinities[terrain] + ".png";
+            }
+
+            updateStarDisplays(modalChar, true);
+        }
+
+    }
+
+    populateCharResources(modalChar);
+}
+
+function serverToggle() {
+
+    let serverToggleBtn = document.getElementById('hm-server-toggle');
+
+    if (data.server == "Global") {
+        data.server = "JP";
+        serverToggleBtn.innerText = "JP";
+    }
+    else if (data.server == "JP") {
+        data.server = "Global"
+        serverToggleBtn.innerText = "Gbl";
+    }
+
+    let hardModes = misc_data.hard_modes[charMap.get(modalChar)];
+    let hardModeNodes = 0;
+
+    if (data.server == "Global") {
+
+        for (let i = 0; i < hardModes.length; i++) {
+
+            if (parseInt(hardModes[i].substring(0, hardModes[i].indexOf('-'))) <= globalMaxWorld) {
+                hardModeNodes++;
+            }
+        }
+    }
+    else if (data.server == "JP") {
+        hardModeNodes = hardModes.length;
+    }
+
+    sweepMax = hardModeNodes * 3; sweepMin = hardModeNodes * 3;
+    if (document.getElementById('input_allow_node_refresh').checked) {
+        sweepMax = hardModeNodes * 6;
+    }
+
+    document.getElementById("hard-nodes-count").innerText = "/ " + sweepMax;
+
+    saveTime = Date.now() + (1000 * 5);
 }
 
 function boostedMood(base, boost) {
@@ -2882,6 +3150,7 @@ function charDataFromModal(character) {
 
     charData.current = {};
     charData.target = {};
+    charData.eleph = {};
 
     charData.current.level = document.getElementById("input_level_current").value;
     charData.target.level = document.getElementById("input_level_target").value;
@@ -2913,6 +3182,15 @@ function charDataFromModal(character) {
     charData.current.ue = modalStars.ue;
     charData.target.ue = modalStars.ue_target;
 
+    charData.eleph.owned = document.getElementById("input_eleph_owned").value;
+    charData.eleph.unlocked = document.getElementById("input_char_unlocked").checked;
+    charData.eleph.cost = document.getElementById("input_eleph_cost").value;
+    charData.eleph.purchasable = document.getElementById("input_eleph_purchasable").value;
+    charData.eleph.farm_nodes = document.getElementById("input_farm_nodes").value;
+    charData.eleph.node_refresh = document.getElementById("input_allow_node_refresh").checked;
+    charData.eleph.use_eligma = document.getElementById("option-eligma").checked;
+    charData.eleph.use_shop = document.getElementById("option-shop").checked;
+
     return charData;
 
 }
@@ -2926,6 +3204,9 @@ function isCharModalDirty() {
         return true;
     }
     else if (compareObjects(charData.target, modalData.target) != true) {
+        return true;
+    }
+    else if (compareObjects(charData.eleph, modalData.eleph) != true) {
         return true;
     }
 
@@ -3003,7 +3284,13 @@ function populateCharResources(character) {
 
                 const resourceImg = document.createElement('img');
                 resourceImg.className = "char-resource-img";
-                resourceImg.src = "icons/" + matName + ".png";
+
+                if (matName.includes("BD") || matName.includes("TN")) {
+                    resourceImg.src = "icons/SchoolMat/" + matName + ".png";
+                }
+                else {
+                    resourceImg.src = "icons/Artifact/" + matName + ".png";
+                }
 
                 const resourceText = document.createElement('p');
                 resourceText.className = "resource-display-text";
@@ -3085,11 +3372,136 @@ function populateCharResources(character) {
         else {
             uexpText.parentElement.style.display = "none";
         }
+
+        let elephText = document.getElementById('char-Eleph');
+
+        if (resources["Eleph"] > 0) {
+            elephText.innerText = commafy(resources["Eleph"]);
+            elephText.parentElement.style.display = "";
+        }
+        else {
+            elephText.parentElement.style.display = "none";
+        }
+
+        let eligmaText = document.getElementById('char-Eligma');
+
+        if (resources["Eligma"] > 0) {
+            eligmaText.innerText = commafy(resources["Eligma"]);
+            eligmaText.parentElement.style.display = "";
+        }
+        else {
+            eligmaText.parentElement.style.display = "none";
+        }
+
+        let charId = charMap.get(character);
+
+        let hardModes = misc_data.hard_modes[charId];
+        let shopCharacter = misc_data.shop_characters[charId];
+        let shopCurrency;
+
+        let shopCurrencyText = document.getElementById('char-ShopCurrency');
+        let currencyResetsText = document.getElementById('char-currency-times');
+
+        if (hardModes) {
+            if (resources["ShopResets"] > 0) {
+                currencyResetsText.innerText = resources["ShopResets"];
+                document.getElementById("content-14").style.display = "";
+            }
+            else {
+                document.getElementById("content-14").style.display = "none";
+            }
+        }
+        else {
+
+            if (typeof (shopCharacter) == "object") {
+                shopCurrency = shopCharacter.currency;
+            }
+            else {
+                shopCurrency = shopCharacter;
+            }
+
+            if (resources[shopCurrency + "Cost"] > 0) {
+                shopCurrencyText.innerText = commafy(resources[shopCurrency + "Cost"]);
+                shopCurrencyText.parentElement.style.display = "";
+                currencyResetsText.innerText = resources["ShopResets"];
+                document.getElementById("content-14").style.display = "";
+            }
+            else {
+                document.getElementById("content-14").style.display = "none";
+                shopCurrencyText.parentElement.style.display = "none";
+            }
+
+
+        }
     }
 
 }
 
+function buyTypeClick(type) {
+
+    if (type == "Eligma") {
+        document.getElementById('option-shop').checked = false;
+    }
+    else if (type == "Shop") {
+        document.getElementById('option-eligma').checked = false;
+    }
+
+    populateCharResources(modalChar);
+}
+
+function nodeRefreshClick() {
+
+    if (document.getElementById('input_allow_node_refresh').checked) {
+        sweepMax = sweepMin * 2;
+    }
+    else {
+        sweepMax = sweepMin;
+    }
+
+    document.getElementById('hard-nodes-count').innerText = "/ " + sweepMax;
+
+    validateInput('Node_Sweeps');
+}
+
+function shopCostChange() {
+
+    let cost = document.getElementById('input_eleph_cost').value;
+
+    if (cost == 5) {
+        document.getElementById('label_eleph_purchasable').style.visibility = 'hidden';
+        document.getElementById('input_eleph_purchasable').style.visibility = 'hidden';
+    }
+    else {
+        document.getElementById('label_eleph_purchasable').style.visibility = '';
+        document.getElementById('input_eleph_purchasable').style.visibility = '';
+    }
+}
+
 function starClicked(type, mode, pos) {
+
+    let charData = charDataFromModal(modalChar);
+
+    if (mode == "current" && charData.eleph?.unlocked == false) {
+        let message = "Character has to be Unlocked to change Current Stars";
+
+        if (Date.now() > toastCooldownTime || toastCooldownMsg != message) {
+
+            toastCooldownTime = Date.now() + 1000 * 10;
+            toastCooldownMsg = message;
+
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                title: 'Invalid input',
+                text: message,
+                color: alertColour,
+                showConfirmButton: false,
+                timer: 4000
+            })
+        }
+
+        return;
+    }
 
     var charInfoObj = charlist[charMap.get(modalChar)];
 
@@ -3164,13 +3576,13 @@ function starClicked(type, mode, pos) {
         let terrain = charInfoObj.CharacterWeapon.AffinityBoost;
         let boostAmt = charInfoObj.CharacterWeapon.AffinityBoostAmount;
 
-        document.getElementById('mood-' + terrain).src = "icons/Mood_" + boostedMood(charInfoObj.Affinities[terrain], boostAmt) + ".png";
+        document.getElementById('mood-' + terrain).src = "icons/Mood/Mood_" + boostedMood(charInfoObj.Affinities[terrain], boostAmt) + ".png";
     }
     else {
 
         let terrain = charInfoObj.CharacterWeapon.AffinityBoost;
 
-        document.getElementById('mood-' + terrain).src = "icons/Mood_" + charInfoObj.Affinities[terrain] + ".png";
+        document.getElementById('mood-' + terrain).src = "icons/Mood/Mood_" + charInfoObj.Affinities[terrain] + ".png";
     }
 
     updateStarDisplays(modalChar, true);
@@ -3283,6 +3695,7 @@ function openResourceModal() {
 
     if (resourceDisplay == "Remaining") {
         updateCells(neededMatDict, false, 'resource-count-text', 'misc-resource');
+        hideResourceDisplays();
     }
     else if (resourceDisplay == "Owned") {
         updateCells(ownedMatDict, true, 'resource-count-text', 'misc-resource');
@@ -3305,6 +3718,41 @@ function openResourceModal() {
         'modal_name': 'resource'
     })
 
+}
+
+function hideResourceDisplays() {
+    let raidTokenDisplay = document.getElementById("RaidTokenCost");
+    let rareRaidTokenDisplay = document.getElementById("RareRaidTokenCost");
+    let eligmaDisplay = document.getElementById("Eligma");
+    let arenaCoinDisplay = document.getElementById("ArenaCoinCost");
+    let jeCoinDisplay = document.getElementById("JECoinCost");
+    let masteryCertDisplay = document.getElementById("MasteryCertificateCost");
+
+    raidTokenDisplay.parentElement.style.display = ""
+    rareRaidTokenDisplay.parentElement.style.display = "";
+    eligmaDisplay.parentElement.style.display = "";
+    arenaCoinDisplay.parentElement.style.display = "";
+    jeCoinDisplay.parentElement.style.display = "";
+    masteryCertDisplay.parentElement.style.display = "";
+
+    if (raidTokenDisplay.innerText == "0") {
+        raidTokenDisplay.parentElement.style.display = "none";
+    }
+    if (rareRaidTokenDisplay.innerText == "0") {
+        rareRaidTokenDisplay.parentElement.style.display = "none";
+    }
+    if (eligmaDisplay.innerText == "0") {
+        eligmaDisplay.parentElement.style.display = "none";
+    }
+    if (arenaCoinDisplay.innerText == "0") {
+        arenaCoinDisplay.parentElement.style.display = "none";
+    }
+    if (jeCoinDisplay.innerText == "0") {
+        jeCoinDisplay.parentElement.style.display = "none";
+    }
+    if (masteryCertDisplay.innerText == "0") {
+        masteryCertDisplay.parentElement.style.display = "none";
+    }
 }
 
 function openGearModal() {
@@ -3516,7 +3964,7 @@ function hideEmptyCell(id) {
     }
 }
 
-function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, parent, reorder, type) {
+function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, parent, reorder, type, imgLoc) {
 
     const newTable = document.createElement("table");
     newTable.className = "resource-table";
@@ -3546,10 +3994,10 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
                 newImg.draggable = false;
                 newImg.className = type + "-icon";
                 if (reorder) {
-                    newImg.src = ("icons/" + rows[row] + "_" + columns[col - 1] + ".png").replace(/ /g, '');
+                    newImg.src = (imgLoc + rows[row] + "_" + columns[col - 1] + ".png").replace(/ /g, '');
                 }
                 else {
-                    newImg.src = ("icons/" + columns[col - 1] + "_" + rows[row] + ".png").replace(/ /g, '');
+                    newImg.src = (imgLoc + columns[col - 1] + "_" + rows[row] + ".png").replace(/ /g, '');
                 }
 
                 const newP = document.createElement("p");
@@ -3804,7 +4252,8 @@ function calculateCharResources(charData, output) {
 
     let charMatDict = {};
 
-    let charObj = charlist[charMap.get(charData.name)];
+    let charId = charMap.get(charData.name);
+    let charObj = charlist[charId];
 
     calcSkillCost(charObj, "Ex", charData.current?.ex, charData.target?.ex, charMatDict);
     calcSkillCost(charObj, "Skill1", charData.current?.basic, charData.target?.basic, charMatDict);
@@ -3820,6 +4269,63 @@ function calculateCharResources(charData, output) {
     calcMysticCost(charData.current?.star, charData.target?.star, charMatDict);
 
     calcUECost(charObj, charData.current?.ue, charData.target?.ue, charData.current?.ue_level, charData.target?.ue_level, charMatDict);
+
+    if (charMatDict["Eleph"] && charData.eleph?.owned > 0) {
+        charMatDict["Eleph"] = Math.max(charMatDict["Eleph"] - charData.eleph?.owned, 0);
+    }
+
+    if (charData.eleph?.use_eligma && charMatDict["Eleph"]) {
+
+        if (!charMatDict["Eligma"]) {
+            charMatDict["Eligma"] = 0;
+        }
+
+        charMatDict["Eligma"] += ligma(charMatDict["Eleph"], charData.eleph?.cost, charData.eleph?.purchasable);
+    }
+
+    let purchaseData = misc_data.shop_characters[charId];
+    let currency, amount, cost, times;
+
+    if (purchaseData) {
+        if (typeof (purchaseData) == "object") {
+            currency = purchaseData.currency;
+            amount = purchaseData.amount;
+            cost = purchaseData.cost;
+            times = purchaseData.times;
+        }
+        else {
+            currency = purchaseData;
+            let currencyInfo = misc_data.shop_eleph[currency];
+            amount = currencyInfo.amount;
+            cost = currencyInfo.cost;
+            times = currencyInfo.times;
+        }
+    }
+
+    if ((charData.eleph?.unlocked === false) &&
+        (["RaidToken", "RareRaidToken", "ArenaCoin", "JECoin"].includes(currency) || misc_data.hard_modes[charId])) {
+
+        if (!charMatDict["Eleph"]) {
+            charMatDict["Eleph"] = 0;
+        }
+
+        charMatDict["Eleph"] += misc_data.unlock_cost[charObj.BaseStar + "*"];
+    }
+
+    if (charData.eleph?.use_shop && charMatDict["Eleph"] && misc_data.shop_characters[charId]) {
+
+        let purchasesTaken = Math.ceil(charMatDict["Eleph"] / amount);
+        let currencyCost = purchasesTaken * cost;
+        let resetsTaken = Math.ceil(purchasesTaken / times);
+
+        charMatDict[currency + "Cost"] = currencyCost;
+        charMatDict["ShopResets"] = resetsTaken;
+    }
+
+    if (misc_data.hard_modes[charId] && charMatDict["Eleph"]) {
+
+        charMatDict["ShopResets"] = Math.ceil(charMatDict["Eleph"] / (charData.eleph?.farm_nodes * 0.4));
+    }
 
     if (output) {
         return charMatDict;
@@ -3962,8 +4468,43 @@ function calcMysticCost(star, starTarget, matDict) {
 
                 matDict["Credit"] += targetStar.credit - currentStar.credit;
             }
+
+            if ((currentStar.eleph || currentStar.eleph == 0) && targetStar.eleph) {
+
+                if (!matDict["Eleph"]) {
+                    matDict["Eleph"] = 0;
+                }
+
+                matDict["Eleph"] += targetStar.eleph - currentStar.eleph
+            }
         }
     }
+
+}
+
+function ligma(elephNeeded, elephCost, elephRemaining) {
+
+    let ligmaNeeded = 0;
+
+    while (elephCost < 5 && elephNeeded > 0) {
+
+        let nextAmount = Math.min(elephRemaining, elephNeeded);
+        if (nextAmount > 0) {
+            elephNeeded -= nextAmount;
+            ligmaNeeded += nextAmount * elephCost;
+            elephCost++;
+            elephRemaining = 20;
+        }
+        else {
+            break;
+        }
+    }
+
+    if (elephNeeded > 0) {
+        ligmaNeeded += elephNeeded * 5;
+    }
+
+    return ligmaNeeded;
 
 }
 
@@ -3994,6 +4535,15 @@ function calcUECost(charObj, star, starTarget, level, levelTarget, matDict) {
                 }
 
                 matDict["Credit"] += targetStar.credit - currentStar.credit;
+            }
+
+            if ((currentStar.eleph || currentStar.eleph == 0) && targetStar.eleph) {
+
+                if (!matDict["Eleph"]) {
+                    matDict["Eleph"] = 0;
+                }
+
+                matDict["Eleph"] += targetStar.eleph - currentStar.eleph
             }
 
         }
@@ -4092,7 +4642,11 @@ function calculateRaidCoins() {
         }
     }
 
-    neededMatDict["RaidTokenCost"] = raidCoins;
+    if (!neededMatDict["RaidTokenCost"]) {
+        neededMatDict["RaidTokenCost"] = 0;
+    }
+
+    neededMatDict["RaidTokenCost"] += raidCoins;
 }
 
 function switchResourceDisplay(displayType) {
@@ -4102,8 +4656,20 @@ function switchResourceDisplay(displayType) {
     let btnRemaining = document.getElementById("switch-resource-remaining");
     let displayText = document.getElementById("current-resource-display");
     var raidTokenDisplay = document.getElementById("raid-token-display-wrapper");
+    let rareRaidTokenDisplay = document.getElementById("rare-raid-token-display-wrapper");
+    let eligmaDisplay = document.getElementById("eligma-display-wrapper");
+    let arenaCoinDisplay = document.getElementById("arena-coin-display-wrapper");
+    let jeCoinDisplay = document.getElementById("je-coin-display-wrapper");
+    let masteryCertDisplay = document.getElementById("mastery-certificate-display-wrapper");
     var xpInputs = document.getElementById("xp-input-wrapper");
     var inputs = document.getElementsByClassName("input-wrapper");
+
+    raidTokenDisplay.style.display = "none";
+    rareRaidTokenDisplay.style.display = "none";
+    eligmaDisplay.style.display = "none";
+    arenaCoinDisplay.style.display = "none";
+    jeCoinDisplay.style.display = "none";
+    masteryCertDisplay.style.display = "none";
 
     if (displayType == "Owned") {
         resourceDisplay = "Owned";
@@ -4112,7 +4678,6 @@ function switchResourceDisplay(displayType) {
         btnRemaining.parentElement.style.display = "";
         displayText.innerText = "Owned";
         xpInputs.style.display = "";
-        raidTokenDisplay.style.display = "none";
         updateCells(ownedMatDict, true, 'resource-count-text', 'misc-resource');
         for (i = 0; i < inputs.length; i++) {
             inputs[i].parentElement.classList.add("editable");
@@ -4125,7 +4690,6 @@ function switchResourceDisplay(displayType) {
         btnRemaining.parentElement.style.display = "";
         displayText.innerText = "Total Needed"
         xpInputs.style.display = "none";
-        raidTokenDisplay.style.display = "none";
         updateCells(requiredMatDict, false, 'resource-count-text', 'misc-resource');
         for (i = 0; i < inputs.length; i++) {
             inputs[i].parentElement.classList.remove("editable");
@@ -4139,8 +4703,8 @@ function switchResourceDisplay(displayType) {
         btnRemaining.parentElement.style.display = "none";
         displayText.innerText = "Remaining Needed";
         xpInputs.style.display = "none";
-        raidTokenDisplay.style.display = "";
         updateCells(neededMatDict, false, 'resource-count-text', 'misc-resource');
+        hideResourceDisplays();
         for (i = 0; i < inputs.length; i++) {
             inputs[i].parentElement.classList.remove("editable");
         }
@@ -4421,14 +4985,14 @@ function setTheme(theme) {
     let image = document.getElementById('theme-button');
 
     if (theme == "light") {
-        image.src = "icons/moon-black.svg";
+        image.src = "icons/UI/moon-black.svg";
         pageTheme = "light";
         document.body.classList.remove('dark-theme');
         alertColour = "black"
         switchStylesheets("light")
     }
     else if (theme == "dark") {
-        image.src = "icons/sun.svg";
+        image.src = "icons/UI/sun.svg";
         pageTheme = "dark";
         document.body.classList.add('dark-theme');
         alertColour = "#e1e1e1"
@@ -4542,7 +5106,7 @@ function createCharBox(newChar, charId, container, location) {
         newBondContainer.className = "char-heart-container";
 
         const newBondImg = document.createElement("img");
-        newBondImg.src = "icons/bond.png";
+        newBondImg.src = "icons/Misc/bond.png";
         newBondImg.draggable = false;
 
         const newBondP = document.createElement("p");
@@ -4561,7 +5125,7 @@ function createCharBox(newChar, charId, container, location) {
             const newStar = document.createElement("img");
             newStar.draggable = false;
             newStar.className = "display-star";
-            newStar.src = "icons/star.png";
+            newStar.src = "icons/Misc/star.png";
 
             newStarContainer.appendChild(newStar);
         }
@@ -4574,7 +5138,7 @@ function createCharBox(newChar, charId, container, location) {
             const newStar = document.createElement("img");
             newStar.draggable = false;
             newStar.className = "display-star";
-            newStar.src = "icons/star.png";
+            newStar.src = "icons/Misc/star.png";
 
             newUEContainer.appendChild(newStar);
         }
@@ -4601,7 +5165,7 @@ function createCharBox(newChar, charId, container, location) {
     }
 
     const newImg = document.createElement("img");
-    newImg.src = "icons/Icon_" + charId + ".png"
+    newImg.src = "icons/Portrait/Icon_" + charId + ".png"
     newImg.draggable = false;
     newImg.className = "char-img";
 

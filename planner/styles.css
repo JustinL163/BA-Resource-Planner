@@ -690,7 +690,8 @@ div.resource-box.editable.focused p {
     opacity: 1;
 }
 
-.misc-resource, .misc-gear {
+.misc-resource,
+.misc-gear {
     font-size: 1.5em;
 }
 
@@ -707,19 +708,19 @@ div.resource-box.editable.focused p {
 }
 
 .char-resource-wrapper.char-resource-rarity-4 {
-    background-image: url(./icons/background_ssr.png);
+    background-image: url(./icons/Misc/background_ssr.png);
 }
 
 .char-resource-wrapper.char-resource-rarity-3 {
-    background-image: url(./icons/background_sr.png);
+    background-image: url(./icons/Misc/background_sr.png);
 }
 
 .char-resource-wrapper.char-resource-rarity-2 {
-    background-image: url(./icons/background_r.png);
+    background-image: url(./icons/Misc/background_r.png);
 }
 
 .char-resource-wrapper.char-resource-rarity-1 {
-    background-image: url(./icons/background_n.png);
+    background-image: url(./icons/Misc/background_n.png);
 }
 
 .char-mats-wrapper {
@@ -784,7 +785,8 @@ div.char-resource-wrapper .resource-display-text {
     align-self: center;
 }
 
-#char-resource-section {
+#char-resource-section,
+#eleph-section {
     border-top: 2px solid gainsboro;
     margin-top: 20px;
     padding-top: 10px;
@@ -950,12 +952,34 @@ div.char-resource-wrapper .resource-display-text {
     max-height: 80px;
 }
 
+.eleph-icon {
+    max-height: 70px;
+    padding: 10px 0;
+}
+
+.checkbox-input {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    filter: grayscale(1);
+}
+
+.server-toggle {
+    background-color: gainsboro;
+    padding: 5px;
+    border-radius: 10px
+}
+
+.server-toggle:hover {
+    background-color: #b5b5b5;
+}
+
 .draggable-mirror {
     z-index: 1;
 }
 
 .tippy-content {
-    font-family:  monospace;
+    font-family: monospace;
 }
 
 .dark-theme.background {
@@ -1057,6 +1081,14 @@ div.char-resource-wrapper .resource-display-text {
     color: #efefef;
 }
 
+.dark-theme .server-toggle {
+    background-color: #00000047;
+}
+
+.dark-theme .server-toggle:hover {
+    background-color: black;
+}
+
 #theme-button {
     filter: invert(1);
     max-width: 40px;
@@ -1104,23 +1136,27 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
-div#viewFilters { 
+div#viewFilters {
     background-color: #282a35;
     vertical-align: middle;
     height: fit-content;
 }
-div.filter-view-group { 
+
+div.filter-view-group {
     text-align: left;
     padding-top: 10px;
 }
-label.filter-group-header { 
+
+label.filter-group-header {
     font-size: 24px;
     color: #efefef;
 }
+
 div.filter-option-container {
-    display:flex;
+    display: flex;
     flex-wrap: wrap;
 }
+
 label.filter-option-item {
     margin-left: 10px;
     height: 30px;
@@ -1135,6 +1171,7 @@ label.filter-option-item {
 label.filter-option-item[ischecked="true"] {
     background-color: #626576;
 }
+
 /* label.filter-option-item[checked="true"] {
     background-color: white;
 } */
@@ -1169,7 +1206,8 @@ input.filter-option {
     text-align: center;
 }
 
-#table-parent-5, #table-parent-6 {
+#table-parent-5,
+#table-parent-6 {
     width: 50%;
 }
 
@@ -1211,11 +1249,13 @@ input.filter-option {
         width: 50%;
     }
 
-    #table-parent-5, #table-parent-6 {
+    #table-parent-5,
+    #table-parent-6 {
         width: 100%;
     }
 
-    #table-parent-5 .resource-table, #table-parent-6 .resource-table {
+    #table-parent-5 .resource-table,
+    #table-parent-6 .resource-table {
         width: 100%;
     }
 
@@ -1239,7 +1279,7 @@ input.filter-option {
 }
 
 @media (max-width: 800px) {
-    
+
     .charBox {
         width: 27%;
         max-width: 300px;
@@ -1260,7 +1300,7 @@ input.filter-option {
     }
 
     .team-wrapper .char-heart-container p {
-        font-size:  0.6em;
+        font-size: 0.6em;
     }
 
     .team-wrapper .info-bar {
@@ -1271,7 +1311,9 @@ input.filter-option {
         font-size: 0.5em;
     }
 
-    .info-bar, .nameBar, .char-heart-container p {
+    .info-bar,
+    .nameBar,
+    .char-heart-container p {
         font-size: 0.75em;
     }
 
@@ -1336,7 +1378,8 @@ input.filter-option {
         min-width: 30px;
     }
 
-    #table-parent-5, #table-parent-6 {
+    #table-parent-5,
+    #table-parent-6 {
         width: 100%;
     }
 
@@ -1347,20 +1390,24 @@ input.filter-option {
     #ue-table th {
         font-size: 0.75em;
     }
-    
+
     .resource-count-text {
         font-size: 0.75em;
     }
 
-    .gear-count-text, .ue-count-text {
+    .gear-count-text,
+    .ue-count-text {
         font-size: 1.2em;
     }
 
-    div.editable .resource-count-text, div.editable .gear-count-text {
+    div.editable .resource-count-text,
+    div.editable .gear-count-text {
         font-size: 1em;
     }
 
-    #school-mat-table, #artifact-table-1, #artifact-table-2 {
+    #school-mat-table,
+    #artifact-table-1,
+    #artifact-table-2 {
         margin: 0;
         padding: 0;
     }
@@ -1372,12 +1419,13 @@ input.filter-option {
     .resource-table {
         width: 100%;
     }
-    
+
     .resource-table tr td {
         text-align: center;
     }
 
-    #content-1, #content-2 {
+    #content-1,
+    #content-2 {
         width: 30% !important;
         font-size: 0.75em;
         min-width: 0 !important;
@@ -1395,7 +1443,8 @@ input.filter-option {
         min-width: 0 !important;
     }
 
-    .terrain-icon, .mood-icon {
+    .terrain-icon,
+    .mood-icon {
         width: 35px;
     }
 
@@ -1443,6 +1492,41 @@ input.filter-option {
         min-width: 0 !important;
     }
 
+    #content-11 {
+        width: 41% !important;
+        font-size: 0.75em;
+        min-width: 0 !important;
+        margin-bottom: 10px;
+    }
+
+    #content-12 {
+        width: 46% !important;
+        font-size: 0.75em;
+        min-width: 0 !important;
+        margin-bottom: 10px;
+    }
+
+    #content-13 {
+        width: 45% !important;
+        font-size: 0.75em;
+        min-width: 0 !important;
+        margin-bottom: 10px;
+    }
+    
+    #content-14 {
+        width: 42% !important;
+        font-size: 0.75em;
+        min-width: 0 !important;
+        margin-bottom: 10px;
+    }
+
+    #content-15 {
+        width: 53% !important;
+        font-size: 0.75em;
+        min-width: 0 !important;
+        margin-bottom: 10px;
+    }
+
     .gear-display {
         height: 40px;
     }
@@ -1470,7 +1554,7 @@ input.filter-option {
     .char-misc-box img {
         max-width: 40px;
     }
-    
+
     .char-misc-box {
         font-size: 0.75em;
         margin-bottom: 10px;
