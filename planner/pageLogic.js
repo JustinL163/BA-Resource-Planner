@@ -4272,19 +4272,6 @@ function calculateCharResources(charData, output) {
 
     calcUECost(charObj, charData.current?.ue, charData.target?.ue, charData.current?.ue_level, charData.target?.ue_level, charMatDict);
 
-    if (charMatDict["Eleph"] && charData.eleph?.owned > 0) {
-        charMatDict["Eleph"] = Math.max(charMatDict["Eleph"] - charData.eleph?.owned, 0);
-    }
-
-    if (charData.eleph?.use_eligma && charMatDict["Eleph"]) {
-
-        if (!charMatDict["Eligma"]) {
-            charMatDict["Eligma"] = 0;
-        }
-
-        charMatDict["Eligma"] += ligma(charMatDict["Eleph"], charData.eleph?.cost, charData.eleph?.purchasable);
-    }
-
     let purchaseData = misc_data.shop_characters[charId];
     let currency, amount, cost, times;
 
@@ -4312,6 +4299,19 @@ function calculateCharResources(charData, output) {
         }
 
         charMatDict["Eleph"] += misc_data.unlock_cost[charObj.BaseStar + "*"];
+    }
+
+    if (charMatDict["Eleph"] && charData.eleph?.owned > 0) {
+        charMatDict["Eleph"] = Math.max(charMatDict["Eleph"] - charData.eleph?.owned, 0);
+    }
+
+    if (charData.eleph?.use_eligma && charMatDict["Eleph"]) {
+
+        if (!charMatDict["Eligma"]) {
+            charMatDict["Eligma"] = 0;
+        }
+
+        charMatDict["Eligma"] += ligma(charMatDict["Eleph"], charData.eleph?.cost, charData.eleph?.purchasable);
     }
 
     if (charData.eleph?.use_shop && charMatDict["Eleph"] && misc_data.shop_characters[charId]) {
