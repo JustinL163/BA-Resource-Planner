@@ -4648,7 +4648,16 @@ function calculateRaidCoins() {
         neededMatDict["RaidTokenCost"] = 0;
     }
 
-    neededMatDict["RaidTokenCost"] += raidCoins;
+    neededMatDict["RaidTokenCost"] = raidCoins;
+
+    for (character in charMatDicts) {
+        if (!disabledChars.includes(character)) {
+
+            if (charMatDicts[character]["RaidTokenCost"]) {
+                neededMatDict["RaidTokenCost"] += charMatDicts[character]["RaidTokenCost"];
+            }
+        }
+    }
 }
 
 function switchResourceDisplay(displayType) {
