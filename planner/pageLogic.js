@@ -1499,6 +1499,8 @@ function openModal(e) {
             document.getElementById("shop-currency-icon2").src = "icons/Misc/" + shopCurrency + ".png";
         }
         else {
+            document.getElementById("content-13").style.display = "none";
+            document.getElementById("input_farm_nodes").value = 0;
             buyOptionTwo.style.display = "none";
         }
 
