@@ -974,6 +974,11 @@ div.char-resource-wrapper .resource-display-text {
     background-color: #b5b5b5;
 }
 
+.label-current, .label-target, #label-star, #label-bond, #label-skills, #label-owned, #label-gear, #label-char-unlocked,
+#label-school, #label-attack-type, #label-defense-type, #label-skill-ex, #label-skill-basic, #label-skill-enhanced, #label-skill-sub {
+    white-space: nowrap;
+}
+
 .draggable-mirror {
     z-index: 1;
 }

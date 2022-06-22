@@ -169,7 +169,7 @@ const propertyColours = {
     "Light": "#ec242487", "Heavy": "#fff10099", "Special": "#1070a5c2",
     "Striker": "#ec242487",
     "Abydos": "#9ce4fc66", "Gehenna": "#ec7d7966", "Millennium": "#9ebdfa66", "Trinity": "#fcd19c66", "Hyakkiyako": "#f0a8c466",
-    "Arius": "#dbdad85e", "Shanhaijing": "#b4feca66", "Red Winter": "#d98c9e66", "Valkyrie": "#a1a9e166"
+    "Arius": "#dbdad85e", "Shanhaijing": "#b4feca66", "RedWinter": "#d98c9e66", "Valkyrie": "#a1a9e166"
 }
 
 const exportDataVersion = 2;
