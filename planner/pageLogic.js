@@ -75,7 +75,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('localisations.json?1').done(function (json) {
+    $.getJSON('localisations.json?2').done(function (json) {
         localisations = json;
         checkResources();
     });
@@ -1475,6 +1475,8 @@ function openModal(e) {
     if (modalCharID) {
         return;
     }
+
+    console.log("test");
 
     modalCharID = this.id.substring(5);
 
@@ -3201,7 +3203,7 @@ function getSkillFormatted(charId, skill, level, targetLevel) {
             secondDesc = localisations[language]?.Characters[charId]?.Skills[skill]["Level" + targetLevel].Description;
         }
 
-        while (firstDesc.includes('[')) {
+        while (firstDesc.includes('[c][007eff]')) {
             let firstParam = firstDesc.substring(firstDesc.indexOf('[c][007eff]') + 11, firstDesc.indexOf('[-][/c]'));
             firstDesc = firstDesc.replace('[c][007eff]', '<span style="color: #008c9b;">');
             if (secondDesc) {
