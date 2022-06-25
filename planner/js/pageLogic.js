@@ -60,27 +60,27 @@ let loaded = false;
 
 function loadResources() {
 
-    $.getJSON('misc_data.json?5').done(function (json) {
+    $.getJSON('json/misc_data.json?5').done(function (json) {
         misc_data = json;
         checkResources();
     });
 
-    $.getJSON('skillinfo.json?3').done(function (json) {
+    $.getJSON('json/skillinfo.json?3').done(function (json) {
         skillinfo = json;
         checkResources();
     });
 
-    $.getJSON('charlist.json?8').done(function (json) {
+    $.getJSON('json/charlist.json?8').done(function (json) {
         charlist = json;
         checkResources();
     });
 
-    $.getJSON('localisations.json?2').done(function (json) {
+    $.getJSON('json/localisations.json?2').done(function (json) {
         localisations = json;
         checkResources();
     });
 
-    $.getJSON('manualLocalisations.json?1').done(function (json) {
+    $.getJSON('json/manualLocalisations.json?1').done(function (json) {
         mLocalisations = json;
         checkResources();
     });
@@ -1751,7 +1751,7 @@ function generateTeamBorrowOptions() {
 
         let charName = charNames.get(key);
 
-        let school = charlist[key].School;
+        //let school = charlist[key].School;
         let damageType = charlist[key].DamageType;
         let type = charlist[key].Type;
 
@@ -1762,14 +1762,14 @@ function generateTeamBorrowOptions() {
                     groupStrikerBorrows[damageType] = {};
                 }
 
-                groupStrikerBorrows[damageType][charName] = charName;
+                groupStrikerBorrows[damageType][key] = charName;
             }
             else if (type == "Special") {
                 if (!groupSpecialBorrows[damageType]) {
                     groupSpecialBorrows[damageType] = {};
                 }
 
-                groupSpecialBorrows[damageType][charName] = charName;
+                groupSpecialBorrows[damageType][key] = charName;
             }
         }
         else {
@@ -1779,14 +1779,14 @@ function generateTeamBorrowOptions() {
                     groupStrikerBorrows["Unassigned"] = {};
                 }
 
-                groupStrikerBorrows["Unassigned"][charName] = charName;
+                groupStrikerBorrows["Unassigned"][key] = charName;
             }
             else if (type == "Special") {
                 if (!groupSpecialBorrows["Unassigned"]) {
                     groupSpecialBorrows["Unassigned"] = {};
                 }
 
-                groupSpecialBorrows["Unassigned"][charName] = charName;
+                groupSpecialBorrows["Unassigned"][key] = charName;
             }
         }
     }
@@ -1814,10 +1814,10 @@ function generateTeamCharOptions() {
 
     for (let i = 0; i < existing.length; i++) {
 
-        if (!groupChars.includes(existing[i])) {
-            let charId = charMap.get(existing[i]);
+        if (!groupChars.includes(charNames.get(existing[i]))) {
+            let charId = existing[i];
 
-            let school = charlist[charId].School;
+            //let school = charlist[charId].School;
             let damageType = charlist[charId].DamageType;
             let type = charlist[charId].Type;
 
@@ -1828,14 +1828,14 @@ function generateTeamCharOptions() {
                         groupStrikerOptions[damageType] = {};
                     }
 
-                    groupStrikerOptions[damageType][existing[i]] = existing[i];
+                    groupStrikerOptions[damageType][existing[i]] = charNames.get(existing[i]);
                 }
                 else if (type == "Special") {
                     if (!groupSpecialOptions[damageType]) {
                         groupSpecialOptions[damageType] = {};
                     }
 
-                    groupSpecialOptions[damageType][existing[i]] = existing[i];
+                    groupSpecialOptions[damageType][existing[i]] = charNames.get(existing[i]);
                 }
             }
             else {
@@ -1845,14 +1845,14 @@ function generateTeamCharOptions() {
                         groupStrikerOptions["Unassigned"] = {};
                     }
 
-                    groupStrikerOptions["Unassigned"][existing[i]] = existing[i];
+                    groupStrikerOptions["Unassigned"][existing[i]] = charNames.get(existing[i]);
                 }
                 else if (type == "Special") {
                     if (!groupSpecialOptions["Unassigned"]) {
                         groupSpecialOptions["Unassigned"] = {};
                     }
 
-                    groupSpecialOptions["Unassigned"][existing[i]] = existing[i];
+                    groupSpecialOptions["Unassigned"][existing[i]] = charNames.get(existing[i]);
                 }
             }
         }
@@ -2286,7 +2286,7 @@ async function pickCharacter(slotDivId, type) {
                 slotChildren[i].remove();
             }
 
-            createCharBox(borrow, charMap.get(borrow), slotContainer, "borrow");
+            createCharBox(borrow, slotContainer, "borrow");
 
             borrowed = true;
             saveGroup();
@@ -2302,7 +2302,7 @@ async function pickCharacter(slotDivId, type) {
             slotChildren[i].remove();
         }
 
-        createCharBox(charMap.get(character), slotContainer, "teams");
+        createCharBox(character, slotContainer, "teams");
         groupChars.push(character);
 
         saveGroup();
