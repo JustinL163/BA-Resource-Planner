@@ -708,19 +708,19 @@ div.resource-box.editable.focused p {
 }
 
 .char-resource-wrapper.char-resource-rarity-4 {
-    background-image: url(./icons/Misc/background_ssr.png);
+    background-image: url(../icons/Misc/background_ssr.png);
 }
 
 .char-resource-wrapper.char-resource-rarity-3 {
-    background-image: url(./icons/Misc/background_sr.png);
+    background-image: url(../icons/Misc/background_sr.png);
 }
 
 .char-resource-wrapper.char-resource-rarity-2 {
-    background-image: url(./icons/Misc/background_r.png);
+    background-image: url(../icons/Misc/background_r.png);
 }
 
 .char-resource-wrapper.char-resource-rarity-1 {
-    background-image: url(./icons/Misc/background_n.png);
+    background-image: url(../icons/Misc/background_n.png);
 }
 
 .char-mats-wrapper {
@@ -979,6 +979,46 @@ div.char-resource-wrapper .resource-display-text {
     white-space: nowrap;
 }
 
+.transfer-modal-button {
+    max-width: 150px;
+    width: 40%;
+    min-height: 50px;
+    position: absolute;
+    font-size: 1.5em;
+}
+
+.transfer-modal-button:hover {
+    filter: brightness(0.8);
+}
+
+.transfer-modal-button:disabled {
+    filter: grayscale(1);
+}
+
+.dark-theme .transfer-modal-button {
+    color: white;
+}
+
+.transfer-modal-input {
+    min-height: 50px;
+    text-align: center;
+    font-family: monospace;
+    background-color: white;
+}
+
+.transfer-modal-button-wrapper {
+    width: 100%; 
+    position: relative; 
+    min-height: 70px;
+}
+
+.transfer-modal-input-wrapper {
+    width: 100%;
+    text-align: center;
+    padding-top: 20px;
+    font-size: 2em;
+}
+
 .draggable-mirror {
     z-index: 1;
 }
@@ -1006,6 +1046,7 @@ div.char-resource-wrapper .resource-display-text {
 .dark-theme .modal-content-wrapper {
     background-color: #3d3d3d;
     color: #efefef;
+    border: solid 3px white;
 }
 
 .dark-theme .content-section-wrapper {

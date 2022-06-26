@@ -44,6 +44,9 @@ var misc_data, charlist, skillinfo, localisations;
 
 let charMap, charNames, inputMap;
 
+let gUsername, gAuthkey;
+let saveCooldown = 0, loadCooldown = 0;
+
 let focusedInput;
 let navigationObjects = {};
 
@@ -90,6 +93,10 @@ function loadResources() {
 function checkResources() {
 
     if (charlist && misc_data && skillinfo && localisations && mLocalisations) {
+
+        if (!localStorage.getItem('data-backup')) {
+            localStorage.setItem('data-backup', localStorage.getItem('save-data'));
+        }
 
         data = tryParseJSON(localStorage.getItem('save-data'));
 
@@ -199,6 +206,17 @@ function updateUiLanguage() {
 }
 
 function init() {
+
+    gUsername = localStorage.getItem("username");
+    gAuthkey = localStorage.getItem("authkey");
+
+    if (gUsername) {
+        document.getElementById('input-transfer-username').value = gUsername;
+    }
+    if (gAuthkey) {
+        document.getElementById('input-transfer-authkey').value = gAuthkey;
+        document.getElementById('transfer-register-button').style.visibility = "hidden";
+    }
 
     if (data == null) {
         data = { exportVersion: exportDataVersion, characters: [], disabled_characters: [], owned_materials: {}, groups: {} };
@@ -386,16 +404,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.2.1".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.2.2".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.2.1",
+            title: "Updated to Version 1.2.2",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.2.1";
+        data.site_version = "1.2.2";
         saveToLocalStorage(false);
     }
 
@@ -469,6 +487,7 @@ function init() {
                         position: 'top-end',
                         title: 'Invalid input',
                         text: result,
+                        color: alertColour,
                         showConfirmButton: false,
                         timer: 4000
                     })
@@ -774,6 +793,9 @@ function handleKeydown(e, keyPressed) {
         }
         else if (modalOpen == "gearModal") {
             closeGearModal();
+        }
+        else if (modalOpen == "transferModal") {
+            closeTransferModal();
         }
     }
 }
@@ -1475,8 +1497,6 @@ function openModal(e) {
     if (modalCharID) {
         return;
     }
-
-    console.log("test");
 
     modalCharID = this.id.substring(5);
 
@@ -3920,6 +3940,26 @@ function openGearModal() {
 
 }
 
+function openTransferModal() {
+
+    freezeBody(true);
+
+    modalOpen = "transferModal";
+
+    let modal = document.getElementById("transferModal");
+
+    updateLoginButtons();
+
+    modal.style.visibility = "visible";
+
+    modal.onclick = function (event) {
+        if (event.target == modal) {
+            closeTransferModal();
+        }
+    };
+
+}
+
 function updateCells(dict, editable, cellClass, miscClass) {
 
     let cellElements = document.getElementsByClassName(cellClass);
@@ -4010,6 +4050,166 @@ function closeGearModal() {
 
     modalOpen = "";
 
+}
+
+function closeTransferModal() {
+
+    freezeBody(false);
+
+    var modal = document.getElementById("transferModal");
+
+    modal.style.visibility = "hidden";
+
+    modalOpen = "";
+}
+
+function updateLoginButtons() {
+
+    if (!gUsername) {
+        document.getElementById('transfer-login-button').style.visibility = "";
+    }
+
+    let lUsername = document.getElementById('input-transfer-username').value;
+    let lAuthkey = document.getElementById('input-transfer-authkey').value;
+
+    if (!lUsername || lUsername.length < 5 || lUsername.length > 20 || lUsername != gUsername ||
+        !lAuthkey || lAuthkey.length != 6 || lAuthkey != gAuthkey) {
+        document.getElementById('transfer-save-button').disabled = true;
+        document.getElementById('transfer-load-button').disabled = true;
+    }
+    else {
+        document.getElementById('transfer-save-button').disabled = false;
+        document.getElementById('transfer-load-button').disabled = false;
+    }
+
+    if ((lUsername == gUsername && lAuthkey == gAuthkey) || lUsername.length < 5 || lUsername.length > 20 || lAuthkey.length != 6) {
+        document.getElementById('transfer-login-button').disabled = true;
+    }
+    else {
+        document.getElementById('transfer-login-button').disabled = false;
+    }
+
+    if (!gAuthkey && lAuthkey) {
+        document.getElementById('transfer-register-button').disabled = true;
+    }
+    else if (!gAuthkey && !lAuthkey) {
+        document.getElementById('transfer-register-button').disabled = false;
+    }
+
+}
+
+function registerClick() {
+
+    let lUsername = document.getElementById('input-transfer-username').value;
+
+    if (!lUsername || lUsername.length < 5 || lUsername.length > 20) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: "Please pick a username 5-20 characters long",
+            color: alertColour
+        })
+    }
+    else if (!gAuthkey && !gUsername) {
+        registerRequest(lUsername);
+        document.getElementById('transfer-register-button').style.visibility = "hidden";
+    }
+}
+
+function loginClick() {
+
+    let lUsername = document.getElementById('input-transfer-username').value;
+    let lAuthkey = document.getElementById('input-transfer-authkey').value;
+
+    if (Date.now() > loadCooldown) {
+
+        if (lUsername && lAuthkey && lUsername.length >= 5 && lUsername.length <= 20 && lAuthkey.length == 6) {
+            
+            loadCooldown = Date.now() + (2 * 60 * 1000 + 10000);
+            loadRequest(true, true);
+        }
+        else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: "Expecting Username 5-20 characters long, and Auth Key 6 characters long",
+                color: alertColour
+            })
+        }
+    }
+    else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: "Too soon, try again in " + timeUntil(loadCooldown),
+            color: alertColour
+        })
+    }
+
+
+}
+
+function saveClick() {
+
+    if (Date.now() > saveCooldown) {
+        saveRequest(true);
+        saveCooldown = Date.now() + (2 * 60 * 1000 + 10000);
+    }
+    else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: "Too soon, try again in " + timeUntil(saveCooldown),
+            color: alertColour
+        })
+    }
+
+}
+
+function loadClick() {
+
+    if (Date.now() > loadCooldown) {
+        loadRequest(true, false);
+        loadCooldown = Date.now() + (2 * 60 * 1000 + 10000);
+    }
+    else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: "Too soon, try again in " + timeUntil(loadCooldown),
+            color: alertColour
+        })
+    }
+}
+
+function timeUntil(timeTarget) {
+
+    let timeCurrent = Date.now();
+
+    if (timeTarget > timeCurrent) {
+
+        let diff = Math.floor((timeTarget - timeCurrent) / 1000);
+
+        let mins = Math.floor(diff / 60);
+        diff = diff - mins * 60;
+
+        let resultString = "";
+        if (mins > 0) {
+            resultString += mins + "m";
+        }
+        if (diff > 0) {
+            resultString += diff + "s";
+        }
+
+        if (resultString == "") {
+            resultString = "0s";
+        }
+
+        return resultString;
+    }
+    else {
+        return "0s";
+    }
 }
 
 // function getCharByID(id) {
@@ -4109,7 +4309,7 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
             if (col == 0) {
                 let localisedName = mLocalisations[language]?.Data[rows[row].replaceAll(' ', '')];
                 if (localisedName) {
-                    newCell.innerText = localisedName; 
+                    newCell.innerText = localisedName;
                 }
                 else {
                     newCell.innerText = rows[row];
@@ -4938,27 +5138,34 @@ function updateInfoDisplay(character, charId, idInject) {
     }
 }
 
-function transferDialog() {
+// function transferDialog() {
 
+//     Swal.fire({
+//         title: 'Data transfer',
+//         showDenyButton: true,
+//         showCancelButton: true,
+//         confirmButtonText: 'Export',
+//         denyButtonText: 'Import',
+//         denyButtonColor: '#dc9641'
+//     }).then((result) => {
+//         if (result.isConfirmed) {
+//             Swal.fire({
+//                 title: 'Exported data',
+//                 html: '<textarea style="width: 400px; height: 250px; resize: none;" readonly>' + localStorage.getItem('save-data') + '</textarea>'
+//             })
+//         }
+//         else if (result.isDenied) {
+//             getImportData();
+//         }
+//     })
+
+// }
+
+function displayExportData() {
     Swal.fire({
-        title: 'Data transfer',
-        showDenyButton: true,
-        showCancelButton: true,
-        confirmButtonText: 'Export',
-        denyButtonText: 'Import',
-        denyButtonColor: '#dc9641'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire({
-                title: 'Exported data',
-                html: '<textarea style="width: 400px; height: 250px; resize: none;" readonly>' + localStorage.getItem('save-data') + '</textarea>'
-            })
-        }
-        else if (result.isDenied) {
-            getImportData();
-        }
+        title: 'Exported data',
+        html: '<textarea style="width: 400px; height: 250px; resize: none;" readonly>' + localStorage.getItem('save-data') + '</textarea>'
     })
-
 }
 
 function tryParseJSON(source) {

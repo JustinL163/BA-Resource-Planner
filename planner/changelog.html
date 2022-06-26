@@ -28,6 +28,28 @@
     </nav>
     <div class="bodyText">
         <div class="changelog-section">
+            <h2>Version 1.2.2</h2>
+            <br>
+            <h3>Changes</h3>
+            <ul>
+                <li>Added cloud save functionality (may be bugs, so do take care using it until I squish a few)</li>
+                <ul>
+                    <li>First enter a username 5-20 characters long, and press "Register"</li>
+                    <li>Wait until a popup appears confirming the registration worked, and saves the Auth Key</li>
+                    <li>Now you can press "Save" to upload the save to the cloud, or "Load" to download from the cloud</li>
+                    <li>Load will replace the current data, so make sure you don't load old data instead of saving</li>
+                    <li>(Later it will warn you if the data being loaded will be older than the currently active data, but doesn't work like that yet)</li>
+                    <li>The "Login" button is for logging into the same cloud save on other devices or browsers etc, it will also currently replace active data</li>
+                    <li>(Later login button will get it's own API call and not force load data, but doesn't work like that yet)</li>
+                </ul>
+                <li>If something gets fucked up, a backup has been created first time loading the page after this update,</li>
+                <li>So if your data dissapears, contact me on Discord (Justin163#7721) for instructions on how to recover from the backup</li>
+                <li>Added white border around modals on dark mode</li>
+            </ul>
+            <br>
+        </div>
+        <br><br>
+        <div class="changelog-section">
             <h2>Version 1.2.1</h2>
             <br>
             <h3>Changes</h3>

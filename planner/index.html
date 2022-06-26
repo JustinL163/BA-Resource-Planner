@@ -13,7 +13,7 @@
     </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/styles.css?16">
+    <link rel="stylesheet" href="css/styles.css?17">
     <title>Blue Archive Resource Planner</title>
     <style id="toggleViewStyle" class="modifyable"></style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -25,10 +25,10 @@
     <script src="https://unpkg.com/tippy.js@6"></script>
     <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/light.css" />
     <script src="js/config.js?10"></script>
-    <script src="js/pageLogic.js?34"></script>
+    <script src="js/pageLogic.js?35"></script>
     <script src="js/filters.js?2"></script>
     <script src="js/lzma_worker.js?1"></script>
-    <script src="js/cloudAPI.js?1"></script>
+    <script src="js/cloudAPI.js?2"></script>
     <style id="toggleViewStyle" class="modifyable"></style>
 </head>
 
@@ -328,7 +328,8 @@
                             <img draggable="false" class="eleph-icon" src="icons/Misc/Eligma.png">
                             <div style="align-self: center;">
                                 <p id="label-eleph-cost">Eligma Cost</p>
-                                <input id="input_eleph_cost" type="number" class="two_digit_input" oninput="shopCostChange()">
+                                <input id="input_eleph_cost" type="number" class="two_digit_input"
+                                    oninput="shopCostChange()">
                                 <p id="label-eleph-purchasable">Purchasable</p>
                                 <input id="input_eleph_purchasable" type="number" class="two_digit_input">
                             </div>
@@ -347,7 +348,8 @@
                                     <p id="hard-nodes-count" style="margin-left: 10px;"></p>
                                 </div>
                                 <p id="label-node-refresh" style="white-space: nowrap;">Node Refreshing</p>
-                                <input id="input_allow_node_refresh" onclick="nodeRefreshClick()" type="checkbox" class="checkbox-input">
+                                <input id="input_allow_node_refresh" onclick="nodeRefreshClick()" type="checkbox"
+                                    class="checkbox-input">
                             </div>
                             <div style="position: absolute; right: 0; bottom: 0; padding: 5px">
                                 <p id="hm-server-toggle" class="server-toggle" onclick="serverToggle()"></p>
@@ -514,7 +516,8 @@
                 </div>
                 <div id="rare-raid-token-display-wrapper" class="resource-box">
                     <img draggable="false" src="icons/Misc/RareRaidToken.png">
-                    <p id="RareRaidTokenCost" class="misc-resource no-input" style="align-self: center; margin-left: 10px;">
+                    <p id="RareRaidTokenCost" class="misc-resource no-input"
+                        style="align-self: center; margin-left: 10px;">
                     </p>
                 </div>
                 <div id="eligma-display-wrapper" class="resource-box">
@@ -534,7 +537,8 @@
                 </div>
                 <div id="mastery-certificate-display-wrapper" class="resource-box">
                     <img draggable="false" src="icons/Misc/MasteryCertificate.png">
-                    <p id="MasteryCertificateCost" class="misc-resource no-input" style="align-self: center; margin-left: 10px;">
+                    <p id="MasteryCertificateCost" class="misc-resource no-input"
+                        style="align-self: center; margin-left: 10px;">
                     </p>
                 </div>
             </div>
@@ -832,6 +836,36 @@
             </div>
         </div>
     </div>
+    <div class="modal" id="transferModal">
+        <div class="modal-content-wrapper" style="max-height: 80%; overflow-y: auto; max-width: 400px;">
+            <div class="transfer-modal-input-wrapper">
+                <p>Username</p>
+                <input id="input-transfer-username" class="transfer-modal-input" oninput="updateLoginButtons()">
+            </div>
+            <div class="transfer-modal-input-wrapper">
+                <p>Auth Key</p>
+                <input id="input-transfer-authkey" class="transfer-modal-input" oninput="updateLoginButtons()">
+            </div>
+            <div id="transfer-login-wrapper" class="transfer-modal-button-wrapper" style="padding-top: 20px;">
+                <button id="transfer-login-button" class="transfer-modal-button"
+                    style="left: 20px; background-color: #6d7087;" onclick="loginClick()">Login</button>
+                <button id="transfer-register-button" class="transfer-modal-button"
+                    style="right: 20px; background-color: #876d6d;" onclick="registerClick()">Register</button>
+            </div>
+            <div class="transfer-modal-button-wrapper">
+                <button id="transfer-save-button" class="transfer-modal-button"
+                    style="left: 20px; background-color: #27c4ae94;" onclick="saveClick()">Save</button>
+                <button id="transfer-load-button" class="transfer-modal-button"
+                    style="right: 20px; background-color: #dc415e94;" onclick="loadClick()">Load</button>
+            </div>
+            <div class="transfer-modal-button-wrapper" style="border-top: 2px solid gainsboro; padding-top: 10px;">
+                <button class="transfer-modal-button" onclick="displayExportData()"
+                    style="left: 20px; background-color: #2778c494;">Export</button>
+                <button class="transfer-modal-button" onclick="getImportData()"
+                    style="right: 20px; background-color: #dc964194;">Import</button>
+            </div>
+        </div>
+    </div>
     <datalist id="char-options">
     </datalist>
     <div class="footer-wrapper">
@@ -848,7 +882,7 @@
                 <div class="footer-button" onclick="teamsToggle()">
                     <p id="teamsEditorButton">Teams Editor</p>
                 </div>
-                <div class="footer-button" onclick="transferDialog()">
+                <div class="footer-button" onclick="openTransferModal()">
                     <p>Transfer</p>
                 </div>
             </div>

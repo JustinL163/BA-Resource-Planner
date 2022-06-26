@@ -48,6 +48,18 @@
             <h3>Cloudflare</h3>
             <p>This website is hosted with Cloudflare Pages, Cloudflare collects limited data (mostly country of access, and total number of requests per resource type) anonymously on behalf of the site, this is aggregated data and not personally identifiable</p>
         </div>
+        <br><br>
+        <div class="changelog-section">
+            <h2>Cloud saves</h2>
+            <br>
+            <p>This is an optional part of the website, you can choose not to use it if you want</p>
+            <p>The chosen username, along with the randomly generated Auth Key (can't input your own password), and compressed Save-Data, are stored in an AWS database</p>
+            <p>Also stored is registration time, and save last modified time</p>
+            <p>At some point I may parse the data to look at aggregated statistics, which might be shared to 3rd parties (e.g. might share interesting stat like proportion of lvl 75 units from all users of the cloud save service or etc to Blue Archive related online communities)</p>
+            <p>I'll add the ability to delete all the collected data at some point later, otherwise can contact me if you have any questions or concerns.</p>
+            <p>IP addresses are also temporarily collected by the intermediary node js server running on a Heroku dyno, these are used to block attempted API abuse, however are only stored short term, this data is frequently discarded whenever the dyno restarts</p>
+            <p>The dyno is recycled at minimum once per 24 hours, that is the longest time the stored IP data can persist for</p>
+        </div>
     </div>
 </body>
 
