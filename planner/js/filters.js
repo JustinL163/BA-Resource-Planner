@@ -240,6 +240,7 @@ function resetViewFilters() {
     whitelist.filter_star = [];
     whitelist.filter_school = [];
     whitelist.filter_weapon = [];
+    whitelist.filter_material = [];
 
     rebuildViewFilters();
 }
