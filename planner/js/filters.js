@@ -6,8 +6,9 @@ let whitelist = {
     filter_star: [],
     filter_school: [],
     filter_weapon: [],
+    filter_material: [],
     length() {
-        return this.special.length + this.filter_atk.length + this.filter_def.length + this.filter_school.length + this.filter_star.length + this.filter_type.length + this.filter_weapon.length;
+        return this.special.length + this.filter_atk.length + this.filter_def.length + this.filter_school.length + this.filter_star.length + this.filter_type.length + this.filter_weapon.length + this.filter_material.length;
     },
     getNonEmpty() {
         let toreturn = [];
@@ -18,6 +19,7 @@ let whitelist = {
         if (this.filter_school.length > 0) toreturn.push(this.filter_school);
         if (this.filter_type.length > 0) toreturn.push(this.filter_type);
         if (this.filter_weapon.length > 0) toreturn.push(this.filter_weapon);
+        if (this.filter_material.length > 0) toreturn.push(this.filter_material);
 
         return toreturn;
     }
@@ -118,7 +120,11 @@ function buildFilterList() {
             filter_weapon: {
                 label: "Weapon Type",
                 options: []
-            }
+            },
+            filter_material: {
+                label: "Material",
+                options: []
+            },
         }
 
         for(const i in charlist) {
@@ -129,12 +135,26 @@ function buildFilterList() {
             filterTypes.filter_type.options.push(char.Type);
             filterTypes.filter_weapon.options.push(char.WeaponType);
             filterTypes.filter_star.options.push(char.BaseStar.toString());
+            let mat1id = char.Skills.Skill1.Level7.LevelUpMats.Items[2].ItemId;
+            let mat2id = char.Skills.Skill1.Level7.LevelUpMats.Items[3].ItemId;
+            if(mat1id < 1000)
+            {
+                let mat = matLookup.get(mat1id);
+                filterTypes.filter_material.options.push(mat.substr(0, mat.length - 2));
+            }
+            if(mat2id < 1000)
+            {
+                let mat = matLookup.get(mat2id);
+                filterTypes.filter_material.options.push(mat.substr(0, mat.length - 2));
+            }
         }
         for(const i in filterTypes) {
             // remove duplicates
             filterTypes[i].options = [...new Set(filterTypes[i].options)];
         }
-
+        
+        filterTypes.filter_material.options.sort();
+        
         return filterTypes;
     }
 }
@@ -155,6 +175,19 @@ function assignClassFilters() {
         if (charInfo.JpOnly) {
             attributes.push("filter_in_jp");
         }
+        let mat1id = charInfo.Skills.Skill1.Level7.LevelUpMats.Items[2].ItemId;
+        let mat2id = charInfo.Skills.Skill1.Level7.LevelUpMats.Items[3].ItemId;
+        if(mat1id < 1000)
+        {
+            let mat = matLookup.get(mat1id);
+            attributes.push("filter_material_" + mat.substr(0, mat.length - 2).toLowerCase());
+        }
+        if(mat2id < 1000)
+        {
+            let mat = matLookup.get(mat2id);
+            attributes.push("filter_material_" + mat.substr(0, mat.length - 2).toLowerCase());
+        }
+        console.log(attributes);
         $(char).addClass(attributes);
     }
 }
@@ -207,6 +240,7 @@ function resetViewFilters() {
     whitelist.filter_star = [];
     whitelist.filter_school = [];
     whitelist.filter_weapon = [];
+    whitelist.filter_material = [];
 
     rebuildViewFilters();
 }

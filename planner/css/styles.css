@@ -14,7 +14,7 @@
     align-items: center;
     top: 0px;
     max-height: 5%;
-    z-index: 10;
+    z-index: 11;
 }
 
 .nav-list {
@@ -1186,6 +1186,7 @@ div#viewFilters {
     background-color: #282a35;
     vertical-align: middle;
     height: fit-content;
+    z-index: 10;
 }
 
 div.filter-view-group {
@@ -1677,12 +1678,16 @@ input.filter-option {
     }
 
     label.filter-group-header {
-        font-size: 1.2em;
+        font-size: 1em;
     }
 
     label.filter-option-item {
         height: 1.5em;
         font-size: 0.8em;
+    }
+
+    div.filter-view-group {
+        padding-top: 5px;
     }
 
     .changelog-section ul {
