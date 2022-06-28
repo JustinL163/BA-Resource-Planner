@@ -2912,9 +2912,9 @@ function saveCharChanges() {
         return false;
     }
 
-    var charName = document.getElementById("displayName").innerText;
+    var charName = charNames.get(modalCharID);
+    charId = modalCharID;
 
-    let charId = charMap.get(charName)
     var charData = data.characters.find(obj => { return obj.id == charId });
 
     if (charData != undefined) {
@@ -2969,8 +2969,8 @@ function saveCharChanges() {
 
     updateInfoDisplay(charName, charId, "");
 
-    updateStarDisplay(charName + "-star-container", charName, charId, "star-display", false);
-    updateStarDisplay(charName + "-ue-container", charName, charId, "ue-display", false);
+    updateStarDisplay(charName + "-star-container", charId, "star-display", true);
+    updateStarDisplay(charName + "-ue-container", charId, "ue-display", true);
 
     closeModal(true);
 }
@@ -3792,6 +3792,7 @@ function updateStarDisplay(id, charId, type, fromTemp) {
         else if (type == "star-display") {
             if (star > s) {
                 starContainer.children[s].style.visibility = "";
+                starContainer.children[s].style.filter = "";
             }
             else if (star_target > s) {
                 starContainer.children[s].style.visibility = "";
