@@ -2323,7 +2323,7 @@ async function pickCharacter(slotDivId, type) {
         }
 
         createCharBox(character, slotContainer, "teams");
-        groupChars.push(character);
+        groupChars.push(charNames.get(character));
 
         saveGroup();
 
