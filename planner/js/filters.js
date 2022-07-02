@@ -62,6 +62,9 @@ function buildFilterList() {
 
     $("div#viewFilters").html(filterGroupElements.join("\n"));
 
+    $("label.filter-group-header").each((a, b) => {$(b).click(() => {$(b.nextElementSibling).toggle()})});
+    $('div#viewFilters').css("minWidth", $('div#viewFilters').width());
+
     $("input.filter-option").change((e) => {
         assignClassFilters()
         let filter = $(e.currentTarget);
@@ -187,7 +190,6 @@ function assignClassFilters() {
             let mat = matLookup.get(mat2id);
             attributes.push("filter_material_" + mat.substr(0, mat.length - 2).toLowerCase());
         }
-        console.log(attributes);
         $(char).addClass(attributes);
     }
 }
