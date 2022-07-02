@@ -34,6 +34,12 @@ $(document).ready(function () {
 function toggleViewFilters() {
     buildFilterList();
     $("div#viewFilters").toggle();
+	let firstRun = true;
+	if(firstRun)
+	{
+		$('div#viewFilters').css("minWidth", $('div#viewFilters').width());
+		firstRun = false;
+	}
     if (window.matchMedia("(max-width: 800px)").matches) {
         $("#charsContainerActions").toggle()
     }
@@ -62,8 +68,20 @@ function buildFilterList() {
 
     $("div#viewFilters").html(filterGroupElements.join("\n"));
 
-    $("label.filter-group-header").each((a, b) => {$(b).click(() => {$(b.nextElementSibling).toggle()})});
-    $('div#viewFilters').css("minWidth", $('div#viewFilters').width());
+    $("label.filter-group-header").each((a, b) => {
+		$(b).click(() => {
+			$(b.nextElementSibling).toggle(0, () => {
+				if(b.nextElementSibling.style.display === "none")
+				{
+					b.className = "char-action-label filter-group-header toggle-closed";
+				}
+				else
+				{
+					b.className = "char-action-label filter-group-header toggle-open";
+				}
+			})
+		});
+	});
 
     $("input.filter-option").change((e) => {
         assignClassFilters()
@@ -88,7 +106,7 @@ function buildFilterList() {
             optionElements.push(buildFilterElement(prefix, option));
         }
 
-        return `<div class="filter-view-group"><label class="char-action-label filter-group-header">${label}</label><div class="filter-option-container">${optionElements.join("\n")}</div></div>`;
+        return `<div class="filter-view-group"><label class="char-action-label filter-group-header toggle-open">${label}</label><div class="filter-option-container">${optionElements.join("\n")}</div></div>`;
     }
     function buildFilterElement(prefix, label) {
         // <input class="filter-option" filter-target="test" type="checkbox"> TEST;
