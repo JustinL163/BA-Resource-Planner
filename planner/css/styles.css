@@ -866,6 +866,24 @@ div.char-resource-wrapper .resource-display-text {
     margin-left: 10px;
 }
 
+label.char-action-label.toggle-open::before {
+    content: ' ';
+    display: inline-block;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 7px solid #fff;
+    padding-bottom: 5px;
+}
+
+label.char-action-label.toggle-closed::before {
+    content: ' ';
+    display: inline-block;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 7px solid #fff;
+    margin-right: 7px;
+}
+
 .charEditorButton {
     height: 4vh;
     width: 150px;

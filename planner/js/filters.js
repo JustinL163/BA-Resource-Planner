@@ -31,9 +31,25 @@ $(document).ready(function () {
     style = $("style#toggleViewStyle");
 });
 
+let toggleCount = 0;
 function toggleViewFilters() {
     buildFilterList();
     $("div#viewFilters").toggle();
+    if(toggleCount % 2 == 0)
+    {
+        $('div#viewFilters').css("minWidth", $('div#viewFilters').width());
+        $("label.filter-group-header").each((a, b) => {
+            if (b.classList.contains('toggle-closed')) {
+                b.nextElementSibling.style.display = "none";
+            }
+        });
+        toggleCount++;
+    }
+    else {
+        $('div#viewFilters').css("minWidth","0px");
+        $('.filter-option-container').css('display', '');
+        toggleCount++;
+    }
     if (window.matchMedia("(max-width: 800px)").matches) {
         $("#charsContainerActions").toggle()
     }
@@ -62,6 +78,21 @@ function buildFilterList() {
 
     $("div#viewFilters").html(filterGroupElements.join("\n"));
 
+    $("label.filter-group-header").each((a, b) => {
+        $(b).click(() => {
+            $(b.nextElementSibling).toggle(0, () => {
+                if(b.nextElementSibling.style.display === "none")
+                {
+                    b.className = "char-action-label filter-group-header toggle-closed";
+                }
+                else
+                {
+                    b.className = "char-action-label filter-group-header toggle-open";
+                }
+            })
+        });
+    });
+
     $("input.filter-option").change((e) => {
         assignClassFilters()
         let filter = $(e.currentTarget);
@@ -85,7 +116,7 @@ function buildFilterList() {
             optionElements.push(buildFilterElement(prefix, option));
         }
 
-        return `<div class="filter-view-group"><label class="char-action-label filter-group-header">${label}</label><div class="filter-option-container">${optionElements.join("\n")}</div></div>`;
+        return `<div class="filter-view-group"><label class="char-action-label filter-group-header toggle-closed">${label}</label><div class="filter-option-container">${optionElements.join("\n")}</div></div>`;
     }
     function buildFilterElement(prefix, label) {
         // <input class="filter-option" filter-target="test" type="checkbox"> TEST;
@@ -187,7 +218,6 @@ function assignClassFilters() {
             let mat = matLookup.get(mat2id);
             attributes.push("filter_material_" + mat.substr(0, mat.length - 2).toLowerCase());
         }
-        console.log(attributes);
         $(char).addClass(attributes);
     }
 }
