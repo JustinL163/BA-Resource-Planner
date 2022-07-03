@@ -3262,7 +3262,8 @@ function getSkillFormatted(charId, skill, level, targetLevel) {
                     paramFilled += '/<span style="color: #588f00;">' + params[paramCount - 1][targetLevel - 1] + "</span>";
                 }
 
-                desc = desc.replaceAll(paramString, paramFilled);
+                let paramRegex = new RegExp(paramString, "g");
+                desc = desc.replace(paramRegex, paramFilled);
 
                 paramCount++;
             }
@@ -4308,7 +4309,7 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
             const newCell = document.createElement("td");
 
             if (col == 0) {
-                let localisedName = mLocalisations[language]?.Data[rows[row].replaceAll(' ', '')];
+                let localisedName = mLocalisations[language]?.Data[rows[row].replace(/ /g, '')];
                 if (localisedName) {
                     newCell.innerText = localisedName;
                 }
