@@ -13,7 +13,7 @@
     </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/styles.css?20">
+    <link rel="stylesheet" href="css/styles.css?21">
     <title>Blue Archive Resource Planner</title>
     <style id="toggleViewStyle" class="modifyable"></style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -25,7 +25,7 @@
     <script src="https://unpkg.com/tippy.js@6"></script>
     <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/light.css" />
     <script src="js/config.js?10"></script>
-    <script src="js/pageLogic.js?40"></script>
+    <script src="js/pageLogic.js?41"></script>
     <script src="js/filters.js?4"></script>
     <script src="js/lzma_worker.js?1"></script>
     <script src="js/cloudAPI.js?2"></script>
@@ -453,7 +453,7 @@
                 <div id="table-parent-3"></div>
             </div>
             <div id="other-resource-wrapper">
-                <div class="resource-box">
+                <div class="resource-box" onclick="DisplayMatUsers('Credit')">
                     <img draggable="false" src="icons/Misc/Credit.png">
                     <p id="Credit" class="misc-resource" style="align-self: center;"></p>
                     <div class="input-wrapper" style="width: 60%;">
@@ -482,11 +482,11 @@
                         <input id="input-XP_1" class="resource-input xp-input" type="number">
                     </div>
                 </div>
-                <div id="xp-display-wrapper" class="resource-box">
+                <div id="xp-display-wrapper" class="resource-box" onclick="DisplayMatUsers('Xp')">
                     <img draggable="false" src="icons/Misc/exp.png">
                     <p id="Xp" class="misc-resource no-input" style="align-self: center; margin-left: 10px;"></p>
                 </div>
-                <div class="resource-box">
+                <div class="resource-box" onclick="DisplayMatUsers('9999')">
                     <img draggable="false" src="icons/Misc/SecretTech.png">
                     <p id="Secret" class="misc-resource" style="align-self: center;"></p>
                     <div class="input-wrapper" style="width: 60%;">
@@ -509,33 +509,33 @@
                     <p id="current-resource-display" style="align-self: center; font-size: 1.75em; text-align: center;">
                     </p>
                 </div>
-                <div id="raid-token-display-wrapper" class="resource-box">
+                <div id="raid-token-display-wrapper" class="resource-box" onclick="DisplayMatUsers('RaidTokenCost')">
                     <img draggable="false" src="icons/Misc/RaidToken.png">
                     <p id="RaidTokenCost" class="misc-resource no-input" style="align-self: center; margin-left: 10px;">
                     </p>
                 </div>
-                <div id="rare-raid-token-display-wrapper" class="resource-box">
+                <div id="rare-raid-token-display-wrapper" class="resource-box" onclick="DisplayMatUsers('RareRaidTokenCost')">
                     <img draggable="false" src="icons/Misc/RareRaidToken.png">
                     <p id="RareRaidTokenCost" class="misc-resource no-input"
                         style="align-self: center; margin-left: 10px;">
                     </p>
                 </div>
-                <div id="eligma-display-wrapper" class="resource-box">
+                <div id="eligma-display-wrapper" class="resource-box"  onclick="DisplayMatUsers('Eligma')">
                     <img draggable="false" src="icons/Misc/Eligma.png">
                     <p id="Eligma" class="misc-resource no-input" style="align-self: center; margin-left: 10px;">
                     </p>
                 </div>
-                <div id="arena-coin-display-wrapper" class="resource-box">
+                <div id="arena-coin-display-wrapper" class="resource-box"  onclick="DisplayMatUsers('ArenaCoinCost')">
                     <img draggable="false" src="icons/Misc/ArenaCoin.png">
                     <p id="ArenaCoinCost" class="misc-resource no-input" style="align-self: center; margin-left: 10px;">
                     </p>
                 </div>
-                <div id="je-coin-display-wrapper" class="resource-box">
+                <div id="je-coin-display-wrapper" class="resource-box"  onclick="DisplayMatUsers('JECoinCost')">
                     <img draggable="false" src="icons/Misc/JECoin.png">
                     <p id="JECoinCost" class="misc-resource no-input" style="align-self: center; margin-left: 10px;">
                     </p>
                 </div>
-                <div id="mastery-certificate-display-wrapper" class="resource-box">
+                <div id="mastery-certificate-display-wrapper" class="resource-box"  onclick="DisplayMatUsers('MasteryCertificateCost')">
                     <img draggable="false" src="icons/Misc/MasteryCertificate.png">
                     <p id="MasteryCertificateCost" class="misc-resource no-input"
                         style="align-self: center; margin-left: 10px;">
@@ -572,7 +572,7 @@
                         <input id="input-GXP_1" class="resource-input xp-input" type="number">
                     </div>
                 </div>
-                <div id="xp-display-wrapper" class="resource-box">
+                <div id="xp-display-wrapper" class="resource-box" onclick="DisplayMatUsers('GearXp')">
                     <img draggable="false" src="icons/Misc/gxp.png">
                     <p id="GearXp" class="misc-gear no-input" style="align-self: center; margin-left: 10px;"></p>
                 </div>
@@ -866,6 +866,7 @@
             </div>
         </div>
     </div>
+    <div id="popup-wrapper" class="show-mat-chars" style="display: none;"></div>
     <datalist id="char-options">
     </datalist>
     <div class="footer-wrapper">

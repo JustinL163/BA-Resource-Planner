@@ -1015,6 +1015,35 @@ label.char-action-label.toggle-closed::before {
     filter: grayscale(1);
 }
 
+.show-mat-chars {
+    position: absolute;
+    background-color: #e7e7e7f5;
+    padding: 5px;
+    border-radius: 15px;
+    z-index: 10;
+    height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 400px;
+    outline: solid black 4px;
+    margin-right: 10px;
+}
+
+.show-mat-chars img {
+    width: 50px;
+    border-radius: 100%;
+    padding-right: 5px;
+}
+
+.char-row-mats {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    max-width: 150px;
+    padding-right: 5px;
+}
+
 .dark-theme .transfer-modal-button {
     color: white;
 }
@@ -1153,6 +1182,12 @@ label.char-action-label.toggle-closed::before {
 
 .dark-theme .server-toggle:hover {
     background-color: black;
+}
+
+.dark-theme .show-mat-chars {
+    background-color: #000000d1;
+    color: #efefef;
+    outline-color: white;
 }
 
 #theme-button {
@@ -1724,6 +1759,15 @@ input.filter-option {
 
     #modeButton p {
         font-size: 1.5em;
+    }
+
+    .show-mat-chars {
+        font-size: 0.8em;
+        outline-width: 2px;
+    }
+    
+    .show-mat-chars img {
+        width: 25px;
     }
 
 }

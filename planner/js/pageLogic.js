@@ -52,6 +52,8 @@ let navigationObjects = {};
 
 let preInput;
 
+let closableAfter = 0;
+
 let tooltips = [];
 
 let keyPressed = {};
@@ -404,18 +406,24 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.2.4".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.2.5".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.2.4",
+            title: "Updated to Version 1.2.5",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.2.4";
+        data.site_version = "1.2.5";
         saveToLocalStorage(false);
     }
+
+    document.body.addEventListener('click', (event) => {
+        if (closableAfter != 0 && Date.now() > closableAfter) {
+            HidePopup();
+        }
+    });
 
     // set input validation
 
@@ -4034,6 +4042,8 @@ function closeResourceModal() {
 
     freezeBody(false);
 
+    HidePopup();
+
     var modal = document.getElementById("resourceModal");
 
     modal.style.visibility = "hidden";
@@ -4045,6 +4055,8 @@ function closeResourceModal() {
 function closeGearModal() {
 
     freezeBody(false);
+
+    HidePopup();
 
     var modal = document.getElementById("gearModal");
 
@@ -4126,7 +4138,7 @@ function loginClick() {
     if (Date.now() > loadCooldown) {
 
         if (lUsername && lAuthkey && lUsername.length >= 5 && lUsername.length <= 20 && lAuthkey.length == 6) {
-            
+
             loadCooldown = Date.now() + (2 * 60 * 1000 + 10000);
             loadRequest(true, true);
         }
@@ -4339,6 +4351,18 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
                     newP.id = (columns[col - 1] + "_" + rows[row]).replace(/ /g, '');
                 }
 
+                let matFound = matLookup.reverseMap[newP.id];
+                if (matFound) {
+                    newCell.id = "mat-" + matFound;
+                }
+                else {
+                    newCell.id = "mat-" + newP.id;
+                }
+
+                newCell.addEventListener('click', (event) => {
+                    DisplayMatUsers(event.currentTarget.id);
+                })
+
                 const newInput = document.createElement("input");
                 newInput.className = "resource-input";
                 newInput.type = "number";
@@ -4446,6 +4470,92 @@ function updatedResource() {
     }
 
     saveTime = Date.now() + (1000 * 5);
+}
+
+function DisplayMatUsers(mat) {
+
+    if (resourceDisplay == "Owned" || gearDisplay == "Owned") {
+        return;
+    }
+
+    let matId = mat;
+    if (mat.substring(0, 4) == "mat-") {
+        matId = mat.substring(4);
+    }
+    let matUsers = [];
+
+    for (key in charMatDicts) {
+        if (!disabledChars.includes(key) && charMatDicts[key][matId] > 0) {
+            matUsers.push({ "charId": key, "matCount": charMatDicts[key][matId] });
+        }
+    }
+
+    if (matUsers.length == 0) {
+        return;
+    }
+
+    matUsers = matUsers.sort(function (a, b) { return parseFloat(b.matCount) - parseFloat(a.matCount); })
+
+    let wrapperDiv = document.getElementById('popup-wrapper');
+    let wrapperChildren = wrapperDiv.children;
+    while (wrapperChildren.length > 0) {
+        wrapperChildren[0].remove();
+    }
+
+    for (let i = 0; i < matUsers.length; i++) {
+
+        let charDiv = document.createElement('div');
+        charDiv.className = "char-row-mats";
+
+        let charImg = document.createElement('img');
+        charImg.src = "icons/Portrait/Icon_" + matUsers[i].charId + ".png";
+
+        let matAmount = document.createElement('p');
+        matAmount.innerText = commafy(matUsers[i].matCount);
+
+        charDiv.appendChild(charImg);
+        charDiv.appendChild(matAmount);
+
+        wrapperDiv.appendChild(charDiv);
+    }
+
+    if (mat == "9999") {
+        mat = 'Secret';
+    }
+
+    let element = document.getElementById(mat);
+    if (element.tagName.toLowerCase() == 'p') {
+        element = element.parentElement;
+    }
+
+    let matOffset = getOffset(element);
+
+    if (matOffset.left > (window.innerWidth / 2)) {
+        wrapperDiv.style.right = (window.innerWidth - Math.round(matOffset.left) - 10) + "px";
+        wrapperDiv.style.left = "";
+    }
+    else {
+        wrapperDiv.style.left = (20 + Math.round(matOffset.left)) + "px";
+        wrapperDiv.style.right = "";
+    }
+
+    if (matOffset.top > (window.innerHeight / 2)) {
+        wrapperDiv.style.bottom = (document.body.clientHeight - Math.round(matOffset.top)) + "px";
+        wrapperDiv.style.top = "";
+    }
+    else {
+        wrapperDiv.style.top = (20 + Math.round(matOffset.top)) + "px";
+        wrapperDiv.style.bottom = "";
+    }
+
+    wrapperDiv.style.display = "";
+    closableAfter = Date.now() + 200;
+
+}
+
+function HidePopup() {
+    document.getElementById('popup-wrapper').style.display = 'none';
+    closableAfter = 0;
 }
 
 function commafy(num) {
