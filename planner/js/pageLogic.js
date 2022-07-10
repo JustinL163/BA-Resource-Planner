@@ -65,7 +65,7 @@ let loaded = false;
 
 function loadResources() {
 
-    $.getJSON('json/misc_data.json?5').done(function (json) {
+    $.getJSON('json/misc_data.json?6').done(function (json) {
         misc_data = json;
         checkResources();
     });
