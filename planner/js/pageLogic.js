@@ -70,17 +70,17 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/skillinfo.json?3').done(function (json) {
+    $.getJSON('json/skillinfo.json?4').done(function (json) {
         skillinfo = json;
         checkResources();
     });
 
-    $.getJSON('json/charlist.json?8').done(function (json) {
+    $.getJSON('json/charlist.json?9').done(function (json) {
         charlist = json;
         checkResources();
     });
 
-    $.getJSON('json/localisations.json?2').done(function (json) {
+    $.getJSON('json/localisations.json?3').done(function (json) {
         localisations = json;
         checkResources();
     });
@@ -406,16 +406,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.2.5".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.2.6".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.2.5",
+            title: "Updated to Version 1.2.6",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.2.5";
+        data.site_version = "1.2.6";
         saveToLocalStorage(false);
     }
 
