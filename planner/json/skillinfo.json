@@ -74,7 +74,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "Increases the CRIT.RATE of Aru's EX skill by <?1>.",
+                "DescEn": "Increases CRIT.RATE by <?1> for the duration of Aru's EX skill.",
                 "Parameters": [
                     [
                         "20.1%",
@@ -131,7 +131,7 @@
                     4,
                     4
                 ],
-                "DescEn": "Gains regeneration, continuously restoring 3.4% of Eimi's lost HP plus <?1> of Healing for 20s.",
+                "DescEn": "Gains regeneration, continuously restoring 3.4% of Eimi's lost HP plus <?1> of Healing every 1s for 20s.",
                 "Parameters": [
                     [
                         "8.6%",
@@ -569,7 +569,7 @@
                 ]
             },
             "Skill1": {
-                "DescEn": "Once per battle when HP falls below 30%, gains regeneration, continuously restoring HP equal to <?1> of Healing for 20s.",
+                "DescEn": "Once per battle when HP falls below 30%, gains regeneration, continuously restoring HP equal to <?1> of Healing every 4s for 20s.",
                 "Parameters": [
                     [
                         "100%",
@@ -660,7 +660,7 @@
                     3,
                     3
                 ],
-                "DescEn": "Fires 3 shots at an enemy that deal <?1> damage to the target and enemies in a fan-shaped area behind them.",
+                "DescEn": "Fires 3 shots at an enemy that each deal <?1> damage to the target and enemies in a fan-shaped area behind them.",
                 "Parameters": [
                     [
                         "350%",
@@ -1730,7 +1730,7 @@
                     3,
                     3
                 ],
-                "DescEn": "Deals <?1> damage 5 times to nearby targets. If Momoi is in the same unit, deals an additional <?2> POISON damage over time for 20s. (Only once per unique target)",
+                "DescEn": "Fires 5 shots that target up to 5 different enemies, each shot dealing <?1> damage. If Momoi is in the same unit, each shot deals an additional <?2> POISON damage every 4s for 20s.",
                 "Parameters": [
                     [
                         "119%",
@@ -2295,7 +2295,7 @@
                     5,
                     5
                 ],
-                "DescEn": "Deals <?1> damage to one enemy, and deals an additional <?2> CHILL damage over time for 20s.",
+                "DescEn": "Deals <?1> damage to one enemy, plus an additional <?2> CHILL damage every 4s for 20s.",
                 "Parameters": [
                     [
                         "651%",
@@ -2532,7 +2532,7 @@
                 ]
             },
             "Skill1": {
-                "DescEn": "Every 25s, deals <?1> damage to one enemy, and deals an additional <?2> CHILL damage over time for 20s.",
+                "DescEn": "Every 25s, deals <?1> damage to one enemy, plus an additional <?2> CHILL damage every 4s for 20s.",
                 "Parameters": [
                     [
                         "186%",
@@ -2578,7 +2578,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "Attacks have a 25% chance to deal an additional <?1> CHILL damage over time for 20s. 10s cooldown between activations.",
+                "DescEn": "Attacks have a 25% chance to deal an additional <?1> CHILL damage every 4s for 20s. 10s cooldown between activations.",
                 "Parameters": [
                     [
                         "34.1%",
@@ -3590,7 +3590,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "Every <b>3</b> times that Mutsuki's EX Skill hits an enemy, she gains one little devils stack, lasting for 56s. Mutsuki's Crit DMG is increased by <?1> per stack held, and she can hold a maximum of 6 stacks. The duration of existing stacks is not refreshed upon gaining a new stack.",
+                "DescEn": "Every <b>3</b> times that Mutsuki's EX Skill hits an enemy, she gains one little devils stack, lasting for 56s. Mutsuki's Crit DMG is increased by <?1> per stack held, and she can hold a maximum of 6 stacks.",
                 "Parameters": [
                     [
                         "2.1%",
@@ -3769,7 +3769,7 @@
                 ]
             },
             "Skill1": {
-                "DescEn": "Every 45s, grants regeneration to the ally with the lowest HP, continuously restoring HP equal to <?1> of Healing for 20s. Mimori herself cannot be affected.",
+                "DescEn": "Every 45s, grants regeneration to the ally with the lowest HP, continuously restoring HP equal to <?1> of Healing every 4s for 20s. Mimori herself cannot be affected.",
                 "Parameters": [
                     [
                         "22.8%",
@@ -5006,6 +5006,450 @@
             }
         }
     },
+    "10045": {
+        "Skills": {
+            "Ex": {
+                "Cost": [
+                    6,
+                    6,
+                    6,
+                    6,
+                    5
+                ],
+                "DescEn": "Increases the ATK of all allies within a circular area by <?1> and increases their Explosive DMG by <?2> for 50s.",
+                "Parameters": [
+                    [
+                        "26.5%",
+                        "28.5%",
+                        "32.5%",
+                        "34.5%",
+                        "38.5%",
+                        "40.5%",
+                        "44.5%",
+                        "46.4%",
+                        "50.4%",
+                        "52.4%"
+                    ],
+                    [
+                        "68.3%",
+                        "73.4%",
+                        "83.6%",
+                        "88.8%",
+                        "99%",
+                        "104%",
+                        "114%",
+                        "119%",
+                        "129%",
+                        "134%"
+                    ]
+                ]
+            },
+            "Skill1": {
+                "DescEn": "Every 40s, deals <?1> damage to one enemy and restores own HP by <?2> of Healing.",
+                "Parameters": [
+                    [
+                        "283%",
+                        "297%",
+                        "312%",
+                        "340%",
+                        "354%",
+                        "368%",
+                        "397%",
+                        "411%",
+                        "425%",
+                        "454%"
+                    ],
+                    [
+                        "75%",
+                        "75%",
+                        "75%",
+                        "82.6%",
+                        "82.6%",
+                        "82.6%",
+                        "90.1%",
+                        "90.1%",
+                        "90.1%",
+                        "97.6%"
+                    ]
+                ]
+            },
+            "Skill2": {
+                "DescEn": "Increases DEF by <?1> and ATK by <?2>.",
+                "Parameters": [
+                    [
+                        "11.2%",
+                        "11.4%",
+                        "11.7%",
+                        "12.8%",
+                        "13.1%",
+                        "13.4%",
+                        "14.5%",
+                        "14.8%",
+                        "15.1%",
+                        "16.2%"
+                    ],
+                    [
+                        "11.2%",
+                        "11.4%",
+                        "11.7%",
+                        "12.8%",
+                        "13.1%",
+                        "13.4%",
+                        "14.5%",
+                        "14.8%",
+                        "15.1%",
+                        "16.2%"
+                    ]
+                ]
+            },
+            "Skill3": {
+                "DescEn": "Increases Cost Recovery by <?1> for the duration of Hoshino's EX skill.",
+                "Parameters": [
+                    [
+                        "360",
+                        "378",
+                        "396",
+                        "468",
+                        "486",
+                        "504",
+                        "576",
+                        "594",
+                        "612",
+                        "684"
+                    ]
+                ]
+            },
+            "Skill4": {
+                "DescEn": "Increases DEF by <?1> plus a further <?3> and ATK by <?2> plus a further <?4>.",
+                "Parameters": [
+                    [
+                        "160",
+                        "164",
+                        "168",
+                        "184",
+                        "188",
+                        "192",
+                        "208",
+                        "212",
+                        "216",
+                        "232"
+                    ],
+                    [
+                        "192",
+                        "196",
+                        "201",
+                        "220",
+                        "225",
+                        "230",
+                        "249",
+                        "254",
+                        "258",
+                        "278"
+                    ],
+                    [
+                        "11.2%",
+                        "11.4%",
+                        "11.7%",
+                        "12.8%",
+                        "13.1%",
+                        "13.4%",
+                        "14.5%",
+                        "14.8%",
+                        "15.1%",
+                        "16.2%"
+                    ],
+                    [
+                        "11.2%",
+                        "11.4%",
+                        "11.7%",
+                        "12.8%",
+                        "13.1%",
+                        "13.4%",
+                        "14.5%",
+                        "14.8%",
+                        "15.1%",
+                        "16.2%"
+                    ]
+                ]
+            }
+        }
+    },
+    "10046": {
+        "Skills": {
+            "Ex": {
+                "Cost": [
+                    2,
+                    2,
+                    2,
+                    2,
+                    2
+                ],
+                "DescEn": "Deals <?1> damage to one enemy and applies focused target to them for 30s.",
+                "Parameters": [
+                    [
+                        "423%",
+                        "486%",
+                        "613%",
+                        "677%",
+                        "804%",
+                        "867%",
+                        "994%",
+                        "1058%",
+                        "1185%",
+                        "1248%"
+                    ]
+                ]
+            },
+            "Skill1": {
+                "DescEn": "Every 6 normal attacks, deals <?1> damage to one enemy and decreases their CRIT.DMG RES by <?2> for 20s.",
+                "Parameters": [
+                    [
+                        "418%",
+                        "439%",
+                        "460%",
+                        "502%",
+                        "523%",
+                        "543%",
+                        "585%",
+                        "606%",
+                        "627%",
+                        "669%"
+                    ],
+                    [
+                        "29.9%",
+                        "29.9%",
+                        "29.9%",
+                        "32.9%",
+                        "32.9%",
+                        "32.9%",
+                        "35.9%",
+                        "35.9%",
+                        "35.9%",
+                        "38.9%"
+                    ]
+                ]
+            },
+            "Skill2": {
+                "DescEn": "Increases ATK SPD by <?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            },
+            "Skill3": {
+                "DescEn": "Every 25 times Izuna successfully lands a critical hit, increases ATK SPD by <?1> for 23s.",
+                "Parameters": [
+                    [
+                        "16.2%",
+                        "17.1%",
+                        "17.9%",
+                        "21.1%",
+                        "21.9%",
+                        "22.8%",
+                        "26%",
+                        "26.8%",
+                        "27.6%",
+                        "30.9%"
+                    ]
+                ]
+            },
+            "Skill4": {
+                "DescEn": "Increases CRIT.DMG by <?1> and ATK SPD by <?2>.",
+                "Parameters": [
+                    [
+                        "2000",
+                        "2100",
+                        "2200",
+                        "2600",
+                        "2700",
+                        "2800",
+                        "3200",
+                        "3300",
+                        "3400",
+                        "3800"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            }
+        }
+    },
+    "10047": {
+        "Skills": {
+            "Ex": {
+                "Cost": [
+                    6,
+                    6,
+                    6,
+                    6,
+                    6
+                ],
+                "DescEn": "Fires 3 grenades that target up to 3 different enemies. Each grenade deals <?1> damage and inflicts STUN for <?2> to the target and enemies in a circular area around them. If the target is already inflicted with a crowd-control effect, deals <?3> damage and inflicts STUN for <?4> instead.",
+                "Parameters": [
+                    [
+                        "232%",
+                        "267%",
+                        "302%",
+                        "337%",
+                        "372%",
+                        "407%",
+                        "442%",
+                        "477%",
+                        "511%",
+                        "546%"
+                    ],
+                    [
+                        "2.1s",
+                        "2.1s",
+                        "2.4s",
+                        "2.4s",
+                        "2.7s",
+                        "2.7s",
+                        "3s",
+                        "3s",
+                        "3.3s",
+                        "3.3s"
+                    ],
+                    [
+                        "465%",
+                        "535%",
+                        "604%",
+                        "674%",
+                        "744%",
+                        "814%",
+                        "884%",
+                        "954%",
+                        "1023%",
+                        "1093%"
+                    ],
+                    [
+                        "4.1s",
+                        "4.1s",
+                        "4.7s",
+                        "4.7s",
+                        "5.3s",
+                        "5.3s",
+                        "5.9s",
+                        "5.9s",
+                        "6.5s",
+                        "6.5s"
+                    ]
+                ]
+            },
+            "Skill1": {
+                "DescEn": "Every 50s, deals <?1> damage to one enemy and inflicts STUN for <?2>.",
+                "Parameters": [
+                    [
+                        "282%",
+                        "296%",
+                        "310%",
+                        "339%",
+                        "353%",
+                        "367%",
+                        "395%",
+                        "409%",
+                        "423%",
+                        "451%"
+                    ],
+                    [
+                        "2.4s",
+                        "2.4s",
+                        "2.4s",
+                        "2.6s",
+                        "2.6s",
+                        "2.6s",
+                        "2.8s",
+                        "2.8s",
+                        "2.8s",
+                        "3.1s"
+                    ]
+                ]
+            },
+            "Skill2": {
+                "DescEn": "Increases ATK by <?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            },
+            "Skill3": {
+                "DescEn": "Chise's EX skill deals an additional <?1> CHILL damage to targets hit every 4s for 20s.",
+                "Parameters": [
+                    [
+                        "30%",
+                        "31.5%",
+                        "33%",
+                        "39%",
+                        "40.5%",
+                        "42%",
+                        "48%",
+                        "49.5%",
+                        "51%",
+                        "57%"
+                    ]
+                ]
+            },
+            "Skill4": {
+                "DescEn": "Increases ATK by <?1> plus a further <?2>.",
+                "Parameters": [
+                    [
+                        "272",
+                        "285",
+                        "299",
+                        "353",
+                        "367",
+                        "380",
+                        "434",
+                        "448",
+                        "462",
+                        "516"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            }
+        }
+    },
     "13000": {
         "Skills": {
             "Ex": {
@@ -5172,7 +5616,7 @@
                 ]
             },
             "Skill3": {
-                "DescEn": "Attacks have a 10% chance to deal an additional <?1> BURN damage over time for 20s. 5s cooldown between activations.",
+                "DescEn": "Attacks have a 10% chance to deal an additional <?1> BURN damage every 4s for 20s. 5s cooldown between activations.",
                 "Parameters": [
                     [
                         "53.7%",
@@ -6189,7 +6633,7 @@
                     3,
                     3
                 ],
-                "DescEn": "Deals <?1> damage to enemies in a fan-shaped area. If Midori is in the same unit, deals an additional <?2> BURN damage over time for 20s.",
+                "DescEn": "Deals <?1> damage to enemies in a fan-shaped area. If Midori is in the same unit, deals an additional <?2> BURN damage every 4s for 20s.",
                 "Parameters": [
                     [
                         "338%",
@@ -6639,7 +7083,7 @@
                     4,
                     4
                 ],
-                "DescEn": "Repositions up to 4 allies in range to the selected location and grants them a barrier equal to <?1> of Healing.",
+                "DescEn": "Repositions up to 4 allies in range to the selected location and grants them a barrier equal to <?1> of Healing lasting up to 13s.",
                 "Parameters": [
                     [
                         "175%",
@@ -7400,7 +7844,7 @@
                     5,
                     5
                 ],
-                "DescEn": "Launches a firework in a straight line, dealing <?1> damage and an additional <?2> BURN damage over time for 20s to the first enemy hit.",
+                "DescEn": "Launches a firework in a straight line, dealing <?1> damage to the first enemy hit, plus an additional <?2> BURN damage every 4s for 20s.",
                 "Parameters": [
                     [
                         "501%",
@@ -7747,7 +8191,7 @@
                 ]
             },
             "Skill1": {
-                "DescEn": "Every 20s, deals <?1> POISON damage over time to one enemy and decreases their CRIT.RATE by 12.1% for 20s.",
+                "DescEn": "Every 20s, decreases the CRIT.RATE of one enemy by 12.1% for 20s and deals <?1> POISON damage to them every 4s for 20s.",
                 "Parameters": [
                     [
                         "36.5%",
@@ -9088,7 +9532,7 @@
                 ]
             },
             "Skill1": {
-                "DescEn": "Every 35s, deals <?1> damage to the enemy with the lowest HP and an additional <?2> BURN damage over time for 20s.",
+                "DescEn": "Every 35s, deals <?1> damage to one enemy, plus an additional <?2> BURN damage every 4s for 20s.",
                 "Parameters": [
                     [
                         "185%",
@@ -9746,7 +10190,7 @@
                     4,
                     4
                 ],
-                "DescEn": "Grants regeneration to one ally, continuously restoring HP equal to <?1> of Healing for 20s.",
+                "DescEn": "Grants regeneration to one ally, continuously restoring HP equal to <?1> of Healing every 4s for 20s.",
                 "Parameters": [
                     [
                         "54.1%",
@@ -10706,7 +11150,7 @@
                     3,
                     3
                 ],
-                "DescEn": "Repositions up to 4 enemies within a circular area and deals <?1> POISON damage over time to them for 20s.",
+                "DescEn": "Repositions up to 4 enemies within a circular area and deals <?1> POISON damage to them every 4s for 20s.",
                 "Parameters": [
                     [
                         "58.9%",
@@ -11356,6 +11800,114 @@
                         "165",
                         "170",
                         "190"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            }
+        }
+    },
+    "26008": {
+        "Skills": {
+            "Ex": {
+                "Cost": [
+                    3,
+                    3,
+                    3,
+                    3,
+                    3
+                ],
+                "DescEn": "Repositions up to 4 allies in range to the selected location and grants them a barrier equal to <?1> of Healing lasting up to 30s.",
+                "Parameters": [
+                    [
+                        "76.8%",
+                        "88.3%",
+                        "111%",
+                        "122%",
+                        "145%",
+                        "157%",
+                        "180%",
+                        "192%",
+                        "215%",
+                        "226%"
+                    ]
+                ]
+            },
+            "Skill1": {
+                "DescEn": "Every 45s, increases the CRIT.DMG of the ally with the highest Crit DMG by <?1> for 36s.",
+                "Parameters": [
+                    [
+                        "20.8%",
+                        "21.8%",
+                        "22.9%",
+                        "27%",
+                        "28.1%",
+                        "29.1%",
+                        "33.3%",
+                        "34.3%",
+                        "35.4%",
+                        "39.5%"
+                    ]
+                ]
+            },
+            "Skill2": {
+                "DescEn": "Increases HEAL by <?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            },
+            "Skill3": {
+                "DescEn": "Increases all allies' ATK by <?1>.",
+                "Parameters": [
+                    [
+                        "9.1%",
+                        "9.5%",
+                        "10%",
+                        "11.8%",
+                        "12.3%",
+                        "12.7%",
+                        "14.5%",
+                        "15%",
+                        "15.5%",
+                        "17.3%"
+                    ]
+                ]
+            },
+            "Skill4": {
+                "DescEn": "Increases HEAL by <?1> plus a further <?2>.",
+                "Parameters": [
+                    [
+                        "702",
+                        "737",
+                        "772",
+                        "912",
+                        "947",
+                        "982",
+                        "1122",
+                        "1157",
+                        "1193",
+                        "1333"
                     ],
                     [
                         "14%",

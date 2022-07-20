@@ -70,7 +70,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/skillinfo.json?4').done(function (json) {
+    $.getJSON('json/skillinfo.json?5').done(function (json) {
         skillinfo = json;
         checkResources();
     });
