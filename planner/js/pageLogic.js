@@ -65,7 +65,7 @@ let loaded = false;
 
 function loadResources() {
 
-    $.getJSON('json/misc_data.json?6').done(function (json) {
+    $.getJSON('json/misc_data.json?7').done(function (json) {
         misc_data = json;
         checkResources();
     });
@@ -406,16 +406,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.2.6".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.2.7".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.2.6",
+            title: "Updated to Version 1.2.7",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.2.6";
+        data.site_version = "1.2.7";
         saveToLocalStorage(false);
     }
 
