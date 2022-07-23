@@ -565,22 +565,22 @@ const inputValidation = {
         default: "0",
         name: "Enhanced",
         requisite: {
-            "modalStars.star_target": {
-                type: "object",
-                name: "Target Stars",
-                compare: "equal_greater",
-                mode: "threshold",
-                sanitise: true,
-                levels: [
-                    {
-                        required: "2",
-                        max: "10"
-                    },
-                    {
-                        max: "0"
-                    }
-                ]
-            }
+            // "modalStars.star_target": {
+            //     type: "object",
+            //     name: "Target Stars",
+            //     compare: "equal_greater",
+            //     mode: "threshold",
+            //     sanitise: true,
+            //     levels: [
+            //         {
+            //             required: "2",
+            //             max: "10"
+            //         },
+            //         {
+            //             max: "0"
+            //         }
+            //     ]
+            // }
         },
         "navigation": "direct",
         "Up": "input_basic_target",
@@ -596,22 +596,22 @@ const inputValidation = {
         default: "0",
         name: "Enhanced Target",
         requisite: {
-            "modalStars.star_target": {
-                type: "object",
-                name: "Target Stars",
-                compare: "equal_greater",
-                mode: "threshold",
-                sanitise: true,
-                levels: [
-                    {
-                        required: "2",
-                        max: "10"
-                    },
-                    {
-                        max: "0"
-                    }
-                ]
-            },
+            // "modalStars.star_target": {
+            //     type: "object",
+            //     name: "Target Stars",
+            //     compare: "equal_greater",
+            //     mode: "threshold",
+            //     sanitise: true,
+            //     levels: [
+            //         {
+            //             required: "2",
+            //             max: "10"
+            //         },
+            //         {
+            //             max: "0"
+            //         }
+            //     ]
+            // },
             "passive": {
                 type: "input",
                 compare: "equal_greater",
@@ -633,22 +633,22 @@ const inputValidation = {
         default: "0",
         name: "Sub",
         requisite: {
-            "modalStars.star_target": {
-                type: "object",
-                name: "Target Stars",
-                compare: "equal_greater",
-                mode: "threshold",
-                sanitise: true,
-                levels: [
-                    {
-                        required: "3",
-                        max: "10"
-                    },
-                    {
-                        max: "0"
-                    }
-                ]
-            }
+            // "modalStars.star_target": {
+            //     type: "object",
+            //     name: "Target Stars",
+            //     compare: "equal_greater",
+            //     mode: "threshold",
+            //     sanitise: true,
+            //     levels: [
+            //         {
+            //             required: "3",
+            //             max: "10"
+            //         },
+            //         {
+            //             max: "0"
+            //         }
+            //     ]
+            // }
         },
         "navigation": "direct",
         "Up": "input_enhanced_target",
@@ -664,22 +664,22 @@ const inputValidation = {
         default: "0",
         name: "Sub Target",
         requisite: {
-            "modalStars.star_target": {
-                type: "object",
-                name: "Target Stars",
-                compare: "equal_greater",
-                mode: "threshold",
-                sanitise: true,
-                levels: [
-                    {
-                        required: "3",
-                        max: "10"
-                    },
-                    {
-                        max: "0"
-                    }
-                ]
-            },
+            // "modalStars.star_target": {
+            //     type: "object",
+            //     name: "Target Stars",
+            //     compare: "equal_greater",
+            //     mode: "threshold",
+            //     sanitise: true,
+            //     levels: [
+            //         {
+            //             required: "3",
+            //             max: "10"
+            //         },
+            //         {
+            //             max: "0"
+            //         }
+            //     ]
+            // },
             "sub": {
                 type: "input",
                 compare: "equal_greater",
