@@ -104,6 +104,21 @@ function checkResources() {
 
         if (data?.language) {
             language = data.language;
+            if (language == "EN") {
+                language = "En";
+            }
+            else if (language == "KR") {
+                language = "Kr";
+            }
+            else if (language == "JP") {
+                language = "Jp";
+            }
+            else if (language == "CN") {
+                language = "Tw";
+            }
+            else if (language == "TH") {
+                language = "Th";
+            }
         }
 
         charMap = new Map()
