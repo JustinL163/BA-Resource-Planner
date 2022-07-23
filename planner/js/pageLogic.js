@@ -2696,6 +2696,11 @@ function buildLanguages() {
     let selectElement = document.getElementById('languages');
 
     for (let i = 0; i < languages.length; i++) {
+
+        if (languages[i] == "Tw") {
+            addOption(selectElement, "CN", "Tw");        
+            continue;
+        }
         addOption(selectElement, languages[i].toUpperCase(), languages[i]);
     }
 }
