@@ -4,7 +4,7 @@ var modalStars = { "star": 0, "star_target": 0, "ue": 0, "ue_target": 0 };
 var data;
 const ueStarCap = 3;
 const globalMaxWorld = 16;
-const languages = ["En", "Jp", "Kr", "Tw", "Th"];
+const languages = ["En", "Kr", "Jp", "Tw", "Th"];
 let language = "En";
 
 var requiredMatDict = {};
@@ -85,7 +85,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/manualLocalisations.json?1').done(function (json) {
+    $.getJSON('json/manualLocalisations.json?2').done(function (json) {
         mLocalisations = json;
         checkResources();
     });
@@ -101,6 +101,10 @@ function checkResources() {
         }
 
         data = tryParseJSON(localStorage.getItem('save-data'));
+
+        if (data?.language) {
+            language = data.language;
+        }
 
         charMap = new Map()
         charNames = new Map()
@@ -221,11 +225,13 @@ function init() {
     }
 
     if (data == null) {
-        data = { exportVersion: exportDataVersion, characters: [], disabled_characters: [], owned_materials: {}, groups: {} };
+        data = { exportVersion: exportDataVersion, characters: [], disabled_characters: [], owned_materials: {}, groups: {}, language: "EN" };
         localStorage.setItem("save-data", JSON.stringify(data));
     }
 
     updateUiLanguage();
+    buildLanguages();
+    document.getElementById('languages').value = language;
 
     if (data != null) {
         if (data.disabled_characters != undefined) {
@@ -289,6 +295,10 @@ function init() {
         }
         else if (data.server == "JP") {
             serverToggleBtn.innerText = "JP";
+        }
+
+        if (!data.language) {
+            data.language = "EN";
         }
     }
 
@@ -406,16 +416,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.2.7".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.2.8".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.2.7",
+            title: "Updated to Version 1.2.8",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.2.7";
+        data.site_version = "1.2.8";
         saveToLocalStorage(false);
     }
 
@@ -2666,6 +2676,28 @@ function filterChanged(filterType) {
 
     applyFilters(filtered);
 
+}
+
+function languageChanged() {
+
+    let selectElement = document.getElementById('languages');
+    selectElement.blur();
+
+    let languageSet = selectElement.value;
+    data.language = languageSet;
+
+    localStorage.setItem("save-data", JSON.stringify(data));
+
+    location.reload();
+}
+
+function buildLanguages() {
+
+    let selectElement = document.getElementById('languages');
+
+    for (let i = 0; i < languages.length; i++) {
+        addOption(selectElement, languages[i].toUpperCase(), languages[i]);
+    }
 }
 
 function applyFilters(filtered) {
@@ -5637,6 +5669,9 @@ function createCharBox(charId, container, location) {
     }
     else if (charName.includes('(')) {
         nameTag.innerText = charName.substring(0, charName.indexOf('('));
+    }
+    else if (charName.includes('（')) {
+        nameTag.innerText = charName.substring(0, charName.indexOf('（'));
     }
     else {
         nameTag.innerText = charName;

@@ -11,18 +11,30 @@
 
         gtag('config', 'G-3XZ18739WF');
     </script>
+    <script>
+        function hamburgToggle() {
+            let linkWrapper = document.getElementById('mobile-links-wrapper');
+            if (linkWrapper.style.display === "block") {
+                linkWrapper.style.display = "none";
+            } else {
+                linkWrapper.style.display = "block";
+            }
+        }
+    </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/styles.css?22">
+    <link rel="stylesheet" href="css/styles.css?23">
     <title>Blue Archive Resource Planner</title>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://justin163.com/planner">
     <meta property="og:site_name" content="Justin163 Planner">
-    <meta property="og:image" itemprop="image primaryImageOfPage" content="https://justin163.com/planner/icons/Misc/EmbedIcon.png">
+    <meta property="og:image" itemprop="image primaryImageOfPage"
+        content="https://justin163.com/planner/icons/Misc/EmbedIcon.png">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:domain" content="justin163.com">
     <meta name="twitter:title" property="og:title" itemprop="name" content="Blue Archive Resource Planner">
-    <meta name="twitter:description" property="og:description" itemprop="description" content="A tool to help easily keep track of resources needed to level students, or keep track of teams for various content.">
+    <meta name="twitter:description" property="og:description" itemprop="description"
+        content="A tool to help easily keep track of resources needed to level students, or keep track of teams for various content.">
     <meta name="theme-color" content="#ff00bb">
     <style id="toggleViewStyle" class="modifyable"></style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -34,7 +46,7 @@
     <script src="packages/tippyjs/tippy.js"></script>
     <link rel="stylesheet" href="packages/tippyjs/light.css" />
     <script src="js/config.js?10"></script>
-    <script src="js/pageLogic.js?46"></script>
+    <script src="js/pageLogic.js?47"></script>
     <script src="js/filters.js?4"></script>
     <script src="js/lzma_worker.js?1"></script>
     <script src="js/cloudAPI.js?2"></script>
@@ -44,13 +56,24 @@
 <body class="background dark-theme" onload="load()">
     <nav class="navbar navbground">
         <span class="logo">Justin163</span>
+        <img src="icons/UI/hamburger.svg" id="hamburger" onclick="hamburgToggle()">
         <ul class="nav-list">
             <li><a class="active">Resource Planner</a></li>
             <li><a href="changelog.html">Changelog</a></li>
             <li><a href="privacy.html">Privacy</a></li>
         </ul>
-        <img src="icons/UI/sun.svg" id="theme-button" onclick="switchTheme()">
+        <div class="nav-right">
+            <select name="languages" id="languages" onchange="languageChanged()"></select>
+            <img src="icons/UI/sun.svg" id="theme-button" onclick="switchTheme()">
+        </div>
     </nav>
+    <div id="mobile-links-wrapper">
+        <ul class="mobile-links">
+            <li><a class="active">Resource Planner</a></li>
+            <li><a href="changelog.html">Changelog</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
+        </ul>
+    </div>
     <div class="bodyContainer">
         <div id="boxesContainer" class="mainContainer">
             <div id="charsContainerActions">
@@ -523,28 +546,30 @@
                     <p id="RaidTokenCost" class="misc-resource no-input" style="align-self: center; margin-left: 10px;">
                     </p>
                 </div>
-                <div id="rare-raid-token-display-wrapper" class="resource-box" onclick="DisplayMatUsers('RareRaidTokenCost')">
+                <div id="rare-raid-token-display-wrapper" class="resource-box"
+                    onclick="DisplayMatUsers('RareRaidTokenCost')">
                     <img draggable="false" src="icons/Misc/RareRaidToken.png">
                     <p id="RareRaidTokenCost" class="misc-resource no-input"
                         style="align-self: center; margin-left: 10px;">
                     </p>
                 </div>
-                <div id="eligma-display-wrapper" class="resource-box"  onclick="DisplayMatUsers('Eligma')">
+                <div id="eligma-display-wrapper" class="resource-box" onclick="DisplayMatUsers('Eligma')">
                     <img draggable="false" src="icons/Misc/Eligma.png">
                     <p id="Eligma" class="misc-resource no-input" style="align-self: center; margin-left: 10px;">
                     </p>
                 </div>
-                <div id="arena-coin-display-wrapper" class="resource-box"  onclick="DisplayMatUsers('ArenaCoinCost')">
+                <div id="arena-coin-display-wrapper" class="resource-box" onclick="DisplayMatUsers('ArenaCoinCost')">
                     <img draggable="false" src="icons/Misc/ArenaCoin.png">
                     <p id="ArenaCoinCost" class="misc-resource no-input" style="align-self: center; margin-left: 10px;">
                     </p>
                 </div>
-                <div id="je-coin-display-wrapper" class="resource-box"  onclick="DisplayMatUsers('JECoinCost')">
+                <div id="je-coin-display-wrapper" class="resource-box" onclick="DisplayMatUsers('JECoinCost')">
                     <img draggable="false" src="icons/Misc/JECoin.png">
                     <p id="JECoinCost" class="misc-resource no-input" style="align-self: center; margin-left: 10px;">
                     </p>
                 </div>
-                <div id="mastery-certificate-display-wrapper" class="resource-box"  onclick="DisplayMatUsers('MasteryCertificateCost')">
+                <div id="mastery-certificate-display-wrapper" class="resource-box"
+                    onclick="DisplayMatUsers('MasteryCertificateCost')">
                     <img draggable="false" src="icons/Misc/MasteryCertificate.png">
                     <p id="MasteryCertificateCost" class="misc-resource no-input"
                         style="align-self: center; margin-left: 10px;">
