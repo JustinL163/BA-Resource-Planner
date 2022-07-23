@@ -1701,6 +1701,7 @@ function closeModal(animated, forced) {
 
         document.getElementById('character-modal-wrapper').style.visibility = "";
         modal.style.visibility = "hidden";
+        modalCharID = "";
         return;
     }
 
