@@ -11,6 +11,16 @@
 
         gtag('config', 'G-3XZ18739WF');
     </script>
+    <script>
+        function hamburgToggle() {
+            let linkWrapper = document.getElementById('mobile-links-wrapper');
+            if (linkWrapper.style.display === "block") {
+                linkWrapper.style.display = "none";
+            } else {
+                linkWrapper.style.display = "block";
+            }
+        }
+    </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/styles.css">
@@ -20,13 +30,87 @@
 <body class="background">
     <nav class="navbar navbground">
         <span class="logo">Justin163</span>
+        <img src="icons/UI/hamburger.svg" id="hamburger" onclick="hamburgToggle()">
         <ul class="nav-list">
             <li><a href="index.html">Resource Planner</a></li>
             <li><a class="active">Changelog</a></li>
             <li><a href="privacy.html">Privacy</a></li>
         </ul>
     </nav>
+    <div id="mobile-links-wrapper">
+        <ul class="mobile-links">
+            <li><a href="index.html">Resource Planner</a></li>
+            <li><a class="active">Changelog</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
+        </ul>
+    </div>
     <div class="bodyText">
+        <div class="changelog-section">
+            <h2>Version 1.2.8</h2>
+            <br>
+            <h3>Changes</h3>
+            <ul>
+                <li>Added support for other official in-game languages, Korean, Japanese, Chinese and Thai</li>
+                <li>(Only English, Korean and Japanese have translations for all characters, Chinese and Thai are only translated for characters currently on global servers)</li>
+                <li>(And I intend to translate all of the UI at some point also, if anyone that speaks one of these languages is interested in helping with that, 
+                    feel free to contact me on Discord, Justin163#7721, I can provide a google spreadsheet with all the phrases I need to translate)
+                </li>
+            </ul>
+            <br>
+            <h3>Fixed Issues</h3>
+            <ul>
+                <li>After deleting a character, you couldn't open another without refreshing the page</li>
+            </ul>
+            <br>
+        </div>
+        <br><br>
+        <div class="changelog-section">
+            <h2>Version 1.2.7</h2>
+            <br>
+            <h3>Changes</h3>
+            <ul>
+                <li>Added Midori as purchasable with rare raid tokens, Momoi with raid tokens</li>
+            </ul>
+            <br>
+        </div>
+        <br><br>
+        <div class="changelog-section">
+            <h2>Version 1.2.6</h2>
+            <br>
+            <h3>Changes</h3>
+            <ul>
+                <li>Added 4 new characters, Hoshino (Swimsuit), Chise (Swimsuit), Izuna (Swimsuit) and Shizuko (Swimsuit)</li>
+                <li>Updated skill descriptions for new characters</li>
+            </ul>
+            <br>
+        </div>
+        <br><br>
+        <div class="changelog-section">
+            <h2>Version 1.2.5</h2>
+            <br>
+            <h3>Changes</h3>
+            <ul>
+                <li>Clicking a resource or gear part in Remaining Needed or Total Needed mode will now display a list of characters that need that mat</li>
+                <li>New Year Mutsuki and Aru eleph can be bought with Mastery Certificates</li>
+            </ul>
+            <br>
+        </div>
+        <br><br>
+        <div class="changelog-section">
+            <h2>Version 1.2.4</h2>
+            <br>
+            <h3>Changes</h3>
+            <ul>
+                <li>Filter groups are now collapsible (goldcrater)</li>
+            </ul>
+            <br>
+            <h3>Fixed Issues</h3>
+            <ul>
+                <li>Team editor character options weren't updating upon adding a character to a team</li>
+            </ul>
+            <br>
+        </div>
+        <br><br>
         <div class="changelog-section">
             <h2>Version 1.2.3</h2>
             <br>

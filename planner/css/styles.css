@@ -140,7 +140,7 @@
 
 .main-box-content {
     overflow: hidden;
-    outline: solid white 4px;
+    /* outline: solid white 4px; */
     border-radius: 15%;
     position: relative;
 }
@@ -323,10 +323,6 @@ label {
     /*border-width: 0.3rem;*/
     /*margin-right: 2%;*/
     /*transition: all 0.5s;*/
-}
-
-.modal-content-wrapper .main-box-content {
-    outline: solid black 4px;
 }
 
 .modal-content-section {
@@ -624,6 +620,7 @@ div.editable.empty-resource:hover {
 
 .resource-box img {
     max-width: 80px;
+    max-height: 80px;
     height: fit-content;
     align-self: center;
 }
@@ -782,6 +779,7 @@ div.char-resource-wrapper .resource-display-text {
 
 .char-misc-box img {
     max-width: 80px;
+    max-height: 80px;
     align-self: center;
 }
 
@@ -1013,6 +1011,35 @@ label.char-action-label.toggle-closed::before {
     filter: grayscale(1);
 }
 
+.show-mat-chars {
+    position: absolute;
+    background-color: #e7e7e7f5;
+    padding: 5px;
+    border-radius: 15px;
+    z-index: 10;
+    height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 400px;
+    outline: solid black 4px;
+    margin-right: 10px;
+}
+
+.show-mat-chars img {
+    width: 50px;
+    border-radius: 100%;
+    padding-right: 5px;
+}
+
+.char-row-mats {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    max-width: 150px;
+    padding-right: 5px;
+}
+
 .dark-theme .transfer-modal-button {
     color: white;
 }
@@ -1153,11 +1180,27 @@ label.char-action-label.toggle-closed::before {
     background-color: black;
 }
 
+.dark-theme .show-mat-chars {
+    background-color: #000000d1;
+    color: #efefef;
+    outline-color: white;
+}
+
 #theme-button {
     filter: invert(1);
     max-width: 40px;
     margin-right: 100px;
     cursor: pointer;
+}
+
+#hamburger {
+    filter: invert(1);
+    max-width: 20px;
+    display: none;
+}
+
+#mobile-links-wrapper {
+    display: none;
 }
 
 .changelog-section {
@@ -1276,6 +1319,27 @@ input.filter-option {
     width: 50%;
 }
 
+#languages {
+    height: 4vh;
+    width: 100px;
+    font-size: 1.5em;
+    text-align: center;
+    margin-right: 10px;
+    background-color: transparent;
+    border-color: transparent;
+    color: whitesmoke;
+}
+
+#languages option {
+    color: black;
+}
+
+.nav-right {
+    display: flex;
+    margin-left: auto;
+    margin-right: 15px;
+}
+
 @media (max-width: 1280px) {
 
     #other-resource-wrapper {
@@ -1352,10 +1416,6 @@ input.filter-option {
         margin: 0.5rem;
     }
 
-    .main-box-content {
-        outline: solid white 2px;
-    }
-
     .team-wrapper .charBox:first-child {
         margin-left: 0;
     }
@@ -1403,6 +1463,7 @@ input.filter-option {
 
     .resource-box img {
         max-width: 40px;
+        max-height: 40px;
     }
 
     .resource-box img.xp-icon {
@@ -1606,6 +1667,7 @@ input.filter-option {
 
     .char-resource-img {
         max-width: 40px;
+        max-height: 40px;
     }
 
     .char-resource-wrapper {
@@ -1618,6 +1680,7 @@ input.filter-option {
 
     .char-misc-box img {
         max-width: 40px;
+        max-height: 40px;
     }
 
     .char-misc-box {
@@ -1647,11 +1710,44 @@ input.filter-option {
 
     .nav-list {
         margin-left: 0;
+        display: none;
     }
 
     #theme-button {
         margin-right: 0;
         max-width: 20px;
+    }
+
+    #hamburger {
+        display: block;
+        margin-left: 15px;
+    }
+
+    .mobile-links li a {
+        padding: 14px 16px;
+        text-decoration: none;
+        display: block;
+        background-color: #35394c;
+        color: white;
+    }
+
+    .mobile-links li a.active {
+        background-color: #454858;
+        color: rgb(250, 250, 135);
+    }
+
+    #mobile-links-wrapper {
+        position: fixed;
+        width: 100%;
+        z-index: 12;
+    }
+
+    #languages {
+        font-size: 1em;
+    }
+
+    .nameBar p {
+        font-size: 110%;
     }
 
     .nav-list li a {
@@ -1719,6 +1815,15 @@ input.filter-option {
 
     #modeButton p {
         font-size: 1.5em;
+    }
+
+    .show-mat-chars {
+        font-size: 0.8em;
+        outline-width: 2px;
+    }
+    
+    .show-mat-chars img {
+        width: 25px;
     }
 
 }

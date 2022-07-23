@@ -31,14 +31,24 @@ $(document).ready(function () {
     style = $("style#toggleViewStyle");
 });
 
+let toggleCount = 0;
 function toggleViewFilters() {
     buildFilterList();
     $("div#viewFilters").toggle();
-    let firstRun = true;
-    if(firstRun)
+    if(toggleCount % 2 == 0)
     {
         $('div#viewFilters').css("minWidth", $('div#viewFilters').width());
-        firstRun = false;
+        $("label.filter-group-header").each((a, b) => {
+            if (b.classList.contains('toggle-closed')) {
+                b.nextElementSibling.style.display = "none";
+            }
+        });
+        toggleCount++;
+    }
+    else {
+        $('div#viewFilters').css("minWidth","0px");
+        $('.filter-option-container').css('display', '');
+        toggleCount++;
     }
     if (window.matchMedia("(max-width: 800px)").matches) {
         $("#charsContainerActions").toggle()
@@ -106,7 +116,7 @@ function buildFilterList() {
             optionElements.push(buildFilterElement(prefix, option));
         }
 
-        return `<div class="filter-view-group"><label class="char-action-label filter-group-header toggle-open">${label}</label><div class="filter-option-container">${optionElements.join("\n")}</div></div>`;
+        return `<div class="filter-view-group"><label class="char-action-label filter-group-header toggle-closed">${label}</label><div class="filter-option-container">${optionElements.join("\n")}</div></div>`;
     }
     function buildFilterElement(prefix, label) {
         // <input class="filter-option" filter-target="test" type="checkbox"> TEST;

@@ -4,7 +4,7 @@ var modalStars = { "star": 0, "star_target": 0, "ue": 0, "ue_target": 0 };
 var data;
 const ueStarCap = 3;
 const globalMaxWorld = 16;
-const languages = ["En", "Jp", "Kr", "Tw", "Th"];
+const languages = ["En", "Kr", "Jp", "Tw", "Th"];
 let language = "En";
 
 var requiredMatDict = {};
@@ -52,6 +52,8 @@ let navigationObjects = {};
 
 let preInput;
 
+let closableAfter = 0;
+
 let tooltips = [];
 
 let keyPressed = {};
@@ -63,27 +65,27 @@ let loaded = false;
 
 function loadResources() {
 
-    $.getJSON('json/misc_data.json?5').done(function (json) {
+    $.getJSON('json/misc_data.json?7').done(function (json) {
         misc_data = json;
         checkResources();
     });
 
-    $.getJSON('json/skillinfo.json?3').done(function (json) {
+    $.getJSON('json/skillinfo.json?5').done(function (json) {
         skillinfo = json;
         checkResources();
     });
 
-    $.getJSON('json/charlist.json?8').done(function (json) {
+    $.getJSON('json/charlist.json?9').done(function (json) {
         charlist = json;
         checkResources();
     });
 
-    $.getJSON('json/localisations.json?2').done(function (json) {
+    $.getJSON('json/localisations.json?3').done(function (json) {
         localisations = json;
         checkResources();
     });
 
-    $.getJSON('json/manualLocalisations.json?1').done(function (json) {
+    $.getJSON('json/manualLocalisations.json?2').done(function (json) {
         mLocalisations = json;
         checkResources();
     });
@@ -99,6 +101,25 @@ function checkResources() {
         }
 
         data = tryParseJSON(localStorage.getItem('save-data'));
+
+        if (data?.language) {
+            language = data.language;
+            if (language == "EN") {
+                language = "En";
+            }
+            else if (language == "KR") {
+                language = "Kr";
+            }
+            else if (language == "JP") {
+                language = "Jp";
+            }
+            else if (language == "CN") {
+                language = "Tw";
+            }
+            else if (language == "TH") {
+                language = "Th";
+            }
+        }
 
         charMap = new Map()
         charNames = new Map()
@@ -219,11 +240,13 @@ function init() {
     }
 
     if (data == null) {
-        data = { exportVersion: exportDataVersion, characters: [], disabled_characters: [], owned_materials: {}, groups: {} };
+        data = { exportVersion: exportDataVersion, characters: [], disabled_characters: [], owned_materials: {}, groups: {}, language: "EN" };
         localStorage.setItem("save-data", JSON.stringify(data));
     }
 
     updateUiLanguage();
+    buildLanguages();
+    document.getElementById('languages').value = language;
 
     if (data != null) {
         if (data.disabled_characters != undefined) {
@@ -287,6 +310,10 @@ function init() {
         }
         else if (data.server == "JP") {
             serverToggleBtn.innerText = "JP";
+        }
+
+        if (!data.language) {
+            data.language = "EN";
         }
     }
 
@@ -404,18 +431,24 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.2.3".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.2.8".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.2.3",
+            title: "Updated to Version 1.2.8",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.2.3";
+        data.site_version = "1.2.8";
         saveToLocalStorage(false);
     }
+
+    document.body.addEventListener('click', (event) => {
+        if (closableAfter != 0 && Date.now() > closableAfter) {
+            HidePopup();
+        }
+    });
 
     // set input validation
 
@@ -1693,6 +1726,7 @@ function closeModal(animated, forced) {
 
         document.getElementById('character-modal-wrapper').style.visibility = "";
         modal.style.visibility = "hidden";
+        modalCharID = "";
         return;
     }
 
@@ -2659,6 +2693,33 @@ function filterChanged(filterType) {
 
 }
 
+function languageChanged() {
+
+    let selectElement = document.getElementById('languages');
+    selectElement.blur();
+
+    let languageSet = selectElement.value;
+    data.language = languageSet;
+
+    localStorage.setItem("save-data", JSON.stringify(data));
+
+    location.reload();
+}
+
+function buildLanguages() {
+
+    let selectElement = document.getElementById('languages');
+
+    for (let i = 0; i < languages.length; i++) {
+
+        if (languages[i] == "Tw") {
+            addOption(selectElement, "CN", "Tw");        
+            continue;
+        }
+        addOption(selectElement, languages[i].toUpperCase(), languages[i]);
+    }
+}
+
 function applyFilters(filtered) {
 
     var charBoxes = document.getElementsByClassName('main-display-char');
@@ -3262,7 +3323,8 @@ function getSkillFormatted(charId, skill, level, targetLevel) {
                     paramFilled += '/<span style="color: #588f00;">' + params[paramCount - 1][targetLevel - 1] + "</span>";
                 }
 
-                desc = desc.replaceAll(paramString, paramFilled);
+                let paramRegex = new RegExp(paramString, "g");
+                desc = desc.replace(paramRegex, paramFilled);
 
                 paramCount++;
             }
@@ -4033,6 +4095,8 @@ function closeResourceModal() {
 
     freezeBody(false);
 
+    HidePopup();
+
     var modal = document.getElementById("resourceModal");
 
     modal.style.visibility = "hidden";
@@ -4044,6 +4108,8 @@ function closeResourceModal() {
 function closeGearModal() {
 
     freezeBody(false);
+
+    HidePopup();
 
     var modal = document.getElementById("gearModal");
 
@@ -4125,7 +4191,7 @@ function loginClick() {
     if (Date.now() > loadCooldown) {
 
         if (lUsername && lAuthkey && lUsername.length >= 5 && lUsername.length <= 20 && lAuthkey.length == 6) {
-            
+
             loadCooldown = Date.now() + (2 * 60 * 1000 + 10000);
             loadRequest(true, true);
         }
@@ -4308,7 +4374,7 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
             const newCell = document.createElement("td");
 
             if (col == 0) {
-                let localisedName = mLocalisations[language]?.Data[rows[row].replaceAll(' ', '')];
+                let localisedName = mLocalisations[language]?.Data[rows[row].replace(/ /g, '')];
                 if (localisedName) {
                     newCell.innerText = localisedName;
                 }
@@ -4337,6 +4403,18 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
                 else {
                     newP.id = (columns[col - 1] + "_" + rows[row]).replace(/ /g, '');
                 }
+
+                let matFound = matLookup.reverseMap[newP.id];
+                if (matFound) {
+                    newCell.id = "mat-" + matFound;
+                }
+                else {
+                    newCell.id = "mat-" + newP.id;
+                }
+
+                newCell.addEventListener('click', (event) => {
+                    DisplayMatUsers(event.currentTarget.id);
+                })
 
                 const newInput = document.createElement("input");
                 newInput.className = "resource-input";
@@ -4445,6 +4523,92 @@ function updatedResource() {
     }
 
     saveTime = Date.now() + (1000 * 5);
+}
+
+function DisplayMatUsers(mat) {
+
+    if (resourceDisplay == "Owned" || gearDisplay == "Owned") {
+        return;
+    }
+
+    let matId = mat;
+    if (mat.substring(0, 4) == "mat-") {
+        matId = mat.substring(4);
+    }
+    let matUsers = [];
+
+    for (key in charMatDicts) {
+        if (!disabledChars.includes(key) && charMatDicts[key][matId] > 0) {
+            matUsers.push({ "charId": key, "matCount": charMatDicts[key][matId] });
+        }
+    }
+
+    if (matUsers.length == 0) {
+        return;
+    }
+
+    matUsers = matUsers.sort(function (a, b) { return parseFloat(b.matCount) - parseFloat(a.matCount); })
+
+    let wrapperDiv = document.getElementById('popup-wrapper');
+    let wrapperChildren = wrapperDiv.children;
+    while (wrapperChildren.length > 0) {
+        wrapperChildren[0].remove();
+    }
+
+    for (let i = 0; i < matUsers.length; i++) {
+
+        let charDiv = document.createElement('div');
+        charDiv.className = "char-row-mats";
+
+        let charImg = document.createElement('img');
+        charImg.src = "icons/Portrait/Icon_" + matUsers[i].charId + ".png";
+
+        let matAmount = document.createElement('p');
+        matAmount.innerText = commafy(matUsers[i].matCount);
+
+        charDiv.appendChild(charImg);
+        charDiv.appendChild(matAmount);
+
+        wrapperDiv.appendChild(charDiv);
+    }
+
+    if (mat == "9999") {
+        mat = 'Secret';
+    }
+
+    let element = document.getElementById(mat);
+    if (element.tagName.toLowerCase() == 'p') {
+        element = element.parentElement;
+    }
+
+    let matOffset = getOffset(element);
+
+    if (matOffset.left > (window.innerWidth / 2)) {
+        wrapperDiv.style.right = (window.innerWidth - Math.round(matOffset.left) - 10) + "px";
+        wrapperDiv.style.left = "";
+    }
+    else {
+        wrapperDiv.style.left = (20 + Math.round(matOffset.left)) + "px";
+        wrapperDiv.style.right = "";
+    }
+
+    if (matOffset.top > (window.innerHeight / 2)) {
+        wrapperDiv.style.bottom = (document.body.clientHeight - Math.round(matOffset.top)) + "px";
+        wrapperDiv.style.top = "";
+    }
+    else {
+        wrapperDiv.style.top = (20 + Math.round(matOffset.top)) + "px";
+        wrapperDiv.style.bottom = "";
+    }
+
+    wrapperDiv.style.display = "";
+    closableAfter = Date.now() + 200;
+
+}
+
+function HidePopup() {
+    document.getElementById('popup-wrapper').style.display = 'none';
+    closableAfter = 0;
 }
 
 function commafy(num) {
@@ -5525,6 +5689,9 @@ function createCharBox(charId, container, location) {
     }
     else if (charName.includes('(')) {
         nameTag.innerText = charName.substring(0, charName.indexOf('('));
+    }
+    else if (charName.includes('（')) {
+        nameTag.innerText = charName.substring(0, charName.indexOf('（'));
     }
     else {
         nameTag.innerText = charName;
