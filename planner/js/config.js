@@ -565,22 +565,22 @@ const inputValidation = {
         default: "0",
         name: "Enhanced",
         requisite: {
-            "modalStars.star_target": {
-                type: "object",
-                name: "Target Stars",
-                compare: "equal_greater",
-                mode: "threshold",
-                sanitise: true,
-                levels: [
-                    {
-                        required: "2",
-                        max: "10"
-                    },
-                    {
-                        max: "0"
-                    }
-                ]
-            }
+            // "modalStars.star_target": {
+            //     type: "object",
+            //     name: "Target Stars",
+            //     compare: "equal_greater",
+            //     mode: "threshold",
+            //     sanitise: true,
+            //     levels: [
+            //         {
+            //             required: "2",
+            //             max: "10"
+            //         },
+            //         {
+            //             max: "0"
+            //         }
+            //     ]
+            // }
         },
         "navigation": "direct",
         "Up": "input_basic_target",
@@ -596,22 +596,22 @@ const inputValidation = {
         default: "0",
         name: "Enhanced Target",
         requisite: {
-            "modalStars.star_target": {
-                type: "object",
-                name: "Target Stars",
-                compare: "equal_greater",
-                mode: "threshold",
-                sanitise: true,
-                levels: [
-                    {
-                        required: "2",
-                        max: "10"
-                    },
-                    {
-                        max: "0"
-                    }
-                ]
-            },
+            // "modalStars.star_target": {
+            //     type: "object",
+            //     name: "Target Stars",
+            //     compare: "equal_greater",
+            //     mode: "threshold",
+            //     sanitise: true,
+            //     levels: [
+            //         {
+            //             required: "2",
+            //             max: "10"
+            //         },
+            //         {
+            //             max: "0"
+            //         }
+            //     ]
+            // },
             "passive": {
                 type: "input",
                 compare: "equal_greater",
@@ -633,22 +633,22 @@ const inputValidation = {
         default: "0",
         name: "Sub",
         requisite: {
-            "modalStars.star_target": {
-                type: "object",
-                name: "Target Stars",
-                compare: "equal_greater",
-                mode: "threshold",
-                sanitise: true,
-                levels: [
-                    {
-                        required: "3",
-                        max: "10"
-                    },
-                    {
-                        max: "0"
-                    }
-                ]
-            }
+            // "modalStars.star_target": {
+            //     type: "object",
+            //     name: "Target Stars",
+            //     compare: "equal_greater",
+            //     mode: "threshold",
+            //     sanitise: true,
+            //     levels: [
+            //         {
+            //             required: "3",
+            //             max: "10"
+            //         },
+            //         {
+            //             max: "0"
+            //         }
+            //     ]
+            // }
         },
         "navigation": "direct",
         "Up": "input_enhanced_target",
@@ -664,22 +664,22 @@ const inputValidation = {
         default: "0",
         name: "Sub Target",
         requisite: {
-            "modalStars.star_target": {
-                type: "object",
-                name: "Target Stars",
-                compare: "equal_greater",
-                mode: "threshold",
-                sanitise: true,
-                levels: [
-                    {
-                        required: "3",
-                        max: "10"
-                    },
-                    {
-                        max: "0"
-                    }
-                ]
-            },
+            // "modalStars.star_target": {
+            //     type: "object",
+            //     name: "Target Stars",
+            //     compare: "equal_greater",
+            //     mode: "threshold",
+            //     sanitise: true,
+            //     levels: [
+            //         {
+            //             required: "3",
+            //             max: "10"
+            //         },
+            //         {
+            //             max: "0"
+            //         }
+            //     ]
+            // },
             "sub": {
                 type: "input",
                 compare: "equal_greater",
@@ -735,22 +735,22 @@ const inputValidation = {
         default: "0",
         name: "Gear 2",
         requisite: {
-            "level_target": {
-                type: "input",
-                name: "Level Target",
-                compare: "equal_greater",
-                mode: "threshold",
-                sanitise: true,
-                levels: [
-                    {
-                        required: "15",
-                        max: "7"
-                    },
-                    {
-                        max: "0"
-                    }
-                ]
-            }
+            // "level_target": {
+            //     type: "input",
+            //     name: "Level Target",
+            //     compare: "equal_greater",
+            //     mode: "threshold",
+            //     sanitise: true,
+            //     levels: [
+            //         {
+            //             required: "15",
+            //             max: "7"
+            //         },
+            //         {
+            //             max: "0"
+            //         }
+            //     ]
+            // }
         },
         "navigation": "direct",
         "Up": "input_gear1_target",
@@ -766,22 +766,22 @@ const inputValidation = {
         default: "0",
         name: "Gear 2 Target",
         requisite: {
-            "level_target": {
-                type: "input",
-                name: "Level Target",
-                compare: "equal_greater",
-                mode: "threshold",
-                sanitise: true,
-                levels: [
-                    {
-                        required: "15",
-                        max: "7"
-                    },
-                    {
-                        max: "0"
-                    }
-                ]
-            },
+            // "level_target": {
+            //     type: "input",
+            //     name: "Level Target",
+            //     compare: "equal_greater",
+            //     mode: "threshold",
+            //     sanitise: true,
+            //     levels: [
+            //         {
+            //             required: "15",
+            //             max: "7"
+            //         },
+            //         {
+            //             max: "0"
+            //         }
+            //     ]
+            // },
             "gear2": {
                 type: "input",
                 compare: "equal_greater",
@@ -803,22 +803,22 @@ const inputValidation = {
         default: "0",
         name: "Gear 3",
         requisite: {
-            "level_target": {
-                type: "input",
-                name: "Level Target",
-                compare: "equal_greater",
-                mode: "threshold",
-                sanitise: true,
-                levels: [
-                    {
-                        required: "35",
-                        max: "7"
-                    },
-                    {
-                        max: "0"
-                    }
-                ]
-            }
+            // "level_target": {
+            //     type: "input",
+            //     name: "Level Target",
+            //     compare: "equal_greater",
+            //     mode: "threshold",
+            //     sanitise: true,
+            //     levels: [
+            //         {
+            //             required: "35",
+            //             max: "7"
+            //         },
+            //         {
+            //             max: "0"
+            //         }
+            //     ]
+            // }
         },
         "navigation": "direct",
         "Up": "input_gear2_target",
@@ -834,22 +834,22 @@ const inputValidation = {
         default: "0",
         name: "Gear 3 Target",
         requisite: {
-            "level_target": {
-                type: "input",
-                name: "Level Target",
-                compare: "equal_greater",
-                mode: "threshold",
-                sanitise: true,
-                levels: [
-                    {
-                        required: "35",
-                        max: "7"
-                    },
-                    {
-                        max: "0"
-                    }
-                ]
-            },
+            // "level_target": {
+            //     type: "input",
+            //     name: "Level Target",
+            //     compare: "equal_greater",
+            //     mode: "threshold",
+            //     sanitise: true,
+            //     levels: [
+            //         {
+            //             required: "35",
+            //             max: "7"
+            //         },
+            //         {
+            //             max: "0"
+            //         }
+            //     ]
+            // },
             "gear3": {
                 type: "input",
                 compare: "equal_greater",
