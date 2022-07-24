@@ -1230,15 +1230,17 @@ function validateInput(key, checkonly, verbose) {
                     if (checkMax != null && parseInt(inputElement.value) > checkMax) {
                         if (!checkonly && sanitise) {
                             inputElement.value = checkMax;
+                        } else if (!sanitise) {
+                            return maxMessage;
                         }
-                        return maxMessage;
                     }
 
                     if (checkMin != null && parseInt(inputElement.value) < checkMin) {
                         if (!checkonly && sanitise) {
                             inputElement.value = checkMin;
+                        } else if (!sanitise) {
+                            return minMessage;
                         }
-                        return minMessage;
                     }
                 }
                 else if (valReq.type == "object" && compareMode == "direct") {
@@ -1247,18 +1249,20 @@ function validateInput(key, checkonly, verbose) {
                         if (parseInt(inputElement.value) < compareVal) {
                             if (!checkonly && sanitise) {
                                 inputElement.value = compareVal;
+                            } else if (!sanitise) {
+                                message = val.name + " must be greater than or equal to " + compareVal;
+                                return message;
                             }
-                            message = val.name + " must be greater than or equal to " + compareVal;
-                            return message;
                         }
                     }
                     else if (compareType == "equal_lesser") {
                         if (parseInt(inputElement.value) > compareVal) {
                             if (!checkonly && sanitise) {
                                 inputElement.value = compareVal;
+                            } else if (!sanitise) {
+                                message = val.name + " must be lesser than or equal to " + compareVal;
+                                return message;
                             }
-                            message = val.name + " must be lesser than or equal to " + compareVal;
-                            return message;
                         }
                     }
                     else if (compareType == "max") {
@@ -1271,7 +1275,7 @@ function validateInput(key, checkonly, verbose) {
                 }
                 else if (verbose && compareMode == 'direct') {
 
-                    let result = validateInput(reqKey, true, verbose);
+                    let result = validateInput(reqKey, checkonly, verbose);
 
                     if (result != "validated") {
                         return result;
@@ -1281,18 +1285,20 @@ function validateInput(key, checkonly, verbose) {
                         if (parseInt(inputElement.value) < compareVal) {
                             if (!checkonly && sanitise) {
                                 inputElement.value = compareVal;
+                            } else if (!sanitise) {
+                                message = val.name + " must be greater than or equal to " + inputValidation[reqKey].name;
+                                return message;
                             }
-                            message = val.name + " must be greater than or equal to " + inputValidation[reqKey].name;
-                            return message;
                         }
                     }
                     else if (compareType == "equal_lesser") {
                         if (parseInt(inputElement.value) > compareVal) {
                             if (!checkonly && sanitise) {
                                 inputElement.value = compareVal;
+                            } else if (!sanitise) {
+                                message = val.name + " must be lesser than or equal to " + inputValidation[reqKey].name;
+                                return message;
                             }
-                            message = val.name + " must be lesser than or equal to " + inputValidation[reqKey].name;
-                            return message;
                         }
                     }
 
@@ -2954,7 +2960,7 @@ function saveCharChanges() {
 
     for (let key in inputValidation) {
         if (inputValidation[key].location == "characterModal") {
-            let result = validateInput(key, true, true);
+            let result = validateInput(key, false, true);
             if (result != "validated") {
                 //invalidMessages.push(result);
                 invalidMessages += result + "<br>";
