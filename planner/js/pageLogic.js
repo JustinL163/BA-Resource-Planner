@@ -3257,7 +3257,7 @@ function updateTooltip(charId, skill) {
     }
     else if (skill == "passive" || skill == "passive_target") {
         tooltips[2].setProps({
-            content: getSkillFormatted(charId, "Skill2", charData.current?.passive, charData.target?.passive)
+            content: getSkillFormatted(charId, "Skill2", charData.current?.passive, charData.target?.passive, charData.target?.ue)
         })
     }
     else if (skill == "sub" || skill == "sub_target") {
@@ -3267,7 +3267,7 @@ function updateTooltip(charId, skill) {
     }
 }
 
-function getSkillFormatted(charId, skill, level, targetLevel) {
+function getSkillFormatted(charId, skill, level, targetLevel, targetUe) {
 
     if (level == 0) {
         level = 1;
@@ -3277,6 +3277,11 @@ function getSkillFormatted(charId, skill, level, targetLevel) {
     }
 
     if (localisations[language]?.Characters[charId]?.Skills[skill]?.Name) {
+
+        if (skill == "Skill2" && targetUe >= 2) {
+            skill = "Skill2Upgrade";
+        }
+
         let firstDesc = localisations[language]?.Characters[charId]?.Skills[skill]["Level" + level].Description;
 
         let secondDesc;
@@ -3300,6 +3305,24 @@ function getSkillFormatted(charId, skill, level, targetLevel) {
             else {
                 firstDesc = firstDesc.replace('[-][/c]', '</span>');
             }
+        }
+
+        while (firstDesc.includes('\n')) {
+            firstDesc = firstDesc.replace('\n', "<br>")
+        }
+
+        if (firstDesc && skill == "Ex") {
+
+            let curCost = charlist[charId]?.Skills?.Ex?.["Level" + level]?.Cost;
+            let tgtCost = charlist[charId]?.Skills?.Ex?.["Level" + targetLevel]?.Cost;
+
+            let costText = 'Cost: <span style="color: #008c9b;">' + curCost + "</span>";
+
+            if (level != targetLevel && curCost != tgtCost) {
+                costText += '/<span style="color: #588f00;">' + tgtCost + "</span>";
+            }
+
+            firstDesc = costText + "<br>" + firstDesc;
         }
 
         return firstDesc;
@@ -3791,6 +3814,7 @@ function starClicked(type, mode, pos) {
     }
 
     updateStarDisplays(modalCharID, true);
+    updateTooltip(modalCharID, "passive");
     populateCharResources(modalCharID);
 }
 
