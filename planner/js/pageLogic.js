@@ -29,6 +29,8 @@ let groupEditMode = "Move";
 let currentGroup = "";
 let borrowed = false;
 
+let multiSelected = [];
+
 const defaultGroups = ["Binah", "Chesed", "Hod", "ShiroKuro", "Perorodzilla", "Hieronymous", "Kaiten"];
 
 var sweepMax = 0;
@@ -342,7 +344,8 @@ function init() {
     const newDiv = document.createElement("div");
     newDiv.className = "charBox";
     newDiv.id = "addCharButton";
-    newDiv.onclick = newCharClicked;
+    // newDiv.onclick = newCharClicked;
+    newDiv.onclick = showMultiSelect;
     const newContent = document.createElement("div");
     newContent.className = "charBoxwrap";
     const newImg = document.createElement("img");
@@ -431,16 +434,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.2.8".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.2.9".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.2.8",
+            title: "Updated to Version 1.2.9",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.2.8";
+        data.site_version = "1.2.9";
         saveToLocalStorage(false);
     }
 
@@ -1773,7 +1776,157 @@ function closeModal(animated, forced) {
 
 }
 
+function showMultiSelect() {
+    let boxesContainer = document.getElementById('boxesContainer');
+    let multiSelectContainer = document.getElementById('characterMultiSelectContainer');
+
+    boxesContainer.style.display = "none";
+    multiSelectContainer.style.display = "";
+
+    generateMultiSelectChars();
+
+}
+
+function generateMultiSelectChars() {
+
+    let multiCharsContainer = document.getElementById("charsSelectContainer");
+
+    let existingChars = getExistingCharacters();
+
+    let newCharOptions = [];
+
+    for (key in charlist) {
+
+        if (!existingChars.includes(key)) {
+            newCharOptions.push(charNames.get(key));
+        }
+    }
+
+    newCharOptions.sort();
+
+    for (let i = 0; i < newCharOptions.length; i++) {
+        createMultiSelectChar(charMap.get(newCharOptions[i]), multiCharsContainer);
+    }
+
+}
+
+function createMultiSelectChar(charId, container) {
+
+    let charName = charNames.get(charId.toString());
+
+    const newCharDiv = document.createElement("div");
+    newCharDiv.className = "multiSelectChar";
+    newCharDiv.id = "multi_" + charId;
+
+    const newImg = document.createElement("img");
+    newImg.src = "icons/Portrait/Icon_" + charId + ".png"
+    newImg.draggable = false;
+    newImg.className = "multi-char-img";
+
+    const nameDiv = document.createElement("div");
+    nameDiv.className = "nameBar multiCharName";
+
+    const nameTag = document.createElement("p");
+    if (charName.includes(' ')) {
+        nameTag.innerText = charName.substring(0, charName.indexOf(' '));
+    }
+    else if (charName.includes('(')) {
+        nameTag.innerText = charName.substring(0, charName.indexOf('('));
+    }
+    else if (charName.includes('（')) {
+        nameTag.innerText = charName.substring(0, charName.indexOf('（'));
+    }
+    else {
+        nameTag.innerText = charName;
+    }
+    nameDiv.appendChild(nameTag);
+
+    newCharDiv.appendChild(newImg);
+    newCharDiv.appendChild(nameDiv);
+
+    newCharDiv.addEventListener('click', (event) => {
+        toggleMultiSelection(event.currentTarget.id);
+    })
+
+    container.appendChild(newCharDiv);
+
+}
+
+function toggleMultiSelection(boxId) {
+
+    let charId = boxId.substring(6);
+
+    let element = document.getElementById(boxId);
+
+    if (multiSelected.includes(charId)) {
+        let charIndex = multiSelected.indexOf(charId);
+
+        if (charIndex != -1) {
+            multiSelected.splice(charIndex, 1);
+        }
+
+        element.classList.remove("multiSelected");
+    }
+    else {
+        multiSelected.push(charId);
+
+        element.classList.add("multiSelected");
+    }
+
+}
+
+function filterMultiChars() {
+
+    let searchInput = document.getElementById("multiCharSearch");
+
+    let searchPhrase = searchInput.value.toLowerCase();
+    let phraseLength = searchPhrase.length;
+
+    if (!searchPhrase) {
+        let multiChars = document.getElementsByClassName("multiSelectChar");
+
+        for (let i = 0; i < multiChars.length; i++) {
+            multiChars[i].style.display = "";
+        }
+    }
+    else {
+        let nameBars = document.getElementsByClassName("multiCharName");
+
+        for (let i = 0; i < nameBars.length; i++) {
+            if (nameBars[i].children[0].innerText.toLowerCase().substring(0, phraseLength) == searchPhrase) {
+                nameBars[i].parentElement.style.display = "";
+            }
+            else {
+                nameBars[i].parentElement.style.display = "none";
+            }
+        }
+    }
+}
+
+function multiCharAdd() {
+
+    for (let i = 0; i < multiSelected.length; i++) {
+
+        let charInfoObj = charlist[multiSelected[i]];
+        charInfoObj.Id = charInfoObj.Id.toString();
+
+        let newCharObj = new Student(charInfoObj);
+
+        data.characters.push(newCharObj);
+        
+    }
+
+    saveToLocalStorage(false);
+
+    location.reload();
+
+}
+
 function teamsToggle() {
+
+    if (document.getElementById("characterMultiSelectContainer").style.display != "none") {
+        return;
+    }
 
     let boxesContainer = document.getElementById('boxesContainer');
     let teamsEditorContainer = document.getElementById('teamsEditorContainer');
@@ -2719,7 +2872,7 @@ function buildLanguages() {
     for (let i = 0; i < languages.length; i++) {
 
         if (languages[i] == "Tw") {
-            addOption(selectElement, "CN", "Tw");        
+            addOption(selectElement, "CN", "Tw");
             continue;
         }
         addOption(selectElement, languages[i].toUpperCase(), languages[i]);
@@ -4034,6 +4187,10 @@ function openGearModal() {
 }
 
 function openTransferModal() {
+
+    if (document.getElementById("characterMultiSelectContainer").style.display != "none") {
+        return;
+    }
 
     freezeBody(true);
 

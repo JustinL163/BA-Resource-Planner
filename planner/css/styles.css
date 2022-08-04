@@ -194,7 +194,7 @@
     min-width: 50px;
 }
 
-.charBox * {
+.charBox *, .multiSelectChar * {
     -moz-user-select: -moz-none;
     -khtml-user-select: none;
     -webkit-user-select: none;
@@ -1064,6 +1064,56 @@ label.char-action-label.toggle-closed::before {
     font-size: 2em;
 }
 
+#charsSelectContainer {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.multiSelectChar {
+    max-width: 100px;
+    min-width: 50px;
+    width: 10%;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 10px;
+    position: relative;
+}
+
+.multi-char-img {
+    height: 100%;
+    width: 100%;
+}
+
+.multiSelected:before {
+    content: '✔';
+    position: absolute;
+    font-size: 4em;
+    color: white;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    text-align: center;
+}
+
+.multiSelected img {
+    filter: brightness(0.3);
+}
+
+#multiCharSearch {
+    height: 50px;
+    margin: 10px;
+    text-align: center;
+    width: 200px;
+    font-size: 1.25em;
+}
+
+.multiCharButton {
+    height: 4vh;
+    width: 150px;
+    margin: 10px;
+    font-size: 1.25em;
+}
+
 .draggable-mirror {
     z-index: 1;
 }
@@ -1826,6 +1876,24 @@ input.filter-option {
         width: 25px;
     }
 
+    #charsSelectContainer {
+        justify-content: center;
+    }
+
+    .multiSelected:before {
+        font-size: 2em;
+    }
+
+    #charsContainerActions {
+        justify-content: center;
+    }
+
+    .charEditorButton {
+        height: 4vh;
+        width: 90px;
+        margin: 5px;
+        font-size: 0.75em;
+    }
 }
 
 @media (hover: hover) {
