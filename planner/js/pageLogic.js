@@ -72,17 +72,17 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/skillinfo.json?5').done(function (json) {
+    $.getJSON('json/skillinfo.json?6').done(function (json) {
         skillinfo = json;
         checkResources();
     });
 
-    $.getJSON('json/charlist.json?9').done(function (json) {
+    $.getJSON('json/charlist.json?10').done(function (json) {
         charlist = json;
         checkResources();
     });
 
-    $.getJSON('json/localisations.json?3').done(function (json) {
+    $.getJSON('json/localisations.json?4').done(function (json) {
         localisations = json;
         checkResources();
     });
@@ -345,7 +345,10 @@ function init() {
     newDiv.className = "charBox";
     newDiv.id = "addCharButton";
     // newDiv.onclick = newCharClicked;
-    newDiv.onclick = showMultiSelect;
+    newDiv.addEventListener('click', (event) => {
+        showMultiSelect('AddNewChars');
+    });
+    // newDiv.onclick = showMultiSelect;
     const newContent = document.createElement("div");
     newContent.className = "charBoxwrap";
     const newImg = document.createElement("img");
@@ -434,16 +437,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.2.9".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.2.10".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.2.9",
+            title: "Updated to Version 1.2.10",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.2.9";
+        data.site_version = "1.2.10";
         saveToLocalStorage(false);
     }
 
@@ -1776,33 +1779,39 @@ function closeModal(animated, forced) {
 
 }
 
-function showMultiSelect() {
+function showMultiSelect(source) {
+    
     let boxesContainer = document.getElementById('boxesContainer');
     let multiSelectContainer = document.getElementById('characterMultiSelectContainer');
 
     boxesContainer.style.display = "none";
     multiSelectContainer.style.display = "";
 
-    generateMultiSelectChars();
+    let visualCharOptions = [];
+
+    if (source == "AddNewChars") {
+        let existingChars = getExistingCharacters();
+    
+        for (key in charlist) {
+    
+            if (!existingChars.includes(key)) {
+                visualCharOptions.push(charNames.get(key));
+            }
+        }
+    
+        visualCharOptions.sort();
+    }
+    else if (source == "AddTeamMember") {
+        
+    }
+
+    generateMultiSelectChars(visualCharOptions);
 
 }
 
-function generateMultiSelectChars() {
+function generateMultiSelectChars(newCharOptions) {
 
     let multiCharsContainer = document.getElementById("charsSelectContainer");
-
-    let existingChars = getExistingCharacters();
-
-    let newCharOptions = [];
-
-    for (key in charlist) {
-
-        if (!existingChars.includes(key)) {
-            newCharOptions.push(charNames.get(key));
-        }
-    }
-
-    newCharOptions.sort();
 
     for (let i = 0; i < newCharOptions.length; i++) {
         createMultiSelectChar(charMap.get(newCharOptions[i]), multiCharsContainer);
