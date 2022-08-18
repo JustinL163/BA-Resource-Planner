@@ -21,13 +21,16 @@ var disabledChars = [];
 let swappableStrikers, swappableSpecials;
 
 let groupChars = [];
-let groupStrikerOptions = {};
-let groupSpecialOptions = {};
-let groupStrikerBorrows = {};
-let groupSpecialBorrows = {};
+let groupStrikerOptions = [];
+let groupSpecialOptions = [];
+let groupStrikerBorrows = [];
+let groupSpecialBorrows = [];
 let groupEditMode = "Move";
 let currentGroup = "";
 let borrowed = false;
+
+let selectingSlotId = "";
+let multiCharSource = "";
 
 let multiSelected = [];
 
@@ -437,16 +440,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.2.10".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.2.11".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.2.10",
+            title: "Updated to Version 1.2.11",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.2.10";
+        data.site_version = "1.2.11";
         saveToLocalStorage(false);
     }
 
@@ -1779,47 +1782,129 @@ function closeModal(animated, forced) {
 
 }
 
-function showMultiSelect(source) {
-    
+function multiCharCancel() {
+
     let boxesContainer = document.getElementById('boxesContainer');
+    let editorContainer = document.getElementById('teamsEditorContainer');
     let multiSelectContainer = document.getElementById('characterMultiSelectContainer');
 
+    multiCharsClear();
+
+    if (multiCharSource == "AddNewChars") {
+        multiSelected = [];
+
+        boxesContainer.style.display = "";
+        multiSelectContainer.style.display = "none";
+    }
+    else if (multiCharSource == "AddTeamStriker" || multiCharSource == "AddTeamSpecial" ||
+        multiCharSource == "AddTeamStrikerBorrow" || multiCharSource == "AddTeamSpecialBorrow") {
+
+        editorContainer.style.display = "";
+        multiSelectContainer.style.display = "none";
+    }
+}
+
+function multiCharsClear() {
+
+    let multiChars = document.getElementById('charsSelectContainer')?.children;
+
+    while (multiChars?.length > 0) {
+        multiChars[0].remove();
+    }
+
+}
+
+function multiCharBorrow() {
+
+    if (multiCharSource == "AddTeamStriker") {
+        showMultiSelect("AddTeamStrikerBorrow");
+    }
+    else if (multiCharSource == "AddTeamSpecial") {
+        showMultiSelect("AddTeamSpecialBorrow");
+    }
+}
+
+function showMultiSelect(source) {
+
+    multiCharsClear();
+
+    multiCharSource = source;
+
+    let boxesContainer = document.getElementById('boxesContainer');
+    let editorContainer = document.getElementById('teamsEditorContainer');
+    let multiSelectContainer = document.getElementById('characterMultiSelectContainer');
+    let multiCharAdd = document.getElementById('multi-char-add');
+    let multiCharCancel = document.getElementById('multi-char-cancel');
+    let multiCharBorrow = document.getElementById('multi-char-borrow');
+
     boxesContainer.style.display = "none";
+    editorContainer.style.display = "none";
     multiSelectContainer.style.display = "";
 
     let visualCharOptions = [];
+    let mode = "";
 
     if (source == "AddNewChars") {
         let existingChars = getExistingCharacters();
-    
+
         for (key in charlist) {
-    
+
             if (!existingChars.includes(key)) {
                 visualCharOptions.push(charNames.get(key));
             }
         }
-    
+
         visualCharOptions.sort();
+        mode = "Multi";
+        multiCharBorrow.style.display = "none";
     }
-    else if (source == "AddTeamMember") {
-        
+    else if (source == "AddTeamStriker") {
+        visualCharOptions = groupStrikerOptions;
+        mode = "Single";
+        if (!borrowed) {
+            multiCharBorrow.style.display = "";
+        }
+    }
+    else if (source == "AddTeamSpecial") {
+        visualCharOptions = groupSpecialOptions;
+        mode = "Single";
+        if (!borrowed) {
+            multiCharBorrow.style.display = "";
+        }
+    }
+    else if (source == "AddTeamStrikerBorrow") {
+        visualCharOptions = groupStrikerBorrows;
+        mode = "Single";
+        multiCharBorrow.style.display = "none";
+    }
+    else if (source == "AddTeamSpecialBorrow") {
+        visualCharOptions = groupSpecialBorrows;
+        mode = "Single";
+        multiCharBorrow.style.display = "none";
     }
 
-    generateMultiSelectChars(visualCharOptions);
+    if (mode == "Multi") {
+        multiCharAdd.style.display = "";
+    }
+    else if (mode == "Single") {
+        multiCharAdd.style.display = "none";
+    }
+
+    generateMultiSelectChars(visualCharOptions, mode);
 
 }
 
-function generateMultiSelectChars(newCharOptions) {
+function generateMultiSelectChars(newCharOptions, mode) {
 
     let multiCharsContainer = document.getElementById("charsSelectContainer");
 
     for (let i = 0; i < newCharOptions.length; i++) {
-        createMultiSelectChar(charMap.get(newCharOptions[i]), multiCharsContainer);
+        createMultiSelectChar(charMap.get(newCharOptions[i]), multiCharsContainer, mode);
     }
 
 }
 
-function createMultiSelectChar(charId, container) {
+function createMultiSelectChar(charId, container, mode) {
 
     let charName = charNames.get(charId.toString());
 
@@ -1853,11 +1938,66 @@ function createMultiSelectChar(charId, container) {
     newCharDiv.appendChild(newImg);
     newCharDiv.appendChild(nameDiv);
 
-    newCharDiv.addEventListener('click', (event) => {
-        toggleMultiSelection(event.currentTarget.id);
-    })
+    if (mode == "Multi") {
+        newCharDiv.addEventListener('click', (event) => {
+            toggleMultiSelection(event.currentTarget.id);
+        })
+    }
+    else if (mode == "Single") {
+        newCharDiv.addEventListener('click', (event) => {
+            singleSelect(event.currentTarget.id);
+        })
+    }
+
 
     container.appendChild(newCharDiv);
+
+}
+
+function singleSelect(boxId) {
+    let charId = boxId.substring(6);
+
+    if (multiCharSource == "AddTeamStriker" || multiCharSource == "AddTeamSpecial") {
+
+        let slotContainer = document.getElementById(selectingSlotId);
+
+        let slotChildren = slotContainer.children;
+
+        for (let i = 0; i < slotChildren.length; i++) {
+            slotChildren[i].remove();
+        }
+
+        createCharBox(charId, slotContainer, "teams");
+        groupChars.push(charNames.get(charId));
+
+        saveGroup();
+
+        generateTeamCharOptions();
+
+    }
+    else if (multiCharSource == "AddTeamStrikerBorrow" || multiCharSource == "AddTeamSpecialBorrow") {
+
+        let slotContainer = document.getElementById(selectingSlotId);
+
+        let slotChildren = slotContainer.children;
+
+        for (let i = 0; i < slotChildren.length; i++) {
+            slotChildren[i].remove();
+        }
+
+        createCharBox(charId, slotContainer, "borrow");
+
+        borrowed = true;
+        saveGroup();
+    }
+
+    let editorContainer = document.getElementById('teamsEditorContainer');
+    let multiSelectContainer = document.getElementById('characterMultiSelectContainer');
+
+    editorContainer.style.display = "";
+    multiSelectContainer.style.display = "none";
+
+    multiCharsClear();
 
 }
 
@@ -1922,7 +2062,7 @@ function multiCharAdd() {
         let newCharObj = new Student(charInfoObj);
 
         data.characters.push(newCharObj);
-        
+
     }
 
     saveToLocalStorage(false);
@@ -1966,8 +2106,8 @@ function teamsToggle() {
 
 function generateTeamBorrowOptions() {
 
-    groupStrikerBorrows = {};
-    groupSpecialBorrows = {};
+    groupStrikerBorrows = [];
+    groupSpecialBorrows = [];
 
     for (key in charlist) {
 
@@ -1977,121 +2117,143 @@ function generateTeamBorrowOptions() {
         let damageType = charlist[key].DamageType;
         let type = charlist[key].Type;
 
-        if (damageType) {
-
-            if (type == "Striker") {
-                if (!groupStrikerBorrows[damageType]) {
-                    groupStrikerBorrows[damageType] = {};
-                }
-
-                groupStrikerBorrows[damageType][key] = charName;
-            }
-            else if (type == "Special") {
-                if (!groupSpecialBorrows[damageType]) {
-                    groupSpecialBorrows[damageType] = {};
-                }
-
-                groupSpecialBorrows[damageType][key] = charName;
-            }
+        if (type == "Striker") {
+            groupStrikerBorrows.push(charName);
         }
-        else {
-
-            if (type == "Striker") {
-                if (!groupStrikerBorrows["Unassigned"]) {
-                    groupStrikerBorrows["Unassigned"] = {};
-                }
-
-                groupStrikerBorrows["Unassigned"][key] = charName;
-            }
-            else if (type == "Special") {
-                if (!groupSpecialBorrows["Unassigned"]) {
-                    groupSpecialBorrows["Unassigned"] = {};
-                }
-
-                groupSpecialBorrows["Unassigned"][key] = charName;
-            }
+        else if (type == "Special") {
+            groupSpecialBorrows.push(charName);
         }
+
+        // if (damageType) {
+
+        //     if (type == "Striker") {
+        //         if (!groupStrikerBorrows[damageType]) {
+        //             groupStrikerBorrows[damageType] = {};
+        //         }
+
+        //         groupStrikerBorrows[damageType][key] = charName;
+        //     }
+        //     else if (type == "Special") {
+        //         if (!groupSpecialBorrows[damageType]) {
+        //             groupSpecialBorrows[damageType] = {};
+        //         }
+
+        //         groupSpecialBorrows[damageType][key] = charName;
+        //     }
+        // }
+        // else {
+
+        //     if (type == "Striker") {
+        //         if (!groupStrikerBorrows["Unassigned"]) {
+        //             groupStrikerBorrows["Unassigned"] = {};
+        //         }
+
+        //         groupStrikerBorrows["Unassigned"][key] = charName;
+        //     }
+        //     else if (type == "Special") {
+        //         if (!groupSpecialBorrows["Unassigned"]) {
+        //             groupSpecialBorrows["Unassigned"] = {};
+        //         }
+
+        //         groupSpecialBorrows["Unassigned"][key] = charName;
+        //     }
+        // }
     }
 
-    groupStrikerBorrows = sortObject(groupStrikerBorrows);
+    groupStrikerBorrows.sort();
+    groupSpecialBorrows.sort();
 
-    for (key in groupStrikerBorrows) {
-        groupStrikerBorrows[key] = sortObject(groupStrikerBorrows[key]);
-    }
+    // groupStrikerBorrows = sortObject(groupStrikerBorrows);
 
-    groupSpecialBorrows = sortObject(groupSpecialBorrows);
+    // for (key in groupStrikerBorrows) {
+    //     groupStrikerBorrows[key] = sortObject(groupStrikerBorrows[key]);
+    // }
 
-    for (key in groupSpecialBorrows) {
-        groupSpecialBorrows[key] = sortObject(groupSpecialBorrows[key]);
-    }
+    // groupSpecialBorrows = sortObject(groupSpecialBorrows);
+
+    // for (key in groupSpecialBorrows) {
+    //     groupSpecialBorrows[key] = sortObject(groupSpecialBorrows[key]);
+    // }
 
 }
 
 function generateTeamCharOptions() {
 
-    groupStrikerOptions = {};
-    groupSpecialOptions = {};
+    groupStrikerOptions = [];
+    groupSpecialOptions = [];
 
     let existing = getExistingCharacters();
 
-    for (let i = 0; i < existing.length; i++) {
+    // for (let i = 0; i < existing.length; i++) {
+    for (key in charlist) {
 
-        if (!groupChars.includes(charNames.get(existing[i]))) {
-            let charId = existing[i];
+        if (!groupChars.includes(charNames.get(key))) {
+
+            let charName = charNames.get(key);
 
             //let school = charlist[charId].School;
-            let damageType = charlist[charId].DamageType;
-            let type = charlist[charId].Type;
+            let damageType = charlist[key].DamageType;
+            let type = charlist[key].Type;
 
-            if (damageType) {
-
-                if (type == "Striker") {
-                    if (!groupStrikerOptions[damageType]) {
-                        groupStrikerOptions[damageType] = {};
-                    }
-
-                    groupStrikerOptions[damageType][existing[i]] = charNames.get(existing[i]);
-                }
-                else if (type == "Special") {
-                    if (!groupSpecialOptions[damageType]) {
-                        groupSpecialOptions[damageType] = {};
-                    }
-
-                    groupSpecialOptions[damageType][existing[i]] = charNames.get(existing[i]);
-                }
+            if (type == "Striker") {
+                groupStrikerOptions.push(charName);
             }
-            else {
-
-                if (type == "Striker") {
-                    if (!groupStrikerOptions["Unassigned"]) {
-                        groupStrikerOptions["Unassigned"] = {};
-                    }
-
-                    groupStrikerOptions["Unassigned"][existing[i]] = charNames.get(existing[i]);
-                }
-                else if (type == "Special") {
-                    if (!groupSpecialOptions["Unassigned"]) {
-                        groupSpecialOptions["Unassigned"] = {};
-                    }
-
-                    groupSpecialOptions["Unassigned"][existing[i]] = charNames.get(existing[i]);
-                }
+            else if (type == "Special") {
+                groupSpecialOptions.push(charName);
             }
+
+            // if (damageType) {
+
+            //     if (type == "Striker") {
+            //         if (!groupStrikerOptions[damageType]) {
+            //             groupStrikerOptions[damageType] = {};
+            //         }
+
+            //         groupStrikerOptions[damageType][key] = charName;
+            //     }
+            //     else if (type == "Special") {
+            //         if (!groupSpecialOptions[damageType]) {
+            //             groupSpecialOptions[damageType] = {};
+            //         }
+
+            //         groupSpecialOptions[damageType][existing[i]] = charName;
+            //     }
+            // }
+            // else {
+
+            //     if (type == "Striker") {
+            //         if (!groupStrikerOptions["Unassigned"]) {
+            //             groupStrikerOptions["Unassigned"] = {};
+            //         }
+
+            //         groupStrikerOptions["Unassigned"][key] = charName;
+            //     }
+            //     else if (type == "Special") {
+            //         if (!groupSpecialOptions["Unassigned"]) {
+            //             groupSpecialOptions["Unassigned"] = {};
+            //         }
+
+            //         groupSpecialOptions["Unassigned"][key] = charName;
+            //     }
+            // }
         }
 
     }
 
-    groupStrikerOptions = sortObject(groupStrikerOptions);
+    groupStrikerOptions.sort();
+    groupSpecialOptions.sort();
 
-    for (key in groupStrikerOptions) {
-        groupStrikerOptions[key] = sortObject(groupStrikerOptions[key]);
-    }
+    // groupStrikerOptions = sortObject(groupStrikerOptions);
 
-    groupSpecialOptions = sortObject(groupSpecialOptions);
+    // for (key in groupStrikerOptions) {
+    //     groupStrikerOptions[key] = sortObject(groupStrikerOptions[key]);
+    // }
 
-    for (key in groupSpecialOptions) {
-        groupSpecialOptions[key] = sortObject(groupSpecialOptions[key]);
-    }
+    // groupSpecialOptions = sortObject(groupSpecialOptions);
+
+    // for (key in groupSpecialOptions) {
+    //     groupSpecialOptions[key] = sortObject(groupSpecialOptions[key]);
+    // }
 }
 
 function addNewTeam(team) {
@@ -2147,7 +2309,7 @@ function addNewTeam(team) {
                 let charName = charNames.get(team[i].id);
                 if (charName) {
                     createCharBox(team[i].id, blankSlot, "borrow");
-                    groupChars.push(charName);
+                    //groupChars.push(charName);
                 }
             }
             else {
@@ -2459,15 +2621,23 @@ function removeGroupCharacter(slotDivId) {
 
 async function pickCharacter(slotDivId, type) {
 
+    selectingSlotId = slotDivId;
+
     let options, optionsBorrow;
     if (type == "Striker") {
+        showMultiSelect("AddTeamStriker");
+        return;
         options = groupStrikerOptions;
         optionsBorrow = groupStrikerBorrows;
     }
     else if (type == "Special") {
+        showMultiSelect("AddTeamSpecial");
+        return;
         options = groupSpecialOptions;
         optionsBorrow = groupSpecialBorrows;
     }
+
+
 
     let getBorrow = false;
     let character;
@@ -5803,7 +5973,9 @@ function createCharBox(charId, container, location) {
     let newUEContainer;
     let newBondContainer;
 
-    if (location != "borrow") {
+    let char = data.characters.find(obj => { return obj.id == charId });
+
+    if (location != "borrow" && char) {
 
         newStarContainer = document.createElement("div");
         newStarContainer.className = "star-container";
@@ -5912,7 +6084,7 @@ function createCharBox(charId, container, location) {
     newContent.appendChild(newContentBox);
 
     newDiv.appendChild(newContent);
-    if (location != "borrow") {
+    if (location != "borrow" && char) {
         newDiv.appendChild(newStarContainer);
         newDiv.appendChild(newUEContainer);
         newDiv.appendChild(newBondContainer);
@@ -5932,7 +6104,7 @@ function createCharBox(charId, container, location) {
         container.appendChild(newDiv);
     }
 
-    if (location != "borrow") {
+    if (location != "borrow" && char) {
         updateInfoDisplay(charName, charId, idInject);
         updateStarDisplay(charName + idInject + "-star-container", charId, "star-display", false);
         updateStarDisplay(charName + idInject + "-ue-container", charId, "ue-display", false);

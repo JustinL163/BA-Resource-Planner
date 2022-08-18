@@ -46,7 +46,7 @@
     <script src="packages/tippyjs/tippy.js"></script>
     <link rel="stylesheet" href="packages/tippyjs/light.css" />
     <script src="js/config.js?11"></script>
-    <script src="js/pageLogic.js?52"></script>
+    <script src="js/pageLogic.js?53"></script>
     <script src="js/filters.js?4"></script>
     <script src="js/lzma_worker.js?1"></script>
     <script src="js/cloudAPI.js?2"></script>
@@ -111,8 +111,9 @@
         </div>
         <div id="characterMultiSelectContainer" class="mainContainer" style="display: none;">
             <input id="multiCharSearch" type="search" autocomplete="off" placeholder="Search" oninput="filterMultiChars()">
-            <button class="multiCharButton" onclick="multiCharAdd()">Add Selected</button>
-            <button class="multiCharButton" onclick="location.reload()">Cancel</button>
+            <button id="multi-char-add" class="multiCharButton" onclick="multiCharAdd()">Add Selected</button>
+            <button id="multi-char-cancel" class="multiCharButton" onclick="multiCharCancel()">Cancel</button>
+            <button id="multi-char-borrow" class="multiCharButton" onclick="multiCharBorrow()" style="display: none;">Borrow</button>
             <div id="charsSelectContainer"></div>
         </div>
     </div>
