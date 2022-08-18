@@ -1787,6 +1787,9 @@ function multiCharCancel() {
     let boxesContainer = document.getElementById('boxesContainer');
     let editorContainer = document.getElementById('teamsEditorContainer');
     let multiSelectContainer = document.getElementById('characterMultiSelectContainer');
+    let multiCharSearch = document.getElementById('multiCharSearch');
+
+    multiCharSearch.value = "";
 
     multiCharsClear();
 
