@@ -5686,6 +5686,114 @@
             }
         }
     },
+    "10049": {
+        "Skills": {
+            "Ex": {
+                "Cost": [
+                    4,
+                    4,
+                    4,
+                    4,
+                    4
+                ],
+                "DescEn": "Immediately reloads and deals <?1> damage to one enemy.",
+                "Parameters": [
+                    [
+                        "933%",
+                        "1073%",
+                        "1353%",
+                        "1493%",
+                        "1773%",
+                        "1913%",
+                        "2193%",
+                        "2333%",
+                        "2613%",
+                        "2753%"
+                    ]
+                ]
+            },
+            "Skill1": {
+                "DescEn": "Every 30s, increases ATK by <?1> for 25s.",
+                "Parameters": [
+                    [
+                        "23%",
+                        "24.2%",
+                        "25.3%",
+                        "29.9%",
+                        "31.1%",
+                        "32.2%",
+                        "36.8%",
+                        "38%",
+                        "39.2%",
+                        "43.8%"
+                    ]
+                ]
+            },
+            "Skill2": {
+                "DescEn": "Increases ATK by <?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            },
+            "Skill3": {
+                "DescEn": "Whenever Kazusa reloads, increases ATK by <?1> but decreases ATK SPD by 16.3% for 15s. Effect can stack up to 2 times.",
+                "Parameters": [
+                    [
+                        "26.1%",
+                        "27.4%",
+                        "28.7%",
+                        "33.9%",
+                        "35.2%",
+                        "36.5%",
+                        "41.8%",
+                        "43.1%",
+                        "44.4%",
+                        "49.6%"
+                    ]
+                ]
+            },
+            "Skill4": {
+                "DescEn": "Increases ATK by <?1> plus a further <?2>.",
+                "Parameters": [
+                    [
+                        "290",
+                        "304",
+                        "319",
+                        "376",
+                        "391",
+                        "405",
+                        "463",
+                        "478",
+                        "492",
+                        "550"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            }
+        }
+    },
     "13000": {
         "Skills": {
             "Ex": {
@@ -5806,7 +5914,7 @@
                     4,
                     4
                 ],
-                "DescEn": "Creates a circular zone that continuously deals <?1> damage every 1s to enemies in a circular area at the selected location for 10s.",
+                "DescEn": "Creates a circular zone that continuously deals <?1> damage to enemies inside it every 1s for 10s.",
                 "Parameters": [
                     [
                         "56%",
@@ -8444,7 +8552,7 @@
                     6,
                     6
                 ],
-                "DescEn": "Creates a circular zone that continuously deals <?1> damage every 1s to enemies in a circular area at the selected location for 8s.",
+                "DescEn": "Creates a circular zone that continuously deals <?1> damage to enemies inside it every 1s for 8s.",
                 "Parameters": [
                     [
                         "126%",
@@ -10003,7 +10111,7 @@
                     7,
                     6
                 ],
-                "DescEn": "Deploys Iroha riding Toramaru for 55s, with an additional <?1> of Iroha's ATK. Every 15s, Toramaru activates the skill \"Main Cannon, Aim, Fire!\", firing a shell that deals <?2> damage to one enemy and splits, dealing the same damage to up to 2 nearby enemies. Only one tactical support vehicle may be deployed at any given time.",
+                "DescEn": "Deploys Iroha riding Toramaru for 55s, with an additional <?1> of Iroha's ATK. Every 15s, Toramaru activates the skill \"Main Cannon, Aim, Fire!\", firing a shell that deals <?2> damage to one enemy and splits, dealing the same damage to up to 2 nearby enemies (up to 2 times). Only one tactical support vehicle may be deployed at any given time.",
                 "Parameters": [
                     [
                         "11.2%",
@@ -10215,6 +10323,138 @@
                         "3300",
                         "3400",
                         "3800"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            }
+        }
+    },
+    "20018": {
+        "Skills": {
+            "Ex": {
+                "Cost": [
+                    4,
+                    4,
+                    4,
+                    4,
+                    4
+                ],
+                "DescEn": "Deals <?1> damage to enemies in a rectangular area, plus an additional <?2> BURN damage every 4s for 20s.",
+                "Parameters": [
+                    [
+                        "306%",
+                        "352%",
+                        "398%",
+                        "443%",
+                        "489%",
+                        "535%",
+                        "581%",
+                        "627%",
+                        "673%",
+                        "719%"
+                    ],
+                    [
+                        "50.9%",
+                        "50.9%",
+                        "58.5%",
+                        "58.5%",
+                        "66.2%",
+                        "66.2%",
+                        "73.8%",
+                        "73.8%",
+                        "81.5%",
+                        "81.5%"
+                    ]
+                ]
+            },
+            "Skill1": {
+                "DescEn": "Every 40s, deals <?1> damage to up to 5 enemies and inflicts STUN for <?2>.",
+                "Parameters": [
+                    [
+                        "100%",
+                        "105%",
+                        "110%",
+                        "120%",
+                        "125%",
+                        "130%",
+                        "140%",
+                        "145%",
+                        "150%",
+                        "160%"
+                    ],
+                    [
+                        "1.2s",
+                        "1.2s",
+                        "1.2s",
+                        "1.4s",
+                        "1.4s",
+                        "1.4s",
+                        "1.5s",
+                        "1.5s",
+                        "1.5s",
+                        "1.6s"
+                    ]
+                ]
+            },
+            "Skill2": {
+                "DescEn": "Increases ATK by <?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            },
+            "Skill3": {
+                "DescEn": "Increases all allies' ATK by <?1>.",
+                "Parameters": [
+                    [
+                        "9.1%",
+                        "9.5%",
+                        "10%",
+                        "11.8%",
+                        "12.3%",
+                        "12.7%",
+                        "14.5%",
+                        "15%",
+                        "15.5%",
+                        "17.3%"
+                    ]
+                ]
+            },
+            "Skill4": {
+                "DescEn": "Increases ATK by <?1> plus a further <?2>.",
+                "Parameters": [
+                    [
+                        "239",
+                        "251",
+                        "263",
+                        "311",
+                        "323",
+                        "335",
+                        "383",
+                        "395",
+                        "406",
+                        "454"
                     ],
                     [
                         "14%",
@@ -11973,7 +12213,7 @@
                     4,
                     4
                 ],
-                "DescEn": "Deploys Ayane riding Rain Cloud for 30s, with an additional <?1> of Ayane's ATK and <?2> of Ayane's CRIT.RATE. Every 12s, Rain Cloud activates the skill \"Downpour Missile\", dealing <?3> damage to one enemy. This attack ignores <?4> of the enemy's DEF. Only one tactical support vehicle may be deployed at any given time.",
+                "DescEn": "Deploys Ayane riding Raincloud for 30s, with an additional <?1> of Ayane's ATK and <?2> of Ayane's CRIT.RATE. Every 12s, Raincloud activates the skill \"Downpour Missile\", dealing <?3> damage to one enemy. This attack ignores <?4> of the enemy's DEF. Only one tactical support vehicle may be deployed at any given time.",
                 "Parameters": [
                     [
                         "12.5%",
