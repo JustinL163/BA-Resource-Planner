@@ -3,7 +3,7 @@ var modalCharID = 0;
 var modalStars = { "star": 0, "star_target": 0, "ue": 0, "ue_target": 0 };
 var data;
 const ueStarCap = 3;
-const globalMaxWorld = 16;
+const globalMaxWorld = 17;
 const languages = ["En", "Kr", "Jp", "Tw", "Th"];
 let language = "En";
 
@@ -440,16 +440,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.2.12".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.2.13".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.2.12",
+            title: "Updated to Version 1.2.13",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.2.12";
+        data.site_version = "1.2.13";
         saveToLocalStorage(false);
     }
 
