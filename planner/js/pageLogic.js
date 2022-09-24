@@ -66,26 +66,30 @@ let modalOpen = "";
 let pageTheme = "dark";
 let alertColour = "#e1e1e1";
 
+let modelVariables;
+let campaignMultiplier = 1;
+let OptimalStageRuns = [];
+
 let loaded = false;
 
 function loadResources() {
 
-    $.getJSON('json/misc_data.json?8').done(function (json) {
+    $.getJSON('json/misc_data.json?9').done(function (json) {
         misc_data = json;
         checkResources();
     });
 
-    $.getJSON('json/skillinfo.json?7').done(function (json) {
+    $.getJSON('json/skillinfo.json?8').done(function (json) {
         skillinfo = json;
         checkResources();
     });
 
-    $.getJSON('json/charlist.json?11').done(function (json) {
+    $.getJSON('json/charlist.json?12').done(function (json) {
         charlist = json;
         checkResources();
     });
 
-    $.getJSON('json/localisations.json?5').done(function (json) {
+    $.getJSON('json/localisations.json?6').done(function (json) {
         localisations = json;
         checkResources();
     });
@@ -440,22 +444,23 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.2.13".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.2.14".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.2.13",
+            title: "Updated to Version 1.2.14",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.2.13";
+        data.site_version = "1.2.14";
         saveToLocalStorage(false);
     }
 
     document.body.addEventListener('click', (event) => {
         if (closableAfter != 0 && Date.now() > closableAfter) {
             HidePopup();
+            HideStagesPopup();
         }
     });
 
@@ -1691,16 +1696,16 @@ function openModal(e) {
                     modalSections[i].classList.add("animate-pop");
                 }
 
+                modal.onclick = function (event) {
+                    if (event.target == modal) {
+                        closeModal(fromChar);
+                    }
+                };
+
             }, 300);
         }, 10);
 
     }
-
-    modal.onclick = function (event) {
-        if (event.target == modal) {
-            closeModal(fromChar);
-        }
-    };
 }
 
 function closeModal(animated, forced) {
@@ -1777,6 +1782,8 @@ function closeModal(animated, forced) {
     }, 300);
 
     modalCharID = "";
+
+    modal.onclick = "";
 
     //}, 1000);
 
@@ -4355,6 +4362,8 @@ function openGearModal() {
 
     hideEmptyGear();
 
+    SolveGearFarm();
+
     modal.onclick = function (event) {
         if (event.target == modal) {
             closeGearModal();
@@ -4479,6 +4488,7 @@ function closeGearModal() {
     freezeBody(false);
 
     HidePopup();
+    HideStagesPopup();
 
     var modal = document.getElementById("gearModal");
 
@@ -4970,6 +4980,7 @@ function DisplayMatUsers(mat) {
         wrapperDiv.style.bottom = "";
     }
 
+    HideStagesPopup();
     wrapperDiv.style.display = "";
     closableAfter = Date.now() + 200;
 
@@ -4978,6 +4989,170 @@ function DisplayMatUsers(mat) {
 function HidePopup() {
     document.getElementById('popup-wrapper').style.display = 'none';
     closableAfter = 0;
+}
+
+function DisplayStageRuns() {
+
+    if (OptimalStageRuns.length < 1) {
+        return;
+    }
+
+    let wrapperDiv = document.getElementById('stages-popup-wrapper');
+    let wrapperChildren = wrapperDiv.children;
+    while (wrapperChildren.length > 0) {
+        wrapperChildren[0].remove();
+    }
+
+    let disclaimerDiv = document.createElement('div');
+    disclaimerDiv.className = "stage-disclaimer";
+
+    let disclaimerP = document.createElement('p');
+    disclaimerP.innerText = "*Sorted by number of runs, you can farm stages in a different order depending which gear is needed first";
+
+    let disclaimerP2 = document.createElement('p');
+    disclaimerP2.innerText = "*Calculated for expected min AP cost, but gear drops are random, best to check again after doing a large number of runs"
+    disclaimerP2.style.marginTop = "15px";
+
+    disclaimerDiv.appendChild(disclaimerP);
+    disclaimerDiv.appendChild(disclaimerP2);
+    wrapperDiv.appendChild(disclaimerDiv);
+
+    for (let i = 0; i < OptimalStageRuns.length; i++) {
+
+        let stageDiv = document.createElement('div');
+        stageDiv.className = "stage-run";
+
+        let stageName = document.createElement('p');
+        if (OptimalStageRuns[i].stage.length == 4) {
+            stageName.innerText = OptimalStageRuns[i].stage;
+        }
+        else {
+            stageName.innerText = OptimalStageRuns[i].stage + "  ";
+        }
+        stageName.classList.add("stage-run-name");
+
+        let stageRuns = document.createElement('p');
+        stageRuns.innerText = commafy(OptimalStageRuns[i].runs) + " runs"
+
+        stageDiv.appendChild(stageName);
+        stageDiv.appendChild(stageRuns);
+
+        wrapperDiv.appendChild(stageDiv);
+    }
+
+    let element = document.getElementById("ap-display-wrapper");
+
+    let elOffset = getOffset(element);
+
+    if (elOffset.left > (window.innerWidth / 2)) {
+        wrapperDiv.style.right = (window.innerWidth - Math.round(elOffset.left) - 10) + "px";
+        wrapperDiv.style.left = "";
+    }
+    else {
+        wrapperDiv.style.left = (20 + Math.round(elOffset.left)) + "px";
+        wrapperDiv.style.right = "";
+    }
+
+    // if (elOffset.top > (window.innerHeight / 2)) {
+    //     wrapperDiv.style.bottom = (document.body.clientHeight - Math.round(elOffset.top)) + "px";
+    //     wrapperDiv.style.top = "";
+    // }
+    // else {
+    //     wrapperDiv.style.top = (20 + Math.round(elOffset.top)) + "px";
+    //     wrapperDiv.style.bottom = "";
+    // }
+
+    HidePopup();
+    wrapperDiv.style.display = "";
+    closableAfter = Date.now() + 200;
+}
+
+function HideStagesPopup() {
+    document.getElementById('stages-popup-wrapper').style.display = 'none';
+    closableAfter = 0;
+}
+
+function GenerateModelVariables(multiplier) {
+    let rates = misc_data.gear_rates;
+    let areas = Object.keys(rates);
+
+    let drops = misc_data.gear_drops;
+
+    modelVariables = {};
+
+    for (let i = 0; i < areas.length; i++) {
+
+        // if (parseInt(areas[i]) > 17) {
+        //     break;
+        // }
+
+        for (let s = 1; s <= 5; s++) {
+
+            let stage = areas[i] + "-" + s;
+            let newVariable = {};
+
+            for (let gr = 0; gr < rates[areas[i]].length; gr++) {
+
+                let tier = rates[areas[i]][gr].Tier;
+
+                newVariable["T" + tier + "_" + drops[stage][0]] = rates[areas[i]][gr].Rates[0] * multiplier;
+                newVariable["T" + tier + "_" + drops[stage][1]] = rates[areas[i]][gr].Rates[1] * multiplier;
+                newVariable["T" + tier + "_" + drops[stage][2]] = rates[areas[i]][gr].Rates[2] * multiplier;
+                newVariable["AP"] = 10;
+            }
+
+            modelVariables[stage] = newVariable;
+        }
+    }
+
+    return;
+}
+
+function GenerateGearLinearModel() {
+
+    let model = {};
+    model.optimize = "AP";
+    model.opType = "min";
+    model.constraints = {};
+    model.variables = modelVariables;
+
+    let keys = Object.keys(neededMatDict);
+
+    for (let i = 0; i < keys.length; i++) {
+        if (gearLookup.includes(keys[i]) && neededMatDict[keys[i]] != 0) {
+            model.constraints[keys[i]] = { "min": neededMatDict[keys[i]] };
+        }
+    }
+
+    return model;
+}
+
+function SetMultiplier(multi) {
+    campaignMultiplier = multi;
+    SolveGearFarm();
+}
+
+function SolveGearFarm() {
+
+    GenerateModelVariables(campaignMultiplier);
+    let solution = solver.Solve(GenerateGearLinearModel());
+    let solKeys = Object.keys(solution);
+
+    OptimalStageRuns = [];
+    let totalAP = 0;
+
+    for (let i = 0; i < solKeys.length; i++) {
+
+        if (solKeys[i].includes('-')) {
+            let sr = Math.ceil(solution[solKeys[i]]);
+            OptimalStageRuns.push({ stage: solKeys[i], runs: sr })
+            totalAP += sr * 10;
+        }
+    }
+
+    OptimalStageRuns.sort((a, b) => b.runs - a.runs);
+
+    document.getElementById("gear-farm-energy").innerText = commafy(totalAP);
 }
 
 function commafy(num) {
@@ -5591,6 +5766,8 @@ function switchGearDisplay(displayType) {
     let btnRemaining = document.getElementById("switch-gear-remaining");
     let displayText = document.getElementById("current-gear-display");
     let gxpInputs = document.getElementById("gear-xp-input-wrapper");
+    let campaignMulti = document.getElementById("normal-campaign-multi");
+    let apDisplay = document.getElementById("gear-farm-energy");
     //var inputs = document.getElementsByClassName("input-wrapper");
 
     if (displayType == "Owned") {
@@ -5599,6 +5776,8 @@ function switchGearDisplay(displayType) {
         btnTotal.parentElement.style.display = "";
         btnRemaining.parentElement.style.display = "";
         gxpInputs.style.display = "";
+        campaignMulti.parentElement.style.display = "none";
+        apDisplay.parentElement.style.display = "none";
         displayText.innerText = "Owned";
         updateCells(ownedMatDict, true, 'gear-count-text', 'misc-gear');
     }
@@ -5608,8 +5787,11 @@ function switchGearDisplay(displayType) {
         btnTotal.parentElement.style.display = "";
         btnRemaining.parentElement.style.display = "none";
         gxpInputs.style.display = "none";
+        campaignMulti.parentElement.style.display = "";
+        apDisplay.parentElement.style.display = "";
         displayText.innerText = "Remaining Needed";
         updateCells(neededMatDict, false, 'gear-count-text', 'misc-gear');
+        SolveGearFarm();
     }
     else if (displayType == "Total") {
         gearDisplay = "Total";
@@ -5617,6 +5799,8 @@ function switchGearDisplay(displayType) {
         btnTotal.parentElement.style.display = "none";
         btnRemaining.parentElement.style.display = "";
         gxpInputs.style.display = "none";
+        campaignMulti.parentElement.style.display = "none";
+        apDisplay.parentElement.style.display = "none";
         displayText.innerText = "Total Needed";
         updateCells(requiredMatDict, false, 'gear-count-text', 'misc-gear');
     }
