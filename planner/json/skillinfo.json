@@ -3047,8 +3047,15 @@
                     4,
                     4
                 ],
-                "DescEn": "Repositions and deals <?1> damage to enemies in a circular area at the selected location, gaining a barrier with HP equal to <?3> of Healing for 20s<?2>.",
+                "DescEn": "Repositions to the selected location, gaining a barrier with HP equal to <?1> of Healing for 20s while dealing <?2> damage to enemies in a circular area<?3>.",
                 "Parameters": [
+                    [
+                        "276%",
+                        "297%",
+                        "339%",
+                        "359%",
+                        "401%"
+                    ],
                     [
                         "366%",
                         "394%",
@@ -3059,16 +3066,9 @@
                     [
                         "",
                         "",
-                        " and inflicts TAUNT for 3s",
-                        " and inflicts TAUNT for 3s",
-                        " and inflicts TAUNT for 3s"
-                    ],
-                    [
-                        "276%",
-                        "297%",
-                        "339%",
-                        "359%",
-                        "401%"
+                        " and inflicting TAUNT for 3s",
+                        " and inflicting TAUNT for 3s",
+                        " and inflicting TAUNT for 3s"
                     ]
                 ]
             },
@@ -6007,6 +6007,234 @@
             }
         }
     },
+    "10051": {
+        "Skills": {
+            "Ex": {
+                "Cost": [
+                    5,
+                    5,
+                    5,
+                    5,
+                    5
+                ],
+                "DescEn": "Upgrades Thundergun, augmenting its normal attacks to deal <?1> damage for 90s and changing the activation condition for Utaha's Basic Skill.",
+                "Parameters": [
+                    [
+                        "115%",
+                        "120%",
+                        "130%",
+                        "136%",
+                        "146%",
+                        "151%",
+                        "162%",
+                        "167%",
+                        "177%",
+                        "182%"
+                    ]
+                ]
+            },
+            "Skill1": {
+                "DescEn": "Every 30s, deals <?1> damage to one enemy. While Thundergun is upgraded, this skill will activate every 6 normal attacks and deal <?2> damage instead.",
+                "Parameters": [
+                    [
+                        "166%",
+                        "174%",
+                        "182%",
+                        "215%",
+                        "224%",
+                        "232%",
+                        "265%",
+                        "274%",
+                        "282%",
+                        "315%"
+                    ],
+                    [
+                        "284%",
+                        "298%",
+                        "312%",
+                        "369%",
+                        "383%",
+                        "397%",
+                        "454%",
+                        "468%",
+                        "483%",
+                        "539%"
+                    ]
+                ]
+            },
+            "Skill2": {
+                "DescEn": "Increases ATK by <?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            },
+            "Skill3": {
+                "DescEn": "Deals <?1> damage as an additional hit to enemies inflicted with a debuff.",
+                "Parameters": [
+                    [
+                        "5.1%",
+                        "5.3%",
+                        "5.6%",
+                        "6.6%",
+                        "6.8%",
+                        "7.1%",
+                        "8.1%",
+                        "8.4%",
+                        "8.6%",
+                        "9.7%"
+                    ]
+                ]
+            },
+            "Skill4": {
+                "DescEn": "Increases ATK SPD by <?1> and ATK by <?2>.",
+                "Parameters": [
+                    [
+                        "1400",
+                        "1470",
+                        "1540",
+                        "1820",
+                        "1890",
+                        "1960",
+                        "2240",
+                        "2310",
+                        "2380",
+                        "2660"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            }
+        }
+    },
+    "10052": {
+        "Skills": {
+            "Ex": {
+                "Cost": [
+                    3,
+                    3,
+                    3,
+                    3,
+                    3
+                ],
+                "DescEn": "Applies focused target to one enemy and decreases their DEF by <?1> for 40s.",
+                "Parameters": [
+                    [
+                        "21.3%",
+                        "24.5%",
+                        "30.9%",
+                        "34.1%",
+                        "40.5%",
+                        "43.7%",
+                        "50.1%",
+                        "53.3%",
+                        "59.7%",
+                        "62.9%"
+                    ]
+                ]
+            },
+            "Skill1": {
+                "DescEn": "Every 30s, deals <?1> damage to one enemy.",
+                "Parameters": [
+                    [
+                        "399%",
+                        "419%",
+                        "439%",
+                        "519%",
+                        "539%",
+                        "559%",
+                        "638%",
+                        "658%",
+                        "678%",
+                        "758%"
+                    ]
+                ]
+            },
+            "Skill2": {
+                "DescEn": "Increases MAX HP by <?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            },
+            "Skill3": {
+                "DescEn": "Whenever Noa uses her Basic Skill, increases DEBUFF DURATION by <?1> for 13s.",
+                "Parameters": [
+                    [
+                        "16.9%",
+                        "17.7%",
+                        "18.6%",
+                        "22%",
+                        "22.8%",
+                        "23.6%",
+                        "27%",
+                        "27.9%",
+                        "28.7%",
+                        "32.1%"
+                    ]
+                ]
+            },
+            "Skill4": {
+                "DescEn": "Increases ATK by <?1> and MAX HP by <?2>.",
+                "Parameters": [
+                    [
+                        "130",
+                        "137",
+                        "143",
+                        "169",
+                        "175",
+                        "182",
+                        "208",
+                        "214",
+                        "221",
+                        "247"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            }
+        }
+    },
     "13000": {
         "Skills": {
             "Ex": {
@@ -8647,6 +8875,126 @@
                         "23.1%",
                         "23.8%",
                         "26.6%"
+                    ]
+                ]
+            }
+        }
+    },
+    "16010": {
+        "Skills": {
+            "Ex": {
+                "Cost": [
+                    7,
+                    7,
+                    7,
+                    7,
+                    7
+                ],
+                "DescEn": "Deals <?1> damage to enemies in a circular area plus an additional <?2> Cheer Fever damage every 4s for 120s.",
+                "Parameters": [
+                    [
+                        "107%",
+                        "107%",
+                        "124%",
+                        "124%",
+                        "140%",
+                        "140%",
+                        "156%",
+                        "156%",
+                        "172%",
+                        "172%"
+                    ],
+                    [
+                        "29.9%",
+                        "34.4%",
+                        "38.9%",
+                        "43.4%",
+                        "47.9%",
+                        "52.4%",
+                        "56.9%",
+                        "61.4%",
+                        "65.9%",
+                        "70.4%"
+                    ]
+                ]
+            },
+            "Skill1": {
+                "DescEn": "Every 40s, increases the ATK of both Hibiki and the ally with the highest ATK by <?1> for 30s.",
+                "Parameters": [
+                    [
+                        "15.5%",
+                        "15.9%",
+                        "16.2%",
+                        "17.8%",
+                        "18.2%",
+                        "18.6%",
+                        "20.1%",
+                        "20.5%",
+                        "20.9%",
+                        "22.5%"
+                    ]
+                ]
+            },
+            "Skill2": {
+                "DescEn": "Increases ATK by <?1> but decreases CRIT.DMG by 11.2%.",
+                "Parameters": [
+                    [
+                        "17.9%",
+                        "18.8%",
+                        "19.7%",
+                        "23.3%",
+                        "24.2%",
+                        "25%",
+                        "28.6%",
+                        "29.5%",
+                        "30.4%",
+                        "34%"
+                    ]
+                ]
+            },
+            "Skill3": {
+                "DescEn": "Deals <?1> damage as an additional hit to enemies. Deals between <b>0.5&times;</b> and <b>2&times;</b> damage depending on the distance between the enemy and Hibiki.",
+                "Parameters": [
+                    [
+                        "3.4%",
+                        "3.5%",
+                        "3.7%",
+                        "4.4%",
+                        "4.6%",
+                        "4.7%",
+                        "5.4%",
+                        "5.6%",
+                        "5.7%",
+                        "6.4%"
+                    ]
+                ]
+            },
+            "Skill4": {
+                "DescEn": "Increases ATK by <?1> plus a further <?2> but decreases CRIT.DMG by 11.2%.",
+                "Parameters": [
+                    [
+                        "791",
+                        "831",
+                        "870",
+                        "1029",
+                        "1068",
+                        "1108",
+                        "1266",
+                        "1305",
+                        "1345",
+                        "1503"
+                    ],
+                    [
+                        "17.9%",
+                        "18.8%",
+                        "19.7%",
+                        "23.3%",
+                        "24.2%",
+                        "25%",
+                        "28.6%",
+                        "29.5%",
+                        "30.4%",
+                        "34%"
                     ]
                 ]
             }

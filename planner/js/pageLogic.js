@@ -74,22 +74,22 @@ let loaded = false;
 
 function loadResources() {
 
-    $.getJSON('json/misc_data.json?9').done(function (json) {
+    $.getJSON('json/misc_data.json?10').done(function (json) {
         misc_data = json;
         checkResources();
     });
 
-    $.getJSON('json/skillinfo.json?8').done(function (json) {
+    $.getJSON('json/skillinfo.json?9').done(function (json) {
         skillinfo = json;
         checkResources();
     });
 
-    $.getJSON('json/charlist.json?13').done(function (json) {
+    $.getJSON('json/charlist.json?14').done(function (json) {
         charlist = json;
         checkResources();
     });
 
-    $.getJSON('json/localisations.json?6').done(function (json) {
+    $.getJSON('json/localisations.json?7').done(function (json) {
         localisations = json;
         checkResources();
     });
@@ -444,16 +444,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.2.14".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.2.15".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.2.14",
+            title: "Updated to Version 1.2.15",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.2.14";
+        data.site_version = "1.2.15";
         saveToLocalStorage(false);
     }
 

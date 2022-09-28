@@ -301,7 +301,7 @@ const inputValidation = {
         id: "input_level_current",
         location: "characterModal",
         min: "1",
-        max: "80",
+        max: "83",
         default: "1",
         name: "Level",
         "navigation": "direct",
@@ -312,7 +312,7 @@ const inputValidation = {
         id: "input_level_target",
         location: "characterModal",
         min: "1",
-        max: "80",
+        max: "83",
         default: "1",
         name: "Level Target",
         requisite: {
