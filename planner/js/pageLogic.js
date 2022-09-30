@@ -1461,6 +1461,43 @@ function CharInputsMax() {
 
 }
 
+function CharInputsGoalMax() {
+
+    Swal.fire({
+        title: 'Set Inputs to max goal',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Global MAX',
+        denyButtonText: 'Jp MAX',
+        denyButtonColor: '#dc9641'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let values = [78, 5, 10, 10, 10, 6, 6, 6];
+            SetCharInputGoalValues(values);
+        }
+        else if (result.isDenied) {
+            let values = [83, 5, 10, 10, 10, 7, 7, 7];
+            SetCharInputGoalValues(values);
+        }
+    })
+
+
+}
+
+function SetCharInputGoalValues(values) {
+
+    document.getElementById("input_level_target").value = values[0];
+
+    document.getElementById("input_ex_target").value = values[1];
+    document.getElementById("input_basic_target").value = values[2];
+    document.getElementById("input_enhanced_target").value = values[3];
+    document.getElementById("input_sub_target").value = values[4];
+
+    document.getElementById("input_gear1_target").value = values[5];
+    document.getElementById("input_gear2_target").value = values[6];
+    document.getElementById("input_gear3_target").value = values[7];
+}
+
 function SetCharInputValues(values) {
 
     document.getElementById("input_level_current").value = values[0];

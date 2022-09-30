@@ -47,7 +47,7 @@
     <script src="packages/javascript-lp-solver/solver.js"></script>
     <link rel="stylesheet" href="packages/tippyjs/light.css" />
     <script src="js/config.js?12"></script>
-    <script src="js/pageLogic.js?60"></script>
+    <script src="js/pageLogic.js?61"></script>
     <script src="js/filters.js?4"></script>
     <script src="js/lzma_worker.js?1"></script>
     <script src="js/cloudAPI.js?2"></script>
@@ -133,10 +133,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-content-section" style="min-width: 30px; margin: initial; text-align: center;">
+                <div class="modal-content-section" style="min-width: 30px; margin: initial; text-align: center; display: flex;
+                        flex-direction: column; align-self: flex-start; align-items: center;">
                     <img id="char-delete" class="action-icon" src="icons/UI/cross.svg" onclick="deleteClicked()"
                         style="max-width: 25px;">
                     <img id="char-max" class="action-icon" src="icons/UI/MaxIcon.png" onclick="CharInputsMax()"
+                        style="margin-top: 10px">
+                    <img id="char-max-goal" class="action-icon" src="icons/UI/MaxGoalIcon.png" onclick="CharInputsGoalMax()"
                         style="margin-top: 10px">
                 </div>
                 <div class="modal-content-section" id="content-1" style="width: 10%; min-width: 90px;">
