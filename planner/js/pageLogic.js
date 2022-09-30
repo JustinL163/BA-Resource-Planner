@@ -444,16 +444,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.2.15".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.2.16".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.2.15",
+            title: "Updated to Version 1.2.16",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.2.15";
+        data.site_version = "1.2.16";
         saveToLocalStorage(false);
     }
 
@@ -741,6 +741,16 @@ function init() {
 
     tippy('#hm-server-toggle', {
         content: "Switch between Global/JP hardmode stages allowed",
+        theme: 'light'
+    })
+
+    tippy('#char-delete', {
+        content: "Delete character",
+        theme: 'light'
+    })
+
+    tippy('#char-max', {
+        content: "Set character levels to max",
         theme: 'light'
     })
 
@@ -1426,6 +1436,57 @@ function getExistingCharacters() {
 
     return existChars;
 
+}
+
+function CharInputsMax() {
+
+    Swal.fire({
+        title: 'Set Inputs to max',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Global MAX',
+        denyButtonText: 'Jp MAX',
+        denyButtonColor: '#dc9641'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let values = [78, 78, 5, 5, 10, 10, 10, 10, 10, 10, 6, 6, 6, 6, 6, 6];
+            SetCharInputValues(values);
+        }
+        else if (result.isDenied) {
+            let values = [83, 83, 5, 5, 10, 10, 10, 10, 10, 10, 7, 7, 7, 7, 7, 7];
+            SetCharInputValues(values);
+        }
+    })
+
+
+}
+
+function SetCharInputValues(values) {
+
+    document.getElementById("input_level_current").value = values[0];
+    document.getElementById("input_level_target").value = values[1];
+
+    document.getElementById("input_ex_current").value = values[2];
+    document.getElementById("input_ex_target").value = values[3];
+    document.getElementById("input_basic_current").value = values[4];
+    document.getElementById("input_basic_target").value = values[5];
+    document.getElementById("input_enhanced_current").value = values[6];
+    document.getElementById("input_enhanced_target").value = values[7];
+    document.getElementById("input_sub_current").value = values[8];
+    document.getElementById("input_sub_target").value = values[9];
+
+    document.getElementById("input_gear1_current").value = values[10];
+    document.getElementById("input_gear1_target").value = values[11];
+    document.getElementById("input_gear2_current").value = values[12];
+    document.getElementById("input_gear2_target").value = values[13];
+    document.getElementById("input_gear3_current").value = values[14];
+    document.getElementById("input_gear3_target").value = values[15];
+
+    let charInfo = charlist[modalCharID];
+
+    document.getElementById("gear1-img").src = "icons/Gear/T" + values[10] + "_" + charInfo.Equipment.Slot1 + ".png";
+    document.getElementById("gear2-img").src = "icons/Gear/T" + values[12] + "_" + charInfo.Equipment.Slot2 + ".png";
+    document.getElementById("gear3-img").src = "icons/Gear/T" + values[14] + "_" + charInfo.Equipment.Slot3 + ".png";
 }
 
 function deleteClicked() {
