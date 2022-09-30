@@ -754,6 +754,11 @@ function init() {
         theme: 'light'
     })
 
+    tippy('#char-max-goal', {
+        content: "Set character targets to max",
+        theme: 'light'
+    })
+
     setInterval(() => {
         if (saveTime != 0) {
             if (Date.now() > saveTime) {
@@ -1464,7 +1469,7 @@ function CharInputsMax() {
 function CharInputsGoalMax() {
 
     Swal.fire({
-        title: 'Set Inputs to max goal',
+        title: 'Set Inputs to max target',
         showDenyButton: true,
         showCancelButton: true,
         confirmButtonText: 'Global MAX',
