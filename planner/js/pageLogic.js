@@ -10,6 +10,7 @@ let language = "En";
 var requiredMatDict = {};
 var neededMatDict = {};
 var ownedMatDict = {};
+let leftoverMatDict = {};
 var charMatDicts = {};
 var resourceDisplay = "Remaining";
 var gearDisplay = "Remaining";
@@ -70,11 +71,13 @@ let modelVariables;
 let campaignMultiplier = 1;
 let OptimalStageRuns = [];
 
+let docScrollTop = 0;
+
 let loaded = false;
 
 function loadResources() {
 
-    $.getJSON('json/misc_data.json?10').done(function (json) {
+    $.getJSON('json/misc_data.json?11').done(function (json) {
         misc_data = json;
         checkResources();
     });
@@ -444,16 +447,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.2.16".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.2.17".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.2.16",
+            title: "Updated to Version 1.2.17",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.2.16";
+        data.site_version = "1.2.17";
         saveToLocalStorage(false);
     }
 
@@ -655,10 +658,12 @@ function init() {
     document.getElementById('switch-resource-owned').innerText = 'Switch to\nOwned';
     document.getElementById('switch-resource-total').innerText = 'Switch to\nTotal Needed';
     document.getElementById('switch-resource-remaining').innerText = 'Switch to\nRemaining Needed';
+    document.getElementById('switch-resource-leftover').innerText = 'Switch to\nLeftover';
 
     document.getElementById('switch-gear-owned').innerText = 'Switch to\nOwned';
     document.getElementById('switch-gear-total').innerText = 'Switch to\nTotal Needed';
     document.getElementById('switch-gear-remaining').innerText = 'Switch to\nRemaining Needed';
+    document.getElementById('switch-gear-leftover').innerText = 'Switch to\nLeftover';
 
     document.getElementById('current-resource-display').innerText = "Remaining Needed";
     document.getElementById('current-gear-display').innerText = "Remaining Needed";
@@ -1597,12 +1602,13 @@ function colourTableRows(tableId) {
 function freezeBody(mode) {
 
     if (mode) {
-        let top = $("body").scrollTop();
+        let top = docScrollTop = window.pageYOffset;
         $("body").css('position', 'fixed').css('overflow', 'hidden').css('top', -top).css('width', '100%');
     }
     else {
-        let top = $("body").position().top;
-        $("body").css('position', 'relative').css('overflow', 'auto').css('top', 0).scrollTop(-top);
+        $("body").css('position', 'relative').css('overflow', 'auto').css('top', 0)
+        window.scrollBy(0, docScrollTop);
+        docScrollTop = 0;
     }
 }
 
@@ -4382,6 +4388,9 @@ function openResourceModal() {
     else if (resourceDisplay == "Total") {
         updateCells(requiredMatDict, false, 'resource-count-text', 'misc-resource');
     }
+    else if (resourceDisplay == "Leftover") {
+        updateCells(leftoverMatDict, false, 'resource-count-text', 'misc-resource');
+    }
 
     hideEmpty();
 
@@ -4458,6 +4467,9 @@ function openGearModal() {
     }
     else if (gearDisplay == "Total") {
         updateCells(requiredMatDict, false, 'gear-count-text', 'misc-gear');
+    }
+    else if (gearDisplay == "Leftover") {
+        updateCells(leftoverMatDict, false, "gear-count-text", "misc-gear");
     }
 
     updateCells(ownedMatDict, true, 'ue-count-text', 'abrakadabra');
@@ -4998,6 +5010,7 @@ function updatedResource() {
     }
     else {
         updateNeededMat(dictKey);
+        updateLeftoverMat(dictKey);
     }
 
     if (isUEinput) {
@@ -5075,11 +5088,11 @@ function DisplayMatUsers(mat) {
     }
 
     if (matOffset.top > (window.innerHeight / 2)) {
-        wrapperDiv.style.bottom = (document.body.clientHeight - Math.round(matOffset.top)) + "px";
+        wrapperDiv.style.bottom = (document.body.clientHeight - Math.round(matOffset.top) - docScrollTop) + "px";
         wrapperDiv.style.top = "";
     }
     else {
-        wrapperDiv.style.top = (20 + Math.round(matOffset.top)) + "px";
+        wrapperDiv.style.top = (20 + Math.round(matOffset.top) + docScrollTop) + "px";
         wrapperDiv.style.bottom = "";
     }
 
@@ -5155,6 +5168,8 @@ function DisplayStageRuns() {
         wrapperDiv.style.left = (20 + Math.round(elOffset.left)) + "px";
         wrapperDiv.style.right = "";
     }
+
+    wrapperDiv.style.top = (100 + docScrollTop) + "px";
 
     // if (elOffset.top > (window.innerHeight / 2)) {
     //     wrapperDiv.style.bottom = (document.body.clientHeight - Math.round(elOffset.top)) + "px";
@@ -5279,6 +5294,8 @@ function updateXP() {
     else {
         neededMatDict["Xp"] = 0;
     }
+
+    leftoverMatDict["Xp"] = Math.max(xpOwned - (requiredMatDict["Xp"] ?? 0), 0);
 }
 
 function updateGearXP() {
@@ -5293,6 +5310,8 @@ function updateGearXP() {
     else {
         neededMatDict["GearXp"] = 0;
     }
+
+    leftoverMatDict["GearXp"] = Math.max(gxpOwned - (requiredMatDict["GearXp"] ?? 0), 0);
 }
 
 function updateUeXP() {
@@ -5385,6 +5404,10 @@ function getTotalUeOfType(type) {
 
 function updateNeededMat(mat) {
     neededMatDict[mat] = Math.max((requiredMatDict[mat] ?? 0) - (ownedMatDict[mat] ?? 0), 0);
+}
+
+function updateLeftoverMat(mat) {
+    leftoverMatDict[mat] = Math.max((ownedMatDict[mat] ?? 0) - (requiredMatDict[mat] ?? 0), 0);
 }
 
 function calculateCharResources(charData, output) {
@@ -5736,6 +5759,10 @@ function updateAggregateCount() {
         updateNeededMat(key);
     }
 
+    for (key in ownedMatDict) {
+        updateLeftoverMat(key);
+    }
+
     calculateRaidCoins();
 
     updateXP();
@@ -5802,6 +5829,7 @@ function switchResourceDisplay(displayType) {
     let btnOwned = document.getElementById("switch-resource-owned");
     let btnTotal = document.getElementById("switch-resource-total");
     let btnRemaining = document.getElementById("switch-resource-remaining");
+    let btnLeftover = document.getElementById("switch-resource-leftover");
     let displayText = document.getElementById("current-resource-display");
     var raidTokenDisplay = document.getElementById("raid-token-display-wrapper");
     let rareRaidTokenDisplay = document.getElementById("rare-raid-token-display-wrapper");
@@ -5824,6 +5852,7 @@ function switchResourceDisplay(displayType) {
         btnOwned.parentElement.style.display = "none";
         btnTotal.parentElement.style.display = "";
         btnRemaining.parentElement.style.display = "";
+        btnLeftover.parentElement.style.display = "";
         displayText.innerText = "Owned";
         xpInputs.style.display = "";
         updateCells(ownedMatDict, true, 'resource-count-text', 'misc-resource');
@@ -5836,6 +5865,7 @@ function switchResourceDisplay(displayType) {
         btnOwned.parentElement.style.display = "";
         btnTotal.parentElement.style.display = "none";
         btnRemaining.parentElement.style.display = "";
+        btnLeftover.parentElement.style.display = "";
         displayText.innerText = "Total Needed"
         xpInputs.style.display = "none";
         updateCells(requiredMatDict, false, 'resource-count-text', 'misc-resource');
@@ -5849,10 +5879,24 @@ function switchResourceDisplay(displayType) {
         btnOwned.parentElement.style.display = "";
         btnTotal.parentElement.style.display = "";
         btnRemaining.parentElement.style.display = "none";
+        btnLeftover.parentElement.style.display = "";
         displayText.innerText = "Remaining Needed";
         xpInputs.style.display = "none";
         updateCells(neededMatDict, false, 'resource-count-text', 'misc-resource');
         hideResourceDisplays();
+        for (i = 0; i < inputs.length; i++) {
+            inputs[i].parentElement.classList.remove("editable");
+        }
+    }
+    else if (displayType == "Leftover") {
+        resourceDisplay = "Leftover";
+        btnOwned.parentElement.style.display = "";
+        btnTotal.parentElement.style.display = "";
+        btnRemaining.parentElement.style.display = "";
+        btnLeftover.parentElement.style.display = "none";
+        displayText.innerText = "Leftover";
+        xpInputs.style.display = "none";
+        updateCells(leftoverMatDict, false, 'resource-count-text', 'misc-resource');
         for (i = 0; i < inputs.length; i++) {
             inputs[i].parentElement.classList.remove("editable");
         }
@@ -5867,6 +5911,7 @@ function switchGearDisplay(displayType) {
     let btnOwned = document.getElementById("switch-gear-owned");
     let btnTotal = document.getElementById("switch-gear-total");
     let btnRemaining = document.getElementById("switch-gear-remaining");
+    let btnLeftover = document.getElementById("switch-gear-leftover");
     let displayText = document.getElementById("current-gear-display");
     let gxpInputs = document.getElementById("gear-xp-input-wrapper");
     let campaignMulti = document.getElementById("normal-campaign-multi");
@@ -5878,6 +5923,7 @@ function switchGearDisplay(displayType) {
         btnOwned.parentElement.style.display = "none";
         btnTotal.parentElement.style.display = "";
         btnRemaining.parentElement.style.display = "";
+        btnLeftover.parentElement.style.display = "";
         gxpInputs.style.display = "";
         campaignMulti.parentElement.style.display = "none";
         apDisplay.parentElement.style.display = "none";
@@ -5889,6 +5935,7 @@ function switchGearDisplay(displayType) {
         btnOwned.parentElement.style.display = "";
         btnTotal.parentElement.style.display = "";
         btnRemaining.parentElement.style.display = "none";
+        btnLeftover.parentElement.style.display = "";
         gxpInputs.style.display = "none";
         campaignMulti.parentElement.style.display = "";
         apDisplay.parentElement.style.display = "";
@@ -5901,11 +5948,24 @@ function switchGearDisplay(displayType) {
         btnOwned.parentElement.style.display = "";
         btnTotal.parentElement.style.display = "none";
         btnRemaining.parentElement.style.display = "";
+        btnLeftover.parentElement.style.display = "";
         gxpInputs.style.display = "none";
         campaignMulti.parentElement.style.display = "none";
         apDisplay.parentElement.style.display = "none";
         displayText.innerText = "Total Needed";
         updateCells(requiredMatDict, false, 'gear-count-text', 'misc-gear');
+    }
+    else if (displayType == "Leftover") {
+        gearDisplay = "Leftover";
+        btnOwned.parentElement.style.display = "";
+        btnTotal.parentElement.style.display = "";
+        btnRemaining.parentElement.style.display = "";
+        btnLeftover.parentElement.style.display = "none";
+        gxpInputs.style.display = "none";
+        campaignMulti.parentElement.style.display = "none";
+        apDisplay.parentElement.style.display = "none";
+        displayText.innerText = "Leftover";
+        updateCells(leftoverMatDict, false, 'gear-count-text', 'misc-gear');
     }
 
     hideEmptyGear();

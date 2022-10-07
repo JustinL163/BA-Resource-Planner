@@ -47,7 +47,7 @@
     <script src="packages/javascript-lp-solver/solver.js"></script>
     <link rel="stylesheet" href="packages/tippyjs/light.css" />
     <script src="js/config.js?12"></script>
-    <script src="js/pageLogic.js?62"></script>
+    <script src="js/pageLogic.js?63"></script>
     <script src="js/filters.js?4"></script>
     <script src="js/lzma_worker.js?1"></script>
     <script src="js/cloudAPI.js?2"></script>
@@ -553,6 +553,10 @@
                     <button id="switch-resource-total" class="button-switch-display" style="background-color: #c8f5e0;"
                         onclick="switchResourceDisplay('Total')"></button>
                 </div>
+                <div class="resource-box" style="border: none;">
+                    <button id="switch-resource-leftover" class="button-switch-display" style="background-color: #f5efc8;"
+                        onclick="switchResourceDisplay('Leftover')"></button>
+                </div>
                 <div class="resource-box">
                     <p id="current-resource-display" style="align-self: center; font-size: 1.75em; text-align: center;">
                     </p>
@@ -637,6 +641,10 @@
                 <div class="resource-box" style="border: none;">
                     <button id="switch-gear-total" class="button-switch-display" style="background-color: #c8f5e0;"
                         onclick="switchGearDisplay('Total')"></button>
+                </div>
+                <div class="resource-box" style="border: none;">
+                    <button id="switch-gear-leftover" class="button-switch-display" style="background-color: #f5efc8;"
+                        onclick="switchGearDisplay('Leftover')"></button>
                 </div>
                 <div class="resource-box">
                     <p id="current-gear-display" style="align-self: center; font-size: 1.75em; text-align: center;"></p>
