@@ -35,7 +35,7 @@ let multiCharSource = "";
 
 let multiSelected = [];
 
-const defaultGroups = ["Binah", "Chesed", "Hod", "ShiroKuro", "Perorodzilla", "Hieronymous", "Kaiten"];
+const defaultGroups = {"Binah": [], "Chesed": [], "Hod": [], "ShiroKuro": [], "Perorodzilla": [], "Hieronymous": [], "Kaiten": []}
 
 var sweepMax = 0;
 let sweepMin = 0;
@@ -252,7 +252,7 @@ function init() {
     }
 
     if (data == null) {
-        data = { exportVersion: exportDataVersion, characters: [], disabled_characters: [], owned_materials: {}, groups: {}, language: "EN" };
+        data = { exportVersion: exportDataVersion, characters: [], disabled_characters: [], owned_materials: {}, groups: defaultGroups, language: "EN" };
         localStorage.setItem("save-data", JSON.stringify(data));
     }
 
@@ -864,6 +864,11 @@ function handleKeydown(e, keyPressed) {
         else if (modalOpen == "transferModal") {
             closeTransferModal();
         }
+    }
+
+    if (keycount == 3 && keyPressed.Control == true && keyPressed.Shift == true && keyPressed.S == true) {
+        saveTime = Date.now() + 300;
+        keyPressed = {};
     }
 }
 
@@ -2621,9 +2626,9 @@ async function addNewGroup() {
                 return "Name must be less than or equal to 35 characters long";
             }
 
-            if (defaultGroups.includes(value) || value == "blankselect") {
-                return "Can't use that name";
-            }
+            // if (defaultGroups.includes(value) || value == "blankselect") {
+            //     return "Can't use that name";
+            // }
 
             if ($("#select-groups option[value='" + value + "']").length > 0) {
                 return "Group with name already exists";
@@ -2990,10 +2995,10 @@ function deleteGroup() {
             clearTeams();
             document.getElementById('select-groups').value = "blankselect";
 
-            if (!defaultGroups.includes(currentGroup)) {
+            // if (!defaultGroups.includes(currentGroup)) {
 
-                $("#select-groups option[value='" + currentGroup + "']").remove();
-            }
+            $("#select-groups option[value='" + currentGroup + "']").remove();
+            // }
 
             if (data.groups[currentGroup]) {
 
@@ -3013,7 +3018,7 @@ async function renameGroup() {
         return;
     }
 
-    if (defaultGroups.includes(currentGroup)) {
+    if (false) {//defaultGroups.includes(currentGroup)) {
         Swal.fire({
             title: "Defaut groups can't be renamed",
             icon: 'warning'
@@ -3034,9 +3039,9 @@ async function renameGroup() {
                     return "Name must be less than or equal to 35 characters long";
                 }
 
-                if (defaultGroups.includes(value) || value == "blankselect") {
-                    return "Can't use that name";
-                }
+                // if (defaultGroups.includes(value) || value == "blankselect") {
+                //     return "Can't use that name";
+                // }
 
                 if ($("#select-groups option[value='" + value + "']").length > 0) {
                     return "Group with name already exists";
@@ -3087,18 +3092,18 @@ function rebuildGroups() {
         options[1].remove();
     }
 
-    for (let i = 0; i < defaultGroups.length; i++) {
+    // for (let i = 0; i < defaultGroups.length; i++) {
 
-        addOption(selectElement, defaultGroups[i], defaultGroups[i]);
-    }
+    //     addOption(selectElement, defaultGroups[i], defaultGroups[i]);
+    // }
 
     if (data.groups) {
 
         for (key in data.groups) {
 
-            if (!defaultGroups.includes(key)) {
-                addOption(selectElement, key, key);
-            }
+            // if (!defaultGroups.includes(key)) {
+            addOption(selectElement, key, key);
+            // }
         }
     }
 
