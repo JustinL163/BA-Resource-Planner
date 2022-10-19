@@ -645,15 +645,17 @@ div.editable.empty-resource:hover {
 }
 
 .button-switch-display,
-#gear-switch-display {
+#gear-switch-display,
+.modal-button {
     width: 100%;
     font-size: 1.5em;
     font-family: monospace;
 }
 
 .button-switch-display:hover,
-#gear-switch-display:hover {
-    filter: brightness(0.95);
+#gear-switch-display:hover,
+.modal-button:hover {
+    filter: brightness(0.90);
 }
 
 .input-wrapper {

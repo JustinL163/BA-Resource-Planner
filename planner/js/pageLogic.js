@@ -35,10 +35,13 @@ let multiCharSource = "";
 
 let multiSelected = [];
 
-const defaultGroups = {"Binah": [], "Chesed": [], "Hod": [], "ShiroKuro": [], "Perorodzilla": [], "Hieronymous": [], "Kaiten": []}
+const defaultGroups = { "Binah": [], "Chesed": [], "Hod": [], "ShiroKuro": [], "Perorodzilla": [], "Hieronymous": [], "Kaiten": [] }
 
 var sweepMax = 0;
 let sweepMin = 0;
+
+let lvlCalcsCap = 83;
+let lvlMAX = 83;
 
 var saveTime = 0;
 var toastCooldownTime = 0;
@@ -82,12 +85,12 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/skillinfo.json?9').done(function (json) {
+    $.getJSON('json/skillinfo.json?10').done(function (json) {
         skillinfo = json;
         checkResources();
     });
 
-    $.getJSON('json/charlist.json?14').done(function (json) {
+    $.getJSON('json/charlist.json?15').done(function (json) {
         charlist = json;
         checkResources();
     });
@@ -447,16 +450,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.2.18".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.2.19".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.2.18",
+            title: "Updated to Version 1.2.19",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.2.18";
+        data.site_version = "1.2.19";
         saveToLocalStorage(false);
     }
 
@@ -2741,6 +2744,44 @@ function removeGroupCharacter(slotDivId) {
     }
 
     saveGroup();
+}
+
+async function PickLevelCalcsCap() {
+
+    await Swal.fire({
+        title: 'Level to cap calculations at',
+        input: 'range',
+        inputAttributes: {
+            min: 78,
+            max: lvlMAX,
+            step: 1
+        },
+        inputValue: lvlCalcsCap,
+        showCancelButton: true,
+        // showDenyButton: !borrowed,
+        // denyButtonText: 'Borrow',
+        // denyButtonColor: '#dc9641'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            if (lvlCalcsCap != result.value) {
+            
+                lvlCalcsCap = result.value;
+                document.getElementById('set-level-cap').innerText = "Lvl Cap: " + lvlCalcsCap;
+
+                updateAggregateCount();
+                if (resourceDisplay == "Remaining") {
+                    updateCells(neededMatDict, false, 'resource-count-text', 'misc-resource');
+                }
+                else if (resourceDisplay == "Total") {
+                    updateCells(requiredMatDict, false, 'resource-count-text', 'misc-resource');
+                }
+                else if (resourceDisplay == "Leftover") {
+                    updateCells(leftoverMatDict, false, 'resource-count-text', 'misc-resource');
+                }
+            } 
+        }
+    })
 }
 
 async function pickCharacter(slotDivId, type) {
@@ -5556,7 +5597,12 @@ function calcXpCost(level, levelTarget, matDict) {
 
     if (level && levelTarget) {
         var xpNeeded = Math.max(misc_data.level_xp[parseInt(levelTarget) - 1] - misc_data.level_xp[parseInt(level) - 1], 0);
-        matDict["Xp"] = xpNeeded;
+
+        if (!matDict["Xp"]) {
+            matDict["Xp"] = 0;
+        }
+
+        matDict["Xp"] += xpNeeded;
 
         if (!matDict["Credit"]) {
             matDict["Credit"] = 0;
@@ -5751,12 +5797,19 @@ function updateAggregateCount() {
         if (!disabledChars.includes(charId)) {
             for (matName in charMatDicts[charId]) {
 
+                if (matName == "Xp") {
+                    continue;
+                }
+
                 if (!requiredMatDict[matName]) {
                     requiredMatDict[matName] = 0;
                 }
 
                 requiredMatDict[matName] += charMatDicts[charId][matName];
             }
+
+            let char = data.characters.find(obj => { return obj.id == charId });
+            calcXpCost(char.current?.level, Math.min(char.target?.level, lvlCalcsCap), requiredMatDict);
         }
     }
 
@@ -5844,6 +5897,7 @@ function switchResourceDisplay(displayType) {
     let masteryCertDisplay = document.getElementById("mastery-certificate-display-wrapper");
     var xpInputs = document.getElementById("xp-input-wrapper");
     var inputs = document.getElementsByClassName("input-wrapper");
+    let btnLvlCap = document.getElementById("set-level-cap");
 
     raidTokenDisplay.style.display = "none";
     rareRaidTokenDisplay.style.display = "none";
@@ -5858,6 +5912,7 @@ function switchResourceDisplay(displayType) {
         btnTotal.parentElement.style.display = "";
         btnRemaining.parentElement.style.display = "";
         btnLeftover.parentElement.style.display = "";
+        btnLvlCap.parentElement.style.display = "none";
         displayText.innerText = "Owned";
         xpInputs.style.display = "";
         updateCells(ownedMatDict, true, 'resource-count-text', 'misc-resource');
@@ -5871,6 +5926,7 @@ function switchResourceDisplay(displayType) {
         btnTotal.parentElement.style.display = "none";
         btnRemaining.parentElement.style.display = "";
         btnLeftover.parentElement.style.display = "";
+        btnLvlCap.parentElement.style.display = "";
         displayText.innerText = "Total Needed"
         xpInputs.style.display = "none";
         updateCells(requiredMatDict, false, 'resource-count-text', 'misc-resource');
@@ -5885,6 +5941,7 @@ function switchResourceDisplay(displayType) {
         btnTotal.parentElement.style.display = "";
         btnRemaining.parentElement.style.display = "none";
         btnLeftover.parentElement.style.display = "";
+        btnLvlCap.parentElement.style.display = "";
         displayText.innerText = "Remaining Needed";
         xpInputs.style.display = "none";
         updateCells(neededMatDict, false, 'resource-count-text', 'misc-resource');
@@ -5899,6 +5956,7 @@ function switchResourceDisplay(displayType) {
         btnTotal.parentElement.style.display = "";
         btnRemaining.parentElement.style.display = "";
         btnLeftover.parentElement.style.display = "none";
+        btnLvlCap.parentElement.style.display = "";
         displayText.innerText = "Leftover";
         xpInputs.style.display = "none";
         updateCells(leftoverMatDict, false, 'resource-count-text', 'misc-resource');
