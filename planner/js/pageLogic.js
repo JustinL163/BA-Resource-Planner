@@ -85,17 +85,17 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/skillinfo.json?10').done(function (json) {
+    $.getJSON('json/skillinfo.json?11').done(function (json) {
         skillinfo = json;
         checkResources();
     });
 
-    $.getJSON('json/charlist.json?15').done(function (json) {
+    $.getJSON('json/charlist.json?16').done(function (json) {
         charlist = json;
         checkResources();
     });
 
-    $.getJSON('json/localisations.json?7').done(function (json) {
+    $.getJSON('json/localisations.json?8').done(function (json) {
         localisations = json;
         checkResources();
     });
@@ -255,7 +255,7 @@ function init() {
     }
 
     if (data == null) {
-        data = { exportVersion: exportDataVersion, characters: [], disabled_characters: [], owned_materials: {}, groups: defaultGroups, language: "EN" };
+        data = { exportVersion: exportDataVersion, characters: [], disabled_characters: [], owned_materials: {}, groups: defaultGroups, language: "EN", level_cap: lvlMAX };
         localStorage.setItem("save-data", JSON.stringify(data));
     }
 
@@ -330,6 +330,13 @@ function init() {
         if (!data.language) {
             data.language = "EN";
         }
+
+        if (!data.level_cap) {
+            data.level_cap = 83;
+        }
+
+        lvlCalcsCap = data.level_cap;
+        document.getElementById('set-level-cap').innerText = "Lvl Cap: " + lvlCalcsCap;
     }
 
     // remove later
@@ -450,16 +457,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.2.19".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.2.20".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.2.19",
+            title: "Updated to Version 1.2.20",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.2.19";
+        data.site_version = "1.2.20";
         saveToLocalStorage(false);
     }
 
@@ -2767,6 +2774,7 @@ async function PickLevelCalcsCap() {
             if (lvlCalcsCap != result.value) {
             
                 lvlCalcsCap = result.value;
+                data.level_cap = result.value;
                 document.getElementById('set-level-cap').innerText = "Lvl Cap: " + lvlCalcsCap;
 
                 updateAggregateCount();
@@ -2779,6 +2787,8 @@ async function PickLevelCalcsCap() {
                 else if (resourceDisplay == "Leftover") {
                     updateCells(leftoverMatDict, false, 'resource-count-text', 'misc-resource');
                 }
+
+                saveTime = Date.now() + (1000 * 5);
             } 
         }
     })
