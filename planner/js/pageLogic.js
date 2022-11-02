@@ -2474,7 +2474,7 @@ function addNewTeam(team) {
                 let charName = charNames.get(team[i + 4].id);
                 if (charName) {
                     createCharBox(team[i + 4].id, blankSlot, "borrow");
-                    groupChars.push(charName);
+                    //groupChars.push(charName);
                 }
             }
             else {
