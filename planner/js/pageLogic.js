@@ -3191,6 +3191,7 @@ async function MoveGroup() {
     })
 
     SetGroupOrder(groupPos);
+    saveTime = Date.now() + (1000 * 5);
 
 }
 
