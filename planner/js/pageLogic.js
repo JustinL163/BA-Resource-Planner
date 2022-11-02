@@ -4114,15 +4114,19 @@ function populateCharResources(charId) {
     let tnWrapper = document.getElementById('char-tns-wrapper');
 
     while (mainartisWrapper.children.length > 0) {
+        mainartisWrapper.children[0]._tippy.destroy();
         mainartisWrapper.children[0].remove();
     }
     while (subartisWrapper.children.length > 0) {
+        subartisWrapper.children[0]._tippy.destroy();
         subartisWrapper.children[0].remove();
     }
     while (bdWrapper.children.length > 0) {
+        bdWrapper.children[0]._tippy.destroy();
         bdWrapper.children[0].remove();
     }
     while (tnWrapper.children.length > 0) {
+        tnWrapper.children[0]._tippy.destroy();
         tnWrapper.children[0].remove();
     }
 
@@ -4143,6 +4147,10 @@ function populateCharResources(charId) {
             if (matName && matName != "Secret") {
                 const wrapDiv = document.createElement('div');
                 wrapDiv.className = "char-resource-wrapper";
+                tippy(wrapDiv, {
+                    content: "Owned: " + ownedMatDict[key],
+                    theme: "light"
+                })
 
                 let extraClassName = "";
 
