@@ -30,6 +30,8 @@ let groupEditMode = "Move";
 let currentGroup = "";
 let borrowed = false;
 
+let GroupFilterMode = "OnlyGroup";
+
 let selectingSlotId = "";
 let multiCharSource = "";
 
@@ -457,16 +459,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.2.20".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.2.21".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.2.20",
+            title: "Updated to Version 1.2.21",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.2.20";
+        data.site_version = "1.2.21";
         saveToLocalStorage(false);
     }
 
@@ -2654,8 +2656,13 @@ async function addNewGroup() {
         addNewTeam([null, null, null, null, null, null]);
         borrowed = false;
 
+        let groupCount = 0;
+        if (data.groups) {
+            groupCount = Object.keys(data.groups).length;
+        }
+
         let selectElement = document.getElementById('select-groups');
-        addOption(selectElement, groupName, groupName);
+        addOption(selectElement, (groupCount + 1) + ". " + groupName, groupName);
 
         selectElement.value = groupName;
     }
@@ -2772,7 +2779,7 @@ async function PickLevelCalcsCap() {
         if (result.isConfirmed) {
 
             if (lvlCalcsCap != result.value) {
-            
+
                 lvlCalcsCap = result.value;
                 data.level_cap = result.value;
                 document.getElementById('set-level-cap').innerText = "Lvl Cap: " + lvlCalcsCap;
@@ -2789,7 +2796,7 @@ async function PickLevelCalcsCap() {
                 }
 
                 saveTime = Date.now() + (1000 * 5);
-            } 
+            }
         }
     })
 }
@@ -3058,6 +3065,8 @@ function deleteGroup() {
             }
 
             currentGroup = "";
+
+            rebuildGroups();
         }
     })
 }
@@ -3103,14 +3112,25 @@ async function renameGroup() {
         if (groupName) {
             let option = $("#select-groups option[value='" + currentGroup + "']");
 
-            if (option.length > 0) {
-                option[0].text = groupName;
-                option[0].value = groupName;
-            }
+            // if (option.length > 0) {
+            //     option[0].text = groupName;
+            //     option[0].value = groupName;
+            // }
+            let curGroupPos;
 
             if (data.groups && data.groups[currentGroup]) {
+                curGroupPos = Object.keys(data.groups).indexOf(currentGroup) + 1;
+
                 data.groups[groupName] = data.groups[currentGroup];
                 delete (data.groups[currentGroup]);
+
+                currentGroup = groupName;
+
+                if (curGroupPos) {
+                    SetGroupOrder(curGroupPos);
+                }
+
+                rebuildGroups();
 
                 saveTime = Date.now() + (1000 * 5);
             }
@@ -3134,6 +3154,71 @@ function isTeamEmpty(team) {
     return isEmpty
 }
 
+async function MoveGroup() {
+
+    if (currentGroup == "") {
+        basicAlert("Select group first");
+        return;
+    }
+
+    let groupCount = 0;
+    if (data.groups) {
+        groupCount = Object.keys(data.groups).length;
+        if (groupCount <= 1) {
+            basicAlert("Need more than 1 group to move");
+            return;
+        }
+    }
+
+    const { value: groupPos } = await Swal.fire({
+        title: 'Enter new group position',
+        input: 'text',
+        inputLabel: '1-' + groupCount,
+        inputPlaceholder: '',
+        showCancelButton: true,
+        inputValidator: (value) => {
+            if (!value) {
+                return "Position can't be blank";
+            }
+
+            let positionValue = parseInt(value);
+
+            if (positionValue < 1 || positionValue > groupCount) {
+                return "Position must be between 1 and " + groupCount;
+            }
+
+        }
+    })
+
+    SetGroupOrder(groupPos);
+
+}
+
+function SetGroupOrder(newPos) {
+
+    if (newPos) {
+        let curGroup = 1;
+        let newGroupObject = {};
+        let groups = Object.keys(data.groups);
+
+        for (let i = 0; i < groups.length; i++) {
+            if (newPos == curGroup) {
+                newGroupObject[currentGroup] = data.groups[currentGroup];
+            }
+            if (groups[i] != currentGroup) {
+                newGroupObject[groups[i]] = data.groups[groups[i]];
+                curGroup++;
+            }
+        }
+        if (newGroupObject[currentGroup] == undefined) {
+            newGroupObject[currentGroup] = data.groups[currentGroup];
+        }
+
+        data.groups = newGroupObject;
+        rebuildGroups();
+    }
+}
+
 function rebuildGroups() {
 
     let selectElement = document.getElementById('select-groups');
@@ -3147,14 +3232,16 @@ function rebuildGroups() {
 
     //     addOption(selectElement, defaultGroups[i], defaultGroups[i]);
     // }
+    let curGroup = 1;
 
     if (data.groups) {
 
         for (key in data.groups) {
 
             // if (!defaultGroups.includes(key)) {
-            addOption(selectElement, key, key);
+            addOption(selectElement, curGroup + ". " + key, key);
             // }
+            curGroup++;
         }
     }
 
@@ -3183,6 +3270,20 @@ function rebuildFilters() {
 
 }
 
+function ToggleGroupFilterMode() {
+
+    if (GroupFilterMode == "OnlyGroup") {
+        GroupFilterMode = "UpToGroup";
+        document.getElementById('btn-group-filter-mode').innerText = "Up to Group";
+    }
+    else if (GroupFilterMode == "UpToGroup") {
+        GroupFilterMode = "OnlyGroup";
+        document.getElementById('btn-group-filter-mode').innerText = "Only Group";
+    }
+
+    filterChanged("group");
+}
+
 function filterChanged(filterType) {
 
     let filtered = [];
@@ -3198,7 +3299,26 @@ function filterChanged(filterType) {
             filtered = "All";
         }
         else if (groupName) {
-            filtered = charsFromGroup(groupName);
+            if (GroupFilterMode == "OnlyGroup") {
+                filtered = charsFromGroup(groupName);
+            }
+            else if (GroupFilterMode == "UpToGroup") {
+                let groups = Object.keys(data.groups);
+
+                for (let i = 0; i < groups.length; i++) {
+                    let additionalMembers = charsFromGroup(groups[i]);
+
+                    for (let m = 0; m < additionalMembers.length; m++) {
+                        if (!filtered.includes(additionalMembers[m])) {
+                            filtered.push(additionalMembers[m]);
+                        }
+                    }
+
+                    if (groups[i] == groupName) {
+                        break;
+                    }
+                }
+            }
         }
     }
 
@@ -3276,7 +3396,7 @@ function charsFromGroup(group) {
 
             for (let i = 0; i < team.length; i++) {
 
-                if (team[i] != null && typeof (team[i] != "object")) {
+                if (team[i] != null && typeof (team[i]) != "object") {
                     inGroup.push(team[i]);
                 }
             }
@@ -3379,7 +3499,15 @@ function getTextFormattedGroup(monospaced) {
 
                 names.push(charData.name);
 
-                charDataString += charData.current.star + "★  ";
+                if (charData.current.ue > 0) {
+                    charDataString += "UE" + charData.current.ue + "★  ";
+                }
+                else {
+                    charDataString += charData.current.star + "★  ";
+                    if (monospaced) {
+                        charDataString += "  ";
+                    }
+                }
                 charDataString += charData.current.level + "  ";
                 if (charData.current.level.length == 1 && monospaced) {
                     charDataString += " ";
@@ -3387,7 +3515,9 @@ function getTextFormattedGroup(monospaced) {
                 charDataString += formatLevel("Ex", charData.current.ex) + formatLevel("Other", charData.current.basic) +
                     formatLevel("Other", charData.current.passive) + formatLevel("Other", charData.current.sub) + "  ";
                 charDataString += charData.current.gear1 + charData.current.gear2 + charData.current.gear3 + "  ";
-                charDataString += charData.current.bond;
+                if (charData.current.ue_level != "0") {
+                    charDataString += charData.current.ue_level;
+                }
 
                 levels.push(charDataString);
             }
@@ -3403,10 +3533,10 @@ function getTextFormattedGroup(monospaced) {
     }
 
     if (monospaced) {
-        textOutput += "Name" + " ".repeat(longest - 4) + "Star Lvl Skill Gear Bond\n";
+        textOutput += "Name" + " ".repeat(longest - 4) + " Star  Lvl Skill Gear UE\n";
     }
     else {
-        textOutput += "Name   Star Lvl Skill Gear Bond\n";
+        textOutput += "Name   Star Lvl Skill Gear UE\n";
     }
 
     for (let i = 0; i < names.length; i++) {
