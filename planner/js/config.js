@@ -1918,7 +1918,7 @@ const inputValidation = {
         "id": "input-Secret",
         "location": "resourceModal",
         "min": "0",
-        "max": "20",
+        "max": "99",
         "navigation": "direct",
         "Left": "input-XP_4",
         "Up": "input-XP_4"
