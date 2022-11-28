@@ -11,7 +11,7 @@ function saveRequest(notify) {
         xhr.open('POST', 'https://api.justin163.com/save');
         xhr.setRequestHeader('Content-Type', 'application/octet-stream');
         xhr.setRequestHeader('Username', gUsername);
-        xhr.setRequestHeader('Auth_Key', gAuthkey);
+        xhr.setRequestHeader('Auth-Key', gAuthkey);
         xhr.onload = function () {
             if (this.status == 200) {
 
@@ -80,7 +80,7 @@ function loadRequest(notify, setCreds) {
     let xhr = new XMLHttpRequest();
     xhr.open('GET', 'https://api.justin163.com/load');
     xhr.setRequestHeader('Username', document.getElementById('input-transfer-username').value);
-    xhr.setRequestHeader('Auth_Key', document.getElementById('input-transfer-authkey').value);
+    xhr.setRequestHeader('Auth-Key', document.getElementById('input-transfer-authkey').value);
     xhr.overrideMimeType('text\/plain; charset=x-user-defined');
     xhr.onload = function () {
         if (this.status == 200) {
