@@ -6648,6 +6648,150 @@
             }
         }
     },
+    "10056": {
+        "Skills": {
+            "Ex": {
+                "Cost": [
+                    4,
+                    4,
+                    4,
+                    4,
+                    4
+                ],
+                "DescEn": "Increases the CRIT.DMG of all allies except self in a circular area around Serina by <?1> for 50s. Also grants them one Holy Night Blessing stack (max. 15 stacks, lasts until the end of battle) and increases their Piercing Weak DMG by <?2> for each Holy Night Blessing stack they hold for 50s.",
+                "Parameters": [
+                    [
+                        "27.2%",
+                        "31.3%",
+                        "35.4%",
+                        "39.5%",
+                        "43.5%",
+                        "47.6%",
+                        "55.8%",
+                        "57.8%",
+                        "61.9%",
+                        "66%"
+                    ],
+                    [
+                        "2.3%",
+                        "2.3%",
+                        "3%",
+                        "3%",
+                        "3.7%",
+                        "3.7%",
+                        "3.7%",
+                        "4.1%",
+                        "4.1%",
+                        "4.4%"
+                    ]
+                ]
+            },
+            "Skill1": {
+                "DescEn": "Every 21 normal attacks, throws a random gift that increases the CRIT.DMG of all allies in a circular area except self by a different amount depending on the gift chosen.\n<b>Green Box</b>: <?1> for 30s.\n<b>Red Box</b>: <?2> for 30s.\n<b>Teddy Bear</b>: <?3> for 30s.",
+                "Parameters": [
+                    [
+                        "11%",
+                        "11.6%",
+                        "12.1%",
+                        "14.4%",
+                        "14.9%",
+                        "15.5%",
+                        "17.7%",
+                        "18.2%",
+                        "18.8%",
+                        "21%"
+                    ],
+                    [
+                        "12.6%",
+                        "13.2%",
+                        "13.9%",
+                        "16.4%",
+                        "17%",
+                        "17.7%",
+                        "20.2%",
+                        "20.8%",
+                        "21.5%",
+                        "24%"
+                    ],
+                    [
+                        "14.2%",
+                        "14.9%",
+                        "15.6%",
+                        "18.5%",
+                        "19.2%",
+                        "19.9%",
+                        "22.7%",
+                        "23.4%",
+                        "24.2%",
+                        "27%"
+                    ]
+                ]
+            },
+            "Skill2": {
+                "DescEn": "Increases MAX HP by <?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            },
+            "Skill3": {
+                "DescEn": "Increases EVA by <?1> while reloading.",
+                "Parameters": [
+                    [
+                        "18.1%",
+                        "19%",
+                        "19.9%",
+                        "23.5%",
+                        "24.5%",
+                        "25.4%",
+                        "29%",
+                        "29.9%",
+                        "30.8%",
+                        "34.4%"
+                    ]
+                ]
+            },
+            "Skill4": {
+                "DescEn": "Increases DEF by <?1> and MAX HP by <?2>.",
+                "Parameters": [
+                    [
+                        "200",
+                        "210",
+                        "220",
+                        "260",
+                        "270",
+                        "280",
+                        "320",
+                        "330",
+                        "340",
+                        "380"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            }
+        }
+    },
     "13000": {
         "Skills": {
             "Ex": {
@@ -11924,6 +12068,126 @@
                         "1650",
                         "1700",
                         "1900"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            }
+        }
+    },
+    "20021": {
+        "Skills": {
+            "Ex": {
+                "Cost": [
+                    5,
+                    5,
+                    5,
+                    5,
+                    5
+                ],
+                "DescEn": "Grants one Holy Night Blessing stack to all allies in a circular area (max. 15 stacks, lasts until the end of battle). Also grants them regeneration, continuously restoring HP equal to <?1> of Healing, plus an additional <?2> of Healing for each Holy Night Blessing stack they hold, every 4s for 60s.",
+                "Parameters": [
+                    [
+                        "7%",
+                        "8.1%",
+                        "10.2%",
+                        "11.2%",
+                        "13.4%",
+                        "14.4%",
+                        "16.5%",
+                        "17.6%",
+                        "19.7%",
+                        "20.8%"
+                    ],
+                    [
+                        "0.3%",
+                        "0.4%",
+                        "0.5%",
+                        "0.6%",
+                        "0.7%",
+                        "0.8%",
+                        "0.8%",
+                        "0.9%",
+                        "1%",
+                        "1%"
+                    ]
+                ]
+            },
+            "Skill1": {
+                "DescEn": "Every 35s, increases the REC of the ally with the lowest HP by <?1> for 15s.",
+                "Parameters": [
+                    [
+                        "22.7%",
+                        "23.9%",
+                        "25%",
+                        "29.5%",
+                        "30.7%",
+                        "31.8%",
+                        "36.4%",
+                        "37.5%",
+                        "38.6%",
+                        "43.2%"
+                    ]
+                ]
+            },
+            "Skill2": {
+                "DescEn": "Increases HEAL by <?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            },
+            "Skill3": {
+                "DescEn": "Increases all allies' CRIT.DMG by <?1>.",
+                "Parameters": [
+                    [
+                        "9.1%",
+                        "9.5%",
+                        "10%",
+                        "11.8%",
+                        "12.3%",
+                        "12.7%",
+                        "14.5%",
+                        "15%",
+                        "15.5%",
+                        "17.3%"
+                    ]
+                ]
+            },
+            "Skill4": {
+                "DescEn": "Increases HEAL by <?1> plus a further <?2>.",
+                "Parameters": [
+                    [
+                        "1008",
+                        "1058",
+                        "1108",
+                        "1310",
+                        "1360",
+                        "1411",
+                        "1612",
+                        "1662",
+                        "1713",
+                        "1914"
                     ],
                     [
                         "14%",
