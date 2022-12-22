@@ -78,6 +78,8 @@ let OptimalStageRuns = [];
 
 let docScrollTop = 0;
 
+let bugsNotified = {};
+
 let loaded = false;
 
 function loadResources() {
@@ -244,6 +246,8 @@ function updateUiLanguage() {
 }
 
 function init() {
+
+    bugsNotified = JSON.parse(localStorage.getItem("bugs_notified")) ?? {};
 
     gUsername = localStorage.getItem("username");
     gAuthkey = localStorage.getItem("authkey");
@@ -459,16 +463,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.2.23".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.2.24".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.2.23",
+            title: "Updated to Version 1.2.24",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.2.23";
+        data.site_version = "1.2.24";
         saveToLocalStorage(false);
     }
 
@@ -4565,6 +4569,18 @@ function openResourceModal() {
 
     freezeBody(true);
 
+    if (!(bugsNotified['1'] == true)) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Serious bug',
+            text: "Credit required for increasing student's xp level was being overcalculated (in resource modal only) by up to 2x since version 1.2.19, please check the credit required now, it should be significantly decreased as of version 1.2.24",
+            color: alertColour
+        })
+
+        bugsNotified['1'] = true;
+        localStorage.setItem("bugs_notified", JSON.stringify(bugsNotified));
+    }
+
     modalOpen = "resourceModal";
 
     var modal = document.getElementById("resourceModal");
@@ -5959,6 +5975,13 @@ function updateAggregateCount() {
 
             let char = data.characters.find(obj => { return obj.id == charId });
             calcXpCost(char.current?.level, Math.min(char.target?.level, lvlCalcsCap), requiredMatDict);
+
+            let checkCredit = {};
+            calcXpCost(char.current?.level, char.target?.level, checkCredit);
+
+            if (checkCredit.Credit > 0) {
+                requiredMatDict["Credit"] -= checkCredit.Credit;
+            }
         }
     }
 
