@@ -47,7 +47,7 @@
     <script src="packages/javascript-lp-solver/solver.js"></script>
     <link rel="stylesheet" href="packages/tippyjs/light.css" />
     <script src="js/config.js?14"></script>
-    <script src="js/pageLogic.js?76"></script>
+    <script src="js/pageLogic.js?77"></script>
     <script src="js/filters.js?4"></script>
     <script src="js/lzma_worker.js?1"></script>
     <script src="js/cloudAPI.js?3"></script>
@@ -60,6 +60,7 @@
         <img src="icons/UI/hamburger.svg" id="hamburger" onclick="hamburgToggle()">
         <ul class="nav-list">
             <li><a class="active">Resource Planner</a></li>
+            <!-- <li><a href="events.html">Event Planner</a></li> -->
             <li><a href="changelog.html">Changelog</a></li>
             <li><a href="privacy.html">Privacy</a></li>
         </ul>
@@ -71,6 +72,7 @@
     <div id="mobile-links-wrapper">
         <ul class="mobile-links">
             <li><a class="active">Resource Planner</a></li>
+            <!-- <li><a href="events.html">Event Planner</a></li> -->
             <li><a href="changelog.html">Changelog</a></li>
             <li><a href="privacy.html">Privacy</a></li>
         </ul>
@@ -672,6 +674,9 @@
                 <div id="ap-display-wrapper" class="resource-box" onclick="DisplayStageRuns()">
                     <img draggable="false" src="icons/Misc/Energy.png" style="height: 80%;">
                     <p id="gear-farm-energy" class="no-input" style="align-self: center; margin-left: 10px;">0</p>
+                    <div style="position: absolute; right: 0; bottom: 0; padding: 5px">
+                        <p id="nm-server-toggle" class="server-toggle" onclick="serverToggle(event)"></p>
+                    </div>
                 </div>
             </div>
             <div class="modal-section-wrapper gear-section" style="width: 100%;">

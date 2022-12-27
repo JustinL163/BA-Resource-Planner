@@ -325,12 +325,15 @@ function init() {
         }
 
         let serverToggleBtn = document.getElementById('hm-server-toggle');
+        let serverToggleBtn2 = document.getElementById('nm-server-toggle');
 
         if (data.server == "Global") {
             serverToggleBtn.innerText = "Gbl";
+            serverToggleBtn2.innerText = "Gbl";
         }
         else if (data.server == "JP") {
             serverToggleBtn.innerText = "JP";
+            serverToggleBtn2.innerText = "JP";
         }
 
         if (!data.language) {
@@ -463,16 +466,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.2.24".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.2.25".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.2.24",
+            title: "Updated to Version 1.2.25",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.2.24";
+        data.site_version = "1.2.25";
         saveToLocalStorage(false);
     }
 
@@ -762,6 +765,11 @@ function init() {
 
     tippy('#hm-server-toggle', {
         content: "Switch between Global/JP hardmode stages allowed",
+        theme: 'light'
+    })
+
+    tippy('#nm-server-toggle', {
+        content: "Switch between Global/JP stages farmable",
         theme: 'light'
     })
 
@@ -3841,17 +3849,30 @@ function charUnlockClick() {
     populateCharResources(modalCharID);
 }
 
-function serverToggle() {
+function serverToggle(e) {
+
+    if (e) {
+        e.stopPropagation();
+    }
 
     let serverToggleBtn = document.getElementById('hm-server-toggle');
+    let serverToggleBtn2 = document.getElementById('nm-server-toggle');
 
     if (data.server == "Global") {
         data.server = "JP";
         serverToggleBtn.innerText = "JP";
+        serverToggleBtn2.innerText = "JP";
     }
     else if (data.server == "JP") {
         data.server = "Global"
         serverToggleBtn.innerText = "Gbl";
+        serverToggleBtn2.innerText = "Gbl";
+    }
+
+    if (e && e.currentTarget.id == "nm-server-toggle") {
+        HideStagesPopup();
+        SolveGearFarm();
+        return;
     }
 
     let hardModes = misc_data.hard_modes[modalCharID];
@@ -5411,9 +5432,9 @@ function GenerateModelVariables(multiplier) {
 
     for (let i = 0; i < areas.length; i++) {
 
-        // if (parseInt(areas[i]) > 17) {
-        //     break;
-        // }
+        if (data.server == "Global" && parseInt(areas[i]) > globalMaxWorld) {
+            break;
+        }
 
         for (let s = 1; s <= 5; s++) {
 
