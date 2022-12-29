@@ -5452,6 +5452,8 @@ function GenerateModelVariables(multiplier) {
                 newVariable["AP"] = 10;
 
                 availableGear["T" + tier + "_" + drops[stage][0]] = true;
+                availableGear["T" + tier + "_" + drops[stage][1]] = true;
+                availableGear["T" + tier + "_" + drops[stage][2]] = true;
             }
 
             modelVariables[stage] = newVariable;
