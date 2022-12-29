@@ -24,7 +24,7 @@ function init() {
         let eventDiv = document.createElement("div");
         let eventImg = document.createElement("img");
 
-        eventImg.src = event_data.events[event_data.event_order[i]].icon;
+        eventImg.src = "icons/EventIcon/" + event_data.events[event_data.event_order[i]].icon;
         eventImg.className = "event-icon";
 
         eventDiv.appendChild(eventImg);

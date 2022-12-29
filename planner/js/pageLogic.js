@@ -72,7 +72,7 @@ let modalOpen = "";
 let pageTheme = "dark";
 let alertColour = "#e1e1e1";
 
-let modelVariables;
+let modelVariables, availableGear;
 let campaignMultiplier = 1;
 let OptimalStageRuns = [];
 
@@ -89,17 +89,17 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/skillinfo.json?13').done(function (json) {
+    $.getJSON('json/skillinfo.json?14').done(function (json) {
         skillinfo = json;
         checkResources();
     });
 
-    $.getJSON('json/charlist.json?18').done(function (json) {
+    $.getJSON('json/charlist.json?19').done(function (json) {
         charlist = json;
         checkResources();
     });
 
-    $.getJSON('json/localisations.json?10').done(function (json) {
+    $.getJSON('json/localisations.json?11').done(function (json) {
         localisations = json;
         checkResources();
     });
@@ -466,16 +466,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.2.25".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.2.26".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#7721");
         Swal.fire({
-            title: "Updated to Version 1.2.25",
+            title: "Updated to Version 1.2.26",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.2.25";
+        data.site_version = "1.2.26";
         saveToLocalStorage(false);
     }
 
@@ -5429,6 +5429,7 @@ function GenerateModelVariables(multiplier) {
     let drops = misc_data.gear_drops;
 
     modelVariables = {};
+    availableGear = {};
 
     for (let i = 0; i < areas.length; i++) {
 
@@ -5449,6 +5450,8 @@ function GenerateModelVariables(multiplier) {
                 newVariable["T" + tier + "_" + drops[stage][1]] = rates[areas[i]][gr].Rates[1] * multiplier;
                 newVariable["T" + tier + "_" + drops[stage][2]] = rates[areas[i]][gr].Rates[2] * multiplier;
                 newVariable["AP"] = 10;
+
+                availableGear["T" + tier + "_" + drops[stage][0]] = true;
             }
 
             modelVariables[stage] = newVariable;
@@ -5469,7 +5472,7 @@ function GenerateGearLinearModel() {
     let keys = Object.keys(neededMatDict);
 
     for (let i = 0; i < keys.length; i++) {
-        if (gearLookup.includes(keys[i]) && neededMatDict[keys[i]] != 0) {
+        if (availableGear[keys[i]] == true && neededMatDict[keys[i]] != 0) {
             model.constraints[keys[i]] = { "min": neededMatDict[keys[i]] };
         }
     }
