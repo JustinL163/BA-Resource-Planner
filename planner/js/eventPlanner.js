@@ -199,6 +199,10 @@ function LoadEvent(eventId) {
 
 function EventTabClicked(tab) {
 
+    if (!current_event) {
+        return;
+    }
+
     let tabs = document.getElementsByClassName('event-tab-button');
 
     for (let i = 0; i < tabs.length; i++) {
