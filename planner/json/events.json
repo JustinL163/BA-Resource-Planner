@@ -1,5 +1,9 @@
 {
     "event_order": [
+        "neverland-rerun",
+        "bunny-chaser"
+    ],
+    "TEMP": [
         "after-school-sweets",
         "summer-gehenna",
         "neverland-rerun",
@@ -16,70 +20,182 @@
         },
         "summer-gehenna": {
             "icon": "Event_804_En.png",
-            "date": ""
+            "reset_time": 1681153200,
+            "start_time": 1681178400,
+            "end_time": 1681783200,
+            "maint_hours": 6,
+            "currencies": {
+                "Supply_Box": {
+                    "icon": "Supply_Box.png",
+                    "bonus_units": [
+                        {"id": "10022", "bonus": 0.2},
+                        {"id": "10023", "bonus": 0.2},
+                        {"id": "16006", "bonus": 0.2},
+                        {"id": "10002", "bonus": 0.2},
+                        {"id": "26000", "bonus": 0.2},
+                        {"id": "10030", "bonus": 0.2},
+                        {"id": "20008", "bonus": 0.2}
+                    ]
+                },
+                "Grilled_Corn": {
+                    "icon": "Grilled_Corn.png",
+                    "bonus_units": [
+                        {"id": "10006", "bonus": 0.25},
+                        {"id": "10023", "bonus": 0.25},
+                        {"id": "13002", "bonus": 0.25},
+                        {"id": "26002", "bonus": 0.25},
+                        {"id": "13007", "bonus": 0.25}
+                    ]
+                },
+                "Summer_Sunglasses": {
+                    "icon": "Summer_Sunglasses.png",
+                    "bonus_units": [
+                        {"id": "10004", "bonus": 0.25},
+                        {"id": "10022", "bonus": 0.25},
+                        {"id": "10009", "bonus": 0.25},
+                        {"id": "16006", "bonus": 0.25},
+                        {"id": "23001", "bonus": 0.25}
+                    ]
+                }
+            }
         },
         "neverland-rerun": {
             "icon": "Event_805_En.png",
-            "date": "",
+            "reset_time": 1681153200,
+            "start_time": 1681178400,
+            "end_time": 1681783200,
+            "maint_hours": 6,
+            "available_targets": ["Shop", "Materials", "Manual"],
+            "event_point_target": 10000,
+            "currency_targets": ["Mushroom", "Event_Point"],
             "currencies": {
                 "Mushroom": {
                     "icon": "Mushroom.png",
-                    "bonus_units": {
-                        "23004": 0.25,
-                        "20000": 0.25,
-                        "16002": 0.25,
-                        "10014": 0.25,
-                        "10040": 0.25,
-                        "16009": 0.25
-                    }
+                    "shortname": "Mushroom",
+                    "bonus_units": [
+                        {"id": "23004", "bonus": 0.25},
+                        {"id": "20000", "bonus": 0.25},
+                        {"id": "16002", "bonus": 0.25},
+                        {"id": "10014", "bonus": 0.25},
+                        {"id": "10040", "bonus": 0.25},
+                        {"id": "16009", "bonus": 0.25}
+                    ]
                 },
-                "Bamboo": {
+                "Black_Bamboo_Shoot": {
                     "icon": "Black_Bamboo_Shoot.png",
-                    "bonus_units": {
-                        "10050": 0.25,
-                        "13012": 0.25,
-                        "20002": 0.25,
-                        "13009": 0.25,
-                        "20015": 0.25,
-                        "10034": 0.25
-                    }
+                    "shortname": "Bamboo",
+                    "bonus_units": [
+                        {"id": "10050", "bonus": 0.25},
+                        {"id": "13012", "bonus": 0.25},
+                        {"id": "20002", "bonus": 0.25},
+                        {"id": "13009", "bonus": 0.25},
+                        {"id": "20015", "bonus": 0.25},
+                        {"id": "10034", "bonus": 0.25}
+                    ]
                 },
                 "Ginseng": {
                     "icon": "Ginseng.png",
-                    "bonus_units": {
-                        "10011": 0.25,
-                        "10025": 0.25,
-                        "20006": 0.25,
-                        "13001": 0.25,
-                        "23006": 0.25,
-                        "16004": 0.25
-                    }
+                    "shortname": "Ginseng",
+                    "bonus_units": [
+                        {"id": "10011", "bonus": 0.25},
+                        {"id": "10025", "bonus": 0.25},
+                        {"id": "20006", "bonus": 0.25},
+                        {"id": "13001", "bonus": 0.25},
+                        {"id": "23006", "bonus": 0.25},
+                        {"id": "16004", "bonus": 0.25}
+                    ]
                 },
                 "Event_Point": {
                     "icon": "Event_Point.png",
-                    "bonus_units": {
-                        "10050": 0.3,
-                        "10025": 0.3,
-                        "20006": 0.3,
-                        "13012": 0.3,
+                    "shortname": "Event Point",
+                    "bonus_units": [
+                        {"id": "10050", "bonus": 0.3},
+                        {"id": "10025", "bonus": 0.3},
+                        {"id": "20006", "bonus": 0.3},
+                        {"id": "13012", "bonus": 0.3},
 
-                        "20002": 0.1,
-                        "13009": 0.1,
-                        "20015": 0.1,
-                        "10034": 0.1,
-                        "23004": 0.1,
-                        "20000": 0.1,
-                        "16002": 0.1,
-                        "10014": 0.1,
-                        "10040": 0.1,
-                        "16009": 0.1,
-                        "10011": 0.1,
-                        "13001": 0.1,
-                        "23006": 0.1,
-                        "16004": 0.1
-                    }
+                        {"id": "20002", "bonus": 0.1},
+                        {"id": "13009", "bonus": 0.1},
+                        {"id": "20015", "bonus": 0.1},
+                        {"id": "10034", "bonus": 0.1},
+                        {"id": "23004", "bonus": 0.1},
+                        {"id": "20000", "bonus": 0.1},
+                        {"id": "16002", "bonus": 0.1},
+                        {"id": "10014", "bonus": 0.1},
+                        {"id": "10040", "bonus": 0.1},
+                        {"id": "16009", "bonus": 0.1},
+                        {"id": "10011", "bonus": 0.1},
+                        {"id": "13001", "bonus": 0.1},
+                        {"id": "23006", "bonus": 0.1},
+                        {"id": "16004", "bonus": 0.1}
+                    ]
                 }
-            }
+            },
+            "shops": {
+                "Mushroom": [
+                    {"type": "Eleph", "id": "16002", "count": 50, "cost": 25},
+                    {"type": "XpReport", "id": "XP_1", "count": 200, "cost": 1},
+                    {"type": "XpReport", "id": "XP_2", "count": 150, "cost": 10},
+                    {"type": "XpReport", "id": "XP_3", "count": 80, "cost": 40},
+                    {"type": "XpReport", "id": "XP_4", "count": 15, "cost": 200},
+                    {"type": "Material", "id": "4070", "count": 40, "cost": 7},
+                    {"type": "Material", "id": "4071", "count": 30, "cost": 12},
+                    {"type": "Material", "id": "4072", "count": 20, "cost": 24},
+                    {"type": "Material", "id": "4073", "count": 10, "cost": 60}
+                ],
+                "Black_Bamboo_Shoot": [
+                    {"type": "Eleph", "id": "16004", "count": 50, "cost": 25},
+                    {"type": "XpOrb", "id": "GXP_1", "count": 150, "cost": 1},
+                    {"type": "XpOrb", "id": "GXP_2", "count": 100, "cost": 4},
+                    {"type": "XpOrb", "id": "GXP_3", "count": 50, "cost": 16},
+                    {"type": "XpOrb", "id": "GXP_4", "count": 10, "cost": 64},
+                    {"type": "Material", "id": "3070", "count": 35, "cost": 20},
+                    {"type": "Material", "id": "3071", "count": 30, "cost": 40},
+                    {"type": "Material", "id": "3072", "count": 25, "cost": 100},
+                    {"type": "Material", "id": "3073", "count": 7, "cost": 200}
+                ],
+                "Ginseng": [
+                    {"type": "Eleph", "id": "13001", "count": 50, "cost": 25},
+                    {"type": "Material", "id": "190", "count": 150, "cost": 3},
+                    {"type": "Material", "id": "191", "count": 60, "cost": 10},
+                    {"type": "Material", "id": "192", "count": 30, "cost": 25},
+                    {"type": "Material", "id": "193", "count": 15, "cost": 50},
+                    {"type": "Material", "id": "180", "count": 150, "cost": 3},
+                    {"type": "Material", "id": "181", "count": 60, "cost": 10},
+                    {"type": "Material", "id": "182", "count": 30, "cost": 25},
+                    {"type": "Material", "id": "183", "count": 15, "cost": 50},
+                    {"type": "Furniture", "id": "White_Coffee_Table", "count": 1, "cost": 1000}
+                ]
+            },
+            "stages": [
+                {"type": "Story", "number": 1, "cost": 10, "initial": {"Event_Point": 10, "Mushroom": 10, "Ginseng": 5}},
+                {"type": "Story", "number": 2, "cost": 10, "initial": {"Event_Point": 10, "Black_Bamboo_Shoot": 10, "Ginseng": 5}},
+                {"type": "Story", "number": 3, "cost": 10, "initial": {"Event_Point": 10, "Mushroom": 10, "Ginseng": 5}},
+                {"type": "Story", "number": 4, "cost": 10, "initial": {"Event_Point": 10, "Black_Bamboo_Shoot": 10, "Ginseng": 5}},
+                {"type": "Story", "number": 5, "cost": 10, "initial": {"Event_Point": 10, "Mushroom": 10, "Ginseng": 5}},
+                {"type": "Story", "number": 6, "cost": 10, "initial": {"Event_Point": 10, "Black_Bamboo_Shoot": 10, "Ginseng": 5}},
+                {"type": "Story", "number": 7, "cost": 10, "initial": {"Event_Point": 10, "Mushroom": 10, "Ginseng": 5}},
+                {"type": "Story", "number": 8, "cost": 10, "initial": {"Event_Point": 10, "Black_Bamboo_Shoot": 10, "Ginseng": 5}},
+                
+                {"type": "Quest", "number": 1, "cost": 10, "initial": {"Event_Point": 50, "Mushroom": 100, "Black_Bamboo_Shoot": 40}, "drops": {"Event_Point": 3, "Mushroom": 6, "Black_Bamboo_Shoot": 2, "Rohonc_1": 0.25, "Rohonc_2": 0.15}},
+                {"type": "Quest", "number": 2, "cost": 10, "initial": {"Event_Point": 50, "Black_Bamboo_Shoot": 80, "Ginseng": 40}, "drops": {"Event_Point": 3, "Black_Bamboo_Shoot": 5, "Ginseng": 2, "Nimrud_1": 0.25, "Nimrud_2": 0.15}},
+                {"type": "Quest", "number": 3, "cost": 10, "initial": {"Event_Point": 50, "Mushroom": 40, "Ginseng": 80}, "drops": {"Event_Point": 3, "Mushroom": 2, "Ginseng": 5, "Haniwa_1": 0.25, "Haniwa_2": 0.15}},
+                {"type": "Quest", "number": 4, "cost": 10, "initial": {"Event_Point": 100, "Mushroom": 20, "Black_Bamboo_Shoot": 20, "Ginseng": 20}, "drops": {"Event_Point": 10, "Mushroom": 1, "Black_Bamboo_Shoot": 1, "Ginseng": 1, "Voynich_1": 0.25, "Voynich_2": 0.15}},
+                {"type": "Quest", "number": 5, "cost": 15, "initial": {"Event_Point": 63, "Mushroom": 350}, "drops": {"Event_Point": 5, "Mushroom": 20, "Rohonc_2": 0.25, "Rohonc_3": 0.08}},
+                {"type": "Quest", "number": 6, "cost": 15, "initial": {"Event_Point": 63, "Black_Bamboo_Shoot": 300}, "drops": {"Event_Point": 5, "Black_Bamboo_Shoot": 16, "Nimrud_2": 0.25, "Nimrud_3": 0.08}},
+                {"type": "Quest", "number": 7, "cost": 15, "initial": {"Event_Point": 63, "Ginseng": 250}, "drops": {"Event_Point": 5, "Ginseng": 14, "Haniwa_2": 0.25, "Haniwa_3": 0.08}},
+                {"type": "Quest", "number": 8, "cost": 15, "initial": {"Event_Point": 175, "Mushroom": 50, "Black_Bamboo_Shoot": 50, "Ginseng": 50}, "drops": {"Event_Point": 18, "Mushroom": 3, "Black_Bamboo_Shoot": 3, "Ginseng": 3, "Voynich_2": 0.25, "Voynich_3": 0.08}},
+                {"type": "Quest", "number": 9, "cost": 20, "initial": {"Event_Point": 67, "Mushroom": 800}, "drops": {"Event_Point": 7, "Mushroom": 40, "Rohonc_2": 0.25, "Rohonc_3": 0.12, "Rohonc_4": 0.021}},
+                {"type": "Quest", "number": 10, "cost": 20, "initial": {"Event_Point": 67, "Black_Bamboo_Shoot": 640}, "drops": {"Event_Point": 7, "Black_Bamboo_Shoot": 32, "Nimrud_2": 0.25, "Nimrud_3": 0.12, "Nimrud_4": 0.021}},
+                {"type": "Quest", "number": 11, "cost": 20, "initial": {"Event_Point": 67, "Ginseng": 533}, "drops": {"Event_Point": 7, "Ginseng": 27, "Haniwa_2": 0.25, "Haniwa_3": 0.12, "Haniwa_4": 0.021}},
+                {"type": "Quest", "number": 12, "cost": 20, "initial": {"Event_Point": 267, "Mushroom": 107, "Black_Bamboo_Shoot": 107, "Ginseng": 107}, "drops": {"Event_Point": 27, "Mushroom": 5, "Black_Bamboo_Shoot": 5, "Ginseng": 5, "Voynich_2": 0.25, "Voynich_3": 0.12, "Voynich_4": 0.021}},
+
+                {"type": "Challenge", "number": 1, "cost": 5},
+                {"type": "Challenge", "number": 2, "cost": 5},
+                {"type": "Challenge", "number": 3, "cost": 5},
+                {"type": "Challenge", "number": 4, "cost": 5},
+                {"type": "Challenge", "number": 5, "cost": 5}
+            ]
         },
         "on-your-mark": {
             "icon": "Event_817_Jp.png",
@@ -87,7 +203,107 @@
         },
         "bunny-chaser": {
             "icon": "Event_806_En.png",
-            "date": ""
+            "reset_time": 1681153200,
+            "start_time": 1681178400,
+            "end_time": 1681783200,
+            "maint_hours": 6,
+            "available_targets": ["Shop", "Currency", "Manual"],
+            "currency_targets": ["Chocolate_Coin"],
+            "currencies": {
+                "Chocolate_Coin": {
+                    "icon": "Chocolate_Coin.png",
+                    "shortname": "Chocolate Coin",
+                    "bonus_units": [
+                        {"id": "10026", "bonus": 0.3},
+                        {"id": "20019", "bonus": 0.3},
+
+                        {"id": "16001", "bonus": 0.2},
+                        {"id": "26001", "bonus": 0.2}
+                    ]
+                },
+                "Rabbit_Sticker": {
+                    "icon": "Rabbit_Sticker.png",
+                    "shortname": "Rabbit Sticker",
+                    "bonus_units": [
+                        {"id": "10027", "bonus": 0.3},
+
+                        {"id": "10008", "bonus": 0.2},
+                        {"id": "13010", "bonus": 0.2},
+                        {"id": "23003", "bonus": 0.2},
+                        {"id": "13000", "bonus": 0.1}
+                    ]
+                },
+                "Boarding_Ticket": {
+                    "icon": "Boarding_Ticket.png",
+                    "shortname": "Boarding Ticket",
+                    "bonus_units": [
+                        {"id": "10028", "bonus": 0.3},
+
+                        {"id": "20001", "bonus": 0.2},
+                        {"id": "10007", "bonus": 0.2},
+                        {"id": "20013", "bonus": 0.2},
+                        {"id": "13000", "bonus": 0.1}
+                    ]
+                }
+            },
+            "shops": {
+                "Rabbit_Sticker": [
+                    {"type": "XpReport", "id": "XP_1", "count": 150, "cost": 1},
+                    {"type": "XpReport", "id": "XP_2", "count": 75, "cost": 10},
+                    {"type": "XpReport", "id": "XP_3", "count": 25, "cost": 40},
+                    {"type": "XpReport", "id": "XP_4", "count": 10, "cost": 200},
+                    {"type": "Material", "id": "3050", "count": 8, "cost": 10},
+                    {"type": "Material", "id": "3051", "count": 6, "cost": 30},
+                    {"type": "Material", "id": "3052", "count": 4, "cost": 100},
+                    {"type": "Material", "id": "3053", "count": 1, "cost": 300},
+                    {"type": "Material", "id": "170", "count": 70, "cost": 5},
+                    {"type": "Material", "id": "171", "count": 35, "cost": 15},
+                    {"type": "Material", "id": "172", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "173", "count": 10, "cost": 200},
+                    {"type": "Furniture", "id": "Counter_Chair_Gold_Black", "count": 1, "cost": 500},
+                    {"type": "Furniture", "id": "Counter_Chair_Gold_Red", "count": 1, "cost": 500}
+                ],
+                "Boarding_Ticket": [
+                    {"type": "XpOrb", "id": "GXP_1", "count": 150, "cost": 1},
+                    {"type": "XpOrb", "id": "GXP_2", "count": 75, "cost": 4},
+                    {"type": "XpOrb", "id": "GXP_3", "count": 25, "cost": 15},
+                    {"type": "XpOrb", "id": "GXP_4", "count": 10, "cost": 60},
+                    {"type": "Material", "id": "4050", "count": 25, "cost": 5},
+                    {"type": "Material", "id": "4051", "count": 20, "cost": 15},
+                    {"type": "Material", "id": "4052", "count": 15, "cost": 50},
+                    {"type": "Material", "id": "4053", "count": 10, "cost": 200},
+                    {"type": "Material", "id": "110", "count": 70, "cost": 5},
+                    {"type": "Material", "id": "111", "count": 35, "cost": 15},
+                    {"type": "Material", "id": "112", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "113", "count": 10, "cost": 200},
+                    {"type": "Furniture", "id": "Counter_Chair_Silver_Blue", "count": 1, "cost": 500},
+                    {"type": "Furniture", "id": "Counter_Chair_Dark_Violet", "count": 1, "cost": 500}
+                ]
+            },
+            "stages": [
+                {"type": "Story", "number": 1, "cost": 10, "initial": {"Chocolate_Coin": 10, "Rabbit_Sticker": 20}},
+                {"type": "Story", "number": 2, "cost": 10, "initial": {"Chocolate_Coin": 10, "Boarding_Ticket": 20}},
+                {"type": "Story", "number": 3, "cost": 10, "initial": {"Chocolate_Coin": 10, "Rabbit_Sticker": 20}},
+                {"type": "Story", "number": 4, "cost": 10, "initial": {"Chocolate_Coin": 10, "Boarding_Ticket": 20}},
+                {"type": "Story", "number": 5, "cost": 10, "initial": {"Chocolate_Coin": 10, "Rabbit_Sticker": 20}},
+                {"type": "Story", "number": 6, "cost": 10, "initial": {"Chocolate_Coin": 10, "Boarding_Ticket": 20}},
+                
+                {"type": "Quest", "number": 1, "cost": 10, "initial": {"Rabbit_Sticker": 300, "Boarding_Ticket": 100}, "drops": {"Rabbit_Sticker": 13, "Boarding_Ticket": 4}},
+                {"type": "Quest", "number": 2, "cost": 10, "initial": {"Rabbit_Sticker": 100, "Boarding_Ticket": 300}, "drops": {"Rabbit_Sticker": 4, "Boarding_Ticket": 13}},
+                {"type": "Quest", "number": 3, "cost": 10, "initial": {"Chocolate_Coin": 300, "Rabbit_Sticker": 50, "Boarding_Ticket": 50}, "drops": {"Chocolate_Coin": 13, "Rabbit_Sticker": 2, "Boarding_Ticket": 2}},
+                {"type": "Quest", "number": 4, "cost": 12, "initial": {"Rabbit_Sticker": 350, "Boarding_Ticket": 150}, "drops": {"Rabbit_Sticker": 16, "Boarding_Ticket": 6}},
+                {"type": "Quest", "number": 5, "cost": 12, "initial": {"Rabbit_Sticker": 150, "Boarding_Ticket": 350}, "drops": {"Rabbit_Sticker": 6, "Boarding_Ticket": 16}},
+                {"type": "Quest", "number": 6, "cost": 12, "initial": {"Chocolate_Coin": 350, "Rabbit_Sticker": 75, "Boarding_Ticket": 75}, "drops": {"Chocolate_Coin": 16, "Rabbit_Sticker": 3, "Boarding_Ticket": 3}},
+                {"type": "Quest", "number": 7, "cost": 15, "initial": {"Chocolate_Coin": 200, "Rabbit_Sticker": 400}, "drops": {"Chocolate_Coin": 12, "Rabbit_Sticker": 21}},
+                {"type": "Quest", "number": 8, "cost": 15, "initial": {"Chocolate_Coin": 200, "Boarding_Ticket": 400}, "drops": {"Chocolate_Coin": 12, "Boarding_Ticket": 21}},
+                {"type": "Quest", "number": 9, "cost": 15, "initial": {"Chocolate_Coin": 500}, "drops": {"Chocolate_Coin": 30}},
+
+                {"type": "Challenge", "number": 1, "cost": 5},
+                {"type": "Challenge", "number": 2, "cost": 5},
+                {"type": "Challenge", "number": 3, "cost": 5},
+                {"type": "Challenge", "number": 4, "cost": 5},
+                {"type": "Challenge", "number": 5, "cost": 5}
+            ]
         },
         "get-set-go": {
             "icon": "Event_818_Jp.png",

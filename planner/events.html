@@ -25,7 +25,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/event-planner.css">
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="packages/javascript-lp-solver/solver.js"></script>
+    <script src="js/config.js?14"></script>
+    <script src="js/common.js?1"></script>
     <script src="js/eventPlanner.js"></script>
     <title>Changelog</title>
 </head>
@@ -40,6 +46,10 @@
             <li><a href="changelog.html">Changelog</a></li>
             <li><a href="privacy.html">Privacy</a></li>
         </ul>
+        <div class="nav-right">
+            <select name="languages" id="languages" onchange="languageChanged()"></select>
+            <img src="icons/UI/sun.svg" id="theme-button" onclick="switchTheme()">
+        </div>
     </nav>
     <div id="mobile-links-wrapper">
         <ul class="mobile-links">
@@ -53,11 +63,80 @@
         <div id="events-list"></div>
         <div id="event-content-container">
             <div id="event-tab-menu">
-                <div class="event-tab">Resources</div>
-                <div class="event-tab">Energy</div>
-                <div class="event-tab">Bonus</div>
-                <div class="event-tab">Shop</div>
+                <div id="tab-Targets" class="event-tab-button" onclick="EventTabClicked('Targets')">Targets</div>
+                <div id="tab-Energy" class="event-tab-button" onclick="EventTabClicked('Energy')">Energy</div>
+                <div id="tab-Bonus" class="event-tab-button" onclick="EventTabClicked('Bonus')">Bonus</div>
+                <div id="tab-Shop" class="event-tab-button" onclick="EventTabClicked('Shop')">Shop</div>
+                <div id="tab-Stages" class="event-tab-button" onclick="EventTabClicked('Stages')">Stages</div>
             </div>
+            <div class="event-tab" id="Targets-tab">
+                <div id="optimisation-approaches-container">
+                    <div class="optimise-approach-button" id="tab-opti-Shop" onclick="SetOptimise('Shop')">Only Shop</div>
+                    <div class="optimise-approach-button" id="tab-opti-Materials" onclick="SetOptimise('Materials')">Materials</div>
+                    <div class="optimise-approach-button" id="tab-opti-Currency" onclick="SetOptimise('Currency')">Currency</div>
+                    <div class="optimise-approach-button" id="tab-opti-Manual" onclick="SetOptimise('Manual')">Manual</div>
+                </div>
+                <div id="optimisation-settings-container"></div>
+            </div>
+            <div class="event-tab" id="Energy-tab" style="display: block;">
+                <div id="energy-sources-fixed-container">
+                    <div class="energy-source">
+                        <img src="icons/EventIcon/EnergyIcon/EnergyNatural.png">
+                        <p id="energy-natural-total">0</p>
+                    </div>
+                    <div class="energy-source">
+                        <img src="icons/EventIcon/EnergyIcon/EnergyDailyTask.png">
+                        <p id="energy-dailytask-total">0</p>
+                    </div>
+                    <div class="energy-source">
+                        <img src="icons/EventIcon/EnergyIcon/EnergyClub.png">
+                        <p id="energy-club-total">0</p>
+                    </div>
+                    <div class="energy-source">
+                        <img src="icons/EventIcon/EnergyIcon/EnergyWeeklyTask.png">
+                        <p id="energy-weeklytask-total">0</p>
+                    </div>
+                    <div class="energy-source">
+                        <img src="icons/EventIcon/EnergyIcon/Loading_Arona.png">
+                        <p id="energy-aronalogin-total">0</p>
+                    </div>
+                </div>
+                <div id="energy-sources-editable-container">
+                    <div class="energy-source" onclick="EnergySourceClicked('Pyro')">
+                        <img src="icons/EventIcon/EnergyIcon/Common_Icon_Diamond.png">
+                        <p id="energy-pyro-total">0</p>
+                    </div>
+                    <div class="energy-source" onclick="EnergySourceClicked('ArenaCoin')">
+                        <img src="icons/EventIcon/EnergyIcon/ArenaCoin.png">
+                        <p id="energy-arenacoin-total">0</p>
+                    </div>
+                    <div class="energy-source" onclick="EnergySourceClicked('Cafe')">
+                        <img src="icons/EventIcon/EnergyIcon/Common_Icon_Cafe.png">
+                        <p id="energy-cafe-total">3600</p>
+                    </div>
+                    <div class="energy-source" onclick="EnergySourceClicked('EnergyPack')">
+                        <img src="icons/EventIcon/EnergyIcon/Goods_Icon_Biweekly_0.png">
+                        <p id="energy-energypack-total">0</p>
+                    </div>
+                    <div class="energy-source">
+                        <img src="icons/EventIcon/EnergyIcon/Energy.png">
+                        <p id="energy-total">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="event-tab" id="Bonus-tab">
+                <p>Characters:</p>
+                <div id="bonus-chars-container"></div>
+                <div id="currency-bonuses"></div>
+            </div>
+            <div class="event-tab" id="Shop-tab">
+                <div id="currency-shop-tabs"></div>
+                <div id="currency-shop-content"></div>
+            </div>
+            <div class="event-tab" id="Stages-tab">
+                <div id="stages-table-container"></div>
+            </div>
+            <div id="rewards-container"></div>
         </div>
     </div>
 </body>
