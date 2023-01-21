@@ -103,8 +103,8 @@ function init() {
     InitKeyTracking();
 
     //TEMP
-    LoadEvent('neverland-rerun');
-    EventTabClicked('Targets');
+    // LoadEvent('neverland-rerun');
+    // EventTabClicked('Targets');
 }
 
 async function saveToLocalStorage(notify) {
