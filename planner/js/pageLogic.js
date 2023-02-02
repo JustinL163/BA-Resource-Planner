@@ -822,7 +822,11 @@ async function sectionQuickSet(section) {
                 "- 1 - 1 - 1 - 1": "Target"
             }
         },
-        "Level": {            
+        "Level": {          
+            " 83": {
+                "83 83": "Both",
+                "- 83": "Target"
+            },
             " 80": {
                 "80 80": "Both",
                 "- 80": "Target"
