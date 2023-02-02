@@ -19,6 +19,8 @@ let event_point_target = 0;
 let targetedMaterials = {}, targetedCurrency = "";
 let optimisationType = "";
 
+let displayIncluded = {};
+
 let initialClearRewards = {};
 let initialClearCost = 0;
 
@@ -36,7 +38,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/charlist.json?19').done(function (json) {
+    $.getJSON('json/charlist.json?20').done(function (json) {
         charlist = json;
         checkResources();
     });
@@ -146,6 +148,7 @@ function LoadEvent(eventId) {
     currencyNeeded = {};
     targetedMaterials = {};
     optimisationType = "";
+    stage_runs = {};
 
     if (events_data[current_event]) {
         event_data = events_data[current_event];
@@ -157,6 +160,10 @@ function LoadEvent(eventId) {
         enabledBonusUnits = [];
         event_data.shop_purchases = {};
         event_data.currency_needed = {};
+    }
+
+    if (!event_data.shop_purchases) {
+        event_data.shop_purchases = InitMaxShopPurchases();
     }
 
     if (event_config.events[current_event].event_point_target) {
@@ -192,6 +199,7 @@ function LoadEvent(eventId) {
     CalculateNeededFinal();
     InitTargetsTab();
     GenerateStagesTable();
+    GeneratePointsTable();
     LoadFirstShop();
 
     eventLoading = false;
@@ -1301,7 +1309,13 @@ function CalculateStageDrops(result, ignoreRequirement) {
     }
 
     let totalCurrencies = {};
-    let totalDrops = {};
+    let totalArtifacts = {};
+    let totalSchoolMats = {};
+    let totalEleph = {};
+    let totalXps = {};
+    let totalEligma = 0;
+    let totalCredit = 0;
+    let totalSecretTech = 0;
     let energyCost = 0;
 
     let stageRuns = {};
@@ -1337,11 +1351,11 @@ function CalculateStageDrops(result, ignoreRequirement) {
                 totalCurrencies[drop] += runs * Math.ceil(drops[drop] + (drops[drop] * (currencyBonuses[drop] ?? 0))).toFixed(5);
             }
             else {
-                if (!totalDrops[drop]) {
-                    totalDrops[drop] = 0;
+                if (!totalArtifacts[drop]) {
+                    totalArtifacts[drop] = 0;
                 }
 
-                totalDrops[drop] += runs * drops[drop];
+                totalArtifacts[drop] += runs * drops[drop];
             }
         })
 
@@ -1373,6 +1387,20 @@ function CalculateStageDrops(result, ignoreRequirement) {
         energyCost += initialClearCost;
     }
 
+    if (displayIncluded['ShopPurchases']) {
+        AddShopPurchases(totalArtifacts, totalSchoolMats, totalEleph);
+    }
+
+    if (displayIncluded['PointRewards']) {
+        let pointTarget = event_config.events[current_event].event_point_target;
+        let intResults = AddPointRewards(pointTarget, totalXps, totalCredit, totalEligma, totalSecretTech);
+        if (intResults) {
+            totalCredit = intResults[0];
+            totalEligma = intResults[1];
+            totalSecretTech = intResults[2];
+        }
+    }
+
     for (let i = 0; i < neededCurrencies.length; i++) {
 
         if (initialClearRewards[neededCurrencies[i]]) {
@@ -1385,7 +1413,8 @@ function CalculateStageDrops(result, ignoreRequirement) {
     }
 
     if (feasible) {
-        UpdateRewardsObtained(totalCurrencies, totalDrops, energyCost);
+        UpdateRewardsObtained(totalCurrencies, energyCost, totalArtifacts, totalSchoolMats, totalEleph, totalXps,
+            totalCredit, totalEligma, totalSecretTech);
         stage_runs = stageRuns;
     }
     else {
@@ -1398,6 +1427,101 @@ function CalculateStageDrops(result, ignoreRequirement) {
 
 }
 
+function AddShopPurchases(totalArtifacts, totalSchoolMats, totalEleph) {
+
+    let shops = Object.keys(event_data.shop_purchases);
+
+    for (let i = 0; i < shops.length; i++) {
+
+        let shop = event_data.shop_purchases[shops[i]];
+
+        let items = Object.keys(shop);
+
+        for (let ii = 0; ii < items.length; ii++) {
+
+            let itemNum = parseInt(items[ii]);
+
+            if (itemNum) {
+
+                if (itemNum < 1000) {
+
+                    let matName = matLookup.get(itemNum);
+
+                    if (!totalArtifacts[matName]) {
+                        totalArtifacts[matName] = 0;
+                    }
+
+                    totalArtifacts[matName] += parseInt(shop[items[ii]]);
+                }
+                else if (itemNum < 5000) {
+
+                    let matName = matLookup.get(itemNum);
+
+                    if (!totalSchoolMats[matName]) {
+                        totalSchoolMats[matName] = 0;
+                    }
+
+                    totalSchoolMats[matName] += parseInt(shop[items[ii]]);
+                }
+                else if (itemNum >= 10000 && itemNum < 30000) {
+
+
+                }
+            }
+        }
+    }
+}
+
+function AddPointRewards(pointTarget, totalXps, totalCredit, totalEligma, totalSecretTech) {
+
+    let pointTiers = event_config.events[current_event].point_rewards;
+
+    if (!pointTiers) {
+        return;
+    }
+
+    for (let i = 0; i < pointTiers.length; i++) {
+
+        let pTier = pointTiers[i];
+
+        if (pTier.points > pointTarget) {
+            break;
+        }
+
+        if (pTier.type == "XpReport" || pTier.type == "XpOrb") {
+
+            if (!totalXps[pTier.id]) {
+                totalXps[pTier.id] = 0;
+            }
+
+            totalXps[pTier.id] += pTier.count;
+        }
+        else if (pTier.type == "Eligma") {
+            totalEligma += pTier.count;
+        }
+        else if (pTier.type == "Credit") {
+            totalCredit += pTier.count;
+        }
+        else if (pTier.type == "SecretTech") {
+            totalSecretTech += pTier.count;
+        }
+    }
+
+    return [totalCredit, totalEligma, totalSecretTech];
+}
+
+function DisplayOptionClicked(option) {
+
+    if (displayIncluded[option]) {
+        displayIncluded[option] = false;
+    }
+    else {
+        displayIncluded[option] = true;
+    }
+
+    RefreshDropsDisplay();
+}
+
 function ClearRewards() {
 
     let rewardsContainer = document.getElementById('rewards-container');
@@ -1407,41 +1531,119 @@ function ClearRewards() {
     }
 }
 
-function UpdateRewardsObtained(totalCurrencies, totalDrops, energyCost) {
+function UpdateRewardsObtained(totalCurrencies, energyCost, totalArtifacts, totalSchoolMats, totalEleph, totalXps, totalCredit, totalEligma, totalSecretTech) {
 
     ClearRewards();
 
     let rewardsContainer = document.getElementById('rewards-container');
 
-    rewardsContainer.appendChild(CreateRewardItem("icons/EventIcon/EnergyIcon/EnergyPadded.png", energyCost, ""));
+    let currenciesContainer = document.createElement('div');
+    currenciesContainer.className = "reward-group";
+    let artifactsContainer = document.createElement('div');
+    artifactsContainer.className = "reward-group";
+    let schoolMatsContainer = document.createElement('div');
+    schoolMatsContainer.className = "reward-group";
+    let xpMatsContainer = document.createElement('div');
+    xpMatsContainer.className = "reward-group";
+    let miscContainer = document.createElement('div');
+    miscContainer.className = "reward-group";
+
+    currenciesContainer.appendChild(CreateRewardItem("icons/EventIcon/EnergyIcon/EnergyPadded.png", energyCost, ""));
 
     let currencyNames = Object.keys(totalCurrencies);
 
     currencyNames.forEach((name) => {
 
-        rewardsContainer.appendChild(CreateRewardItem("icons/EventIcon/CurrencyIcon/" + name + ".png", totalCurrencies[name], ""));
+        currenciesContainer.appendChild(CreateRewardItem("icons/EventIcon/CurrencyIcon/" + name + ".png", totalCurrencies[name], ""));
     })
 
-    let artifactNames = Object.keys(totalDrops).sort();
+    let dropSliced = "";
+    let dropRarity = "";
+    let currentMatType = "";
+    let currentSubDiv;
+
+    let artifactNames = Object.keys(totalArtifacts).sort().reverse();
 
     artifactNames.forEach((name) => {
 
-        rewardsContainer.appendChild(CreateRewardItem("icons/Artifact/" + name + ".png", totalDrops[name].toFixed(1),
-            'drop-resource-rarity-' + name.slice(-1) + ' drop-resource'));
+        dropSliced = name.slice(0, -2);
+        dropRarity = name.slice(-1);
+
+        if (currentMatType != dropSliced) {
+            currentSubDiv = document.createElement('div');
+            currentSubDiv.className = "reward-group";
+            artifactsContainer.appendChild(currentSubDiv);
+
+            currentMatType = dropSliced;
+        }
+
+        currentSubDiv.appendChild(CreateRewardItem("icons/Artifact/" + name + ".png", totalArtifacts[name].toFixed(1),
+            'drop-resource-rarity-' + dropRarity + ' drop-resource'));
     })
+
+    currentMatType = "";
+
+    let schoolMatNames = Object.keys(totalSchoolMats).sort().reverse();
+
+    schoolMatNames.forEach((name) => {
+
+        dropSliced = name.slice(5);
+        dropRarity = name.slice(3, 4);
+
+        if (currentMatType != dropSliced) {
+            currentSubDiv = document.createElement('div');
+            currentSubDiv.className = "reward-group";
+            schoolMatsContainer.appendChild(currentSubDiv);
+
+            currentMatType = dropSliced;
+        }
+
+        currentSubDiv.appendChild(CreateRewardItem("icons/SchoolMat/" + name + ".png", totalSchoolMats[name].toFixed(1),
+            'drop-resource-rarity-' + dropRarity + ' drop-resource'));
+    })
+
+    let xpMatNames = Object.keys(totalXps).sort().reverse();
+
+    xpMatNames.forEach((name) => {
+        xpMatsContainer.appendChild(CreateRewardItem("icons/LevelPart/" + name + ".png", totalXps[name], ""))
+    })
+
+    if (totalEligma) {
+        miscContainer.appendChild(CreateRewardItem("icons/Misc/Eligma.png", totalEligma, ""));
+    }
+    if (totalSecretTech) {
+        miscContainer.appendChild(CreateRewardItem("icons/Misc/SecretTech.png", totalSecretTech, ""));
+    }
+    if (totalCredit) {
+        miscContainer.appendChild(CreateRewardItem("icons/Misc/Credit.png", totalCredit, ""));
+    }
+
+    rewardsContainer.appendChild(currenciesContainer);
+    rewardsContainer.appendChild(miscContainer);
+    rewardsContainer.appendChild(xpMatsContainer);
+    rewardsContainer.appendChild(schoolMatsContainer);
+    rewardsContainer.appendChild(artifactsContainer);
 }
 
 function CreateRewardItem(imgSrc, itemCount, divClass) {
 
     let itemDiv = document.createElement('div');
-    itemDiv.className = divClass;
+    if (divClass) {
+        itemDiv.className = divClass;
+    }
 
     let itemImg = document.createElement('img');
     let itemP = document.createElement('p');
 
     itemImg.src = imgSrc;
 
-    itemP.innerText = commafy(itemCount);
+    let itmCount = commafy(itemCount);
+
+    if (itmCount.slice(-2) == ".0") {
+        itmCount = itmCount.slice(0, -2);
+    }
+
+    itemP.innerText = itmCount;
 
     itemDiv.appendChild(itemImg);
     itemDiv.appendChild(itemP);
@@ -1473,6 +1675,10 @@ function ShowCurrencyTargets() {
     }
 
     optContainer.appendChild(currencyDivsContainer);
+
+    if (!eventLoading && currencyTargets.length == 1) {
+        document.getElementById('currency-target-' + currencyTargets[0]).click();
+    }
 }
 
 function OptimiseCurrency(divId) {
@@ -1538,4 +1744,118 @@ function InfeasibleModel() {
     failureDiv.innerText = "A minimum of about " + energyMin + " energy is needed for this to be feasible, please either add additional energy sources, or reduce shop purchases.";
 
     document.getElementById('rewards-container').appendChild(failureDiv);
+}
+
+function GeneratePointsTable() {
+
+    let existingTable = document.getElementById('points-table');
+    if (existingTable) {
+        existingTable.remove();
+    }
+
+    let pointTiers = event_config.events[current_event].point_rewards;
+
+    if (!pointTiers) {
+        document.getElementById('tab-Points').style.display = 'none';
+        return;
+    }
+    else {
+        document.getElementById('tab-Points').style.display = '';
+    }
+
+    let tableContainer = document.getElementById('points-table-container');
+
+    let table = document.createElement('table');
+    table.id = 'points-table';
+    let tableHead = document.createElement('thead');
+    let tableBody = document.createElement('tbody');
+
+    let tableHeadRow = document.createElement('tr');
+
+    CreateTableRowCells(tableHeadRow, ["Points", "Reward"], 'th');
+
+    tableHead.appendChild(tableHeadRow);
+
+    for (let i = 0; i < pointTiers.length; i++) {
+
+        let pTier = pointTiers[i];
+
+        let tableRow = document.createElement('tr');
+
+        CreateTableRowCells(tableRow, [pTier.points, CreatePointRewardDiv(pTier.type, pTier.id, pTier.count)], 'td');
+
+        tableBody.appendChild(tableRow);
+    }
+
+    table.appendChild(tableHead);
+    table.appendChild(tableBody);
+
+    tableContainer.appendChild(table);
+}
+
+function CreatePointRewardDiv(rewardType, rewardId, rewardCount) {
+
+    let rewardDiv = document.createElement('div');
+    rewardDiv.className = 'stages-table-drops-container';
+
+    let dropDiv = document.createElement('div');
+    let dropImg = document.createElement('img');
+    let dropP = document.createElement('p');
+
+    if (rewardType == "XpReport" || rewardType == "XpOrb") {
+        dropImg.src = "icons/LevelPart/" + rewardId + ".png";
+    }
+    else if (rewardType == "Eligma") {
+        dropImg.src = "icons/Misc/Eligma.png";
+    }
+    else if (rewardType == "Credit") {
+        dropImg.src = "icons/Misc/Credit.png";
+    }
+    else if (rewardType == "SecretTech") {
+        dropImg.src = "icons/Misc/SecretTech.png";
+    }
+
+    dropP.innerText = commafy(rewardCount);
+
+    dropDiv.appendChild(dropImg);
+    dropDiv.appendChild(dropP);
+    rewardDiv.appendChild(dropDiv);
+
+    return rewardDiv;
+}
+
+function InitMaxShopPurchases() {
+
+    let shopPurchases = {};
+
+    let shopList = event_config.events[current_event].shops;
+
+    let shops = Object.keys(shopList);
+
+    shops.forEach((shop) => {
+
+        shopPurchases[shop] = {};
+
+        shopList[shop].forEach((item) => {
+
+            shopPurchases[shop][item.id] = item.count;
+        })
+    })
+
+    let currencies = event_config.events[current_event].currencies;
+    currencyNames = Object.keys(currencies);
+
+    event_data.currency_needed = {};
+
+    currencyNames.forEach((name) => {
+
+        if (currencies[name].clear) {
+
+            event_data.currency_needed[name] = currencies[name].clear;
+        }
+    })
+
+    currencyNeededPre = event_data.currency_needed;
+
+    return shopPurchases;
 }

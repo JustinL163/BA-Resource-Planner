@@ -16,7 +16,120 @@
     "events": {
         "after-school-sweets": {
             "icon": "Event_816_Jp.png",
-            "date": ""
+            "reset_time": 1677524400,
+            "start_time": 1677549600,
+            "end_time": 1678759200,
+            "maint_hours": 6,
+            "available_targets": ["Shop", "Currency", "Manual"],
+            "currency_targets": ["Sweets_Coupon"],
+            "currencies": {
+                "Sweets_Coupon": {
+                    "icon": "Sweets_Coupon.png",
+                    "bonus_units": [
+                        {"id": "10049", "bonus": 0.2},
+                        {"id": "10029", "bonus": 0.2},
+                        {"id": "16003", "bonus": 0.2},
+                        {"id": "20018", "bonus": 0.2},
+                        {"id": "26005", "bonus": 0.2}
+                    ]
+                },
+                "Mint_Choco_Parfait": {
+                    "icon": "Mint_Choco_Parfait.png",
+                    "clear": 10695,
+                    "bonus_units": [
+                        {"id": "10049", "bonus": 0.25},
+                        {"id": "16005", "bonus": 0.25},
+                        {"id": "23000", "bonus": 0.25},
+                        {"id": "20003", "bonus": 0.25}
+                    ]
+                },
+                "Macaron": {
+                    "icon": "Macaron.png",
+                    "clear": 12650,
+                    "bonus_units": [
+                        {"id": "13003", "bonus": 0.25},
+                        {"id": "10013", "bonus": 0.25},
+                        {"id": "20004", "bonus": 0.25},
+                        {"id": "20018", "bonus": 0.25}
+                    ]
+                },
+                "Roll_Waffle": {
+                    "icon": "Roll_Waffle.png",
+                    "bonus_units": []
+                }
+            },
+            "shops": {
+                "Mint_Choco_Parfait": [
+                    {"type": "XpReport", "id": "XP_1", "count": 150, "cost": 1},
+                    {"type": "XpReport", "id": "XP_2", "count": 75, "cost": 10},
+                    {"type": "XpReport", "id": "XP_3", "count": 25, "cost": 40},
+                    {"type": "XpReport", "id": "XP_4", "count": 10, "cost": 200},
+                    {"type": "Material", "id": "3020", "count": 8, "cost": 10},
+                    {"type": "Material", "id": "3021", "count": 6, "cost": 30},
+                    {"type": "Material", "id": "3022", "count": 4, "cost": 100},
+                    {"type": "Material", "id": "3023", "count": 1, "cost": 300},
+                    {"type": "Material", "id": "3080", "count": 8, "cost": 10},
+                    {"type": "Material", "id": "3081", "count": 6, "cost": 30},
+                    {"type": "Material", "id": "3082", "count": 4, "cost": 100},
+                    {"type": "Material", "id": "3083", "count": 1, "cost": 300},
+                    {"type": "Material", "id": "240", "count": 70, "cost": 5},
+                    {"type": "Material", "id": "241", "count": 35, "cost": 15},
+                    {"type": "Material", "id": "242", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "243", "count": 10, "cost": 200},
+                    {"type": "Furniture", "id": "Military_Chair_Blue", "count": 1, "cost": 1000}
+                ],
+                "Macaron": [
+                    {"type": "XpOrb", "id": "GXP_1", "count": 150, "cost": 1},
+                    {"type": "XpOrb", "id": "GXP_2", "count": 75, "cost": 4},
+                    {"type": "XpOrb", "id": "GXP_3", "count": 25, "cost": 15},
+                    {"type": "XpOrb", "id": "GXP_4", "count": 10, "cost": 60},
+                    {"type": "Material", "id": "4020", "count": 25, "cost": 5},
+                    {"type": "Material", "id": "4021", "count": 20, "cost": 15},
+                    {"type": "Material", "id": "4022", "count": 15, "cost": 50},
+                    {"type": "Material", "id": "4023", "count": 10, "cost": 200},
+                    {"type": "Material", "id": "4080", "count": 25, "cost": 5},
+                    {"type": "Material", "id": "4081", "count": 20, "cost": 15},
+                    {"type": "Material", "id": "4082", "count": 15, "cost": 50},
+                    {"type": "Material", "id": "4083", "count": 10, "cost": 200},
+                    {"type": "Material", "id": "160", "count": 70, "cost": 5},
+                    {"type": "Material", "id": "161", "count": 35, "cost": 15},
+                    {"type": "Material", "id": "162", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "163", "count": 10, "cost": 200},
+                    {"type": "Furniture", "id": "Valentine_Storage_Set", "count": 1, "cost": 1000}
+                ],
+                "Roll_Waffle": [
+                    {"type": "Eleph", "id": "10029", "count": 50, "cost": 1}
+                ]
+            },
+            "stages": [
+                {"type": "Story", "number": 1, "cost": 10, "initial": {"Sweets_Coupon": 20, "Mint_Choco_Parfait": 20}},
+                {"type": "Story", "number": 2, "cost": 10, "initial": {"Sweets_Coupon": 20, "Macaron": 20}},
+                {"type": "Story", "number": 3, "cost": 10, "initial": {"Sweets_Coupon": 20, "Mint_Choco_Parfait": 20}},
+                {"type": "Story", "number": 4, "cost": 10, "initial": {"Sweets_Coupon": 20, "Macaron": 20}},
+                {"type": "Story", "number": 5, "cost": 10, "initial": {"Sweets_Coupon": 20, "Mint_Choco_Parfait": 20}},
+                {"type": "Story", "number": 6, "cost": 10, "initial": {"Sweets_Coupon": 20, "Macaron": 20}},
+                {"type": "Story", "number": 7, "cost": 10, "initial": {"Sweets_Coupon": 20, "Mint_Choco_Parfait": 20}},
+                {"type": "Story", "number": 8, "cost": 10, "initial": {"Sweets_Coupon": 20, "Macaron": 20}},
+                
+                {"type": "Quest", "number": 1, "cost": 10, "initial": {"Sweets_Coupon": 100, "Mint_Choco_Parfait": 25, "Macaron": 25}, "drops": {"Sweets_Coupon": 13, "Mint_Choco_Parfait": 2, "Macaron": 2, "Colgante_1": 0.25, "Colgante_2": 0.15}},
+                {"type": "Quest", "number": 2, "cost": 10, "initial": {"Mint_Choco_Parfait": 100, "Macaron": 50}, "drops": {"Mint_Choco_Parfait": 13, "Macaron": 4, "Aether_1": 0.25, "Aether_2": 0.15}},
+                {"type": "Quest", "number": 3, "cost": 10, "initial": {"Mint_Choco_Parfait": 50, "Macaron": 100}, "drops": {"Mint_Choco_Parfait": 4, "Macaron": 13, "Mandragora_1": 0.25, "Mandragora_2": 0.15}},
+                {"type": "Quest", "number": 4, "cost": 10, "initial": {"Sweets_Coupon": 150}, "drops": {"Sweets_Coupon": 16, "Nimrud_1": 0.25, "Nimrud_2": 0.15}},
+                {"type": "Quest", "number": 5, "cost": 15, "initial": {"Sweets_Coupon": 100, "Mint_Choco_Parfait": 50, "Macaron": 50}, "drops": {"Sweets_Coupon": 20, "Mint_Choco_Parfait": 4, "Macaron": 4, "Colgante_2": 0.25, "Colgante_3": 0.08}},
+                {"type": "Quest", "number": 6, "cost": 15, "initial": {"Mint_Choco_Parfait": 125, "Macaron": 75}, "drops": {"Mint_Choco_Parfait": 20, "Macaron": 8, "Aether_2": 0.25, "Aether_3": 0.08}},
+                {"type": "Quest", "number": 7, "cost": 15, "initial": {"Mint_Choco_Parfait": 75, "Macaron": 125}, "drops": {"Mint_Choco_Parfait": 8, "Macaron": 20, "Mandragora_2": 0.25, "Mandragora_3": 0.08}},
+                {"type": "Quest", "number": 8, "cost": 15, "initial": {"Sweets_Coupon": 200}, "drops": {"Sweets_Coupon": 26, "Nimrud_2": 0.25, "Nimrud_3": 0.08}},
+                {"type": "Quest", "number": 9, "cost": 20, "initial": {"Sweets_Coupon": 150, "Mint_Choco_Parfait": 50, "Macaron": 50}, "drops": {"Sweets_Coupon": 28, "Mint_Choco_Parfait": 8, "Macaron": 8, "Colgante_2": 0.25, "Colgante_3": 0.12, "Colgante_4": 0.021}},
+                {"type": "Quest", "number": 10, "cost": 20, "initial": {"Sweets_Coupon": 25, "Mint_Choco_Parfait": 225}, "drops": {"Sweets_Coupon": 16, "Mint_Choco_Parfait": 28, "Aether_2": 0.25, "Aether_3": 0.12, "Aether_4": 0.021}},
+                {"type": "Quest", "number": 11, "cost": 20, "initial": {"Sweets_Coupon": 25, "Macaron": 225}, "drops": {"Sweets_Coupon": 16, "Macaron": 28, "Mandragora_2": 0.25, "Mandragora_3": 0.12, "Mandragora_4": 0.021}},
+                {"type": "Quest", "number": 12, "cost": 20, "initial": {"Sweets_Coupon": 250}, "drops": {"Sweets_Coupon": 40, "Nimrud_2": 0.25, "Nimrud_3": 0.12, "Nimrud_4": 0.021}},
+
+                {"type": "Challenge", "number": 1, "cost": 5},
+                {"type": "Challenge", "number": 2, "cost": 5},
+                {"type": "Challenge", "number": 3, "cost": 5},
+                {"type": "Challenge", "number": 4, "cost": 5},
+                {"type": "Challenge", "number": 5, "cost": 5}
+            ]
         },
         "summer-gehenna": {
             "icon": "Event_804_En.png",
@@ -67,7 +180,6 @@
             "maint_hours": 6,
             "available_targets": ["Shop", "Materials", "Manual"],
             "event_point_target": 10000,
-            "currency_targets": ["Mushroom", "Event_Point"],
             "currencies": {
                 "Mushroom": {
                     "icon": "Mushroom.png",
@@ -195,6 +307,48 @@
                 {"type": "Challenge", "number": 3, "cost": 5},
                 {"type": "Challenge", "number": 4, "cost": 5},
                 {"type": "Challenge", "number": 5, "cost": 5}
+            ],
+            "point_rewards": [
+                {"points": 10, "type": "XpReport", "id": "XP_1", "count": 10},
+                {"points": 50, "type": "XpOrb", "id": "GXP_1", "count": 10},
+                {"points": 100, "type": "XpReport", "id": "XP_2", "count": 5},
+                {"points": 200, "type": "XpOrb", "id": "GXP_2", "count": 5},
+                {"points": 300, "type": "Credit", "count": 500000},
+                {"points": 400, "type": "XpReport", "id": "XP_1", "count": 10},
+                {"points": 500, "type": "XpOrb", "id": "GXP_1", "count": 10},
+                {"points": 600, "type": "XpReport", "id": "XP_2", "count": 5},
+                {"points": 700, "type": "XpOrb", "id": "GXP_2", "count": 5},
+                {"points": 800, "type": "XpReport", "id": "XP_3", "count": 2},
+                {"points": 900, "type": "XpOrb", "id": "GXP_3", "count": 2},
+                {"points": 1000, "type": "Credit", "count": 500000},
+                {"points": 1200, "type": "XpReport", "id": "XP_1", "count": 20},
+                {"points": 1400, "type": "XpOrb", "id": "GXP_1", "count": 20},
+                {"points": 1600, "type": "XpReport", "id": "XP_2", "count": 10},
+                {"points": 1800, "type": "XpOrb", "id": "GXP_2", "count": 10},
+                {"points": 2000, "type": "Eligma", "count": 10},
+                {"points": 2200, "type": "XpReport", "id": "XP_3", "count": 2},
+                {"points": 2400, "type": "XpOrb", "id": "GXP_3", "count": 2},
+                {"points": 2600, "type": "Credit", "count": 1000000},
+                {"points": 2800, "type": "XpReport", "id": "XP_4", "count": 1},
+                {"points": 3000, "type": "Eligma", "count": 10},
+                {"points": 3200, "type": "XpOrb", "id": "GXP_4", "count": 1},
+                {"points": 3400, "type": "Credit", "count": 1000000},
+                {"points": 3600, "type": "XpReport", "id": "XP_3", "count": 3},
+                {"points": 3800, "type": "XpOrb", "id": "GXP_3", "count": 3},
+                {"points": 4000, "type": "Eligma", "count": 10},
+                {"points": 4200, "type": "XpReport", "id": "XP_4", "count": 2},
+                {"points": 4400, "type": "XpOrb", "id": "GXP_4", "count": 2},
+                {"points": 4600, "type": "Credit", "count": 1000000},
+                {"points": 4800, "type": "XpReport", "id": "XP_3", "count": 3},
+                {"points": 5000, "type": "XpOrb", "id": "GXP_3", "count": 3},
+                {"points": 5500, "type": "Credit", "count": 1000000},
+                {"points": 6000, "type": "Eligma", "count": 10},
+                {"points": 6500, "type": "Credit", "count": 1000000},
+                {"points": 7000, "type": "XpReport", "id": "XP_4", "count": 2},
+                {"points": 7500, "type": "XpOrb", "id": "GXP_4", "count": 2},
+                {"points": 8000, "type": "Eligma", "count": 10},
+                {"points": 9000, "type": "Credit", "count": 1000000},
+                {"points": 10000, "type": "SecretTech", "count": 1}
             ]
         },
         "on-your-mark": {

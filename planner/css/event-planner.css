@@ -242,9 +242,8 @@
 }
 
 #rewards-container {
-    display: flex;
-    flex-wrap: wrap;
-    border-top: 0.25em solid #00000073;
+    /* display: flex;
+    flex-wrap: wrap; */
     padding-top: 1em;
 }
 
@@ -282,4 +281,23 @@
 
 #currency-divs-container div.selected {
     background-color: rgb(171 188 231);
+}
+
+#reward-display-options-container {
+    display: flex;
+    border-top: 0.25em solid #00000073;
+    padding-top: 1em;
+}
+
+#reward-display-options-container input {
+    margin-left: 1em;
+}
+
+#reward-display-options-container label {
+    margin-left: 0.25em;
+}
+
+.reward-group {
+    display: flex;
+    flex-wrap: wrap;
 }

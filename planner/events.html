@@ -68,6 +68,7 @@
                 <div id="tab-Bonus" class="event-tab-button" onclick="EventTabClicked('Bonus')">Bonus</div>
                 <div id="tab-Shop" class="event-tab-button" onclick="EventTabClicked('Shop')">Shop</div>
                 <div id="tab-Stages" class="event-tab-button" onclick="EventTabClicked('Stages')">Stages</div>
+                <div id="tab-Points" class="event-tab-button" onclick="EventTabClicked('Points')">Point Rewards</div>
             </div>
             <div class="event-tab" id="Targets-tab">
                 <div id="optimisation-approaches-container">
@@ -135,6 +136,15 @@
             </div>
             <div class="event-tab" id="Stages-tab">
                 <div id="stages-table-container"></div>
+            </div>
+            <div class="event-tab" id="Points-tab">
+                <div id="points-table-container"></div>
+            </div>
+            <div id="reward-display-options-container">
+                <input type="checkbox" id="include-shop-purchases" name="include-shop-purchases" onclick="DisplayOptionClicked('ShopPurchases')">
+                <label for="include-shop-purchases">Shop Purchases</label>
+                <input type="checkbox" id="include-point-rewards" name="include-point-rewards" onclick="DisplayOptionClicked('PointRewards')">
+                <label for="include-point-rewards">Point Rewards</label>
             </div>
             <div id="rewards-container"></div>
         </div>

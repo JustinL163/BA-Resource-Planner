@@ -1069,6 +1069,23 @@
                         "26.6%"
                     ]
                 ]
+            },
+            "Skill5": {
+                "DescEn": "Every 30s, Neru becomes enraged and her EVA increases by <?1> for 20s. Improves the increase to EX Skill damage by an additional <b>0.3&times;</b> while enraged.",
+                "Parameters": [
+                    [
+                        "19.4%",
+                        "20.4%",
+                        "21.4%",
+                        "25.3%",
+                        "26.2%",
+                        "27.2%",
+                        "31.1%",
+                        "32.1%",
+                        "33.1%",
+                        "36.9%"
+                    ]
+                ]
             }
         }
     },
@@ -1307,6 +1324,23 @@
                         "23.1%",
                         "23.8%",
                         "26.6%"
+                    ]
+                ]
+            },
+            "Skill5": {
+                "DescEn": "Every 25s, deals <?1> damage to enemies in a circular area.",
+                "Parameters": [
+                    [
+                        "290%",
+                        "305%",
+                        "319%",
+                        "377%",
+                        "392%",
+                        "406%",
+                        "464%",
+                        "479%",
+                        "493%",
+                        "551%"
                     ]
                 ]
             }
@@ -6802,7 +6836,7 @@
                     5,
                     5
                 ],
-                "DescEn": "Sets off 5 explosions targeting different enemies. Each explosion deals <?1> damage to the target, plus an additional <?2> damage to both the target and enemies in a circular area around them.",
+                "DescEn": "Sets off 5 explosions targeting up to 5 different enemies. Each explosion deals <?1> damage to the target, plus an additional <?2> damage to both the target and enemies in a circular area around them.",
                 "Parameters": [
                     [
                         "106%",
@@ -6907,6 +6941,438 @@
                         "23.1%",
                         "23.8%",
                         "26.6%"
+                    ]
+                ]
+            }
+        }
+    },
+    "10058": {
+        "Skills": {
+            "Ex": {
+                "Cost": [
+                    4,
+                    4,
+                    4,
+                    4,
+                    4
+                ],
+                "DescEn": "Repositions to the selected location and deals <?1> damage to enemies in a circular area and decreases their DEF and EVA by <?2> for 40s. The reduction to DEF and EVA is increased by <b>2.5&times;</b> if the enemy is <b>medium</b> sized.",
+                "Parameters": [
+                    [
+                        "103%",
+                        "118%",
+                        "150%",
+                        "165%",
+                        "196%",
+                        "211%",
+                        "243%",
+                        "258%",
+                        "289%",
+                        "305%"
+                    ],
+                    [
+                        "6.8%",
+                        "7.8%",
+                        "9.9%",
+                        "10.9%",
+                        "13%",
+                        "14%",
+                        "16.1%",
+                        "17.1%",
+                        "19.2%",
+                        "20.2%"
+                    ]
+                ]
+            },
+            "Skill1": {
+                "DescEn": "Whenever First Aid Ready expires, deals damage equal to <?1> of Mine's DEF to enemies in a circular area and decreases their DEF and EVA by <?2> for 30s.",
+                "Parameters": [
+                    [
+                        "475%",
+                        "498%",
+                        "522%",
+                        "617%",
+                        "641%",
+                        "665%",
+                        "760%",
+                        "783%",
+                        "807%",
+                        "902%"
+                    ],
+                    [
+                        "8%",
+                        "8.4%",
+                        "8.8%",
+                        "10.4%",
+                        "10.8%",
+                        "11.2%",
+                        "12.8%",
+                        "13.2%",
+                        "13.6%",
+                        "15.2%"
+                    ]
+                ]
+            },
+            "Skill2": {
+                "DescEn": "Increases MAX HP by <?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            },
+            "Skill3": {
+                "DescEn": "Whenever Mine uses her EX skill, gains First Aid Ready, restoring own HP by <?1> of Healing every 4s for 10s. If Mine is already under the effect of First Aid Ready, increases her CRIT.RES by <?2> for 20s instead.",
+                "Parameters": [
+                    [
+                        "64.8%",
+                        "68%",
+                        "71.2%",
+                        "84.2%",
+                        "87.4%",
+                        "90.7%",
+                        "103%",
+                        "106%",
+                        "110%",
+                        "123%"
+                    ],
+                    [
+                        "19.3%",
+                        "20.3%",
+                        "21.3%",
+                        "25.1%",
+                        "26.1%",
+                        "27.1%",
+                        "30.9%",
+                        "31.9%",
+                        "32.9%",
+                        "36.7%"
+                    ]
+                ]
+            },
+            "Skill4": {
+                "DescEn": "Increases DEF by <?1> and MAX HP by <?2>.",
+                "Parameters": [
+                    [
+                        "200",
+                        "210",
+                        "220",
+                        "260",
+                        "270",
+                        "280",
+                        "320",
+                        "330",
+                        "340",
+                        "380"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            }
+        }
+    },
+    "10059": {
+        "Skills": {
+            "Ex": {
+                "Cost": [
+                    6,
+                    6,
+                    6,
+                    6,
+                    6
+                ],
+                "DescEn": "Deals <?1> damage to one enemy. Damage increases by up to <b>2&times;</b> the higher the current HP of the target.",
+                "Parameters": [
+                    [
+                        "810%",
+                        "932%",
+                        "1175%",
+                        "1297%",
+                        "1540%",
+                        "1662%",
+                        "1905%",
+                        "2026%",
+                        "2270%",
+                        "2391%"
+                    ]
+                ]
+            },
+            "Skill1": {
+                "DescEn": "Every 5 normal attacks, deals <?1> damage to one enemy. Every 3 times this skill is activated, summons a meteorite dealing an additional <?2> damage.",
+                "Parameters": [
+                    [
+                        "89.4%",
+                        "93.9%",
+                        "98.3%",
+                        "116%",
+                        "120%",
+                        "125%",
+                        "143%",
+                        "147%",
+                        "152%",
+                        "169%"
+                    ],
+                    [
+                        "178%",
+                        "187%",
+                        "196%",
+                        "232%",
+                        "241%",
+                        "250%",
+                        "286%",
+                        "295%",
+                        "304%",
+                        "339%"
+                    ]
+                ]
+            },
+            "Skill2": {
+                "DescEn": "Increases ATK by <?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            },
+            "Skill3": {
+                "DescEn": "Mika's attacks always deal critical damage. Also increases Damage Dealt by <?1> and reduces damage taken by <?2>.",
+                "Parameters": [
+                    [
+                        "12.7%",
+                        "13.4%",
+                        "14%",
+                        "16.6%",
+                        "17.2%",
+                        "17.8%",
+                        "20.4%",
+                        "21%",
+                        "21.7%",
+                        "24.2%"
+                    ],
+                    [
+                        "6.4%",
+                        "6.7%",
+                        "7%",
+                        "8.3%",
+                        "8.6%",
+                        "9%",
+                        "10.3%",
+                        "10.6%",
+                        "10.9%",
+                        "12.2%"
+                    ]
+                ]
+            },
+            "Skill4": {
+                "DescEn": "Increases Piercing Weak DMG by <?1> and ATK by <?2>.",
+                "Parameters": [
+                    [
+                        "26%",
+                        "27.3%",
+                        "28.6%",
+                        "33.8%",
+                        "35.1%",
+                        "36.4%",
+                        "41.6%",
+                        "42.9%",
+                        "44.2%",
+                        "49.4%"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            }
+        }
+    },
+    "10060": {
+        "Skills": {
+            "Ex": {
+                "Cost": [
+                    5,
+                    5,
+                    5,
+                    5,
+                    5
+                ],
+                "DescEn": "Deals <?1> damage to enemies in a fan-shaped area, increases ATK by <?2> and normal attacks will ignore delay for 30s",
+                "Parameters": [
+                    [
+                        "354%",
+                        "407%",
+                        "513%",
+                        "566%",
+                        "619%",
+                        "672%",
+                        "778%",
+                        "831%",
+                        "938%",
+                        "991%"
+                    ],
+                    [
+                        "16.7%",
+                        "16.7%",
+                        "16.7%",
+                        "16.7%",
+                        "19.2%",
+                        "19.2%",
+                        "19.2%",
+                        "19.2%",
+                        "19.2%",
+                        "19.2%"
+                    ]
+                ]
+            },
+            "Skill1": {
+                "DescEn": "Every 40s, creates a circular zone that continuously deals <?1> damage to enemies inside it every 1s for 10s.",
+                "Parameters": [
+                    [
+                        "17.9%",
+                        "18.8%",
+                        "19.7%",
+                        "23.3%",
+                        "24.2%",
+                        "25.1%",
+                        "28.7%",
+                        "29.6%",
+                        "30.5%",
+                        "34.1%"
+                    ]
+                ]
+            },
+            "Skill2": {
+                "DescEn": "Increases DEF by <?1> and ATK by <?2>.",
+                "Parameters": [
+                    [
+                        "11.2%",
+                        "11.4%",
+                        "11.7%",
+                        "12.8%",
+                        "13.1%",
+                        "13.4%",
+                        "14.5%",
+                        "14.8%",
+                        "15.1%",
+                        "16.2%"
+                    ],
+                    [
+                        "11.2%",
+                        "11.4%",
+                        "11.7%",
+                        "12.8%",
+                        "13.1%",
+                        "13.4%",
+                        "14.5%",
+                        "14.8%",
+                        "15.1%",
+                        "16.2%"
+                    ]
+                ]
+            },
+            "Skill3": {
+                "DescEn": "Every 50 normal attacks, restores own HP by <?1> of Healing.",
+                "Parameters": [
+                    [
+                        "30%",
+                        "31.5%",
+                        "33%",
+                        "39%",
+                        "40.5%",
+                        "42%",
+                        "48%",
+                        "49.5%",
+                        "51%",
+                        "57%"
+                    ]
+                ]
+            },
+            "Skill4": {
+                "DescEn": "Increases DEF by <?1> plus a further <?3> and ATK by <?2> plus a further <?4>.",
+                "Parameters": [
+                    [
+                        "160",
+                        "164",
+                        "168",
+                        "184",
+                        "188",
+                        "192",
+                        "208",
+                        "212",
+                        "216",
+                        "232"
+                    ],
+                    [
+                        "166",
+                        "170",
+                        "174",
+                        "190",
+                        "195",
+                        "199",
+                        "215",
+                        "219",
+                        "223",
+                        "240"
+                    ],
+                    [
+                        "11.2%",
+                        "11.4%",
+                        "11.7%",
+                        "12.8%",
+                        "13.1%",
+                        "13.4%",
+                        "14.5%",
+                        "14.8%",
+                        "15.1%",
+                        "16.2%"
+                    ],
+                    [
+                        "11.2%",
+                        "11.4%",
+                        "11.7%",
+                        "12.8%",
+                        "13.1%",
+                        "13.4%",
+                        "14.5%",
+                        "14.8%",
+                        "15.1%",
+                        "16.2%"
                     ]
                 ]
             }
@@ -7719,7 +8185,7 @@
                 ]
             },
             "Skill1": {
-                "DescEn": "When Junko's HP falls below 20%, she becomes INVINCIBLE for <?1> once per battle.",
+                "DescEn": "Once per battle, when Junko's HP falls below 20%, she becomes INVINCIBLE for <?1>.",
                 "Parameters": [
                     [
                         "12.8s",
@@ -7807,6 +8273,23 @@
                         "23.1%",
                         "23.8%",
                         "26.6%"
+                    ]
+                ]
+            },
+            "Skill5": {
+                "DescEn": "Once per battle, when Junko's HP falls below 20%, she becomes INVINCIBLE for <?1> and reduces the EX Cost of Junko's next <b>two</b> EX Skill uses by <b>4</b>.",
+                "Parameters": [
+                    [
+                        "12.8s",
+                        "13.5s",
+                        "14.1s",
+                        "16.7s",
+                        "17.3s",
+                        "17.9s",
+                        "20.5s",
+                        "21.1s",
+                        "21.8s",
+                        "24.3s"
                     ]
                 ]
             }
@@ -8872,6 +9355,23 @@
                         "23.1%",
                         "23.8%",
                         "26.6%"
+                    ]
+                ]
+            },
+            "Skill5": {
+                "DescEn": "Every 25s, deals <?1> damage to one enemy and inflicts STUN for 3s.",
+                "Parameters": [
+                    [
+                        "254%",
+                        "267%",
+                        "279%",
+                        "330%",
+                        "343%",
+                        "356%",
+                        "407%",
+                        "419%",
+                        "432%",
+                        "483%"
                     ]
                 ]
             }
@@ -12541,6 +13041,150 @@
             }
         }
     },
+    "20023": {
+        "Skills": {
+            "Ex": {
+                "Cost": [
+                    3,
+                    3,
+                    3,
+                    3,
+                    3
+                ],
+                "DescEn": "Deals <?1> damage to one enemy and inflicts damage accumulation for 15s. For the duration of the effect, <?2> of the damage taken from allies will be accumulated and dealt again as <b class='ba-col-pierce'>Piercing</b> damage once it expires, up to a maximum of <?3> of Kanna's ATK. (This additional damage cannot critically hit.)",
+                "Parameters": [
+                    [
+                        "52.9%",
+                        "60.9%",
+                        "68.8%",
+                        "76.7%",
+                        "84.7%",
+                        "92.6%",
+                        "108%",
+                        "116%",
+                        "132%",
+                        "140%"
+                    ],
+                    [
+                        "30%",
+                        "30%",
+                        "40%",
+                        "40%",
+                        "50%",
+                        "50%",
+                        "50%",
+                        "50%",
+                        "50%",
+                        "50%"
+                    ],
+                    [
+                        "2070%",
+                        "2070%",
+                        "2380%",
+                        "2380%",
+                        "2691%",
+                        "2691%",
+                        "2691%",
+                        "2691%",
+                        "2691%",
+                        "2691%"
+                    ]
+                ]
+            },
+            "Skill1": {
+                "DescEn": "Every 30s, deals <?1> damage to one enemy and decreases their DEF by <?2> for 20s.",
+                "Parameters": [
+                    [
+                        "197%",
+                        "207%",
+                        "217%",
+                        "257%",
+                        "266%",
+                        "276%",
+                        "316%",
+                        "326%",
+                        "336%",
+                        "375%"
+                    ],
+                    [
+                        "7.6%",
+                        "7.9%",
+                        "8.3%",
+                        "9.8%",
+                        "10.2%",
+                        "10.6%",
+                        "12.1%",
+                        "12.5%",
+                        "12.9%",
+                        "14.4%"
+                    ]
+                ]
+            },
+            "Skill2": {
+                "DescEn": "Increases ATK by <?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            },
+            "Skill3": {
+                "DescEn": "Increases the ATK of all allies who use <b class='ba-col-pierce'>Piercing</b> type attacks by <?1>.",
+                "Parameters": [
+                    [
+                        "12.7%",
+                        "13.4%",
+                        "14%",
+                        "16.5%",
+                        "17.2%",
+                        "17.8%",
+                        "20.4%",
+                        "21%",
+                        "21.7%",
+                        "24.2%"
+                    ]
+                ]
+            },
+            "Skill4": {
+                "DescEn": "Increases ATK by <?1> plus a further <?2>.",
+                "Parameters": [
+                    [
+                        "249",
+                        "261",
+                        "274",
+                        "323",
+                        "336",
+                        "348",
+                        "398",
+                        "410",
+                        "423",
+                        "472"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            }
+        }
+    },
     "23000": {
         "Skills": {
             "Ex": {
@@ -14379,7 +15023,7 @@
                     4,
                     4
                 ],
-                "DescEn": "Deploys Ayane riding Raincloud for 30s, with an additional <?1> of Ayane's ATK and <?2> of Ayane's CRIT.RATE. Every 12s, Raincloud activates the skill \"Downpour Missile\", dealing <?3> damage to one enemy. This attack ignores <?4> of the enemy's DEF. Only one tactical support vehicle may be deployed at any given time.",
+                "DescEn": "Deploys Ayane riding Water Cloud for 30s, with an additional <?1> of Ayane's ATK and <?2> of Ayane's CRIT.RATE. Every 12s, Water Cloud activates the skill \"Heavy Rain Missile\", dealing <?3> damage to one enemy. This attack ignores <?4> of the enemy's DEF. Only one tactical support vehicle may be deployed at any given time.",
                 "Parameters": [
                     [
                         "12.5%",
