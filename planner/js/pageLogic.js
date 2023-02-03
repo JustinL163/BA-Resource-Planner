@@ -763,6 +763,10 @@ async function sectionQuickSet(section) {
 
     optionData = {
         "Gear": {
+            " 777": {
+                "7 7 7 7 7 7": "Both",
+                "- 7 - 7 - 7": "Target"
+            },
             " 666": {
                 "6 6 6 6 6 6": "Both",
                 "- 6 - 6 - 6": "Target"
@@ -818,7 +822,15 @@ async function sectionQuickSet(section) {
                 "- 1 - 1 - 1 - 1": "Target"
             }
         },
-        "Level": {
+        "Level": {          
+            " 83": {
+                "83 83": "Both",
+                "- 83": "Target"
+            },
+            " 80": {
+                "80 80": "Both",
+                "- 80": "Target"
+            },
             " 78": {
                 "78 78": "Both",
                 "- 78": "Target"
