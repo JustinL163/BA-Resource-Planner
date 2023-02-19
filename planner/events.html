@@ -24,19 +24,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/event-planner.css">
+    <link rel="stylesheet" href="css/event-planner.css?1">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="packages/javascript-lp-solver/solver.js"></script>
+    <script src="packages/tippyjs/popper.js"></script>
+    <script src="packages/tippyjs/tippy.js"></script>
+    <link rel="stylesheet" href="packages/tippyjs/light.css" />
     <script src="js/config.js?14"></script>
-    <script src="js/common.js?1"></script>
-    <script src="js/eventPlanner.js?1"></script>
+    <script src="js/common.js?2"></script>
+    <script src="js/eventPlanner.js?2"></script>
     <title>Event Planner</title>
 </head>
 
-<body class="background" onload="loadResources()">
+<body class="background dark-theme" onload="loadResources()">
     <nav class="navbar navbground">
         <span class="logo">Justin163</span>
         <img src="icons/UI/hamburger.svg" id="hamburger" onclick="hamburgToggle()">
@@ -59,7 +62,11 @@
             <li><a href="privacy.html">Privacy</a></li>
         </ul>
     </div>
-    <div style="display: flex; margin-top: 2vh;">
+    <div id="body-content-container">
+        <div id="event-list-button" onclick="ToggleEventList()">
+            <img src="icons/UI/hamburger.svg">
+            <p id="event-list-button-label">Event List</p>
+        </div>
         <div id="events-list"></div>
         <div id="event-content-container">
             <div id="event-tab-menu">
@@ -69,64 +76,80 @@
                 <div id="tab-Shop" class="event-tab-button" onclick="EventTabClicked('Shop')">Shop</div>
                 <div id="tab-Stages" class="event-tab-button" onclick="EventTabClicked('Stages')">Stages</div>
                 <div id="tab-Points" class="event-tab-button" onclick="EventTabClicked('Points')">Point Rewards</div>
+                <div id="tab-Boxes" class="event-tab-button" onclick="EventTabClicked('Boxes')">Boxes</div>
             </div>
             <div class="event-tab" id="Targets-tab">
                 <div id="optimisation-approaches-container">
-                    <div class="optimise-approach-button" id="tab-opti-Shop" onclick="SetOptimise('Shop')">Only Shop</div>
-                    <div class="optimise-approach-button" id="tab-opti-Materials" onclick="SetOptimise('Materials')">Materials</div>
-                    <div class="optimise-approach-button" id="tab-opti-Currency" onclick="SetOptimise('Currency')">Currency</div>
-                    <div class="optimise-approach-button" id="tab-opti-Manual" onclick="SetOptimise('Manual')">Manual</div>
+                    <div class="optimise-approach-button" id="tab-opti-Shop" onclick="SetOptimise('Shop')">Min Clear
+                    </div>
+                    <div class="optimise-approach-button" id="tab-opti-Materials" onclick="SetOptimise('Materials')">
+                        Materials</div>
+                    <div class="optimise-approach-button" id="tab-opti-Currency" onclick="SetOptimise('Currency')">
+                        Currency</div>
+                    <div class="optimise-approach-button" id="tab-opti-Manual" onclick="SetOptimise('Manual')">Manual
+                    </div>
                 </div>
                 <div id="optimisation-settings-container"></div>
             </div>
             <div class="event-tab" id="Energy-tab">
                 <div id="energy-sources-fixed-container">
-                    <div class="energy-source">
+                    <div id="energy-source-natural" class="energy-source">
                         <img src="icons/EventIcon/EnergyIcon/EnergyNatural.png">
                         <p id="energy-natural-total">0</p>
                     </div>
-                    <div class="energy-source">
+                    <div id="energy-source-dailies" class="energy-source">
                         <img src="icons/EventIcon/EnergyIcon/EnergyDailyTask.png">
                         <p id="energy-dailytask-total">0</p>
                     </div>
-                    <div class="energy-source">
+                    <div id="energy-source-club" class="energy-source">
                         <img src="icons/EventIcon/EnergyIcon/EnergyClub.png">
                         <p id="energy-club-total">0</p>
                     </div>
-                    <div class="energy-source">
+                    <div id="energy-source-weeklies" class="energy-source">
                         <img src="icons/EventIcon/EnergyIcon/EnergyWeeklyTask.png">
                         <p id="energy-weeklytask-total">0</p>
                     </div>
-                    <div class="energy-source">
+                    <div id="energy-source-arona" class="energy-source">
                         <img src="icons/EventIcon/EnergyIcon/Loading_Arona.png">
                         <p id="energy-aronalogin-total">0</p>
                     </div>
                 </div>
                 <div id="energy-sources-editable-container">
-                    <div class="energy-source" onclick="EnergySourceClicked('Pyro')">
-                        <img src="icons/EventIcon/EnergyIcon/Common_Icon_Diamond.png">
+                    <div id="energy-source-pyro" class="energy-source energy-editable"
+                        onclick="EnergySourceClicked('Pyro')">
+                        <div>
+                            <img src="icons/EventIcon/EnergyIcon/Common_Icon_Diamond.png">
+                            <p id="energy-source-pyro-refresh" class="energy-source-setting"></p>
+                        </div>
                         <p id="energy-pyro-total">0</p>
                     </div>
-                    <div class="energy-source" onclick="EnergySourceClicked('ArenaCoin')">
-                        <img src="icons/EventIcon/EnergyIcon/ArenaCoin.png">
+                    <div id="energy-source-pvp" class="energy-source energy-editable" onclick="EnergySourceClicked('ArenaCoin')">
+                        <div>
+                            <img src="icons/EventIcon/EnergyIcon/ArenaCoin.png">
+                            <p id="energy-source-pvp-refresh" class="energy-source-setting"></p>
+                        </div>
                         <p id="energy-arenacoin-total">0</p>
                     </div>
-                    <div class="energy-source" onclick="EnergySourceClicked('Cafe')">
-                        <img src="icons/EventIcon/EnergyIcon/Common_Icon_Cafe.png">
-                        <p id="energy-cafe-total">3600</p>
+                    <div id="energy-source-cafe" class="energy-source energy-editable" onclick="EnergySourceClicked('Cafe')">
+                        <div>
+                            <img src="icons/EventIcon/EnergyIcon/Common_Icon_Cafe.png">
+                            <p id="energy-source-cafe-level" class="energy-source-setting"></p>
+                        </div>
+                        <p id="energy-cafe-total">0</p>
                     </div>
-                    <div class="energy-source" onclick="EnergySourceClicked('EnergyPack')">
+                    <div id="energy-source-pack" class="energy-source energy-editable"
+                        onclick="EnergySourceClicked('EnergyPack')">
                         <img src="icons/EventIcon/EnergyIcon/Goods_Icon_Biweekly_0.png">
                         <p id="energy-energypack-total">0</p>
                     </div>
-                    <div class="energy-source">
+                    <div id="energy-sources-total" class="energy-source">
                         <img src="icons/EventIcon/EnergyIcon/Energy.png">
                         <p id="energy-total">0</p>
                     </div>
                 </div>
             </div>
             <div class="event-tab" id="Bonus-tab">
-                <p>Characters:</p>
+                <p style="margin-left: 1em; margin-bottom: 1em;">Click character to toggle</p>
                 <div id="bonus-chars-container"></div>
                 <div id="currency-bonuses"></div>
             </div>
@@ -140,13 +163,25 @@
             <div class="event-tab" id="Points-tab">
                 <div id="points-table-container"></div>
             </div>
-            <div id="reward-display-options-container">
-                <input type="checkbox" id="include-shop-purchases" name="include-shop-purchases" onclick="DisplayOptionClicked('ShopPurchases')">
-                <label for="include-shop-purchases">Shop Purchases</label>
-                <input type="checkbox" id="include-point-rewards" name="include-point-rewards" onclick="DisplayOptionClicked('PointRewards')">
-                <label for="include-point-rewards">Point Rewards</label>
+            <div class="event-tab" id="Boxes-tab">
+                <div id="box-cycle-tabs"></div>
+                <div id="box-cycle-content"></div>
             </div>
+            <div id="reward-display-options-container">
+                <input type="checkbox" id="include-shop-purchases" name="include-shop-purchases"
+                    onclick="DisplayOptionClicked('ShopPurchases')">
+                <label id="label-shop-purchases" for="include-shop-purchases">Shop Purchases</label>
+                <input type="checkbox" id="include-point-rewards" name="include-point-rewards"
+                    onclick="DisplayOptionClicked('PointRewards')">
+                <label id="label-point-rewards" for="include-point-rewards">Point Rewards</label>
+                <input type="checkbox" id="include-box-rewards" name="include-box-rewards"
+                    onclick="DisplayOptionClicked('BoxRewards')">
+                <label id="label-box-rewards" for="include-box-rewards">Box Rewards</label>
+            </div>
+            <div id="disclaimer-text"></div>
+            <div id="box-info-text"></div>
             <div id="rewards-container"></div>
+            <div id="info-select-event">Select an Event</div>
         </div>
     </div>
 </body>

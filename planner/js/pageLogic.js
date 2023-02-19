@@ -37,13 +37,10 @@ let multiCharSource = "";
 
 let multiSelected = [];
 
-const defaultGroups = { "Binah": [], "Chesed": [], "Hod": [], "ShiroKuro": [], "Perorodzilla": [], "Hieronymous": [], "Kaiten": [] }
-
 var sweepMax = 0;
 let sweepMin = 0;
 
 let lvlCalcsCap = 83;
-let lvlMAX = 83;
 
 var saveTime = 0;
 var toastCooldownTime = 0;

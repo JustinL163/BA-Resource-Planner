@@ -2,6 +2,8 @@ let pageTheme = "dark";
 let keyPressed = {};
 let inputMap = new Map();
 let preInput;
+const defaultGroups = { "Binah": [], "Chesed": [], "Hod": [], "ShiroKuro": [], "Perorodzilla": [], "Goz": [], "Hieronymous": [], "Kaiten": [] }
+let lvlMAX = 83;
 
 function switchTheme() {
 

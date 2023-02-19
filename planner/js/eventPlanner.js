@@ -28,7 +28,7 @@ let cafeDefault = 7;
 
 function loadResources() {
 
-    $.getJSON('json/events.json?1').done(function (json) {
+    $.getJSON('json/events.json?2').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -53,6 +53,9 @@ function checkResources() {
         if (data) {
             events_data = data.events_data ?? {};
         }
+        else {
+            events_data = {};
+        }
 
         init();
     }
@@ -61,33 +64,15 @@ function checkResources() {
 function init() {
 
     if (data == null) {
-        window.location.replace("/planner/index.html");
+        data = { exportVersion: exportDataVersion, characters: [], disabled_characters: [], owned_materials: {}, groups: defaultGroups, language: "EN", level_cap: lvlMAX };
+        localStorage.setItem("save-data", JSON.stringify(data));
     }
 
     if (data.page_theme != undefined) {
         setTheme(data.page_theme);
     }
 
-
-    let events_list = document.getElementById("events-list");
-
-    for (let i = 0; i < event_config.event_order.length; i++) {
-        let eventDiv = document.createElement("div");
-        let eventImg = document.createElement("img");
-
-        eventImg.src = "icons/EventIcon/" + event_config.events[event_config.event_order[i]].icon;
-        eventImg.className = "event-icon";
-
-        eventDiv.appendChild(eventImg);
-        eventDiv.id = event_config.event_order[i];
-        eventDiv.style.cursor = "pointer";
-
-        eventDiv.addEventListener('click', (event) => {
-            LoadEvent(event.currentTarget.id);
-        })
-
-        events_list.appendChild(eventDiv);
-    }
+    GenerateEventsList();
 
     setInterval(() => {
         if (saveTime != 0) {
@@ -103,6 +88,8 @@ function init() {
     }, 300);
 
     InitKeyTracking();
+
+    InitTippies();
 
     //TEMP
     // LoadEvent('neverland-rerun');
@@ -130,13 +117,177 @@ function handleKeydown(e, keyPressed) {
 
 }
 
+function GenerateEventsList() {
+
+    let events_list = document.getElementById("events-list");
+
+    for (let i = 0; i < event_config.event_order.length; i++) {
+        let eventDiv = document.createElement("div");
+        let eventImg = document.createElement("img");
+        let eventLabel = document.createElement('p');
+
+        let eventInfo = event_config.events[event_config.event_order[i]];
+
+        eventImg.src = "icons/EventIcon/" + eventInfo.icon;
+        eventImg.className = "event-icon";
+
+        if (eventInfo.display_name) {
+            eventLabel.innerText = eventInfo.display_name;
+        }
+
+        eventDiv.appendChild(eventImg);
+        eventDiv.appendChild(eventLabel);
+        eventDiv.id = event_config.event_order[i];
+        eventDiv.className = "listed-event";
+        eventDiv.style.cursor = "pointer";
+
+        eventDiv.addEventListener('click', (event) => {
+            LoadEvent(event.currentTarget.id);
+        })
+
+        events_list.appendChild(eventDiv);
+    }
+}
+
+function InitTippies() {
+
+    tippy('#tab-Targets', {
+        content: "Set optimisation targets",
+        theme: 'light'
+    });
+
+    tippy('#tab-Energy', {
+        content: "Adjust available energy",
+        theme: 'light'
+    });
+
+    tippy('#tab-Bonus', {
+        content: "Toggle bonus currency characters",
+        theme: 'light'
+    });
+
+    tippy('#tab-Shop', {
+        content: "Pick shop purchases",
+        theme: 'light'
+    });
+
+    tippy('#tab-Stages', {
+        content: "See calculated optimal runs, or set manually",
+        theme: 'light'
+    });
+
+    tippy('#tab-Points', {
+        content: "View event point reward tiers",
+        theme: 'light'
+    });
+
+    tippy('#tab-Boxes', {
+        content: "View event gacha box contents",
+        theme: 'light'
+    });
+
+    tippy('#energy-source-natural', {
+        content: "Natural energy regen (10/h)",
+        theme: 'light'
+    });
+
+    tippy('#energy-source-dailies', {
+        content: "Energy from daily tasks (150/d)",
+        theme: 'light'
+    });
+
+    tippy('#energy-source-club', {
+        content: "Open club energy (10/d)",
+        theme: 'light'
+    });
+
+    tippy('#energy-source-weeklies', {
+        content: "Energy from weekly tasks",
+        theme: 'light'
+    });
+
+    tippy('#energy-source-arona', {
+        content: "Arona 10 day login cycle",
+        theme: 'light'
+    });
+
+    tippy('#energy-source-pyro', {
+        content: "Set daily pyro refills",
+        theme: 'light'
+    });
+
+    tippy('#energy-source-pvp', {
+        content: "Set daily pvp refills",
+        theme: 'light'
+    });
+
+    tippy('#energy-source-cafe', {
+        content: "Set cafe level",
+        theme: 'light'
+    });
+
+    tippy('#energy-source-pack', {
+        content: "Using bi-weekly energy pack",
+        theme: 'light'
+    });
+
+    tippy('#energy-sources-total', {
+        content: "Available energy for event",
+        theme: 'light'
+    });
+
+    tippy('#label-shop-purchases', {
+        content: "Display rewards purchased from shops",
+        theme: 'light'
+    });
+
+    tippy('#label-point-rewards', {
+        content: "Display rewards from event point tiers",
+        theme: 'light'
+    });
+
+    tippy('#label-box-rewards', {
+        content: "Display rewards from event gacha boxes",
+        theme: 'light'
+    });
+
+    tippy('#tab-opti-Shop', {
+        content: "Use minimum energy possible to clear picked shop purchases and event point tiers",
+        theme: 'light'
+    });
+
+    tippy('#tab-opti-Materials', {
+        content: "Select stage drop material(s) to target, equally weighted. (Makes sure to at least clear picked shops and point tiers)",
+        theme: 'light'
+    });
+
+    tippy('#tab-opti-Currency', {
+        content: "Farm as many of a specific event currency as possible. (Makes sure to at least clear picked shops and point tiers)",
+        theme: 'light'
+    });
+
+    tippy('#tab-opti-Manual', {
+        content: "Sets the inputs in Stages tab to editable for manual input. (Currently manual doesn't include initial clear event currencies like the other modes)",
+        theme: 'light'
+    });
+}
+
 function LoadEvent(eventId) {
 
+    if (!current_event) {
+        document.getElementById("info-select-event").style.display = "none";
+    }
+
     if (current_event == eventId) {
+        document.getElementById('events-list').classList.add('event-selected');
         return;
     }
 
+    document.getElementById('event-list-button-label').innerText = "Event List - " + event_config.events[eventId].display_name;
+
     eventLoading = true;
+
+    document.getElementById('events-list').classList.add('event-selected');
 
     if (current_event) {
         document.getElementById(current_event).classList.remove('selected');
@@ -145,6 +296,7 @@ function LoadEvent(eventId) {
 
     current_event = eventId;
     current_currency = "";
+    targetedCurrency = "";
     currencyNeeded = {};
     targetedMaterials = {};
     optimisationType = "";
@@ -160,9 +312,10 @@ function LoadEvent(eventId) {
         enabledBonusUnits = [];
         event_data.shop_purchases = {};
         event_data.currency_needed = {};
+        event_data.cafe_rank = cafeDefault;
     }
 
-    if (!event_data.shop_purchases) {
+    if (Object.keys(event_data.shop_purchases).length == 0) {
         event_data.shop_purchases = InitMaxShopPurchases();
     }
 
@@ -194,6 +347,7 @@ function LoadEvent(eventId) {
     CalculateBonuses();
     UpdateBonuses();
     GenerateShopTabs();
+    GenerateBoxesTabs();
     CalculateInitalClear();
     CalculateEnergyAvailable();
     CalculateNeededFinal();
@@ -288,6 +442,10 @@ function GenerateBonusTab() {
     }
 
     for (let i = 0; i < currencyNames.length; i++) {
+
+        if (currencies[currencyNames[i]].source == "BoxPull") {
+            continue;
+        }
 
         let bonus_units = currencies[currencyNames[i]].bonus_units;
 
@@ -417,7 +575,11 @@ function UpdateBonuses() {
 
     for (let i = 0; i < currencies.length; i++) {
 
-        document.getElementById("currency-" + currencies[i]).innerText = "+" + Math.round(currencyBonuses[currencies[i]] * 100) + "%";
+        let currencyBonusLabel = document.getElementById("currency-" + currencies[i]);
+
+        if (currencyBonusLabel) {
+            currencyBonusLabel.innerText = "+" + Math.round(currencyBonuses[currencies[i]] * 100) + "%";
+        }
     }
 
 }
@@ -489,12 +651,30 @@ async function EnergySourceClicked(source) {
 
         if (source == "Pyro") {
             event_data["pyro_refreshes"] = parseInt(result);
+            if (result == "0") {
+                document.getElementById('energy-source-pyro-refresh').innerText = '';
+            }
+            else {
+                document.getElementById('energy-source-pyro-refresh').innerText = result + "x";
+            }
         }
         else if (source == "ArenaCoin") {
             event_data["pvp_refreshes"] = parseInt(result);
+            if (result == "0") {
+                document.getElementById('energy-source-pvp-refresh').innerText = '';
+            }
+            else {
+                document.getElementById('energy-source-pvp-refresh').innerText = result + "x";
+            }
         }
         else if (source == "Cafe") {
             event_data["cafe_rank"] = parseInt(result);
+            if (result == "0") {
+                document.getElementById('energy-source-cafe-level').innerText = '';
+            }
+            else {
+                document.getElementById('energy-source-cafe-level').innerText = "Lvl " + result;
+            }
         }
         else if (source == "EnergyPack") {
             if (result == "Yes") {
@@ -556,8 +736,26 @@ function CalculateEnergyAvailable() {
     document.getElementById('energy-club-total').innerText = energy_club;
 
     document.getElementById("energy-pyro-total").innerText = energy_pyrorefresh;
+    if (event_data.pyro_refreshes) {
+        document.getElementById('energy-source-pyro-refresh').innerText = event_data.pyro_refreshes + "x";
+    }
+    else {
+        document.getElementById('energy-source-pyro-refresh').innerText = '';
+    }
     document.getElementById("energy-arenacoin-total").innerText = energy_pvprefresh;
+    if (event_data.pvp_refreshes) {
+        document.getElementById('energy-source-pvp-refresh').innerText = event_data.pvp_refreshes + "x";
+    }
+    else {
+        document.getElementById('energy-source-pvp-refresh').innerText = '';
+    }
     document.getElementById("energy-cafe-total").innerText = energy_cafe;
+    if (event_data.cafe_rank) {
+        document.getElementById('energy-source-cafe-level').innerText = "Lvl " + event_data.cafe_rank;
+    }
+    else {
+        document.getElementById('energy-source-cafe-level').innerText = '';
+    }
     document.getElementById("energy-energypack-total").innerText = energy_energypack;
 
     energyAvailable = (energyByDay.reduce((t, c) => t + c) + 500 + 150)
@@ -624,6 +822,110 @@ function GenerateShopTabs() {
 
 }
 
+function GenerateBoxesTabs() {
+
+    let boxCycleSets = event_config.events[current_event].boxes;
+
+    if (!boxCycleSets) {
+
+        ClearChildren(document.getElementById('box-cycle-tabs'));
+        ClearChildren(document.getElementById('box-cycle-content'));
+        document.getElementById('tab-Boxes').style.display = 'none';
+        return;
+    }
+
+    document.getElementById('tab-Boxes').style.display = '';
+
+    let elementBoxesTabs = document.getElementById('box-cycle-tabs');
+
+    ClearChildren(elementBoxesTabs);
+
+    for (let i = 0; i < boxCycleSets.length; i++) {
+
+        let boxSet = boxCycleSets[i];
+
+        let tabDiv = document.createElement('div');
+        tabDiv.className = "box-cycle-tab";
+        tabDiv.id = "box-cycle-set-" + i;
+
+        tabDiv.addEventListener('click', (event) => {
+            BoxesTabClicked(event.currentTarget.id);
+        })
+
+        let tabP = document.createElement('p');
+        tabP.id = "box-cycle-label-" + i;
+
+        if (boxSet.cycle.length > 1) {
+
+            let cycleText = boxSet.cycle[0];
+
+            for (let ii = 1; ii < boxSet.cycle.length; ii++) {
+                cycleText += "/" + boxSet.cycle[ii];
+            }
+
+            tabP.innerText = cycleText;
+        }
+        else {
+            tabP.innerText = boxSet.cycle[0] + "+";
+        }
+
+        tabDiv.appendChild(tabP);
+
+        elementBoxesTabs.appendChild(tabDiv);
+    }
+
+    if (elementBoxesTabs.children) {
+        elementBoxesTabs.children[0].click();
+    }
+}
+
+function CalculateBoxesNeeded(boxDropCurrency) {
+
+    let boxCycleSets = event_config.events[current_event].boxes;
+    let boxSelect = {};
+
+    for (let i = 0; i < boxCycleSets.length; i++) {
+
+        for (let ii = 0; ii < boxCycleSets[i].cycle.length; ii++) {
+
+            boxSelect[boxCycleSets[i].cycle[ii]] = i;
+        }
+    }
+
+    let infiniteBox = boxSelect[Object.keys(boxSelect).length];
+
+    let cycle = 0;
+    let boxCurrencyObtained = 0;
+
+    while (boxCurrencyObtained < boxDropCurrency) {
+
+        cycle++;
+
+        let boxRewards;
+        if (boxSelect[cycle] != undefined) {
+            boxRewards = boxCycleSets[boxSelect[cycle]].rewards;
+        }
+        else {
+            boxRewards = boxCycleSets[infiniteBox].rewards;
+        }
+
+        for (let i = 0; i < boxRewards.length; i++) {
+
+            if (boxRewards[i].type == "EventCurrency") {
+                boxCurrencyObtained += boxRewards[i].amount * boxRewards[i].count;
+            }
+        }
+    }
+
+    return cycle;
+}
+
+function CalculateBoxCurrencyNeeded(boxDropCurrency) {
+
+    let pullCurrencyNeeded = CalculateBoxesNeeded(boxDropCurrency) * event_config.events[current_event].box_clear_cost;
+    return pullCurrencyNeeded;
+}
+
 function ShopTabClicked(currency) {
 
     if (current_currency == currency) {
@@ -661,22 +963,65 @@ function ShopTabClicked(currency) {
     GenerateShopContent(currency);
 }
 
+function BoxesTabClicked(boxCycleTabId) {
+
+    // if (current_currency == currency) {
+    //     return;
+    // }
+
+    // current_currency = currency;
+
+    let tabs = document.getElementsByClassName('box-cycle-tab');
+
+    for (let i = 0; i < tabs.length; i++) {
+        if (tabs[i].id == boxCycleTabId) {
+            tabs[i].classList.add('selected')
+        }
+        else {
+            tabs[i].classList.remove('selected')
+        }
+    }
+
+    GenerateBoxContent(boxCycleTabId);
+}
+
 function GenerateShopContent(currency) {
 
     let shop = event_config.events[current_event].shops[currency];
 
     let elShopContent = document.getElementById('currency-shop-content');
 
-    while (elShopContent.children.length > 0) {
-        elShopContent.children[0].remove();
-    }
+    ClearChildren(elShopContent);
 
     for (let i = 0; i < shop.length; i++) {
 
         elShopContent.appendChild(CreateShopItem(shop[i], currency));
     }
 
+}
 
+function GenerateBoxContent(boxCycleTabId) {
+
+    let cycleId = boxCycleTabId.substring(14);
+
+    let box = event_config.events[current_event].boxes[cycleId];
+
+    let elementBoxContent = document.getElementById('box-cycle-content');
+
+    ClearChildren(elementBoxContent);
+
+    for (let i = 0; i < box.rewards.length; i++) {
+
+        elementBoxContent.appendChild(CreateBoxItem(box.rewards[i]));
+    }
+
+}
+
+function ClearChildren(parentElement) {
+
+    while (parentElement.children.length > 0) {
+        parentElement.children[0].remove();
+    }
 }
 
 function CreateShopItem(item, currency) {
@@ -686,28 +1031,7 @@ function CreateShopItem(item, currency) {
 
     let itemImg = document.createElement('img');
 
-    if (item.type == "Eleph") {
-        itemImg.src = "icons/Eleph/Eleph_" + item.id + ".png";
-    }
-    else if (item.type == "XpReport") {
-        itemImg.src = "icons/LevelPart/" + item.id + ".png";
-    }
-    else if (item.type == "XpOrb") {
-        itemImg.src = "icons/LevelPart/" + item.id + ".png";
-    }
-    else if (item.type == "Material") {
-        let matName = matLookup.map[item.id];
-
-        if (parseInt(item.id) < 1000) {
-            itemImg.src = "icons/Artifact/" + matName + ".png";
-        }
-        else {
-            itemImg.src = "icons/SchoolMat/" + matName + ".png";
-        }
-    }
-    else if (item.type == "Furniture") {
-        itemImg.src = "icons/Furniture/" + item.id + ".png";
-    }
+    SetItemImage(itemImg, item);
 
     itemDiv.appendChild(itemImg);
 
@@ -756,6 +1080,16 @@ function CreateShopItem(item, currency) {
 
     itemDiv.appendChild(inputDiv);
 
+    if (item.amount) {
+
+        let amountP = document.createElement('p');
+        amountP.className = "shop-item-amount-label";
+
+        amountP.innerText = "x" + commafy(item.amount);
+
+        itemDiv.appendChild(amountP);
+    }
+
     let priceDiv = document.createElement('div');
     priceDiv.className = "shop-item-price-container";
 
@@ -772,6 +1106,82 @@ function CreateShopItem(item, currency) {
 
 
     return itemDiv;
+}
+
+function CreateBoxItem(item) {
+
+    let itemDiv = document.createElement('div');
+    itemDiv.className = "box-item";
+
+    let itemImg = document.createElement('img');
+
+    SetItemImage(itemImg, item);
+
+    itemDiv.appendChild(itemImg);
+
+    let amountP = document.createElement('p');
+    amountP.className = "box-item-amount";
+    amountP.innerText = item.amount;
+
+    itemDiv.appendChild(amountP);
+
+    let priceDiv = document.createElement('div');
+    priceDiv.className = "box-item-times-container";
+
+    let priceP = document.createElement('p');
+    priceP.innerText = item.count + " times";
+
+    priceDiv.appendChild(priceP);
+
+    itemDiv.appendChild(priceDiv);
+
+
+    return itemDiv;
+
+}
+
+function SetItemImage(itemImg, item) {
+
+    if (item.type == "Eleph") {
+        itemImg.src = "icons/Eleph/Eleph_" + item.id + ".png";
+    }
+    else if (item.type == "XpReport") {
+        itemImg.src = "icons/LevelPart/" + item.id + ".png";
+    }
+    else if (item.type == "XpOrb") {
+        itemImg.src = "icons/LevelPart/" + item.id + ".png";
+    }
+    else if (item.type == "Material") {
+        let matName = matLookup.map[item.id];
+
+        if (parseInt(item.id) < 1000) {
+            itemImg.src = "icons/Artifact/" + matName + ".png";
+        }
+        else {
+            itemImg.src = "icons/SchoolMat/" + matName + ".png";
+        }
+    }
+    else if (item.type == "Furniture") {
+        itemImg.src = "icons/Furniture/" + item.id + ".png";
+    }
+    else if (item.type == "Eligma") {
+        itemImg.src = "icons/Misc/Eligma.png";
+    }
+    else if (item.type == "Credit") {
+        itemImg.src = "icons/Misc/Credit.png";
+    }
+    else if (item.type == "SecretTech") {
+        itemImg.src = "icons/Misc/SecretTech.png";
+    }
+    else if (item.type == "Pyroxene") {
+        itemImg.src = "icons/Misc/Pyroxene.png";
+    }
+    else if (item.type == "EventCurrency") {
+        itemImg.src = "icons/EventIcon/CurrencyIcon/" + item.id + ".png";
+    }
+    else if (item.type == "Misc") {
+        itemImg.src = "icons/MiscItem/" + item.id + ".png";
+    }
 }
 
 function HarvestItemPurchases() {
@@ -800,9 +1210,21 @@ function HarvestItemPurchases() {
     event_data.shop_purchases[current_currency] = shopPurchases;
 
     currencyNeededPre[current_currency] = totalPurchaseCost;
-    event_data.currency_needed = currencyNeededPre;
 
-    currencyNeeded[current_currency] = currencyNeededPre[current_currency] - initialClearRewards[current_currency];
+    let currencySource = event_config.events[current_event].currencies[current_currency].source;
+    if (currencySource == "StageDrop") {
+        currencyNeeded[current_currency] = currencyNeededPre[current_currency] - initialClearRewards[current_currency];
+    }
+    else if (currencySource == "BoxPull") {
+        let boxPullCurrency = event_config.events[current_event].currencies[current_currency].pull_currency;
+
+        let pullCurrencyNeeded = CalculateBoxCurrencyNeeded(totalPurchaseCost);
+
+        currencyNeeded[boxPullCurrency] = pullCurrencyNeeded - initialClearRewards[boxPullCurrency];
+        currencyNeededPre[boxPullCurrency] = pullCurrencyNeeded;
+    }
+
+    event_data.currency_needed = currencyNeededPre;
 
     document.getElementById('currency-label-' + current_currency).innerText = totalPurchaseCost;
 
@@ -845,7 +1267,9 @@ function CalculateNeededFinal() {
 
     for (let i = 0; i < currencies.length; i++) {
 
-        currencyNeeded[currencies[i]] = Math.max(currencyNeededPre[currencies[i]] - initialClearRewards[currencies[i]], 0);
+        if (initialClearRewards[currencies[i]]) {
+            currencyNeeded[currencies[i]] = Math.max(currencyNeededPre[currencies[i]] - initialClearRewards[currencies[i]], 0);
+        }
     }
 
     event_point_target = Math.max(event_point_target - initialClearRewards["Event_Point"], 0);
@@ -881,6 +1305,10 @@ function GenerateStagesTable() {
         if (stage.type == "Quest") {
 
             let tableRow = document.createElement('tr');
+
+            if (i % 2 == 1) {
+                tableRow.className = "alternate-row";
+            }
 
             CreateTableRowCells(tableRow, [stage.number, stage.cost, CreateRunsDiv(stage.number), CreateDropsDiv(stage.drops)], 'td');
 
@@ -1100,6 +1528,7 @@ function SetOptimise(optimisation) {
 
     stage_runs = {};
     targetedMaterials = {};
+    event_data["optimisation_options"] = null;
 
     if (optimisation == "Shop") {
 
@@ -1171,6 +1600,7 @@ function GenerateMaterialSelections() {
 
     let currentMatType = matDrops[0].slice(0, -2);
     let currentMatsContainer = document.createElement('div');
+    currentMatsContainer.className = "justify-content-center";
     optContainer.appendChild(currentMatsContainer);
 
     let dropSliced = "", dropRarity = "";
@@ -1198,6 +1628,7 @@ function GenerateMaterialSelections() {
         if (dropSliced != currentMatType) {
 
             currentMatsContainer = document.createElement('div');
+            currentMatsContainer.className = "justify-content-center";
             optContainer.appendChild(currentMatsContainer);
 
             currentMatType = dropSliced;
@@ -1388,16 +1819,21 @@ function CalculateStageDrops(result, ignoreRequirement) {
     }
 
     if (displayIncluded['ShopPurchases']) {
-        AddShopPurchases(totalArtifacts, totalSchoolMats, totalEleph);
+        let intResults = AddShopPurchases(totalArtifacts, totalSchoolMats, totalEleph, totalXps, totalCredit, totalEligma, totalSecretTech);
+        if (intResults) {
+            totalCredit += intResults[0];
+            totalEligma += intResults[1];
+            totalSecretTech += intResults[2];
+        }
     }
 
     if (displayIncluded['PointRewards']) {
         let pointTarget = event_config.events[current_event].event_point_target;
         let intResults = AddPointRewards(pointTarget, totalXps, totalCredit, totalEligma, totalSecretTech);
         if (intResults) {
-            totalCredit = intResults[0];
-            totalEligma = intResults[1];
-            totalSecretTech = intResults[2];
+            totalCredit += intResults[0];
+            totalEligma += intResults[1];
+            totalSecretTech += intResults[2];
         }
     }
 
@@ -1406,6 +1842,32 @@ function CalculateStageDrops(result, ignoreRequirement) {
         if (initialClearRewards[neededCurrencies[i]]) {
             totalCurrencies[neededCurrencies[i]] += initialClearRewards[neededCurrencies[i]];
         }
+    }
+
+    if (displayIncluded['BoxRewards']) {
+
+        let pullCurrency;
+        let currencyNames = Object.keys(event_config.events[current_event].currencies);
+        let currencies = event_config.events[current_event].currencies;
+
+        for (let i = 0; i < currencyNames.length; i++) {
+
+            if (currencies[currencyNames[i]].source == "BoxPull") {
+
+                pullCurrency = currencies[currencyNames[i]].pull_currency;
+            }
+        }
+
+        let results = AddBoxRewards(totalCurrencies[pullCurrency], totalArtifacts, totalSchoolMats, totalEleph, totalXps);
+        if (results) {
+            totalCredit += results[0];
+            totalEligma += results[1];
+            totalSecretTech += results[2];
+            totalCurrencies[results[4]] = results[3];
+        }
+    }
+    else {
+        document.getElementById('box-info-text').innerText = '';
     }
 
     if (initialClearRewards["Event_Point"]) {
@@ -1427,7 +1889,7 @@ function CalculateStageDrops(result, ignoreRequirement) {
 
 }
 
-function AddShopPurchases(totalArtifacts, totalSchoolMats, totalEleph) {
+function AddShopPurchases(totalArtifacts, totalSchoolMats, totalEleph, totalXps, totalCredit, totalEligma, totalSecretTech) {
 
     let shops = Object.keys(event_data.shop_purchases);
 
@@ -1468,8 +1930,22 @@ function AddShopPurchases(totalArtifacts, totalSchoolMats, totalEleph) {
 
                 }
             }
+            else if (items[ii].includes('-')) {
+
+                if (items[ii].includes('Credit')) {
+                    totalCredit += parseInt(items[ii].substring(items[ii].indexOf('-') + 1)) * parseInt(shop[items[ii]]);
+                }
+                else if (items[ii].includes('Eligma')) {
+                    totalEligma += parseInt(items[ii].substring(items[ii].indexOf('-') + 1)) * parseInt(shop[items[ii]]);
+                }
+            }
+            else if (items[ii] == "SecretTech") {
+                totalSecretTech += parseInt(shop[items[ii]]);
+            }
         }
     }
+
+    return [totalCredit, totalEligma, totalSecretTech];
 }
 
 function AddPointRewards(pointTarget, totalXps, totalCredit, totalEligma, totalSecretTech) {
@@ -1510,6 +1986,118 @@ function AddPointRewards(pointTarget, totalXps, totalCredit, totalEligma, totalS
     return [totalCredit, totalEligma, totalSecretTech];
 }
 
+function AddBoxRewards(pullCurrency, totalArtifacts, totalSchoolMats, totalEleph, totalXps) {
+
+    if (!pullCurrency) {
+        return;
+    }
+
+    let totalCredit = 0, totalEligma = 0, totalSecretTech = 0;
+
+    let boxClearCost = event_config.events[current_event].box_clear_cost;
+
+    let boxClears = Math.floor(pullCurrency / boxClearCost);
+    let leftoverBoxPercent = ((pullCurrency - boxClears * boxClearCost) / boxClearCost * 100).toFixed(0);
+
+    if (leftoverBoxPercent) {
+        document.getElementById('box-info-text').innerText = boxClears + " boxes cleared (displayed), and enough currency for " + leftoverBoxPercent + "% of a box (not displayed)";
+    }
+
+    let boxCycleSets = event_config.events[current_event].boxes;
+    let boxSelect = {};
+
+    for (let i = 0; i < boxCycleSets.length; i++) {
+
+        for (let ii = 0; ii < boxCycleSets[i].cycle.length; ii++) {
+
+            boxSelect[boxCycleSets[i].cycle[ii]] = i;
+        }
+    }
+
+    let infiniteBox = boxSelect[Object.keys(boxSelect).length];
+
+    let cycle = 0;
+    let boxCurrencyObtained = 0;
+    let boxCurrencyName = "";
+
+    while (cycle < boxClears) {
+
+        cycle++;
+
+        let boxRewards;
+        if (boxSelect[cycle] != undefined) {
+            boxRewards = boxCycleSets[boxSelect[cycle]].rewards;
+        }
+        else {
+            boxRewards = boxCycleSets[infiniteBox].rewards;
+        }
+
+        for (let i = 0; i < boxRewards.length; i++) {
+
+            if (boxRewards[i].type == "XpReport" || boxRewards[i].type == "XpOrb") {
+
+                if (!totalXps[boxRewards[i].id]) {
+                    totalXps[boxRewards[i].id] = 0;
+                }
+
+                totalXps[boxRewards[i].id] += boxRewards[i].count;
+            }
+            else if (boxRewards[i].type == "Eligma") {
+                totalEligma += boxRewards[i].count;
+            }
+            else if (boxRewards[i].type == "Credit") {
+                totalCredit += boxRewards[i].count;
+            }
+            else if (boxRewards[i].type == "SecretTech") {
+                totalSecretTech += boxRewards[i].count;
+            }
+            else if (boxRewards[i].type == "Material") {
+
+                let itemNum = parseInt(boxRewards[i].id);
+
+                if (itemNum < 1000) {
+
+                    let matName = matLookup.get(itemNum);
+
+                    if (!totalArtifacts[matName]) {
+                        totalArtifacts[matName] = 0;
+                    }
+
+                    totalArtifacts[matName] += boxRewards[i].count;
+                }
+                else if (itemNum < 5000) {
+
+                    let matName = matLookup.get(itemNum);
+
+                    if (!totalSchoolMats[matName]) {
+                        totalSchoolMats[matName] = 0;
+                    }
+
+                    totalSchoolMats[matName] += boxRewards[i].count;
+                }
+            }
+            else if (boxRewards[i].type == "Eleph") {
+
+                if (!totalEleph[boxRewards[i].id]) {
+                    totalEleph[boxRewards[i].id] = 0;
+                }
+
+                totalEleph[boxRewards[i].id] += (boxRewards[i].amount * boxRewards[i].count);
+            }
+            else if (boxRewards[i].type == "EventCurrency") {
+
+                if (!boxCurrencyName) {
+                    boxCurrencyName = boxRewards[i].id;
+                }
+
+                boxCurrencyObtained += (boxRewards[i].amount * boxRewards[i].count);
+            }
+        }
+    }
+
+    return [totalCredit, totalEligma, totalSecretTech, boxCurrencyObtained, boxCurrencyName];
+}
+
 function DisplayOptionClicked(option) {
 
     if (displayIncluded[option]) {
@@ -1547,6 +2135,8 @@ function UpdateRewardsObtained(totalCurrencies, energyCost, totalArtifacts, tota
     xpMatsContainer.className = "reward-group";
     let miscContainer = document.createElement('div');
     miscContainer.className = "reward-group";
+    let elephContainer = document.createElement('div');
+    elephContainer.className = "reward-group";
 
     currenciesContainer.appendChild(CreateRewardItem("icons/EventIcon/EnergyIcon/EnergyPadded.png", energyCost, ""));
 
@@ -1598,8 +2188,8 @@ function UpdateRewardsObtained(totalCurrencies, energyCost, totalArtifacts, tota
             currentMatType = dropSliced;
         }
 
-        currentSubDiv.appendChild(CreateRewardItem("icons/SchoolMat/" + name + ".png", totalSchoolMats[name].toFixed(1),
-            'drop-resource-rarity-' + dropRarity + ' drop-resource'));
+        currentSubDiv.appendChild(CreateRewardItem("icons/SchoolMat/" + name + ".png", totalSchoolMats[name].toFixed(1), ''));
+        //'drop-resource-rarity-' + dropRarity + ' drop-resource'));
     })
 
     let xpMatNames = Object.keys(totalXps).sort().reverse();
@@ -1618,7 +2208,14 @@ function UpdateRewardsObtained(totalCurrencies, energyCost, totalArtifacts, tota
         miscContainer.appendChild(CreateRewardItem("icons/Misc/Credit.png", totalCredit, ""));
     }
 
+    let elephIds = Object.keys(totalEleph);
+
+    elephIds.forEach((id) => {
+        elephContainer.appendChild(CreateRewardItem("icons/Eleph/Eleph_" + id + ".png", totalEleph[id], ""))
+    })
+
     rewardsContainer.appendChild(currenciesContainer);
+    rewardsContainer.appendChild(elephContainer);
     rewardsContainer.appendChild(miscContainer);
     rewardsContainer.appendChild(xpMatsContainer);
     rewardsContainer.appendChild(schoolMatsContainer);
@@ -1741,16 +2338,16 @@ function InfeasibleModel() {
 
     let failureDiv = document.createElement('div');
 
-    failureDiv.innerText = "A minimum of about " + energyMin + " energy is needed for this to be feasible, please either add additional energy sources, or reduce shop purchases.";
+    failureDiv.innerText = "A minimum of about " + energyMin + " energy is needed for this to be feasible, please either add additional energy sources, reduce shop purchases or set bonus characters";
 
     document.getElementById('rewards-container').appendChild(failureDiv);
 }
 
 function GeneratePointsTable() {
 
-    let existingTable = document.getElementById('points-table');
-    if (existingTable) {
-        existingTable.remove();
+    let existingTableContainer = document.getElementById('points-table-container');
+    while (existingTableContainer.children.length > 0) {
+        existingTableContainer.children[0].remove();
     }
 
     let pointTiers = event_config.events[current_event].point_rewards;
@@ -1763,18 +2360,16 @@ function GeneratePointsTable() {
         document.getElementById('tab-Points').style.display = '';
     }
 
+    let tableWrapPoint = Math.floor(pointTiers.length / 3);
+
     let tableContainer = document.getElementById('points-table-container');
 
-    let table = document.createElement('table');
-    table.id = 'points-table';
-    let tableHead = document.createElement('thead');
-    let tableBody = document.createElement('tbody');
-
-    let tableHeadRow = document.createElement('tr');
-
-    CreateTableRowCells(tableHeadRow, ["Points", "Reward"], 'th');
-
-    tableHead.appendChild(tableHeadRow);
+    let table1 = GetNewTable(["Points", "Rewards"]);
+    let table1Body = table1.getElementsByTagName('tbody')[0];
+    let table2 = GetNewTable(["Points", "Rewards"]);
+    let table2Body = table2.getElementsByTagName('tbody')[0];
+    let table3 = GetNewTable(["Points", "Rewards"]);
+    let table3Body = table3.getElementsByTagName('tbody')[0];
 
     for (let i = 0; i < pointTiers.length; i++) {
 
@@ -1784,19 +2379,44 @@ function GeneratePointsTable() {
 
         CreateTableRowCells(tableRow, [pTier.points, CreatePointRewardDiv(pTier.type, pTier.id, pTier.count)], 'td');
 
-        tableBody.appendChild(tableRow);
+        if (i < tableWrapPoint) {
+            table1Body.appendChild(tableRow);
+        }
+        else if (i < (tableWrapPoint * 2)) {
+            table2Body.appendChild(tableRow);
+        }
+        else {
+            table3Body.appendChild(tableRow);
+        }
     }
+
+    tableContainer.appendChild(table1);
+    tableContainer.appendChild(table2);
+    tableContainer.appendChild(table3);
+}
+
+function GetNewTable(headers) {
+
+    let table = document.createElement('table');
+    let tableHead = document.createElement('thead');
+    let tableBody = document.createElement('tbody');
+
+    let tableHeadRow = document.createElement('tr');
+
+    CreateTableRowCells(tableHeadRow, headers, 'th');
+
+    tableHead.appendChild(tableHeadRow);
 
     table.appendChild(tableHead);
     table.appendChild(tableBody);
 
-    tableContainer.appendChild(table);
+    return table;
 }
 
 function CreatePointRewardDiv(rewardType, rewardId, rewardCount) {
 
     let rewardDiv = document.createElement('div');
-    rewardDiv.className = 'stages-table-drops-container';
+    rewardDiv.className = 'point-rewards-table-container';
 
     let dropDiv = document.createElement('div');
     let dropImg = document.createElement('img');
@@ -1858,4 +2478,16 @@ function InitMaxShopPurchases() {
     currencyNeededPre = event_data.currency_needed;
 
     return shopPurchases;
+}
+
+function ToggleEventList() {
+
+    let eventList = document.getElementById('events-list');
+
+    if (eventList.classList.contains('event-selected')) {
+        eventList.classList.remove('event-selected');
+    }
+    else {
+        eventList.classList.add('event-selected');
+    }
 }

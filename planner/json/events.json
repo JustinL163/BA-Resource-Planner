@@ -1,7 +1,7 @@
 {
     "event_order": [
-        "neverland-rerun",
-        "bunny-chaser"
+        "after-school-sweets",
+        "neverland-rerun"
     ],
     "TEMP": [
         "after-school-sweets",
@@ -16,15 +16,19 @@
     "events": {
         "after-school-sweets": {
             "icon": "Event_816_Jp.png",
+            "display_name": "A Tale of After-School Sweets",
             "reset_time": 1677524400,
             "start_time": 1677549600,
             "end_time": 1678759200,
             "maint_hours": 6,
-            "available_targets": ["Shop", "Currency", "Manual"],
+            "available_targets": ["Shop", "Materials", "Currency", "Manual"],
             "currency_targets": ["Sweets_Coupon"],
             "currencies": {
                 "Sweets_Coupon": {
                     "icon": "Sweets_Coupon.png",
+                    "shortname": "Sweets Coupon",
+                    "source": "StageDrop",
+                    "clear": 30600,
                     "bonus_units": [
                         {"id": "10049", "bonus": 0.2},
                         {"id": "10029", "bonus": 0.2},
@@ -35,6 +39,8 @@
                 },
                 "Mint_Choco_Parfait": {
                     "icon": "Mint_Choco_Parfait.png",
+                    "shortname": "Mint Choco Parfait",
+                    "source": "StageDrop",
                     "clear": 10695,
                     "bonus_units": [
                         {"id": "10049", "bonus": 0.25},
@@ -45,6 +51,8 @@
                 },
                 "Macaron": {
                     "icon": "Macaron.png",
+                    "shortname": "Macaron",
+                    "source": "StageDrop",
                     "clear": 12650,
                     "bonus_units": [
                         {"id": "13003", "bonus": 0.25},
@@ -55,6 +63,10 @@
                 },
                 "Roll_Waffle": {
                     "icon": "Roll_Waffle.png",
+                    "shortname": "Roll Waffle",
+                    "source": "BoxPull",
+                    "pull_currency": "Sweets_Coupon",
+                    "clear": 230,
                     "bonus_units": []
                 }
             },
@@ -98,7 +110,13 @@
                     {"type": "Furniture", "id": "Valentine_Storage_Set", "count": 1, "cost": 1000}
                 ],
                 "Roll_Waffle": [
-                    {"type": "Eleph", "id": "10029", "count": 50, "cost": 1}
+                    {"type": "Eleph", "id": "10029", "count": 50, "cost": 1},
+                    {"type": "Pyroxene", "id": "Pyroxene-1200", "count": 1, "cost": 40, "amount": 1200},
+                    {"type": "Eligma", "id": "Eligma-5", "count": 20, "cost": 2, "amount": 5},
+                    {"type": "SecretTech", "id": "SecretTech", "count": 1, "cost": 20},
+                    {"type": "Credit", "id": "Credit-750000", "count": 5, "cost": 5, "amount": 750000},
+                    {"type": "Credit", "id": "Credit-350000", "count": 10, "cost": 3, "amount": 350000},
+                    {"type": "Credit", "id": "Credit-100000", "count": 25, "cost": 1, "amount": 100000}
                 ]
             },
             "stages": [
@@ -129,6 +147,55 @@
                 {"type": "Challenge", "number": 3, "cost": 5},
                 {"type": "Challenge", "number": 4, "cost": 5},
                 {"type": "Challenge", "number": 5, "cost": 5}
+            ],
+            "box_clear_cost": 1800,
+            "boxes": [
+                {
+                    "cycle": [1, 3, 5],
+                    "rewards": [
+                        {"type": "Eleph", "id": 26005, "amount":  20, "count": 1},
+                        {"type": "EventCurrency", "id": "Roll_Waffle", "amount":  10, "count": 2},
+                        {"type": "XpReport", "id": "XP_1", "amount":  1, "count": 60},
+                        {"type": "XpReport", "id": "XP_2", "amount":  1, "count": 35},
+                        {"type": "XpReport", "id": "XP_3", "amount":  1, "count": 20},
+                        {"type": "XpReport", "id": "XP_4", "amount":  1, "count": 3},
+                        {"type": "Material", "id": "140", "amount":  1, "count": 30},
+                        {"type": "Material", "id": "141", "amount":  1, "count": 12},
+                        {"type": "Material", "id": "142", "amount":  1, "count": 6},
+                        {"type": "Material", "id": "143", "amount":  1, "count": 2},
+                        {"type": "Misc", "id": "Random_Equipment_Box_0", "amount":  1, "count": 129}
+                    ]
+                },
+                {
+                    "cycle": [2, 4, 6],
+                    "rewards": [
+                        {"type": "Eleph", "id": 23000, "amount":  20, "count": 1},
+                        {"type": "EventCurrency", "id": "Roll_Waffle", "amount":  10, "count": 2},
+                        {"type": "XpReport", "id": "GXP_1", "amount":  1, "count": 60},
+                        {"type": "XpReport", "id": "GXP_2", "amount":  1, "count": 35},
+                        {"type": "XpReport", "id": "GXP_3", "amount":  1, "count": 20},
+                        {"type": "XpReport", "id": "GXP_4", "amount":  1, "count": 3},
+                        {"type": "Material", "id": "130", "amount":  1, "count": 30},
+                        {"type": "Material", "id": "131", "amount":  1, "count": 12},
+                        {"type": "Material", "id": "132", "amount":  1, "count": 6},
+                        {"type": "Material", "id": "133", "amount":  1, "count": 2},
+                        {"type": "Misc", "id": "Random_Equipment_Box_0", "amount":  1, "count": 129}
+                    ]
+                },
+                {
+                    "cycle": [7],
+                    "rewards": [
+                        {"type": "Eleph", "id": 26005, "amount":  1, "count": 3},
+                        {"type": "EventCurrency", "id": "Roll_Waffle", "amount":  10, "count": 1},
+                        {"type": "XpReport", "id": "XP_1", "amount":  1, "count": 100},
+                        {"type": "XpReport", "id": "XP_2", "amount":  1, "count": 50},
+                        {"type": "XpReport", "id": "XP_3", "amount":  1, "count": 20},
+                        {"type": "Material", "id": "140", "amount":  1, "count": 15},
+                        {"type": "Material", "id": "141", "amount":  1, "count": 7},
+                        {"type": "Material", "id": "142", "amount":  1, "count": 2},
+                        {"type": "Misc", "id": "Random_Equipment_Box_0", "amount":  1, "count": 102}
+                    ]
+                }
             ]
         },
         "summer-gehenna": {
@@ -174,6 +241,7 @@
         },
         "neverland-rerun": {
             "icon": "Event_805_En.png",
+            "display_name": "Playing Tag at Neverland",
             "reset_time": 1681153200,
             "start_time": 1681178400,
             "end_time": 1681783200,
@@ -184,6 +252,8 @@
                 "Mushroom": {
                     "icon": "Mushroom.png",
                     "shortname": "Mushroom",
+                    "source": "StageDrop",
+                    "clear": 10870,
                     "bonus_units": [
                         {"id": "23004", "bonus": 0.25},
                         {"id": "20000", "bonus": 0.25},
@@ -196,6 +266,8 @@
                 "Black_Bamboo_Shoot": {
                     "icon": "Black_Bamboo_Shoot.png",
                     "shortname": "Bamboo",
+                    "source": "StageDrop",
+                    "clear": 9040,
                     "bonus_units": [
                         {"id": "10050", "bonus": 0.25},
                         {"id": "13012", "bonus": 0.25},
@@ -208,6 +280,8 @@
                 "Ginseng": {
                     "icon": "Ginseng.png",
                     "shortname": "Ginseng",
+                    "source": "StageDrop",
+                    "clear": 7350,
                     "bonus_units": [
                         {"id": "10011", "bonus": 0.25},
                         {"id": "10025", "bonus": 0.25},
@@ -357,6 +431,7 @@
         },
         "bunny-chaser": {
             "icon": "Event_806_En.png",
+            "display_name": "Bunny Chasers on Board",
             "reset_time": 1681153200,
             "start_time": 1681178400,
             "end_time": 1681783200,
