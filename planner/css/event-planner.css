@@ -4,7 +4,7 @@
     max-width: 300px;
     overflow-y: auto;
     margin-left: auto;
-    max-height: 90vh; 
+    max-height: 90vh;
     text-align: center;
 }
 
@@ -24,7 +24,7 @@
 }
 
 #body-content-container {
-    display: flex; 
+    display: flex;
     margin-top: 2vh;
 }
 
@@ -79,7 +79,8 @@
     width: 100%;
 }
 
-.currency-box p, .currency-shop-tab p {
+.currency-box p,
+.currency-shop-tab p {
     top: 50%;
     left: 50%;
     position: absolute;
@@ -203,7 +204,8 @@
     padding-left: 1em;
 }
 
-.stages-table-drops-container, .point-rewards-table-container {
+.stages-table-drops-container,
+.point-rewards-table-container {
     display: flex;
 }
 
@@ -211,15 +213,21 @@
     flex-wrap: wrap;
 }
 
-.stages-table-drops-container div, .point-rewards-table-container div {
+.stages-table-drops-container div,
+.point-rewards-table-container div {
     position: relative;
 }
 
-.stages-table-drops-container img, .point-rewards-table-container img {
+.stages-table-drops-container img,
+.point-rewards-table-container img {
     max-width: 70px;
 }
 
-.stages-table-drops-container p, #rewards-container p, .box-item-amount, .point-rewards-table-container p, .energy-source-setting {
+.stages-table-drops-container p,
+#rewards-container p,
+.box-item-amount,
+.point-rewards-table-container p,
+.energy-source-setting {
     top: 50%;
     left: 50%;
     position: absolute;
@@ -293,7 +301,7 @@
 
 #currency-divs-container div {
     filter: none !important;
-    padding: 1em;   
+    padding: 1em;
 }
 
 #currency-divs-container div:hover {
@@ -554,7 +562,8 @@
         margin-right: 1%;
     }
 
-    .event-tab-button, .optimise-approach-button {
+    .event-tab-button,
+    .optimise-approach-button {
         padding: 0.5em;
         font-size: 0.9em;
     }
@@ -577,7 +586,9 @@
         max-width: 70px;
     }
 
-    .stages-table-drops-container p, #rewards-container p, .box-item-amount {
+    .stages-table-drops-container p,
+    #rewards-container p,
+    .box-item-amount {
         font-size: 16px;
     }
 
@@ -617,7 +628,8 @@
         width: 30%;
     }
 
-    #energy-sources-fixed-container, #energy-sources-editable-container {
+    #energy-sources-fixed-container,
+    #energy-sources-editable-container {
         flex-wrap: wrap;
         place-content: center;
     }
@@ -715,5 +727,9 @@
         background-color: #ffffff78;
         font-family: monospace;
         font-size: 1.25em;
+    }
+
+    .shop-furniture-info-bubble {
+        max-width: 1em !important;
     }
 }
