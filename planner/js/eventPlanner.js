@@ -26,9 +26,11 @@ let initialClearCost = 0;
 
 let cafeDefault = 7;
 
+let shopItemTippies = [];
+
 function loadResources() {
 
-    $.getJSON('json/events.json?2').done(function (json) {
+    $.getJSON('json/events.json?3').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -269,6 +271,22 @@ function InitTippies() {
     tippy('#tab-opti-Manual', {
         content: "Sets the inputs in Stages tab to editable for manual input. (Currently manual doesn't include initial clear event currencies like the other modes)",
         theme: 'light'
+    });
+
+    tippy('#info-event-bonus-maximise', {
+        content: `<b>TLDR: Beat stages you need to farm with the highest bonus per token. This may take several runs.</b><br><br>
+        
+        An event stage saves your highest bonus multiplier for each token. You may need several runs to maximize this, usually focusing one token at a time due to team limitations. 
+        You cannot forfeit or be defeated on teams with these characters, otherwise it removes their bonus. It’s fine if the bonus chars die.<br><br>
+        
+        For example, to set up a stage with 3 currencies:<br>
+        - Beat it with the highest bonus for token A<br>
+        - Beat it with the highest bonus for token B<br>
+        - Beat it with the highest bonus for token C<br>
+        - Now you have the maximum bonus multipliers for tokens A, B, and C. You can sweep away.<br> 
+        - Repeat for every stage you need to farm.`,
+        theme: 'light',
+        allowHTML: true
     });
 }
 
@@ -996,6 +1014,23 @@ function GenerateShopContent(currency) {
     for (let i = 0; i < shop.length; i++) {
 
         elShopContent.appendChild(CreateShopItem(shop[i], currency));
+
+        if (shop[i].type == "Furniture") {
+
+            if (shop[i].limited) {
+                
+                shopItemTippies.push(tippy(('#info-' + shop[i].id), {
+                    content: "This furniture is event limited",
+                    theme: 'light'
+                })[0]);
+            }
+            else {
+                shopItemTippies.push(tippy(('#info-' + shop[i].id), {
+                    content: "This furniture is not limited",
+                    theme: 'light'
+                })[0]);
+            }
+        }
     }
 
 }
@@ -1018,6 +1053,12 @@ function GenerateBoxContent(boxCycleTabId) {
 }
 
 function ClearChildren(parentElement) {
+
+    for (let i = 0; i < shopItemTippies.length; i++) {
+        shopItemTippies[i].destroy();
+    }
+
+    shopItemTippies = [];
 
     while (parentElement.children.length > 0) {
         parentElement.children[0].remove();
@@ -1103,6 +1144,20 @@ function CreateShopItem(item, currency) {
     priceDiv.appendChild(priceP);
 
     itemDiv.appendChild(priceDiv);
+
+    if (item.type == "Furniture") {
+
+        let infoImg = document.createElement('img');
+        infoImg.id = "info-" + item.id;
+        infoImg.className = "shop-furniture-info-bubble";
+        infoImg.src = "icons/Furniture/circle-exclamation-solid.svg";
+
+        itemDiv.appendChild(infoImg);
+
+        if (item.limited) {
+            infoImg.classList.add('limited-furniture');
+        }
+    }
 
 
     return itemDiv;
@@ -1310,7 +1365,7 @@ function GenerateStagesTable() {
                 tableRow.className = "alternate-row";
             }
 
-            CreateTableRowCells(tableRow, [stage.number, stage.cost, CreateRunsDiv(stage.number), CreateDropsDiv(stage.drops)], 'td');
+            CreateTableRowCells(tableRow, [("Q" + stage.number), CreateEnergyDiv(stage.cost), CreateRunsDiv(stage.number), CreateDropsDiv(stage.drops)], 'td');
 
             tableBody.appendChild(tableRow);
         }
@@ -1343,6 +1398,24 @@ function CreateTableRowCells(row, cells, cellType) {
 
         row.appendChild(tableCell);
     })
+}
+
+function CreateEnergyDiv(cost) {
+
+    let energyDiv = document.createElement('div');
+    let energyImg = document.createElement('img');
+    let energyP = document.createElement('p');
+
+    energyDiv.className = "stage-quest-energy";
+
+    energyImg.src = "icons/Misc/Energy.png";
+
+    energyP.innerText = cost;
+
+    energyDiv.appendChild(energyImg);
+    energyDiv.appendChild(energyP);
+
+    return energyDiv;
 }
 
 function CreateDropsDiv(drops) {
@@ -1555,6 +1628,7 @@ function SetOptimise(optimisation) {
     else if (optimisation == "Manual") {
 
         optimisationType = "Manual";
+        document.getElementById('tab-Stages').click();
     }
 
     event_data["optimisation_type"] = optimisationType;

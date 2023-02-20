@@ -24,7 +24,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/event-planner.css?1">
+    <link rel="stylesheet" href="css/event-planner.css?2">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
@@ -35,7 +35,7 @@
     <link rel="stylesheet" href="packages/tippyjs/light.css" />
     <script src="js/config.js?14"></script>
     <script src="js/common.js?2"></script>
-    <script src="js/eventPlanner.js?2"></script>
+    <script src="js/eventPlanner.js?3"></script>
     <title>Event Planner</title>
 </head>
 
@@ -118,14 +118,14 @@
                     <div id="energy-source-pyro" class="energy-source energy-editable"
                         onclick="EnergySourceClicked('Pyro')">
                         <div>
-                            <img src="icons/EventIcon/EnergyIcon/Common_Icon_Diamond.png">
+                            <img src="icons/EventIcon/EnergyIcon/EnergyPyro.png">
                             <p id="energy-source-pyro-refresh" class="energy-source-setting"></p>
                         </div>
                         <p id="energy-pyro-total">0</p>
                     </div>
                     <div id="energy-source-pvp" class="energy-source energy-editable" onclick="EnergySourceClicked('ArenaCoin')">
                         <div>
-                            <img src="icons/EventIcon/EnergyIcon/ArenaCoin.png">
+                            <img src="icons/EventIcon/EnergyIcon/EnergyPvp.png">
                             <p id="energy-source-pvp-refresh" class="energy-source-setting"></p>
                         </div>
                         <p id="energy-arenacoin-total">0</p>
@@ -152,6 +152,7 @@
                 <p style="margin-left: 1em; margin-bottom: 1em;">Click character to toggle</p>
                 <div id="bonus-chars-container"></div>
                 <div id="currency-bonuses"></div>
+                <p id="info-event-bonus-maximise" style="display: none;">How to maximise event farming</p>
             </div>
             <div class="event-tab" id="Shop-tab">
                 <div id="currency-shop-tabs"></div>

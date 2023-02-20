@@ -160,8 +160,10 @@
 
 .shop-item-input-container input {
     height: 25%;
-    background-color: #ffffff96;
+    background-color: #ffffffd9;
     text-align: center;
+    width: 3em;
+    font-weight: 900;
 }
 
 .shop-item-input-container p {
@@ -170,6 +172,7 @@
     font-family: sans-serif;
     text-shadow: -1px -1px 0 #ffffff, 0px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 0px 1px 0 #fff, 1px 1px 0 #fff;
     color: black;
+    white-space: nowrap;
 }
 
 .shop-item-price-container {
@@ -393,10 +396,6 @@
     color: black;
 }
 
-#energy-source-pyro img {
-    padding-inline: 1em;
-}
-
 #energy-source-pack p {
     padding-left: 0.5em;
 }
@@ -444,6 +443,27 @@
 #info-select-event {
     text-align: center;
     font-size: 4em;
+}
+
+.stage-quest-energy {
+    display: flex;
+    transform: translate(-5px, 0px);
+}
+
+.stage-quest-energy img {
+    width: 1em;
+}
+
+.shop-furniture-info-bubble {
+    max-width: 2em !important;
+    position: absolute;
+    top: 5%;
+    left: 10%;
+    filter: invert(52%) sepia(40%) saturate(6904%) hue-rotate(178deg) brightness(108%) contrast(98%);
+}
+
+.shop-furniture-info-bubble.limited-furniture {
+    filter: invert(84%) sepia(10%) saturate(4286%) hue-rotate(3deg) brightness(109%) contrast(98%);
 }
 
 .dark-theme #events-list {
@@ -508,6 +528,11 @@
 
 .dark-theme .box-cycle-tab.selected {
     background-color: rgb(26 26 26);
+}
+
+.dark-theme .stage-runs-div input:disabled {
+    color: white;
+    background-color: rgb(44 44 44 / 30%);
 }
 
 @media (max-width: 800px) {
@@ -634,7 +659,7 @@
     }
 
     #stages-table th:first-child {
-        padding-right: 0.5em;
+        padding-right: 2em;
     }
 
     .stage-runs-div input {
@@ -656,10 +681,6 @@
 
     #optimisation-settings-container div.justify-content-center {
         justify-content: center;
-    }
-
-    #energy-source-pyro img {
-        padding-inline: 0;
     }
 
     #energy-source-cafe-level {
@@ -688,5 +709,11 @@
 
     #event-list-button p {
         margin-left: 0.5em;
+    }
+
+    .shop-item-input-container input {
+        background-color: #ffffff78;
+        font-family: monospace;
+        font-size: 1.25em;
     }
 }
