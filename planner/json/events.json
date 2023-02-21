@@ -1,6 +1,7 @@
 {
     "event_order": [
         "after-school-sweets",
+        "summer-gehenna",
         "neverland-rerun"
     ],
     "TEMP": [
@@ -200,13 +201,19 @@
         },
         "summer-gehenna": {
             "icon": "Event_804_En.png",
+            "display_name": "Head Prefect Hina's Summmer Break",
             "reset_time": 1681153200,
             "start_time": 1681178400,
             "end_time": 1681783200,
             "maint_hours": 6,
+            "available_targets": ["Shop", "Materials", "Currency", "Manual"],
+            "currency_targets": ["Supply_Box"],
             "currencies": {
                 "Supply_Box": {
                     "icon": "Supply_Box.png",
+                    "shortname": "Supply Box",
+                    "source": "StageDrop",
+                    "clear": 28800,
                     "bonus_units": [
                         {"id": "10022", "bonus": 0.2},
                         {"id": "10023", "bonus": 0.2},
@@ -219,6 +226,9 @@
                 },
                 "Grilled_Corn": {
                     "icon": "Grilled_Corn.png",
+                    "shortname": "Grilled Corn",
+                    "source": "StageDrop",
+                    "clear": 8735,
                     "bonus_units": [
                         {"id": "10006", "bonus": 0.25},
                         {"id": "10023", "bonus": 0.25},
@@ -229,6 +239,9 @@
                 },
                 "Summer_Sunglasses": {
                     "icon": "Summer_Sunglasses.png",
+                    "shortname": "Summer Shades",
+                    "source": "StageDrop",
+                    "clear": 8475,
                     "bonus_units": [
                         {"id": "10004", "bonus": 0.25},
                         {"id": "10022", "bonus": 0.25},
@@ -236,8 +249,141 @@
                         {"id": "16006", "bonus": 0.25},
                         {"id": "23001", "bonus": 0.25}
                     ]
+                },
+                "Soaked_Helmet": {
+                    "icon": "Soaked_Helmet.png",
+                    "shortname": "Soaked Helmet",
+                    "source": "BoxPull",
+                    "pull_currency": "Supply_Box",
+                    "clear": 220,
+                    "bonus_units": []
                 }
-            }
+            },
+            "shops": {
+                "Grilled_Corn": [
+                    {"type": "XpReport", "id": "XP_1", "count": 150, "cost": 1},
+                    {"type": "XpReport", "id": "XP_2", "count": 75, "cost": 10},
+                    {"type": "XpReport", "id": "XP_3", "count": 25, "cost": 40},
+                    {"type": "XpReport", "id": "XP_4", "count": 10, "cost": 200},
+                    {"type": "Material", "id": "3030", "count": 8, "cost": 10},
+                    {"type": "Material", "id": "3031", "count": 6, "cost": 30},
+                    {"type": "Material", "id": "3032", "count": 4, "cost": 100},
+                    {"type": "Material", "id": "3033", "count": 1, "cost": 300},
+                    {"type": "Material", "id": "180", "count": 70, "cost": 5},
+                    {"type": "Material", "id": "181", "count": 35, "cost": 15},
+                    {"type": "Material", "id": "182", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "183", "count": 10, "cost": 200}
+                ],
+                "Summer_Sunglasses": [
+                    {"type": "XpOrb", "id": "GXP_1", "count": 150, "cost": 1},
+                    {"type": "XpOrb", "id": "GXP_2", "count": 75, "cost": 4},
+                    {"type": "XpOrb", "id": "GXP_3", "count": 25, "cost": 15},
+                    {"type": "XpOrb", "id": "GXP_4", "count": 10, "cost": 60},
+                    {"type": "Material", "id": "4030", "count": 25, "cost": 5},
+                    {"type": "Material", "id": "4031", "count": 20, "cost": 15},
+                    {"type": "Material", "id": "4032", "count": 15, "cost": 50},
+                    {"type": "Material", "id": "4033", "count": 10, "cost": 200},
+                    {"type": "Material", "id": "130", "count": 70, "cost": 5},
+                    {"type": "Material", "id": "131", "count": 35, "cost": 15},
+                    {"type": "Material", "id": "132", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "133", "count": 10, "cost": 200}
+                ],
+                "Soaked_Helmet": [
+                    {"type": "Eleph", "id": "26000", "count": 40, "cost": 1},
+                    {"type": "Pyroxene", "id": "Pyroxene-1200", "count": 1, "cost": 40, "amount": 1200},
+                    {"type": "Eligma", "id": "Eligma-5", "count": 20, "cost": 2, "amount": 5},
+                    {"type": "SecretTech", "id": "SecretTech", "count": 1, "cost": 20},
+                    {"type": "Credit", "id": "Credit-750000", "count": 5, "cost": 5, "amount": 750000},
+                    {"type": "Credit", "id": "Credit-350000", "count": 10, "cost": 3, "amount": 350000},
+                    {"type": "Credit", "id": "Credit-100000", "count": 25, "cost": 1, "amount": 100000}
+                ]
+            },
+            "stages": [
+                {"type": "Story", "number": 1, "cost": 10, "initial": {"Supply_Box": 10, "Grilled_Corn": 20}},
+                {"type": "Story", "number": 2, "cost": 10, "initial": {"Supply_Box": 10, "Summer_Sunglasses": 20}},
+                {"type": "Story", "number": 3, "cost": 10, "initial": {"Supply_Box": 10, "Grilled_Corn": 20}},
+                {"type": "Story", "number": 4, "cost": 10, "initial": {"Supply_Box": 10, "Summer_Sunglasses": 20}},
+                {"type": "Story", "number": 5, "cost": 10, "initial": {"Supply_Box": 10, "Grilled_Corn": 20}},
+                {"type": "Story", "number": 6, "cost": 10, "initial": {"Supply_Box": 10, "Summer_Sunglasses": 20}},
+                {"type": "Story", "number": 7, "cost": 10, "initial": {"Supply_Box": 10, "Grilled_Corn": 20}},
+                {"type": "Story", "number": 8, "cost": 10, "initial": {"Supply_Box": 10, "Summer_Sunglasses": 20}},
+                {"type": "Story", "number": 9, "cost": 10, "initial": {"Supply_Box": 10, "Grilled_Corn": 20}},
+                {"type": "Story", "number": 10, "cost": 10, "initial": {"Supply_Box": 10, "Summer_Sunglasses": 20}},
+
+                {"type": "Quest", "number": 1, "cost": 10, "initial": {"Supply_Box": 300, "Grilled_Corn": 50, "Summer_Sunglasses": 50}, "drops": {"Supply_Box": 13, "Grilled_Corn": 2, "Summer_Sunglasses": 2, "Voynich_1": 0.25, "Voynich_2": 0.15}},
+                {"type": "Quest", "number": 2, "cost": 10, "initial": {"Grilled_Corn": 300, "Summer_Sunglasses": 100}, "drops": {"Grilled_Corn": 13, "Summer_Sunglasses": 4, "Nimrud_1": 0.25, "Nimrud_2": 0.15}},
+                {"type": "Quest", "number": 3, "cost": 10, "initial": {"Grilled_Corn": 100, "Summer_Sunglasses": 300}, "drops": {"Grilled_Corn": 4, "Summer_Sunglasses": 4, "Wolfsegg_1": 0.25, "Wolfsegg_2": 0.15}},
+                {"type": "Quest", "number": 4, "cost": 15, "initial": {"Supply_Box": 350, "Grilled_Corn": 75, "Summer_Sunglasses": 75}, "drops": {"Supply_Box": 20, "Grilled_Corn": 4, "Summer_Sunglasses": 4, "Voynich_2": 0.25, "Voynich_3": 0.08}},
+                {"type": "Quest", "number": 5, "cost": 15, "initial": {"Grilled_Corn": 350, "Summer_Sunglasses": 150}, "drops": {"Grilled_Corn": 20, "Summer_Sunglasses": 8, "Nimrud_2": 0.25, "Nimrud_3": 0.08}},
+                {"type": "Quest", "number": 6, "cost": 15, "initial": {"Grilled_Corn": 150, "Summer_Sunglasses": 350}, "drops": {"Grilled_Corn": 8, "Summer_Sunglasses": 8, "Wolfsegg_2": 0.25, "Wolfsegg_3": 0.08}},
+                {"type": "Quest", "number": 7, "cost": 20, "initial": {"Supply_Box": 400, "Grilled_Corn": 100, "Summer_Sunglasses": 100}, "drops": {"Supply_Box": 28, "Grilled_Corn": 8, "Summer_Sunglasses": 8, "Voynich_2": 0.25, "Voynich_3": 0.12, "Voynich_4": 0.021}},
+                {"type": "Quest", "number": 8, "cost": 20, "initial": {"Supply_Box": 200, "Grilled_Corn": 400}, "drops": {"Supply_Box": 16, "Grilled_Corn": 28, "Nimrud_2": 0.25, "Nimrud_3": 0.12, "Nimrud_4": 0.021}},
+                {"type": "Quest", "number": 9, "cost": 20, "initial": {"Supply_Box": 200, "Summer_Sunglasses": 400}, "drops": {"Supply_Box": 16, "Summer_Sunglasses": 28, "Wolfsegg_2": 0.25, "Wolfsegg_3": 0.12, "Wolfsegg_4": 0.021}},
+                {"type": "Quest", "number": 10, "cost": 20, "initial": {"Supply_Box": 500}, "drops": {"Supply_Box": 40, "Phaistos_2": 0.25, "Phaistos_3": 0.12, "Phaistos_4": 0.021}},
+
+                {"type": "Challenge", "number": 1, "cost": 5},
+                {"type": "Challenge", "number": 2, "cost": 5},
+                {"type": "Challenge", "number": 3, "cost": 5},
+                {"type": "Challenge", "number": 4, "cost": 5},
+                {"type": "Challenge", "number": 5, "cost": 5}
+            ],
+            "box_clear_cost": 1800,
+            "boxes": [
+                {
+                    "cycle": [1, 3, 5],
+                    "rewards": [
+                        {"type": "Eleph", "id": 16006, "amount":  10, "count": 2},
+                        {"type": "EventCurrency", "id": "Soaked_Helmet", "amount":  10, "count": 2},
+                        {"type": "XpReport", "id": "XP_1", "amount":  1, "count": 40},
+                        {"type": "XpReport", "id": "XP_2", "amount":  1, "count": 20},
+                        {"type": "XpReport", "id": "XP_3", "amount":  1, "count": 10},
+                        {"type": "XpReport", "id": "XP_4", "amount":  1, "count": 2},
+                        {"type": "Material", "id": "180", "amount":  1, "count": 30},
+                        {"type": "Material", "id": "181", "amount":  1, "count": 12},
+                        {"type": "Material", "id": "182", "amount":  1, "count": 6},
+                        {"type": "Material", "id": "183", "amount":  1, "count": 2},
+                        {"type": "Credit", "amount": 1000, "count": 45},
+                        {"type": "Credit", "amount": 5000, "count": 35},
+                        {"type": "Credit", "amount": 25000, "count": 15},
+                        {"type": "Credit", "amount": 100000, "count": 5},
+                        {"type": "Misc", "id": "Random_Equipment_Box_0", "amount":  1, "count": 74}
+                    ]
+                },
+                {
+                    "cycle": [2, 4, 6],
+                    "rewards": [
+                        {"type": "Eleph", "id": 16006, "amount":  10, "count": 2},
+                        {"type": "EventCurrency", "id": "Soaked_Helmet", "amount":  10, "count": 2},
+                        {"type": "XpReport", "id": "GXP_1", "amount":  1, "count": 40},
+                        {"type": "XpReport", "id": "GXP_2", "amount":  1, "count": 20},
+                        {"type": "XpReport", "id": "GXP_3", "amount":  1, "count": 10},
+                        {"type": "XpReport", "id": "GXP_4", "amount":  1, "count": 2},
+                        {"type": "Material", "id": "130", "amount":  1, "count": 30},
+                        {"type": "Material", "id": "131", "amount":  1, "count": 12},
+                        {"type": "Material", "id": "132", "amount":  1, "count": 6},
+                        {"type": "Material", "id": "133", "amount":  1, "count": 2},
+                        {"type": "Credit", "amount": 1000, "count": 45},
+                        {"type": "Credit", "amount": 5000, "count": 35},
+                        {"type": "Credit", "amount": 25000, "count": 15},
+                        {"type": "Credit", "amount": 100000, "count": 5},
+                        {"type": "Misc", "id": "Random_Equipment_Box_0", "amount":  1, "count": 74}
+                    ]
+                },
+                {
+                    "cycle": [7],
+                    "rewards": [
+                        {"type": "Eleph", "id": 16006, "amount":  1, "count": 3},
+                        {"type": "EventCurrency", "id": "Soaked_Helmet", "amount":  10, "count": 1},
+                        {"type": "XpReport", "id": "XP_1", "amount":  1, "count": 170},
+                        {"type": "XpReport", "id": "XP_2", "amount":  1, "count": 40},
+                        {"type": "XpReport", "id": "XP_3", "amount":  1, "count": 10},
+                        {"type": "Material", "id": "180", "amount":  1, "count": 15},
+                        {"type": "Material", "id": "181", "amount":  1, "count": 5},
+                        {"type": "Material", "id": "182", "amount":  1, "count": 1},
+                        {"type": "Misc", "id": "Random_Equipment_Box_0", "amount":  1, "count": 55}
+                    ]
+                }
+            ]
         },
         "neverland-rerun": {
             "icon": "Event_805_En.png",

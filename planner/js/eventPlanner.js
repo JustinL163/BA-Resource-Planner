@@ -30,7 +30,7 @@ let shopItemTippies = [];
 
 function loadResources() {
 
-    $.getJSON('json/events.json?3').done(function (json) {
+    $.getJSON('json/events.json?4').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -1176,7 +1176,7 @@ function CreateBoxItem(item) {
 
     let amountP = document.createElement('p');
     amountP.className = "box-item-amount";
-    amountP.innerText = item.amount;
+    amountP.innerText = commafy(item.amount);
 
     itemDiv.appendChild(amountP);
 
@@ -2120,7 +2120,7 @@ function AddBoxRewards(pullCurrency, totalArtifacts, totalSchoolMats, totalEleph
                 totalEligma += boxRewards[i].count;
             }
             else if (boxRewards[i].type == "Credit") {
-                totalCredit += boxRewards[i].count;
+                totalCredit += (boxRewards[i].count * boxRewards[i].amount);
             }
             else if (boxRewards[i].type == "SecretTech") {
                 totalSecretTech += boxRewards[i].count;
