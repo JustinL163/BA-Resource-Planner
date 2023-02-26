@@ -2369,6 +2369,7 @@ function InfeasibleModel() {
     if (solvedModel.result) {
 
         energyMin = Math.ceil(solvedModel.result + Math.min(solvedModel.result * 0.01, 50));
+        energyMin += initialClearCost;
     }
 
     let failureDiv = document.createElement('div');
