@@ -23,8 +23,8 @@
     </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/event-planner.css?2">
+    <link rel="stylesheet" href="css/styles.css?1">
+    <link rel="stylesheet" href="css/event-planner.css?3">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
@@ -33,10 +33,20 @@
     <script src="packages/tippyjs/popper.js"></script>
     <script src="packages/tippyjs/tippy.js"></script>
     <link rel="stylesheet" href="packages/tippyjs/light.css" />
-    <script src="js/config.js?14"></script>
+    <script src="js/config.js?15"></script>
     <script src="js/common.js?2"></script>
-    <script src="js/eventPlanner.js?4"></script>
+    <script src="js/eventPlanner.js?5"></script>
     <title>Event Planner</title>
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://justin163.com/planner/events">
+    <meta property="og:image" itemprop="image primaryImageOfPage"
+        content="https://justin163.com/planner/icons/Misc/EmbedIcon.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:domain" content="justin163.com">
+    <meta name="twitter:title" property="og:title" itemprop="name" content="Blue Archive Resource Planner">
+    <meta name="twitter:description" property="og:description" itemprop="description"
+        content="A tool to optimise event resource income, plan energy spend and stage farming">
+    <meta name="theme-color" content="#ff00bb">
 </head>
 
 <body class="background dark-theme" onload="loadResources()">
@@ -75,8 +85,31 @@
                 <div id="tab-Bonus" class="event-tab-button" onclick="EventTabClicked('Bonus')">Bonus</div>
                 <div id="tab-Shop" class="event-tab-button" onclick="EventTabClicked('Shop')">Shop</div>
                 <div id="tab-Stages" class="event-tab-button" onclick="EventTabClicked('Stages')">Stages</div>
-                <div id="tab-Points" class="event-tab-button" onclick="EventTabClicked('Points')">Point Rewards</div>
-                <div id="tab-Boxes" class="event-tab-button" onclick="EventTabClicked('Boxes')">Boxes</div>
+                <div id="tab-Lessons" class="event-tab-button" onclick="EventTabClicked('Lessons')"
+                    style="display: none;">Lessons</div>
+                <div id="tab-Points" class="event-tab-button" onclick="EventTabClicked('Points')"
+                    style="display: none;">Point Rewards</div>
+                <div id="tab-Boxes" class="event-tab-button" onclick="EventTabClicked('Boxes')" style="display: none;">
+                    Boxes</div>
+            </div>
+            <div id="info-notifications">
+                <div id="notification-bonus" style="display: none;">
+                    <img src="icons/UI/x-mark-128.png">
+                    <p class="notification-text">No bonus chars set</p>
+                    <p class="notification-button" onclick="EventTabClicked('Bonus')"><u>Check Now</u></p>
+                </div>
+                <div id="notification-energy" style="display: none;">
+                    <img src="icons/UI/x-mark-128.png">
+                    <p class="notification-text">No energy sources set</p>
+                    <p class="notification-button" onclick="EventTabClicked('Energy')"><u>Check Now</u></p>
+                    <p style="margin-left: 0.5em;">or</p>
+                    <p class="notification-button" onclick="DismissNotification('Energy')"><u>Dismiss</u></p>
+                </div>
+                <div id="notification-optimisation" style="display: none;">
+                    <img src="icons/UI/x-mark-128.png">
+                    <p class="notification-text">No optimisation target set</p>
+                    <p class="notification-button" onclick="EventTabClicked('Targets')"><u>Check Now</u></p>
+                </div>
             </div>
             <div class="event-tab" id="Targets-tab">
                 <div id="optimisation-approaches-container">
@@ -123,14 +156,16 @@
                         </div>
                         <p id="energy-pyro-total">0</p>
                     </div>
-                    <div id="energy-source-pvp" class="energy-source energy-editable" onclick="EnergySourceClicked('ArenaCoin')">
+                    <div id="energy-source-pvp" class="energy-source energy-editable"
+                        onclick="EnergySourceClicked('ArenaCoin')">
                         <div>
                             <img src="icons/EventIcon/EnergyIcon/EnergyPvp.png">
                             <p id="energy-source-pvp-refresh" class="energy-source-setting"></p>
                         </div>
                         <p id="energy-arenacoin-total">0</p>
                     </div>
-                    <div id="energy-source-cafe" class="energy-source energy-editable" onclick="EnergySourceClicked('Cafe')">
+                    <div id="energy-source-cafe" class="energy-source energy-editable"
+                        onclick="EnergySourceClicked('Cafe')">
                         <div>
                             <img src="icons/EventIcon/EnergyIcon/Common_Icon_Cafe.png">
                             <p id="energy-source-cafe-level" class="energy-source-setting"></p>
@@ -149,7 +184,10 @@
                 </div>
             </div>
             <div class="event-tab" id="Bonus-tab">
-                <p style="margin-left: 1em; margin-bottom: 1em;">Click character to toggle</p>
+                <div id="bonus-chars-header">
+                    <p style="margin-left: 1em; margin-bottom: 1em;">Click character to toggle</p>
+                    <p id="bonus-chars-all-button" onclick="BonusCharsEnableAll()">Enable All</p>
+                </div>
                 <div id="bonus-chars-container"></div>
                 <div id="currency-bonuses"></div>
                 <p id="info-event-bonus-maximise" style="display: none;">How to maximise event farming</p>
@@ -161,6 +199,21 @@
             <div class="event-tab" id="Stages-tab">
                 <div id="stages-table-container"></div>
             </div>
+            <div class="event-tab" id="Lessons-tab">
+                <div id="lessons-header-container">
+                    <p id="lesson-points-remaining-info">Remaining<br>Points:</p>
+                    <div id="lesson-points-remaining-container">
+                        <img src="icons/EventIcon/CurrencyIcon/Event_Point.png">
+                        <p id="lesson-points-remaining"></p>
+                    </div>
+                    <p id="lesson-points-rankup-info">Points to<br>Rank Up:</p>
+                    <div id="lesson-points-rankup-container">
+                        <img src="icons/EventIcon/CurrencyIcon/Event_Point.png">
+                        <p id="lesson-points-rankup"></p>
+                    </div>
+                </div>
+                <div id="lessons-container"></div>
+            </div>
             <div class="event-tab" id="Points-tab">
                 <div id="points-table-container"></div>
             </div>
@@ -169,15 +222,16 @@
                 <div id="box-cycle-content"></div>
             </div>
             <div id="reward-display-options-container">
+                <p style="margin-left: 1em;">Display:</p>
                 <input type="checkbox" id="include-shop-purchases" name="include-shop-purchases"
                     onclick="DisplayOptionClicked('ShopPurchases')">
                 <label id="label-shop-purchases" for="include-shop-purchases">Shop Purchases</label>
                 <input type="checkbox" id="include-point-rewards" name="include-point-rewards"
-                    onclick="DisplayOptionClicked('PointRewards')">
-                <label id="label-point-rewards" for="include-point-rewards">Point Rewards</label>
+                    onclick="DisplayOptionClicked('PointRewards')" style="display: none;">
+                <label id="label-point-rewards" for="include-point-rewards" style="display: none;">Point Rewards</label>
                 <input type="checkbox" id="include-box-rewards" name="include-box-rewards"
-                    onclick="DisplayOptionClicked('BoxRewards')">
-                <label id="label-box-rewards" for="include-box-rewards">Box Rewards</label>
+                    onclick="DisplayOptionClicked('BoxRewards')" style="display: none;">
+                <label id="label-box-rewards" for="include-box-rewards" style="display: none;">Box Rewards</label>
             </div>
             <div id="disclaimer-text"></div>
             <div id="box-info-text"></div>

@@ -166,7 +166,7 @@ var rowColours = {
 
 const propertyColours = {
     "Explosive": "#ec242487", "Piercing": "#fff10099", "Mystic": "#1070a5c2",
-    "Light": "#ec242487", "Heavy": "#fff10099", "Special": "#1070a5c2",
+    "Light": "#ec242487", "Heavy": "#fff10099", "Special": "#1070a5c2", "Elastic": "#c246d79e",
     "Striker": "#ec242487",
     "Abydos": "#9ce4fc66", "Gehenna": "#ec7d7966", "Millennium": "#9ebdfa66", "Trinity": "#fcd19c66", "Hyakkiyako": "#f0a8c466",
     "Arius": "#dbdad85e", "Shanhaijing": "#b4feca66", "RedWinter": "#d98c9e66", "Valkyrie": "#a1a9e166"
@@ -301,7 +301,7 @@ const inputValidation = {
         id: "input_level_current",
         location: "characterModal",
         min: "1",
-        max: "83",
+        max: "85",
         default: "1",
         name: "Level",
         "navigation": "direct",
@@ -312,7 +312,7 @@ const inputValidation = {
         id: "input_level_target",
         location: "characterModal",
         min: "1",
-        max: "83",
+        max: "85",
         default: "1",
         name: "Level Target",
         requisite: {

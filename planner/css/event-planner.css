@@ -40,6 +40,7 @@
 
 .event-tab-button {
     padding: 1em;
+    cursor: pointer;
 }
 
 .event-tab-button:hover {
@@ -227,7 +228,10 @@
 #rewards-container p,
 .box-item-amount,
 .point-rewards-table-container p,
-.energy-source-setting {
+.energy-source-setting,
+.lesson-item-amount,
+#lesson-points-remaining,
+#lesson-points-rankup {
     top: 50%;
     left: 50%;
     position: absolute;
@@ -474,6 +478,101 @@
     filter: invert(84%) sepia(10%) saturate(4286%) hue-rotate(3deg) brightness(109%) contrast(98%);
 }
 
+.lesson-rewards-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.lesson-rewards-container div {
+    position: relative;
+}
+
+.lesson-container {
+    margin-bottom: 1em;
+    background-color: rgb(214 221 239);
+    border-radius: 1em;
+}
+
+.lesson-container button {
+    font-size: 2em;
+    width: 1.25em;
+    border-radius: 20px;
+    margin-left: 0.5em;
+    margin-bottom: 0.25em;
+}
+
+.lesson-text {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 1em;
+}
+
+.lesson-text p:first-child {
+    margin-right: 1em;
+}
+
+.lesson-item img {
+    max-width: 100px;
+}
+
+#lessons-header-container {
+    display: flex;
+}
+
+#lesson-points-remaining-container,
+#lesson-points-rankup-container {
+    position: relative;
+}
+
+#lesson-points-remaining-container img,
+#lesson-points-rankup-container img {
+    max-width: 100px;
+}
+
+#lesson-points-remaining-info,
+#lesson-points-rankup-info {
+    align-self: center;
+    margin-left: 1em;
+}
+
+#info-notifications {
+    margin-bottom: 1em;
+    white-space: nowrap;
+}
+
+#info-notifications div {
+    display: flex;
+    align-items: center;
+}
+
+#info-notifications div img {
+    max-width: 1.5em;
+    margin-left: 1em;
+}
+
+.notification-text {
+    margin-left: 1em;
+}
+
+.notification-button {
+    padding-left: 0.5em;
+    cursor: pointer;
+}
+
+#bonus-chars-all-button {
+    cursor: pointer;
+    margin-left: 3em;
+    margin-bottom: 1em;
+}
+
+#bonus-chars-all-button:hover {
+    background-color: rgb(160 169 195);
+}
+
+#bonus-chars-header {
+    display: flex;
+}
+
 .dark-theme #events-list {
     background-color: rgb(47 47 47);
 }
@@ -541,6 +640,10 @@
 .dark-theme .stage-runs-div input:disabled {
     color: white;
     background-color: rgb(44 44 44 / 30%);
+}
+
+.dark-theme .lesson-container {
+    background-color: rgb(70, 70, 70);
 }
 
 @media (max-width: 800px) {
@@ -731,5 +834,13 @@
 
     .shop-furniture-info-bubble {
         max-width: 1em !important;
+    }
+
+    #info-notifications {
+        font-size: 0.8em;
+    }
+
+    #info-notifications div {
+        flex-wrap: wrap;
     }
 }

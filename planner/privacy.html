@@ -33,7 +33,7 @@
         <img src="icons/UI/hamburger.svg" id="hamburger" onclick="hamburgToggle()">
         <ul class="nav-list">
             <li><a href="index.html">Resource Planner</a></li>
-            <!-- <li><a href="events.html">Event Planner</a></li> -->
+            <li><a href="events.html">Event Planner</a></li>
             <li><a href="changelog.html">Changelog</a></li>
             <li><a class="active">Privacy</a></li>
         </ul>
@@ -41,7 +41,7 @@
     <div id="mobile-links-wrapper">
         <ul class="mobile-links">
             <li><a href="index.html">Resource Planner</a></li>
-            <!-- <li><a href="events.html">Event Planner</a></li> -->
+            <li><a href="events.html">Event Planner</a></li>
             <li><a href="changelog.html">Changelog</a></li>
             <li><a class="active">Privacy</a></li>
         </ul>
@@ -56,7 +56,7 @@
             <br>
             <h3>Inquiries</h3>
             <br>
-            <p>If you have any questions or concerns about usage of this data, please feel free to contact me on Discord (Justin163#7721), or through email at dev@justin163.com (any collected email addresses will be used solely for the purpose of responding via email)</p>
+            <p>If you have any questions or concerns about usage of this data, please feel free to contact me on Discord (Justin163#4337), or through email at dev@justin163.com (any collected email addresses will be used solely for the purpose of responding via email)</p>
         </div>
         <br><br>
         <div class="changelog-section">
@@ -77,8 +77,8 @@
             <p>Also stored is registration time, and save last modified time</p>
             <p>At some point I may parse the data to look at aggregated statistics, which might be shared to 3rd parties (e.g. might share interesting stat like proportion of lvl 75 units from all users of the cloud save service or etc to Blue Archive related online communities)</p>
             <p>I'll add the ability to delete all the collected data at some point later, otherwise can contact me if you have any questions or concerns.</p>
-            <p>IP addresses are also temporarily collected by the intermediary node js server running on a Heroku dyno, these are used to block attempted API abuse, however are only stored short term, this data is frequently discarded whenever the dyno restarts</p>
-            <p>The dyno is recycled at minimum once per 24 hours, that is the longest time the stored IP data can persist for</p>
+            <p>IP addresses are also temporarily collected by the intermediary node js server running on a Google App Engine instance, these are used to block attempted API abuse, however are only stored short term, this data is frequently discarded whenever the dyno restarts</p>
+            <p>The instances are regularly recycled upon which IP information is destroyed</p>
         </div>
     </div>
 </body>

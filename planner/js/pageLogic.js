@@ -40,7 +40,7 @@ let multiSelected = [];
 var sweepMax = 0;
 let sweepMin = 0;
 
-let lvlCalcsCap = 83;
+let lvlCalcsCap = 85;
 
 var saveTime = 0;
 var toastCooldownTime = 0;
@@ -77,27 +77,27 @@ let loaded = false;
 
 function loadResources() {
 
-    $.getJSON('json/misc_data.json?12').done(function (json) {
+    $.getJSON('json/misc_data.json?13').done(function (json) {
         misc_data = json;
         checkResources();
     });
 
-    $.getJSON('json/skillinfo.json?15').done(function (json) {
+    $.getJSON('json/skillinfo.json?16').done(function (json) {
         skillinfo = json;
         checkResources();
     });
 
-    $.getJSON('json/charlist.json?20').done(function (json) {
+    $.getJSON('json/charlist.json?21').done(function (json) {
         charlist = json;
         checkResources();
     });
 
-    $.getJSON('json/localisations.json?12').done(function (json) {
+    $.getJSON('json/localisations.json?13').done(function (json) {
         localisations = json;
         checkResources();
     });
 
-    $.getJSON('json/manualLocalisations.json?2').done(function (json) {
+    $.getJSON('json/manualLocalisations.json?3').done(function (json) {
         mLocalisations = json;
         checkResources();
     });
@@ -334,7 +334,7 @@ function init() {
         }
 
         if (!data.level_cap) {
-            data.level_cap = 83;
+            data.level_cap = 85;
         }
 
         lvlCalcsCap = data.level_cap;
@@ -459,16 +459,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.2.27".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.3".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
-            "If still having issues, contact me on Discord, Justin163#7721");
+            "If still having issues, contact me on Discord, Justin163#4337");
         Swal.fire({
-            title: "Updated to Version 1.2.27",
+            title: "Updated to Version 1.3",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.2.27";
+        data.site_version = "1.3";
         saveToLocalStorage(false);
     }
 
@@ -820,6 +820,10 @@ async function sectionQuickSet(section) {
             }
         },
         "Level": {          
+            " 85": {
+                "85 85": "Both",
+                "- 85": "Target"
+            },
             " 83": {
                 "83 83": "Both",
                 "- 83": "Target"
@@ -1084,11 +1088,11 @@ function CharInputsMax() {
         denyButtonColor: '#dc9641'
     }).then((result) => {
         if (result.isConfirmed) {
-            let values = [78, 78, 5, 5, 10, 10, 10, 10, 10, 10, 6, 6, 6, 6, 6, 6];
+            let values = [80, 80, 5, 5, 10, 10, 10, 10, 10, 10, 7, 7, 7, 7, 6, 6];
             SetCharInputValues(values);
         }
         else if (result.isDenied) {
-            let values = [83, 83, 5, 5, 10, 10, 10, 10, 10, 10, 7, 7, 7, 7, 7, 7];
+            let values = [85, 85, 5, 5, 10, 10, 10, 10, 10, 10, 7, 7, 7, 7, 7, 7];
             SetCharInputValues(values);
         }
     })
@@ -1107,11 +1111,11 @@ function CharInputsGoalMax() {
         denyButtonColor: '#dc9641'
     }).then((result) => {
         if (result.isConfirmed) {
-            let values = [78, 5, 10, 10, 10, 6, 6, 6];
+            let values = [80, 5, 10, 10, 10, 7, 7, 6];
             SetCharInputGoalValues(values);
         }
         else if (result.isDenied) {
-            let values = [83, 5, 10, 10, 10, 7, 7, 7];
+            let values = [85, 5, 10, 10, 10, 7, 7, 7];
             SetCharInputGoalValues(values);
         }
     })
@@ -4186,17 +4190,17 @@ function openResourceModal() {
 
     freezeBody(true);
 
-    if (!(bugsNotified['1'] == true)) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Serious bug',
-            text: "Credit required for increasing student's xp level was being overcalculated (in resource modal only) by up to 2x since version 1.2.19, please check the credit required now, it should be significantly decreased as of version 1.2.24",
-            color: alertColour
-        })
+    // if (!(bugsNotified['1'] == true)) {
+    //     Swal.fire({
+    //         icon: 'warning',
+    //         title: 'Serious bug',
+    //         text: "Credit required for increasing student's xp level was being overcalculated (in resource modal only) by up to 2x since version 1.2.19, please check the credit required now, it should be significantly decreased as of version 1.2.24",
+    //         color: alertColour
+    //     })
 
-        bugsNotified['1'] = true;
-        localStorage.setItem("bugs_notified", JSON.stringify(bugsNotified));
-    }
+    //     bugsNotified['1'] = true;
+    //     localStorage.setItem("bugs_notified", JSON.stringify(bugsNotified));
+    // }
 
     modalOpen = "resourceModal";
 

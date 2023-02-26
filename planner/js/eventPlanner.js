@@ -16,6 +16,9 @@ let current_event = "", current_currency = "";
 let stage_runs = {};
 let event_point_target = 0;
 
+let lessonRuns = [];
+let maxEventPoints = 0;
+
 let targetedMaterials = {}, targetedCurrency = "";
 let optimisationType = "";
 
@@ -30,7 +33,7 @@ let shopItemTippies = [];
 
 function loadResources() {
 
-    $.getJSON('json/events.json?4').done(function (json) {
+    $.getJSON('json/events.json?5').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -40,7 +43,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/charlist.json?20').done(function (json) {
+    $.getJSON('json/charlist.json?21').done(function (json) {
         charlist = json;
         checkResources();
     });
@@ -153,125 +156,33 @@ function GenerateEventsList() {
 
 function InitTippies() {
 
-    tippy('#tab-Targets', {
-        content: "Set optimisation targets",
-        theme: 'light'
-    });
+    let tippieIds = ['#tab-Targets', '#tab-Energy', '#tab-Bonus', '#tab-Shop', '#tab-Stages', '#tab-Points', '#tab-Boxes', '#energy-source-natural',
+        '#energy-source-dailies', '#energy-source-club', '#energy-source-weeklies', '#energy-source-arona', '#energy-source-pyro', '#energy-source-pvp', 
+        '#energy-source-cafe', '#energy-source-pack', '#energy-sources-total', '#label-shop-purchases', '#label-point-rewards', '#label-box-rewards', 
+        '#tab-opti-Shop', '#tab-opti-Materials', '#tab-opti-Currency', '#tab-opti-Manual']
 
-    tippy('#tab-Energy', {
-        content: "Adjust available energy",
-        theme: 'light'
-    });
+    let tippieMsgs = ['Set optimisation targets', 'Adjust available energy', 'Toggle bonus currency characters', 'Pick shop purchases',
+        'See calculated optimal runs, or set manually', 'View event point reward tiers', 'View event gacha box contents', 'Natural energy regen (10/h)', 
+        'Energy from daily tasks (150/d)', 'Open club energy (10/d)', 'Energy from weekly tasks', 'Arona 10 day login cycle', 'Set daily pyro refills',
+        'Set daily pvp refills', 'Set cafe level', 'Using bi-weekly energy pack', 'Available energy for event', 'Display rewards purchased from shops', 
+        'Display rewards from event point tiers', 'Display rewards from event gacha boxes', 'Use minimum energy possible to clear picked shop purchases and event point tiers', 
+        'Select stage drop material(s) to target, equally weighted. (Makes sure to at least clear picked shops and point tiers)',
+        'Farm as many of a specific event currency as possible. (Makes sure to at least clear picked shops and point tiers)',
+        "Sets the inputs in Stages tab to editable for manual input. (Currently manual doesn't include initial clear event currencies like the other modes)"]
 
-    tippy('#tab-Bonus', {
-        content: "Toggle bonus currency characters",
-        theme: 'light'
-    });
+    //let tippieTimeouts = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 6, 10, 10, 10]
 
-    tippy('#tab-Shop', {
-        content: "Pick shop purchases",
-        theme: 'light'
-    });
-
-    tippy('#tab-Stages', {
-        content: "See calculated optimal runs, or set manually",
-        theme: 'light'
-    });
-
-    tippy('#tab-Points', {
-        content: "View event point reward tiers",
-        theme: 'light'
-    });
-
-    tippy('#tab-Boxes', {
-        content: "View event gacha box contents",
-        theme: 'light'
-    });
-
-    tippy('#energy-source-natural', {
-        content: "Natural energy regen (10/h)",
-        theme: 'light'
-    });
-
-    tippy('#energy-source-dailies', {
-        content: "Energy from daily tasks (150/d)",
-        theme: 'light'
-    });
-
-    tippy('#energy-source-club', {
-        content: "Open club energy (10/d)",
-        theme: 'light'
-    });
-
-    tippy('#energy-source-weeklies', {
-        content: "Energy from weekly tasks",
-        theme: 'light'
-    });
-
-    tippy('#energy-source-arona', {
-        content: "Arona 10 day login cycle",
-        theme: 'light'
-    });
-
-    tippy('#energy-source-pyro', {
-        content: "Set daily pyro refills",
-        theme: 'light'
-    });
-
-    tippy('#energy-source-pvp', {
-        content: "Set daily pvp refills",
-        theme: 'light'
-    });
-
-    tippy('#energy-source-cafe', {
-        content: "Set cafe level",
-        theme: 'light'
-    });
-
-    tippy('#energy-source-pack', {
-        content: "Using bi-weekly energy pack",
-        theme: 'light'
-    });
-
-    tippy('#energy-sources-total', {
-        content: "Available energy for event",
-        theme: 'light'
-    });
-
-    tippy('#label-shop-purchases', {
-        content: "Display rewards purchased from shops",
-        theme: 'light'
-    });
-
-    tippy('#label-point-rewards', {
-        content: "Display rewards from event point tiers",
-        theme: 'light'
-    });
-
-    tippy('#label-box-rewards', {
-        content: "Display rewards from event gacha boxes",
-        theme: 'light'
-    });
-
-    tippy('#tab-opti-Shop', {
-        content: "Use minimum energy possible to clear picked shop purchases and event point tiers",
-        theme: 'light'
-    });
-
-    tippy('#tab-opti-Materials', {
-        content: "Select stage drop material(s) to target, equally weighted. (Makes sure to at least clear picked shops and point tiers)",
-        theme: 'light'
-    });
-
-    tippy('#tab-opti-Currency', {
-        content: "Farm as many of a specific event currency as possible. (Makes sure to at least clear picked shops and point tiers)",
-        theme: 'light'
-    });
-
-    tippy('#tab-opti-Manual', {
-        content: "Sets the inputs in Stages tab to editable for manual input. (Currently manual doesn't include initial clear event currencies like the other modes)",
-        theme: 'light'
-    });
+    for (let i = 0; i < tippieIds.length; i++) {
+        tippy(tippieIds[i], {
+            content: tippieMsgs[i],
+            theme: 'light'//,
+            // onShow(instance) {
+            //     setTimeout(() => {
+            //         instance.hide();
+            //     }, tippieTimeouts[i] * 1000);
+            // }
+        })
+    }
 
     tippy('#info-event-bonus-maximise', {
         content: `<b>TLDR: Beat stages you need to farm with the highest bonus per token. This may take several runs.</b><br><br>
@@ -319,6 +230,7 @@ function LoadEvent(eventId) {
     targetedMaterials = {};
     optimisationType = "";
     stage_runs = {};
+    lessonRuns = [];
 
     if (events_data[current_event]) {
         event_data = events_data[current_event];
@@ -372,7 +284,9 @@ function LoadEvent(eventId) {
     InitTargetsTab();
     GenerateStagesTable();
     GeneratePointsTable();
+    GenerateLessonsTab();
     LoadFirstShop();
+    UpdateNotifications();
 
     eventLoading = false;
 }
@@ -399,6 +313,8 @@ function EventTabClicked(tab) {
     }
 
     SwitchTab(tab);
+
+    UpdateNotifications();
 }
 
 function InitTargetsTab() {
@@ -849,7 +765,13 @@ function GenerateBoxesTabs() {
         ClearChildren(document.getElementById('box-cycle-tabs'));
         ClearChildren(document.getElementById('box-cycle-content'));
         document.getElementById('tab-Boxes').style.display = 'none';
+        document.getElementById('include-box-rewards').style.display = 'none';
+        document.getElementById('label-box-rewards').style.display = 'none';
         return;
+    }
+    else {
+        document.getElementById('include-box-rewards').style.display = '';
+        document.getElementById('label-box-rewards').style.display = '';
     }
 
     document.getElementById('tab-Boxes').style.display = '';
@@ -1018,7 +940,7 @@ function GenerateShopContent(currency) {
         if (shop[i].type == "Furniture") {
 
             if (shop[i].limited) {
-                
+
                 shopItemTippies.push(tippy(('#info-' + shop[i].id), {
                     content: "This furniture is event limited",
                     theme: 'light'
@@ -1072,7 +994,7 @@ function CreateShopItem(item, currency) {
 
     let itemImg = document.createElement('img');
 
-    SetItemImage(itemImg, item);
+    SetItemImage(itemImg, item, '');
 
     itemDiv.appendChild(itemImg);
 
@@ -1170,7 +1092,7 @@ function CreateBoxItem(item) {
 
     let itemImg = document.createElement('img');
 
-    SetItemImage(itemImg, item);
+    SetItemImage(itemImg, item, '');
 
     itemDiv.appendChild(itemImg);
 
@@ -1192,24 +1114,28 @@ function CreateBoxItem(item) {
 
 
     return itemDiv;
-
 }
 
-function SetItemImage(itemImg, item) {
+function SetItemImage(itemImg, item, replacementId) {
+
+    let itemId = item.id;
+    if (replacementId) {
+        itemId = replacementId;
+    }
 
     if (item.type == "Eleph") {
-        itemImg.src = "icons/Eleph/Eleph_" + item.id + ".png";
+        itemImg.src = "icons/Eleph/Eleph_" + itemId + ".png";
     }
     else if (item.type == "XpReport") {
-        itemImg.src = "icons/LevelPart/" + item.id + ".png";
+        itemImg.src = "icons/LevelPart/" + itemId + ".png";
     }
     else if (item.type == "XpOrb") {
-        itemImg.src = "icons/LevelPart/" + item.id + ".png";
+        itemImg.src = "icons/LevelPart/" + itemId + ".png";
     }
     else if (item.type == "Material") {
-        let matName = matLookup.map[item.id];
+        let matName = matLookup.map[itemId];
 
-        if (parseInt(item.id) < 1000) {
+        if (parseInt(itemId) < 1000) {
             itemImg.src = "icons/Artifact/" + matName + ".png";
         }
         else {
@@ -1217,7 +1143,7 @@ function SetItemImage(itemImg, item) {
         }
     }
     else if (item.type == "Furniture") {
-        itemImg.src = "icons/Furniture/" + item.id + ".png";
+        itemImg.src = "icons/Furniture/" + itemId + ".png";
     }
     else if (item.type == "Eligma") {
         itemImg.src = "icons/Misc/Eligma.png";
@@ -1232,10 +1158,10 @@ function SetItemImage(itemImg, item) {
         itemImg.src = "icons/Misc/Pyroxene.png";
     }
     else if (item.type == "EventCurrency") {
-        itemImg.src = "icons/EventIcon/CurrencyIcon/" + item.id + ".png";
+        itemImg.src = "icons/EventIcon/CurrencyIcon/" + itemId + ".png";
     }
     else if (item.type == "Misc") {
-        itemImg.src = "icons/MiscItem/" + item.id + ".png";
+        itemImg.src = "icons/MiscItem/" + itemId + ".png";
     }
 }
 
@@ -1903,7 +1829,7 @@ function CalculateStageDrops(result, ignoreRequirement) {
 
     if (displayIncluded['PointRewards']) {
         let pointTarget = event_config.events[current_event].event_point_target;
-        let intResults = AddPointRewards(pointTarget, totalXps, totalCredit, totalEligma, totalSecretTech);
+        let intResults = AddPointRewards(pointTarget, totalEleph, totalXps, totalCredit, totalEligma, totalSecretTech);
         if (intResults) {
             totalCredit += intResults[0];
             totalEligma += intResults[1];
@@ -1946,6 +1872,7 @@ function CalculateStageDrops(result, ignoreRequirement) {
 
     if (initialClearRewards["Event_Point"]) {
         totalCurrencies["Event_Point"] += initialClearRewards["Event_Point"];
+        maxEventPoints = totalCurrencies["Event_Point"];
     }
 
     if (feasible) {
@@ -2001,6 +1928,11 @@ function AddShopPurchases(totalArtifacts, totalSchoolMats, totalEleph, totalXps,
                 }
                 else if (itemNum >= 10000 && itemNum < 30000) {
 
+                    if (!totalEleph[items[ii]]) {
+                        totalEleph[items[ii]] = 0;
+                    }
+
+                    totalEleph[items[ii]] += (parseInt(shop[items[ii]]));
 
                 }
             }
@@ -2016,13 +1948,21 @@ function AddShopPurchases(totalArtifacts, totalSchoolMats, totalEleph, totalXps,
             else if (items[ii] == "SecretTech") {
                 totalSecretTech += parseInt(shop[items[ii]]);
             }
+            else if (items[ii].includes('XP_') && items[ii].length <= 5) {
+
+                if (!totalXps[items[ii]]) {
+                    totalXps[items[ii]] = 0;
+                }
+
+                totalXps[items[ii]] += parseInt(shop[items[ii]]);
+            }
         }
     }
 
     return [totalCredit, totalEligma, totalSecretTech];
 }
 
-function AddPointRewards(pointTarget, totalXps, totalCredit, totalEligma, totalSecretTech) {
+function AddPointRewards(pointTarget, totalEleph, totalXps, totalCredit, totalEligma, totalSecretTech) {
 
     let pointTiers = event_config.events[current_event].point_rewards;
 
@@ -2054,6 +1994,14 @@ function AddPointRewards(pointTarget, totalXps, totalCredit, totalEligma, totalS
         }
         else if (pTier.type == "SecretTech") {
             totalSecretTech += pTier.count;
+        }
+        else if (pTier.type == "Eleph") {
+
+            if (!totalEleph[pTier.id]) {
+                totalEleph[pTier.id] = 0;
+            }
+
+            totalEleph[pTier.id] += (pTier.count);
         }
     }
 
@@ -2413,6 +2361,7 @@ function InfeasibleModel() {
     let failureDiv = document.createElement('div');
 
     failureDiv.innerText = "A minimum of about " + energyMin + " energy is needed for this to be feasible, please either add additional energy sources, reduce shop purchases or set bonus characters";
+    failureDiv.style.marginLeft = '0.5em';
 
     document.getElementById('rewards-container').appendChild(failureDiv);
 }
@@ -2428,10 +2377,14 @@ function GeneratePointsTable() {
 
     if (!pointTiers) {
         document.getElementById('tab-Points').style.display = 'none';
+        document.getElementById('include-point-rewards').style.display = 'none';
+        document.getElementById('label-point-rewards').style.display = 'none';
         return;
     }
     else {
         document.getElementById('tab-Points').style.display = '';
+        document.getElementById('include-point-rewards').style.display = '';
+        document.getElementById('label-point-rewards').style.display = '';
     }
 
     let tableWrapPoint = Math.floor(pointTiers.length / 3);
@@ -2508,6 +2461,9 @@ function CreatePointRewardDiv(rewardType, rewardId, rewardCount) {
     else if (rewardType == "SecretTech") {
         dropImg.src = "icons/Misc/SecretTech.png";
     }
+    else if (rewardType == "Eleph") {
+        dropImg.src = "icons/Eleph/Eleph_" + rewardId + ".png";
+    }
 
     dropP.innerText = commafy(rewardCount);
 
@@ -2516,6 +2472,259 @@ function CreatePointRewardDiv(rewardType, rewardId, rewardCount) {
     rewardDiv.appendChild(dropDiv);
 
     return rewardDiv;
+}
+
+function GenerateLessonsTab() {
+
+    if (!event_config.events[current_event].lessons) {
+        return;
+    }
+
+    let lessonsContainer = document.getElementById('lessons-container');
+
+    while (lessonsContainer.children.length > 0) {
+        lessonsContainer.children[0].remove();
+    }
+
+    let usedEventPoints = lessonRuns.length * event_config.events[current_event].lessons_template.lesson_cost;
+    let remainingEventPoints = maxEventPoints - usedEventPoints;
+    document.getElementById('lesson-points-remaining').innerText = commafy(remainingEventPoints);
+
+    let lessons = event_config.events[current_event].lessons;
+    let lessonRewardTemplate = event_config.events[current_event].lessons_template.rewards;
+
+    let results = GetLessonRanks();
+
+    let lessonRank = results[0];
+    let lessonLevel = results[1];
+    let rankMaxed = results[2];
+
+    if (!rankMaxed) {
+        let rankupEventPoints = event_config.events[current_event].lessons_template.rank_upgrades[lessonRank - 1] - usedEventPoints;
+        document.getElementById('lesson-points-rankup').innerText = commafy(rankupEventPoints);
+        document.getElementById('lesson-points-rankup-container').style.display = '';
+        document.getElementById('lesson-points-rankup-info').style.display = '';
+    }
+    else {
+        document.getElementById('lesson-points-rankup-container').style.display = 'none';
+        document.getElementById('lesson-points-rankup-info').style.display = 'none';
+    }
+
+    for (let i = 0; i < lessons.length; i++) {
+
+        let lessonContainer = document.createElement('div');
+        lessonContainer.className = "lesson-container";
+
+        let lessonPsDiv = document.createElement('div');
+        lessonPsDiv.className = "lesson-text";
+
+        let lessonName = document.createElement('p');
+        let lessonRuns = document.createElement('p');
+        lessonRuns.id = "lesson-text-runs-" + i;
+
+        lessonPsDiv.appendChild(lessonName);
+        lessonPsDiv.appendChild(lessonRuns);
+
+        let lessonRewardsContainer = document.createElement('div');
+
+        lessonRewardsContainer.className = "lesson-rewards-container";
+
+        let lessonNameText = "Lvl " + lessonLevel + ", " + lessons[i].name1;
+        if (lessonRank >= lessons[i].unlock_2) {
+            lessonNameText += " / " + lessons[i].name2;
+        }
+
+        lessonName.innerText = lessonNameText;
+
+        for (let ii = 0; ii < lessonRewardTemplate[lessonLevel - 1].length; ii++) {
+            lessonRewardsContainer.appendChild(CreateLessonRewardItem(lessonRewardTemplate[lessonLevel - 1][ii], i))
+        }
+
+        lessonContainer.appendChild(lessonPsDiv);
+        lessonContainer.appendChild(lessonRewardsContainer);
+
+        if (!rankMaxed && lessonRank >= lessons[i].unlock_rank) {
+
+            let lessonButton = document.createElement('button');
+            lessonButton.innerText = '+';
+            lessonButton.addEventListener('click', () => {
+                console.log(LessonButtonClicked(Math.round(i)));
+            })
+
+            lessonContainer.appendChild(lessonButton);
+        }
+        else if (rankMaxed) {
+
+            let lessonInput = document.createElement('input');
+
+            lessonContainer.appendChild(lessonInput);
+        }
+
+        lessonsContainer.appendChild(lessonContainer);
+    }
+
+    let lessonRunStrings = {};
+    for (let i = 0; i < lessonRuns.length; i++) {
+
+        if (!lessonRunStrings[lessonRuns[i]]) {
+            lessonRunStrings[lessonRuns[i]] = (i + 1).toString();
+        }
+        else {
+            lessonRunStrings[lessonRuns[i]] += " " + (i + 1);
+        }
+    }
+
+    let lessonNums = Object.keys(lessonRunStrings);
+    lessonNums.forEach((lessonNum) => {
+        document.getElementById('lesson-text-runs-' + lessonNum).innerText = lessonRunStrings[lessonNum];
+    })
+}
+
+function LessonButtonClicked(lessonNum) {
+
+    lessonRuns.push(lessonNum);
+    GenerateLessonsTab();
+
+}
+
+function GetLessonRanks() {
+
+    let rankUpgrades = event_config.events[current_event].lessons_template.rank_upgrades;
+    let levelUnlocks = event_config.events[current_event].lessons_template.level_unlocks;
+    let lessonCost = event_config.events[current_event].lessons_template.lesson_cost;
+
+    let currencySpent = lessonRuns.length * lessonCost;
+
+    let rank = 1;
+    let rankMaxed = false;
+    if (currencySpent >= rankUpgrades[rankUpgrades.length - 1]) {
+        rank = rankUpgrades.length + 1;
+        rankMaxed = true;
+    }
+    else {
+        for (let i = 0; i < rankUpgrades.length; i++) {
+
+            rank = i + 1;
+
+            if (rankUpgrades[i] > currencySpent) {
+                break;
+            }
+        }
+    }
+
+    let level = 1;
+    for (let i = 0; i < levelUnlocks.length; i++) {
+
+        if (levelUnlocks[i] > rank) {
+            break;
+        }
+
+        level = i + 1;
+    }
+
+    return [rank, level, rankMaxed];
+}
+
+function CreateLessonRewardItem(item, lesson) {
+
+    let replacementId = '';
+    if (item.id && item.id.substring(0, 5) == "swap_") {
+        replacementId = event_config.events[current_event].lessons[lesson].id_swap[item.id];
+    }
+
+    let itemDiv = document.createElement('div');
+    itemDiv.className = "lesson-item";
+
+    let itemImg = document.createElement('img');
+
+    SetItemImage(itemImg, item, replacementId);
+
+    itemDiv.appendChild(itemImg);
+
+    let amountP = document.createElement('p');
+    amountP.className = "lesson-item-amount";
+    if (item.count) {
+        amountP.innerText = commafy(item.count);
+    }
+    else {
+        amountP.innerText = Math.round(item.chance * 100) + "%"
+    }
+
+    itemDiv.appendChild(amountP);
+
+    return itemDiv;
+
+}
+
+function UpdateNotifications() {
+
+    if (enabledBonusUnits.length == 0) {
+        document.getElementById('notification-bonus').style.display = '';
+    }
+    else {
+        document.getElementById('notification-bonus').style.display = 'none';
+    }
+
+    if (event_data.pyro_refreshes == undefined) {
+        document.getElementById('notification-energy').style.display = '';
+    }
+    else {
+        document.getElementById('notification-energy').style.display = 'none';
+    }
+
+    if (event_data.optimisation_type == undefined) {
+        document.getElementById('notification-optimisation').style.display = '';
+    }
+    else {
+        document.getElementById('notification-optimisation').style.display = 'none';
+    }
+}
+
+function DismissNotification(type) {
+
+    if (type == "Energy") {
+        if (event_data.pyro_refreshes == undefined) {
+            event_data.pyro_refreshes = 0;
+        }
+    }
+
+    UpdateNotifications();
+}
+
+function BonusCharsEnableAll() {
+
+    let currencies = event_config.events[current_event].currencies;
+    let currencyNames = Object.keys(currencies);
+
+    let bonusCharsList = [];
+
+    for (let i = 0; i < currencyNames.length; i++) {
+
+        if (currencies[currencyNames[i]].source == "BoxPull") {
+            continue;
+        }
+
+        let bonus_units = currencies[currencyNames[i]].bonus_units;
+
+        for (let ii = 0; ii < bonus_units.length; ii++) {
+
+            if (!bonusCharsList.includes(bonus_units[ii].id)) {
+
+                bonusCharsList.push(bonus_units[ii].id);
+            }
+        }
+    }
+
+    enabledBonusUnits = bonusCharsList;
+    event_data.enabled_bonus_units = enabledBonusUnits;
+
+    GenerateBonusTab();
+
+    CalculateBonuses();
+    UpdateBonuses();
+    RefreshDropsDisplay();
+
+    saveTime = Date.now() + (1000 * 5);
 }
 
 function InitMaxShopPurchases() {
