@@ -573,6 +573,11 @@
     display: flex;
 }
 
+#artifact-toggle-info {
+    margin-left: 1em;
+    margin-bottom: 0.5em;
+}
+
 .dark-theme #events-list {
     background-color: rgb(47 47 47);
 }
@@ -644,6 +649,10 @@
 
 .dark-theme .lesson-container {
     background-color: rgb(70, 70, 70);
+}
+
+.dark-theme #bonus-chars-all-button:hover {
+    background-color: #74749347;
 }
 
 @media (max-width: 800px) {

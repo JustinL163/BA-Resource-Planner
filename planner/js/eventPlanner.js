@@ -1604,6 +1604,11 @@ function GenerateMaterialSelections() {
 
     let optContainer = document.getElementById('optimisation-settings-container');
 
+    let infoText = document.createElement('p');
+    infoText.innerText = "Click artifacts to toggle";
+    infoText.id = "artifact-toggle-info"
+    optContainer.appendChild(infoText);
+
     let matDrops = GetMatDropOptions();
 
     let currentMatType = matDrops[0].slice(0, -2);
