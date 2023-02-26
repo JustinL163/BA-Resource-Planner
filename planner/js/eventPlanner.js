@@ -157,15 +157,15 @@ function GenerateEventsList() {
 function InitTippies() {
 
     let tippieIds = ['#tab-Targets', '#tab-Energy', '#tab-Bonus', '#tab-Shop', '#tab-Stages', '#tab-Points', '#tab-Boxes', '#energy-source-natural',
-        '#energy-source-dailies', '#energy-source-club', '#energy-source-weeklies', '#energy-source-arona', '#energy-source-pyro', '#energy-source-pvp', 
-        '#energy-source-cafe', '#energy-source-pack', '#energy-sources-total', '#label-shop-purchases', '#label-point-rewards', '#label-box-rewards', 
+        '#energy-source-dailies', '#energy-source-club', '#energy-source-weeklies', '#energy-source-arona', '#energy-source-pyro', '#energy-source-pvp',
+        '#energy-source-cafe', '#energy-source-pack', '#energy-sources-total', '#label-shop-purchases', '#label-point-rewards', '#label-box-rewards',
         '#tab-opti-Shop', '#tab-opti-Materials', '#tab-opti-Currency', '#tab-opti-Manual']
 
     let tippieMsgs = ['Set optimisation targets', 'Adjust available energy', 'Toggle bonus currency characters', 'Pick shop purchases',
-        'See calculated optimal runs, or set manually', 'View event point reward tiers', 'View event gacha box contents', 'Natural energy regen (10/h)', 
+        'See calculated optimal runs, or set manually', 'View event point reward tiers', 'View event gacha box contents', 'Natural energy regen (10/h)',
         'Energy from daily tasks (150/d)', 'Open club energy (10/d)', 'Energy from weekly tasks', 'Arona 10 day login cycle', 'Set daily pyro refills',
-        'Set daily pvp refills', 'Set cafe level', 'Using bi-weekly energy pack', 'Available energy for event', 'Display rewards purchased from shops', 
-        'Display rewards from event point tiers', 'Display rewards from event gacha boxes', 'Use minimum energy possible to clear picked shop purchases and event point tiers', 
+        'Set daily pvp refills', 'Set cafe level', 'Using bi-weekly energy pack', 'Available energy for event', 'Display rewards purchased from shops',
+        'Display rewards from event point tiers', 'Display rewards from event gacha boxes', 'Use minimum energy possible to clear picked shop purchases and event point tiers',
         'Select stage drop material(s) to target, equally weighted. (Makes sure to at least clear picked shops and point tiers)',
         'Farm as many of a specific event currency as possible. (Makes sure to at least clear picked shops and point tiers)',
         "Sets the inputs in Stages tab to editable for manual input. (Currently manual doesn't include initial clear event currencies like the other modes)"]
@@ -622,6 +622,12 @@ async function EnergySourceClicked(source) {
         CalculateEnergyAvailable();
 
         saveTime = Date.now() + (1000 * 5);
+
+        if (event_data.pyro_refreshes == undefined) {
+            event_data.pyro_refreshes = 0;
+        }
+
+        UpdateNotifications();
     }
 }
 
@@ -1558,6 +1564,8 @@ function SetOptimise(optimisation) {
     }
 
     event_data["optimisation_type"] = optimisationType;
+
+    UpdateNotifications();
 }
 
 function GetMatDropOptions() {
