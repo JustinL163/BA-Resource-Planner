@@ -12,11 +12,14 @@ let energyAvailable = 0;
 let shopPurchaseModified = false;
 let eventLoading = false;
 
+let failureReason = "";
+
 let current_event = "", current_currency = "";
 let stage_runs = {};
 let event_point_target = 0;
 
-let lessonRuns = [];
+let lessonPreRuns = [];
+let lessonPostRuns = {};
 let maxEventPoints = 0;
 
 let targetedMaterials = {}, targetedCurrency = "";
@@ -33,7 +36,7 @@ let shopItemTippies = [];
 
 function loadResources() {
 
-    $.getJSON('json/events.json?5').done(function (json) {
+    $.getJSON('json/events.json?6').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -159,13 +162,14 @@ function InitTippies() {
     let tippieIds = ['#tab-Targets', '#tab-Energy', '#tab-Bonus', '#tab-Shop', '#tab-Stages', '#tab-Points', '#tab-Boxes', '#energy-source-natural',
         '#energy-source-dailies', '#energy-source-club', '#energy-source-weeklies', '#energy-source-arona', '#energy-source-pyro', '#energy-source-pvp',
         '#energy-source-cafe', '#energy-source-pack', '#energy-sources-total', '#label-shop-purchases', '#label-point-rewards', '#label-box-rewards',
-        '#tab-opti-Shop', '#tab-opti-Materials', '#tab-opti-Currency', '#tab-opti-Manual']
+        '#label-lesson-rewards', '#tab-opti-Shop', '#tab-opti-Materials', '#tab-opti-Currency', '#tab-opti-Manual']
 
     let tippieMsgs = ['Set optimisation targets', 'Adjust available energy', 'Toggle bonus currency characters', 'Pick shop purchases',
         'See calculated optimal runs, or set manually', 'View event point reward tiers', 'View event gacha box contents', 'Natural energy regen (10/h)',
         'Energy from daily tasks (150/d)', 'Open club energy (10/d)', 'Energy from weekly tasks', 'Arona 10 day login cycle', 'Set daily pyro refills',
         'Set daily pvp refills', 'Set cafe level', 'Using bi-weekly energy pack', 'Available energy for event', 'Display rewards purchased from shops',
-        'Display rewards from event point tiers', 'Display rewards from event gacha boxes', 'Use minimum energy possible to clear picked shop purchases and event point tiers',
+        'Display rewards from event point tiers', 'Display rewards from event gacha boxes', 'Display rewards from event lessons', 
+        'Use minimum energy possible to clear picked shop purchases and event point tiers',
         'Select stage drop material(s) to target, equally weighted. (Makes sure to at least clear picked shops and point tiers)',
         'Farm as many of a specific event currency as possible. (Makes sure to at least clear picked shops and point tiers)',
         "Sets the inputs in Stages tab to editable for manual input. (Currently manual doesn't include initial clear event currencies like the other modes)"]
@@ -230,12 +234,16 @@ function LoadEvent(eventId) {
     targetedMaterials = {};
     optimisationType = "";
     stage_runs = {};
-    lessonRuns = [];
+    lessonPreRuns = [];
+    lessonPostRuns = {};
+    failureReason = "";
 
     if (events_data[current_event]) {
         event_data = events_data[current_event];
         enabledBonusUnits = event_data.enabled_bonus_units ?? [];
         currencyNeededPre = event_data.currency_needed ?? {};
+        lessonPreRuns = event_data.lesson_pre_runs ?? [];
+        lessonPostRuns = event_data.lesson_post_runs ?? {};
     }
     else {
         event_data = {};
@@ -310,6 +318,9 @@ function EventTabClicked(tab) {
 
     if (tab == "Stages") {
         GenerateStagesTable();
+    }
+    else if (tab == "Lessons") {
+        GenerateLessonsTab();
     }
 
     SwitchTab(tab);
@@ -464,6 +475,7 @@ function ToggleBonusChar(id) {
 
     CalculateBonuses();
     UpdateBonuses();
+    UpdateNotifications();
     RefreshDropsDisplay();
 }
 
@@ -1736,6 +1748,8 @@ function RefreshDropsDisplay() {
 
 function CalculateStageDrops(result, ignoreRequirement) {
 
+    failureReason = "";
+
     let feasible = true;
 
     let stages = event_config.events[current_event].stages;
@@ -1832,7 +1846,7 @@ function CalculateStageDrops(result, ignoreRequirement) {
     }
 
     if (displayIncluded['ShopPurchases']) {
-        let intResults = AddShopPurchases(totalArtifacts, totalSchoolMats, totalEleph, totalXps, totalCredit, totalEligma, totalSecretTech);
+        let intResults = AddShopPurchases(totalArtifacts, totalSchoolMats, totalEleph, totalXps, 0, 0, 0);
         if (intResults) {
             totalCredit += intResults[0];
             totalEligma += intResults[1];
@@ -1842,11 +1856,19 @@ function CalculateStageDrops(result, ignoreRequirement) {
 
     if (displayIncluded['PointRewards']) {
         let pointTarget = event_config.events[current_event].event_point_target;
-        let intResults = AddPointRewards(pointTarget, totalEleph, totalXps, totalCredit, totalEligma, totalSecretTech);
+        let intResults = AddPointRewards(pointTarget, totalEleph, totalXps, 0, 0, 0);
         if (intResults) {
             totalCredit += intResults[0];
             totalEligma += intResults[1];
             totalSecretTech += intResults[2];
+        }
+    }
+
+    if (displayIncluded['LessonRewards']) {
+
+        let intResults = AddLessonRewards(totalArtifacts, totalSchoolMats, totalEleph, totalXps, 0, 0, 0);
+        if (intResults) {
+            totalEligma += intResults[0];
         }
     }
 
@@ -1886,6 +1908,18 @@ function CalculateStageDrops(result, ignoreRequirement) {
     if (initialClearRewards["Event_Point"]) {
         totalCurrencies["Event_Point"] += initialClearRewards["Event_Point"];
         maxEventPoints = totalCurrencies["Event_Point"];
+    }
+
+    if (event_config.events[current_event].lessons) {
+        document.getElementById("notification-lessons").style.display = 'none';
+        let remainingEventPoints = maxEventPoints - GetUsedLessonPoints();
+        if (remainingEventPoints < 0) {
+            failureReason = "The number of Event Points used on lessons is too high, please reduce lesson runs until remaining points are not negative";
+            feasible = false;
+        }
+        else if (remainingEventPoints > event_config.events[current_event].lessons_template.lesson_cost) {
+            document.getElementById("notification-lessons").style.display = '';
+        }
     }
 
     if (feasible) {
@@ -2133,6 +2167,161 @@ function AddBoxRewards(pullCurrency, totalArtifacts, totalSchoolMats, totalEleph
     return [totalCredit, totalEligma, totalSecretTech, boxCurrencyObtained, boxCurrencyName];
 }
 
+function AddLessonRewards(totalArtifacts, totalSchoolMats, totalEleph, totalXps, totalCredit, totalEligma, totalSecretTech) {
+
+    let rankUpgrades = event_config.events[current_event].lessons_template.rank_upgrades;
+    let levelUnlocks = event_config.events[current_event].lessons_template.level_unlocks;
+    let lessonCost = event_config.events[current_event].lessons_template.lesson_cost;
+
+    for (let i = 0; i < lessonPreRuns.length; i++) {
+
+        let currencySpent = lessonCost * i;
+
+        let currentRank = 1;
+        for (let ii = 0; ii < rankUpgrades.length; ii++) {
+
+            if (rankUpgrades[ii] > currencySpent) {
+                break;
+            }
+            else {
+                currentRank = ii + 2;
+            }
+        }
+
+        let currentLevel = 1;
+        for (let ii = 0; ii < levelUnlocks.length; ii++) {
+
+            if (levelUnlocks[ii] > currentRank) {
+                break;
+            }
+            else {
+                currentLevel = ii + 1;
+            }
+        }
+
+        let lessonRewardTemplate = event_config.events[current_event].lessons_template.rewards[currentLevel - 1];
+
+        for (let ii = 0; ii < lessonRewardTemplate.length; ii++) {
+
+            let itemAmountAdded = 0;
+            if (lessonRewardTemplate[ii].chance) {
+                itemAmountAdded += lessonRewardTemplate[ii].chance;
+            }
+            else if (lessonRewardTemplate[ii].count) {
+                itemAmountAdded += lessonRewardTemplate[ii].count;
+            }
+
+            let itemId = lessonRewardTemplate[ii].id;
+
+            if (lessonRewardTemplate[ii].type == "XpReport" || lessonRewardTemplate[ii].type == "XpOrb") { }
+            else if (lessonRewardTemplate[ii].type == "Eligma") {
+                totalEligma += itemAmountAdded;
+            }
+            else if (lessonRewardTemplate[ii].type == "Credit") { }
+            else if (lessonRewardTemplate[ii].type == "SecretTech") { }
+            else if (lessonRewardTemplate[ii].type == "Material") {
+
+                let itemNum = parseInt(event_config.events[current_event].lessons[lessonPreRuns[i]].id_swap[itemId]);
+
+                if (itemNum < 1000) {
+
+                    let matName = matLookup.get(itemNum);
+
+                    if (!totalArtifacts[matName]) {
+                        totalArtifacts[matName] = 0;
+                    }
+
+                    totalArtifacts[matName] += itemAmountAdded;
+                }
+                else if (itemNum < 5000) {
+
+                    let matName = matLookup.get(itemNum);
+
+                    if (!totalSchoolMats[matName]) {
+                        totalSchoolMats[matName] = 0;
+                    }
+
+                    totalSchoolMats[matName] += itemAmountAdded;
+                }
+            }
+            else if (lessonRewardTemplate[ii].type == "Eleph") {
+
+                if (!totalEleph[itemId]) {
+                    totalEleph[itemId] = 0;
+                }
+
+                totalEleph[itemId] += itemAmountAdded;
+            }
+        }
+    }
+
+    let lessonRunKeys = Object.keys(lessonPostRuns);
+
+    for (let i = 0; i < lessonRunKeys.length; i++) {
+
+        if (lessonPostRuns[lessonRunKeys[i]] == '0') {
+            continue;
+        }
+
+        let lessonRewardTemplate = event_config.events[current_event].lessons_template.rewards[4];
+
+        for (let ii = 0; ii < lessonRewardTemplate.length; ii++) {
+
+            let itemAmountAdded = 0;
+            if (lessonRewardTemplate[ii].chance) {
+                itemAmountAdded += lessonRewardTemplate[ii].chance * lessonPostRuns[lessonRunKeys[i]];
+            }
+            else if (lessonRewardTemplate[ii].count) {
+                itemAmountAdded += lessonRewardTemplate[ii].count * lessonPostRuns[lessonRunKeys[i]];
+            }
+
+            let itemId = lessonRewardTemplate[ii].id;
+
+            if (lessonRewardTemplate[ii].type == "XpReport" || lessonRewardTemplate[ii].type == "XpOrb") { }
+            else if (lessonRewardTemplate[ii].type == "Eligma") {
+                totalEligma += itemAmountAdded;
+            }
+            else if (lessonRewardTemplate[ii].type == "Credit") { }
+            else if (lessonRewardTemplate[ii].type == "SecretTech") { }
+            else if (lessonRewardTemplate[ii].type == "Material") {
+
+                let itemNum = parseInt(event_config.events[current_event].lessons[lessonRunKeys[i]].id_swap[itemId]);
+
+                if (itemNum < 1000) {
+
+                    let matName = matLookup.get(itemNum);
+
+                    if (!totalArtifacts[matName]) {
+                        totalArtifacts[matName] = 0;
+                    }
+
+                    totalArtifacts[matName] += itemAmountAdded;
+                }
+                else if (itemNum < 5000) {
+
+                    let matName = matLookup.get(itemNum);
+
+                    if (!totalSchoolMats[matName]) {
+                        totalSchoolMats[matName] = 0;
+                    }
+
+                    totalSchoolMats[matName] += itemAmountAdded;
+                }
+            }
+            else if (lessonRewardTemplate[ii].type == "Eleph") {
+
+                if (!totalEleph[itemId]) {
+                    totalEleph[itemId] = 0;
+                }
+
+                totalEleph[itemId] += itemAmountAdded;
+            }
+        }
+    }
+
+    return [totalEligma];
+}
+
 function DisplayOptionClicked(option) {
 
     if (displayIncluded[option]) {
@@ -2234,7 +2423,7 @@ function UpdateRewardsObtained(totalCurrencies, energyCost, totalArtifacts, tota
     })
 
     if (totalEligma) {
-        miscContainer.appendChild(CreateRewardItem("icons/Misc/Eligma.png", totalEligma, ""));
+        miscContainer.appendChild(CreateRewardItem("icons/Misc/Eligma.png", totalEligma.toFixed(1), ""));
     }
     if (totalSecretTech) {
         miscContainer.appendChild(CreateRewardItem("icons/Misc/SecretTech.png", totalSecretTech, ""));
@@ -2246,7 +2435,7 @@ function UpdateRewardsObtained(totalCurrencies, energyCost, totalArtifacts, tota
     let elephIds = Object.keys(totalEleph);
 
     elephIds.forEach((id) => {
-        elephContainer.appendChild(CreateRewardItem("icons/Eleph/Eleph_" + id + ".png", totalEleph[id], ""))
+        elephContainer.appendChild(CreateRewardItem("icons/Eleph/Eleph_" + id + ".png", totalEleph[id].toFixed(1), ""))
     })
 
     rewardsContainer.appendChild(currenciesContainer);
@@ -2360,22 +2549,28 @@ function HarvestStageRuns() {
 
 function InfeasibleModel() {
 
-    let model = GetStagesLinearModel("Energy_Cost", "min", false);
-
-    let solvedModel = solver.Solve(model);
-
-    let energyMin = 0;
-
-    if (solvedModel.result) {
-
-        energyMin = Math.ceil(solvedModel.result + Math.min(solvedModel.result * 0.01, 50));
-        energyMin += initialClearCost;
-    }
-
     let failureDiv = document.createElement('div');
-
-    failureDiv.innerText = "A minimum of about " + energyMin + " energy is needed for this to be feasible, please either add additional energy sources, reduce shop purchases or set bonus characters";
     failureDiv.style.marginLeft = '0.5em';
+
+    if (!failureReason) {
+
+        let model = GetStagesLinearModel("Energy_Cost", "min", false);
+
+        let solvedModel = solver.Solve(model);
+
+        let energyMin = 0;
+
+        if (solvedModel.result) {
+
+            energyMin = Math.ceil(solvedModel.result + Math.min(solvedModel.result * 0.01, 50));
+            energyMin += initialClearCost;
+        }
+
+        failureDiv.innerText = "A minimum of about " + energyMin + " energy is needed for this to be feasible, please either add additional energy sources, reduce shop purchases or set bonus characters";
+    }
+    else {
+        failureDiv.innerText = failureReason;
+    }
 
     document.getElementById('rewards-container').appendChild(failureDiv);
 }
@@ -2488,11 +2683,22 @@ function CreatePointRewardDiv(rewardType, rewardId, rewardCount) {
     return rewardDiv;
 }
 
-function GenerateLessonsTab() {
+function GetUsedLessonPoints() {
 
-    if (!event_config.events[current_event].lessons) {
-        return;
+    let postRuns = 0;
+    let runNums = Object.keys(lessonPostRuns);
+
+    for (let i = 0; i < runNums.length; i++) {
+        postRuns += parseInt(lessonPostRuns[runNums[i]]);
     }
+
+    let usedEventPoints = (lessonPreRuns.length + postRuns) * event_config.events[current_event].lessons_template.lesson_cost;
+    //let remainingEventPoints = maxEventPoints - usedEventPoints;
+
+    return usedEventPoints;
+}
+
+function GenerateLessonsTab() {
 
     let lessonsContainer = document.getElementById('lessons-container');
 
@@ -2500,9 +2706,25 @@ function GenerateLessonsTab() {
         lessonsContainer.children[0].remove();
     }
 
-    let usedEventPoints = lessonRuns.length * event_config.events[current_event].lessons_template.lesson_cost;
+    if (!event_config.events[current_event].lessons) {
+        document.getElementById('tab-Lessons').style.display = 'none';
+        document.getElementById('tab-Lessons').classList.remove('selected');
+        document.getElementById('Lessons-tab').style.display = '';
+        document.getElementById('include-lesson-rewards').style.display = 'none';
+        document.getElementById('label-lesson-rewards').style.display = 'none';
+        return;
+    }
+    else {
+        document.getElementById('tab-Lessons').style.display = '';
+        document.getElementById('include-lesson-rewards').style.display = '';
+        document.getElementById('label-lesson-rewards').style.display = '';
+    }
+
+    let usedEventPoints = GetUsedLessonPoints();
     let remainingEventPoints = maxEventPoints - usedEventPoints;
     document.getElementById('lesson-points-remaining').innerText = commafy(remainingEventPoints);
+
+    let remainingLessons = Math.max(Math.floor(remainingEventPoints / event_config.events[current_event].lessons_template.lesson_cost), 0);
 
     let lessons = event_config.events[current_event].lessons;
     let lessonRewardTemplate = event_config.events[current_event].lessons_template.rewards;
@@ -2559,32 +2781,100 @@ function GenerateLessonsTab() {
 
         if (!rankMaxed && lessonRank >= lessons[i].unlock_rank) {
 
+            let lessonButtonsDiv = document.createElement('div');
+            lessonButtonsDiv.className = "lesson-buttons-container";
+
             let lessonButton = document.createElement('button');
             lessonButton.innerText = '+';
             lessonButton.addEventListener('click', () => {
-                console.log(LessonButtonClicked(Math.round(i)));
+                LessonButtonClicked(Math.round(i), false);
             })
 
-            lessonContainer.appendChild(lessonButton);
+            let lessonMaxButton = document.createElement('button');
+            lessonMaxButton.innerText = 'M';
+            lessonMaxButton.addEventListener('click', () => {
+                LessonButtonClicked(Math.round(i), true);
+            })
+
+            lessonButtonsDiv.appendChild(lessonButton);
+            lessonButtonsDiv.appendChild(lessonMaxButton);
+
+            lessonContainer.appendChild(lessonButtonsDiv);
         }
         else if (rankMaxed) {
 
-            let lessonInput = document.createElement('input');
+            let inputDiv = document.createElement('div');
+            inputDiv.className = "lesson-input-container";
 
-            lessonContainer.appendChild(lessonInput);
+            let lessonInput = document.createElement('input');
+            lessonInput.id = "lesson-runs-input-" + i;
+            lessonInput.className = "lesson-runs-input";
+            lessonInput.type = "number";
+            lessonInput.min = 0;
+
+            let inputMax;
+
+            if (lessonPostRuns[i]) {
+                lessonInput.value = parseInt(lessonPostRuns[i]);
+                inputMax = remainingLessons + parseInt(lessonPostRuns[i]);
+            }
+            else {
+                lessonInput.value = 0;
+                inputMax = remainingLessons;
+            }
+
+            lessonInput.max = inputMax;
+
+            lessonInput.addEventListener('input', (event) => {
+                validateBasic(event.currentTarget.id);
+            });
+
+            lessonInput.addEventListener('beforeinput', (event) => {
+                preInput = event.target.value;
+            });
+
+            lessonInput.addEventListener('focusout', (event) => {
+                let validation = validateBasic(event.currentTarget.id);
+
+                let lPostRuns = lessonPostRuns[event.currentTarget.id.substring(18)];
+                let lInputRun = document.getElementById(event.currentTarget.id).value;
+                if (lInputRun == '') {
+                    lInputRun = '0'
+                }
+
+                if (validation == "validated" && lPostRuns != lInputRun && !(lPostRuns == undefined && lInputRun == '0')) {
+
+                    lessonPostRuns[event.currentTarget.id.substring(18)] = lInputRun;
+                    event_data.lesson_post_runs = lessonPostRuns;
+
+                    saveTime = Date.now() + (1000 * 5);
+
+                    GenerateLessonsTab();
+                }
+
+                preInput = '';
+            });
+
+            let lessonInputLabel = document.createElement('p');
+            lessonInputLabel.innerText = " / " + inputMax;
+
+            inputDiv.appendChild(lessonInput);
+            inputDiv.appendChild(lessonInputLabel);
+
+            lessonContainer.appendChild(inputDiv);
         }
 
         lessonsContainer.appendChild(lessonContainer);
     }
 
     let lessonRunStrings = {};
-    for (let i = 0; i < lessonRuns.length; i++) {
+    for (let i = 0; i < lessonPreRuns.length; i++) {
 
-        if (!lessonRunStrings[lessonRuns[i]]) {
-            lessonRunStrings[lessonRuns[i]] = (i + 1).toString();
+        if (!lessonRunStrings[lessonPreRuns[i]]) {
+            lessonRunStrings[lessonPreRuns[i]] = (i + 1).toString();
         }
         else {
-            lessonRunStrings[lessonRuns[i]] += " " + (i + 1);
+            lessonRunStrings[lessonPreRuns[i]] += " " + (i + 1);
         }
     }
 
@@ -2592,13 +2882,35 @@ function GenerateLessonsTab() {
     lessonNums.forEach((lessonNum) => {
         document.getElementById('lesson-text-runs-' + lessonNum).innerText = lessonRunStrings[lessonNum];
     })
+
+    if (!eventLoading) {
+        RefreshDropsDisplay();
+    }
 }
 
-function LessonButtonClicked(lessonNum) {
+function LessonButtonClicked(lessonNum, max) {
 
-    lessonRuns.push(lessonNum);
+    if (max) {
+
+        let rankUpgrades = event_config.events[current_event].lessons_template.rank_upgrades;
+
+        let maxPreRuns = rankUpgrades[rankUpgrades.length - 1] / event_config.events[current_event].lessons_template.lesson_cost;
+
+        for (let i = lessonPreRuns.length; i < maxPreRuns; i++) {
+            lessonPreRuns.push(lessonNum);
+        }
+
+        console.log(lessonPreRuns);
+    }
+    else {
+        lessonPreRuns.push(lessonNum);
+    }
+
+    event_data.lesson_pre_runs = lessonPreRuns;
+
+    saveTime = Date.now() + (1000 * 5);
+
     GenerateLessonsTab();
-
 }
 
 function GetLessonRanks() {
@@ -2607,7 +2919,7 @@ function GetLessonRanks() {
     let levelUnlocks = event_config.events[current_event].lessons_template.level_unlocks;
     let lessonCost = event_config.events[current_event].lessons_template.lesson_cost;
 
-    let currencySpent = lessonRuns.length * lessonCost;
+    let currencySpent = lessonPreRuns.length * lessonCost;
 
     let rank = 1;
     let rankMaxed = false;
@@ -2670,6 +2982,16 @@ function CreateLessonRewardItem(item, lesson) {
 
 }
 
+function ResetLessons() {
+
+    event_data.lesson_pre_runs = lessonPreRuns = [];
+    event_data.lesson_post_runs = lessonPostRuns = {};
+
+    saveTime = Date.now() + (1000 * 5);
+
+    GenerateLessonsTab();
+}
+
 function UpdateNotifications() {
 
     if (enabledBonusUnits.length == 0) {
@@ -2691,6 +3013,10 @@ function UpdateNotifications() {
     }
     else {
         document.getElementById('notification-optimisation').style.display = 'none';
+    }
+
+    if (!event_config.events[current_event].lessons) {
+        document.getElementById('notification-lessons').style.display = 'none';
     }
 }
 
@@ -2736,6 +3062,7 @@ function BonusCharsEnableAll() {
 
     CalculateBonuses();
     UpdateBonuses();
+    UpdateNotifications();
     RefreshDropsDisplay();
 
     saveTime = Date.now() + (1000 * 5);

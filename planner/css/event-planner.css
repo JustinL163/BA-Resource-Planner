@@ -395,6 +395,10 @@
     margin-left: 3em;
 }
 
+#points-table-container th:first-child {
+    padding-right: 20px;
+}
+
 .shop-item-amount-label {
     top: 50%;
     left: 50%;
@@ -491,6 +495,12 @@
     margin-bottom: 1em;
     background-color: rgb(214 221 239);
     border-radius: 1em;
+    max-width: fit-content;
+    padding-right: 1em;
+}
+
+.lesson-buttons-container {
+    display: flex;
 }
 
 .lesson-container button {
@@ -499,6 +509,14 @@
     border-radius: 20px;
     margin-left: 0.5em;
     margin-bottom: 0.25em;
+}
+
+.lesson-container button:hover {
+    filter: brightness(0.9);
+}
+
+.lesson-container button:last-child {
+    margin-left: 2em;
 }
 
 .lesson-text {
@@ -517,6 +535,7 @@
 
 #lessons-header-container {
     display: flex;
+    flex-wrap: wrap;
 }
 
 #lesson-points-remaining-container,
@@ -576,6 +595,38 @@
 #artifact-toggle-info {
     margin-left: 1em;
     margin-bottom: 0.5em;
+}
+
+.lesson-runs-input {
+    margin-left: 0.5em;
+    margin-bottom: 0.5em;
+    width: 3em;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+#disclaimer-event-energy {
+    margin: 0.75em;
+}
+
+.lesson-input-container {
+    display: flex;
+}
+
+.lesson-input-container p {
+    white-space: break-spaces;
+    font-size: 1.5em;
+    align-self: center;
+    margin-bottom: 0.5em;
+}
+
+#reset-lessons-button {
+    align-self: center;
+    padding: 1em;
+}
+
+#reset-lessons-button:hover {
+    background-color: rgb(160 169 195);
 }
 
 .dark-theme #events-list {
@@ -655,6 +706,10 @@
     background-color: #74749347;
 }
 
+.dark-theme #reset-lessons-button:hover {
+    background-color: rgb(76 76 76);
+}
+
 @media (max-width: 800px) {
 
     #events-list {
@@ -672,6 +727,7 @@
         width: 100%;
         margin-left: 1%;
         margin-right: 1%;
+        margin-bottom: 5em;
     }
 
     .event-tab-button,
@@ -771,6 +827,10 @@
         margin-right: auto;
     }
 
+    #points-table-container th:first-child {
+        padding-right: 5px;
+    }
+
     .shop-item-amount-label {
         transform: translate(-25%, -290%);
         font-size: 12px;
@@ -851,5 +911,37 @@
 
     #info-notifications div {
         flex-wrap: wrap;
+    }
+
+    #disclaimer-event-energy {
+        margin: 0.5em;
+        font-size: 0.9em;
+    }
+
+    .lesson-container button:last-child {
+        margin-left: auto;
+        margin-right: 0.5em;
+    }
+
+    #lessons-header-container {
+        font-size: 0.8em;
+    }
+
+    #lesson-points-remaining-container img,
+    #lesson-points-rankup-container img {
+        max-width: 80px;
+    }
+
+    #lesson-points-remaining,
+    #lesson-points-rankup {
+        font-size: 16px;
+    }
+
+    .lesson-item img {
+        max-width: 65px;
+    }
+
+    .lesson-item-amount {
+        font-size: 18px;
     }
 }

@@ -24,7 +24,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/styles.css?1">
-    <link rel="stylesheet" href="css/event-planner.css?4">
+    <link rel="stylesheet" href="css/event-planner.css?5">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
@@ -35,7 +35,7 @@
     <link rel="stylesheet" href="packages/tippyjs/light.css" />
     <script src="js/config.js?15"></script>
     <script src="js/common.js?2"></script>
-    <script src="js/eventPlanner.js?8"></script>
+    <script src="js/eventPlanner.js?9"></script>
     <title>Event Planner</title>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://justin163.com/planner/events">
@@ -110,6 +110,11 @@
                     <p class="notification-text">No optimisation target set</p>
                     <p class="notification-button" onclick="EventTabClicked('Targets')"><u>Check Now</u></p>
                 </div>
+                <div id="notification-lessons" style="display: none;">
+                    <img src="icons/UI/x-mark-128.png">
+                    <p class="notification-text">Event points not all spent on lessons</p>
+                    <p class="notification-button" onclick="EventTabClicked('Lessons')"><u>Check Now</u></p>
+                </div>
             </div>
             <div class="event-tab" id="Targets-tab">
                 <div id="optimisation-approaches-container">
@@ -182,6 +187,7 @@
                         <p id="energy-total">0</p>
                     </div>
                 </div>
+                <p id="disclaimer-event-energy">Energy subsections are showing amount generated for the whole event length</p>
             </div>
             <div class="event-tab" id="Bonus-tab">
                 <div id="bonus-chars-header">
@@ -211,6 +217,7 @@
                         <img src="icons/EventIcon/CurrencyIcon/Event_Point.png">
                         <p id="lesson-points-rankup"></p>
                     </div>
+                    <p id="reset-lessons-button" onclick="ResetLessons()">Reset Lessons</p>
                 </div>
                 <div id="lessons-container"></div>
             </div>
@@ -232,6 +239,9 @@
                 <input type="checkbox" id="include-box-rewards" name="include-box-rewards"
                     onclick="DisplayOptionClicked('BoxRewards')" style="display: none;">
                 <label id="label-box-rewards" for="include-box-rewards" style="display: none;">Box Rewards</label>
+                <input type="checkbox" id="include-lesson-rewards" name="include-lesson-rewards"
+                    onclick="DisplayOptionClicked('LessonRewards')" style="display: none;">
+                <label id="label-lesson-rewards" for="include-lesson-rewards" style="display: none;">Lesson Rewards</label>
             </div>
             <div id="disclaimer-text"></div>
             <div id="box-info-text"></div>
