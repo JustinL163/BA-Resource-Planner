@@ -3,7 +3,7 @@ let keyPressed = {};
 let inputMap = new Map();
 let preInput;
 const defaultGroups = { "Binah": [], "Chesed": [], "Hod": [], "ShiroKuro": [], "Perorodzilla": [], "Goz": [], "Hieronymous": [], "Kaiten": [] }
-let lvlMAX = 83;
+let lvlMAX = 85;
 
 function switchTheme() {
 
