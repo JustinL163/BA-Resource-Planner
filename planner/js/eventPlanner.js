@@ -36,7 +36,7 @@ let shopItemTippies = [];
 
 function loadResources() {
 
-    $.getJSON('json/events.json?6').done(function (json) {
+    $.getJSON('json/events.json?7').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -134,7 +134,14 @@ function GenerateEventsList() {
         let eventImg = document.createElement("img");
         let eventLabel = document.createElement('p');
 
-        let eventInfo = event_config.events[event_config.event_order[i]];
+        let eventName = event_config.event_order[i];
+        let eventDisabled = false;
+        if (eventName.substring(0, 1) == "|") {
+            eventName = eventName.substring(1);
+            eventDisabled = true;
+        }
+
+        let eventInfo = event_config.events[eventName];
 
         eventImg.src = "icons/EventIcon/" + eventInfo.icon;
         eventImg.className = "event-icon";
@@ -147,11 +154,18 @@ function GenerateEventsList() {
         eventDiv.appendChild(eventLabel);
         eventDiv.id = event_config.event_order[i];
         eventDiv.className = "listed-event";
-        eventDiv.style.cursor = "pointer";
 
-        eventDiv.addEventListener('click', (event) => {
-            LoadEvent(event.currentTarget.id);
-        })
+        if (!eventDisabled) {
+
+            eventDiv.style.cursor = "pointer";
+
+            eventDiv.addEventListener('click', (event) => {
+                LoadEvent(event.currentTarget.id);
+            })
+        }
+        else {
+            eventDiv.classList.add("disabled-event");
+        }
 
         events_list.appendChild(eventDiv);
     }
@@ -168,7 +182,7 @@ function InitTippies() {
         'See calculated optimal runs, or set manually', 'View event point reward tiers', 'View event gacha box contents', 'Natural energy regen (10/h)',
         'Energy from daily tasks (150/d)', 'Open club energy (10/d)', 'Energy from weekly tasks', 'Arona 10 day login cycle', 'Set daily pyro refills',
         'Set daily pvp refills', 'Set cafe level', 'Using bi-weekly energy pack', 'Available energy for event', 'Display rewards purchased from shops',
-        'Display rewards from event point tiers', 'Display rewards from event gacha boxes', 'Display rewards from event lessons', 
+        'Display rewards from event point tiers', 'Display rewards from event gacha boxes', 'Display rewards from event lessons',
         'Use minimum energy possible to clear picked shop purchases and event point tiers',
         'Select stage drop material(s) to target, equally weighted. (Makes sure to at least clear picked shops and point tiers)',
         'Farm as many of a specific event currency as possible. (Makes sure to at least clear picked shops and point tiers)',
@@ -213,6 +227,7 @@ function LoadEvent(eventId) {
 
     if (current_event == eventId) {
         document.getElementById('events-list').classList.add('event-selected');
+        document.getElementById('event-content-container').classList.add('event-selected');
         return;
     }
 
@@ -221,6 +236,7 @@ function LoadEvent(eventId) {
     eventLoading = true;
 
     document.getElementById('events-list').classList.add('event-selected');
+    document.getElementById('event-content-container').classList.add('event-selected');
 
     if (current_event) {
         document.getElementById(current_event).classList.remove('selected');
@@ -1150,6 +1166,9 @@ function SetItemImage(itemImg, item, replacementId) {
     else if (item.type == "XpOrb") {
         itemImg.src = "icons/LevelPart/" + itemId + ".png";
     }
+    else if (item.type == "XpWeapon") {
+        itemImg.src = "icons/LevelPart/" + itemId + ".png";
+    }
     else if (item.type == "Material") {
         let matName = matLookup.map[itemId];
 
@@ -2003,6 +2022,14 @@ function AddShopPurchases(totalArtifacts, totalSchoolMats, totalEleph, totalXps,
 
                 totalXps[items[ii]] += parseInt(shop[items[ii]]);
             }
+            else if (items[ii].substring(0, 7) == "Needle_") {
+
+                if (!totalXps[items[ii]]) {
+                    totalXps[items[ii]] = 0;
+                }
+
+                totalXps[items[ii]] += parseInt(shop[items[ii]]);
+            }
         }
     }
 
@@ -2168,6 +2195,10 @@ function AddBoxRewards(pullCurrency, totalArtifacts, totalSchoolMats, totalEleph
 }
 
 function AddLessonRewards(totalArtifacts, totalSchoolMats, totalEleph, totalXps, totalCredit, totalEligma, totalSecretTech) {
+
+    if (!event_config.events[current_event].lessons) {
+        return;
+    }
 
     let rankUpgrades = event_config.events[current_event].lessons_template.rank_upgrades;
     let levelUnlocks = event_config.events[current_event].lessons_template.level_unlocks;
@@ -3107,11 +3138,14 @@ function InitMaxShopPurchases() {
 function ToggleEventList() {
 
     let eventList = document.getElementById('events-list');
+    let eventContentContainer = document.getElementById('event-content-container');
 
     if (eventList.classList.contains('event-selected')) {
         eventList.classList.remove('event-selected');
+        eventContentContainer.classList.remove('event-selected');
     }
     else {
         eventList.classList.add('event-selected');
+        eventContentContainer.classList.add('event-selected');
     }
 }

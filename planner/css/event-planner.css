@@ -21,6 +21,7 @@
     width: 60%;
     margin-left: 2%;
     margin-right: auto;
+    margin-bottom: 5em;
 }
 
 #body-content-container {
@@ -629,6 +630,10 @@
     background-color: rgb(160 169 195);
 }
 
+.disabled-event {
+    filter: grayscale(1);
+}
+
 .dark-theme #events-list {
     background-color: rgb(47 47 47);
 }
@@ -728,6 +733,11 @@
         margin-left: 1%;
         margin-right: 1%;
         margin-bottom: 5em;
+        display: none;
+    }
+
+    #event-content-container.event-selected {
+        display: block;
     }
 
     .event-tab-button,

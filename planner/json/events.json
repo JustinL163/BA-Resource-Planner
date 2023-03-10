@@ -3,17 +3,12 @@
         "after-school-sweets",
         "summer-gehenna",
         "neverland-rerun",
-        "on-your-mark"
-    ],
-    "TEMP": [
-        "after-school-sweets",
-        "summer-gehenna",
-        "neverland-rerun",
         "on-your-mark",
-        "bunny-chaser",
-        "get-set-go",
+        "|bunny-chaser",
+        "|get-set-go",
         "hot-spring-rerun",
-        "cathedral-christmas"
+        "cathedral-christmas",
+        "bookstore-rerun"
     ],
     "events": {
         "after-school-sweets": {
@@ -313,10 +308,10 @@
 
                 {"type": "Quest", "number": 1, "cost": 10, "initial": {"Supply_Box": 300, "Grilled_Corn": 50, "Summer_Sunglasses": 50}, "drops": {"Supply_Box": 13, "Grilled_Corn": 2, "Summer_Sunglasses": 2, "Voynich_1": 0.25, "Voynich_2": 0.15}},
                 {"type": "Quest", "number": 2, "cost": 10, "initial": {"Grilled_Corn": 300, "Summer_Sunglasses": 100}, "drops": {"Grilled_Corn": 13, "Summer_Sunglasses": 4, "Nimrud_1": 0.25, "Nimrud_2": 0.15}},
-                {"type": "Quest", "number": 3, "cost": 10, "initial": {"Grilled_Corn": 100, "Summer_Sunglasses": 300}, "drops": {"Grilled_Corn": 4, "Summer_Sunglasses": 4, "Wolfsegg_1": 0.25, "Wolfsegg_2": 0.15}},
+                {"type": "Quest", "number": 3, "cost": 10, "initial": {"Grilled_Corn": 100, "Summer_Sunglasses": 300}, "drops": {"Grilled_Corn": 4, "Summer_Sunglasses": 13, "Wolfsegg_1": 0.25, "Wolfsegg_2": 0.15}},
                 {"type": "Quest", "number": 4, "cost": 15, "initial": {"Supply_Box": 350, "Grilled_Corn": 75, "Summer_Sunglasses": 75}, "drops": {"Supply_Box": 20, "Grilled_Corn": 4, "Summer_Sunglasses": 4, "Voynich_2": 0.25, "Voynich_3": 0.08}},
                 {"type": "Quest", "number": 5, "cost": 15, "initial": {"Grilled_Corn": 350, "Summer_Sunglasses": 150}, "drops": {"Grilled_Corn": 20, "Summer_Sunglasses": 8, "Nimrud_2": 0.25, "Nimrud_3": 0.08}},
-                {"type": "Quest", "number": 6, "cost": 15, "initial": {"Grilled_Corn": 150, "Summer_Sunglasses": 350}, "drops": {"Grilled_Corn": 8, "Summer_Sunglasses": 8, "Wolfsegg_2": 0.25, "Wolfsegg_3": 0.08}},
+                {"type": "Quest", "number": 6, "cost": 15, "initial": {"Grilled_Corn": 150, "Summer_Sunglasses": 350}, "drops": {"Grilled_Corn": 8, "Summer_Sunglasses": 20, "Wolfsegg_2": 0.25, "Wolfsegg_3": 0.08}},
                 {"type": "Quest", "number": 7, "cost": 20, "initial": {"Supply_Box": 400, "Grilled_Corn": 100, "Summer_Sunglasses": 100}, "drops": {"Supply_Box": 28, "Grilled_Corn": 8, "Summer_Sunglasses": 8, "Voynich_2": 0.25, "Voynich_3": 0.12, "Voynich_4": 0.021}},
                 {"type": "Quest", "number": 8, "cost": 20, "initial": {"Supply_Box": 200, "Grilled_Corn": 400}, "drops": {"Supply_Box": 16, "Grilled_Corn": 28, "Nimrud_2": 0.25, "Nimrud_3": 0.12, "Nimrud_4": 0.021}},
                 {"type": "Quest", "number": 9, "cost": 20, "initial": {"Supply_Box": 200, "Summer_Sunglasses": 400}, "drops": {"Supply_Box": 16, "Summer_Sunglasses": 28, "Wolfsegg_2": 0.25, "Wolfsegg_3": 0.12, "Wolfsegg_4": 0.021}},
@@ -671,12 +666,12 @@
             },
             "stages": [
                 {"type": "Story", "number": 1, "cost": 10, "initial": {"Event_Point": 10, "Bean_Bag": 10, "Whistle": 5}},
-                {"type": "Story", "number": 1, "cost": 10, "initial": {"Event_Point": 15, "Millennium_Flag": 10, "Whistle": 5}},
-                {"type": "Story", "number": 1, "cost": 10, "initial": {"Event_Point": 20, "Bean_Bag": 10, "Whistle": 5}},
-                {"type": "Story", "number": 1, "cost": 10, "initial": {"Event_Point": 25, "Millennium_Flag": 10, "Whistle": 5}},
-                {"type": "Story", "number": 1, "cost": 10, "initial": {"Event_Point": 30, "Bean_Bag": 10, "Whistle": 5}},
-                {"type": "Story", "number": 1, "cost": 10, "initial": {"Event_Point": 35, "Millennium_Flag": 10, "Whistle": 5}},
-                {"type": "Story", "number": 1, "cost": 10, "initial": {"Event_Point": 40, "Bean_Bag": 10, "Millennium_Flag": 10, "Whistle": 5}},
+                {"type": "Story", "number": 2, "cost": 10, "initial": {"Event_Point": 15, "Millennium_Flag": 10, "Whistle": 5}},
+                {"type": "Story", "number": 3, "cost": 10, "initial": {"Event_Point": 20, "Bean_Bag": 10, "Whistle": 5}},
+                {"type": "Story", "number": 4, "cost": 10, "initial": {"Event_Point": 25, "Millennium_Flag": 10, "Whistle": 5}},
+                {"type": "Story", "number": 5, "cost": 10, "initial": {"Event_Point": 30, "Bean_Bag": 10, "Whistle": 5}},
+                {"type": "Story", "number": 6, "cost": 10, "initial": {"Event_Point": 35, "Millennium_Flag": 10, "Whistle": 5}},
+                {"type": "Story", "number": 7, "cost": 10, "initial": {"Event_Point": 40, "Bean_Bag": 10, "Millennium_Flag": 10, "Whistle": 5}},
 
                 {"type": "Quest", "number": 1, "cost": 10, "initial": {"Event_Point": 100, "Bean_Bag": 100, "Millennium_Flag": 40}, "drops": {"Event_Point": 4, "Bean_Bag": 6, "Millennium_Flag": 2}},
                 {"type": "Quest", "number": 2, "cost": 10, "initial": {"Event_Point": 100, "Millennium_Flag": 80, "Whistle": 40}, "drops": {"Event_Point": 4, "Millennium_Flag": 5, "Whistle": 2}},
@@ -837,7 +832,8 @@
         },
         "bunny-chaser": {
             "icon": "Event_806_En.png",
-            "display_name": "Bunny Chasers on Board",
+            "display_name": "Coming Soon",
+            "display_name2": "Bunny Chasers on Board",
             "reset_time": 1681153200,
             "start_time": 1681178400,
             "end_time": 1681783200,
@@ -942,16 +938,644 @@
         },
         "get-set-go": {
             "icon": "Event_818_Jp.png",
-            "date": ""
+            "display_name": "Coming Soon"
         },
         "hot-spring-rerun": {
             "icon": "Event_808_En.png",
-            "date": ""
+            "display_name": "Hot Springs Resort Daily Logs",
+            "reset_time": 1681153200,
+            "start_time": 1681178400,
+            "end_time": 1681783200,
+            "maint_hours": 6,
+            "available_targets": ["Shop", "Currency", "Manual"],
+            "currency_targets": ["Event_Point"],
+            "event_point_target": 15000,
+            "currencies": {
+                "Hot_Spring_Towel": {
+                    "icon": "Hot_Spring_Towel.png",
+                    "shortname": "Hot Spring Towel",
+                    "source": "StageDrop",
+                    "clear": 8870,
+                    "bonus_units": [
+                        {"id": "10055", "bonus": 0.25},
+                        {"id": "16007", "bonus": 0.25},
+                        {"id": "10004", "bonus": 0.25},
+                        {"id": "26006", "bonus": 0.25}
+                    ]
+                },
+                "Mustache_Shampoo": {
+                    "icon": "Mustache_Shampoo.png",
+                    "shortname": "Mustache Shampoo",
+                    "source": "StageDrop",
+                    "clear": 9382,
+                    "bonus_units": [
+                        {"id": "10030", "bonus": 0.25},
+                        {"id": "10006", "bonus": 0.25},
+                        {"id": "20010", "bonus": 0.25},
+                        {"id": "26000", "bonus": 0.25}
+                    ]
+                },
+                "Capybara_Bath_Salt": {
+                    "icon": "Capybara_Bath_Salt.png",
+                    "shortname": "Capybara Salt",
+                    "source": "StageDrop",
+                    "clear": 5900,
+                    "bonus_units": [
+                        {"id": "10017", "bonus": 0.25},
+                        {"id": "10037", "bonus": 0.25},
+                        {"id": "20009", "bonus": 0.25},
+                        {"id": "20008", "bonus": 0.25}
+                    ]
+                },
+                "Event_Point": {
+                    "icon": "Event_Point.png",
+                    "shortname": "Event Point",
+                    "bonus_units": [
+                        {"id": "10055", "bonus": 0.3},
+                        {"id": "10030", "bonus": 0.3},
+                        {"id": "20009", "bonus": 0.3},
+                        {"id": "20010", "bonus": 0.3},
+                        {"id": "10006", "bonus": 0.1},
+                        {"id": "10017", "bonus": 0.1},
+                        {"id": "16007", "bonus": 0.1},
+                        {"id": "10004", "bonus": 0.1},
+                        {"id": "10037", "bonus": 0.1},
+                        {"id": "20008", "bonus": 0.1},
+                        {"id": "26000", "bonus": 0.1},
+                        {"id": "26006", "bonus": 0.1}
+                    ]
+                }
+            },
+            "shops": {
+                "Hot_Spring_Towel": [
+                    {"type": "Eleph", "id": "26000", "count": 50, "cost": 25},
+                    {"type": "XpReport", "id": "XP_1", "count": 600, "cost": 1},
+                    {"type": "XpReport", "id": "XP_2", "count": 150, "cost": 10},
+                    {"type": "XpReport", "id": "XP_3", "count": 45, "cost": 40},
+                    {"type": "XpReport", "id": "XP_4", "count": 10, "cost": 200},
+                    {"type": "Material", "id": "4010", "count": 40, "cost": 7},
+                    {"type": "Material", "id": "4011", "count": 30, "cost": 12},
+                    {"type": "Material", "id": "4012", "count": 20, "cost": 24},
+                    {"type": "Material", "id": "4013", "count": 10, "cost": 60}
+                ],
+                "Mustache_Shampoo": [
+                    {"type": "Eleph", "id": "23001", "count": 50, "cost": 25},
+                    {"type": "XpOrb", "id": "GXP_1", "count": 200, "cost": 1},
+                    {"type": "XpOrb", "id": "GXP_2", "count": 50, "cost": 4},
+                    {"type": "XpOrb", "id": "GXP_3", "count": 15, "cost": 16},
+                    {"type": "XpOrb", "id": "GXP_4", "count": 3, "cost": 64},
+                    {"type": "Material", "id": "3010", "count": 35, "cost": 20},
+                    {"type": "Material", "id": "3011", "count": 30, "cost": 40},
+                    {"type": "Material", "id": "3012", "count": 25, "cost": 100},
+                    {"type": "Material", "id": "3013", "count": 7, "cost": 200},
+                    {"type": "Furniture", "id": "Refreshing_Fruits_Bar", "count": 1, "cost": 1500, "limited": false}
+                ],
+                "Capybara_Bath_Salt": [
+                    {"type": "Eleph", "id": "10017", "count": 50, "cost": 16},
+                    {"type": "Material", "id": "160", "count": 150, "cost": 3},
+                    {"type": "Material", "id": "161", "count": 60, "cost": 10},
+                    {"type": "Material", "id": "162", "count": 30, "cost": 25},
+                    {"type": "Material", "id": "163", "count": 15, "cost": 50},
+                    {"type": "Material", "id": "140", "count": 150, "cost": 3},
+                    {"type": "Material", "id": "141", "count": 60, "cost": 10},
+                    {"type": "Material", "id": "142", "count": 30, "cost": 25},
+                    {"type": "Material", "id": "143", "count": 15, "cost": 50}
+                ]
+            },
+            "stages": [
+                {"type": "Story", "number": 1, "cost": 10, "initial": {"Event_Point": 10, "Hot_Spring_Towel": 10, "Capybara_Bath_Salt": 5}},
+                {"type": "Story", "number": 2, "cost": 10, "initial": {"Event_Point": 15, "Mustache_Shampoo": 10, "Capybara_Bath_Salt": 5}},
+                {"type": "Story", "number": 3, "cost": 10, "initial": {"Event_Point": 20, "Hot_Spring_Towel": 10, "Capybara_Bath_Salt": 5}},
+                {"type": "Story", "number": 4, "cost": 10, "initial": {"Event_Point": 25, "Mustache_Shampoo": 10, "Capybara_Bath_Salt": 5}},
+                {"type": "Story", "number": 5, "cost": 10, "initial": {"Event_Point": 30, "Hot_Spring_Towel": 10, "Capybara_Bath_Salt": 5}},
+                {"type": "Story", "number": 6, "cost": 10, "initial": {"Event_Point": 35, "Mustache_Shampoo": 10, "Capybara_Bath_Salt": 5}},
+                {"type": "Story", "number": 7, "cost": 10, "initial": {"Event_Point": 40, "Hot_Spring_Towel": 10, "Mustache_Shampoo": 10, "Capybara_Bath_Salt": 5}},
+
+                {"type": "Quest", "number": 1, "cost": 10, "initial": {"Event_Point": 100, "Hot_Spring_Towel": 100, "Mustache_Shampoo": 40}, "drops": {"Event_Point": 3, "Hot_Spring_Towel": 6, "Mustache_Shampoo": 2}},
+                {"type": "Quest", "number": 2, "cost": 10, "initial": {"Event_Point": 100, "Mustache_Shampoo": 80, "Capybara_Bath_Salt": 40}, "drops": {"Event_Point": 3, "Mustache_Shampoo": 5, "Capybara_Bath_Salt": 2}},
+                {"type": "Quest", "number": 3, "cost": 10, "initial": {"Event_Point": 100, "Hot_Spring_Towel": 40, "Capybara_Bath_Salt": 80}, "drops": {"Event_Point": 3, "Hot_Spring_Towel": 2, "Capybara_Bath_Salt": 5}},
+                {"type": "Quest", "number": 4, "cost": 10, "initial": {"Event_Point": 200, "Hot_Spring_Towel": 20, "Mustache_Shampoo": 20, "Capybara_Bath_Salt": 20}, "drops": {"Event_Point": 12, "Hot_Spring_Towel": 1, "Mustache_Shampoo": 1, "Capybara_Bath_Salt": 1}},
+                {"type": "Quest", "number": 5, "cost": 12, "initial": {"Event_Point": 100, "Hot_Spring_Towel": 280}, "drops": {"Event_Point": 5, "Hot_Spring_Towel": 16}},
+                {"type": "Quest", "number": 6, "cost": 12, "initial": {"Event_Point": 100, "Mustache_Shampoo": 240}, "drops": {"Event_Point": 5, "Mustache_Shampoo": 13}},
+                {"type": "Quest", "number": 7, "cost": 12, "initial": {"Event_Point": 100, "Capybara_Bath_Salt": 200}, "drops": {"Event_Point": 5, "Capybara_Bath_Salt": 11}},
+                {"type": "Quest", "number": 8, "cost": 12, "initial": {"Event_Point": 280, "Hot_Spring_Towel": 40, "Mustache_Shampoo": 40, "Capybara_Bath_Salt": 40}, "drops": {"Event_Point": 17, "Hot_Spring_Towel": 2, "Mustache_Shampoo": 2, "Capybara_Bath_Salt": 2}},
+                {"type": "Quest", "number": 9, "cost": 15, "initial": {"Event_Point": 100, "Hot_Spring_Towel": 600}, "drops": {"Event_Point": 6, "Hot_Spring_Towel": 30}},
+                {"type": "Quest", "number": 10, "cost": 15, "initial": {"Event_Point": 100, "Mustache_Shampoo": 480}, "drops": {"Event_Point": 6, "Mustache_Shampoo": 24}},
+                {"type": "Quest", "number": 11, "cost": 15, "initial": {"Event_Point": 100, "Capybara_Bath_Salt": 400}, "drops": {"Event_Point": 6, "Capybara_Bath_Salt": 20}},
+                {"type": "Quest", "number": 12, "cost": 15, "initial": {"Event_Point": 400, "Hot_Spring_Towel": 80, "Mustache_Shampoo": 80, "Capybara_Bath_Salt": 80}, "drops": {"Event_Point": 24, "Hot_Spring_Towel": 4, "Mustache_Shampoo": 4, "Capybara_Bath_Salt": 4}},
+
+                {"type": "Challenge", "number": 1, "cost": 10},
+                {"type": "Challenge", "number": 2, "cost": 10},
+                {"type": "Challenge", "number": 3, "cost": 10},
+                {"type": "Challenge", "number": 4, "cost": 10},
+                {"type": "Challenge", "number": 5, "cost": 10}
+            ],
+            "point_rewards": [
+                {"points": 10, "type": "XpReport", "id": "XP_1", "count": 10},
+                {"points": 50, "type": "XpOrb", "id": "GXP_1", "count": 10},
+                {"points": 100, "type": "XpReport", "id": "XP_2", "count": 5},
+                {"points": 200, "type": "XpOrb", "id": "GXP_2", "count": 5},
+                {"points": 300, "type": "Eleph", "id": "16007", "count": 10},
+                {"points": 400, "type": "XpReport", "id": "XP_1", "count": 10},
+                {"points": 500, "type": "XpOrb", "id": "GXP_1", "count": 10},
+                {"points": 600, "type": "XpReport", "id": "XP_2", "count": 5},
+                {"points": 700, "type": "XpOrb", "id": "GXP_2", "count": 5},
+                {"points": 800, "type": "XpReport", "id": "XP_3", "count": 2},
+                {"points": 900, "type": "XpOrb", "id": "GXP_3", "count": 2},
+                {"points": 1000, "type": "Eleph", "id": "16007", "count": 10},
+                {"points": 1200, "type": "XpReport", "id": "XP_1", "count": 20},
+                {"points": 1400, "type": "XpOrb", "id": "GXP_1", "count": 20},
+                {"points": 1600, "type": "XpReport", "id": "XP_2", "count": 10},
+                {"points": 1800, "type": "XpOrb", "id": "GXP_2", "count": 10},
+                {"points": 2000, "type": "Eligma", "count": 15},
+                {"points": 2200, "type": "XpReport", "id": "XP_3", "count": 2},
+                {"points": 2400, "type": "XpOrb", "id": "GXP_3", "count": 2},
+                {"points": 2600, "type": "Credit", "count": 1000000},
+                {"points": 2800, "type": "XpReport", "id": "XP_4", "count": 1},
+                {"points": 3000, "type": "Eleph", "id": "16007", "count": 10},
+                {"points": 3200, "type": "XpOrb", "id": "GXP_4", "count": 1},
+                {"points": 3400, "type": "Credit", "count": 1000000},
+                {"points": 3600, "type": "XpReport", "id": "XP_3", "count": 3},
+                {"points": 3800, "type": "XpOrb", "id": "GXP_3", "count": 3},
+                {"points": 4000, "type": "Eligma", "count": 20},
+                {"points": 4200, "type": "XpReport", "id": "XP_4", "count": 2},
+                {"points": 4400, "type": "XpOrb", "id": "GXP_4", "count": 2},
+                {"points": 4600, "type": "Credit", "count": 1500000},
+                {"points": 4800, "type": "XpReport", "id": "XP_3", "count": 3},
+                {"points": 5000, "type": "Eleph", "id": "16007", "count": 10},
+                {"points": 5500, "type": "XpOrb", "id": "GXP_3", "count": 3},
+                {"points": 6000, "type": "Eleph", "id": "16007", "count": 10},
+                {"points": 6500, "type": "Credit", "count": 1500000},
+                {"points": 7000, "type": "XpReport", "id": "XP_4", "count": 2},
+                {"points": 7500, "type": "XpOrb", "id": "GXP_4", "count": 2},
+                {"points": 8000, "type": "Eligma", "count": 15},
+                {"points": 9000, "type": "Credit", "count": 2000000},
+                {"points": 10000, "type": "SecretTech", "count": 1}
+            ],
+            "lessons_template": {
+                "rank_upgrades": [500, 1500, 3000, 5000, 7500, 10500, 14000],
+                "level_unlocks": [1, 2, 4, 6, 8],
+                "lesson_cost": 500,
+                "rewards": [
+                    [
+                        {"type": "Eleph", "id": "16007", "chance": 0.7},
+                        {"type": "Eligma", "chance": 0.1},
+                        {"type": "Material", "id": "swap_0", "count": 1}
+                    ],
+                    [
+                        {"type": "Eleph", "id": "16007", "chance": 0.9},
+                        {"type": "Eligma", "chance": 0.11},
+                        {"type": "Material", "id": "swap_1", "chance": 0.7},
+                        {"type": "Material", "id": "swap_0", "count": 2}
+                    ],
+                    [
+                        {"type": "Eleph", "id": "16007", "count": 1},
+                        {"type": "Eleph", "id": "16007", "chance": 0.1},
+                        {"type": "Eligma", "chance": 0.13},
+                        {"type": "Material", "id": "swap_1", "count": 1},
+                        {"type": "Material", "id": "swap_1", "chance": 0.3},
+                        {"type": "Material", "id": "swap_0", "count": 3}
+                    ],
+                    [
+                        {"type": "Eleph", "id": "16007", "count": 1},
+                        {"type": "Eleph", "id": "16007", "chance": 0.3},
+                        {"type": "Eligma", "chance": 0.15},
+                        {"type": "Material", "id": "swap_2", "chance": 0.5},
+                        {"type": "Material", "id": "swap_1", "count": 1},
+                        {"type": "Material", "id": "swap_1", "chance": 0.9},
+                        {"type": "Material", "id": "swap_0", "count": 4}
+                    ],
+                    [
+                        {"type": "Eleph", "id": "16007", "count": 1},
+                        {"type": "Eleph", "id": "16007", "chance": 0.5},
+                        {"type": "Eligma", "chance": 0.17},
+                        {"type": "Material", "id": "swap_2", "count": 1},
+                        {"type": "Material", "id": "swap_1", "count": 2},
+                        {"type": "Material", "id": "swap_1", "chance": 0.5},
+                        {"type": "Material", "id": "swap_0", "count": 5}
+                    ]
+                ]
+            },
+            "lessons": [
+                {
+                    "name1": "Main Building",
+                    "name2": "Banquet Hall",
+                    "unlock_rank": 1,
+                    "unlock_2": 5,
+                    "id_swap": {
+                        "swap_0": "210",
+                        "swap_1": "211",
+                        "swap_2": "212"
+                    }
+                },
+                {
+                    "name1": "Large Public Bath",
+                    "name2": "Open-Air Bath",
+                    "unlock_rank": 2,
+                    "unlock_2": 6,
+                    "id_swap": {
+                        "swap_0": "160",
+                        "swap_1": "161",
+                        "swap_2": "162"
+                    }
+                },
+                {
+                    "name1": "Guest Room",
+                    "name2": "Annex",
+                    "unlock_rank": 3,
+                    "unlock_2": 7,
+                    "id_swap": {
+                        "swap_0": "200",
+                        "swap_1": "201",
+                        "swap_2": "202"
+                    }
+                },
+                {
+                    "name1": "Rest Area",
+                    "name2": "Garden",
+                    "unlock_rank": 4,
+                    "unlock_2": 8,
+                    "id_swap": {
+                        "swap_0": "140",
+                        "swap_1": "141",
+                        "swap_2": "142"
+                    }
+                }
+            ]
         },
         "cathedral-christmas": {
             "icon": "Event_819_Jp.png",
-            "date": ""
-        }
+            "display_name": "A Cathedral Christmas",
+            "reset_time": 1677524400,
+            "start_time": 1677549600,
+            "end_time": 1678759200,
+            "maint_hours": 6,
+            "available_targets": ["Shop", "Materials", "Currency", "Manual"],
+            "currency_targets": ["Christmas_Present"],
+            "currencies": {
+                "Christmas_Present": {
+                    "icon": "Christmas_Present.png",
+                    "shortname": "Christmas Present",
+                    "source": "StageDrop",
+                    "clear": 30600,
+                    "bonus_units": [
+                        {"id": "10056", "bonus": 0.2},
+                        {"id": "20021", "bonus": 0.2},
+                        {"id": "16011", "bonus": 0.2},
+                        {"id": "13003", "bonus": 0.2},
+                        {"id": "20003", "bonus": 0.2}
+                    ]
+                },
+                "Christmas_Sock": {
+                    "icon": "Christmas_Sock.png",
+                    "shortname": "Christmas Stocking",
+                    "source": "StageDrop",
+                    "clear": 8735,
+                    "bonus_units": [
+                        {"id": "26003", "bonus": 0.3},
+                        {"id": "10013", "bonus": 0.3},
+                        {"id": "10056", "bonus": 0.2},
+                        {"id": "20004", "bonus": 0.2}
+                    ]
+                },
+                "Candy_Cane": {
+                    "icon": "Candy_Cane.png",
+                    "shortname": "Candy Cane",
+                    "source": "StageDrop",
+                    "clear": 9475,
+                    "bonus_units": [
+                        {"id": "23002", "bonus": 0.3},
+                        {"id": "16003", "bonus": 0.3},
+                        {"id": "20021", "bonus": 0.2},
+                        {"id": "16005", "bonus": 0.2}
+                    ]
+                },
+                "Eggnog": {
+                    "icon": "Eggnog.png",
+                    "shortname": "Eggnog",
+                    "source": "BoxPull",
+                    "pull_currency": "Christmas_Present",
+                    "clear": 230,
+                    "bonus_units": []
+                }
+            },
+            "shops": {
+                "Christmas_Sock": [
+                    {"type": "XpReport", "id": "XP_1", "count": 150, "cost": 1},
+                    {"type": "XpReport", "id": "XP_2", "count": 75, "cost": 10},
+                    {"type": "XpReport", "id": "XP_3", "count": 25, "cost": 40},
+                    {"type": "XpReport", "id": "XP_4", "count": 10, "cost": 200},
+                    {"type": "Material", "id": "3020", "count": 8, "cost": 10},
+                    {"type": "Material", "id": "3021", "count": 6, "cost": 30},
+                    {"type": "Material", "id": "3022", "count": 4, "cost": 100},
+                    {"type": "Material", "id": "3023", "count": 1, "cost": 300},
+                    {"type": "Material", "id": "120", "count": 70, "cost": 5},
+                    {"type": "Material", "id": "121", "count": 35, "cost": 15},
+                    {"type": "Material", "id": "122", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "123", "count": 10, "cost": 200}
+                ],
+                "Candy_Cane": [
+                    {"type": "XpOrb", "id": "GXP_1", "count": 150, "cost": 1},
+                    {"type": "XpOrb", "id": "GXP_2", "count": 75, "cost": 4},
+                    {"type": "XpOrb", "id": "GXP_3", "count": 25, "cost": 15},
+                    {"type": "XpOrb", "id": "GXP_4", "count": 10, "cost": 60},
+                    {"type": "Material", "id": "4020", "count": 25, "cost": 5},
+                    {"type": "Material", "id": "4021", "count": 20, "cost": 15},
+                    {"type": "Material", "id": "4022", "count": 15, "cost": 50},
+                    {"type": "Material", "id": "4023", "count": 10, "cost": 200},
+                    {"type": "Material", "id": "190", "count": 70, "cost": 5},
+                    {"type": "Material", "id": "191", "count": 35, "cost": 15},
+                    {"type": "Material", "id": "192", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "193", "count": 10, "cost": 200},
+                    {"type": "Furniture", "id": "Light_Music_Stand", "count": 1, "cost": 1000, "limited": true}
+                ],
+                "Eggnog": [
+                    {"type": "Eleph", "id": "20003", "count": 50, "cost": 1},
+                    {"type": "Pyroxene", "id": "Pyroxene-1200", "count": 1, "cost": 40, "amount": 1200},
+                    {"type": "Eligma", "id": "Eligma-5", "count": 20, "cost": 2, "amount": 5},
+                    {"type": "SecretTech", "id": "SecretTech", "count": 1, "cost": 20},
+                    {"type": "Credit", "id": "Credit-750000", "count": 5, "cost": 5, "amount": 750000},
+                    {"type": "Credit", "id": "Credit-350000", "count": 10, "cost": 3, "amount": 350000},
+                    {"type": "Credit", "id": "Credit-100000", "count": 25, "cost": 1, "amount": 100000}
+                ]
+            },
+            "stages": [
+                {"type": "Story", "number": 1, "cost": 10, "initial": {"Christmas_Present": 20, "Christmas_Sock": 20}},
+                {"type": "Story", "number": 2, "cost": 10, "initial": {"Christmas_Present": 20, "Candy_Cane": 20}},
+                {"type": "Story", "number": 3, "cost": 10, "initial": {"Christmas_Present": 20, "Christmas_Sock": 20}},
+                {"type": "Story", "number": 4, "cost": 10, "initial": {"Christmas_Present": 20, "Candy_Cane": 20}},
+                {"type": "Story", "number": 5, "cost": 10, "initial": {"Christmas_Present": 20, "Christmas_Sock": 20}},
+                {"type": "Story", "number": 6, "cost": 10, "initial": {"Christmas_Present": 20, "Candy_Cane": 20}},
+                {"type": "Story", "number": 7, "cost": 10, "initial": {"Christmas_Present": 20, "Christmas_Sock": 20}},
+                {"type": "Story", "number": 8, "cost": 10, "initial": {"Christmas_Present": 20, "Candy_Cane": 20}},
+                {"type": "Story", "number": 9, "cost": 10, "initial": {"Christmas_Present": 20, "Christmas_Sock": 20, "Candy_Cane": 20}},
 
+                {"type": "Quest", "number": 1, "cost": 10, "initial": {"Christmas_Present": 100, "Christmas_Sock": 25, "Candy_Cane": 25}, "drops": {"Christmas_Present": 13, "Christmas_Sock": 2, "Candy_Cane": 2, "Wolfsegg_1": 0.25, "Wolfsegg_2": 0.15}},
+                {"type": "Quest", "number": 2, "cost": 10, "initial": {"Christmas_Sock": 100, "Candy_Cane": 50}, "drops": {"Christmas_Sock": 13, "Candy_Cane": 4, "Haniwa_1": 0.25, "Haniwa_2": 0.15}},
+                {"type": "Quest", "number": 3, "cost": 10, "initial": {"Christmas_Sock": 50, "Candy_Cane": 100}, "drops": {"Christmas_Sock": 4, "Candy_Cane": 13, "Mandragora_1": 0.25, "Mandragora_2": 0.15}},
+                {"type": "Quest", "number": 4, "cost": 10, "initial": {"Christmas_Present": 150}, "drops": {"Christmas_Present": 16, "Antikythera_1": 0.25, "Antikythera_2": 0.15}},
+                {"type": "Quest", "number": 5, "cost": 15, "initial": {"Christmas_Present": 100, "Christmas_Sock": 50, "Candy_Cane": 50}, "drops": {"Christmas_Present": 20, "Christmas_Sock": 4, "Candy_Cane": 4, "Wolfsegg_2": 0.25, "Wolfsegg_3": 0.08}},
+                {"type": "Quest", "number": 6, "cost": 15, "initial": {"Christmas_Sock": 125, "Candy_Cane": 75}, "drops": {"Christmas_Sock": 20, "Candy_Cane": 8, "Haniwa_2": 0.25, "Haniwa_3": 0.08}},
+                {"type": "Quest", "number": 7, "cost": 15, "initial": {"Christmas_Sock": 75, "Candy_Cane": 125}, "drops": {"Christmas_Sock": 8, "Candy_Cane": 20, "Mandragora_2": 0.25, "Mandragora_3": 0.08}},
+                {"type": "Quest", "number": 8, "cost": 15, "initial": {"Christmas_Present": 200}, "drops": {"Christmas_Present": 26, "Antikythera_2": 0.25, "Antikythera_3": 0.08}},
+                {"type": "Quest", "number": 9, "cost": 20, "initial": {"Christmas_Present": 150, "Christmas_Sock": 50, "Candy_Cane": 50}, "drops": {"Christmas_Present": 28, "Christmas_Sock": 8, "Candy_Cane": 8, "Wolfsegg_2": 0.25, "Wolfsegg_3": 0.12, "Wolfsegg_4": 0.021}},
+                {"type": "Quest", "number": 10, "cost": 20, "initial": {"Christmas_Present": 25, "Christmas_Sock": 225}, "drops": {"Christmas_Present": 16, "Christmas_Sock": 28, "Haniwa_2": 0.25, "Haniwa_3": 0.12, "Haniwa_4": 0.021}},
+                {"type": "Quest", "number": 11, "cost": 20, "initial": {"Christmas_Present": 25, "Candy_Cane": 225}, "drops": {"Christmas_Present": 16, "Candy_Cane": 28, "Mandragora_2": 0.25, "Mandragora_3": 0.12, "Mandragora_4": 0.021}},
+                {"type": "Quest", "number": 12, "cost": 20, "initial": {"Christmas_Present": 250}, "drops": {"Christmas_Present": 40, "Antikythera_2": 0.25, "Antikythera_3": 0.12, "Antikythera_4": 0.021}},
+
+
+                {"type": "Challenge", "number": 1, "cost": 5},
+                {"type": "Challenge", "number": 2, "cost": 5},
+                {"type": "Challenge", "number": 3, "cost": 5},
+                {"type": "Challenge", "number": 4, "cost": 5},
+                {"type": "Challenge", "number": 5, "cost": 5}
+            ],
+            "box_clear_cost": 1800,
+            "boxes": [
+                {
+                    "cycle": [1, 3, 5],
+                    "rewards": [
+                        {"type": "Eleph", "id": 26003, "amount":  20, "count": 1},
+                        {"type": "EventCurrency", "id": "Eggnog", "amount":  10, "count": 2},
+                        {"type": "XpReport", "id": "XP_1", "amount":  1, "count": 60},
+                        {"type": "XpReport", "id": "XP_2", "amount":  1, "count": 35},
+                        {"type": "XpReport", "id": "XP_3", "amount":  1, "count": 20},
+                        {"type": "XpReport", "id": "XP_4", "amount":  1, "count": 3},
+                        {"type": "Material", "id": "140", "amount":  1, "count": 30},
+                        {"type": "Material", "id": "141", "amount":  1, "count": 12},
+                        {"type": "Material", "id": "142", "amount":  1, "count": 6},
+                        {"type": "Material", "id": "143", "amount":  1, "count": 2},
+                        {"type": "Misc", "id": "Random_Equipment_Box_0", "amount":  1, "count": 129}
+                    ]
+                },
+                {
+                    "cycle": [2, 4, 6],
+                    "rewards": [
+                        {"type": "Eleph", "id": 23002, "amount":  20, "count": 1},
+                        {"type": "EventCurrency", "id": "Eggnog", "amount":  10, "count": 2},
+                        {"type": "XpReport", "id": "GXP_1", "amount":  1, "count": 60},
+                        {"type": "XpReport", "id": "GXP_2", "amount":  1, "count": 35},
+                        {"type": "XpReport", "id": "GXP_3", "amount":  1, "count": 20},
+                        {"type": "XpReport", "id": "GXP_4", "amount":  1, "count": 3},
+                        {"type": "Material", "id": "170", "amount":  1, "count": 30},
+                        {"type": "Material", "id": "171", "amount":  1, "count": 12},
+                        {"type": "Material", "id": "172", "amount":  1, "count": 6},
+                        {"type": "Material", "id": "173", "amount":  1, "count": 2},
+                        {"type": "Misc", "id": "Random_Equipment_Box_0", "amount":  1, "count": 129}
+                    ]
+                },
+                {
+                    "cycle": [7],
+                    "rewards": [
+                        {"type": "Eleph", "id": 26003, "amount":  1, "count": 3},
+                        {"type": "EventCurrency", "id": "Eggnog", "amount":  10, "count": 1},
+                        {"type": "XpReport", "id": "XP_1", "amount":  1, "count": 100},
+                        {"type": "XpReport", "id": "XP_2", "amount":  1, "count": 50},
+                        {"type": "XpReport", "id": "XP_3", "amount":  1, "count": 20},
+                        {"type": "Material", "id": "140", "amount":  1, "count": 15},
+                        {"type": "Material", "id": "141", "amount":  1, "count": 7},
+                        {"type": "Material", "id": "142", "amount":  1, "count": 2},
+                        {"type": "Misc", "id": "Random_Equipment_Box_0", "amount":  1, "count": 102}
+                    ]
+                }
+            ]
+        },
+        "bookstore-rerun": {
+            "icon": "Event_812_En.png",
+            "display_name": "Magician of the Old Bookstore",
+            "reset_time": 1677524400,
+            "start_time": 1677549600,
+            "end_time": 1678586400,
+            "maint_hours": 6,
+            "available_targets": ["Shop", "Materials", "Manual"],
+            "event_point_target": 15000,
+            "currencies": {
+                "Sisterhoods_Veil": {
+                    "icon": "Sisterhoods_Veil.png",
+                    "shortname": "Sisterhood's Veil",
+                    "source": "StageDrop",
+                    "clear": 13715,
+                    "bonus_units": [
+                        {"id": "10036", "bonus": 0.3},
+                        {"id": "10061", "bonus": 0.3},
+
+                        {"id": "10029", "bonus": 0.2},
+                        {"id": "13003", "bonus": 0.2},
+
+                        {"id": "20003", "bonus": 0.15},
+                        {"id": "26003", "bonus": 0.15},
+                        {"id": "26005", "bonus": 0.15}
+                    ]
+                },
+                "Trinitys_Chant_Book": {
+                    "icon": "Trinitys_Chant_Book.png",
+                    "shortname": "Trinity's Chant Book",
+                    "source": "StageDrop",
+                    "clear": 12160,
+                    "bonus_units": [
+                        {"id": "10035", "bonus": 0.3},
+                        {"id": "10061", "bonus": 0.3},
+
+                        {"id": "10013", "bonus": 0.2},
+                        {"id": "10049", "bonus": 0.2},
+                        {"id": "13003", "bonus": 0.2},
+
+                        {"id": "23002", "bonus": 0.15},
+                        {"id": "26004", "bonus": 0.15},
+                        {"id": "26005", "bonus": 0.15}
+                    ]
+                },
+                "Trinitys_Candlestick": {
+                    "icon": "Trinitys_Candlestick.png",
+                    "shortname": "Trinity's Candlestick",
+                    "source": "StageDrop",
+                    "clear": 8100,
+                    "bonus_units": [
+                        {"id": "10035", "bonus": 0.3},
+                        {"id": "10036", "bonus": 0.3},
+
+                        {"id": "10029", "bonus": 0.2},
+                        {"id": "10058", "bonus": 0.2},
+                        {"id": "16003", "bonus": 0.2},
+
+                        {"id": "20003", "bonus": 0.15},
+                        {"id": "23000", "bonus": 0.15},
+                        {"id": "23002", "bonus": 0.15},
+                        {"id": "23008", "bonus": 0.15}
+                    ]
+                },
+                "Event_Point": {
+                    "icon": "Event_Point.png",
+                    "shortname": "Event Point",
+                    "bonus_units": [
+                        {"id": "10013", "bonus": 0.2},
+                        {"id": "10049", "bonus": 0.2},
+                        {"id": "10058", "bonus": 0.2},
+                        {"id": "16003", "bonus": 0.2},
+
+                        {"id": "23000", "bonus": 0.15},
+                        {"id": "23008", "bonus": 0.15},
+                        {"id": "26003", "bonus": 0.15},
+                        {"id": "26004", "bonus": 0.15}
+                    ]
+                }
+            },
+            "shops": {
+                "Sisterhoods_Veil": [
+                    {"type": "Eleph", "id": "26004", "count": 50, "cost": 25},
+                    {"type": "XpReport", "id": "XP_1", "count": 300, "cost": 1},
+                    {"type": "XpReport", "id": "XP_2", "count": 150, "cost": 10},
+                    {"type": "XpReport", "id": "XP_3", "count": 70, "cost": 40},
+                    {"type": "XpReport", "id": "XP_4", "count": 15, "cost": 200},
+                    {"type": "Material", "id": "4020", "count": 75, "cost": 7},
+                    {"type": "Material", "id": "4021", "count": 50, "cost": 12},
+                    {"type": "Material", "id": "4022", "count": 35, "cost": 24},
+                    {"type": "Material", "id": "4023", "count": 15, "cost": 60},
+                    {"type": "Furniture", "id": "Interrogation_Room_Table", "count": 1, "cost": 2000, "limited": true}
+                ],
+                "Trinitys_Chant_Book": [
+                    {"type": "Eleph", "id": "23000", "count": 50, "cost": 20},
+                    {"type": "XpOrb", "id": "GXP_1", "count": 300, "cost": 1},
+                    {"type": "XpOrb", "id": "GXP_2", "count": 150, "cost": 4},
+                    {"type": "XpOrb", "id": "GXP_3", "count": 70, "cost": 16},
+                    {"type": "XpOrb", "id": "GXP_4", "count": 15, "cost": 64},
+                    {"type": "Material", "id": "3020", "count": 45, "cost": 20},
+                    {"type": "Material", "id": "3021", "count": 32, "cost": 40},
+                    {"type": "Material", "id": "3022", "count": 24, "cost": 100},
+                    {"type": "Material", "id": "3023", "count": 8, "cost": 200},
+                    {"type": "Furniture", "id": "Cathedral_Pew", "count": 1, "cost": 2000, "limited": true}
+                ],
+                "Trinitys_Candlestick": [
+                    {"type": "SecretTech", "id": "SecretTech", "count": 1, "cost": 1000},
+                    {"type": "XpWeapon", "id": "Needle_1", "count": 100, "cost": 5},
+                    {"type": "XpWeapon", "id": "Needle_2", "count": 40, "cost": 25},
+                    {"type": "Material", "id": "150", "count": 150, "cost": 3},
+                    {"type": "Material", "id": "151", "count": 60, "cost": 10},
+                    {"type": "Material", "id": "152", "count": 30, "cost": 25},
+                    {"type": "Material", "id": "153", "count": 15, "cost": 50},
+                    {"type": "Material", "id": "200", "count": 150, "cost": 3},
+                    {"type": "Material", "id": "201", "count": 60, "cost": 10},
+                    {"type": "Material", "id": "202", "count": 30, "cost": 25},
+                    {"type": "Material", "id": "203", "count": 15, "cost": 50},
+                    {"type": "Furniture", "id": "Simple_White_Sofa", "count": 1, "cost": 500, "limited": false}
+                ]
+            },
+            "stages": [
+                {"type": "Story", "number": 1, "cost": 10, "initial": {"Event_Point": 10}},
+                {"type": "Story", "number": 2, "cost": 10, "initial": {"Event_Point": 10}},
+                {"type": "Story", "number": 3, "cost": 10, "initial": {"Event_Point": 10}},
+                {"type": "Story", "number": 4, "cost": 10, "initial": {"Event_Point": 10}},
+                {"type": "Story", "number": 5, "cost": 10, "initial": {"Event_Point": 10}},
+                {"type": "Story", "number": 6, "cost": 10, "initial": {"Event_Point": 10}},
+                {"type": "Story", "number": 7, "cost": 10, "initial": {"Event_Point": 10}},
+                {"type": "Story", "number": 8, "cost": 10, "initial": {"Event_Point": 10}},
+                
+                {"type": "Quest", "number": 1, "cost": 10, "initial": {"Event_Point": 50, "Sisterhoods_Veil": 100, "Trinitys_Chant_Book": 40}, "drops": {"Event_Point": 2, "Sisterhoods_Veil": 12, "Voynich_1": 0.3375, "Voynich_2": 0.225}},
+                {"type": "Quest", "number": 2, "cost": 10, "initial": {"Event_Point": 50, "Trinitys_Chant_Book": 80, "Trinitys_Candlestick": 40}, "drops": {"Event_Point": 2, "Trinitys_Chant_Book": 10, "Totem_1": 0.3375, "Totem_2": 0.225}},
+                {"type": "Quest", "number": 3, "cost": 10, "initial": {"Event_Point": 50, "Sisterhoods_Veil": 40, "Trinitys_Candlestick": 80}, "drops": {"Event_Point": 2, "Trinitys_Candlestick": 8, "Rohonc_1": 0.3375, "Rohonc_2": 0.225}},
+                {"type": "Quest", "number": 4, "cost": 10, "initial": {"Event_Point": 100, "Sisterhoods_Veil": 20, "Trinitys_Chant_Book": 20, "Trinitys_Candlestick": 20}, "drops": {"Event_Point": 5, "Sisterhoods_Veil": 3, "Trinitys_Chant_Book": 2, "Trinitys_Candlestick": 1, "Nimrud_1": 0.3375, "Nimrud_2": 0.225}},
+                {"type": "Quest", "number": 5, "cost": 15, "initial": {"Event_Point": 50, "Sisterhoods_Veil": 280}, "drops": {"Event_Point": 4, "Sisterhoods_Veil": 24, "Voynich_2": 0.375, "Voynich_3": 0.12}},
+                {"type": "Quest", "number": 6, "cost": 15, "initial": {"Event_Point": 50, "Trinitys_Chant_Book": 240}, "drops": {"Event_Point": 4, "Trinitys_Chant_Book": 20, "Totem_2": 0.375, "Totem_3": 0.12}},
+                {"type": "Quest", "number": 7, "cost": 15, "initial": {"Event_Point": 50, "Trinitys_Candlestick": 200}, "drops": {"Event_Point": 4, "Trinitys_Candlestick": 16, "Rohonc_2": 0.375, "Rohonc_3": 0.12}},
+                {"type": "Quest", "number": 8, "cost": 15, "initial": {"Event_Point": 140, "Sisterhoods_Veil": 40, "Trinitys_Chant_Book": 40, "Trinitys_Candlestick": 40}, "drops": {"Event_Point": 11, "Sisterhoods_Veil": 5, "Trinitys_Chant_Book": 4, "Trinitys_Candlestick": 3, "Nimrud_2": 0.375, "Nimrud_3": 0.12}},
+                {"type": "Quest", "number": 9, "cost": 20, "initial": {"Event_Point": 50, "Sisterhoods_Veil": 600}, "drops": {"Event_Point": 6, "Sisterhoods_Veil": 34, "Voynich_2": 0.375, "Voynich_3": 0.1875, "Voynich_4": 0.03}},
+                {"type": "Quest", "number": 10, "cost": 20, "initial": {"Event_Point": 50, "Trinitys_Chant_Book": 480}, "drops": {"Event_Point": 6, "Trinitys_Chant_Book": 29, "Totem_2": 0.375, "Totem_3": 0.1875, "Totem_4": 0.03}},
+                {"type": "Quest", "number": 11, "cost": 20, "initial": {"Event_Point": 50, "Trinitys_Candlestick": 400}, "drops": {"Event_Point": 6, "Trinitys_Candlestick": 24, "Rohonc_2": 0.375, "Rohonc_3": 0.1875, "Rohonc_4": 0.03}},
+                {"type": "Quest", "number": 12, "cost": 20, "initial": {"Event_Point": 200, "Sisterhoods_Veil": 80, "Trinitys_Chant_Book": 80, "Trinitys_Candlestick": 80}, "drops": {"Event_Point": 16, "Sisterhoods_Veil": 7, "Trinitys_Chant_Book": 6, "Trinitys_Candlestick": 5, "Nimrud_2": 0.375, "Nimrud_3": 0.1875, "Nimrud_4": 0.03}},
+
+                {"type": "Challenge", "number": 1, "cost": 5},
+                {"type": "Challenge", "number": 2, "cost": 5},
+                {"type": "Challenge", "number": 3, "cost": 5},
+                {"type": "Challenge", "number": 4, "cost": 5},
+                {"type": "Challenge", "number": 5, "cost": 5}
+            ],
+            "point_rewards": [
+                {"points": 10, "type": "XpReport", "id": "XP_1", "count": 10},
+                {"points": 50, "type": "XpOrb", "id": "GXP_1", "count": 10},
+                {"points": 100, "type": "XpReport", "id": "XP_2", "count": 5},
+                {"points": 200, "type": "XpOrb", "id": "GXP_2", "count": 5},
+                {"points": 300, "type": "Eleph", "id": "23007", "count": 10},
+                {"points": 400, "type": "XpReport", "id": "XP_1", "count": 10},
+                {"points": 500, "type": "XpOrb", "id": "GXP_1", "count": 10},
+                {"points": 600, "type": "XpReport", "id": "XP_2", "count": 5},
+                {"points": 700, "type": "XpOrb", "id": "GXP_2", "count": 5},
+                {"points": 800, "type": "XpReport", "id": "XP_3", "count": 2},
+                {"points": 900, "type": "XpOrb", "id": "GXP_3", "count": 2},
+                {"points": 1000, "type": "Eleph", "id": "23007", "count": 10},
+                {"points": 1200, "type": "XpReport", "id": "XP_1", "count": 20},
+                {"points": 1400, "type": "XpOrb", "id": "GXP_1", "count": 20},
+                {"points": 1600, "type": "XpReport", "id": "XP_2", "count": 10},
+                {"points": 1800, "type": "XpOrb", "id": "GXP_2", "count": 10},
+                {"points": 2000, "type": "Eligma", "count": 15},
+                {"points": 2200, "type": "XpReport", "id": "XP_3", "count": 2},
+                {"points": 2400, "type": "XpOrb", "id": "GXP_3", "count": 2},
+                {"points": 2600, "type": "Credit", "count": 1000000},
+                {"points": 2800, "type": "XpReport", "id": "XP_4", "count": 1},
+                {"points": 3000, "type": "Eleph", "id": "23007", "count": 10},
+                {"points": 3200, "type": "XpOrb", "id": "GXP_4", "count": 1},
+                {"points": 3400, "type": "Credit", "count": 1000000},
+                {"points": 3600, "type": "XpReport", "id": "XP_3", "count": 3},
+                {"points": 3800, "type": "XpOrb", "id": "GXP_3", "count": 3},
+                {"points": 4000, "type": "Eligma", "count": 20},
+                {"points": 4200, "type": "XpReport", "id": "XP_4", "count": 2},
+                {"points": 4400, "type": "XpOrb", "id": "GXP_4", "count": 2},
+                {"points": 4600, "type": "Credit", "count": 1500000},
+                {"points": 4800, "type": "XpReport", "id": "XP_3", "count": 3},
+                {"points": 5000, "type": "Eleph", "id": "23007", "count": 10},
+                {"points": 5500, "type": "XpOrb", "id": "GXP_3", "count": 3},
+                {"points": 6000, "type": "Eleph", "id": "23007", "count": 10},
+                {"points": 6500, "type": "Credit", "count": 1500000},
+                {"points": 7000, "type": "XpReport", "id": "XP_4", "count": 2},
+                {"points": 7500, "type": "XpOrb", "id": "GXP_4", "count": 2},
+                {"points": 8000, "type": "Eligma", "count": 15},
+                {"points": 9000, "type": "Credit", "count": 2000000},
+                {"points": 10000, "type": "SecretTech", "count": 1},
+                {"points": 11000, "type": "XpReport", "id": "XP_3", "count": 20},
+                {"points": 12000, "type": "Credit", "count": 2000000},
+                {"points": 13000, "type": "XpReport", "id": "XP_3", "count": 20},
+                {"points": 14000, "type": "Credit", "count": 2000000},
+                {"points": 15000, "type": "XpReport", "id": "XP_4", "count": 10}
+            ]
+        }
     }
 }
