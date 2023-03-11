@@ -99,6 +99,11 @@ function init() {
 
     InitTippies();
 
+    document.getElementById('include-shop-purchases').checked = false;
+    document.getElementById('include-point-rewards').checked = false;
+    document.getElementById('include-box-rewards').checked = false;
+    document.getElementById('include-lesson-rewards').checked = false;
+
     //TEMP
     // LoadEvent('neverland-rerun');
     // EventTabClicked('Targets');
