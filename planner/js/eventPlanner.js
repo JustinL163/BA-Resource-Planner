@@ -36,7 +36,7 @@ let shopItemTippies = [];
 
 function loadResources() {
 
-    $.getJSON('json/events.json?7').done(function (json) {
+    $.getJSON('json/events.json?8').done(function (json) {
         event_config = json;
         checkResources();
     });
