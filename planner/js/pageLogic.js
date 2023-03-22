@@ -6160,7 +6160,7 @@ function createCharBox(charId, container, location) {
     const newImg = document.createElement("img");
     newImg.src = "icons/Portrait/Icon_" + charId + ".png";
     if (test) {
-        newImg.src = "icons/Portrait/April/Icon_" + charId + ".png";
+        newImg.src = "icons/Portrait/Icon_" + charId + ".png";
     }
     newImg.draggable = false;
     newImg.className = "char-img";
