@@ -75,6 +75,8 @@ let bugsNotified = {};
 
 let loaded = false;
 
+let test = false;
+
 function loadResources() {
 
     $.getJSON('json/misc_data.json?13').done(function (json) {
@@ -480,7 +482,7 @@ function init() {
     });
 
     // set input validation
-    
+
     InitInputValidation();
 
     var sectionNames = document.getElementsByClassName('section-name');
@@ -819,7 +821,7 @@ async function sectionQuickSet(section) {
                 "- 1 - 1 - 1 - 1": "Target"
             }
         },
-        "Level": {          
+        "Level": {
             " 85": {
                 "85 85": "Both",
                 "- 85": "Target"
@@ -1409,6 +1411,9 @@ function openModal(e) {
 
         var displayImg = document.getElementById("displayImg");
         displayImg.src = "icons/Portrait/Icon_" + charId + ".png";
+        if (test) {
+            displayImg.src = "icons/Portrait/Icon_" + charId + ".png";
+        }
 
         var displayName = document.getElementById("displayName");
         displayName.innerText = charSelected
@@ -6153,7 +6158,10 @@ function createCharBox(charId, container, location) {
     }
 
     const newImg = document.createElement("img");
-    newImg.src = "icons/Portrait/Icon_" + charId + ".png"
+    newImg.src = "icons/Portrait/Icon_" + charId + ".png";
+    if (aprilFools) {
+        newImg.src = "icons/Portrait/April/Icon_" + charId + ".png";
+    }
     newImg.draggable = false;
     newImg.className = "char-img";
 
