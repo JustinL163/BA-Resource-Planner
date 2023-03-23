@@ -36,7 +36,7 @@ let shopItemTippies = [];
 
 function loadResources() {
 
-    $.getJSON('json/events.json?8').done(function (json) {
+    $.getJSON('json/events.json?9').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -191,7 +191,7 @@ function InitTippies() {
         'Use minimum energy possible to clear picked shop purchases and event point tiers',
         'Select stage drop material(s) to target, equally weighted. (Makes sure to at least clear picked shops and point tiers)',
         'Farm as many of a specific event currency as possible. (Makes sure to at least clear picked shops and point tiers)',
-        "Sets the inputs in Stages tab to editable for manual input. (Currently manual doesn't include initial clear event currencies like the other modes)"]
+        "Sets the inputs in Stages tab to editable for manual input."]
 
     //let tippieTimeouts = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 6, 10, 10, 10]
 
@@ -278,7 +278,10 @@ function LoadEvent(eventId) {
         event_data.shop_purchases = InitMaxShopPurchases();
     }
 
-    if (event_config.events[current_event].event_point_target) {
+    if (event_data.point_target) {
+        event_point_target = event_data.point_target;
+    }
+    else if (event_config.events[current_event].event_point_target) {
         event_point_target = event_config.events[current_event].event_point_target;
     }
     else {
@@ -322,7 +325,7 @@ function LoadEvent(eventId) {
 
 function EventTabClicked(tab) {
 
-    if (!current_event) {
+    if (!current_event || eventLoading) {
         return;
     }
 
@@ -1276,6 +1279,9 @@ function CalculateInitalClear() {
                 }
 
                 initialClearRewards[item] += stages[i].initial[item];
+                if (stages[i].drops && stages[i].drops[item]) {
+                    initialClearRewards[item] += stages[i].drops[item];
+                }
             })
         }
 
@@ -1343,6 +1349,21 @@ function GenerateStagesTable() {
     table.appendChild(tableBody);
 
     tableContainer.appendChild(table);
+
+    let currenciesContainer = document.getElementById("initial-clear-display-container");
+
+    while (currenciesContainer.children.length > 0) {
+        currenciesContainer.children[0].remove();
+    }
+
+    currenciesContainer.appendChild(CreateRewardItem("icons/EventIcon/EnergyIcon/EnergyPadded.png", initialClearCost, ""));
+
+    let currencyNames = Object.keys(initialClearRewards);
+
+    currencyNames.forEach((name) => {
+
+        currenciesContainer.appendChild(CreateRewardItem("icons/EventIcon/CurrencyIcon/" + name + ".png", initialClearRewards[name], ""));
+    })
 }
 
 function CreateTableRowCells(row, cells, cellType) {
@@ -1597,6 +1618,7 @@ function SetOptimise(optimisation) {
 
         optimisationType = "Manual";
         document.getElementById('tab-Stages').click();
+        RefreshDropsDisplay();
     }
 
     event_data["optimisation_type"] = optimisationType;
@@ -1865,22 +1887,10 @@ function CalculateStageDrops(result, ignoreRequirement) {
         feasible = false;
     }
 
-    if (!ignoreRequirement) {
-        energyCost += initialClearCost;
-    }
+    energyCost += initialClearCost;
 
     if (displayIncluded['ShopPurchases']) {
         let intResults = AddShopPurchases(totalArtifacts, totalSchoolMats, totalEleph, totalXps, 0, 0, 0);
-        if (intResults) {
-            totalCredit += intResults[0];
-            totalEligma += intResults[1];
-            totalSecretTech += intResults[2];
-        }
-    }
-
-    if (displayIncluded['PointRewards']) {
-        let pointTarget = event_config.events[current_event].event_point_target;
-        let intResults = AddPointRewards(pointTarget, totalEleph, totalXps, 0, 0, 0);
         if (intResults) {
             totalCredit += intResults[0];
             totalEligma += intResults[1];
@@ -1899,6 +1909,11 @@ function CalculateStageDrops(result, ignoreRequirement) {
     for (let i = 0; i < neededCurrencies.length; i++) {
 
         if (initialClearRewards[neededCurrencies[i]]) {
+
+            if (!totalCurrencies[neededCurrencies[i]]) {
+                totalCurrencies[neededCurrencies[i]] = 0;
+            }
+
             totalCurrencies[neededCurrencies[i]] += initialClearRewards[neededCurrencies[i]];
         }
     }
@@ -1930,8 +1945,22 @@ function CalculateStageDrops(result, ignoreRequirement) {
     }
 
     if (initialClearRewards["Event_Point"]) {
+        if (!totalCurrencies["Event_Point"]) {
+            totalCurrencies["Event_Point"] = 0;
+        }
+
         totalCurrencies["Event_Point"] += initialClearRewards["Event_Point"];
         maxEventPoints = totalCurrencies["Event_Point"];
+    }
+
+    if (displayIncluded['PointRewards']) {
+
+        let intResults = AddPointRewards(maxEventPoints, totalEleph, totalXps, 0, 0, 0);
+        if (intResults) {
+            totalCredit += intResults[0];
+            totalEligma += intResults[1];
+            totalSecretTech += intResults[2];
+        }
     }
 
     if (event_config.events[current_event].lessons) {
@@ -2643,11 +2672,31 @@ function GeneratePointsTable() {
     let table3 = GetNewTable(["Points", "Rewards"]);
     let table3Body = table3.getElementsByTagName('tbody')[0];
 
+    table1.style.borderCollapse = 'collapse';
+    table2.style.borderCollapse = 'collapse';
+    table3.style.borderCollapse = 'collapse';
+
     for (let i = 0; i < pointTiers.length; i++) {
 
         let pTier = pointTiers[i];
 
         let tableRow = document.createElement('tr');
+        tableRow.id = "point-tier-" + pTier.points;
+        tableRow.className = "point-tier-row";
+
+        tableRow.addEventListener('click', (event) => {
+
+            let pointTargetClicked = event.currentTarget.id.substring(11);
+
+            event_data.point_target = pointTargetClicked;
+            event_point_target = Math.max(pointTargetClicked - initialClearRewards["Event_Point"], 0);
+
+            RefreshDropsDisplay();
+
+            HighlightPointTiers(pointTargetClicked);
+
+            saveTime = Date.now() + (1000 * 5);
+        })
 
         CreateTableRowCells(tableRow, [pTier.points, CreatePointRewardDiv(pTier.type, pTier.id, pTier.count)], 'td');
 
@@ -2665,6 +2714,31 @@ function GeneratePointsTable() {
     tableContainer.appendChild(table1);
     tableContainer.appendChild(table2);
     tableContainer.appendChild(table3);
+
+    if (event_data.point_target) {
+        HighlightPointTiers(event_data.point_target);
+    }
+    else {
+        HighlightPointTiers(event_config.events[current_event].event_point_target);
+    }
+}
+
+function HighlightPointTiers(targetTier) {
+
+    let tierRows = document.getElementsByClassName('point-tier-row');
+
+    for (let i = 0; i < tierRows.length; i++) {
+
+        if (parseInt(tierRows[i].id.substring(11)) <= targetTier) {
+            tierRows[i].style.backgroundColor = 'rgb(255 0 252 / 21%)';
+        }
+        else if (parseInt(tierRows[i].id.substring(11)) <= maxEventPoints) {
+            tierRows[i].style.backgroundColor = 'rgb(0 201 255 / 21%)';
+        }
+        else {
+            tierRows[i].style.backgroundColor = '';
+        }
+    }
 }
 
 function GetNewTable(headers) {
@@ -2926,20 +3000,33 @@ function GenerateLessonsTab() {
 
 function LessonButtonClicked(lessonNum, max) {
 
+    let usedEventPoints = GetUsedLessonPoints();
+    let remainingEventPoints = maxEventPoints - usedEventPoints;
+    let lessonCost = event_config.events[current_event].lessons_template.lesson_cost;
+
     if (max) {
 
         let rankUpgrades = event_config.events[current_event].lessons_template.rank_upgrades;
 
         let maxPreRuns = rankUpgrades[rankUpgrades.length - 1] / event_config.events[current_event].lessons_template.lesson_cost;
 
-        for (let i = lessonPreRuns.length; i < maxPreRuns; i++) {
-            lessonPreRuns.push(lessonNum);
-        }
+        let newLessonRuns = 0;
 
-        console.log(lessonPreRuns);
+        for (let i = lessonPreRuns.length; i < maxPreRuns; i++) {
+
+            newLessonRuns++;
+            if (remainingEventPoints > newLessonRuns * lessonCost) {
+                lessonPreRuns.push(lessonNum);
+            }
+            else {
+                break;
+            }
+        }
     }
     else {
-        lessonPreRuns.push(lessonNum);
+        if (remainingEventPoints > lessonCost) {
+            lessonPreRuns.push(lessonNum);
+        }
     }
 
     event_data.lesson_pre_runs = lessonPreRuns;

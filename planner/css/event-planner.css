@@ -227,6 +227,7 @@
 
 .stages-table-drops-container p,
 #rewards-container p,
+#initial-clear-display-container p,
 .box-item-amount,
 .point-rewards-table-container p,
 .energy-source-setting,
@@ -291,11 +292,11 @@
     padding-top: 1em;
 }
 
-#rewards-container div {
+#rewards-container div, #initial-clear-display-container div {
     position: relative;
 }
 
-#rewards-container img {
+#rewards-container img, #initial-clear-display-container img {
     max-width: 100px;
 }
 
@@ -589,7 +590,7 @@
     background-color: rgb(160 169 195);
 }
 
-#bonus-chars-header {
+#bonus-chars-header, #points-header {
     display: flex;
 }
 
@@ -632,6 +633,18 @@
 
 .disabled-event {
     filter: grayscale(1);
+}
+
+.point-tier-row:hover {
+    background-color: #00000033 !important;
+}
+
+.point-tier-row td:first-child {
+    text-align: center;
+}
+
+#initial-clear-display-container {
+    display: flex;
 }
 
 .dark-theme #events-list {
@@ -760,12 +773,13 @@
         max-width: 50px;
     }
 
-    #rewards-container img {
+    #rewards-container img, #initial-clear-display-container img {
         max-width: 70px;
     }
 
     .stages-table-drops-container p,
     #rewards-container p,
+    #initial-clear-display-container p,
     .box-item-amount {
         font-size: 16px;
     }
