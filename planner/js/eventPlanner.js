@@ -34,6 +34,8 @@ let cafeDefault = 7;
 
 let shopItemTippies = [];
 
+let aprilFools = true;
+
 function loadResources() {
 
     $.getJSON('json/events.json?9').done(function (json) {
@@ -459,6 +461,9 @@ function GenerateBonusTab() {
         let charImg = document.createElement('img');
 
         charImg.src = "icons/Portrait/Icon_" + bonusCharsList[i] + ".png";
+        if (aprilFools) {
+            charImg.src = "icons/Portrait/April/Icon_" + bonusCharsList[i] + ".png";
+        }
 
         charDiv.appendChild(charImg);
         charsContainer.appendChild(charDiv);

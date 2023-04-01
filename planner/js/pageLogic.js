@@ -75,7 +75,7 @@ let bugsNotified = {};
 
 let loaded = false;
 
-let test = false;
+let aprilFools = true;
 
 function loadResources() {
 
@@ -1411,8 +1411,8 @@ function openModal(e) {
 
         var displayImg = document.getElementById("displayImg");
         displayImg.src = "icons/Portrait/Icon_" + charId + ".png";
-        if (test) {
-            displayImg.src = "icons/Portrait/Icon_" + charId + ".png";
+        if (aprilFools) {
+            displayImg.src = "icons/Portrait/April/Icon_" + charId + ".png";
         }
 
         var displayName = document.getElementById("displayName");
@@ -1666,7 +1666,10 @@ function createMultiSelectChar(charId, container, mode) {
     newCharDiv.id = "multi_" + charId;
 
     const newImg = document.createElement("img");
-    newImg.src = "icons/Portrait/Icon_" + charId + ".png"
+    newImg.src = "icons/Portrait/Icon_" + charId + ".png";
+    if (aprilFools) {
+        newImg.src = "icons/Portrait/April/Icon_" + charId + ".png";
+    }
     newImg.draggable = false;
     newImg.className = "multi-char-img";
 
@@ -4894,6 +4897,9 @@ function DisplayMatUsers(mat) {
 
         let charImg = document.createElement('img');
         charImg.src = "icons/Portrait/Icon_" + matUsers[i].charId + ".png";
+        if (aprilFools) {
+            charImg.src = "icons/Portrait/April/Icon_" + matUsers[i].charId + ".png";
+        }
 
         let matAmount = document.createElement('p');
         matAmount.innerText = commafy(matUsers[i].matCount);
@@ -6159,8 +6165,8 @@ function createCharBox(charId, container, location) {
 
     const newImg = document.createElement("img");
     newImg.src = "icons/Portrait/Icon_" + charId + ".png";
-    if (test) {
-        newImg.src = "icons/Portrait/Icon_" + charId + ".png";
+    if (aprilFools) {
+        newImg.src = "icons/Portrait/April/Icon_" + charId + ".png";
     }
     newImg.draggable = false;
     newImg.className = "char-img";
