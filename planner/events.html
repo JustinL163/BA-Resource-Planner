@@ -23,7 +23,7 @@
     </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/styles.css?1">
+    <link rel="stylesheet" href="css/styles.css?2">
     <link rel="stylesheet" href="css/event-planner.css?7">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
@@ -34,8 +34,8 @@
     <script src="packages/tippyjs/tippy.js"></script>
     <link rel="stylesheet" href="packages/tippyjs/light.css" />
     <script src="js/config.js?15"></script>
-    <script src="js/common.js?2"></script>
-    <script src="js/eventPlanner.js?14"></script>
+    <script src="js/common.js?3"></script>
+    <script src="js/eventPlanner.js?15"></script>
     <title>Event Planner</title>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://justin163.com/planner/events">
@@ -60,6 +60,7 @@
             <li><a href="privacy.html">Privacy</a></li>
         </ul>
         <div class="nav-right">
+            <img id="image-style-button" src="icons/UI/ShirokoIcon.png" onclick="ToggleImageStyle()">
             <select name="languages" id="languages" onchange="languageChanged()"></select>
             <img src="icons/UI/sun.svg" id="theme-button" onclick="switchTheme()">
         </div>

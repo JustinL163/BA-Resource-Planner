@@ -34,8 +34,6 @@ let cafeDefault = 7;
 
 let shopItemTippies = [];
 
-let aprilFools = true;
-
 function loadResources() {
 
     $.getJSON('json/events.json?9').done(function (json) {
@@ -80,6 +78,17 @@ function init() {
 
     if (data.page_theme != undefined) {
         setTheme(data.page_theme);
+    }
+
+    let imgStyle = localStorage.getItem("image-style");
+
+    if (imgStyle == 'true') {
+        aprilFools = true;
+        document.getElementById('image-style-button').src = "icons/UI/ShirokoIcon.png";
+    }
+    else {
+        aprilFools = false;
+        document.getElementById('image-style-button').src = "icons/UI/ShirokoScribble.png";
     }
 
     GenerateEventsList();

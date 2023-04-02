@@ -75,8 +75,6 @@ let bugsNotified = {};
 
 let loaded = false;
 
-let aprilFools = true;
-
 function loadResources() {
 
     $.getJSON('json/misc_data.json?13').done(function (json) {
@@ -263,6 +261,17 @@ function init() {
     updateUiLanguage();
     buildLanguages();
     document.getElementById('languages').value = language;
+
+    let imgStyle = localStorage.getItem("image-style");
+
+    if (imgStyle == 'true') {
+        aprilFools = true;
+        document.getElementById('image-style-button').src = "icons/UI/ShirokoIcon.png";
+    }
+    else {
+        aprilFools = false;
+        document.getElementById('image-style-button').src = "icons/UI/ShirokoScribble.png";
+    }
 
     if (data != null) {
         if (data.disabled_characters != undefined) {

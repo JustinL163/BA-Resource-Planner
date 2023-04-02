@@ -5,6 +5,8 @@ let preInput;
 const defaultGroups = { "Binah": [], "Chesed": [], "Hod": [], "ShiroKuro": [], "Perorodzilla": [], "Goz": [], "Hieronymous": [], "Kaiten": [] }
 let lvlMAX = 85;
 
+let aprilFools = false;
+
 function switchTheme() {
 
     if (pageTheme == "dark") {
@@ -120,6 +122,22 @@ function InitKeyTracking() {
         }
 
     }, false);
+}
+
+function ToggleImageStyle() {
+
+    if (aprilFools) {
+        aprilFools = false;
+        document.getElementById('image-style-button').src = "icons/UI/ShirokoScribble.png";
+    }
+    else {
+        aprilFools = true;
+        document.getElementById('image-style-button').src = "icons/UI/ShirokoIcon.png"
+    }
+
+    localStorage.setItem('image-style', aprilFools);
+
+    location.reload();
 }
 
 function validateBasic(input_id) {
