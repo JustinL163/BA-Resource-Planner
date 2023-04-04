@@ -3,7 +3,7 @@ var modalCharID = 0;
 var modalStars = { "star": 0, "star_target": 0, "ue": 0, "ue_target": 0 };
 var data;
 const ueStarCap = 3;
-const globalMaxWorld = 19;
+const globalMaxWorld = 20;
 const languages = ["En", "Kr", "Jp", "Tw", "Th"];
 let language = "En";
 
