@@ -77,22 +77,22 @@ let loaded = false;
 
 function loadResources() {
 
-    $.getJSON('json/misc_data.json?13').done(function (json) {
+    $.getJSON('json/misc_data.json?14').done(function (json) {
         misc_data = json;
         checkResources();
     });
 
-    $.getJSON('json/skillinfo.json?16').done(function (json) {
+    $.getJSON('json/skillinfo.json?17').done(function (json) {
         skillinfo = json;
         checkResources();
     });
 
-    $.getJSON('json/charlist.json?21').done(function (json) {
+    $.getJSON('json/charlist.json?22').done(function (json) {
         charlist = json;
         checkResources();
     });
 
-    $.getJSON('json/localisations.json?13').done(function (json) {
+    $.getJSON('json/localisations.json?14').done(function (json) {
         localisations = json;
         checkResources();
     });
@@ -435,15 +435,15 @@ function init() {
         ["Hyakkiyako", "Red Winter", "Trinity", "Gehenna", "Abydos", "Millennium", "Arius", "Shanhaijing", "Valkyrie"], 0,
         tableNavigation, document.getElementById("table-parent-1"), false, "resource", "icons/SchoolMat/");
     createTable("artifact-table-1", ["4", "3", "2", "1"], 0,
-        ["Nebra", "Phaistos", "Wolfsegg", "Nimrud", "Mandragora", "Rohonc", "Aether"], 9,
+        ["Nebra", "Phaistos", "Wolfsegg", "Nimrud", "Mandragora", "Rohonc", "Aether", "Antikythera"], 9,
         tableNavigation, document.getElementById("table-parent-2"), true, "resource", "icons/Artifact/");
     createTable("artifact-table-2", ["4", "3", "2", "1"], 4,
-        ["Antikythera", "Voynich", "Haniwa", "Totem", "Baghdad", "Colgante", "Mystery"], 9,
+        ["Voynich", "Haniwa", "Totem", "Baghdad", "Colgante", "Mystery", "Okiku", "Atlantis"], 9,
         tableNavigation, document.getElementById("table-parent-3"), true, "resource", "icons/Artifact/");
 
     let gearNavigation = [];
-    createTable("gear-table", ["T7", "T6", "T5", "T4", "T3", "T2"], 0, ["Hat", "Gloves", "Shoes", "Bag", "Badge", "Hairpin", "Charm", "Watch", "Necklace"],
-        0, gearNavigation, document.getElementById('table-parent-4'), false, "gear", "icons/Gear/");
+    createTable("gear-table", ["T8", "T7", "T6", "T5", "T4", "T3", "T2"], 0, ["Hat", "Gloves", "Shoes", "Bag", "Badge", "Hairpin", "Charm", "Watch", "Necklace"],
+        0, gearNavigation, document.getElementById('table-parent-4'), false, "gear", "icons/Gear/", ["T8_Necklace", "T8_Watch", "T8_Charm"]);
 
     let navObj = {};
     for (let x in tableNavigation) {
@@ -470,16 +470,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.3.3".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.3.4".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#4337");
         Swal.fire({
-            title: "Updated to Version 1.3.3",
+            title: "Updated to Version 1.3.4",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.3.3";
+        data.site_version = "1.3.4";
         saveToLocalStorage(false);
     }
 
@@ -1099,11 +1099,11 @@ function CharInputsMax() {
         denyButtonColor: '#dc9641'
     }).then((result) => {
         if (result.isConfirmed) {
-            let values = [80, 80, 5, 5, 10, 10, 10, 10, 10, 10, 7, 7, 7, 7, 6, 6];
+            let values = [83, 83, 5, 5, 10, 10, 10, 10, 10, 10, 7, 7, 7, 7, 7, 7];
             SetCharInputValues(values);
         }
         else if (result.isDenied) {
-            let values = [85, 85, 5, 5, 10, 10, 10, 10, 10, 10, 7, 7, 7, 7, 7, 7];
+            let values = [85, 85, 5, 5, 10, 10, 10, 10, 10, 10, 8, 8, 8, 8, 7, 7];
             SetCharInputValues(values);
         }
     })
@@ -1122,11 +1122,11 @@ function CharInputsGoalMax() {
         denyButtonColor: '#dc9641'
     }).then((result) => {
         if (result.isConfirmed) {
-            let values = [80, 5, 10, 10, 10, 7, 7, 6];
+            let values = [83, 5, 10, 10, 10, 7, 7, 7];
             SetCharInputGoalValues(values);
         }
         else if (result.isDenied) {
-            let values = [85, 5, 10, 10, 10, 7, 7, 7];
+            let values = [85, 5, 10, 10, 10, 8, 8, 7];
             SetCharInputGoalValues(values);
         }
     })
@@ -3615,6 +3615,14 @@ function getSkillFormatted(charId, skill, level, targetLevel, targetUe) {
     }
     else {
 
+        if (skill == "Skill3") {
+            skill = "Skill4";
+        }
+
+        if (skill == "Skill2" && targetUe >= 2) {
+            skill = "Skill3";
+        }
+
         let desc = skillinfo[charId]?.Skills[skill]?.DescEn;
         let params = skillinfo[charId]?.Skills[skill]?.Parameters;
         let cost = skillinfo[charId]?.Skills[skill]?.Cost;
@@ -3791,7 +3799,7 @@ function populateCharResources(charId) {
                 const wrapDiv = document.createElement('div');
                 wrapDiv.className = "char-resource-wrapper";
                 tippy(wrapDiv, {
-                    content: "Owned: " + ownedMatDict[key],
+                    content: "Owned: " + (ownedMatDict[key] ?? 0),
                     theme: "light"
                 })
 
@@ -4695,7 +4703,7 @@ function hideEmptyCell(id) {
     }
 }
 
-function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, parent, reorder, type, imgLoc) {
+function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, parent, reorder, type, imgLoc, skip) {
 
     const newTable = document.createElement("table");
     newTable.className = "resource-table";
@@ -4716,6 +4724,14 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
         for (col = 0; col < columns.length + 1; col++) {
             const newCell = document.createElement("td");
 
+            let cellCombination = "";
+            if (reorder) {
+                cellCombination = rows[row] + "_" + columns[col - 1];
+            }
+            else {
+                cellCombination = columns[col - 1] + "_" + rows[row];
+            }
+
             if (col == 0) {
                 let localisedName = mLocalisations[language]?.Data[rows[row].replace(/ /g, '')];
                 if (localisedName) {
@@ -4726,7 +4742,7 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
                 }
                 newCell.style.paddingLeft = "8px";
             }
-            else {
+            else if (!(skip && skip.includes(cellCombination))) {
                 const newImg = document.createElement("img");
                 newImg.draggable = false;
                 newImg.className = type + "-icon";
@@ -5445,7 +5461,7 @@ function calcGearCost(charObj, gear, gearTarget, slotNum, matDict) {
             if (charObj?.Equipment) {
                 let gearName = charObj.Equipment["Slot" + slotNum];
 
-                for (let i = 2; i <= 7; i++) {
+                for (let i = 2; i <= 8; i++) {
 
                     let currentBP = gearObj["T" + i] ?? 0;
                     let targetBP = targetGearObj["T" + i];

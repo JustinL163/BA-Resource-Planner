@@ -62,6 +62,14 @@ const matLookup = new TwoWayMap({
     211: "Baghdad_2",
     212: "Baghdad_3",
     213: "Baghdad_4",
+    230: "Okiku_1",
+    231: "Okiku_2",
+    232: "Okiku_3",
+    233: "Okiku_4",
+    250: "Atlantis_1",
+    251: "Atlantis_2",
+    252: "Atlantis_3",
+    253: "Atlantis_4",
     240: "Colgante_1",
     241: "Colgante_2",
     242: "Colgante_3",
@@ -153,13 +161,14 @@ const gearLookup = ["T2_Hat", "T2_Gloves", "T2_Shoes", "T2_Bag", "T2_Badge", "T2
     "T4_Hat", "T4_Gloves", "T4_Shoes", "T4_Bag", "T4_Badge", "T4_Hairpin", "T4_Charm", "T4_Watch", "T4_Necklace",
     "T5_Hat", "T5_Gloves", "T5_Shoes", "T5_Bag", "T5_Badge", "T5_Hairpin", "T5_Charm", "T5_Watch", "T5_Necklace",
     "T6_Hat", "T6_Gloves", "T6_Shoes", "T6_Bag", "T6_Badge", "T6_Hairpin", "T6_Charm", "T6_Watch", "T6_Necklace",
-    "T7_Hat", "T7_Gloves", "T7_Shoes", "T7_Bag", "T7_Badge", "T7_Hairpin", "T7_Charm", "T7_Watch", "T7_Necklace"]
+    "T7_Hat", "T7_Gloves", "T7_Shoes", "T7_Bag", "T7_Badge", "T7_Hairpin", "T7_Charm", "T7_Watch", "T7_Necklace",
+    "T8_Hat", "T8_Gloves", "T8_Shoes", "T8_Bag", "T8_Badge", "T8_Hairpin"]
 
 var rowColours = {
     "Abydos": "#9ce4fc66", "Gehenna": "#ec7d7966", "Millennium": "#9ebdfa66", "Trinity": "#fcd19c66", "Hyakkiyako": "#f0a8c466", "Arius": "#dbdad85e",
     "Shanhaijing": "#b4feca66", "Red Winter": "#d98c9e66", "Valkyrie": "#a1a9e166", "Nebra": "#99919466", "Phaistos": "#fdf7e766", "Wolfsegg": "#93a5f266",
     "Nimrud": "#67e4ef66", "Mandragora": "#a1ede566", "Rohonc": "#c9ab9366", "Aether": "#ca96e066", "Antikythera": "#f7e28866",
-    "Voynich": "#84b28066", "Haniwa": "#e7bef466", "Baghdad": "#d179a066", "Totem": "#b77e6166", "Fleece": "#faf69f66", "Kikuko": "#ef957f66",
+    "Voynich": "#84b28066", "Haniwa": "#e7bef466", "Baghdad": "#d179a066", "Totem": "#b77e6166", "Fleece": "#faf69f66", "Okiku": "#ff88294a", "Atlantis": "#ecff2933",
     "Colgante": "#c2cdfe70", "Mystery": "#305c894a",
     "Gloves": "#84848436", "Bag": "#84848436", "Hairpin": "#84848436", "Watch": "#84848436"
 };
@@ -697,7 +706,7 @@ const inputValidation = {
         id: "input_gear1_current",
         location: "characterModal",
         min: "0",
-        max: "7",
+        max: "8",
         default: "0",
         name: "Gear 1",
         "navigation": "direct",
@@ -710,7 +719,7 @@ const inputValidation = {
         id: "input_gear1_target",
         location: "characterModal",
         min: "0",
-        max: "7",
+        max: "8",
         default: "0",
         name: "Gear 1 Target",
         requisite: {
@@ -731,7 +740,7 @@ const inputValidation = {
         id: "input_gear2_current",
         location: "characterModal",
         min: "0",
-        max: "7",
+        max: "8",
         default: "0",
         name: "Gear 2",
         requisite: {
@@ -762,7 +771,7 @@ const inputValidation = {
         id: "input_gear2_target",
         location: "characterModal",
         min: "0",
-        max: "7",
+        max: "8",
         default: "0",
         name: "Gear 2 Target",
         requisite: {
@@ -1423,7 +1432,7 @@ const inputValidation = {
         "max": "9999",
         "navigation": "resourceTable",
         "Right": "input-Phaistos_4",
-        "Up": "input-Aether_2"
+        "Up": "input-Antikythera_2"
     },
     "Nebra_2": {
         "id": "input-Nebra_2",
@@ -1431,7 +1440,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Up": "input-Aether_3"
+        "Up": "input-Antikythera_3"
     },
     "Nebra_3": {
         "id": "input-Nebra_3",
@@ -1439,7 +1448,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Up": "input-Aether_4"
+        "Up": "input-Antikythera_4"
     },
     "Nebra_4": {
         "id": "input-Nebra_4",
@@ -1605,24 +1614,21 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-Antikythera_4",
-        "Down": "input-Antikythera_4"
+        "Right": "input-Antikythera_4"
     },
     "Aether_2": {
         "id": "input-Aether_2",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable",
-        "Down": "input-Nebra_1"
+        "navigation": "resourceTable"
     },
     "Aether_3": {
         "id": "input-Aether_3",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable",
-        "Down": "input-Nebra_2"
+        "navigation": "resourceTable"
     },
     "Aether_4": {
         "id": "input-Aether_4",
@@ -1630,8 +1636,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Left": "input-Rohonc_1",
-        "Down": "input-Nebra_3"
+        "Left": "input-Rohonc_1"
     },
     "Antikythera_1": {
         "id": "input-Antikythera_1",
@@ -1640,7 +1645,7 @@ const inputValidation = {
         "max": "9999",
         "navigation": "resourceTable",
         "Right": "input-Voynich_4",
-        "Up": "input-Mystery_2"
+        "Down": "input-Voynich_4"
     },
     "Antikythera_2": {
         "id": "input-Antikythera_2",
@@ -1648,7 +1653,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Up": "input-Mystery_3"
+        "Down": "input-Nebra_1"
     },
     "Antikythera_3": {
         "id": "input-Antikythera_3",
@@ -1656,7 +1661,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Up": "input-Mystery_4"
+        "Down": "input-Nebra_2"
     },
     "Antikythera_4": {
         "id": "input-Antikythera_4",
@@ -1665,7 +1670,7 @@ const inputValidation = {
         "max": "9999",
         "navigation": "resourceTable",
         "Left": "input-Aether_1",
-        "Up": "input-Aether_1"
+        "Down": "input-Nebra_3"
     },
     "Voynich_1": {
         "id": "input-Voynich_1",
@@ -1673,21 +1678,24 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-Haniwa_4"
+        "Right": "input-Haniwa_4",
+        "Up": "input-Atlantis_2"
     },
     "Voynich_2": {
         "id": "input-Voynich_2",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Up": "input-Atlantis_3"
     },
     "Voynich_3": {
         "id": "input-Voynich_3",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Up": "input-Atlantis_4"
     },
     "Voynich_4": {
         "id": "input-Voynich_4",
@@ -1695,7 +1703,8 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Left": "input-Antikythera_1"
+        "Left": "input-Antikythera_1",
+        "Up": "input-Antikythera_1"
     },
     "Haniwa_1": {
         "id": "input-Haniwa_1",
@@ -1815,33 +1824,67 @@ const inputValidation = {
         "max": "9999",
         "navigation": "resourceTable"
     },
-    "Kikuko_1": {
-        "id": "input-Kikuko_1",
+    "Okiku_1": {
+        "id": "input-Okiku_1",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "resourceTable",
+        "Right": "input-Atlantis_4"
+    },
+    "Okiku_2": {
+        "id": "input-Okiku_2",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable"
     },
-    "Kikuko_2": {
-        "id": "input-Kikuko_2",
+    "Okiku_3": {
+        "id": "input-Okiku_3",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable"
     },
-    "Kikuko_3": {
-        "id": "input-Kikuko_3",
+    "Okiku_4": {
+        "id": "input-Okiku_4",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "resourceTable",
+        "Left": "input-Mystery_1"
+    },
+    "Atlantis_1": {
+        "id": "input-Atlantis_1",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable"
     },
-    "Kikuko_4": {
-        "id": "input-Kikuko_4",
+    "Atlantis_2": {
+        "id": "input-Atlantis_2",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Down": "input-Voynich_1"
+    },
+    "Atlantis_3": {
+        "id": "input-Atlantis_3",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "resourceTable",
+        "Down": "input-Voynich_2"
+    },
+    "Atlantis_4": {
+        "id": "input-Atlantis_4",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "resourceTable",
+        "Left": "input-Okiku_1",
+        "Down": "input-Voynich_3"
     },
     "Colgante_1": {
         "id": "input-Colgante_1",
@@ -1878,23 +1921,22 @@ const inputValidation = {
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-Okiku_4"
     },
     "Mystery_2": {
         "id": "input-Mystery_2",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable",
-        "Down": "input-Antikythera_1"
+        "navigation": "resourceTable"
     },
     "Mystery_3": {
         "id": "input-Mystery_3",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable",
-        "Down": "input-Antikythera_2"
+        "navigation": "resourceTable"
     },
     "Mystery_4": {
         "id": "input-Mystery_4",
@@ -1902,8 +1944,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Left": "input-Colgante_1",
-        "Down": "input-Antikythera_3"
+        "Left": "input-Colgante_1"
     },
     "Credit": {
         "id": "input-Credit",
@@ -2340,6 +2381,48 @@ const inputValidation = {
     },
     "T7_Necklace": {
         "id": "input-T7_Necklace",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T8_Hat": {
+        "id": "input-T8_Hat",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T8_Gloves": {
+        "id": "input-T8_Gloves",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T8_Shoes": {
+        "id": "input-T8_Shoes",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T8_Bag": {
+        "id": "input-T8_Bag",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T8_Badge": {
+        "id": "input-T8_Badge",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T8_Hairpin": {
+        "id": "input-T8_Hairpin",
         "location": "gearModal",
         "min": "0",
         "max": "9999",
