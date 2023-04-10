@@ -24,7 +24,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/styles.css?2">
-    <link rel="stylesheet" href="css/event-planner.css?7">
+    <link rel="stylesheet" href="css/event-planner.css?8">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
@@ -33,9 +33,10 @@
     <script src="packages/tippyjs/popper.js"></script>
     <script src="packages/tippyjs/tippy.js"></script>
     <link rel="stylesheet" href="packages/tippyjs/light.css" />
+    <script src="packages/mathjs/math.js"></script>
     <script src="js/config.js?15"></script>
-    <script src="js/common.js?3"></script>
-    <script src="js/eventPlanner.js?15"></script>
+    <script src="js/common.js?4"></script>
+    <script src="js/eventPlanner.js?16"></script>
     <title>Event Planner</title>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://justin163.com/planner/events">
@@ -92,6 +93,8 @@
                     style="display: none;">Point Rewards</div>
                 <div id="tab-Boxes" class="event-tab-button" onclick="EventTabClicked('Boxes')" style="display: none;">
                     Boxes</div>
+                <div id="tab-Cards" class="event-tab-button" onclick="EventTabClicked('Cards')" style="display: none;">
+                    Cards</div>
             </div>
             <div id="info-notifications">
                 <div id="notification-bonus" style="display: none;">
@@ -115,6 +118,11 @@
                     <img src="icons/UI/x-mark-128.png">
                     <p class="notification-text">Event points not all spent on lessons</p>
                     <p class="notification-button" onclick="EventTabClicked('Lessons')"><u>Check Now</u></p>
+                </div>
+                <div id="notification-cards" style="display: none;">
+                    <img src="icons/UI/x-mark-128.png">
+                    <p class="notification-text">Card gacha not simulated after pull currency changed</p>
+                    <p class="notification-button" onclick="EventTabClicked('Cards')"><u>Check Now</u></p>
                 </div>
             </div>
             <div class="event-tab" id="Targets-tab">
@@ -188,7 +196,8 @@
                         <p id="energy-total">0</p>
                     </div>
                 </div>
-                <p id="disclaimer-event-energy">Energy subsections are showing amount generated for the whole event length</p>
+                <p id="disclaimer-event-energy">Energy subsections are showing amount generated for the whole event
+                    length</p>
             </div>
             <div class="event-tab" id="Bonus-tab">
                 <div id="bonus-chars-header">
@@ -206,7 +215,8 @@
             <div class="event-tab" id="Stages-tab">
                 <div id="stages-table-container"></div>
                 <div id="intial-clear-container">
-                    <p style="margin-left: 1em;">Intial Clear (included in total below) (also includes story stage clears)</p>
+                    <p style="margin-left: 1em;">Intial Clear (included in total below) (also includes story stage
+                        clears)</p>
                     <div id="initial-clear-display-container"></div>
                 </div>
             </div>
@@ -236,6 +246,26 @@
                 <div id="box-cycle-tabs"></div>
                 <div id="box-cycle-content"></div>
             </div>
+            <div class="event-tab" id="Cards-tab">
+                <div id="cards-sd-container">
+                    <p style="margin-right: 1em;">Rng Adjust:</p>
+                    <input type="range" min="-2" max="1" value="0" step="0.5" oninput="SDSliderChanged()" onchange="SDSliderSet()"
+                        id="sd-slider">
+                    <p id="display-standard-deviation">Avg</p>
+                    <button id="gacha-sim-button" onclick="SimButtonClicked()">Simulate Gacha</button>
+                </div>
+                <div style="margin-left: 1em;">Currently only simulating by pulling first card and resetting, other pull methods will be available later (but reward difference 
+                    between first pull and pull to SR methods are negligible so doesn't change much)</div>
+                <div id="cards-tabs">
+                    <div class="cards-rarity-tab" id="tab-cards-ur" onclick="GenerateCardsRarityTable(['UR'])">UR</div>
+                    <div class="cards-rarity-tab" id="tab-cards-sr-r" onclick="GenerateCardsRarityTable(['SR', 'R_'])">
+                        SR / R
+                    </div>
+                    <div class="cards-rarity-tab" id="tab-cards-n" onclick="GenerateCardsRarityTable(['N_'])">N</div>
+                    <div class="cards-rarity-tab" onclick="HideCards()">Hide Cards</div>
+                </div>
+                <div id="cards-table-container"></div>
+            </div>
             <div id="reward-display-options-container">
                 <p style="margin-left: 1em;">Display:</p>
                 <input type="checkbox" id="include-shop-purchases" name="include-shop-purchases"
@@ -249,7 +279,11 @@
                 <label id="label-box-rewards" for="include-box-rewards" style="display: none;">Box Rewards</label>
                 <input type="checkbox" id="include-lesson-rewards" name="include-lesson-rewards"
                     onclick="DisplayOptionClicked('LessonRewards')" style="display: none;">
-                <label id="label-lesson-rewards" for="include-lesson-rewards" style="display: none;">Lesson Rewards</label>
+                <label id="label-lesson-rewards" for="include-lesson-rewards" style="display: none;">Lesson
+                    Rewards</label>
+                <input type="checkbox" id="include-card-rewards" name="include-card-rewards"
+                    onclick="DisplayOptionClicked('CardRewards')" style="display: none;">
+                <label id="label-card-rewards" for="include-card-rewards" style="display: none;">Card Rewards</label>
             </div>
             <div id="disclaimer-text"></div>
             <div id="box-info-text"></div>

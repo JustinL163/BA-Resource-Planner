@@ -564,3 +564,10 @@ function commafy(num) {
     }
     return (num < 0 ? '-' : '') + o + (parts[1] ? '.' + parts[1] : '');
 }
+
+function ShortenNumber(num, decimalPlaces = 1, unitLetters = ['', 'K', 'M', 'B', 'T']) {
+    const units = Math.min(unitLetters.length - 1, Math.floor(Math.log10(Math.abs(num)) / 3));
+    const result = num / Math.pow(10, units * 3);
+    const truncatedResult = result.toFixed(decimalPlaces).replace(/\.?0+$/, '');
+    return truncatedResult + unitLetters[units];
+}

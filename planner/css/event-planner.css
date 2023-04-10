@@ -189,7 +189,7 @@
     max-width: 60px;
 }
 
-#stages-table {
+#stages-table, #cards-table {
     border-collapse: collapse;
 }
 
@@ -198,7 +198,7 @@
     padding-left: 1em;
 }
 
-#stages-table .alternate-row {
+#stages-table .alternate-row, #cards-table .alternate-row {
     background-color: #74749347;
 }
 
@@ -252,20 +252,20 @@
     background-repeat: no-repeat;
 }
 
-#optimisation-approaches-container {
+#optimisation-approaches-container, #cards-tabs {
     display: flex;
     margin: 10px;
 }
 
-.optimise-approach-button {
+.optimise-approach-button, .cards-rarity-tab {
     padding: 1em;
 }
 
-.optimise-approach-button:hover {
+.optimise-approach-button:hover, .cards-rarity-tab:hover {
     background-color: rgb(160 169 195);
 }
 
-.optimise-approach-button.selected {
+.optimise-approach-button.selected, .cards-rarity-tab.selected {
     background-color: rgb(171 188 231);
 }
 
@@ -647,6 +647,37 @@
     display: flex;
 }
 
+.gacha-card-icon img {
+    max-width: 10em;
+}
+
+#cards-sd-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 1em;
+    align-items: center;
+}
+
+#sd-slider {
+    margin-right: 1em;
+}
+
+#display-standard-deviation {
+    margin-right: 1em;
+}
+
+#gacha-sim-button {
+    padding: 0.5em;
+    font-size: 1em;
+    background: linear-gradient(to left, buttonface 50%, #c7ffe3 50%) right;
+    background-size: 200% 100%;
+}
+
+#gacha-sim-button.active {
+    transition: all 3.5s linear;
+    background-position: left;
+}
+
 .dark-theme #events-list {
     background-color: rgb(47 47 47);
 }
@@ -679,11 +710,11 @@
     background-color: rgb(26 26 26);
 }
 
-.dark-theme .optimise-approach-button:hover {
+.dark-theme .optimise-approach-button:hover, .dark-theme .cards-rarity-tab:hover {
     background-color: rgb(76 76 76);
 }
 
-.dark-theme .optimise-approach-button.selected {
+.dark-theme .optimise-approach-button.selected, .dark-theme .cards-rarity-tab.selected {
     background-color: rgb(26 26 26);
 }
 
@@ -967,5 +998,16 @@
 
     .lesson-item-amount {
         font-size: 18px;
+    }
+
+    .gacha-card-icon img {
+        max-width: 4em;
+        padding: 0.5em;
+    }
+
+    #gacha-sim-button {
+        margin-top: 0.5em;
+        margin-left: auto;
+        margin-right: 1em;
     }
 }

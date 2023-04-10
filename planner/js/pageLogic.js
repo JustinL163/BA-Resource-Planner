@@ -470,16 +470,16 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.3.4".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.3.5".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
             "If still having issues, contact me on Discord, Justin163#4337");
         Swal.fire({
-            title: "Updated to Version 1.3.4",
+            title: "Updated to Version 1.3.5",
             color: alertColour,
             html: updateMessage
         })
 
-        data.site_version = "1.3.4";
+        data.site_version = "1.3.5";
         saveToLocalStorage(false);
     }
 

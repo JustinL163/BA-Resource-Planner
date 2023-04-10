@@ -34,9 +34,22 @@ let cafeDefault = 7;
 
 let shopItemTippies = [];
 
+let cardGachaChances = [];
+
+let cardGachaSimResults = {};
+let completedWorkers = [];
+let cardGachaAvgSD = {};
+let setSD = 0;
+let cardPullCurrencyOwned = 0;
+
+let cardGachaProcessed = false;
+let cardGachaProcessing = false;
+
+let currentTab = "";
+
 function loadResources() {
 
-    $.getJSON('json/events.json?9').done(function (json) {
+    $.getJSON('json/events.json?10').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -114,10 +127,6 @@ function init() {
     document.getElementById('include-point-rewards').checked = false;
     document.getElementById('include-box-rewards').checked = false;
     document.getElementById('include-lesson-rewards').checked = false;
-
-    //TEMP
-    // LoadEvent('neverland-rerun');
-    // EventTabClicked('Targets');
 }
 
 async function saveToLocalStorage(notify) {
@@ -237,6 +246,10 @@ function InitTippies() {
 
 function LoadEvent(eventId) {
 
+    if (cardGachaProcessing) {
+        return;
+    }
+
     if (!current_event) {
         document.getElementById("info-select-event").style.display = "none";
     }
@@ -269,6 +282,13 @@ function LoadEvent(eventId) {
     lessonPreRuns = [];
     lessonPostRuns = {};
     failureReason = "";
+    cardGachaChances = [];
+    cardGachaSimResults = {};
+    completedWorkers = [];
+    cardGachaAvgSD = {};
+    setSD = 0;
+    cardGachaProcessed = false;
+    cardPullCurrencyOwned = 0;
 
     if (events_data[current_event]) {
         event_data = events_data[current_event];
@@ -276,6 +296,9 @@ function LoadEvent(eventId) {
         currencyNeededPre = event_data.currency_needed ?? {};
         lessonPreRuns = event_data.lesson_pre_runs ?? [];
         lessonPostRuns = event_data.lesson_post_runs ?? {};
+        cardGachaAvgSD = event_data.card_pull_rewards ?? {};
+        cardPullCurrencyOwned = event_data.card_pull_currency_owned ?? 0;
+        setSD = event_data.standard_deviation ?? 0;
     }
     else {
         event_data = {};
@@ -283,6 +306,10 @@ function LoadEvent(eventId) {
         event_data.shop_purchases = {};
         event_data.currency_needed = {};
         event_data.cafe_rank = cafeDefault;
+    }
+
+    if (Object.keys(cardGachaAvgSD).length > 0) {
+        cardGachaProcessed = true;
     }
 
     if (Object.keys(event_data.shop_purchases).length == 0) {
@@ -328,6 +355,8 @@ function LoadEvent(eventId) {
     GenerateStagesTable();
     GeneratePointsTable();
     GenerateLessonsTab();
+    InitCardsTab();
+    LoadCardGachaChances();
     LoadFirstShop();
     UpdateNotifications();
 
@@ -423,7 +452,7 @@ function GenerateBonusTab() {
 
     for (let i = 0; i < currencyNames.length; i++) {
 
-        if (currencies[currencyNames[i]].source == "BoxPull") {
+        if (currencies[currencyNames[i]].source == "BoxPull" || currencies[currencyNames[i]].source == "CardPull") {
             continue;
         }
 
@@ -578,6 +607,7 @@ function SwitchTab(tab) {
 
     document.getElementById(tab + '-tab').style.display = 'block';
 
+    currentTab = tab;
 }
 
 async function EnergySourceClicked(source) {
@@ -1384,6 +1414,10 @@ function CreateTableRowCells(row, cells, cellType) {
 
     cells.forEach((item) => {
 
+        if (item == null) {
+            return;
+        }
+
         let tableCell;
         if (cellType == 'th') {
             tableCell = document.createElement('th');
@@ -1438,6 +1472,7 @@ function CreateDropsDiv(drops) {
         let dropP = document.createElement('p');
 
         let matId = matLookup.reverseMap[drop];
+        let dropInt = parseInt(drop);
 
         if (currencyNames.includes(drop)) {
 
@@ -1456,10 +1491,35 @@ function CreateDropsDiv(drops) {
                 dropImg.src = "icons/SchoolMat/" + drop + ".png";
             }
 
-            dropP.innerText = (drops[drop] * 100) + "%";
+            if (Number.isInteger(drops[drop])) {
+                dropP.innerText = (drops[drop]);
+            }
+            else {
+                dropP.innerText = (drops[drop] * 100) + "%";
+            }
 
             dropDiv.classList.add('drop-resource-rarity-' + drop.slice(-1));
             dropDiv.classList.add('drop-resource');
+        }
+        else if (drop == "Credit") {
+
+            dropImg.src = "icons/Misc/Credit.png";
+
+            dropP.innerText = ShortenNumber(drops[drop]);
+        }
+        else if (drop.includes('XP_')) {
+
+            dropImg.src = "icons/LevelPart/" + drop + ".png";
+
+            dropP.innerText = drops[drop];
+        }
+        else if (dropInt) {
+            if (dropInt >= 10000 && dropInt < 30000) {
+
+                dropImg.src = "icons/Eleph/Eleph_" + drop + ".png";
+
+                dropP.innerText = drops[drop];
+            }
         }
 
         dropDiv.appendChild(dropImg);
@@ -1928,8 +1988,19 @@ function CalculateStageDrops(result, ignoreRequirement) {
                 totalCurrencies[neededCurrencies[i]] = 0;
             }
 
-            totalCurrencies[neededCurrencies[i]] += initialClearRewards[neededCurrencies[i]];
+            //totalCurrencies[neededCurrencies[i]] += initialClearRewards[neededCurrencies[i]];
         }
+    }
+
+    initialCurrencyNames = Object.keys(initialClearRewards);
+
+    for (let i = 0; i < initialCurrencyNames.length; i++) {
+
+        if (!totalCurrencies[initialCurrencyNames[i]]) {
+            totalCurrencies[initialCurrencyNames[i]] = 0;
+        }
+
+        totalCurrencies[initialCurrencyNames[i]] += initialClearRewards[initialCurrencyNames[i]];
     }
 
     if (displayIncluded['BoxRewards']) {
@@ -1974,6 +2045,38 @@ function CalculateStageDrops(result, ignoreRequirement) {
             totalCredit += intResults[0];
             totalEligma += intResults[1];
             totalSecretTech += intResults[2];
+        }
+    }
+
+    if (event_config.events[current_event].card_drops) {
+
+        let pullCurrency, pulledCurrency;
+        let currencyNames = Object.keys(event_config.events[current_event].currencies);
+        let currencies = event_config.events[current_event].currencies;
+
+        for (let i = 0; i < currencyNames.length; i++) {
+
+            if (currencies[currencyNames[i]].source == "CardPull") {
+
+                pullCurrency = currencies[currencyNames[i]].pull_currency;
+                pulledCurrency = currencyNames[i];
+            }
+        }
+
+        if (cardPullCurrencyOwned != totalCurrencies[pullCurrency]) {
+            cardPullCurrencyOwned = totalCurrencies[pullCurrency] ?? 0;
+            cardGachaProcessed = false;
+            cardGachaAvgSD = {};
+            event_data.card_pull_rewards = {};
+            event_data.card_pull_currency_owned = cardPullCurrencyOwned ?? 0;
+        }
+
+        if (displayIncluded['CardRewards']) {
+
+            let intResults = AddCardRewards(pulledCurrency, totalCurrencies, totalArtifacts, totalEleph, totalXps);
+            if (intResults) {
+                totalCredit += intResults[0];
+            }
         }
     }
 
@@ -2399,6 +2502,74 @@ function AddLessonRewards(totalArtifacts, totalSchoolMats, totalEleph, totalXps,
     }
 
     return [totalEligma];
+}
+
+function AddCardRewards(pullCurrency, totalCurrencies, totalArtifacts, totalEleph, totalXps) {
+
+    if (!event_config.events[current_event].card_drops) {
+        return;
+    }
+
+    let totalCredit = 0;
+
+    let rewardNames = Object.keys(cardGachaAvgSD);
+
+    for (i = 0; i < rewardNames.length; i++) {
+
+        let rewardName = rewardNames[i];
+        let nameInt = parseInt(rewardName);
+        let matId = matLookup.reverseMap[rewardName];
+
+        let rewardAmount = math.round(cardGachaAvgSD[rewardName].mean + (setSD * cardGachaAvgSD[rewardName].std));
+
+        if (rewardAmount == 0) {
+            continue;
+        }
+
+        if (rewardName == "Credit") {
+            totalCredit += rewardAmount;
+        }
+        else if (rewardName == pullCurrency) {
+
+            if (!totalCurrencies[pullCurrency]) {
+                totalCurrencies[pullCurrency] = 0;
+            }
+
+            totalCurrencies[pullCurrency] += rewardAmount;
+        }
+        else if (rewardName.includes("XP_")) {
+
+            if (!totalXps[rewardName]) {
+                totalXps[rewardName] = 0;
+            }
+
+            totalXps[rewardName] += rewardAmount;
+        }
+        else if (nameInt) {
+
+            if (nameInt >= 10000 && nameInt < 30000) {
+
+                if (!totalEleph[rewardName]) {
+                    totalEleph[rewardName] = 0;
+                }
+
+                totalEleph[rewardName] += rewardAmount;
+            }
+        }
+        else if (matId) {
+
+            if (matId < 1000) {
+
+                if (!totalArtifacts[rewardName]) {
+                    totalArtifacts[rewardName] = 0;
+                }
+
+                totalArtifacts[rewardName] += rewardAmount;
+            }
+        }
+    }
+
+    return [totalCredit];
 }
 
 function DisplayOptionClicked(option) {
@@ -3155,6 +3326,13 @@ function UpdateNotifications() {
     if (!event_config.events[current_event].lessons) {
         document.getElementById('notification-lessons').style.display = 'none';
     }
+
+    if (event_config.events[current_event].card_drops && Object.keys(cardGachaAvgSD).length == 0 && !(cardPullCurrencyOwned == 0)) {
+        document.getElementById('notification-cards').style.display = '';
+    }
+    else {
+        document.getElementById('notification-cards').style.display = 'none';
+    }
 }
 
 function DismissNotification(type) {
@@ -3177,7 +3355,7 @@ function BonusCharsEnableAll() {
 
     for (let i = 0; i < currencyNames.length; i++) {
 
-        if (currencies[currencyNames[i]].source == "BoxPull") {
+        if (currencies[currencyNames[i]].source == "BoxPull" || currencies[currencyNames[i]].source == "CardPull") {
             continue;
         }
 
@@ -3254,4 +3432,353 @@ function ToggleEventList() {
         eventList.classList.add('event-selected');
         eventContentContainer.classList.add('event-selected');
     }
+}
+
+function LoadCardGachaChances() {
+
+    let cardDrops = event_config.events[current_event].card_drops;
+
+    if (!cardDrops) {
+        return;
+    }
+
+    let sum = 0;
+
+    let cumChancesArray = [];
+
+    for (i = 0; i < cardDrops.length; i++) {
+
+        sum += cardDrops[i].chance;
+
+        cumChancesArray.push(sum);
+    }
+
+    for (i = 0; i < cumChancesArray.length; i++) {
+
+        cumChancesArray[i] = cumChancesArray[i] / sum;
+    }
+
+    cardGachaChances[0] = cumChancesArray;
+    cardGachaChances[1] = cardGachaChances[0];
+    cardGachaChances[2] = cardGachaChances[1];
+
+    let sum2 = 0;
+
+    let cumChancesArray2 = [];
+
+    for (i = 0; i < cardDrops.length; i++) {
+
+        if (!(cardDrops[i].icon.substring(0, 2) == "UR" || cardDrops[i].icon.substring(0, 2) == "SR")) {
+            break;
+        }
+
+        sum2 += cardDrops[i].chance4;
+
+        cumChancesArray2.push(sum2);
+    }
+
+    for (i = 0; i < cumChancesArray2.length; i++) {
+
+        cumChancesArray2[i] = cumChancesArray2[i] / sum2;
+    }
+
+    cardGachaChances[3] = cumChancesArray2;
+}
+
+// let startsTime;
+function SimulateCardGacha() {
+
+    if (cardGachaProcessed) {
+        return;
+    }
+
+    cardGachaSimResults = {};
+    completedWorkers = [];
+
+    let card_drop_event = current_event + "";
+
+    // startsTime = new Date();
+    const worker1 = new Worker("js/cardGachaWorker.js");
+    const worker2 = new Worker("js/cardGachaWorker.js");
+    const worker3 = new Worker("js/cardGachaWorker.js");
+    const worker4 = new Worker("js/cardGachaWorker.js");
+
+    worker1.onmessage = (e) => {
+        completedWorkers.push(1);
+        CombineObjectArrays(e.data, cardGachaSimResults);
+        ProcessSimResults(card_drop_event);
+    }
+    worker2.onmessage = (e) => {
+        completedWorkers.push(2);
+        CombineObjectArrays(e.data, cardGachaSimResults);
+        ProcessSimResults(card_drop_event);
+    }
+    worker3.onmessage = (e) => {
+        completedWorkers.push(3);
+        CombineObjectArrays(e.data, cardGachaSimResults);
+        ProcessSimResults(card_drop_event);
+    }
+    worker4.onmessage = (e) => {
+        completedWorkers.push(4);
+        CombineObjectArrays(e.data, cardGachaSimResults);
+        ProcessSimResults(card_drop_event);
+    }
+
+    let cardDrops = event_config.events[current_event].card_drops;
+
+    worker1.postMessage([cardDrops, cardGachaChances, 3000, 100000, cardPullCurrencyOwned]);
+    worker2.postMessage([cardDrops, cardGachaChances, 3000, 100000, cardPullCurrencyOwned]);
+    worker3.postMessage([cardDrops, cardGachaChances, 3000, 100000, cardPullCurrencyOwned]);
+    worker4.postMessage([cardDrops, cardGachaChances, 3000, 100000, cardPullCurrencyOwned]);
+}
+
+function ProcessSimResults(eventName) {
+
+    if (completedWorkers.length != 4) {
+        return;
+    }
+
+    if (eventName != current_event) {
+        cardGachaSimResults = {};
+        cardGachaProcessing = false;
+        return;
+    }
+
+    let rewardNames = Object.keys(cardGachaSimResults);
+
+    for (i = 0; i < rewardNames.length; i++) {
+
+        cardGachaAvgSD[rewardNames[i]] = {};
+
+        cardGachaAvgSD[rewardNames[i]].std = math.std(cardGachaSimResults[rewardNames[i]]);
+        cardGachaAvgSD[rewardNames[i]].mean = math.mean(cardGachaSimResults[rewardNames[i]]);
+    }
+
+    events_data[eventName].card_pull_rewards = cardGachaAvgSD;
+    events_data[eventName].card_pull_currency_owned = cardPullCurrencyOwned ?? 0;
+
+    Swal.fire({
+        toast: true,
+        position: 'top-start',
+        title: ('Simulated ' + cardGachaSimResults["Credit"].length + " attempts"),
+        showConfirmButton: false,
+        timer: 3000
+    })
+
+    cardGachaSimResults = {};
+
+    RefreshDropsDisplay();
+
+    cardGachaProcessing = false;
+    cardGachaProcessed = true;
+
+    UpdateNotifications();
+
+    saveTime = Date.now() + (1000 * 5);
+}
+
+function CombineObjectArrays(source, target) {
+
+    let sourceKeys = Object.keys(source);
+
+    for (i = 0; i < sourceKeys.length; i++) {
+        if (!target[sourceKeys[i]]) {
+            target[sourceKeys[i]] = source[sourceKeys[i]];
+        }
+        else {
+            target[sourceKeys[i]] = target[sourceKeys[i]].concat(source[sourceKeys[i]]);
+        }
+    }
+}
+
+function InitCardsTab() {
+
+    let cardDrops = event_config.events[current_event].card_drops;
+
+    if (!cardDrops) {
+
+        document.getElementById('tab-Cards').style.display = 'none';
+        document.getElementById('Cards-tab').style.display = 'none';
+        document.getElementById('include-card-rewards').style.display = 'none';
+        document.getElementById('label-card-rewards').style.display = 'none';
+        return;
+    }
+    else {
+        document.getElementById('include-card-rewards').style.display = '';
+        document.getElementById('label-card-rewards').style.display = '';
+    }
+
+    document.getElementById('tab-Cards').style.display = '';
+    if (currentTab == "Cards") {
+        document.getElementById('Cards-tab').style.display = 'block';
+    }
+
+    let elementCardsTabs = document.getElementById('cards-tabs');
+
+    if (elementCardsTabs.children) {
+        elementCardsTabs.children[0].click();
+    }
+
+    if (setSD) {
+        document.getElementById("sd-slider").value = setSD;
+        SDSliderChanged();
+    }
+}
+
+function GenerateCardsRarityTable(rarity) {
+
+    let tabs = document.getElementsByClassName('cards-rarity-tab');
+
+    for (let i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove('selected')
+    }
+
+    if (rarity[0] == 'UR') {
+        document.getElementById('tab-cards-ur').classList.add('selected');
+    }
+    else if (rarity[0] == 'SR') {
+        document.getElementById('tab-cards-sr-r').classList.add('selected');
+    }
+    else if (rarity[0] == 'N_') {
+        document.getElementById('tab-cards-n').classList.add('selected');
+    }
+
+    let cardDrops = event_config.events[current_event].card_drops;
+
+    let existingTable = document.getElementById('cards-table');
+    if (existingTable) {
+        existingTable.remove();
+    }
+
+    let tableContainer = document.getElementById('cards-table-container');
+
+    let table = document.createElement('table');
+    table.id = 'cards-table';
+    let tableHead = document.createElement('thead');
+    let tableBody = document.createElement('tbody');
+
+    let tableHeadRow = document.createElement('tr');
+
+    CreateTableRowCells(tableHeadRow, ["Card", "Chance", "Drops"], 'th');
+
+    tableHead.appendChild(tableHeadRow);
+
+    let previousIcon = "";
+
+    let alternating = 0;
+
+    for (let i = 0; i < cardDrops.length; i++) {
+
+        let card = cardDrops[i];
+
+        if (!(rarity.includes(card.icon.substring(0, 2)))) {
+            continue;
+        }
+
+        let tableRow = document.createElement('tr');
+
+        let useIcon = null;
+        if (previousIcon != card.icon) {
+
+            if (previousIcon) {
+                alternating++;
+            }
+
+            useIcon = document.createElement("div");
+            useIcon.className = "gacha-card-icon";
+            useIcon.id = "card-" + card.icon;
+
+            iconImg = document.createElement("img");
+            iconImg.src = "icons/EventIcon/CardIcon/" + card.icon + ".png";
+
+            useIcon.appendChild(iconImg);
+
+            previousIcon = card.icon;
+        }
+        else {
+            let useIcon = tableBody.querySelector("#card-" + card.icon).parentElement;
+            let rowSpan = useIcon.rowSpan;
+
+            if (rowSpan) {
+                useIcon.rowSpan = parseInt(rowSpan) + 1;
+            }
+            else {
+                useIcon.rowSpan = 2;
+            }
+        }
+
+        if (alternating % 2 == 1) {
+            tableRow.className = "alternate-row";
+        }
+
+        CreateTableRowCells(tableRow, [useIcon, (card.chance * 100).toFixed(1) + "%", CreateDropsDiv(card.drops)], 'td');
+
+        tableBody.appendChild(tableRow);
+
+    }
+
+    table.appendChild(tableHead);
+    table.appendChild(tableBody);
+
+    tableContainer.appendChild(table);
+}
+
+function SDSliderChanged() {
+
+    let sdDescs = ["(Bottom 2.3%)", "(Bottom 6.7%)", "(Bottom 15.9%)", "(Bottom 30.9%)", "", "(Top 30.9%)", "(Top 15.9%)"]
+
+    let sd = document.getElementById("sd-slider").value;
+
+    let sdLabel = document.getElementById('display-standard-deviation');
+
+    if (sd == 0) {
+        sdLabel.innerText = "Avg";
+    }
+    else {
+        sdLabel.innerText = sd + "σ" + " " + sdDescs[parseFloat(sd) * 2 + 4];
+    }
+}
+
+function SDSliderSet() {
+
+    let sd = document.getElementById("sd-slider").value;
+
+    setSD = parseFloat(sd);
+
+    event_data.standard_deviation = setSD;
+
+    RefreshDropsDisplay();
+
+    saveTime = Date.now() + (1000 * 5);
+}
+
+function HideCards() {
+
+    let tabs = document.getElementsByClassName('cards-rarity-tab');
+    for (let i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove('selected')
+    }
+
+    let existingTable = document.getElementById('cards-table');
+    if (existingTable) {
+        existingTable.remove();
+    }
+}
+
+function SimButtonClicked() {
+
+    if (cardGachaProcessing || cardGachaProcessed) {
+        return;
+    }
+
+    cardGachaProcessing = true;
+
+    let btn = document.getElementById("gacha-sim-button");
+    btn.classList.add('active');
+
+    SimulateCardGacha();
+
+    setTimeout(() => {
+        btn.classList.remove('active');
+    }, 4000);
 }
