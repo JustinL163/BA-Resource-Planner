@@ -45,11 +45,13 @@ let cardPullCurrencyOwned = 0;
 let cardGachaProcessed = false;
 let cardGachaProcessing = false;
 
+let stageGroup1 = true, stageGroup2 = true, stageGroup3 = true;
+
 let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?11').done(function (json) {
+    $.getJSON('json/events.json?12').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -260,6 +262,18 @@ function LoadEvent(eventId) {
         return;
     }
 
+    if (eventId == "get-set-go") {
+        document.getElementById('stage-groups-container').style.display = '';
+        document.getElementById('temp-disclaimer').style.display = '';
+        document.getElementById('include-stage-group-1').checked = true;
+        document.getElementById('include-stage-group-2').checked = true;
+        document.getElementById('include-stage-group-3').checked = true;
+    }
+    else {
+        document.getElementById('stage-groups-container').style.display = "none";
+        document.getElementById('temp-disclaimer').style.display = 'none';
+    }
+
     document.getElementById('event-list-button-label').innerText = "Event List - " + event_config.events[eventId].display_name;
 
     eventLoading = true;
@@ -289,6 +303,9 @@ function LoadEvent(eventId) {
     setSD = 0;
     cardGachaProcessed = false;
     cardPullCurrencyOwned = 0;
+    stageGroup1 = true;
+    stageGroup2 = true;
+    stageGroup3 = true;
 
     if (events_data[current_event]) {
         event_data = events_data[current_event];
@@ -1252,6 +1269,9 @@ function SetItemImage(itemImg, item, replacementId) {
     else if (item.type == "Misc") {
         itemImg.src = "icons/MiscItem/" + itemId + ".png";
     }
+    else if (item.type == "Gift") {
+        itemImg.src = "icons/Gifts/" + itemId + ".png";
+    }
 }
 
 function HarvestItemPurchases() {
@@ -1589,6 +1609,19 @@ function GetStagesLinearModelVariables() {
         if (stage.type == "Quest") {
 
             modelVariables[stage.number] = {};
+
+            if (current_event == "get-set-go") {
+                if (!stageGroup1 && Math.floor((stage.number - 1) / 4) == 0) {
+                    continue;
+                }
+                else if (!stageGroup2 && Math.floor((stage.number - 1) / 4) == 1) {
+                    continue;
+                }
+                else if (!stageGroup3 && Math.floor((stage.number - 1) / 4) == 2) {
+                    continue;
+                }
+            }
+
             Object.assign(modelVariables[stage.number], stage.drops);
 
             let drops = Object.keys(stage.drops);
@@ -3781,4 +3814,19 @@ function SimButtonClicked() {
     setTimeout(() => {
         btn.classList.remove('active');
     }, 4000);
+}
+
+function StageGroupsStatusUpdate(stagenum) {
+
+    stageGroup1 = document.getElementById('include-stage-group-1').checked;
+    stageGroup2 = document.getElementById('include-stage-group-2').checked;
+    stageGroup3 = document.getElementById('include-stage-group-3').checked;
+
+    if (!stageGroup1 && !stageGroup2 && !stageGroup3) {
+        document.getElementById('include-stage-group-3').checked = true;
+        stageGroup3 = true;
+    }
+
+    RefreshDropsDisplay();
+    GenerateStagesTable();
 }

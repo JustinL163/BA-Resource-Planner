@@ -24,7 +24,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/styles.css?2">
-    <link rel="stylesheet" href="css/event-planner.css?8">
+    <link rel="stylesheet" href="css/event-planner.css?9">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
@@ -36,7 +36,7 @@
     <script src="packages/mathjs/math.js"></script>
     <script src="js/config.js?15"></script>
     <script src="js/common.js?5"></script>
-    <script src="js/eventPlanner.js?17"></script>
+    <script src="js/eventPlanner.js?18"></script>
     <title>Event Planner</title>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://justin163.com/planner/events">
@@ -214,6 +214,28 @@
             </div>
             <div class="event-tab" id="Stages-tab">
                 <div id="stages-table-container"></div>
+                <div id="stage-groups-container" style="display: none;">
+                    <p style="margin-left: 1em;">Enabled:</p>
+                    <input type="checkbox" id="include-stage-group-1" name="include-stage-group-1"
+                        onclick="StageGroupsStatusUpdate()">
+                    <label id="label-stage-group-1" for="include-stage-group-1">Stages 1-4</label>
+                    <input type="checkbox" id="include-stage-group-2" name="include-stage-group-2"
+                        onclick="StageGroupsStatusUpdate()">
+                    <label id="label-stage-group-2" for="include-stage-group-2">Stages 5-8</label>
+                    <input type="checkbox" id="include-stage-group-3" name="include-stage-group-3"
+                        onclick="StageGroupsStatusUpdate()">
+                    <label id="label-stage-group-3" for="include-stage-group-3">Stages 9-12</label>
+                </div>
+                <div id="temp-disclaimer" style="margin-bottom: 1em; display: none;">
+                    <p style="margin-left: 1em;">It takes about 750 bottles per lap, after about lap 30 (~22,500
+                        bottles) the rewards plateau a bit, after lap 50 (~37,500) the rewards plateau a lot.</p>
+                    <p style="margin-left: 1em;">I've set the min clear amount at 15k bottles (~20 laps) as I didn't
+                        have time to make a proper simulation for this event</p>
+                    <p style="margin-left: 1em;">Can use the following sheet by VGrunner12#2355 to check approx rewards
+                        from the laps
+                        https://docs.google.com/spreadsheets/d/1Hb8n7gAlhqHZBwyq8sc3QZNyKlUk7bAhcoQv04kRHeE/edit#gid=0
+                    </p>
+                </div>
                 <div id="intial-clear-container">
                     <p style="margin-left: 1em;">Intial Clear (included in total below) (also includes story stage
                         clears)</p>
@@ -249,12 +271,13 @@
             <div class="event-tab" id="Cards-tab">
                 <div id="cards-sd-container">
                     <p style="margin-right: 1em;">Rng Adjust:</p>
-                    <input type="range" min="-2" max="1" value="0" step="0.5" oninput="SDSliderChanged()" onchange="SDSliderSet()"
-                        id="sd-slider">
+                    <input type="range" min="-2" max="1" value="0" step="0.5" oninput="SDSliderChanged()"
+                        onchange="SDSliderSet()" id="sd-slider">
                     <p id="display-standard-deviation">Avg</p>
                     <button id="gacha-sim-button" onclick="SimButtonClicked()">Simulate Gacha</button>
                 </div>
-                <div style="margin-left: 1em;">Currently only simulating by pulling first card and resetting, other pull methods will be available later (but reward difference 
+                <div style="margin-left: 1em;">Currently only simulating by pulling first card and resetting, other pull
+                    methods will be available later (but reward difference
                     between first pull and pull to SR methods are negligible so doesn't change much)</div>
                 <div id="cards-tabs">
                     <div class="cards-rarity-tab" id="tab-cards-ur" onclick="GenerateCardsRarityTable(['UR'])">UR</div>
