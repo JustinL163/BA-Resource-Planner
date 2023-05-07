@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3XZ18739WF"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-3XZ18739WF');
+    </script>
+    <script>
+        function hamburgToggle() {
+            let linkWrapper = document.getElementById('mobile-links-wrapper');
+            if (linkWrapper.style.display === "block") {
+                linkWrapper.style.display = "none";
+            } else {
+                linkWrapper.style.display = "block";
+            }
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/styles.css">
+    <title>Credits</title>
+</head>
+
+<body class="background">
+    <nav class="navbar navbground">
+        <span class="logo">Justin163</span>
+        <img src="icons/UI/hamburger.svg" id="hamburger" onclick="hamburgToggle()">
+        <ul class="nav-list">
+            <li><a href="index.html">Resource Planner</a></li>
+            <li><a href="events.html">Event Planner</a></li>
+            <li><a href="changelog.html">Changelog</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a class="active">Credits</a></li>
+        </ul>
+    </nav>
+    <div id="mobile-links-wrapper">
+        <ul class="mobile-links">
+            <li><a href="index.html">Resource Planner</a></li>
+            <li><a href="events.html">Event Planner</a></li>
+            <li><a href="changelog.html">Changelog</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a class="active">Credits</a></li>
+        </ul>
+    </div>
+    <div class="bodyText">
+        <div class="changelog-section">
+            <h2>Translation</h2>
+            <br>
+            <h3>Korean - leopardgekko</h3>
+            <br>
+        </div>
+        <br><br>
+    </div>
+</body>
+
+</html>

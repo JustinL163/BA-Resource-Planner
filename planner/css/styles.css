@@ -886,14 +886,14 @@ label.char-action-label.toggle-closed::before {
 }
 
 .charEditorButton {
-    height: 4vh;
+    height: 5vh;
     width: 150px;
     margin: 10px;
     font-size: 1.25em;
 }
 
 #filter-groups {
-    height: 4vh;
+    height: 5vh;
     width: 200px;
     font-size: 1.5em;
     margin: 10px;
@@ -907,7 +907,7 @@ label.char-action-label.toggle-closed::before {
 }
 
 #select-groups {
-    height: 4vh;
+    height: 5vh;
     width: 200px;
     font-size: 1.5em;
     margin: 10px;
@@ -915,7 +915,7 @@ label.char-action-label.toggle-closed::before {
 }
 
 .teamEditorButton {
-    height: 4vh;
+    height: 5vh;
     width: 150px;
     margin: 10px;
     font-size: 1.25em;
@@ -958,6 +958,16 @@ label.char-action-label.toggle-closed::before {
     filter: opacity(0.2);
 }
 
+#teamsContainer {
+    background-color: rgb(196, 205, 228);
+    padding-top: 40px;
+    width: fit-content;
+}
+
+#team1 {
+    margin-top: 0;
+}
+
 #teamsContainer.move-mode .team-slot-add:hover {
     filter: none;
 }
@@ -972,7 +982,7 @@ label.char-action-label.toggle-closed::before {
 }
 
 .eleph-icon {
-    max-height: 70px;
+    max-height: 55px;
     padding: 10px 0;
 }
 
@@ -1081,6 +1091,43 @@ label.char-action-label.toggle-closed::before {
     filter: drop-shadow(2px 4px 6px black);
 }
 
+#popup-screenshot {
+    position: relative;
+    top: 6%;
+    z-index: 12;
+    width: fit-content;
+    text-align: center;
+    margin: auto;
+}
+
+#popup-screenshot canvas {
+    max-width: 90vw;
+    width: auto !important;
+    max-height: 90vh;
+    height: auto !important;
+}
+
+#background-blur {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: white;
+    filter: opacity(0.5) blur(100px);
+}
+
+#text-creating-image {
+    background-color: white;
+    text-align: center;
+    position: relative;
+    top: 50%;
+    font-size: 2em;
+    margin: auto;
+    z-index: 12;
+    width: fit-content;
+}
+
 .dark-theme .transfer-modal-button {
     color: white;
 }
@@ -1168,6 +1215,10 @@ label.char-action-label.toggle-closed::before {
 }
 
 .dark-theme .mainContainer {
+    background-color: rgb(47 47 47);
+}
+
+.dark-theme #teamsContainer {
     background-color: rgb(47 47 47);
 }
 
@@ -1942,10 +1993,27 @@ input.filter-option {
     }
 
     .charEditorButton {
-        height: 4vh;
+        height: 5vh;
         width: 90px;
         margin: 5px;
         font-size: 0.75em;
+    }
+
+    #filter-groups {
+        margin: 5px;
+        font-size: 1.25em;
+    }
+
+    .teamEditorButton {
+        height: 5vh;
+        width: 90px;
+        margin: 5px;
+        font-size: 0.75em;
+    }
+
+    #select-groups {
+        margin: 5px;
+        font-size: 1.25em;
     }
 
     .action-icon {

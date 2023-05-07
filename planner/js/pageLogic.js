@@ -1,11 +1,11 @@
+//const html2canvas = require("../packages/html2canvas/html2canvas");
+
 var curID = 0;
 var modalCharID = 0;
 var modalStars = { "star": 0, "star_target": 0, "ue": 0, "ue_target": 0 };
 var data;
 const ueStarCap = 3;
 const globalMaxWorld = 20;
-const languages = ["En", "Kr", "Jp", "Tw", "Th"];
-let language = "En";
 
 var requiredMatDict = {};
 var neededMatDict = {};
@@ -36,6 +36,7 @@ let selectingSlotId = "";
 let multiCharSource = "";
 
 let multiSelected = [];
+let multiSelectVisible = false;
 
 var sweepMax = 0;
 let sweepMin = 0;
@@ -48,7 +49,7 @@ var toastCooldownMsg = "";
 
 var charMode = "Edit";
 
-var misc_data, charlist, skillinfo, localisations;
+let misc_data, charlist, skillinfo, localisations, language_strings;
 
 let charMap, charNames;
 
@@ -77,22 +78,22 @@ let loaded = false;
 
 function loadResources() {
 
-    $.getJSON('json/misc_data.json?14').done(function (json) {
+    $.getJSON('json/misc_data.json?15').done(function (json) {
         misc_data = json;
         checkResources();
     });
 
-    $.getJSON('json/skillinfo.json?17').done(function (json) {
+    $.getJSON('json/skillinfo.json?18').done(function (json) {
         skillinfo = json;
         checkResources();
     });
 
-    $.getJSON('json/charlist.json?22').done(function (json) {
+    $.getJSON('json/charlist.json?23').done(function (json) {
         charlist = json;
         checkResources();
     });
 
-    $.getJSON('json/localisations.json?14').done(function (json) {
+    $.getJSON('json/localisations.json?15').done(function (json) {
         localisations = json;
         checkResources();
     });
@@ -102,11 +103,16 @@ function loadResources() {
         checkResources();
     });
 
+    $.getJSON('json/strings.json?1').done(function (json) {
+        language_strings = json;
+        checkResources();
+    });
+
 }
 
 function checkResources() {
 
-    if (charlist && misc_data && skillinfo && localisations && mLocalisations) {
+    if (charlist && misc_data && skillinfo && localisations && mLocalisations && language_strings) {
 
         if (!localStorage.getItem('data-backup')) {
             localStorage.setItem('data-backup', localStorage.getItem('save-data'));
@@ -204,38 +210,51 @@ function convertOld() {
 
 function updateUiLanguage() {
 
-    let uiStringsID = mLocalisations[language].UI?.ID;
-    let uiStringsClass = mLocalisations[language].UI?.CLASS;
+    let textElements = document.getElementsByClassName('display-string');
 
-    if (uiStringsID) {
+    for (let i = 0; i < textElements.length; i++) {
 
-        let toUpdate = Object.keys(uiStringsID);
+        let dataId = textElements[i].getAttribute('data-id');
 
-        for (let i = 0; i < toUpdate.length; i++) {
-
-            let element = document.getElementById(toUpdate[i]);
-
-            if (element) {
-                element.innerText = uiStringsID[toUpdate[i]];
-            }
-
-        }
+        textElements[i].innerText = GetLanguageString(dataId);
     }
 
-    if (uiStringsClass) {
+    // if (language == "En" || language == "Kr") {
+    //     return;
+    // }
 
-        let toUpdate = Object.keys(uiStringsClass);
+    // let uiStringsID = mLocalisations[language].UI?.ID;
+    // let uiStringsClass = mLocalisations[language].UI?.CLASS;
 
-        for (let i = 0; i < toUpdate.length; i++) {
+    // if (uiStringsID) {
 
-            let elements = document.getElementsByClassName(toUpdate[i]);
+    //     let toUpdate = Object.keys(uiStringsID);
 
-            for (let e = 0; e < elements.length; e++) {
-                elements[e].innerText = uiStringsClass[toUpdate[i]];
-            }
+    //     for (let i = 0; i < toUpdate.length; i++) {
 
-        }
-    }
+    //         let element = document.getElementById(toUpdate[i]);
+
+    //         if (element) {
+    //             element.innerText = uiStringsID[toUpdate[i]];
+    //         }
+
+    //     }
+    // }
+
+    // if (uiStringsClass) {
+
+    //     let toUpdate = Object.keys(uiStringsClass);
+
+    //     for (let i = 0; i < toUpdate.length; i++) {
+
+    //         let elements = document.getElementsByClassName(toUpdate[i]);
+
+    //         for (let e = 0; e < elements.length; e++) {
+    //             elements[e].innerText = uiStringsClass[toUpdate[i]];
+    //         }
+
+    //     }
+    // }
 }
 
 function init() {
@@ -349,7 +368,7 @@ function init() {
         }
 
         lvlCalcsCap = data.level_cap;
-        document.getElementById('set-level-cap').innerText = "Lvl Cap: " + lvlCalcsCap;
+        document.getElementById('set-level-cap').innerText = GetLanguageString("button-levelcapprefix") + lvlCalcsCap;
     }
 
     // remove later
@@ -399,7 +418,7 @@ function init() {
     modeDiv.id = "modeButton";
 
     let modeP = document.createElement("p");
-    modeP.innerText = "Edit Mode";
+    modeP.innerText = GetLanguageString("label-editmode");
     modeDiv.onclick = modeChange;
 
     modeDiv.appendChild(modeP);
@@ -433,17 +452,17 @@ function init() {
     // generate resource modal tables
     createTable("school-mat-table", ["BD_4", "BD_3", "BD_2", "BD_1", "TN_4", "TN_3", "TN_2", "TN_1"], 0,
         ["Hyakkiyako", "Red Winter", "Trinity", "Gehenna", "Abydos", "Millennium", "Arius", "Shanhaijing", "Valkyrie"], 0,
-        tableNavigation, document.getElementById("table-parent-1"), false, "resource", "icons/SchoolMat/");
+        tableNavigation, document.getElementById("table-parent-1"), false, "resource", "icons/SchoolMat/", [], "school-");
     createTable("artifact-table-1", ["4", "3", "2", "1"], 0,
         ["Nebra", "Phaistos", "Wolfsegg", "Nimrud", "Mandragora", "Rohonc", "Aether", "Antikythera"], 9,
-        tableNavigation, document.getElementById("table-parent-2"), true, "resource", "icons/Artifact/");
+        tableNavigation, document.getElementById("table-parent-2"), true, "resource", "icons/Artifact/", [], "artifact-");
     createTable("artifact-table-2", ["4", "3", "2", "1"], 4,
         ["Voynich", "Haniwa", "Totem", "Baghdad", "Colgante", "Mystery", "Okiku", "Atlantis"], 9,
-        tableNavigation, document.getElementById("table-parent-3"), true, "resource", "icons/Artifact/");
+        tableNavigation, document.getElementById("table-parent-3"), true, "resource", "icons/Artifact/", [], "artifact-");
 
     let gearNavigation = [];
     createTable("gear-table", ["T8", "T7", "T6", "T5", "T4", "T3", "T2"], 0, ["Hat", "Gloves", "Shoes", "Bag", "Badge", "Hairpin", "Charm", "Watch", "Necklace"],
-        0, gearNavigation, document.getElementById('table-parent-4'), false, "gear", "icons/Gear/", ["T8_Necklace", "T8_Watch", "T8_Charm"]);
+        0, gearNavigation, document.getElementById('table-parent-4'), false, "gear", "icons/Gear/", ["T8_Necklace", "T8_Watch", "T8_Charm"], "gear-");
 
     let navObj = {};
     for (let x in tableNavigation) {
@@ -470,16 +489,14 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.3.6".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
-        var updateMessage = ("If anything seems broken, try 'hard refreshing' the page (google it)<br>" +
-            "If still having issues, contact me on Discord, Justin163#4337");
+    if ("1.3.7".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         Swal.fire({
-            title: "Updated to Version 1.3.6",
+            title: GetLanguageString("text-updatedversionprefix") + "1.3.7",
             color: alertColour,
-            html: updateMessage
+            html: GetLanguageString("text-updatemessage")
         })
 
-        data.site_version = "1.3.6";
+        data.site_version = "1.3.7";
         saveToLocalStorage(false);
     }
 
@@ -564,18 +581,8 @@ function init() {
         })
     }
 
-    document.getElementById('switch-resource-owned').innerText = 'Switch to\nOwned';
-    document.getElementById('switch-resource-total').innerText = 'Switch to\nTotal Needed';
-    document.getElementById('switch-resource-remaining').innerText = 'Switch to\nRemaining Needed';
-    document.getElementById('switch-resource-leftover').innerText = 'Switch to\nLeftover';
-
-    document.getElementById('switch-gear-owned').innerText = 'Switch to\nOwned';
-    document.getElementById('switch-gear-total').innerText = 'Switch to\nTotal Needed';
-    document.getElementById('switch-gear-remaining').innerText = 'Switch to\nRemaining Needed';
-    document.getElementById('switch-gear-leftover').innerText = 'Switch to\nLeftover';
-
-    document.getElementById('current-resource-display').innerText = "Remaining Needed";
-    document.getElementById('current-gear-display').innerText = "Remaining Needed";
+    document.getElementById('current-resource-display').innerText = GetLanguageString('label-remainingneeded');
+    document.getElementById('current-gear-display').innerText = GetLanguageString('label-remainingneeded');
 
     groupEditorMode("Move");
 
@@ -609,72 +616,78 @@ function init() {
     })[0];
 
     tippy('#total-needed-needle', {
-        content: "Sum of Remaining Needed XP for the three non universal parts",
+        content: GetLanguageString("tooltip-totalneededneedle"),
         theme: 'light'
     });
 
     tippy('#owned-all', {
-        content: "Leftover XP, (excludes bonus except for universal Firing Pin)",
+        content: GetLanguageString("tooltip-ownedall"),
         theme: 'light'
     })
 
     tippy('#spring-all', {
-        content: "Used for gun types: SMG, SG, HG",
+        content: GetLanguageString("tooltip-springall"),
         theme: 'light'
     })
 
     tippy('#hammer-all', {
-        content: "Used for gun types: AR, GL",
+        content: GetLanguageString("tooltip-hammerall"),
         theme: 'light'
     })
 
     tippy('#barrel-all', {
-        content: "Used for gun types: MG, SR, RG, RL, MT",
+        content: GetLanguageString("tooltip-barrelall"),
         theme: 'light'
     })
 
     tippy('#label-char-unlocked', {
-        content: "Whether you actually own the character, otherwise adds to the Eleph needed by the character unlock amount",
+        content: GetLanguageString("tooltip-charunlocked"),
         theme: 'light'
     })
 
     tippy('#label-eleph-cost', {
-        content: "Current price per Eleph in Eligma store",
+        content: GetLanguageString("tooltip-elephcost"),
         theme: 'light'
     })
 
     tippy('#label-eleph-purchasable', {
-        content: "Number purchasable at current price tier (check in Eligma store by clicking Max to find the number from 1-20)",
+        content: GetLanguageString("tooltip-elephpurchasable"),
         theme: 'light'
     })
 
     tippy('#label-node-refresh', {
-        content: "If you are pyro resetting nodes for this character, doubles max allowed sweep attempts",
+        content: GetLanguageString("tooltip-noderefresh"),
         theme: 'light'
     })
 
     tippy('#hm-server-toggle', {
-        content: "Switch between Global/JP hardmode stages allowed",
+        content: GetLanguageString("tooltip-hmservertoggle"),
         theme: 'light'
     })
 
     tippy('#nm-server-toggle', {
-        content: "Switch between Global/JP stages farmable",
+        content: GetLanguageString("tooltip-nmservertoggle"),
         theme: 'light'
     })
 
     tippy('#char-delete', {
-        content: "Delete character",
+        content: GetLanguageString("tooltip-chardelete"),
         theme: 'light'
     })
 
     tippy('#char-max', {
-        content: "Set character levels to max",
+        content: GetLanguageString("tooltip-charmax"),
         theme: 'light'
     })
 
     tippy('#char-max-goal', {
-        content: "Set character targets to max",
+        content: GetLanguageString("tooltip-charmaxtarget"),
+        theme: 'light'
+    })
+
+    tippy('#btn-group-filter-mode', {
+        content: GetLanguageString("tooltip-groupfiltermode"),
+        allowHTML: true,
         theme: 'light'
     })
 
@@ -765,164 +778,171 @@ function handleKeydown(e, keyPressed) {
         saveTime = Date.now() + 300;
         keyPressed = {};
     }
-}
 
-async function sectionQuickSet(section) {
-
-    optionData = {
-        "Gear": {
-            " 777": {
-                "7 7 7 7 7 7": "Both",
-                "- 7 - 7 - 7": "Target"
-            },
-            " 666": {
-                "6 6 6 6 6 6": "Both",
-                "- 6 - 6 - 6": "Target"
-            },
-            " 555": {
-                "5 5 5 5 5 5": "Both",
-                "- 5 - 5 - 5": "Target"
-            },
-            " 444": {
-                "4 4 4 4 4 4": "Both",
-                "- 4 - 4 - 4": "Target"
-            },
-            " 333": {
-                "3 3 3 3 3 3": "Both",
-                "- 3 - 3 - 3": "Target"
-            },
-            " 222": {
-                "2 2 2 2 2 2": "Both",
-                "- 2 - 2 - 2": "Target"
-            },
-            " 111": {
-                "1 1 1 1 1 1": "Both",
-                "- 1 - 1 - 1": "Target"
-            }
-        },
-        "Skills": {
-            " MMMM": {
-                "5 5 10 10 10 10 10 10": "Both",
-                "- 5 - 10 - 10 - 10": "Target"
-            },
-            " M777": {
-                "5 5 7 7 7 7 7 7": "Both",
-                "- 5 - 7 - 7 - 7": "Target"
-            },
-            " M444": {
-                "5 5 4 4 4 4 4 4": "Both",
-                "- 5 - 4 - 4 - 4": "Target"
-            },
-            " 3777": {
-                "3 3 7 7 7 7 7 7": "Both",
-                "- 3 - 7 - 7 - 7": "Target"
-            },
-            " 3444": {
-                "3 3 4 4 4 4 4 4": "Both",
-                "- 3 - 4 - 4 - 4": "Target",
-            },
-            " 1444": {
-                "1 1 4 4 4 4 4 4": "Both",
-                "- 1 - 4 - 4 - 4": "Target",
-            },
-            " 1111": {
-                "1 1 1 1 1 1 1 1": "Both",
-                "- 1 - 1 - 1 - 1": "Target"
-            }
-        },
-        "Level": {
-            " 85": {
-                "85 85": "Both",
-                "- 85": "Target"
-            },
-            " 83": {
-                "83 83": "Both",
-                "- 83": "Target"
-            },
-            " 80": {
-                "80 80": "Both",
-                "- 80": "Target"
-            },
-            " 78": {
-                "78 78": "Both",
-                "- 78": "Target"
-            },
-            " 75": {
-                "75 75": "Both",
-                "- 75": "Target"
-            },
-            " 73": {
-                "73 73": "Both",
-                "- 73": "Target"
-            },
-            " 70": {
-                "70 70": "Both",
-                "- 70": "Target"
-            },
-            " 35": {
-                "35 35": "Both",
-                "- 35": "Target"
-            }
+    if (multiSelectVisible) {
+        let searchElement = document.getElementById("multiCharSearch");
+        if (document.activeElement != searchElement) {
+            searchElement.focus();
         }
     }
-
-    inputIds = {
-        "Gear": [
-            "input_gear1_current",
-            "input_gear1_target",
-            "input_gear2_current",
-            "input_gear2_target",
-            "input_gear3_current",
-            "input_gear3_target"
-        ],
-        "Skills": [
-            "input_ex_current",
-            "input_ex_target",
-            "input_basic_current",
-            "input_basic_target",
-            "input_enhanced_current",
-            "input_enhanced_target",
-            "input_sub_current",
-            "input_sub_target"
-        ],
-        "Level": [
-            "input_level_current",
-            "input_level_target"
-        ]
-    }
-
-    if (optionData[section] != undefined) {
-
-        const { value: newData } = await Swal.fire({
-            title: 'Quick data select',
-            input: 'select',
-            inputOptions: optionData[section],
-            inputPlaceholder: 'Select an option',
-            showCancelButton: true
-        })
-
-        if (newData) {
-            let inputs = inputIds[section];
-
-            let values = newData.split(' ');
-
-            for (let i = 0; i < inputs.length; i++) {
-                let input = document.getElementById(inputs[i]);
-
-                if (input && values[i] != "-") {
-                    input.value = values[i];
-                }
-            }
-
-            for (let i = 0; i < inputs.length; i++) {
-                let property = inputs[i].replace("input_", '').replace("_current", '');
-
-                validateInput(property, false, true);
-            }
-        }
-    }
-
 }
+
+// async function sectionQuickSet(section) {
+
+//     optionData = {
+//         "Gear": {
+//             " 777": {
+//                 "7 7 7 7 7 7": "Both",
+//                 "- 7 - 7 - 7": "Target"
+//             },
+//             " 666": {
+//                 "6 6 6 6 6 6": "Both",
+//                 "- 6 - 6 - 6": "Target"
+//             },
+//             " 555": {
+//                 "5 5 5 5 5 5": "Both",
+//                 "- 5 - 5 - 5": "Target"
+//             },
+//             " 444": {
+//                 "4 4 4 4 4 4": "Both",
+//                 "- 4 - 4 - 4": "Target"
+//             },
+//             " 333": {
+//                 "3 3 3 3 3 3": "Both",
+//                 "- 3 - 3 - 3": "Target"
+//             },
+//             " 222": {
+//                 "2 2 2 2 2 2": "Both",
+//                 "- 2 - 2 - 2": "Target"
+//             },
+//             " 111": {
+//                 "1 1 1 1 1 1": "Both",
+//                 "- 1 - 1 - 1": "Target"
+//             }
+//         },
+//         "Skills": {
+//             " MMMM": {
+//                 "5 5 10 10 10 10 10 10": "Both",
+//                 "- 5 - 10 - 10 - 10": "Target"
+//             },
+//             " M777": {
+//                 "5 5 7 7 7 7 7 7": "Both",
+//                 "- 5 - 7 - 7 - 7": "Target"
+//             },
+//             " M444": {
+//                 "5 5 4 4 4 4 4 4": "Both",
+//                 "- 5 - 4 - 4 - 4": "Target"
+//             },
+//             " 3777": {
+//                 "3 3 7 7 7 7 7 7": "Both",
+//                 "- 3 - 7 - 7 - 7": "Target"
+//             },
+//             " 3444": {
+//                 "3 3 4 4 4 4 4 4": "Both",
+//                 "- 3 - 4 - 4 - 4": "Target",
+//             },
+//             " 1444": {
+//                 "1 1 4 4 4 4 4 4": "Both",
+//                 "- 1 - 4 - 4 - 4": "Target",
+//             },
+//             " 1111": {
+//                 "1 1 1 1 1 1 1 1": "Both",
+//                 "- 1 - 1 - 1 - 1": "Target"
+//             }
+//         },
+//         "Level": {
+//             " 85": {
+//                 "85 85": "Both",
+//                 "- 85": "Target"
+//             },
+//             " 83": {
+//                 "83 83": "Both",
+//                 "- 83": "Target"
+//             },
+//             " 80": {
+//                 "80 80": "Both",
+//                 "- 80": "Target"
+//             },
+//             " 78": {
+//                 "78 78": "Both",
+//                 "- 78": "Target"
+//             },
+//             " 75": {
+//                 "75 75": "Both",
+//                 "- 75": "Target"
+//             },
+//             " 73": {
+//                 "73 73": "Both",
+//                 "- 73": "Target"
+//             },
+//             " 70": {
+//                 "70 70": "Both",
+//                 "- 70": "Target"
+//             },
+//             " 35": {
+//                 "35 35": "Both",
+//                 "- 35": "Target"
+//             }
+//         }
+//     }
+
+//     inputIds = {
+//         "Gear": [
+//             "input_gear1_current",
+//             "input_gear1_target",
+//             "input_gear2_current",
+//             "input_gear2_target",
+//             "input_gear3_current",
+//             "input_gear3_target"
+//         ],
+//         "Skills": [
+//             "input_ex_current",
+//             "input_ex_target",
+//             "input_basic_current",
+//             "input_basic_target",
+//             "input_enhanced_current",
+//             "input_enhanced_target",
+//             "input_sub_current",
+//             "input_sub_target"
+//         ],
+//         "Level": [
+//             "input_level_current",
+//             "input_level_target"
+//         ]
+//     }
+
+//     if (optionData[section] != undefined) {
+
+//         const { value: newData } = await Swal.fire({
+//             title: 'Quick data select',
+//             input: 'select',
+//             inputOptions: optionData[section],
+//             inputPlaceholder: 'Select an option',
+//             showCancelButton: true
+//         })
+
+//         if (newData) {
+//             let inputs = inputIds[section];
+
+//             let values = newData.split(' ');
+
+//             for (let i = 0; i < inputs.length; i++) {
+//                 let input = document.getElementById(inputs[i]);
+
+//                 if (input && values[i] != "-") {
+//                     input.value = values[i];
+//                 }
+//             }
+
+//             for (let i = 0; i < inputs.length; i++) {
+//                 let property = inputs[i].replace("input_", '').replace("_current", '');
+
+//                 validateInput(property, false, true);
+//             }
+//         }
+//     }
+
+// }
 
 function findPosString(string, direction, tableName) {
 
@@ -981,44 +1001,44 @@ function modeChange() {
         modeButton.classList.remove('mode-move')
     }
 
-    modeButton.children[0].innerText = charMode + " Mode";
+    modeButton.children[0].innerText = GetLanguageString("label-" + charMode.toLowerCase() + "mode");
 
 }
 
-async function newCharClicked() {
+// async function newCharClicked() {
 
 
-    const { value: charId } = await Swal.fire({
-        title: 'Add new character',
-        input: 'select',
-        inputOptions: charOptions,
-        inputPlaceholder: 'Select a character',
-        showCancelButton: true
-    })
+//     const { value: charId } = await Swal.fire({
+//         title: 'Add new character',
+//         input: 'select',
+//         inputOptions: charOptions,
+//         inputPlaceholder: 'Select a character',
+//         showCancelButton: true
+//     })
 
-    if (charId) {
+//     if (charId) {
 
-        if (data.characters.find(obj => { return obj.id == charId }) != undefined) {
-            return;
-        }
+//         if (data.characters.find(obj => { return obj.id == charId }) != undefined) {
+//             return;
+//         }
 
-        let charInfoObj = charlist[charId];
-        charInfoObj.Id = charInfoObj.Id.toString();
+//         let charInfoObj = charlist[charId];
+//         charInfoObj.Id = charInfoObj.Id.toString();
 
-        let newCharObj = new Student(charInfoObj);
+//         let newCharObj = new Student(charInfoObj);
 
 
-        data.characters.push(newCharObj);
+//         data.characters.push(newCharObj);
 
-        let charsContainer = document.getElementById("charsContainer");
+//         let charsContainer = document.getElementById("charsContainer");
 
-        createCharBox(charId, charsContainer, "main");
+//         createCharBox(charId, charsContainer, "main");
 
-        saveToLocalStorage(true);
+//         saveToLocalStorage(true);
 
-        generateCharOptions();
-    }
-}
+//         generateCharOptions();
+//     }
+// }
 
 function generateCharOptions() {
 
@@ -1091,12 +1111,13 @@ function getExistingCharacters() {
 function CharInputsMax() {
 
     Swal.fire({
-        title: 'Set Inputs to max',
+        title: GetLanguageString("text-setinputsmax"),
         showDenyButton: true,
         showCancelButton: true,
-        confirmButtonText: 'Global MAX',
-        denyButtonText: 'Jp MAX',
-        denyButtonColor: '#dc9641'
+        confirmButtonText: GetLanguageString("button-globalmax"),
+        denyButtonText: GetLanguageString("button-jpmax"),
+        denyButtonColor: '#dc9641',
+        cancelButtonText: GetLanguageString("label-cancel")
     }).then((result) => {
         if (result.isConfirmed) {
             let values = [83, 83, 5, 5, 10, 10, 10, 10, 10, 10, 7, 7, 7, 7, 7, 7];
@@ -1114,12 +1135,13 @@ function CharInputsMax() {
 function CharInputsGoalMax() {
 
     Swal.fire({
-        title: 'Set Inputs to max target',
+        title: GetLanguageString("text-settargetinputsmax"),
         showDenyButton: true,
         showCancelButton: true,
-        confirmButtonText: 'Global MAX',
-        denyButtonText: 'Jp MAX',
-        denyButtonColor: '#dc9641'
+        confirmButtonText: GetLanguageString("button-globalmax"),
+        denyButtonText: GetLanguageString("button-jpmax"),
+        denyButtonColor: '#dc9641',
+        cancelButtonText: GetLanguageString("label-cancel")
     }).then((result) => {
         if (result.isConfirmed) {
             let values = [83, 5, 10, 10, 10, 7, 7, 7];
@@ -1178,14 +1200,15 @@ function SetCharInputValues(values) {
 
 function deleteClicked() {
     Swal.fire({
-        title: 'Are you sure?',
-        text: 'This will remove the selected character and all data associated with it.',
+        title: GetLanguageString("label-areyousure"),
+        text: GetLanguageString("text-deletecharacterprompt"),
         color: alertColour,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Confirm deletion'
+        confirmButtonText: GetLanguageString("confirmdeletion"),
+        cancelButtonText: GetLanguageString("label-cancel")
     }).then((result) => {
         if (result.isConfirmed) {
             deleteChar(modalCharID);
@@ -1369,7 +1392,7 @@ function openModal(e) {
 
             document.getElementById("hard-nodes-count").innerText = "/ " + sweepMax;
 
-            currencyDescriptorText.innerText = "Avg Days";
+            currencyDescriptorText.innerText = GetLanguageString("label-avgdays");
 
             document.getElementById("shop-currency-icon").src = "icons/Eleph/Eleph_" + charId + ".png";
 
@@ -1389,24 +1412,24 @@ function openModal(e) {
             }
 
             if (shopCurrency == "RaidToken") {
-                currencyDescriptorText.innerText = "Min Raids";
-                charShopCurrencyText.innerText = "Raid Tokens";
+                currencyDescriptorText.innerText = GetLanguageString("label-minraids");
+                charShopCurrencyText.innerText = GetLanguageString("label-raidtokens");
             }
             else if (shopCurrency == "RareRaidToken") {
-                currencyDescriptorText.innerText = "Min Raids";
-                charShopCurrencyText.innerText = "Rare Raid Tokens";
+                currencyDescriptorText.innerText = GetLanguageString("label-minraids");
+                charShopCurrencyText.innerText = GetLanguageString("label-rareraidtokens");
             }
             else if (shopCurrency == "ArenaCoin") {
-                currencyDescriptorText.innerText = "Shop Resets";
-                charShopCurrencyText.innerText = "TC Coins";
+                currencyDescriptorText.innerText = GetLanguageString("label-shopresets");
+                charShopCurrencyText.innerText = GetLanguageString("label-arenacoins");;
             }
             else if (shopCurrency == "JECoin") {
-                currencyDescriptorText.innerText = "Shop Resets";
-                charShopCurrencyText.innerText = "JE Coins";
+                currencyDescriptorText.innerText = GetLanguageString("label-shopresets");
+                charShopCurrencyText.innerText = GetLanguageString("label-jecoins");;
             }
             else if (shopCurrency == "MasteryCertificate") {
-                currencyDescriptorText.innerText = "Shop Resets";
-                charShopCurrencyText.innerText = "Certificates";
+                currencyDescriptorText.innerText = GetLanguageString("label-shopresets");
+                charShopCurrencyText.innerText = GetLanguageString("label-expertpermits");;
             }
 
             document.getElementById("shop-currency-icon").src = "icons/Misc/" + shopCurrency + ".png";
@@ -1466,10 +1489,10 @@ function closeModal(animated, forced) {
 
     if (!forced && isCharModalDirty()) {
         Swal.fire({
-            title: 'Unsaved Changes',
+            title: GetLanguageString("text-unsavedchanges"),
             showDenyButton: true,
-            confirmButtonText: 'Go back',
-            denyButtonText: 'Discard changes',
+            confirmButtonText: GetLanguageString("button-goback"),
+            denyButtonText: GetLanguageString("button-discardchanges"),
             denyButtonColor: '#d33'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -1564,6 +1587,8 @@ function multiCharCancel() {
         editorContainer.style.display = "";
         multiSelectContainer.style.display = "none";
     }
+
+    multiSelectVisible = false;
 }
 
 function multiCharsClear() {
@@ -1591,6 +1616,7 @@ function showMultiSelect(source) {
     multiCharsClear();
 
     multiCharSource = source;
+    multiSelectVisible = true;
 
     let boxesContainer = document.getElementById('boxesContainer');
     let editorContainer = document.getElementById('teamsEditorContainer');
@@ -1602,6 +1628,7 @@ function showMultiSelect(source) {
     boxesContainer.style.display = "none";
     editorContainer.style.display = "none";
     multiSelectContainer.style.display = "";
+    document.getElementById("multiCharSearch").value = '';
 
     let visualCharOptions = [];
     let mode = "";
@@ -1761,6 +1788,7 @@ function singleSelect(boxId) {
 
     editorContainer.style.display = "";
     multiSelectContainer.style.display = "none";
+    multiSelectVisible = false;
 
     multiCharsClear();
 
@@ -1850,7 +1878,7 @@ function teamsToggle() {
         mainDisplay = "Teams";
         boxesContainer.style.display = "none";
         teamsEditorContainer.style.display = "";
-        buttonText.innerText = "Characters"
+        buttonText.innerText = GetLanguageString("footer-characters");
         generateTeamCharOptions();
         $("div#viewFilters")[0].style.display = 'none';
         if (currentGroup) {
@@ -1863,7 +1891,7 @@ function teamsToggle() {
         mainDisplay = "Characters";
         boxesContainer.style.display = "";
         teamsEditorContainer.style.display = "none";
-        buttonText.innerText = "Teams Editor"
+        buttonText.innerText = GetLanguageString("footer-teamseditor");
         rebuildFilters();
         resetFilters();
     }
@@ -2024,7 +2052,7 @@ function generateTeamCharOptions() {
 function addNewTeam(team) {
 
     if (currentGroup == "") {
-        basicAlert("Select group first");
+        basicAlert(GetLanguageString("text-selectgroup"));
         return;
     }
 
@@ -2032,11 +2060,11 @@ function addNewTeam(team) {
 
     let teamNum = (teamsContainer.childElementCount + 1);
 
-    if (teamNum > 6) {
+    if (teamNum > 25) {
         Swal.fire({
             toast: true,
             position: 'top-start',
-            title: "Can't add more than 6 teams",
+            title: GetLanguageString("text-teamslimit"),
             showConfirmButton: false,
             timer: 1500
         })
@@ -2050,7 +2078,7 @@ function addNewTeam(team) {
 
     let new_teamLabel = document.createElement('p');
     new_teamLabel.className = "team-label";
-    new_teamLabel.innerText = "Team " + teamNum;
+    new_teamLabel.innerText = GetLanguageString("label-teamnumprefix") + teamNum;
     new_teamLabel.onclick = function (event) {
         handleGroupEditorClick(event.target, "", "Team");
     };
@@ -2254,25 +2282,23 @@ function removeTeam(teamDiv) {
 async function addNewGroup() {
 
     const { value: groupName } = await Swal.fire({
-        title: 'Create new group',
+        title: GetLanguageString("text-createnewgroup"),
         input: 'text',
-        inputPlaceholder: 'New group name',
+        inputPlaceholder: GetLanguageString("placeholder-newgroup"),
         showCancelButton: true,
+        confirmButtonText: GetLanguageString("button-ok"),
+        cancelButtonText: GetLanguageString("label-cancel"),
         inputValidator: (value) => {
             if (!value) {
-                return "Name can't be empty";
+                return GetLanguageString("text-fieldempty");
             }
 
             if (value.length > 35) {
-                return "Name must be less than or equal to 35 characters long";
+                return GetLanguageString("text-namelong");
             }
 
-            // if (defaultGroups.includes(value) || value == "blankselect") {
-            //     return "Can't use that name";
-            // }
-
             if ($("#select-groups option[value='" + value + "']").length > 0) {
-                return "Group with name already exists";
+                return GetLanguageString("text-groupexists");
             }
         }
     })
@@ -2296,13 +2322,6 @@ async function addNewGroup() {
         selectElement.value = groupName;
     }
 
-}
-
-function addOption(selectElement, text, value) {
-    let newGroupOption = document.createElement('option');
-    newGroupOption.text = text;
-    newGroupOption.value = value;
-    selectElement.add(newGroupOption);
 }
 
 function clearTeams() {
@@ -2392,7 +2411,7 @@ function removeGroupCharacter(slotDivId) {
 async function PickLevelCalcsCap() {
 
     await Swal.fire({
-        title: 'Level to cap calculations at',
+        title: GetLanguageString("text-levelcapat"),
         input: 'range',
         inputAttributes: {
             min: 78,
@@ -2401,6 +2420,8 @@ async function PickLevelCalcsCap() {
         },
         inputValue: lvlCalcsCap,
         showCancelButton: true,
+        confirmButtonText: GetLanguageString("button-ok"),
+        cancelButtonText: GetLanguageString("label-cancel")
         // showDenyButton: !borrowed,
         // denyButtonText: 'Borrow',
         // denyButtonColor: '#dc9641'
@@ -2411,7 +2432,7 @@ async function PickLevelCalcsCap() {
 
                 lvlCalcsCap = result.value;
                 data.level_cap = result.value;
-                document.getElementById('set-level-cap').innerText = "Lvl Cap: " + lvlCalcsCap;
+                document.getElementById('set-level-cap').innerText = GetLanguageString("button-levelcapprefix") + lvlCalcsCap;
 
                 updateAggregateCount();
                 if (resourceDisplay == "Remaining") {
@@ -2438,80 +2459,80 @@ async function pickCharacter(slotDivId, type) {
     if (type == "Striker") {
         showMultiSelect("AddTeamStriker");
         return;
-        options = groupStrikerOptions;
-        optionsBorrow = groupStrikerBorrows;
+        // options = groupStrikerOptions;
+        // optionsBorrow = groupStrikerBorrows;
     }
     else if (type == "Special") {
         showMultiSelect("AddTeamSpecial");
         return;
-        options = groupSpecialOptions;
-        optionsBorrow = groupSpecialBorrows;
+        // options = groupSpecialOptions;
+        // optionsBorrow = groupSpecialBorrows;
     }
 
 
 
-    let getBorrow = false;
-    let character;
+    // let getBorrow = false;
+    // let character;
 
-    await Swal.fire({
-        title: 'Add new character',
-        input: 'select',
-        inputOptions: options,
-        inputPlaceholder: 'Select a character',
-        showCancelButton: true,
-        showDenyButton: !borrowed,
-        denyButtonText: 'Borrow',
-        denyButtonColor: '#dc9641'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            character = result.value;
-        }
-        else if (result.isDenied) {
-            getBorrow = true;
-        }
-    })
+    // await Swal.fire({
+    //     title: 'Add new character',
+    //     input: 'select',
+    //     inputOptions: options,
+    //     inputPlaceholder: 'Select a character',
+    //     showCancelButton: true,
+    //     showDenyButton: !borrowed,
+    //     denyButtonText: 'Borrow',
+    //     denyButtonColor: '#dc9641'
+    // }).then((result) => {
+    //     if (result.isConfirmed) {
+    //         character = result.value;
+    //     }
+    //     else if (result.isDenied) {
+    //         getBorrow = true;
+    //     }
+    // })
 
-    if (getBorrow) {
-        const { value: borrow } = await Swal.fire({
-            title: 'Add borrow character',
-            input: 'select',
-            inputOptions: optionsBorrow,
-            inputPlaceholder: 'Select a character',
-            showCancelButton: true
-        })
+    // if (getBorrow) {
+    //     const { value: borrow } = await Swal.fire({
+    //         title: 'Add borrow character',
+    //         input: 'select',
+    //         inputOptions: optionsBorrow,
+    //         inputPlaceholder: 'Select a character',
+    //         showCancelButton: true
+    //     })
 
-        if (borrow) {
-            let slotContainer = document.getElementById(slotDivId);
+    //     if (borrow) {
+    //         let slotContainer = document.getElementById(slotDivId);
 
-            let slotChildren = slotContainer.children;
+    //         let slotChildren = slotContainer.children;
 
-            for (let i = 0; i < slotChildren.length; i++) {
-                slotChildren[i].remove();
-            }
+    //         for (let i = 0; i < slotChildren.length; i++) {
+    //             slotChildren[i].remove();
+    //         }
 
-            createCharBox(borrow, slotContainer, "borrow");
+    //         createCharBox(borrow, slotContainer, "borrow");
 
-            borrowed = true;
-            saveGroup();
-        }
-    }
+    //         borrowed = true;
+    //         saveGroup();
+    //     }
+    // }
 
-    if (character) {
-        let slotContainer = document.getElementById(slotDivId);
+    // if (character) {
+    //     let slotContainer = document.getElementById(slotDivId);
 
-        let slotChildren = slotContainer.children;
+    //     let slotChildren = slotContainer.children;
 
-        for (let i = 0; i < slotChildren.length; i++) {
-            slotChildren[i].remove();
-        }
+    //     for (let i = 0; i < slotChildren.length; i++) {
+    //         slotChildren[i].remove();
+    //     }
 
-        createCharBox(character, slotContainer, "teams");
-        groupChars.push(charNames.get(character));
+    //     createCharBox(character, slotContainer, "teams");
+    //     groupChars.push(charNames.get(character));
 
-        saveGroup();
+    //     saveGroup();
 
-        generateTeamCharOptions();
-    }
+    //     generateTeamCharOptions();
+    // }
 }
 
 function groupEditorMode(mode) {
@@ -2664,19 +2685,20 @@ function loadGroup(groupName) {
 function deleteGroup() {
 
     if (currentGroup == "") {
-        basicAlert("Select group first");
+        basicAlert(GetLanguageString("text-selectgroup"));
         return;
     }
 
     Swal.fire({
-        title: 'Are you sure?',
-        text: 'This will clear the whole group and its teams',
+        title: GetLanguageString("label-areyousure"),
+        text: GetLanguageString("text-deletegroup"),
         color: alertColour,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Confirm deletion'
+        confirmButtonText: GetLanguageString("confirmdeletion"),
+        cancelButtonText: GetLanguageString("label-cancel")
     }).then((result) => {
         if (result.isConfirmed) {
             clearTeams();
@@ -2703,7 +2725,7 @@ function deleteGroup() {
 async function renameGroup() {
 
     if (currentGroup == "") {
-        basicAlert("Select group first");
+        basicAlert(GetLanguageString("text-selectgroup"));
         return;
     }
 
@@ -2715,17 +2737,19 @@ async function renameGroup() {
     }
     else {
         const { value: groupName } = await Swal.fire({
-            title: 'Rename group',
+            title: GetLanguageString("text-renamegroup"),
             input: 'text',
-            inputPlaceholder: 'New group name',
+            inputPlaceholder: GetLanguageString("placeholder-grouprename"),
             showCancelButton: true,
+            confirmButtonText: GetLanguageString("button-ok"),
+            cancelButtonText: GetLanguageString("label-cancel"),
             inputValidator: (value) => {
                 if (!value) {
-                    return "Name can't be empty";
+                    return GetLanguageString("text-fieldempty");
                 }
 
                 if (value.length > 35) {
-                    return "Name must be less than or equal to 35 characters long";
+                    return GetLanguageString("text-namelong");
                 }
 
                 // if (defaultGroups.includes(value) || value == "blankselect") {
@@ -2733,7 +2757,7 @@ async function renameGroup() {
                 // }
 
                 if ($("#select-groups option[value='" + value + "']").length > 0) {
-                    return "Group with name already exists";
+                    return GetLanguageString("text-groupexists");
                 }
             }
         })
@@ -2786,7 +2810,7 @@ function isTeamEmpty(team) {
 async function MoveGroup() {
 
     if (currentGroup == "") {
-        basicAlert("Select group first");
+        basicAlert(GetLanguageString("text-selectgroup"));
         return;
     }
 
@@ -2794,26 +2818,28 @@ async function MoveGroup() {
     if (data.groups) {
         groupCount = Object.keys(data.groups).length;
         if (groupCount <= 1) {
-            basicAlert("Need more than 1 group to move");
+            basicAlert(GetLanguageString("text-needmoregroups"));
             return;
         }
     }
 
     const { value: groupPos } = await Swal.fire({
-        title: 'Enter new group position',
+        title: GetLanguageString("text-newgroupposition"),
         input: 'text',
         inputLabel: '1-' + groupCount,
         inputPlaceholder: '',
         showCancelButton: true,
+        confirmButtonText: GetLanguageString("button-ok"),
+        cancelButtonText: GetLanguageString("label-cancel"),
         inputValidator: (value) => {
             if (!value) {
-                return "Position can't be blank";
+                return GetLanguageString("text-fieldempty");
             }
 
             let positionValue = parseInt(value);
 
             if (positionValue < 1 || positionValue > groupCount) {
-                return "Position must be between 1 and " + groupCount;
+                return GetLanguageString("text-positionerrorprefix") + groupCount;
             }
 
         }
@@ -2889,7 +2915,7 @@ function rebuildFilters() {
         options[0].remove();
     }
 
-    addOption(filterGroups, "All", "All");
+    addOption(filterGroups, GetLanguageString("label-all"), "All");
 
     if (data.groups) {
 
@@ -2904,11 +2930,11 @@ function ToggleGroupFilterMode() {
 
     if (GroupFilterMode == "OnlyGroup") {
         GroupFilterMode = "UpToGroup";
-        document.getElementById('btn-group-filter-mode').innerText = "Up to Group";
+        document.getElementById('btn-group-filter-mode').innerText = GetLanguageString("button-groupmodeupto");
     }
     else if (GroupFilterMode == "UpToGroup") {
         GroupFilterMode = "OnlyGroup";
-        document.getElementById('btn-group-filter-mode').innerText = "Only Group";
+        document.getElementById('btn-group-filter-mode').innerText = GetLanguageString("button-groupmodeonly");
     }
 
     filterChanged("group");
@@ -2954,33 +2980,6 @@ function filterChanged(filterType) {
 
     applyFilters(filtered);
 
-}
-
-function languageChanged() {
-
-    let selectElement = document.getElementById('languages');
-    selectElement.blur();
-
-    let languageSet = selectElement.value;
-    data.language = languageSet;
-
-    localStorage.setItem("save-data", JSON.stringify(data));
-
-    location.reload();
-}
-
-function buildLanguages() {
-
-    let selectElement = document.getElementById('languages');
-
-    for (let i = 0; i < languages.length; i++) {
-
-        if (languages[i] == "Tw") {
-            addOption(selectElement, "CN", "Tw");
-            continue;
-        }
-        addOption(selectElement, languages[i].toUpperCase(), languages[i]);
-    }
 }
 
 function applyFilters(filtered) {
@@ -3075,16 +3074,17 @@ function charactersToggle(value) {
 function getTextGroup() {
 
     if (currentGroup == "") {
-        basicAlert("Select group first");
+        basicAlert(GetLanguageString("text-selectgroup"));
         return;
     }
 
     Swal.fire({
-        title: 'Text format',
+        title: GetLanguageString("text-textformat"),
         showDenyButton: true,
         showCancelButton: true,
-        confirmButtonText: 'Monospaced',
-        denyButtonText: 'Normal',
+        confirmButtonText: GetLanguageString("text-monospaced"),
+        denyButtonText: GetLanguageString("text-proportional"),
+        cancelButtonText: GetLanguageString("label-cancel"),
         denyButtonColor: '#dc9641'
     }).then((result) => {
         if (result.isConfirmed) {
@@ -3127,7 +3127,7 @@ function getTextFormattedGroup(monospaced) {
 
                 let charData = data.characters.find(obj => { return obj.id == charId });
 
-                names.push(charData.name);
+                names.push(charNames.get(charId));
 
                 if (charData.current.ue > 0) {
                     charDataString += "UE" + charData.current.ue + "★  ";
@@ -3187,7 +3187,8 @@ function getTextFormattedGroup(monospaced) {
     }
 
     Swal.fire({
-        title: 'Text representation',
+        title: GetLanguageString("text-textrepresentation"),
+        confirmButtonText: GetLanguageString("button-ok"),
         html: '<textarea style="width: 400px; height: 250px; resize: none; padding: 10px;" readonly>' + textOutput + '</textarea>'
     })
 
@@ -3213,7 +3214,7 @@ async function saveToLocalStorage(notify) {
         Swal.fire({
             toast: true,
             position: 'top-start',
-            title: 'Data saved',
+            title: GetLanguageString("text-datasaved"),
             showConfirmButton: false,
             timer: 1500
         })
@@ -3237,11 +3238,11 @@ function saveCharChanges() {
     }
 
     if (allValid == false) {
-        Swal.fire({
-            title: 'Invalid inputs',
-            html: invalidMessages,
-            color: alertColour
-        })
+        // Swal.fire({
+        //     title: 'Invalid inputs',
+        //     html: invalidMessages,
+        //     color: alertColour
+        // })
 
         return false;
     }
@@ -3328,16 +3329,16 @@ function populateCharModal(charId) {
 
     if (charData != undefined) {
 
-        document.getElementById("display_school").innerText = mLocalisations[language].Data[charInfo.School];
+        document.getElementById("display_school").innerText = GetLanguageString('school-' + charInfo.School.toLowerCase());
         updateTextBackground("display_school", charInfo.School);
-        document.getElementById("display_type").innerText = charInfo.Type;
+        document.getElementById("display_type").innerText = GetLanguageString("type-" + charInfo.Type.toLowerCase());
         updateTextBackground("display_type", charInfo.Type);
-        document.getElementById("display_role").innerText = charInfo.TacticRole;
-        document.getElementById("display_position").innerText = charInfo.TacticRange;
-        document.getElementById("display_gun").innerText = charInfo.WeaponType;
-        document.getElementById("display_attack_type").innerText = mLocalisations[language].Data[charInfo.DamageType];
+        document.getElementById("display_role").innerText = GetLanguageString("role-" + charInfo.TacticRole.toLowerCase());
+        document.getElementById("display_position").innerText = GetLanguageString("position-" + charInfo.TacticRange.toLowerCase());
+        document.getElementById("display_gun").innerText = GetLanguageString("gun-" + charInfo.WeaponType.toLowerCase());
+        document.getElementById("display_attack_type").innerText = GetLanguageString("atktype-" + charInfo.DamageType.toLowerCase());
         updateTextBackground("display_attack_type", charInfo.DamageType);
-        document.getElementById("display_defense_type").innerText = mLocalisations[language].Data[charInfo.DefenseType];
+        document.getElementById("display_defense_type").innerText = GetLanguageString("deftype-" + charInfo.DefenseType.toLowerCase());
         updateTextBackground("display_defense_type", charInfo.DefenseType);
 
         document.getElementById('mood-Urban').src = "icons/Mood/Mood_" + charInfo.Affinities.Urban + ".png";
@@ -3799,7 +3800,7 @@ function populateCharResources(charId) {
                 const wrapDiv = document.createElement('div');
                 wrapDiv.className = "char-resource-wrapper";
                 tippy(wrapDiv, {
-                    content: "Owned: " + (ownedMatDict[key] ?? 0),
+                    content: GetLanguageString("label-ownedprefix") + (ownedMatDict[key] ?? 0),
                     theme: "light"
                 })
 
@@ -4012,7 +4013,8 @@ function starClicked(type, mode, pos) {
     let charData = charDataFromModal(modalCharID);
 
     if (mode == "current" && charData.eleph?.unlocked == false) {
-        let message = "Character has to be Unlocked to change Current Stars";
+
+        let message = GetLanguageString("text-characterrequireobtained");
 
         if (Date.now() > toastCooldownTime || toastCooldownMsg != message) {
 
@@ -4022,7 +4024,7 @@ function starClicked(type, mode, pos) {
             Swal.fire({
                 toast: true,
                 position: 'top-end',
-                title: 'Invalid input',
+                title: GetLanguageString("text-invalidinput"),
                 text: message,
                 color: alertColour,
                 showConfirmButton: false,
@@ -4180,11 +4182,13 @@ function updateStarDisplay(id, charId, type, fromTemp) {
         else if (type == "star-display") {
             if (star > s) {
                 starContainer.children[s].style.visibility = "";
-                starContainer.children[s].style.filter = "";
+                //starContainer.children[s].style.filter = "";
+                starContainer.children[s].src = "icons/Misc/star.png"
             }
             else if (star_target > s) {
                 starContainer.children[s].style.visibility = "";
-                starContainer.children[s].style.filter = "grayscale(0.5) contrast(0.5)";
+                //starContainer.children[s].style.filter = "grayscale(0.5) contrast(0.5)";
+                starContainer.children[s].src = "icons/Misc/star-greyed.png"
             }
             else {
                 starContainer.children[s].style.visibility = "hidden";
@@ -4193,11 +4197,13 @@ function updateStarDisplay(id, charId, type, fromTemp) {
         else if (type == "ue-display") {
             if (ue > s) {
                 starContainer.children[s].style.visibility = "";
-                starContainer.children[s].style.filter = "grayscale(0) hue-rotate(150deg)";
+                //starContainer.children[s].style.filter = "grayscale(0) hue-rotate(150deg)";
+                starContainer.children[s].src = "icons/Misc/star-blue.png"
             }
             else if (ue_target > s) {
                 starContainer.children[s].style.visibility = "";
-                starContainer.children[s].style.filter = "grayscale(0.5) hue-rotate(150deg) contrast(0.5)";
+                //starContainer.children[s].style.filter = "grayscale(0.5) hue-rotate(150deg) contrast(0.5)";
+                starContainer.children[s].src = "icons/Misc/star-blue-greyed.png"
             }
             else {
                 starContainer.children[s].style.visibility = "hidden";
@@ -4523,8 +4529,8 @@ function registerClick() {
     if (!lUsername || lUsername.length < 5 || lUsername.length > 20) {
         Swal.fire({
             icon: 'error',
-            title: 'Oops...',
-            text: "Please pick a username 5-20 characters long",
+            title: GetLanguageString("text-oops"),
+            text: GetLanguageString("text-usernamelength"),
             color: alertColour
         })
     }
@@ -4549,8 +4555,8 @@ function loginClick() {
         else {
             Swal.fire({
                 icon: 'error',
-                title: 'Oops...',
-                text: "Expecting Username 5-20 characters long, and Auth Key 6 characters long",
+                title: GetLanguageString("text-oops"),
+                text: GetLanguageString("text-usernamelengthauthkey"),
                 color: alertColour
             })
         }
@@ -4558,8 +4564,8 @@ function loginClick() {
     else {
         Swal.fire({
             icon: 'error',
-            title: 'Oops...',
-            text: "Too soon, try again in " + timeUntil(loadCooldown),
+            title: GetLanguageString("text-oops"),
+            text: GetLanguageString("text-toosoontryagain") + timeUntil(loadCooldown),
             color: alertColour
         })
     }
@@ -4576,8 +4582,8 @@ function saveClick() {
     else {
         Swal.fire({
             icon: 'error',
-            title: 'Oops...',
-            text: "Too soon, try again in " + timeUntil(saveCooldown),
+            title: GetLanguageString("text-oops"),
+            text: GetLanguageString("text-toosoontryagain") + timeUntil(saveCooldown),
             color: alertColour
         })
     }
@@ -4593,8 +4599,8 @@ function loadClick() {
     else {
         Swal.fire({
             icon: 'error',
-            title: 'Oops...',
-            text: "Too soon, try again in " + timeUntil(loadCooldown),
+            title: GetLanguageString("text-oops"),
+            text: GetLanguageString("text-toosoontryagain") + timeUntil(loadCooldown),
             color: alertColour
         })
     }
@@ -4703,7 +4709,7 @@ function hideEmptyCell(id) {
     }
 }
 
-function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, parent, reorder, type, imgLoc, skip) {
+function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, parent, reorder, type, imgLoc, skip, stringLangPrefix) {
 
     const newTable = document.createElement("table");
     newTable.className = "resource-table";
@@ -4733,12 +4739,17 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
             }
 
             if (col == 0) {
-                let localisedName = mLocalisations[language]?.Data[rows[row].replace(/ /g, '')];
-                if (localisedName) {
-                    newCell.innerText = localisedName;
+                if (language != "En" && language != "Kr") {
+                    let localisedName = mLocalisations[language]?.Data[rows[row].replace(/ /g, '')];
+                    if (localisedName) {
+                        newCell.innerText = localisedName;
+                    }
+                    else {
+                        newCell.innerText = rows[row];
+                    }
                 }
                 else {
-                    newCell.innerText = rows[row];
+                    newCell.innerText = GetLanguageString(stringLangPrefix + rows[row].toLowerCase().replace(/ /g, ''));
                 }
                 newCell.style.paddingLeft = "8px";
             }
@@ -4991,10 +5002,10 @@ function DisplayStageRuns() {
     disclaimerDiv.className = "stage-disclaimer";
 
     let disclaimerP = document.createElement('p');
-    disclaimerP.innerText = "*Sorted by number of runs, you can farm stages in a different order depending which gear is needed first";
+    disclaimerP.innerText = GetLanguageString("text-farmenergyinfo");
 
     let disclaimerP2 = document.createElement('p');
-    disclaimerP2.innerText = "*Calculated for expected min AP cost, but gear drops are random, best to check again after doing a large number of runs"
+    disclaimerP2.innerText = GetLanguageString("text-farmenergyinfo2");
     disclaimerP2.style.marginTop = "15px";
 
     disclaimerDiv.appendChild(disclaimerP);
@@ -5738,7 +5749,7 @@ function switchResourceDisplay(displayType) {
         btnRemaining.parentElement.style.display = "";
         btnLeftover.parentElement.style.display = "";
         btnLvlCap.parentElement.style.display = "none";
-        displayText.innerText = "Owned";
+        displayText.innerText = GetLanguageString("label-owned");
         xpInputs.style.display = "";
         updateCells(ownedMatDict, true, 'resource-count-text', 'misc-resource');
         for (i = 0; i < inputs.length; i++) {
@@ -5752,7 +5763,7 @@ function switchResourceDisplay(displayType) {
         btnRemaining.parentElement.style.display = "";
         btnLeftover.parentElement.style.display = "";
         btnLvlCap.parentElement.style.display = "";
-        displayText.innerText = "Total Needed"
+        displayText.innerText = GetLanguageString("label-totalneeded");
         xpInputs.style.display = "none";
         updateCells(requiredMatDict, false, 'resource-count-text', 'misc-resource');
         for (i = 0; i < inputs.length; i++) {
@@ -5767,7 +5778,7 @@ function switchResourceDisplay(displayType) {
         btnRemaining.parentElement.style.display = "none";
         btnLeftover.parentElement.style.display = "";
         btnLvlCap.parentElement.style.display = "";
-        displayText.innerText = "Remaining Needed";
+        displayText.innerText = GetLanguageString("label-remainingneeded");
         xpInputs.style.display = "none";
         updateCells(neededMatDict, false, 'resource-count-text', 'misc-resource');
         hideResourceDisplays();
@@ -5782,7 +5793,7 @@ function switchResourceDisplay(displayType) {
         btnRemaining.parentElement.style.display = "";
         btnLeftover.parentElement.style.display = "none";
         btnLvlCap.parentElement.style.display = "";
-        displayText.innerText = "Leftover";
+        displayText.innerText = GetLanguageString("label-leftover");
         xpInputs.style.display = "none";
         updateCells(leftoverMatDict, false, 'resource-count-text', 'misc-resource');
         for (i = 0; i < inputs.length; i++) {
@@ -5815,7 +5826,7 @@ function switchGearDisplay(displayType) {
         gxpInputs.style.display = "";
         campaignMulti.parentElement.style.display = "none";
         apDisplay.parentElement.style.display = "none";
-        displayText.innerText = "Owned";
+        displayText.innerText = GetLanguageString("label-owned");
         updateCells(ownedMatDict, true, 'gear-count-text', 'misc-gear');
     }
     else if (displayType == "Remaining") {
@@ -5827,7 +5838,7 @@ function switchGearDisplay(displayType) {
         gxpInputs.style.display = "none";
         campaignMulti.parentElement.style.display = "";
         apDisplay.parentElement.style.display = "";
-        displayText.innerText = "Remaining Needed";
+        displayText.innerText = GetLanguageString("label-remainingneeded");
         updateCells(neededMatDict, false, 'gear-count-text', 'misc-gear');
         SolveGearFarm();
     }
@@ -5840,7 +5851,7 @@ function switchGearDisplay(displayType) {
         gxpInputs.style.display = "none";
         campaignMulti.parentElement.style.display = "none";
         apDisplay.parentElement.style.display = "none";
-        displayText.innerText = "Total Needed";
+        displayText.innerText = GetLanguageString("label-totalneeded");
         updateCells(requiredMatDict, false, 'gear-count-text', 'misc-gear');
     }
     else if (displayType == "Leftover") {
@@ -5852,7 +5863,7 @@ function switchGearDisplay(displayType) {
         gxpInputs.style.display = "none";
         campaignMulti.parentElement.style.display = "none";
         apDisplay.parentElement.style.display = "none";
-        displayText.innerText = "Leftover";
+        displayText.innerText = GetLanguageString("label-leftover");
         updateCells(leftoverMatDict, false, 'gear-count-text', 'misc-gear');
     }
 
@@ -5932,7 +5943,7 @@ function updateInfoDisplay(character, charId, idInject) {
 
 function displayExportData() {
     Swal.fire({
-        title: 'Exported data',
+        title: GetLanguageString("text-exporteddata"),
         html: '<textarea style="width: 400px; height: 250px; resize: none;" readonly>' + localStorage.getItem('save-data') + '</textarea>'
     })
 }
@@ -5940,53 +5951,31 @@ function displayExportData() {
 async function getImportData() {
     const { value: importData } = await Swal.fire({
         input: 'textarea',
-        inputLabel: 'Import data',
+        inputLabel: GetLanguageString("text-importdata"),
         color: alertColour,
-        inputPlaceholder: 'Paste your previously exported data here',
+        inputPlaceholder: GetLanguageString("placeholder-importdata"),
         showCancelButton: true
     })
 
     if (importData) {
-        data = tryParseJSON(importData);
+        let tempData = tryParseJSON(importData);
 
-        if (!!!data) {
+        if (!!!tempData) {
             Swal.fire({
                 icon: 'error',
-                title: 'Oops...',
-                text: "That wasn't valid json, couldn't import it",
+                title: GetLanguageString("text-oops"),
+                text: GetLanguageString("text-invalidjson"),
                 color: alertColour
             })
 
             return false;
         }
 
-        localStorage.setItem("save-data", JSON.stringify(data));
+        localStorage.setItem("save-data", JSON.stringify(tempData));
 
         gtag('event', 'action_import');
 
         location.reload();
-
-        // ownedMatDict = {};
-        // if (data != null) {
-        //     if (data.owned_materials != undefined) {
-        //         for (key in data.owned_materials) {
-        //             ownedMatDict[key] = data.owned_materials[key];
-        //         }
-        //     }
-
-        //     if (data.disabled_characters != undefined) {
-        //         disabledChars = data.disabled_characters;
-        //     }
-        // }
-
-        // initData();
-
-        // refreshAllChars();
-        // rebuildGroups();
-        // rebuildFilters();
-
-        // generateCharOptions();
-        // generateTeamBorrowOptions();
     }
 }
 
@@ -6103,8 +6092,7 @@ function createCharBox(charId, container, location) {
         }
 
         if (window.matchMedia("(pointer: fine)").matches) {
-            newDiv.title = `Ctrl+click to disable/enable
-        Shift+drag to move`
+            newDiv.title = GetLanguageString("tooltip-charhoverinfo");
         }
     }
 
@@ -6220,7 +6208,7 @@ function createCharBox(charId, container, location) {
         borrowDiv.className = "borrowBar";
 
         borrowTag = document.createElement("p");
-        borrowTag.innerText = "Borrowed";
+        borrowTag.innerText = GetLanguageString("label-borrowed");
     }
 
     newContentBox.appendChild(newImg);
@@ -6267,3 +6255,30 @@ function getOffset(el) {
     };
 }
 
+function GetGroupScreenshot() {
+
+    if (currentGroup == "") {
+        basicAlert(GetLanguageString("text-selectgroup"));
+        return;
+    }
+
+    document.getElementById("background-blur-container").style.display = '';
+
+    html2canvas(document.getElementById("teamsContainer"), { "logging": false, "windowWidth": 2000, "windowHeight": 1000, "scale": 1 })
+        .then(canvas => { document.getElementById("popup-screenshot").appendChild(canvas); document.getElementById("text-creating-image").style.display = "none" });
+}
+
+function ClearScreenshot() {
+
+    let canvasElement = document.getElementById("popup-screenshot").children;
+
+    if (canvasElement.length > 0) {
+        canvasElement[0].remove();
+    }
+    else {
+        return;
+    }
+
+    document.getElementById("background-blur-container").style.display = "none";
+    document.getElementById("text-creating-image").style.display = '';
+}

@@ -68,8 +68,8 @@ function buildFilterList() {
     let filterGroupElements = [
         '<button id="button-filters-close" onclick="toggleViewFilters()">Close</button>',
         buildFilterGroup("", {
-            label: "Basic",
-            options: ["Selected", "Deselected"]
+            label: GetLanguageString("label-basic"),
+            options: [GetLanguageString("label-selected"), GetLanguageString("label-deselected")]
         }),
     ];
     for(let type in filters) {
@@ -123,37 +123,43 @@ function buildFilterList() {
         let attr = label.toLowerCase().replaceAll(" ", "_");
         let target = `${prefix}${attr}`;
 
+        let langPrefix = langPrefixFromFilter(prefix);
+        if (langPrefix) {
+            label = GetLanguageString(langPrefix + label.toLowerCase());
+        }
+
+
         return `<label class="filter-option-item" checked="false" for="${target}"><input class="filter-option" id="${target}" filter-target="${target}" type="checkbox"> ${label}</label>`;
     }
 
     function getAcceptedDynamicFilters() {
         let filterTypes = {
             filter_atk: {
-                label: "Attack Type",
+                label: GetLanguageString("label-attacktype"),
                 options: []
             },
             filter_def: {
-                label: "Defense Type",
+                label: GetLanguageString("label-defensetype"),
                 options: []
             },
             filter_star: {
-                label: "Base Stars",
+                label: GetLanguageString("label-basestars"),
                 options: []
             },
             filter_school: {
-                label: "School",
+                label: GetLanguageString("label-school"),
                 options: []
             },
             filter_type: {
-                label: "Type",
+                label: GetLanguageString("label-type"),
                 options: []
             },
             filter_weapon: {
-                label: "Weapon Type",
+                label: GetLanguageString('label-weapontype'),
                 options: []
             },
             filter_material: {
-                label: "Material",
+                label: GetLanguageString('label-artifact'),
                 options: []
             },
         }
@@ -188,6 +194,42 @@ function buildFilterList() {
         
         return filterTypes;
     }
+}
+
+function langPrefixFromFilter(prefix) {
+
+    whitelist.filter_type = [];
+    whitelist.filter_atk = [];
+    whitelist.filter_def = [];
+    whitelist.filter_star = [];
+    whitelist.filter_school = [];
+    whitelist.filter_weapon = [];
+    whitelist.filter_material = [];
+    
+    if (prefix == "filter_type_") {
+        return "type-"
+    }
+    else if (prefix == "filter_atk_") {
+        return "atktype-"
+    }
+    else if (prefix == "filter_def_") {
+        return "deftype-"
+    }
+    else if (prefix == "filter_star_") {
+
+    }
+    else if (prefix == "filter_school_") {
+        return "school-"
+    }
+    else if (prefix == "filter_weapon_") {
+        return "gun-"
+    }
+    else if (prefix == "filter_material_") {
+        return "artifact-"
+    }
+    
+
+    return ""
 }
 
 function assignClassFilters() {

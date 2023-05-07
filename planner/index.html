@@ -23,7 +23,7 @@
     </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/styles.css?30">
+    <link rel="stylesheet" href="css/styles.css?31">
     <title>Blue Archive Resource Planner</title>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://justin163.com/planner">
@@ -44,11 +44,12 @@
     <script src="packages/tippyjs/popper.js"></script>
     <script src="packages/tippyjs/tippy.js"></script>
     <script src="packages/javascript-lp-solver/solver.js"></script>
+    <script src="packages/html2canvas/html2canvas.js"></script>
     <link rel="stylesheet" href="packages/tippyjs/light.css" />
     <script src="js/config.js?16"></script>
-    <script src="js/common.js?5"></script>
-    <script src="js/pageLogic.js?94"></script>
-    <script src="js/filters.js?4"></script>
+    <script src="js/common.js?6"></script>
+    <script src="js/pageLogic.js?95"></script>
+    <script src="js/filters.js?5"></script>
     <script src="js/lzma_worker.js?1"></script>
     <script src="js/cloudAPI.js?3"></script>
     <style id="toggleViewStyle" class="modifyable"></style>
@@ -59,10 +60,11 @@
         <span class="logo">Justin163</span>
         <img src="icons/UI/hamburger.svg" id="hamburger" onclick="hamburgToggle()">
         <ul class="nav-list">
-            <li><a class="active">Resource Planner</a></li>
-            <li><a href="events.html">Event Planner</a></li>
-            <li><a href="changelog.html">Changelog</a></li>
-            <li><a href="privacy.html">Privacy</a></li>
+            <li><a class="active display-string" data-id="page-resource-planner"></a></li>
+            <li><a href="events.html" class="display-string" data-id="page-event-planner"></a></li>
+            <li><a href="changelog.html" class="display-string" data-id="page-changelog"></a></li>
+            <li><a href="privacy.html" class="display-string" data-id="page-privacy"></a></li>
+            <li><a href="credit.html" class="display-string" data-id="page-credit"></a></li>
         </ul>
         <div class="nav-right">
             <img id="image-style-button" src="icons/UI/ShirokoIcon.png" onclick="ToggleImageStyle()">
@@ -72,24 +74,31 @@
     </nav>
     <div id="mobile-links-wrapper">
         <ul class="mobile-links">
-            <li><a class="active">Resource Planner</a></li>
-            <li><a href="events.html">Event Planner</a></li>
-            <li><a href="changelog.html">Changelog</a></li>
-            <li><a href="privacy.html">Privacy</a></li>
+            <li><a class="active display-string" data-id="page-resource-planner"></a></li>
+            <li><a href="events.html" class="display-string" data-id="page-event-planner"></a></li>
+            <li><a href="changelog.html" class="display-string" data-id="page-changelog"></a></li>
+            <li><a href="privacy.html" class="display-string" data-id="page-privacy"></a></li>
+            <li><a href="credit.html" class="display-string" data-id="page-credit"></a></li>
         </ul>
     </div>
     <div class="bodyContainer">
         <div id="boxesContainer" class="mainContainer">
             <div id="charsContainerActions">
-                <label class="char-action-label">Group</label>
-                <button id="btn-group-filter-mode" class="charEditorButton" onclick="ToggleGroupFilterMode()">Only Group</button>
+                <label class="char-action-label display-string" data-id="label-group"></label>
+                <button id="btn-group-filter-mode" class="charEditorButton display-string"
+                    onclick="ToggleGroupFilterMode()" data-id="button-groupmodeonly"></button>
                 <select name="filter-groups" id="filter-groups" onchange="filterChanged('group')">
                 </select>
-                <button class="charEditorButton" onclick="resetFilters()">Reset Filters</button>
-                <button class="charEditorButton" onclick="charactersToggle('enable')">Enable All</button>
-                <button class="charEditorButton" onclick="charactersToggle('disable')">Disable All</button>
-                <button class="charEditorButton" onclick="toggleViewFilters()">Filters</button>
-                <button class="charEditorButton" onclick="showMultiSelect('AddNewChars')">Add Characters</button>
+                <button class="charEditorButton display-string" data-id="button-resetfilters"
+                    onclick="resetFilters()"></button>
+                <button class="charEditorButton display-string" data-id="button-enableall"
+                    onclick="charactersToggle('enable')"></button>
+                <button class="charEditorButton display-string" data-id="button-disableall"
+                    onclick="charactersToggle('disable')"></button>
+                <button class="charEditorButton display-string" data-id="button-filters"
+                    onclick="toggleViewFilters()"></button>
+                <button class="charEditorButton display-string" data-id="button-addcharacters"
+                    onclick="showMultiSelect('AddNewChars')"></button>
             </div>
             <div id="charsContainer">
             </div>
@@ -99,18 +108,27 @@
         <div id="teamsEditorContainer" class="mainContainer" style="display: none;">
             <div id="teamEditorActions">
                 <select name="groups" id="select-groups" onchange="groupSelected()">
-                    <option hidden disabled selected value="blankselect">--Select group--</option>
+                    <option hidden disabled selected value="blankselect" class="display-string"
+                        data-id="label-selectgroup"></option>
                 </select>
-                <button class="teamEditorButton" onclick="MoveGroup()">Move Group</button>
-                <button class="teamEditorButton" onclick="addNewGroup()">New Group</button>
-                <button class="teamEditorButton" onclick="renameGroup()">Rename Group</button>
-                <button class="teamEditorButton" onclick="deleteGroup()">Delete Group</button>
-                <button class="teamEditorButton" onclick="addNewTeam([null,null,null,null,null,null])">Add Team</button>
-                <button id="group-move-mode" class="teamEditorButton"
-                    onclick="groupEditorMode('Move')">Add/Move</button>
-                <button id="group-remove-mode" class="teamEditorButton"
-                    onclick="groupEditorMode('Remove')">Remove</button>
-                <button class="teamEditorButton" onclick="getTextGroup()">Text Form</button>
+                <button class="teamEditorButton display-string" onclick="MoveGroup()"
+                    data-id="button-movegroup"></button>
+                <button class="teamEditorButton display-string" onclick="addNewGroup()"
+                    data-id="button-newgroup"></button>
+                <button class="teamEditorButton display-string" onclick="renameGroup()"
+                    data-id="button-renamegroup"></button>
+                <button class="teamEditorButton display-string" onclick="deleteGroup()"
+                    data-id="button-deletegroup"></button>
+                <button class="teamEditorButton display-string" onclick="addNewTeam([null,null,null,null,null,null])"
+                    data-id="button-addteam"></button>
+                <button id="group-move-mode" class="teamEditorButton display-string" onclick="groupEditorMode('Move')"
+                    data-id="button-add/movemode"></button>
+                <button id="group-remove-mode" class="teamEditorButton display-string"
+                    onclick="groupEditorMode('Remove')" data-id="button-removemode"></button>
+                <button class="teamEditorButton display-string" onclick="getTextGroup()"
+                    data-id="button-textform"></button>
+                <button class="teamEditorButton display-string" onclick="GetGroupScreenshot()"
+                    data-id="button-screenshot"></button>
             </div>
             <div id="teamsContainer">
             </div>
@@ -118,10 +136,12 @@
         <div id="characterMultiSelectContainer" class="mainContainer" style="display: none;">
             <input id="multiCharSearch" type="search" autocomplete="off" placeholder="Search"
                 oninput="filterMultiChars()">
-            <button id="multi-char-add" class="multiCharButton" onclick="multiCharAdd()">Add Selected</button>
-            <button id="multi-char-cancel" class="multiCharButton" onclick="multiCharCancel()">Cancel</button>
-            <button id="multi-char-borrow" class="multiCharButton" onclick="multiCharBorrow()"
-                style="display: none;">Borrow</button>
+            <button id="multi-char-add" class="multiCharButton display-string" onclick="multiCharAdd()"
+                data-id="button-addselected"></button>
+            <button id="multi-char-cancel" class="multiCharButton display-string" onclick="multiCharCancel()"
+                data-id="label-cancel"></button>
+            <button id="multi-char-borrow" class="multiCharButton display-string" onclick="multiCharBorrow()"
+                style="display: none;" data-id="button-borrow"></button>
             <div id="charsSelectContainer"></div>
         </div>
     </div>
@@ -144,46 +164,46 @@
                         style="max-width: 25px;">
                     <img id="char-max" class="action-icon" src="icons/UI/MaxIcon.png" onclick="CharInputsMax()"
                         style="margin-top: 10px">
-                    <img id="char-max-goal" class="action-icon" src="icons/UI/MaxGoalIcon.png" onclick="CharInputsGoalMax()"
-                        style="margin-top: 10px">
+                    <img id="char-max-goal" class="action-icon" src="icons/UI/MaxGoalIcon.png"
+                        onclick="CharInputsGoalMax()" style="margin-top: 10px">
                 </div>
                 <div class="modal-content-section" id="content-1" style="width: 10%; min-width: 90px;">
-                    <p id="label-school">School</p>
+                    <p id="label-school" class="display-string" data-id="label-school"></p>
                     <p id="display_school" class="char-info-text"></p>
                     <br>
-                    <p>Type</p>
+                    <p class="display-string" data-id="label-type"></p>
                     <p id="display_type" class="char-info-text"></p>
                 </div>
                 <div class="modal-content-section" id="content-2" style="width: 10%; min-width: 80px;">
-                    <p>Role</p>
+                    <p class="display-string" data-id="label-role"></p>
                     <p id="display_role"></p>
                     <br>
-                    <p>Position</p>
+                    <p class="display-string" data-id="label-position"></p>
                     <p id="display_position"></p>
                     <br>
-                    <p>Gun</p>
+                    <p class="display-string" data-id="label-gun"></p>
                     <p id="display_gun"></p>
                 </div>
                 <div class="modal-content-section" id="content-3" style="width:15%; min-width: 100px;">
-                    <p id="label-attack-type">Attack Type</p>
+                    <p id="label-attack-type" class="display-string" data-id="label-attacktype"></p>
                     <p id="display_attack_type" class="char-info-text"></p>
                     <br>
-                    <p id="label-defense-type">Defense Type</p>
+                    <p id="label-defense-type" class="display-string" data-id="label-defensetype"></p>
                     <p id="display_defense_type" class="char-info-text"></p>
                 </div>
                 <div class="modal-content-section" id="content-4" style="width: 25%; min-width: 150px; display: flex;">
                     <div class="mood-wrapper">
-                        <p>Urban</p>
+                        <p class="display-string" data-id="terrain-urban" style="white-space: nowrap;"></p>
                         <img src="icons/Mood/Terrain_Urban.png" class="terrain-icon"></img>
                         <img id="mood-Urban" class="mood-icon"></img>
                     </div>
                     <div class="mood-wrapper">
-                        <p>Outdoors</p>
+                        <p class="display-string" data-id="terrain-outdoors"></p>
                         <img src="icons/Mood/Terrain_Outdoors.png" class="terrain-icon"></img>
                         <img id="mood-Outdoors" class="mood-icon"></img>
                     </div>
                     <div class="mood-wrapper">
-                        <p>Indoors</p>
+                        <p class="display-string" data-id="terrain-indoors"></p>
                         <img src="icons/Mood/Terrain_Indoors.png" class="terrain-icon"></img>
                         <img id="mood-Indoors" class="mood-icon"></img>
                     </div>
@@ -191,12 +211,12 @@
                 <div class="modal-content-section" id="content-5" style="width: 15%; min-width: 185px; display: flex;">
                     <div class="content-section-wrapper" style="padding: 6% 7% 6% 0;">
                         <div class="section-label">
-                            <p class="section-name" title="Click for presets" id="label-level">Level</p>
+                            <p class="section-name display-string" id="label-level" data-id="label-level"></p>
                         </div>
                         <div>
-                            <p class="label-current">Current</p>
+                            <p class="label-current display-string" data-id="label-current"></p>
                             <input id="input_level_current" type="number" class="two_digit_input">
-                            <p class="label-target">Target</p>
+                            <p class="label-target display-string" data-id="label-target"></p>
                             <input id="input_level_target" type="number" class="two_digit_input">
                         </div>
                     </div>
@@ -204,10 +224,10 @@
                 <div class="modal-content-section" id="content-6" style="width: 20%; min-width: 250px; display: flex;">
                     <div class="content-section-wrapper" style="padding: 3% 5% 3% 0;">
                         <div class="section-label">
-                            <p class="section-name" id="label-star">Stars</p>
+                            <p class="section-name display-string" id="label-star" data-id="label-stars"></p>
                         </div>
                         <div>
-                            <p class="label-current">Current</p>
+                            <p class="label-current display-string" data-id="label-current"></p>
                             <div id="star-current-container" style="display: flex;">
                                 <img draggable="false" id="star-current-1" class="star-icon" src="icons/Misc/star.png">
                                 <img draggable="false" id="star-current-2" class="star-icon" src="icons/Misc/star.png">
@@ -215,7 +235,7 @@
                                 <img draggable="false" id="star-current-4" class="star-icon" src="icons/Misc/star.png">
                                 <img draggable="false" id="star-current-5" class="star-icon" src="icons/Misc/star.png">
                             </div>
-                            <p class="label-target">Target</p>
+                            <p class="label-target display-string" data-id="label-target"></p>
                             <div id="star-target-container" style="display: flex;">
                                 <img draggable="false" id="star-target-1" class="star-icon" src="icons/Misc/star.png">
                                 <img draggable="false" id="star-target-2" class="star-icon" src="icons/Misc/star.png">
@@ -229,10 +249,10 @@
                 <div class="modal-content-section" id="content-7" style="width: 20%; min-width: 280px; display: flex;">
                     <div class="content-section-wrapper" style="padding: 3% 5% 3% 0;">
                         <div class="section-label">
-                            <p class="section-name">UE</p>
+                            <p class="section-name display-string" data-id="label-ue" style="min-width: 30px"></p>
                         </div>
                         <div>
-                            <p class="label-current">Current</p>
+                            <p class="label-current display-string" data-id="label-current"></p>
                             <div id="ue-current-container" style="display: flex;">
                                 <img draggable="false" id="ue-current-1" class="star-icon" src="icons/Misc/star.png">
                                 <img draggable="false" id="ue-current-2" class="star-icon" src="icons/Misc/star.png">
@@ -242,7 +262,7 @@
                                 <img draggable="false" id="ue-current-5" class="star-icon" src="icons/Misc/star.png"
                                     style="visibility: hidden;">
                             </div>
-                            <p class="label-target">Target</p>
+                            <p class="label-target display-string" data-id="label-target"></p>
                             <div id="ue-target-container" style="display: flex;">
                                 <img draggable="false" id="ue-target-1" class="star-icon" src="icons/Misc/star.png">
                                 <img draggable="false" id="ue-target-2" class="star-icon" src="icons/Misc/star.png">
@@ -264,15 +284,15 @@
                 <div class="modal-content-section" id="content-8" style="width: 15%; min-width: 183px; display: flex;">
                     <div class="content-section-wrapper" style="padding: 6% 7% 6% 0;">
                         <div class="section-label">
-                            <p class="section-name" id="label-bond">Bond</p>
+                            <p class="section-name display-string" id="label-bond" data-id="label-bond"></p>
                         </div>
                         <div>
                             <img draggable="false">
                         </div>
                         <div>
-                            <p class="label-current">Current</p>
+                            <p class="label-current display-string" data-id="label-current"></p>
                             <input id="input_bond_current" type="number" class="two_digit_input">
-                            <p class="label-target">Target</p>
+                            <p class="label-target display-string" data-id="label-target"></p>
                             <input id="input_bond_target" type="number" class="two_digit_input">
                         </div>
                     </div>
@@ -281,17 +301,17 @@
                     style="width: 45%; min-width: 400px; display: flex; margin-top: 10px;">
                     <div class="content-section-wrapper" style="padding-right: 15%; padding-top: 2%;">
                         <div class="section-label">
-                            <p class="section-name" title="Click for presets" id="label-skills">Skills</p>
+                            <p class="section-name display-string" id="label-skills" data-id="label-skills"></p>
                         </div>
                         <div>
                             <br>
-                            <p class="label-current">Current</p>
+                            <p class="label-current display-string" data-id="label-current"></p>
                             <br><br><br>
-                            <p class="label-target">Target</p>
+                            <p class="label-target display-string" data-id="label-target"></p>
                             <br>
                         </div>
                         <div class="sub-skill">
-                            <p id="label-skill-ex">EX</p>
+                            <p id="label-skill-ex" class="display-string" data-id="label-skillex"></p>
                             <input id="input_ex_current" type="number" class="two_digit_input">
                             <br>
                             <img id="ex-img" class="skill-img" draggable="false">
@@ -299,7 +319,7 @@
                             <input id="input_ex_target" type="number" class="two_digit_input">
                         </div>
                         <div class="sub-skill">
-                            <p id="label-skill-basic">Basic</p>
+                            <p id="label-skill-basic" class="display-string" data-id="label-skillbasic"></p>
                             <input id="input_basic_current" type="number" class="two_digit_input">
                             <br>
                             <img id="basic-img" class="skill-img" draggable="false">
@@ -307,7 +327,7 @@
                             <input id="input_basic_target" type="number" class="two_digit_input">
                         </div>
                         <div class="sub-skill">
-                            <p id="label-skill-enhanced">Enhanced</p>
+                            <p id="label-skill-enhanced" class="display-string" data-id="label-skillpassive"></p>
                             <input id="input_enhanced_current" type="number" class="two_digit_input">
                             <br>
                             <img id="enhanced-img" class="skill-img" draggable="false">
@@ -315,7 +335,7 @@
                             <input id="input_enhanced_target" type="number" class="two_digit_input">
                         </div>
                         <div class="sub-skill">
-                            <p id="label-skill-sub">Sub</p>
+                            <p id="label-skill-sub" class="display-string" data-id="label-skillsub"></p>
                             <input id="input_sub_current" type="number" class="two_digit_input">
                             <br>
                             <img id="sub-img" class="skill-img" draggable="false">
@@ -328,13 +348,13 @@
                     style="width: 45%; min-width: 400px; display: flex; margin-top: 10px; justify-content: left;">
                     <div class="content-section-wrapper" style="padding: 1% 10% 1% 0;">
                         <div class="section-label">
-                            <p class="section-name" title="Click for presets" id="label-gear">Gear</p>
+                            <p class="section-name display-string" id="label-gear" data-id="label-gear"></p>
                         </div>
                         <div>
                             <br>
-                            <p class="label-current">Current</p>
+                            <p class="label-current display-string" data-id="label-current"></p>
                             <br><br><br>
-                            <p class="label-target">Target</p>
+                            <p class="label-target display-string" data-id="label-target"></p>
                             <br>
                         </div>
                         <div class="sub-gear">
@@ -368,9 +388,9 @@
                         <div class="content-section-wrapper">
                             <img draggable="false" id="char-eleph" class="eleph-icon" src="">
                             <div style="align-self: center;">
-                                <p id="label-owned">Owned</p>
+                                <p id="label-owned" class="display-string" data-id="label-owned"></p>
                                 <input id="input_eleph_owned" type="number" class="two_digit_input">
-                                <p id="label-char-unlocked">Unlocked</p>
+                                <p id="label-char-unlocked" class="display-string" data-id="label-obtained"></p>
                                 <input type="checkbox" id="input_char_unlocked" onclick="charUnlockClick()"
                                     class="checkbox-input">
                             </div>
@@ -380,10 +400,11 @@
                         <div class="content-section-wrapper">
                             <img draggable="false" class="eleph-icon" src="icons/Misc/Eligma.png">
                             <div style="align-self: center;">
-                                <p id="label-eleph-cost">Eligma Cost</p>
+                                <p id="label-eleph-cost" class="display-string" data-id="label-eligmacost"></p>
                                 <input id="input_eleph_cost" type="number" class="two_digit_input"
                                     oninput="shopCostChange()">
-                                <p id="label-eleph-purchasable">Purchasable</p>
+                                <p id="label-eleph-purchasable" class="display-string" data-id="label-purchasablecount">
+                                </p>
                                 <input id="input_eleph_purchasable" type="number" class="two_digit_input">
                             </div>
                         </div>
@@ -392,15 +413,16 @@
                         style="width: 20%; min-width: 230px; display: flex;">
                         <div class="content-section-wrapper" style="padding: 6% 7% 6% 0; position: relative;">
                             <div class="section-label">
-                                <p class="section-name">Hard Mode</p>
+                                <p class="section-name display-string" data-id="label-hardmode"></p>
                             </div>
                             <div>
-                                <p style="white-space: nowrap;">Node Sweeps</p>
+                                <p style="white-space: nowrap;" class="display-string" data-id="label-nodesweeps"></p>
                                 <div style="display: flex;">
                                     <input id="input_farm_nodes" type="number" class="two_digit_input">
                                     <p id="hard-nodes-count" style="margin-left: 10px;"></p>
                                 </div>
-                                <p id="label-node-refresh" style="white-space: nowrap;">Node Refreshing</p>
+                                <p id="label-node-refresh" style="white-space: nowrap;" class="display-string"
+                                    data-id="label-noderefreshing"></p>
                                 <input id="input_allow_node_refresh" onclick="nodeRefreshClick()" type="checkbox"
                                     class="checkbox-input">
                             </div>
@@ -421,13 +443,14 @@
                     <div class="modal-content-section" id="content-15" style="width: 21%; min-width: 250px;">
                         <div class="content-section-wrapper" style="padding: 6% 7% 6% 0%;">
                             <div class="section-label">
-                                <p class="section-name" style="padding: 10px 15px;">Buy With</p>
+                                <p class="section-name display-string" style="padding: 10px 15px;"
+                                    data-id="label-buywith"></p>
                             </div>
                             <div style="align-self: center;">
                                 <div style="display: flex;">
                                     <input type="checkbox" id="option-eligma" onclick="buyTypeClick('Eligma')"
                                         class="checkbox-input">
-                                    <label for="option-eligma">Eligma</label>
+                                    <label for="option-eligma" class="display-string" data-id="label-eligma" style="white-space: nowrap;"></label>
                                 </div>
                                 <div style="display: flex; padding-top: 10px;" id="buy-option-two">
                                     <input type="checkbox" id="option-shop" onclick="buyTypeClick('Shop')"
@@ -490,10 +513,10 @@
             </div>
             <div class="modal-content-section"
                 style="width: 100%; display: flex; justify-content: center; margin-top: 15px;">
-                <button id="cancel-button-resource" class="resource-modal-button"
-                    onclick="cancelCharModal()">Cancel</button>
-                <button id="save-button-resource" class="resource-modal-button" onclick="saveCharChanges()">Save and
-                    Close</button>
+                <button id="cancel-button-resource" class="resource-modal-button display-string"
+                    onclick="cancelCharModal()" data-id="label-cancel"></button>
+                <button id="save-button-resource" class="resource-modal-button display-string"
+                    onclick="saveCharChanges()" data-id="label-saveandclose"></button>
             </div>
             <div style="height: 10px;"></div>
         </div>
@@ -547,24 +570,28 @@
                     </div>
                 </div>
                 <div class="resource-box" style="border: none;">
-                    <button id="switch-resource-owned" class="button-switch-display" style="background-color: #c8e6f5"
+                    <button id="switch-resource-owned" class="button-switch-display display-string"
+                        data-id="button-switchowned" style="background-color: #c8e6f5"
                         onclick="switchResourceDisplay('Owned')"></button>
                 </div>
                 <div class="resource-box" style="border: none; display: none;">
-                    <button id="switch-resource-remaining" class="button-switch-display"
-                        style="background-color: #f5c8dd;" onclick="switchResourceDisplay('Remaining')"></button>
+                    <button id="switch-resource-remaining" class="button-switch-display display-string"
+                        data-id="button-switchremainingneeded" style="background-color: #f5c8dd;"
+                        onclick="switchResourceDisplay('Remaining')"></button>
                 </div>
                 <div class="resource-box" style="border: none;">
-                    <button id="switch-resource-total" class="button-switch-display" style="background-color: #c8f5e0;"
+                    <button id="switch-resource-total" class="button-switch-display display-string"
+                        data-id="button-switchtotalneeded" style="background-color: #c8f5e0;"
                         onclick="switchResourceDisplay('Total')"></button>
                 </div>
                 <div class="resource-box" style="border: none;">
-                    <button id="switch-resource-leftover" class="button-switch-display" style="background-color: #f5efc8;"
+                    <button id="switch-resource-leftover" class="button-switch-display display-string"
+                        data-id="button-switchleftover" style="background-color: #f5efc8;"
                         onclick="switchResourceDisplay('Leftover')"></button>
                 </div>
                 <div class="resource-box" style="border: none;">
-                    <button id="set-level-cap" class="modal-button" style="background-color: rgb(210, 210, 210)"
-                        onclick="PickLevelCalcsCap()">Lvl Cap: </button>
+                    <button id="set-level-cap" class="modal-button display-string" data-id="button-levelcapprefix"
+                        style="background-color: rgb(210, 210, 210)" onclick="PickLevelCalcsCap()"></button>
                 </div>
                 <div class="resource-box">
                     <p id="current-resource-display" style="align-self: center; font-size: 1.75em; text-align: center;">
@@ -640,26 +667,31 @@
                     <p id="GearXp" class="misc-gear no-input" style="align-self: center; margin-left: 10px;"></p>
                 </div>
                 <div class="resource-box" style="border: none;">
-                    <button id="switch-gear-owned" class="button-switch-display" style="background-color: #c8e6f5"
+                    <button id="switch-gear-owned" class="button-switch-display display-string"
+                        data-id="button-switchowned" style="background-color: #c8e6f5"
                         onclick="switchGearDisplay('Owned')"></button>
                 </div>
                 <div class="resource-box" style="border: none; display: none;">
-                    <button id="switch-gear-remaining" class="button-switch-display" style="background-color: #f5c8dd;"
+                    <button id="switch-gear-remaining" class="button-switch-display display-string"
+                        data-id="button-switchremainingneeded" style="background-color: #f5c8dd;"
                         onclick="switchGearDisplay('Remaining')"></button>
                 </div>
                 <div class="resource-box" style="border: none;">
-                    <button id="switch-gear-total" class="button-switch-display" style="background-color: #c8f5e0;"
+                    <button id="switch-gear-total" class="button-switch-display display-string"
+                        data-id="button-switchtotalneeded" style="background-color: #c8f5e0;"
                         onclick="switchGearDisplay('Total')"></button>
                 </div>
                 <div class="resource-box" style="border: none;">
-                    <button id="switch-gear-leftover" class="button-switch-display" style="background-color: #f5efc8;"
+                    <button id="switch-gear-leftover" class="button-switch-display display-string"
+                        data-id="button-switchleftover" style="background-color: #f5efc8;"
                         onclick="switchGearDisplay('Leftover')"></button>
                 </div>
                 <div class="resource-box">
                     <p id="current-gear-display" style="align-self: center; font-size: 1.75em; text-align: center;"></p>
                 </div>
                 <div class="resource-box" style="flex-direction: column;">
-                    <p id="normal-campaign-multi" style="text-align: center; font-size: 1.5em">Normal Mission</p>
+                    <p id="normal-campaign-multi" style="text-align: center; font-size: 1.5em" class="display-string"
+                        data-id="label-normalmission"></p>
                     <div style="display: flex; justify-content: center; font-size: 1.25em">
                         <input type="radio" id="multiplier_1x" name="campaign_multiplier" onchange="SetMultiplier(1)"
                             value="1" checked>
@@ -690,11 +722,12 @@
                                 <th></th>
                                 <th></th>
                                 <th></th>
-                                <th style="padding-right: 10px;">Min XP</th>
-                                <th>Bonus XP</th>
+                                <th style="padding-right: 10px;" class="display-string" data-id="label-gearminxp"></th>
+                                <th class="display-string" data-id="label-gearbonusxp"></th>
                             </tr>
                             <tr id="row-Spring">
-                                <td style="padding-left: 8px;" id="label-spring">Spring</td>
+                                <td style="padding-left: 8px;" id="label-spring" class="display-string"
+                                    data-id="gearxp-spring"></td>
                                 <td class="empty-resource editable">
                                     <img draggable="false" class="ue-icon" src="icons/LevelPart/Spring_4.png">
                                     <p class="ue-count-text" id="T4_Spring"></p>
@@ -723,7 +756,8 @@
                                 </td>
                             </tr>
                             <tr id="row-Hammer" style="background-color: #84848436;">
-                                <td style="padding-left: 8px;" id="label-hammer">Hammer</td>
+                                <td style="padding-left: 8px;" id="label-hammer" class="display-string"
+                                    data-id="gearxp-hammer"></td>
                                 <td class="empty-resource editable">
                                     <img draggable="false" class="ue-icon" src="icons/LevelPart/Hammer_4.png">
                                     <p class="ue-count-text" id="T4_Hammer"></p>
@@ -752,7 +786,8 @@
                                 </td>
                             </tr>
                             <tr id="row-Barrel">
-                                <td style="padding-left: 8px;" id="label-barrel">Barrel</td>
+                                <td style="padding-left: 8px;" id="label-barrel" class="display-string"
+                                    data-id="gearxp-barrel"></td>
                                 <td class="empty-resource editable">
                                     <img draggable="false" class="ue-icon" src="icons/LevelPart/Barrel_4.png">
                                     <p class="ue-count-text" id="T4_Barrel"></p>
@@ -781,7 +816,8 @@
                                 </td>
                             </tr>
                             <tr id="row-Needle" style="background-color: #84848436;">
-                                <td style="padding-left: 8px;" id="label-needle">Needle</td>
+                                <td style="padding-left: 8px;" id="label-needle" class="display-string"
+                                    data-id="gearxp-needle"></td>
                                 <td class="empty-resource editable">
                                     <img draggable="false" class="ue-icon" src="icons/LevelPart/Needle_4.png">
                                     <p class="ue-count-text" id="T4_Needle"></p>
@@ -806,11 +842,11 @@
                                     <p id="needle-min"></p>
                                 </td>
                                 <td>
-                                    <p id="needle-bonus">N/A</p>
+                                    <p id="needle-bonus" class="display-string" data-id="label-n/a"></p>
                                 </td>
                             </tr>
                             <tr id="row-Total">
-                                <td style="padding-left: 8px;">Total</td>
+                                <td style="padding-left: 8px;" class="display-string" data-id="label-total"></td>
                                 <td class="empty-resource">
                                 </td>
                                 <td class="empty-resource">
@@ -834,10 +870,9 @@
                         <tbody>
                             <tr id="row-ue-needed-Header">
                                 <th></th>
-                                <th>Owned XP
-                                    (incl Bonus)</th>
-                                <th>Total Needed XP</th>
-                                <th>Remaining Needed XP</th>
+                                <th class="display-string" data-id="label-gearownedxp"></th>
+                                <th class="display-string" data-id="label-geartotalneededxp"></th>
+                                <th class="display-string" data-id="label-gearremainingneededxp"></th>
                             </tr>
                             <tr id="row-Spring-needed">
                                 <td>
@@ -900,9 +935,9 @@
                             </tr>
                             <tr>
                                 <th></th>
-                                <th>Remaining Owned XP</th>
-                                <th>Total Remaining Needed XP</th>
-                                <th>Remaining Needed XP</th>
+                                <th class="display-string" data-id="label-gearremainingownedxp"></th>
+                                <th class="display-string" data-id="label-geartotalremainingxp"></th>
+                                <th class="display-string" data-id="label-gearremainingneededxp"></th>
                             </tr>
                             <tr id="row-All-needed">
                                 <td>
@@ -927,35 +962,44 @@
     <div class="modal" id="transferModal">
         <div class="modal-content-wrapper" style="max-height: 80%; overflow-y: auto; max-width: 400px;">
             <div class="transfer-modal-input-wrapper">
-                <p>Username</p>
+                <p class="display-string" data-id="saving-username"></p>
                 <input id="input-transfer-username" class="transfer-modal-input" oninput="updateLoginButtons()">
             </div>
             <div class="transfer-modal-input-wrapper">
-                <p>Auth Key</p>
+                <p class="display-string" data-id="saving-authkey"></p>
                 <input id="input-transfer-authkey" class="transfer-modal-input" oninput="updateLoginButtons()">
             </div>
             <div id="transfer-login-wrapper" class="transfer-modal-button-wrapper" style="padding-top: 20px;">
-                <button id="transfer-login-button" class="transfer-modal-button"
-                    style="left: 20px; background-color: #6d7087;" onclick="loginClick()">Login</button>
-                <button id="transfer-register-button" class="transfer-modal-button"
-                    style="right: 20px; background-color: #876d6d;" onclick="registerClick()">Register</button>
+                <button id="transfer-login-button" class="transfer-modal-button display-string"
+                    style="left: 20px; background-color: #6d7087;" onclick="loginClick()"
+                    data-id="saving-loginbutton"></button>
+                <button id="transfer-register-button" class="transfer-modal-button display-string"
+                    style="right: 20px; background-color: #876d6d;" onclick="registerClick()"
+                    data-id="saving-registerbutton"></button>
             </div>
             <div class="transfer-modal-button-wrapper">
-                <button id="transfer-save-button" class="transfer-modal-button"
-                    style="left: 20px; background-color: #27c4ae94;" onclick="saveClick()">Save</button>
-                <button id="transfer-load-button" class="transfer-modal-button"
-                    style="right: 20px; background-color: #dc415e94;" onclick="loadClick()">Load</button>
+                <button id="transfer-save-button" class="transfer-modal-button display-string"
+                    style="left: 20px; background-color: #27c4ae94;" onclick="saveClick()"
+                    data-id="saving-savebutton"></button>
+                <button id="transfer-load-button" class="transfer-modal-button display-string"
+                    style="right: 20px; background-color: #dc415e94;" onclick="loadClick()"
+                    data-id="saving-loadbutton"></button>
             </div>
             <div class="transfer-modal-button-wrapper" style="border-top: 2px solid gainsboro; padding-top: 10px;">
-                <button class="transfer-modal-button" onclick="displayExportData()"
-                    style="left: 20px; background-color: #2778c494;">Export</button>
-                <button class="transfer-modal-button" onclick="getImportData()"
-                    style="right: 20px; background-color: #dc964194;">Import</button>
+                <button class="transfer-modal-button display-string" onclick="displayExportData()"
+                    style="left: 20px; background-color: #2778c494;" data-id="saving-exportbutton"></button>
+                <button class="transfer-modal-button display-string" onclick="getImportData()"
+                    style="right: 20px; background-color: #dc964194;" data-id="saving-importbutton"></button>
             </div>
         </div>
     </div>
     <div id="popup-wrapper" class="show-mat-chars" style="display: none;"></div>
     <div id="stages-popup-wrapper" class="show-stage-runs" style="display: none;"></div>
+    <div id="background-blur-container" style="position: fixed; width: 100%; height: 100%; left: 0; top: 0; z-index: 11; display: none;">
+        <div id="popup-screenshot"></div>
+        <div id="background-blur" onclick="ClearScreenshot()"></div>
+        <p id="text-creating-image">Creating image...</p>
+    </div>
     <datalist id="char-options">
     </datalist>
     <div class="footer-wrapper">
@@ -963,17 +1007,17 @@
             <div class="footer-buttons-wrapper">
                 <div class="footer-button" onclick="openResourceModal()" style="display: flex; align-items: center;">
                     <img draggable="false" src="icons/UI/resourceBtn.png">
-                    <p>Resources</p>
+                    <p class="display-string" data-id="footer-resources"></p>
                 </div>
                 <div class="footer-button" onclick="openGearModal()" style="display: flex; align-items: center;">
                     <img draggable="false" src="icons/Gear/T6_Badge.png">
-                    <p>Gear</p>
+                    <p class="display-string" data-id="footer-gear"></p>
                 </div>
                 <div class="footer-button" onclick="teamsToggle()">
-                    <p id="teamsEditorButton">Teams Editor</p>
+                    <p id="teamsEditorButton" class="display-string" data-id="footer-teamseditor"></p>
                 </div>
                 <div class="footer-button" onclick="openTransferModal()">
-                    <p>Transfer</p>
+                    <p class="display-string" data-id="footer-transfer"></p>
                 </div>
             </div>
         </div>

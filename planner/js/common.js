@@ -4,6 +4,8 @@ let inputMap = new Map();
 let preInput;
 const defaultGroups = { "Binah": [], "Chesed": [], "Hod": [], "ShiroKuro": [], "Perorodzilla": [], "Goz": [], "Hieronymous": [], "Kaiten": [] }
 let lvlMAX = 85;
+const languages = ["En", "Kr", "Jp", "Tw", "Th"];
+let language = "En";
 
 let aprilFools = false;
 
@@ -570,4 +572,57 @@ function ShortenNumber(num, decimalPlaces = 1, unitLetters = ['', 'K', 'M', 'B',
     const result = num / Math.pow(10, units * 3);
     const truncatedResult = result.toFixed(decimalPlaces).replace(/\.?0+$/, '');
     return truncatedResult + unitLetters[units];
+}
+
+function GetLanguageString(dataId) {
+
+    if (language_strings[dataId]) {
+
+        //return "Done"
+        let languageUpper = language.toUpperCase();
+
+        if (language_strings[dataId][languageUpper]) {
+            return language_strings[dataId][languageUpper];
+        }
+        else {
+            return language_strings[dataId]["EN"];
+        }
+    }
+    else {
+        return "Undefined"
+    }
+}
+
+function buildLanguages() {
+
+    let selectElement = document.getElementById('languages');
+
+    for (let i = 0; i < languages.length; i++) {
+
+        if (languages[i] == "Tw") {
+            addOption(selectElement, "CN", "Tw");
+            continue;
+        }
+        addOption(selectElement, languages[i].toUpperCase(), languages[i]);
+    }
+}
+
+function addOption(selectElement, text, value) {
+    let newGroupOption = document.createElement('option');
+    newGroupOption.text = text;
+    newGroupOption.value = value;
+    selectElement.add(newGroupOption);
+}
+
+function languageChanged() {
+
+    let selectElement = document.getElementById('languages');
+    selectElement.blur();
+
+    let languageSet = selectElement.value;
+    data.language = languageSet;
+
+    localStorage.setItem("save-data", JSON.stringify(data));
+
+    location.reload();
 }

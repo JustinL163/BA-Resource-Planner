@@ -23,8 +23,8 @@
     </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/styles.css?2">
-    <link rel="stylesheet" href="css/event-planner.css?9">
+    <link rel="stylesheet" href="css/styles.css?3">
+    <link rel="stylesheet" href="css/event-planner.css?10">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
@@ -35,8 +35,8 @@
     <link rel="stylesheet" href="packages/tippyjs/light.css" />
     <script src="packages/mathjs/math.js"></script>
     <script src="js/config.js?15"></script>
-    <script src="js/common.js?5"></script>
-    <script src="js/eventPlanner.js?18"></script>
+    <script src="js/common.js?6"></script>
+    <script src="js/eventPlanner.js?19"></script>
     <title>Event Planner</title>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://justin163.com/planner/events">
@@ -55,10 +55,11 @@
         <span class="logo">Justin163</span>
         <img src="icons/UI/hamburger.svg" id="hamburger" onclick="hamburgToggle()">
         <ul class="nav-list">
-            <li><a href="index.html">Resource Planner</a></li>
-            <li><a class="active">Event Planner</a></li>
-            <li><a href="changelog.html">Changelog</a></li>
-            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="index.html" class="display-string" data-id="page-resource-planner"></a></li>
+            <li><a class="active display-string" data-id="page-event-planner"></a></li>
+            <li><a href="changelog.html" class="display-string" data-id="page-changelog"></a></li>
+            <li><a href="privacy.html" class="display-string" data-id="page-privacy"></a></li>
+            <li><a href="credit.html" class="display-string" data-id="page-credit"></a></li>
         </ul>
         <div class="nav-right">
             <img id="image-style-button" src="icons/UI/ShirokoIcon.png" onclick="ToggleImageStyle()">
@@ -68,73 +69,85 @@
     </nav>
     <div id="mobile-links-wrapper">
         <ul class="mobile-links">
-            <li><a href="index.html">Resource Planner</a></li>
-            <li><a class="active">Event Planner</a></li>
-            <li><a href="changelog.html">Changelog</a></li>
-            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="index.html" class="display-string" data-id="page-resource-planner"></a></li>
+            <li><a class="active display-string" data-id="page-event-planner"></a></li>
+            <li><a href="changelog.html" class="display-string" data-id="page-changelog"></a></li>
+            <li><a href="privacy.html" class="display-string" data-id="page-privacy"></a></li>
+            <li><a href="credit.html" class="display-string" data-id="page-credit"></a></li>
         </ul>
     </div>
     <div id="body-content-container">
         <div id="event-list-button" onclick="ToggleEventList()">
             <img src="icons/UI/hamburger.svg">
-            <p id="event-list-button-label">Event List</p>
+            <p id="event-list-button-label" class="display-string" data-id="label-eventlist"></p>
         </div>
         <div id="events-list"></div>
         <div id="event-content-container">
             <div id="event-tab-menu">
-                <div id="tab-Targets" class="event-tab-button" onclick="EventTabClicked('Targets')">Targets</div>
-                <div id="tab-Energy" class="event-tab-button" onclick="EventTabClicked('Energy')">Energy</div>
-                <div id="tab-Bonus" class="event-tab-button" onclick="EventTabClicked('Bonus')">Bonus</div>
-                <div id="tab-Shop" class="event-tab-button" onclick="EventTabClicked('Shop')">Shop</div>
-                <div id="tab-Stages" class="event-tab-button" onclick="EventTabClicked('Stages')">Stages</div>
-                <div id="tab-Lessons" class="event-tab-button" onclick="EventTabClicked('Lessons')"
-                    style="display: none;">Lessons</div>
-                <div id="tab-Points" class="event-tab-button" onclick="EventTabClicked('Points')"
-                    style="display: none;">Point Rewards</div>
-                <div id="tab-Boxes" class="event-tab-button" onclick="EventTabClicked('Boxes')" style="display: none;">
-                    Boxes</div>
-                <div id="tab-Cards" class="event-tab-button" onclick="EventTabClicked('Cards')" style="display: none;">
-                    Cards</div>
+                <div id="tab-Targets" class="event-tab-button display-string" onclick="EventTabClicked('Targets')"
+                    data-id="label-tabtargets"></div>
+                <div id="tab-Energy" class="event-tab-button display-string" onclick="EventTabClicked('Energy')"
+                    data-id="label-tabenergy"></div>
+                <div id="tab-Bonus" class="event-tab-button display-string" onclick="EventTabClicked('Bonus')"
+                    data-id="label-tabbonus"></div>
+                <div id="tab-Shop" class="event-tab-button display-string" onclick="EventTabClicked('Shop')"
+                    data-id="label-tabshop"></div>
+                <div id="tab-Stages" class="event-tab-button display-string" onclick="EventTabClicked('Stages')"
+                    data-id="label-tabstages"></div>
+                <div id="tab-Lessons" class="event-tab-button display-string" onclick="EventTabClicked('Lessons')"
+                    style="display: none;" data-id="label-tablessons"></div>
+                <div id="tab-Points" class="event-tab-button display-string" onclick="EventTabClicked('Points')"
+                    style="display: none;" data-id="label-tabpointrewards"></div>
+                <div id="tab-Boxes" class="event-tab-button display-string" onclick="EventTabClicked('Boxes')"
+                    style="display: none;" data-id="label-tabboxes"></div>
+                <div id="tab-Cards" class="event-tab-button display-string" onclick="EventTabClicked('Cards')"
+                    style="display: none;" data-id="label-tabcards"></div>
             </div>
             <div id="info-notifications">
                 <div id="notification-bonus" style="display: none;">
                     <img src="icons/UI/x-mark-128.png">
-                    <p class="notification-text">No bonus chars set</p>
-                    <p class="notification-button" onclick="EventTabClicked('Bonus')"><u>Check Now</u></p>
+                    <p class="notification-text display-string" data-id="label-nobonuschars"></p>
+                    <p class="notification-button" onclick="EventTabClicked('Bonus')"><u class="display-string"
+                            data-id="label-checknow"></u></p>
                 </div>
                 <div id="notification-energy" style="display: none;">
                     <img src="icons/UI/x-mark-128.png">
-                    <p class="notification-text">No energy sources set</p>
-                    <p class="notification-button" onclick="EventTabClicked('Energy')"><u>Check Now</u></p>
+                    <p class="notification-text display-string" data-id="label-noenergyset"></p>
+                    <p class="notification-button" onclick="EventTabClicked('Energy')"><u class="display-string"
+                            data-id="label-checknow"></u></p>
                     <p style="margin-left: 0.5em;">or</p>
-                    <p class="notification-button" onclick="DismissNotification('Energy')"><u>Dismiss</u></p>
+                    <p class="notification-button" onclick="DismissNotification('Energy')"><u class="display-string"
+                            data-id="label-dismiss"></u></p>
                 </div>
                 <div id="notification-optimisation" style="display: none;">
                     <img src="icons/UI/x-mark-128.png">
-                    <p class="notification-text">No optimisation target set</p>
-                    <p class="notification-button" onclick="EventTabClicked('Targets')"><u>Check Now</u></p>
+                    <p class="notification-text display-string" data-id="label-nooptitarget"></p>
+                    <p class="notification-button" onclick="EventTabClicked('Targets')"><u class="display-string"
+                            data-id="label-checknow"></u></p>
                 </div>
                 <div id="notification-lessons" style="display: none;">
                     <img src="icons/UI/x-mark-128.png">
-                    <p class="notification-text">Event points not all spent on lessons</p>
-                    <p class="notification-button" onclick="EventTabClicked('Lessons')"><u>Check Now</u></p>
+                    <p class="notification-text display-string" data-id="label-eventpointsunspent"></p>
+                    <p class="notification-button" onclick="EventTabClicked('Lessons')"><u class="display-string"
+                            data-id="label-checknow"></u></p>
                 </div>
                 <div id="notification-cards" style="display: none;">
                     <img src="icons/UI/x-mark-128.png">
-                    <p class="notification-text">Card gacha not simulated after pull currency changed</p>
-                    <p class="notification-button" onclick="EventTabClicked('Cards')"><u>Check Now</u></p>
+                    <p class="notification-text display-string" data-id="label-cardgachaunsimulated"></p>
+                    <p class="notification-button" onclick="EventTabClicked('Cards')"><u class="display-string"
+                            data-id="label-checknow"></u></p>
                 </div>
             </div>
             <div class="event-tab" id="Targets-tab">
                 <div id="optimisation-approaches-container">
-                    <div class="optimise-approach-button" id="tab-opti-Shop" onclick="SetOptimise('Shop')">Min Clear
-                    </div>
-                    <div class="optimise-approach-button" id="tab-opti-Materials" onclick="SetOptimise('Materials')">
-                        Materials</div>
-                    <div class="optimise-approach-button" id="tab-opti-Currency" onclick="SetOptimise('Currency')">
-                        Currency</div>
-                    <div class="optimise-approach-button" id="tab-opti-Manual" onclick="SetOptimise('Manual')">Manual
-                    </div>
+                    <div class="optimise-approach-button display-string" id="tab-opti-Shop"
+                        onclick="SetOptimise('Shop')" data-id="label-optishop"></div>
+                    <div class="optimise-approach-button display-string" id="tab-opti-Materials"
+                        onclick="SetOptimise('Materials')" data-id="label-optimaterials"></div>
+                    <div class="optimise-approach-button display-string" id="tab-opti-Currency"
+                        onclick="SetOptimise('Currency')" data-id="label-opticurrency"></div>
+                    <div class="optimise-approach-button display-string" id="tab-opti-Manual"
+                        onclick="SetOptimise('Manual')" data-id="label-optimanual"></div>
                 </div>
                 <div id="optimisation-settings-container"></div>
             </div>
@@ -196,13 +209,14 @@
                         <p id="energy-total">0</p>
                     </div>
                 </div>
-                <p id="disclaimer-event-energy">Energy subsections are showing amount generated for the whole event
-                    length</p>
+                <p id="disclaimer-event-energy" class="display-string" data-id="label-energyinfo"></p>
             </div>
             <div class="event-tab" id="Bonus-tab">
                 <div id="bonus-chars-header">
-                    <p style="margin-left: 1em; margin-bottom: 1em;">Click character to toggle</p>
-                    <p id="bonus-chars-all-button" onclick="BonusCharsEnableAll()">Enable All</p>
+                    <p style="margin-left: 1em; margin-bottom: 1em;" class="display-string"
+                        data-id="label-bonuschartoggleinfo"></p>
+                    <p id="bonus-chars-all-button" onclick="BonusCharsEnableAll()" class="display-string"
+                        data-id="button-enableall"></p>
                 </div>
                 <div id="bonus-chars-container"></div>
                 <div id="currency-bonuses"></div>
@@ -215,7 +229,7 @@
             <div class="event-tab" id="Stages-tab">
                 <div id="stages-table-container"></div>
                 <div id="stage-groups-container" style="display: none;">
-                    <p style="margin-left: 1em;">Enabled:</p>
+                    <p style="margin-left: 1em;" class="display-string" data-id="label-enabled"></p>
                     <input type="checkbox" id="include-stage-group-1" name="include-stage-group-1"
                         onclick="StageGroupsStatusUpdate()">
                     <label id="label-stage-group-1" for="include-stage-group-1">Stages 1-4</label>
@@ -228,39 +242,42 @@
                 </div>
                 <div id="temp-disclaimer" style="margin-bottom: 1em; display: none;">
                     <p style="margin-left: 1em;">It takes about 750 bottles per lap, after about lap 30 (~22,500
-                        bottles) the rewards plateau a bit, after lap 50 (~37,500 bottles) the rewards plateau a lot.</p>
+                        bottles) the rewards plateau a bit, after lap 50 (~37,500 bottles) the rewards plateau a lot.
+                    </p>
                     <p style="margin-left: 1em;">I've set the min clear amount at 15k bottles (~20 laps) as I didn't
                         have time to make a proper simulation for this event</p>
-                    <p style="margin-left: 1em; overflow-wrap: anywhere;">Can use the following sheet by VGrunner12#2355 to check approx rewards
+                    <p style="margin-left: 1em; overflow-wrap: anywhere;">Can use the following sheet by VGrunner12#2355
+                        to check approx rewards
                         from the laps
                         https://docs.google.com/spreadsheets/d/1Hb8n7gAlhqHZBwyq8sc3QZNyKlUk7bAhcoQv04kRHeE/edit#gid=0
                     </p>
                 </div>
                 <div id="intial-clear-container">
-                    <p style="margin-left: 1em;">Intial Clear (included in total below) (also includes story stage
-                        clears)</p>
+                    <p style="margin-left: 1em;" class="display-string" data-id="label-initialclearinfo"></p>
                     <div id="initial-clear-display-container"></div>
                 </div>
             </div>
             <div class="event-tab" id="Lessons-tab">
                 <div id="lessons-header-container">
-                    <p id="lesson-points-remaining-info">Remaining<br>Points:</p>
+                    <p id="lesson-points-remaining-info" class="display-string" data-id="label-remainingpoints"></p>
                     <div id="lesson-points-remaining-container">
                         <img src="icons/EventIcon/CurrencyIcon/Event_Point.png">
                         <p id="lesson-points-remaining"></p>
                     </div>
-                    <p id="lesson-points-rankup-info">Points to<br>Rank Up:</p>
+                    <p id="lesson-points-rankup-info" class="display-string" data-id="label-pointsrankup"></p>
                     <div id="lesson-points-rankup-container">
                         <img src="icons/EventIcon/CurrencyIcon/Event_Point.png">
                         <p id="lesson-points-rankup"></p>
                     </div>
-                    <p id="reset-lessons-button" onclick="ResetLessons()">Reset Lessons</p>
+                    <p id="reset-lessons-button" onclick="ResetLessons()" class="display-string"
+                        data-id="label-resetlessons"></p>
                 </div>
                 <div id="lessons-container"></div>
             </div>
             <div class="event-tab" id="Points-tab">
                 <div id="points-header">
-                    <p style="margin-left: 1em; margin-bottom: 1em;">Click point tier to set as minimum target</p>
+                    <p style="margin-left: 1em; margin-bottom: 1em;" class="display-string"
+                        data-id="label-setpointtier"></p>
                 </div>
                 <div id="points-table-container"></div>
             </div>
@@ -270,48 +287,49 @@
             </div>
             <div class="event-tab" id="Cards-tab">
                 <div id="cards-sd-container">
-                    <p style="margin-right: 1em;">Rng Adjust:</p>
+                    <p style="margin-right: 1em;" class="display-string" data-id="label-rngadjust"></p>
                     <input type="range" min="-2" max="1" value="0" step="0.5" oninput="SDSliderChanged()"
                         onchange="SDSliderSet()" id="sd-slider">
-                    <p id="display-standard-deviation">Avg</p>
-                    <button id="gacha-sim-button" onclick="SimButtonClicked()">Simulate Gacha</button>
+                    <p id="display-standard-deviation" class="display-string" data-id="label-stdinfo"></p>
+                    <button id="gacha-sim-button" onclick="SimButtonClicked()" class="display-string"
+                        data-id="button-simulategacha"></button>
                 </div>
                 <div style="margin-left: 1em;">Currently only simulating by pulling first card and resetting, other pull
                     methods will be available later (but reward difference
                     between first pull and pull to SR methods are negligible so doesn't change much)</div>
                 <div id="cards-tabs">
-                    <div class="cards-rarity-tab" id="tab-cards-ur" onclick="GenerateCardsRarityTable(['UR'])">UR</div>
-                    <div class="cards-rarity-tab" id="tab-cards-sr-r" onclick="GenerateCardsRarityTable(['SR', 'R_'])">
-                        SR / R
-                    </div>
-                    <div class="cards-rarity-tab" id="tab-cards-n" onclick="GenerateCardsRarityTable(['N_'])">N</div>
-                    <div class="cards-rarity-tab" onclick="HideCards()">Hide Cards</div>
+                    <div class="cards-rarity-tab display-string" id="tab-cards-ur"
+                        onclick="GenerateCardsRarityTable(['UR'])" data-id="label-rarityur"></div>
+                    <div class="cards-rarity-tab display-string" id="tab-cards-sr-r"
+                        onclick="GenerateCardsRarityTable(['SR', 'R_'])" data-id="label-raritysr/r"></div>
+                    <div class="cards-rarity-tab display-string" id="tab-cards-n"
+                        onclick="GenerateCardsRarityTable(['N_'])" data-id="label-rarityn"></div>
+                    <div class="cards-rarity-tab display-string" onclick="HideCards()" data-id="label-hidecards"></div>
                 </div>
                 <div id="cards-table-container"></div>
             </div>
             <div id="reward-display-options-container">
-                <p style="margin-left: 1em;">Display:</p>
+                <p style="margin-left: 1em;" class="display-string" data-id="label-display"></p>
                 <input type="checkbox" id="include-shop-purchases" name="include-shop-purchases"
                     onclick="DisplayOptionClicked('ShopPurchases')">
-                <label id="label-shop-purchases" for="include-shop-purchases">Shop Purchases</label>
+                <label id="label-shop-purchases" for="include-shop-purchases" class="display-string" data-id="label-includeshop"></label>
                 <input type="checkbox" id="include-point-rewards" name="include-point-rewards"
                     onclick="DisplayOptionClicked('PointRewards')" style="display: none;">
-                <label id="label-point-rewards" for="include-point-rewards" style="display: none;">Point Rewards</label>
+                <label id="label-point-rewards" for="include-point-rewards" style="display: none;" class="display-string" data-id="label-includepointrewards"></label>
                 <input type="checkbox" id="include-box-rewards" name="include-box-rewards"
                     onclick="DisplayOptionClicked('BoxRewards')" style="display: none;">
-                <label id="label-box-rewards" for="include-box-rewards" style="display: none;">Box Rewards</label>
+                <label id="label-box-rewards" for="include-box-rewards" style="display: none;" class="display-string" data-id="label-includeboxes"></label>
                 <input type="checkbox" id="include-lesson-rewards" name="include-lesson-rewards"
                     onclick="DisplayOptionClicked('LessonRewards')" style="display: none;">
-                <label id="label-lesson-rewards" for="include-lesson-rewards" style="display: none;">Lesson
-                    Rewards</label>
+                <label id="label-lesson-rewards" for="include-lesson-rewards" style="display: none;" class="display-string" data-id="label-includelessons"></label>
                 <input type="checkbox" id="include-card-rewards" name="include-card-rewards"
                     onclick="DisplayOptionClicked('CardRewards')" style="display: none;">
-                <label id="label-card-rewards" for="include-card-rewards" style="display: none;">Card Rewards</label>
+                <label id="label-card-rewards" for="include-card-rewards" style="display: none;" class="display-string" data-id="label-includecards"></label>
             </div>
             <div id="disclaimer-text"></div>
             <div id="box-info-text"></div>
             <div id="rewards-container"></div>
-            <div id="info-select-event">Select an Event</div>
+            <div id="info-select-event" class="display-string" data-id="label-selectevent"></div>
         </div>
     </div>
 </body>

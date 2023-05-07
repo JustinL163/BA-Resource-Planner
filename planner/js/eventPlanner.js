@@ -2,7 +2,7 @@ let data;
 let events_data, event_data;
 let saveTime = 0;
 
-let event_config, charlist, event_misc;
+let event_config, charlist, event_misc, language_strings;
 let enabledBonusUnits = [];
 let currencyBonuses = {};
 let currencyNeededPre = {};
@@ -61,15 +61,20 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/charlist.json?21').done(function (json) {
+    $.getJSON('json/charlist.json?23').done(function (json) {
         charlist = json;
+        checkResources();
+    });
+
+    $.getJSON('json/strings.json?1').done(function (json) {
+        language_strings = json;
         checkResources();
     });
 }
 
 function checkResources() {
 
-    if (event_config && event_misc && charlist) {
+    if (event_config && event_misc && charlist && language_strings) {
 
         data = tryParseJSON(localStorage.getItem('save-data'));
 
@@ -78,6 +83,25 @@ function checkResources() {
         }
         else {
             events_data = {};
+        }
+
+        if (data?.language) {
+            language = data.language;
+            if (language == "EN") {
+                language = "En";
+            }
+            else if (language == "KR") {
+                language = "Kr";
+            }
+            else if (language == "JP") {
+                language = "Jp";
+            }
+            else if (language == "CN") {
+                language = "Tw";
+            }
+            else if (language == "TH") {
+                language = "Th";
+            }
         }
 
         init();
@@ -106,6 +130,9 @@ function init() {
         document.getElementById('image-style-button').src = "icons/UI/ShirokoScribble.png";
     }
 
+    buildLanguages();
+    document.getElementById('languages').value = language;
+
     GenerateEventsList();
 
     setInterval(() => {
@@ -129,6 +156,15 @@ function init() {
     document.getElementById('include-point-rewards').checked = false;
     document.getElementById('include-box-rewards').checked = false;
     document.getElementById('include-lesson-rewards').checked = false;
+
+    let textElements = document.getElementsByClassName('display-string');
+
+    for (let i = 0; i < textElements.length; i++) {
+
+        let dataId = textElements[i].getAttribute('data-id');
+
+        textElements[i].innerText = GetLanguageString(dataId);
+    }
 }
 
 async function saveToLocalStorage(notify) {
@@ -205,21 +241,16 @@ function InitTippies() {
         '#energy-source-cafe', '#energy-source-pack', '#energy-sources-total', '#label-shop-purchases', '#label-point-rewards', '#label-box-rewards',
         '#label-lesson-rewards', '#tab-opti-Shop', '#tab-opti-Materials', '#tab-opti-Currency', '#tab-opti-Manual']
 
-    let tippieMsgs = ['Set optimisation targets', 'Adjust available energy', 'Toggle bonus currency characters', 'Pick shop purchases',
-        'See calculated optimal runs, or set manually', 'View event point reward tiers', 'View event gacha box contents', 'Natural energy regen (10/h)',
-        'Energy from daily tasks (150/d)', 'Open club energy (10/d)', 'Energy from weekly tasks', 'Arona 10 day login cycle', 'Set daily pyro refills',
-        'Set daily pvp refills', 'Set cafe level', 'Using bi-weekly energy pack', 'Available energy for event', 'Display rewards purchased from shops',
-        'Display rewards from event point tiers', 'Display rewards from event gacha boxes', 'Display rewards from event lessons',
-        'Use minimum energy possible to clear picked shop purchases and event point tiers',
-        'Select stage drop material(s) to target, equally weighted. (Makes sure to at least clear picked shops and point tiers)',
-        'Farm as many of a specific event currency as possible. (Makes sure to at least clear picked shops and point tiers)',
-        "Sets the inputs in Stages tab to editable for manual input."]
+    let tippieMsgs = ['tooltip-targets', 'tooltip-energy', 'tooltip-bonus', 'tooltip-shop', 'tooltip-stages', 'tooltip-points', 'tooltip-boxes',
+        'tooltip-energynatural', 'tooltip-energydailies', 'tooltip-energyclub', 'tooltip-energyweeklies', 'tooltip-energyarona', 'tooltip-energypyro',
+        'tooltip-energypvp', 'tooltip-energycafe', 'tooltip-energypack', 'tooltip-energytotal', 'tooltip-includeshop', 'tooltip-includepointrewards',
+        'tooltip-includebox', 'tooltip-includelessons', 'tooltip-optishop', 'tooltip-optimaterials', 'tooltip-opticurrency', "tooltip-optimanual"]
 
     //let tippieTimeouts = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 6, 10, 10, 10]
 
     for (let i = 0; i < tippieIds.length; i++) {
         tippy(tippieIds[i], {
-            content: tippieMsgs[i],
+            content: GetLanguageString(tippieMsgs[i]),
             theme: 'light'//,
             // onShow(instance) {
             //     setTimeout(() => {
@@ -1045,13 +1076,13 @@ function GenerateShopContent(currency) {
             if (shop[i].limited) {
 
                 shopItemTippies.push(tippy(('#info-' + shop[i].id), {
-                    content: "This furniture is event limited",
+                    content: GetLanguageString("tooltip-furniturelimited"),
                     theme: 'light'
                 })[0]);
             }
             else {
                 shopItemTippies.push(tippy(('#info-' + shop[i].id), {
-                    content: "This furniture is not limited",
+                    content: GetLanguageString("tooltip-furniturecraftable"),
                     theme: 'light'
                 })[0]);
             }
@@ -1387,7 +1418,8 @@ function GenerateStagesTable() {
 
     let tableHeadRow = document.createElement('tr');
 
-    CreateTableRowCells(tableHeadRow, ["Quest", "Energy", "Runs", "Drops"], 'th');
+    CreateTableRowCells(tableHeadRow, [GetLanguageString("label-headerquest"), GetLanguageString("label-headerenergy"), GetLanguageString("label-headerruns"),
+    GetLanguageString("label-headerdrops")], 'th');
 
     tableHead.appendChild(tableHeadRow);
 
@@ -1770,7 +1802,7 @@ function GenerateMaterialSelections() {
     let optContainer = document.getElementById('optimisation-settings-container');
 
     let infoText = document.createElement('p');
-    infoText.innerText = "Click artifacts to toggle";
+    infoText.innerText = GetLanguageString("label-clicktotoggle");
     infoText.id = "artifact-toggle-info"
     optContainer.appendChild(infoText);
 
@@ -2883,11 +2915,11 @@ function GeneratePointsTable() {
 
     let tableContainer = document.getElementById('points-table-container');
 
-    let table1 = GetNewTable(["Points", "Rewards"]);
+    let table1 = GetNewTable([GetLanguageString("label-points"), GetLanguageString("label-rewards")]);
     let table1Body = table1.getElementsByTagName('tbody')[0];
-    let table2 = GetNewTable(["Points", "Rewards"]);
+    let table2 = GetNewTable([GetLanguageString("label-points"), GetLanguageString("label-rewards")]);
     let table2Body = table2.getElementsByTagName('tbody')[0];
-    let table3 = GetNewTable(["Points", "Rewards"]);
+    let table3 = GetNewTable([GetLanguageString("label-points"), GetLanguageString("label-rewards")]);
     let table3Body = table3.getElementsByTagName('tbody')[0];
 
     table1.style.borderCollapse = 'collapse';
@@ -3692,7 +3724,7 @@ function GenerateCardsRarityTable(rarity) {
 
     let tableHeadRow = document.createElement('tr');
 
-    CreateTableRowCells(tableHeadRow, ["Card", "Chance", "Drops"], 'th');
+    CreateTableRowCells(tableHeadRow, [GetLanguageString("label-card"), GetLanguageString("label-chance"), GetLanguageString("label-drops")], 'th');
 
     tableHead.appendChild(tableHeadRow);
 
