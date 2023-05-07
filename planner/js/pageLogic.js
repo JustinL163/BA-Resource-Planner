@@ -2202,7 +2202,7 @@ function handleGroupEditorClick(divId, type, target) {
 
 function removeTeam(teamDiv) {
 
-    let teamNum = parseInt(teamDiv.innerText.substring(5));
+    let teamNum = parseInt(teamDiv.parentElement.id.substring(4));
 
     let teamWrapper = document.getElementById("team" + teamNum);
 
@@ -2251,7 +2251,7 @@ function removeTeam(teamDiv) {
 
         let n = teamNum + subsequentTeam - 1;
         nextTeam.id = "team" + (teamNum + subsequentTeam - 1);
-        nextTeam.children[0].innerText = "Team " + (teamNum + subsequentTeam - 1);
+        nextTeam.children[0].innerText = GetLanguageString("label-teamnumprefix") + (teamNum + subsequentTeam - 1);
         for (let i = 0; i < 4; i++) {
 
             nextTeam.children[1].children[i].id = "team" + n + "-slot" + (i + 1);
