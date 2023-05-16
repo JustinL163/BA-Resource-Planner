@@ -103,7 +103,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?1').done(function (json) {
+    $.getJSON('json/strings.json?2').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -174,8 +174,17 @@ function checkResources() {
 
 }
 
-function load() {
+$( document ).ready(function() {
+
+    if('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js')
+    }
+
     loadResources();
+})
+
+function load() {
+    //loadResources();
 }
 
 function convertOld() {
@@ -489,14 +498,14 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.3.7".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.3.8".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         Swal.fire({
-            title: GetLanguageString("text-updatedversionprefix") + "1.3.7",
+            title: GetLanguageString("text-updatedversionprefix") + "1.3.8",
             color: alertColour,
             html: GetLanguageString("text-updatemessage")
         })
 
-        data.site_version = "1.3.7";
+        data.site_version = "1.3.8";
         saveToLocalStorage(false);
     }
 
@@ -4739,7 +4748,7 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
             }
 
             if (col == 0) {
-                if (language != "En" && language != "Kr") {
+                if (language != "En" && language != "Kr" && language != "Th") {
                     let localisedName = mLocalisations[language]?.Data[rows[row].replace(/ /g, '')];
                     if (localisedName) {
                         newCell.innerText = localisedName;
