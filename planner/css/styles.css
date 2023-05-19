@@ -1218,6 +1218,16 @@ label.char-action-label.toggle-closed::before {
     font-family: monospace;
 }
 
+#button-save-image {
+    position: fixed;
+    left: 50%;
+    bottom: 10%;
+    margin-left: -45px;
+    font-size: 2em;
+    z-index: 13;
+    visibility: hidden;
+}
+
 .dark-theme.background {
     background-color: rgb(36 36 36);
 }
@@ -2036,6 +2046,10 @@ input.filter-option {
 
     #artifact-table-2 tr:first-child td:first-child {
         padding-right: 0;
+    }
+
+    #button-save-image {
+        visibility: visible;
     }
 }
 

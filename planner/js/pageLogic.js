@@ -103,7 +103,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?2').done(function (json) {
+    $.getJSON('json/strings.json?3').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -174,9 +174,9 @@ function checkResources() {
 
 }
 
-$( document ).ready(function() {
+$(document).ready(function () {
 
-    if('serviceWorker' in navigator) {
+    if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./sw.js')
     }
 
@@ -6272,9 +6272,13 @@ function GetGroupScreenshot() {
     }
 
     document.getElementById("background-blur-container").style.display = '';
+    document.getElementById("button-save-image").style.display = "none";
 
     html2canvas(document.getElementById("teamsContainer"), { "logging": false, "windowWidth": 2000, "windowHeight": 1000, "scale": 1 })
-        .then(canvas => { document.getElementById("popup-screenshot").appendChild(canvas); document.getElementById("text-creating-image").style.display = "none" });
+        .then(canvas => {
+            document.getElementById("popup-screenshot").appendChild(canvas); document.getElementById("text-creating-image").style.display = "none";
+            document.getElementById("button-save-image").style.display = "";
+        });
 }
 
 function ClearScreenshot() {
@@ -6290,4 +6294,22 @@ function ClearScreenshot() {
 
     document.getElementById("background-blur-container").style.display = "none";
     document.getElementById("text-creating-image").style.display = '';
+}
+
+function SaveScreenshot() {
+
+    let canvas = document.querySelector('#popup-screenshot canvas');
+
+    let dataURL = canvas.toDataURL("image/png", 1.0);
+
+    DownloadImage(dataURL, currentGroup + ".png");
+}
+
+function DownloadImage(data, filename = 'untitled.png') {
+    let a = document.createElement('a');
+    a.href = data;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
 }

@@ -24,7 +24,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="manifest.json" />
-    <link rel="stylesheet" href="css/styles.css?32">
+    <link rel="stylesheet" href="css/styles.css?33">
     <title>Blue Archive Resource Planner</title>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://justin163.com/planner">
@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="packages/tippyjs/light.css" />
     <script src="js/config.js?16"></script>
     <script src="js/common.js?6"></script>
-    <script src="js/pageLogic.js?97"></script>
+    <script src="js/pageLogic.js?98"></script>
     <script src="js/filters.js?5"></script>
     <script src="js/lzma_worker.js?1"></script>
     <script src="js/cloudAPI.js?3"></script>
@@ -999,7 +999,8 @@
     <div id="background-blur-container" style="position: fixed; width: 100%; height: 100%; left: 0; top: 0; z-index: 11; display: none;">
         <div id="popup-screenshot"></div>
         <div id="background-blur" onclick="ClearScreenshot()"></div>
-        <p id="text-creating-image">Creating image...</p>
+        <p id="text-creating-image" class="display-string" data-id="label-creatingimage"></p>
+        <button id="button-save-image" class="display-string" data-id="saving-savebutton" onclick="SaveScreenshot()"></button>
     </div>
     <datalist id="char-options">
     </datalist>
