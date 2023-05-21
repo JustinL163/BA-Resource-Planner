@@ -51,7 +51,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?12').done(function (json) {
+    $.getJSON('json/events.json?13').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -61,12 +61,12 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/charlist.json?23').done(function (json) {
+    $.getJSON('json/charlist.json?24').done(function (json) {
         charlist = json;
         checkResources();
     });
 
-    $.getJSON('json/strings.json?1').done(function (json) {
+    $.getJSON('json/strings.json?4').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -198,20 +198,20 @@ function GenerateEventsList() {
         let eventLabel = document.createElement('p');
 
         let eventName = event_config.event_order[i];
+        let eventInfo = event_config.events[eventName] ?? {};
         let eventDisabled = false;
         if (eventName.substring(0, 1) == "|") {
             eventName = eventName.substring(1);
             eventDisabled = true;
+            eventLabel.innerText = GetLanguageString("text-comingsoon");
+            eventInfo = event_config.events[eventName];
         }
-
-        let eventInfo = event_config.events[eventName];
+        else if (eventInfo.display_name) {
+            eventLabel.innerText = eventInfo.display_name;
+        }
 
         eventImg.src = "icons/EventIcon/" + eventInfo.icon;
         eventImg.className = "event-icon";
-
-        if (eventInfo.display_name) {
-            eventLabel.innerText = eventInfo.display_name;
-        }
 
         eventDiv.appendChild(eventImg);
         eventDiv.appendChild(eventLabel);
@@ -1141,6 +1141,10 @@ function CreateShopItem(item, currency) {
     inputElement.max = item.count;
     inputElement.min = 0;
 
+    if (item.locked) {
+        inputElement.disabled = true;
+    }
+
     let initValue = event_data.shop_purchases[current_currency]?.[item.id];
 
     if (initValue) {
@@ -1303,6 +1307,12 @@ function SetItemImage(itemImg, item, replacementId) {
     else if (item.type == "Gift") {
         itemImg.src = "icons/Gifts/" + itemId + ".png";
     }
+    else if (item.type == "Choice") {
+        itemImg.src = "icons/Selectors/" + itemId + ".png";
+    }
+    else if (item.type == "AreaKey") {
+        itemImg.src = "icons/EventIcon/AreaKey/" + item.icon + ".png";
+    }
 }
 
 function HarvestItemPurchases() {
@@ -1334,14 +1344,14 @@ function HarvestItemPurchases() {
 
     let currencySource = event_config.events[current_event].currencies[current_currency].source;
     if (currencySource == "StageDrop") {
-        currencyNeeded[current_currency] = currencyNeededPre[current_currency] - initialClearRewards[current_currency];
+        currencyNeeded[current_currency] = currencyNeededPre[current_currency] - (initialClearRewards[current_currency] ?? 0);
     }
     else if (currencySource == "BoxPull") {
         let boxPullCurrency = event_config.events[current_event].currencies[current_currency].pull_currency;
 
         let pullCurrencyNeeded = CalculateBoxCurrencyNeeded(totalPurchaseCost);
 
-        currencyNeeded[boxPullCurrency] = pullCurrencyNeeded - initialClearRewards[boxPullCurrency];
+        currencyNeeded[boxPullCurrency] = pullCurrencyNeeded - (initialClearRewards[boxPullCurrency] ?? 0);
         currencyNeededPre[boxPullCurrency] = pullCurrencyNeeded;
     }
 
@@ -1393,6 +1403,9 @@ function CalculateNeededFinal() {
 
         if (initialClearRewards[currencies[i]]) {
             currencyNeeded[currencies[i]] = Math.max(currencyNeededPre[currencies[i]] - initialClearRewards[currencies[i]], 0);
+        }
+        else {
+            currencyNeeded[currencies[i]] = currencyNeededPre[currencies[i]];
         }
     }
 
@@ -1686,7 +1699,7 @@ function GetStagesLinearModel(optimise, opType, energyConstrained) {
     let currencyNames = Object.keys(currencyNeeded);
 
     currencyNames.forEach((name) => {
-        if (optimise != name) {
+        if (optimise != name && event_config.events[current_event]?.currencies[name]?.source == "StageDrop") {
             model.constraints[name] = { "min": currencyNeeded[name] };
         }
     })
@@ -2041,7 +2054,8 @@ function CalculateStageDrops(result, ignoreRequirement) {
 
         let intResults = AddLessonRewards(totalArtifacts, totalSchoolMats, totalEleph, totalXps, 0, 0, 0);
         if (intResults) {
-            totalEligma += intResults[0];
+            totalCredit += intResults[0];
+            totalEligma += intResults[1];
         }
     }
 
@@ -2099,7 +2113,7 @@ function CalculateStageDrops(result, ignoreRequirement) {
             totalCurrencies["Event_Point"] = 0;
         }
 
-        totalCurrencies["Event_Point"] += initialClearRewards["Event_Point"];
+        //totalCurrencies["Event_Point"] += initialClearRewards["Event_Point"];
         maxEventPoints = totalCurrencies["Event_Point"];
     }
 
@@ -2464,7 +2478,9 @@ function AddLessonRewards(totalArtifacts, totalSchoolMats, totalEleph, totalXps,
             else if (lessonRewardTemplate[ii].type == "Eligma") {
                 totalEligma += itemAmountAdded;
             }
-            else if (lessonRewardTemplate[ii].type == "Credit") { }
+            else if (lessonRewardTemplate[ii].type == "Credit") { 
+                totalCredit += lessonRewardTemplate[ii].count;
+            }
             else if (lessonRewardTemplate[ii].type == "SecretTech") { }
             else if (lessonRewardTemplate[ii].type == "Material") {
 
@@ -2528,7 +2544,9 @@ function AddLessonRewards(totalArtifacts, totalSchoolMats, totalEleph, totalXps,
             else if (lessonRewardTemplate[ii].type == "Eligma") {
                 totalEligma += itemAmountAdded;
             }
-            else if (lessonRewardTemplate[ii].type == "Credit") { }
+            else if (lessonRewardTemplate[ii].type == "Credit") { 
+                totalCredit += itemAmountAdded;
+            }
             else if (lessonRewardTemplate[ii].type == "SecretTech") { }
             else if (lessonRewardTemplate[ii].type == "Material") {
 
@@ -2566,7 +2584,7 @@ function AddLessonRewards(totalArtifacts, totalSchoolMats, totalEleph, totalXps,
         }
     }
 
-    return [totalEligma];
+    return [totalCredit, totalEligma];
 }
 
 function AddCardRewards(pullCurrency, totalCurrencies, totalArtifacts, totalEleph, totalXps) {
