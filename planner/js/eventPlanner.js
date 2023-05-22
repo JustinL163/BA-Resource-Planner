@@ -51,7 +51,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?13').done(function (json) {
+    $.getJSON('json/events.json?14').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -66,7 +66,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?4').done(function (json) {
+    $.getJSON('json/strings.json?5').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -214,6 +214,16 @@ function GenerateEventsList() {
         eventImg.className = "event-icon";
 
         eventDiv.appendChild(eventImg);
+
+        let previewItems = eventInfo.reward_preview;
+
+        for (let p = 0; p < previewItems?.length; p++) {
+            let previewImg = document.createElement("img");
+            SetItemImage(previewImg, previewItems[p]);
+            previewImg.className = "event-reward-preview preview-" + previewItems[p].preview;
+            eventDiv.appendChild(previewImg);
+        }
+
         eventDiv.appendChild(eventLabel);
         eventDiv.id = event_config.event_order[i];
         eventDiv.className = "listed-event";

@@ -103,7 +103,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?4').done(function (json) {
+    $.getJSON('json/strings.json?5').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -162,7 +162,7 @@ function checkResources() {
             }
         }
 
-        generateCharOptions();
+        //generateCharOptions();
         generateTeamBorrowOptions();
         validateData();
         convertOld();
@@ -498,14 +498,14 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.3.9".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.3.10".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         Swal.fire({
-            title: GetLanguageString("text-updatedversionprefix") + "1.3.9",
+            title: GetLanguageString("text-updatedversionprefix") + "1.3.10",
             color: alertColour,
             html: GetLanguageString("text-updatemessage")
         })
 
-        data.site_version = "1.3.9";
+        data.site_version = "1.3.10";
         saveToLocalStorage(false);
     }
 
@@ -1248,7 +1248,7 @@ function deleteChar(charId) {
             charBox.remove();
         }
 
-        generateCharOptions();
+        // generateCharOptions();
 
         saveTime = Date.now() + (1000 * 5);
     }

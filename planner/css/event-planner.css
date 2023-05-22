@@ -1,7 +1,7 @@
 #events-list {
     background-color: rgb(196, 205, 228);
-    width: 20%;
-    max-width: 300px;
+    width: 25%;
+    max-width: 400px;
     overflow-y: auto;
     margin-left: auto;
     max-height: 90vh;
@@ -14,6 +14,10 @@
 
 #events-list div.selected {
     background-color: rgb(171 188 231);
+}
+
+#events-list:hover .event-reward-preview {
+    visibility: visible;
 }
 
 #event-content-container {
@@ -32,6 +36,66 @@
 .event-icon {
     width: 100%;
     max-width: 250px;
+}
+
+.event-reward-preview {
+    max-width: 4em;
+    position: absolute;
+    visibility: hidden;
+}
+
+.preview-1 {
+    left: 0;
+}
+
+.preview-2 {
+    left: 3em;
+}
+
+.preview-3 {
+    left: 0;
+    bottom: 1em;
+}
+
+.preview-4 {
+    left: 3em;
+    bottom: 1em;
+}
+
+.preview-5 {
+    right: 3em;
+}
+
+.preview-6 {
+    right: 0;
+}
+
+.preview-7 {
+    right: 3em;
+    bottom: 1em;
+}
+
+.preview-8 {
+    right: 0;
+    bottom: 1em;
+}
+
+.preview-9 {
+    right: 6em;
+}
+
+.preview-10 {
+    right: 6em;
+    bottom: 1em;
+}
+
+.preview-11 {
+    left: 6em;
+}
+
+.preview-12 {
+    left: 6em;
+    bottom: 1em;
 }
 
 #event-tab-menu {
@@ -460,6 +524,7 @@
 
 .listed-event {
     margin-bottom: 1em;
+    position: relative;
 }
 
 #info-select-event {
@@ -635,7 +700,7 @@
     background-color: rgb(160 169 195);
 }
 
-.disabled-event {
+.disabled-event img:first-child {
     filter: grayscale(1);
 }
 
@@ -1027,5 +1092,9 @@
         margin-top: 0.5em;
         margin-left: auto;
         margin-right: 1em;
+    }
+
+    .event-reward-preview {
+        visibility: visible;
     }
 }
