@@ -83,17 +83,17 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/skillinfo.json?19').done(function (json) {
+    $.getJSON('json/skillinfo.json?20').done(function (json) {
         skillinfo = json;
         checkResources();
     });
 
-    $.getJSON('json/charlist.json?24').done(function (json) {
+    $.getJSON('json/charlist.json?25').done(function (json) {
         charlist = json;
         checkResources();
     });
 
-    $.getJSON('json/localisations.json?16').done(function (json) {
+    $.getJSON('json/localisations.json?17').done(function (json) {
         localisations = json;
         checkResources();
     });
@@ -498,14 +498,14 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.3.10".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.3.11".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         Swal.fire({
-            title: GetLanguageString("text-updatedversionprefix") + "1.3.10",
+            title: GetLanguageString("text-updatedversionprefix") + "1.3.11",
             color: alertColour,
             html: GetLanguageString("text-updatemessage")
         })
 
-        data.site_version = "1.3.10";
+        data.site_version = "1.3.11";
         saveToLocalStorage(false);
     }
 
