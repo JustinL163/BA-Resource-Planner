@@ -37,7 +37,7 @@
     <script src="packages/mathjs/math.js"></script>
     <script src="js/config.js?15"></script>
     <script src="js/common.js?8"></script>
-    <script src="js/eventPlanner.js?24"></script>
+    <script src="js/eventPlanner.js?25"></script>
     <title>Event Planner</title>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://justin163.com/planner/events">
@@ -145,6 +145,9 @@
                     <p class="notification-text display-string" data-id="label-ownedcurrencyenabled"></p>
                     <p class="notification-button" onclick="EventTabClicked('Owned')"><u class="display-string"
                             data-id="label-checknow"></u></p>
+                    <p style="margin-left: 0.5em;">or</p>
+                    <p class="notification-button" onclick="EventTabClicked('Shop')"><u class="display-string"
+                            data-id="label-updateshop"></u></p>
                 </div>
             </div>
             <div class="event-tab" id="Targets-tab">
@@ -262,7 +265,8 @@
                     </p>
                 </div>
                 <div id="intial-clear-container">
-                    <p style="margin-left: 1em;" id="initial-clear-info" class="display-string" data-id="label-initialclearinfo"></p>
+                    <p style="margin-left: 1em;" id="initial-clear-info" class="display-string"
+                        data-id="label-initialclearinfo"></p>
                     <div id="initial-clear-display-container"></div>
                 </div>
             </div>
@@ -319,9 +323,12 @@
             </div>
             <div class="event-tab" id="Owned-tab">
                 <div id="currency-owned-container"></div>
-                <p id="label-owned-currency-info-1" class="display-string" data-id="label-ownedcurrencyinfo" style="margin-bottom: 1em; margin-left: 1em; margin-right: 3em;"></p>
-                <p id="label-owned-currency-info-2" class="display-string" data-id="label-ownedcurrencyinfo2" style="margin-bottom: 1em; margin-left: 1em; margin-right: 3em;"></p>
-                <p id="label-owned-currency-info-3" class="display-string" data-id="label-ownedcurrencyinfo3" style="margin-bottom: 1em; margin-left: 1em; margin-right: 3em;"></p>
+                <p id="label-owned-currency-info-1" class="display-string" data-id="label-ownedcurrencyinfo"
+                    style="margin-bottom: 1em; margin-left: 1em; margin-right: 3em;"></p>
+                <p id="label-owned-currency-info-2" class="display-string" data-id="label-ownedcurrencyinfo2"
+                    style="margin-bottom: 1em; margin-left: 1em; margin-right: 3em;"></p>
+                <p id="label-owned-currency-info-3" class="display-string" data-id="label-ownedcurrencyinfo3"
+                    style="margin-bottom: 1em; margin-left: 1em; margin-right: 3em;"></p>
             </div>
             <div id="reward-display-options-container">
                 <p style="margin-left: 1em;" class="display-string" data-id="label-display"></p>
