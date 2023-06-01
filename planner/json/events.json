@@ -1159,6 +1159,7 @@
             ]
         },
         "hot-spring-rerun": {
+            "active": true,
             "icon": "Event_808_En.png",
             "display_name": "Hot Springs Resort Daily Logs",
             "reset_time": 1681153200,
@@ -1269,6 +1270,7 @@
                     {"type": "Material", "id": "143", "count": 15, "cost": 50}
                 ]
             },
+            "stage_groups": ["1-4", "5-8", "9-12"],
             "stages": [
                 {"type": "Story", "number": 1, "cost": 10, "initial": {"Event_Point": 10, "Hot_Spring_Towel": 10, "Capybara_Bath_Salt": 5}},
                 {"type": "Story", "number": 2, "cost": 10, "initial": {"Event_Point": 15, "Mustache_Shampoo": 10, "Capybara_Bath_Salt": 5}},
@@ -1278,18 +1280,18 @@
                 {"type": "Story", "number": 6, "cost": 10, "initial": {"Event_Point": 35, "Mustache_Shampoo": 10, "Capybara_Bath_Salt": 5}},
                 {"type": "Story", "number": 7, "cost": 10, "initial": {"Event_Point": 40, "Hot_Spring_Towel": 10, "Mustache_Shampoo": 10, "Capybara_Bath_Salt": 5}},
 
-                {"type": "Quest", "number": 1, "cost": 10, "initial": {"Event_Point": 100, "Hot_Spring_Towel": 100, "Mustache_Shampoo": 40}, "drops": {"Event_Point": 3, "Hot_Spring_Towel": 6, "Mustache_Shampoo": 2}},
-                {"type": "Quest", "number": 2, "cost": 10, "initial": {"Event_Point": 100, "Mustache_Shampoo": 80, "Capybara_Bath_Salt": 40}, "drops": {"Event_Point": 3, "Mustache_Shampoo": 5, "Capybara_Bath_Salt": 2}},
-                {"type": "Quest", "number": 3, "cost": 10, "initial": {"Event_Point": 100, "Hot_Spring_Towel": 40, "Capybara_Bath_Salt": 80}, "drops": {"Event_Point": 3, "Hot_Spring_Towel": 2, "Capybara_Bath_Salt": 5}},
-                {"type": "Quest", "number": 4, "cost": 10, "initial": {"Event_Point": 200, "Hot_Spring_Towel": 20, "Mustache_Shampoo": 20, "Capybara_Bath_Salt": 20}, "drops": {"Event_Point": 12, "Hot_Spring_Towel": 1, "Mustache_Shampoo": 1, "Capybara_Bath_Salt": 1}},
-                {"type": "Quest", "number": 5, "cost": 12, "initial": {"Event_Point": 100, "Hot_Spring_Towel": 280}, "drops": {"Event_Point": 5, "Hot_Spring_Towel": 16}},
-                {"type": "Quest", "number": 6, "cost": 12, "initial": {"Event_Point": 100, "Mustache_Shampoo": 240}, "drops": {"Event_Point": 5, "Mustache_Shampoo": 13}},
-                {"type": "Quest", "number": 7, "cost": 12, "initial": {"Event_Point": 100, "Capybara_Bath_Salt": 200}, "drops": {"Event_Point": 5, "Capybara_Bath_Salt": 11}},
-                {"type": "Quest", "number": 8, "cost": 12, "initial": {"Event_Point": 280, "Hot_Spring_Towel": 40, "Mustache_Shampoo": 40, "Capybara_Bath_Salt": 40}, "drops": {"Event_Point": 17, "Hot_Spring_Towel": 2, "Mustache_Shampoo": 2, "Capybara_Bath_Salt": 2}},
-                {"type": "Quest", "number": 9, "cost": 15, "initial": {"Event_Point": 100, "Hot_Spring_Towel": 600}, "drops": {"Event_Point": 6, "Hot_Spring_Towel": 30}},
-                {"type": "Quest", "number": 10, "cost": 15, "initial": {"Event_Point": 100, "Mustache_Shampoo": 480}, "drops": {"Event_Point": 6, "Mustache_Shampoo": 24}},
-                {"type": "Quest", "number": 11, "cost": 15, "initial": {"Event_Point": 100, "Capybara_Bath_Salt": 400}, "drops": {"Event_Point": 6, "Capybara_Bath_Salt": 20}},
-                {"type": "Quest", "number": 12, "cost": 15, "initial": {"Event_Point": 400, "Hot_Spring_Towel": 80, "Mustache_Shampoo": 80, "Capybara_Bath_Salt": 80}, "drops": {"Event_Point": 24, "Hot_Spring_Towel": 4, "Mustache_Shampoo": 4, "Capybara_Bath_Salt": 4}},
+                {"type": "Quest", "number": 1, "cost": 10, "group": 1, "initial": {"Event_Point": 100, "Hot_Spring_Towel": 100, "Mustache_Shampoo": 40}, "drops": {"Event_Point": 3, "Hot_Spring_Towel": 6, "Mustache_Shampoo": 2}},
+                {"type": "Quest", "number": 2, "cost": 10, "group": 1, "initial": {"Event_Point": 100, "Mustache_Shampoo": 80, "Capybara_Bath_Salt": 40}, "drops": {"Event_Point": 3, "Mustache_Shampoo": 5, "Capybara_Bath_Salt": 2}},
+                {"type": "Quest", "number": 3, "cost": 10, "group": 1, "initial": {"Event_Point": 100, "Hot_Spring_Towel": 40, "Capybara_Bath_Salt": 80}, "drops": {"Event_Point": 3, "Hot_Spring_Towel": 2, "Capybara_Bath_Salt": 5}},
+                {"type": "Quest", "number": 4, "cost": 10, "group": 1, "initial": {"Event_Point": 200, "Hot_Spring_Towel": 20, "Mustache_Shampoo": 20, "Capybara_Bath_Salt": 20}, "drops": {"Event_Point": 12, "Hot_Spring_Towel": 1, "Mustache_Shampoo": 1, "Capybara_Bath_Salt": 1}},
+                {"type": "Quest", "number": 5, "cost": 12, "group": 2, "initial": {"Event_Point": 100, "Hot_Spring_Towel": 280}, "drops": {"Event_Point": 5, "Hot_Spring_Towel": 16}},
+                {"type": "Quest", "number": 6, "cost": 12, "group": 2, "initial": {"Event_Point": 100, "Mustache_Shampoo": 240}, "drops": {"Event_Point": 5, "Mustache_Shampoo": 13}},
+                {"type": "Quest", "number": 7, "cost": 12, "group": 2, "initial": {"Event_Point": 100, "Capybara_Bath_Salt": 200}, "drops": {"Event_Point": 5, "Capybara_Bath_Salt": 11}},
+                {"type": "Quest", "number": 8, "cost": 12, "group": 2, "initial": {"Event_Point": 280, "Hot_Spring_Towel": 40, "Mustache_Shampoo": 40, "Capybara_Bath_Salt": 40}, "drops": {"Event_Point": 17, "Hot_Spring_Towel": 2, "Mustache_Shampoo": 2, "Capybara_Bath_Salt": 2}},
+                {"type": "Quest", "number": 9, "cost": 15, "group": 3, "initial": {"Event_Point": 100, "Hot_Spring_Towel": 600}, "drops": {"Event_Point": 6, "Hot_Spring_Towel": 30}},
+                {"type": "Quest", "number": 10, "cost": 15, "group": 3, "initial": {"Event_Point": 100, "Mustache_Shampoo": 480}, "drops": {"Event_Point": 6, "Mustache_Shampoo": 24}},
+                {"type": "Quest", "number": 11, "cost": 15, "group": 3, "initial": {"Event_Point": 100, "Capybara_Bath_Salt": 400}, "drops": {"Event_Point": 6, "Capybara_Bath_Salt": 20}},
+                {"type": "Quest", "number": 12, "cost": 15, "group": 3, "initial": {"Event_Point": 400, "Hot_Spring_Towel": 80, "Mustache_Shampoo": 80, "Capybara_Bath_Salt": 80}, "drops": {"Event_Point": 24, "Hot_Spring_Towel": 4, "Mustache_Shampoo": 4, "Capybara_Bath_Salt": 4}},
 
                 {"type": "Challenge", "number": 1, "cost": 5},
                 {"type": "Challenge", "number": 2, "cost": 5},
@@ -1536,6 +1538,7 @@
                     {"type": "Credit", "id": "Credit-100000", "count": 25, "cost": 1, "amount": 100000}
                 ]
             },
+            "stage_groups": ["1-4", "5-8", "9-12"],
             "stages": [
                 {"type": "Story", "number": 1, "cost": 10, "initial": {"Christmas_Present": 20, "Christmas_Sock": 20}},
                 {"type": "Story", "number": 2, "cost": 10, "initial": {"Christmas_Present": 20, "Candy_Cane": 20}},
@@ -1547,18 +1550,18 @@
                 {"type": "Story", "number": 8, "cost": 10, "initial": {"Christmas_Present": 20, "Candy_Cane": 20}},
                 {"type": "Story", "number": 9, "cost": 10, "initial": {"Christmas_Present": 20, "Christmas_Sock": 20, "Candy_Cane": 20}},
 
-                {"type": "Quest", "number": 1, "cost": 10, "initial": {"Christmas_Present": 100, "Christmas_Sock": 25, "Candy_Cane": 25}, "drops": {"Christmas_Present": 13, "Christmas_Sock": 2, "Candy_Cane": 2, "Wolfsegg_1": 0.25, "Wolfsegg_2": 0.15}},
-                {"type": "Quest", "number": 2, "cost": 10, "initial": {"Christmas_Sock": 100, "Candy_Cane": 50}, "drops": {"Christmas_Sock": 13, "Candy_Cane": 4, "Haniwa_1": 0.25, "Haniwa_2": 0.15}},
-                {"type": "Quest", "number": 3, "cost": 10, "initial": {"Christmas_Sock": 50, "Candy_Cane": 100}, "drops": {"Christmas_Sock": 4, "Candy_Cane": 13, "Mandragora_1": 0.25, "Mandragora_2": 0.15}},
-                {"type": "Quest", "number": 4, "cost": 10, "initial": {"Christmas_Present": 150}, "drops": {"Christmas_Present": 16, "Antikythera_1": 0.25, "Antikythera_2": 0.15}},
-                {"type": "Quest", "number": 5, "cost": 15, "initial": {"Christmas_Present": 100, "Christmas_Sock": 50, "Candy_Cane": 50}, "drops": {"Christmas_Present": 20, "Christmas_Sock": 4, "Candy_Cane": 4, "Wolfsegg_2": 0.25, "Wolfsegg_3": 0.08}},
-                {"type": "Quest", "number": 6, "cost": 15, "initial": {"Christmas_Sock": 125, "Candy_Cane": 75}, "drops": {"Christmas_Sock": 20, "Candy_Cane": 8, "Haniwa_2": 0.25, "Haniwa_3": 0.08}},
-                {"type": "Quest", "number": 7, "cost": 15, "initial": {"Christmas_Sock": 75, "Candy_Cane": 125}, "drops": {"Christmas_Sock": 8, "Candy_Cane": 20, "Mandragora_2": 0.25, "Mandragora_3": 0.08}},
-                {"type": "Quest", "number": 8, "cost": 15, "initial": {"Christmas_Present": 200}, "drops": {"Christmas_Present": 26, "Antikythera_2": 0.25, "Antikythera_3": 0.08}},
-                {"type": "Quest", "number": 9, "cost": 20, "initial": {"Christmas_Present": 150, "Christmas_Sock": 50, "Candy_Cane": 50}, "drops": {"Christmas_Present": 28, "Christmas_Sock": 8, "Candy_Cane": 8, "Wolfsegg_2": 0.25, "Wolfsegg_3": 0.12, "Wolfsegg_4": 0.021}},
-                {"type": "Quest", "number": 10, "cost": 20, "initial": {"Christmas_Present": 25, "Christmas_Sock": 225}, "drops": {"Christmas_Present": 16, "Christmas_Sock": 28, "Haniwa_2": 0.25, "Haniwa_3": 0.12, "Haniwa_4": 0.021}},
-                {"type": "Quest", "number": 11, "cost": 20, "initial": {"Christmas_Present": 25, "Candy_Cane": 225}, "drops": {"Christmas_Present": 16, "Candy_Cane": 28, "Mandragora_2": 0.25, "Mandragora_3": 0.12, "Mandragora_4": 0.021}},
-                {"type": "Quest", "number": 12, "cost": 20, "initial": {"Christmas_Present": 250}, "drops": {"Christmas_Present": 40, "Antikythera_2": 0.25, "Antikythera_3": 0.12, "Antikythera_4": 0.021}},
+                {"type": "Quest", "number": 1, "cost": 10, "group": 1, "initial": {"Christmas_Present": 100, "Christmas_Sock": 25, "Candy_Cane": 25}, "drops": {"Christmas_Present": 13, "Christmas_Sock": 2, "Candy_Cane": 2, "Wolfsegg_1": 0.25, "Wolfsegg_2": 0.15}},
+                {"type": "Quest", "number": 2, "cost": 10, "group": 1, "initial": {"Christmas_Sock": 100, "Candy_Cane": 50}, "drops": {"Christmas_Sock": 13, "Candy_Cane": 4, "Haniwa_1": 0.25, "Haniwa_2": 0.15}},
+                {"type": "Quest", "number": 3, "cost": 10, "group": 1, "initial": {"Christmas_Sock": 50, "Candy_Cane": 100}, "drops": {"Christmas_Sock": 4, "Candy_Cane": 13, "Mandragora_1": 0.25, "Mandragora_2": 0.15}},
+                {"type": "Quest", "number": 4, "cost": 10, "group": 1, "initial": {"Christmas_Present": 150}, "drops": {"Christmas_Present": 16, "Antikythera_1": 0.25, "Antikythera_2": 0.15}},
+                {"type": "Quest", "number": 5, "cost": 15, "group": 2, "initial": {"Christmas_Present": 100, "Christmas_Sock": 50, "Candy_Cane": 50}, "drops": {"Christmas_Present": 20, "Christmas_Sock": 4, "Candy_Cane": 4, "Wolfsegg_2": 0.25, "Wolfsegg_3": 0.08}},
+                {"type": "Quest", "number": 6, "cost": 15, "group": 2, "initial": {"Christmas_Sock": 125, "Candy_Cane": 75}, "drops": {"Christmas_Sock": 20, "Candy_Cane": 8, "Haniwa_2": 0.25, "Haniwa_3": 0.08}},
+                {"type": "Quest", "number": 7, "cost": 15, "group": 2, "initial": {"Christmas_Sock": 75, "Candy_Cane": 125}, "drops": {"Christmas_Sock": 8, "Candy_Cane": 20, "Mandragora_2": 0.25, "Mandragora_3": 0.08}},
+                {"type": "Quest", "number": 8, "cost": 15, "group": 2, "initial": {"Christmas_Present": 200}, "drops": {"Christmas_Present": 26, "Antikythera_2": 0.25, "Antikythera_3": 0.08}},
+                {"type": "Quest", "number": 9, "cost": 20, "group": 3, "initial": {"Christmas_Present": 150, "Christmas_Sock": 50, "Candy_Cane": 50}, "drops": {"Christmas_Present": 28, "Christmas_Sock": 8, "Candy_Cane": 8, "Wolfsegg_2": 0.25, "Wolfsegg_3": 0.12, "Wolfsegg_4": 0.021}},
+                {"type": "Quest", "number": 10, "cost": 20, "group": 3, "initial": {"Christmas_Present": 25, "Christmas_Sock": 225}, "drops": {"Christmas_Present": 16, "Christmas_Sock": 28, "Haniwa_2": 0.25, "Haniwa_3": 0.12, "Haniwa_4": 0.021}},
+                {"type": "Quest", "number": 11, "cost": 20, "group": 3, "initial": {"Christmas_Present": 25, "Candy_Cane": 225}, "drops": {"Christmas_Present": 16, "Candy_Cane": 28, "Mandragora_2": 0.25, "Mandragora_3": 0.12, "Mandragora_4": 0.021}},
+                {"type": "Quest", "number": 12, "cost": 20, "group": 3, "initial": {"Christmas_Present": 250}, "drops": {"Christmas_Present": 40, "Antikythera_2": 0.25, "Antikythera_3": 0.12, "Antikythera_4": 0.021}},
 
 
                 {"type": "Challenge", "number": 1, "cost": 5},
@@ -1728,6 +1731,7 @@
                     {"type": "Furniture", "id": "New_Year_Clothing_Hanger", "count": 1, "cost": 1000, "limited": false}
                 ]
             },
+            "stage_groups": ["1-4", "5-8", "9-12"],
             "stages": [
                 {"type": "Story", "number": 1, "cost": 10, "initial": {"Event_Point": 10, "Kamaboko": 10}},
                 {"type": "Story", "number": 2, "cost": 10, "initial": {"Event_Point": 10, "Sea_Bream": 10}},
@@ -1740,20 +1744,20 @@
                 {"type": "Story", "number": 9, "cost": 10, "initial": {"Event_Point": 10, "Kamaboko": 20}},
                 {"type": "Story", "number": 10, "cost": 10, "initial": {"Event_Point": 10, "Sea_Bream": 20}},
     
-                {"type": "Quest", "number": 1, "cost": 10, "initial": {"Event_Point": 150, "Kamaboko": 100, "Sea_Bream": 100}, "drops": {"Event_Point": 2, "Kamaboko": 4, "Sea_Bream": 4, "Nebra_1": 0.25, "Nebra_2": 0.15}},
-                {"type": "Quest", "number": 2, "cost": 10, "initial": {"Event_Point": 150, "Kamaboko": 400, "Sea_Bream": 200}, "drops": {"Event_Point": 2, "Kamaboko": 8, "Nimrud_1": 0.25, "Nimrud_2": 0.15}},
-                {"type": "Quest", "number": 3, "cost": 10, "initial": {"Event_Point": 150, "Kamaboko": 200, "Sea_Bream": 400}, "drops": {"Event_Point": 2, "Sea_Bream": 8, "Voynich_1": 0.25, "Voynich_2": 0.15}},
-                {"type": "Quest", "number": 4, "cost": 10, "initial": {"Event_Point": 300}, "drops": {"Event_Point": 8, "Baghdad_1": 0.25, "Baghdad_2": 0.15}},
+                {"type": "Quest", "number": 1, "cost": 10, "group": 1, "initial": {"Event_Point": 150, "Kamaboko": 100, "Sea_Bream": 100}, "drops": {"Event_Point": 2, "Kamaboko": 4, "Sea_Bream": 4, "Nebra_1": 0.25, "Nebra_2": 0.15}},
+                {"type": "Quest", "number": 2, "cost": 10, "group": 1, "initial": {"Event_Point": 150, "Kamaboko": 400, "Sea_Bream": 200}, "drops": {"Event_Point": 2, "Kamaboko": 8, "Nimrud_1": 0.25, "Nimrud_2": 0.15}},
+                {"type": "Quest", "number": 3, "cost": 10, "group": 1, "initial": {"Event_Point": 150, "Kamaboko": 200, "Sea_Bream": 400}, "drops": {"Event_Point": 2, "Sea_Bream": 8, "Voynich_1": 0.25, "Voynich_2": 0.15}},
+                {"type": "Quest", "number": 4, "cost": 10, "group": 1, "initial": {"Event_Point": 300}, "drops": {"Event_Point": 8, "Baghdad_1": 0.25, "Baghdad_2": 0.15}},
 
-                {"type": "Quest", "number": 5, "cost": 15, "initial": {"Event_Point": 150, "Kamaboko": 200, "Sea_Bream": 200}, "drops": {"Event_Point": 4, "Kamaboko": 10, "Sea_Bream": 10, "Nebra_2": 0.25, "Nebra_3": 0.08}},
-                {"type": "Quest", "number": 6, "cost": 15, "initial": {"Event_Point": 150, "Kamaboko": 500, "Sea_Bream": 300}, "drops": {"Event_Point": 4, "Kamaboko": 15, "Nimrud_2": 0.25, "Nimrud_3": 0.08}},
-                {"type": "Quest", "number": 7, "cost": 15, "initial": {"Event_Point": 150, "Kamaboko": 300, "Sea_Bream": 500}, "drops": {"Event_Point": 4, "Sea_Bream": 15, "Voynich_2": 0.25, "Voynich_3": 0.08}},
-                {"type": "Quest", "number": 8, "cost": 15, "initial": {"Event_Point": 400}, "drops": {"Event_Point": 15, "Baghdad_2": 0.25, "Baghdad_3": 0.08}},
+                {"type": "Quest", "number": 5, "cost": 15, "group": 2, "initial": {"Event_Point": 150, "Kamaboko": 200, "Sea_Bream": 200}, "drops": {"Event_Point": 4, "Kamaboko": 10, "Sea_Bream": 10, "Nebra_2": 0.25, "Nebra_3": 0.08}},
+                {"type": "Quest", "number": 6, "cost": 15, "group": 2, "initial": {"Event_Point": 150, "Kamaboko": 500, "Sea_Bream": 300}, "drops": {"Event_Point": 4, "Kamaboko": 15, "Nimrud_2": 0.25, "Nimrud_3": 0.08}},
+                {"type": "Quest", "number": 7, "cost": 15, "group": 2, "initial": {"Event_Point": 150, "Kamaboko": 300, "Sea_Bream": 500}, "drops": {"Event_Point": 4, "Sea_Bream": 15, "Voynich_2": 0.25, "Voynich_3": 0.08}},
+                {"type": "Quest", "number": 8, "cost": 15, "group": 2, "initial": {"Event_Point": 400}, "drops": {"Event_Point": 15, "Baghdad_2": 0.25, "Baghdad_3": 0.08}},
 
-                {"type": "Quest", "number": 9, "cost": 20, "initial": {"Event_Point": 150, "Kamaboko": 200, "Sea_Bream": 200}, "drops": {"Event_Point": 6, "Kamaboko": 18, "Sea_Bream": 18, "Nebra_2": 0.25, "Nebra_3": 0.12, "Nebra_4": 0.021}},
-                {"type": "Quest", "number": 10, "cost": 20, "initial": {"Event_Point": 150, "Kamaboko": 500, "Sea_Bream": 300}, "drops": {"Event_Point": 6, "Kamaboko": 30, "Nimrud_2": 0.25, "Nimrud_3": 0.12, "Nimrud_4": 0.021}},
-                {"type": "Quest", "number": 11, "cost": 20, "initial": {"Event_Point": 150, "Kamaboko": 300, "Sea_Bream": 500}, "drops": {"Event_Point": 6, "Sea_Bream": 30, "Voynich_2": 0.25, "Voynich_3": 0.12, "Voynich_4": 0.021}},
-                {"type": "Quest", "number": 12, "cost": 20, "initial": {"Event_Point": 500}, "drops": {"Event_Point": 30, "Baghdad_2": 0.25, "Baghdad_3": 0.12, "Baghdad_4": 0.021}},
+                {"type": "Quest", "number": 9, "cost": 20, "group": 3, "initial": {"Event_Point": 150, "Kamaboko": 200, "Sea_Bream": 200}, "drops": {"Event_Point": 6, "Kamaboko": 18, "Sea_Bream": 18, "Nebra_2": 0.25, "Nebra_3": 0.12, "Nebra_4": 0.021}},
+                {"type": "Quest", "number": 10, "cost": 20, "group": 3,  "initial": {"Event_Point": 150, "Kamaboko": 500, "Sea_Bream": 300}, "drops": {"Event_Point": 6, "Kamaboko": 30, "Nimrud_2": 0.25, "Nimrud_3": 0.12, "Nimrud_4": 0.021}},
+                {"type": "Quest", "number": 11, "cost": 20, "group": 3,  "initial": {"Event_Point": 150, "Kamaboko": 300, "Sea_Bream": 500}, "drops": {"Event_Point": 6, "Sea_Bream": 30, "Voynich_2": 0.25, "Voynich_3": 0.12, "Voynich_4": 0.021}},
+                {"type": "Quest", "number": 12, "cost": 20, "group": 3,  "initial": {"Event_Point": 500}, "drops": {"Event_Point": 30, "Baghdad_2": 0.25, "Baghdad_3": 0.12, "Baghdad_4": 0.021}},
     
                 {"type": "Challenge", "number": 1, "cost": 5},
                 {"type": "Challenge", "number": 2, "cost": 5},
@@ -2062,24 +2066,25 @@
                     {"type": "Furniture", "id": "Colourful_Multi-screen_TV", "count": 1, "cost": 2000, "limited": false}
                 ]
             },
+            "stage_groups": ["1-4", "5-8", "9-12"],
             "stages": [
                 {"type": "Story", "number": 1, "cost": 10, "initial": {"Event_Point": 20}},
                 {"type": "Story", "number": 2, "cost": 10, "initial": {"Event_Point": 30}},
 
-                {"type": "Quest", "number": 1, "cost": 10, "initial": {"Event_Point": 50, "Apology_Letter": 100, "Seized_Illegal_Candy": 40}, "drops": {"Event_Point": 5, "Apology_Letter": 12, "Baghdad_1": 0.45, "Baghdad_2": 0.15}},
-                {"type": "Quest", "number": 2, "cost": 10, "initial": {"Event_Point": 50, "Seized_Illegal_Candy": 80, "Garbage_Bag": 40}, "drops": {"Event_Point": 5, "Seized_Illegal_Candy": 10, "Voynich_1": 0.45, "Voynich_2": 0.15}},
-                {"type": "Quest", "number": 3, "cost": 10, "initial": {"Event_Point": 50, "Apology_Letter": 40, "Garbage_Bag": 80}, "drops": {"Event_Point": 5, "Garbage_Bag": 8, "Mandragora_1": 0.45, "Mandragora_2": 0.15}},
-                {"type": "Quest", "number": 4, "cost": 10, "initial": {"Event_Point": 100, "Apology_Letter": 20, "Seized_Illegal_Candy": 20, "Garbage_Bag": 20}, "drops": {"Event_Point": 5, "Apology_Letter": 5, "Seized_Illegal_Candy": 4, "Garbage_Bag": 3, "Haniwa_1": 0.45, "Haniwa_2": 0.15}},
+                {"type": "Quest", "number": 1, "cost": 10, "group": 1, "initial": {"Event_Point": 50, "Apology_Letter": 100, "Seized_Illegal_Candy": 40}, "drops": {"Event_Point": 5, "Apology_Letter": 12, "Baghdad_1": 0.45, "Baghdad_2": 0.15}},
+                {"type": "Quest", "number": 2, "cost": 10, "group": 1, "initial": {"Event_Point": 50, "Seized_Illegal_Candy": 80, "Garbage_Bag": 40}, "drops": {"Event_Point": 5, "Seized_Illegal_Candy": 10, "Voynich_1": 0.45, "Voynich_2": 0.15}},
+                {"type": "Quest", "number": 3, "cost": 10, "group": 1, "initial": {"Event_Point": 50, "Apology_Letter": 40, "Garbage_Bag": 80}, "drops": {"Event_Point": 5, "Garbage_Bag": 8, "Mandragora_1": 0.45, "Mandragora_2": 0.15}},
+                {"type": "Quest", "number": 4, "cost": 10, "group": 1, "initial": {"Event_Point": 100, "Apology_Letter": 20, "Seized_Illegal_Candy": 20, "Garbage_Bag": 20}, "drops": {"Event_Point": 5, "Apology_Letter": 5, "Seized_Illegal_Candy": 4, "Garbage_Bag": 3, "Haniwa_1": 0.45, "Haniwa_2": 0.15}},
 
-                {"type": "Quest", "number": 5, "cost": 15, "initial": {"Event_Point": 50, "Apology_Letter": 280}, "drops": {"Event_Point": 10, "Apology_Letter": 24, "Baghdad_2": 0.25, "Baghdad_3": 0.08}},
-                {"type": "Quest", "number": 6, "cost": 15, "initial": {"Event_Point": 50, "Seized_Illegal_Candy": 240}, "drops": {"Event_Point": 10, "Seized_Illegal_Candy": 20, "Voynich_2": 0.25, "Voynich_3": 0.08}},
-                {"type": "Quest", "number": 7, "cost": 15, "initial": {"Event_Point": 50, "Garbage_Bag": 200}, "drops": {"Event_Point": 10, "Garbage_Bag": 16, "Mandragora_2": 0.25, "Mandragora_3": 0.08}},
-                {"type": "Quest", "number": 8, "cost": 15, "initial": {"Event_Point": 140, "Apology_Letter": 40, "Seized_Illegal_Candy": 40, "Garbage_Bag": 40}, "drops": {"Event_Point": 10, "Apology_Letter": 9, "Seized_Illegal_Candy": 8, "Garbage_Bag": 7, "Haniwa_2": 0.25, "Haniwa_3": 0.08}},
+                {"type": "Quest", "number": 5, "cost": 15, "group": 2, "initial": {"Event_Point": 50, "Apology_Letter": 280}, "drops": {"Event_Point": 10, "Apology_Letter": 24, "Baghdad_2": 0.25, "Baghdad_3": 0.08}},
+                {"type": "Quest", "number": 6, "cost": 15, "group": 2, "initial": {"Event_Point": 50, "Seized_Illegal_Candy": 240}, "drops": {"Event_Point": 10, "Seized_Illegal_Candy": 20, "Voynich_2": 0.25, "Voynich_3": 0.08}},
+                {"type": "Quest", "number": 7, "cost": 15, "group": 2, "initial": {"Event_Point": 50, "Garbage_Bag": 200}, "drops": {"Event_Point": 10, "Garbage_Bag": 16, "Mandragora_2": 0.25, "Mandragora_3": 0.08}},
+                {"type": "Quest", "number": 8, "cost": 15, "group": 2, "initial": {"Event_Point": 140, "Apology_Letter": 40, "Seized_Illegal_Candy": 40, "Garbage_Bag": 40}, "drops": {"Event_Point": 10, "Apology_Letter": 9, "Seized_Illegal_Candy": 8, "Garbage_Bag": 7, "Haniwa_2": 0.25, "Haniwa_3": 0.08}},
 
-                {"type": "Quest", "number": 9, "cost": 20, "initial": {"Event_Point": 50, "Apology_Letter": 600}, "drops": {"Event_Point": 15, "Apology_Letter": 34, "Baghdad_2": 0.25, "Baghdad_3": 0.12, "Baghdad_4": 0.021}},
-                {"type": "Quest", "number": 10, "cost": 20, "initial": {"Event_Point": 50, "Seized_Illegal_Candy": 480}, "drops": {"Event_Point": 15, "Seized_Illegal_Candy": 29, "Voynich_2": 0.25, "Voynich_3": 0.12, "Voynich_4": 0.021}},
-                {"type": "Quest", "number": 11, "cost": 20, "initial": {"Event_Point": 50, "Garbage_Bag": 400}, "drops": {"Event_Point": 15, "Garbage_Bag": 24, "Mandragora_2": 0.25, "Mandragora_3": 0.12, "Mandragora_4": 0.021}},
-                {"type": "Quest", "number": 12, "cost": 20, "initial": {"Event_Point": 200, "Apology_Letter": 80, "Seized_Illegal_Candy": 80, "Garbage_Bag": 80}, "drops": {"Event_Point": 15, "Apology_Letter": 12, "Seized_Illegal_Candy": 11, "Garbage_Bag": 10, "Haniwa_2": 0.25, "Haniwa_3": 0.12, "Haniwa_4": 0.021}},
+                {"type": "Quest", "number": 9, "cost": 20, "group": 3, "initial": {"Event_Point": 50, "Apology_Letter": 600}, "drops": {"Event_Point": 15, "Apology_Letter": 34, "Baghdad_2": 0.25, "Baghdad_3": 0.12, "Baghdad_4": 0.021}},
+                {"type": "Quest", "number": 10, "cost": 20, "group": 3, "initial": {"Event_Point": 50, "Seized_Illegal_Candy": 480}, "drops": {"Event_Point": 15, "Seized_Illegal_Candy": 29, "Voynich_2": 0.25, "Voynich_3": 0.12, "Voynich_4": 0.021}},
+                {"type": "Quest", "number": 11, "cost": 20, "group": 3, "initial": {"Event_Point": 50, "Garbage_Bag": 400}, "drops": {"Event_Point": 15, "Garbage_Bag": 24, "Mandragora_2": 0.25, "Mandragora_3": 0.12, "Mandragora_4": 0.021}},
+                {"type": "Quest", "number": 12, "cost": 20, "group": 3, "initial": {"Event_Point": 200, "Apology_Letter": 80, "Seized_Illegal_Candy": 80, "Garbage_Bag": 80}, "drops": {"Event_Point": 15, "Apology_Letter": 12, "Seized_Illegal_Candy": 11, "Garbage_Bag": 10, "Haniwa_2": 0.25, "Haniwa_3": 0.12, "Haniwa_4": 0.021}},
 
                 {"type": "Challenge", "number": 1, "cost": 5},
                 {"type": "Challenge", "number": 2, "cost": 5},
@@ -2260,6 +2265,7 @@
                     {"type": "Furniture", "id": "Simple_White_Sofa", "count": 1, "cost": 500, "limited": false}
                 ]
             },
+            "stage_groups": ["1-4", "5-8", "9-12"],
             "stages": [
                 {"type": "Story", "number": 1, "cost": 10, "initial": {"Event_Point": 10}},
                 {"type": "Story", "number": 2, "cost": 10, "initial": {"Event_Point": 10}},
@@ -2270,18 +2276,18 @@
                 {"type": "Story", "number": 7, "cost": 10, "initial": {"Event_Point": 10}},
                 {"type": "Story", "number": 8, "cost": 10, "initial": {"Event_Point": 10}},
                 
-                {"type": "Quest", "number": 1, "cost": 10, "initial": {"Event_Point": 50, "Sisterhoods_Veil": 100, "Trinitys_Chant_Book": 40}, "drops": {"Event_Point": 2, "Sisterhoods_Veil": 12, "Voynich_1": 0.3375, "Voynich_2": 0.225}},
-                {"type": "Quest", "number": 2, "cost": 10, "initial": {"Event_Point": 50, "Trinitys_Chant_Book": 80, "Trinitys_Candlestick": 40}, "drops": {"Event_Point": 2, "Trinitys_Chant_Book": 10, "Totem_1": 0.3375, "Totem_2": 0.225}},
-                {"type": "Quest", "number": 3, "cost": 10, "initial": {"Event_Point": 50, "Sisterhoods_Veil": 40, "Trinitys_Candlestick": 80}, "drops": {"Event_Point": 2, "Trinitys_Candlestick": 8, "Rohonc_1": 0.3375, "Rohonc_2": 0.225}},
-                {"type": "Quest", "number": 4, "cost": 10, "initial": {"Event_Point": 100, "Sisterhoods_Veil": 20, "Trinitys_Chant_Book": 20, "Trinitys_Candlestick": 20}, "drops": {"Event_Point": 5, "Sisterhoods_Veil": 3, "Trinitys_Chant_Book": 2, "Trinitys_Candlestick": 1, "Nimrud_1": 0.3375, "Nimrud_2": 0.225}},
-                {"type": "Quest", "number": 5, "cost": 15, "initial": {"Event_Point": 50, "Sisterhoods_Veil": 280}, "drops": {"Event_Point": 4, "Sisterhoods_Veil": 24, "Voynich_2": 0.375, "Voynich_3": 0.12}},
-                {"type": "Quest", "number": 6, "cost": 15, "initial": {"Event_Point": 50, "Trinitys_Chant_Book": 240}, "drops": {"Event_Point": 4, "Trinitys_Chant_Book": 20, "Totem_2": 0.375, "Totem_3": 0.12}},
-                {"type": "Quest", "number": 7, "cost": 15, "initial": {"Event_Point": 50, "Trinitys_Candlestick": 200}, "drops": {"Event_Point": 4, "Trinitys_Candlestick": 16, "Rohonc_2": 0.375, "Rohonc_3": 0.12}},
-                {"type": "Quest", "number": 8, "cost": 15, "initial": {"Event_Point": 140, "Sisterhoods_Veil": 40, "Trinitys_Chant_Book": 40, "Trinitys_Candlestick": 40}, "drops": {"Event_Point": 11, "Sisterhoods_Veil": 5, "Trinitys_Chant_Book": 4, "Trinitys_Candlestick": 3, "Nimrud_2": 0.375, "Nimrud_3": 0.12}},
-                {"type": "Quest", "number": 9, "cost": 20, "initial": {"Event_Point": 50, "Sisterhoods_Veil": 600}, "drops": {"Event_Point": 6, "Sisterhoods_Veil": 34, "Voynich_2": 0.375, "Voynich_3": 0.1875, "Voynich_4": 0.03}},
-                {"type": "Quest", "number": 10, "cost": 20, "initial": {"Event_Point": 50, "Trinitys_Chant_Book": 480}, "drops": {"Event_Point": 6, "Trinitys_Chant_Book": 29, "Totem_2": 0.375, "Totem_3": 0.1875, "Totem_4": 0.03}},
-                {"type": "Quest", "number": 11, "cost": 20, "initial": {"Event_Point": 50, "Trinitys_Candlestick": 400}, "drops": {"Event_Point": 6, "Trinitys_Candlestick": 24, "Rohonc_2": 0.375, "Rohonc_3": 0.1875, "Rohonc_4": 0.03}},
-                {"type": "Quest", "number": 12, "cost": 20, "initial": {"Event_Point": 200, "Sisterhoods_Veil": 80, "Trinitys_Chant_Book": 80, "Trinitys_Candlestick": 80}, "drops": {"Event_Point": 16, "Sisterhoods_Veil": 7, "Trinitys_Chant_Book": 6, "Trinitys_Candlestick": 5, "Nimrud_2": 0.375, "Nimrud_3": 0.1875, "Nimrud_4": 0.03}},
+                {"type": "Quest", "number": 1, "cost": 10, "group": 1, "initial": {"Event_Point": 50, "Sisterhoods_Veil": 100, "Trinitys_Chant_Book": 40}, "drops": {"Event_Point": 2, "Sisterhoods_Veil": 12, "Voynich_1": 0.3375, "Voynich_2": 0.225}},
+                {"type": "Quest", "number": 2, "cost": 10, "group": 1, "initial": {"Event_Point": 50, "Trinitys_Chant_Book": 80, "Trinitys_Candlestick": 40}, "drops": {"Event_Point": 2, "Trinitys_Chant_Book": 10, "Totem_1": 0.3375, "Totem_2": 0.225}},
+                {"type": "Quest", "number": 3, "cost": 10, "group": 1, "initial": {"Event_Point": 50, "Sisterhoods_Veil": 40, "Trinitys_Candlestick": 80}, "drops": {"Event_Point": 2, "Trinitys_Candlestick": 8, "Rohonc_1": 0.3375, "Rohonc_2": 0.225}},
+                {"type": "Quest", "number": 4, "cost": 10, "group": 1, "initial": {"Event_Point": 100, "Sisterhoods_Veil": 20, "Trinitys_Chant_Book": 20, "Trinitys_Candlestick": 20}, "drops": {"Event_Point": 5, "Sisterhoods_Veil": 3, "Trinitys_Chant_Book": 2, "Trinitys_Candlestick": 1, "Nimrud_1": 0.3375, "Nimrud_2": 0.225}},
+                {"type": "Quest", "number": 5, "cost": 15, "group": 2, "initial": {"Event_Point": 50, "Sisterhoods_Veil": 280}, "drops": {"Event_Point": 4, "Sisterhoods_Veil": 24, "Voynich_2": 0.375, "Voynich_3": 0.12}},
+                {"type": "Quest", "number": 6, "cost": 15, "group": 2, "initial": {"Event_Point": 50, "Trinitys_Chant_Book": 240}, "drops": {"Event_Point": 4, "Trinitys_Chant_Book": 20, "Totem_2": 0.375, "Totem_3": 0.12}},
+                {"type": "Quest", "number": 7, "cost": 15, "group": 2, "initial": {"Event_Point": 50, "Trinitys_Candlestick": 200}, "drops": {"Event_Point": 4, "Trinitys_Candlestick": 16, "Rohonc_2": 0.375, "Rohonc_3": 0.12}},
+                {"type": "Quest", "number": 8, "cost": 15, "group": 2, "initial": {"Event_Point": 140, "Sisterhoods_Veil": 40, "Trinitys_Chant_Book": 40, "Trinitys_Candlestick": 40}, "drops": {"Event_Point": 11, "Sisterhoods_Veil": 5, "Trinitys_Chant_Book": 4, "Trinitys_Candlestick": 3, "Nimrud_2": 0.375, "Nimrud_3": 0.12}},
+                {"type": "Quest", "number": 9, "cost": 20, "group": 3, "initial": {"Event_Point": 50, "Sisterhoods_Veil": 600}, "drops": {"Event_Point": 6, "Sisterhoods_Veil": 34, "Voynich_2": 0.375, "Voynich_3": 0.1875, "Voynich_4": 0.03}},
+                {"type": "Quest", "number": 10, "cost": 20, "group": 3, "initial": {"Event_Point": 50, "Trinitys_Chant_Book": 480}, "drops": {"Event_Point": 6, "Trinitys_Chant_Book": 29, "Totem_2": 0.375, "Totem_3": 0.1875, "Totem_4": 0.03}},
+                {"type": "Quest", "number": 11, "cost": 20, "group": 3, "initial": {"Event_Point": 50, "Trinitys_Candlestick": 400}, "drops": {"Event_Point": 6, "Trinitys_Candlestick": 24, "Rohonc_2": 0.375, "Rohonc_3": 0.1875, "Rohonc_4": 0.03}},
+                {"type": "Quest", "number": 12, "cost": 20, "group": 3, "initial": {"Event_Point": 200, "Sisterhoods_Veil": 80, "Trinitys_Chant_Book": 80, "Trinitys_Candlestick": 80}, "drops": {"Event_Point": 16, "Sisterhoods_Veil": 7, "Trinitys_Chant_Book": 6, "Trinitys_Candlestick": 5, "Nimrud_2": 0.375, "Nimrud_3": 0.1875, "Nimrud_4": 0.03}},
 
                 {"type": "Challenge", "number": 1, "cost": 5},
                 {"type": "Challenge", "number": 2, "cost": 5},
@@ -2693,19 +2699,20 @@
                     {"type": "Material", "id": "103", "count": 15, "cost": 150}
                 ]
             },
+            "stage_groups": ["1-4", "5-8", "9-12"],
             "stages": [
-                {"type": "Quest", "number": 1, "cost": 10, "initial": {"Event_Point": 100, "Safety_Helmet": 100, "Financial_Statement": 40}, "drops": {"Event_Point": 4, "Safety_Helmet": 6, "Financial_Statement": 2}},
-                {"type": "Quest", "number": 2, "cost": 10, "initial": {"Event_Point": 100, "Financial_Statement": 80, "Potato_Chips": 40}, "drops": {"Event_Point": 4, "Financial_Statement": 5, "Potato_Chips": 2}},
-                {"type": "Quest", "number": 3, "cost": 10, "initial": {"Event_Point": 100, "Safety_Helmet": 40, "Potato_Chips": 80}, "drops": {"Event_Point": 4, "Safety_Helmet": 2, "Potato_Chips": 5}},
-                {"type": "Quest", "number": 4, "cost": 10, "initial": {"Event_Point": 200, "Safety_Helmet": 20, "Financial_Statement": 20, "Potato_Chips": 20}, "drops": {"Event_Point": 16, "Safety_Helmet": 1, "Financial_Statement": 1, "Potato_Chips": 1}},
-                {"type": "Quest", "number": 5, "cost": 15, "initial": {"Event_Point": 100, "Safety_Helmet": 280}, "drops": {"Event_Point": 6, "Safety_Helmet": 20}},
-                {"type": "Quest", "number": 6, "cost": 15, "initial": {"Event_Point": 100, "Financial_Statement": 240}, "drops": {"Event_Point": 6, "Financial_Statement": 17}},
-                {"type": "Quest", "number": 7, "cost": 15, "initial": {"Event_Point": 100, "Potato_Chips": 200}, "drops": {"Event_Point": 6, "Potato_Chips": 15}},
-                {"type": "Quest", "number": 8, "cost": 15, "initial": {"Event_Point": 280, "Safety_Helmet": 40, "Financial_Statement": 40, "Potato_Chips": 40}, "drops": {"Event_Point": 24, "Safety_Helmet": 3, "Financial_Statement": 3, "Potato_Chips": 3}},
-                {"type": "Quest", "number": 9, "cost": 20, "initial": {"Event_Point": 100, "Safety_Helmet": 600}, "drops": {"Event_Point": 8, "Safety_Helmet": 40}},
-                {"type": "Quest", "number": 10, "cost": 20, "initial": {"Event_Point": 100, "Financial_Statement": 480}, "drops": {"Event_Point": 8, "Financial_Statement": 32}},
-                {"type": "Quest", "number": 11, "cost": 20, "initial": {"Event_Point": 100, "Potato_Chips": 400}, "drops": {"Event_Point": 8, "Potato_Chips": 27}},
-                {"type": "Quest", "number": 12, "cost": 20, "initial": {"Event_Point": 400, "Safety_Helmet": 80, "Financial_Statement": 80, "Potato_Chips": 80}, "drops": {"Event_Point": 32, "Safety_Helmet": 6, "Financial_Statement": 6, "Potato_Chips": 6}},
+                {"type": "Quest", "number": 1, "cost": 10, "group": 1, "initial": {"Event_Point": 100, "Safety_Helmet": 100, "Financial_Statement": 40}, "drops": {"Event_Point": 4, "Safety_Helmet": 6, "Financial_Statement": 2}},
+                {"type": "Quest", "number": 2, "cost": 10, "group": 1, "initial": {"Event_Point": 100, "Financial_Statement": 80, "Potato_Chips": 40}, "drops": {"Event_Point": 4, "Financial_Statement": 5, "Potato_Chips": 2}},
+                {"type": "Quest", "number": 3, "cost": 10, "group": 1, "initial": {"Event_Point": 100, "Safety_Helmet": 40, "Potato_Chips": 80}, "drops": {"Event_Point": 4, "Safety_Helmet": 2, "Potato_Chips": 5}},
+                {"type": "Quest", "number": 4, "cost": 10, "group": 1, "initial": {"Event_Point": 200, "Safety_Helmet": 20, "Financial_Statement": 20, "Potato_Chips": 20}, "drops": {"Event_Point": 16, "Safety_Helmet": 1, "Financial_Statement": 1, "Potato_Chips": 1}},
+                {"type": "Quest", "number": 5, "cost": 15, "group": 2, "initial": {"Event_Point": 100, "Safety_Helmet": 280}, "drops": {"Event_Point": 6, "Safety_Helmet": 20}},
+                {"type": "Quest", "number": 6, "cost": 15, "group": 2, "initial": {"Event_Point": 100, "Financial_Statement": 240}, "drops": {"Event_Point": 6, "Financial_Statement": 17}},
+                {"type": "Quest", "number": 7, "cost": 15, "group": 2, "initial": {"Event_Point": 100, "Potato_Chips": 200}, "drops": {"Event_Point": 6, "Potato_Chips": 15}},
+                {"type": "Quest", "number": 8, "cost": 15, "group": 2, "initial": {"Event_Point": 280, "Safety_Helmet": 40, "Financial_Statement": 40, "Potato_Chips": 40}, "drops": {"Event_Point": 24, "Safety_Helmet": 3, "Financial_Statement": 3, "Potato_Chips": 3}},
+                {"type": "Quest", "number": 9, "cost": 20, "group": 3, "initial": {"Event_Point": 100, "Safety_Helmet": 600}, "drops": {"Event_Point": 8, "Safety_Helmet": 40}},
+                {"type": "Quest", "number": 10, "cost": 20, "group": 3, "initial": {"Event_Point": 100, "Financial_Statement": 480}, "drops": {"Event_Point": 8, "Financial_Statement": 32}},
+                {"type": "Quest", "number": 11, "cost": 20, "group": 3, "initial": {"Event_Point": 100, "Potato_Chips": 400}, "drops": {"Event_Point": 8, "Potato_Chips": 27}},
+                {"type": "Quest", "number": 12, "cost": 20, "group": 3, "initial": {"Event_Point": 400, "Safety_Helmet": 80, "Financial_Statement": 80, "Potato_Chips": 80}, "drops": {"Event_Point": 32, "Safety_Helmet": 6, "Financial_Statement": 6, "Potato_Chips": 6}},
 
                 {"type": "Challenge", "number": 1, "cost": 5},
                 {"type": "Challenge", "number": 2, "cost": 5},
@@ -2966,6 +2973,7 @@
                     {"type": "Furniture", "id": "Calligraphy_Desk", "count": 1, "cost": 2000, "limited": false}
                 ]
             },
+            "stage_groups": ["1-4", "5-8", "9-12"],
             "stages": [
                 {"type": "Story", "number": 1, "cost": 10, "initial": {"Lucky_Bag": 10, "Peroro_Mochi": 10}},
                 {"type": "Story", "number": 2, "cost": 10, "initial": {"Lucky_Bag": 10, "Tortoise_Clan_Ema": 10}},
@@ -2981,18 +2989,18 @@
                 {"type": "Story", "number": 12, "cost": 10, "initial": {"Lucky_Bag": 10, "Tortoise_Clan_Ema": 20}},
                 {"type": "Story", "number": 13, "cost": 10, "initial": {"Lucky_Bag": 10, "Peroro_Mochi": 20, "Tortoise_Clan_Ema": 20}},
 
-                {"type": "Quest", "number": 1, "cost": 10, "initial": {"Lucky_Bag": 200, "Peroro_Mochi": 50, "Tortoise_Clan_Ema": 50}, "drops": {"Lucky_Bag": 13, "Peroro_Mochi": 2, "Tortoise_Clan_Ema": 2}},
-                {"type": "Quest", "number": 2, "cost": 10, "initial": {"Peroro_Mochi": 200, "Tortoise_Clan_Ema": 100}, "drops": {"Peroro_Mochi": 13, "Tortoise_Clan_Ema": 4}},
-                {"type": "Quest", "number": 3, "cost": 10, "initial": {"Peroro_Mochi": 100, "Tortoise_Clan_Ema": 200}, "drops": {"Peroro_Mochi": 4, "Tortoise_Clan_Ema": 13}},
-                {"type": "Quest", "number": 4, "cost": 10, "initial": {"Lucky_Bag": 300}, "drops": {"Lucky_Bag": 16}},
-                {"type": "Quest", "number": 5, "cost": 12, "initial": {"Lucky_Bag": 200, "Peroro_Mochi": 100, "Tortoise_Clan_Ema": 100}, "drops": {"Lucky_Bag": 16, "Peroro_Mochi": 3, "Tortoise_Clan_Ema": 3}},
-                {"type": "Quest", "number": 6, "cost": 12, "initial": {"Peroro_Mochi": 250, "Tortoise_Clan_Ema": 150}, "drops": {"Peroro_Mochi": 16, "Tortoise_Clan_Ema": 6}},
-                {"type": "Quest", "number": 7, "cost": 12, "initial": {"Peroro_Mochi": 150, "Tortoise_Clan_Ema": 250}, "drops": {"Peroro_Mochi": 6, "Tortoise_Clan_Ema": 16}},
-                {"type": "Quest", "number": 8, "cost": 12, "initial": {"Lucky_Bag": 400}, "drops": {"Lucky_Bag": 21}},
-                {"type": "Quest", "number": 9, "cost": 15, "initial": {"Lucky_Bag": 300, "Peroro_Mochi": 100, "Tortoise_Clan_Ema": 100}, "drops": {"Lucky_Bag": 21, "Peroro_Mochi": 6, "Tortoise_Clan_Ema": 6}},
-                {"type": "Quest", "number": 10, "cost": 15, "initial": {"Lucky_Bag": 50, "Peroro_Mochi": 450}, "drops": {"Lucky_Bag": 12, "Peroro_Mochi": 21}},
-                {"type": "Quest", "number": 11, "cost": 15, "initial": {"Lucky_Bag": 50, "Tortoise_Clan_Ema": 450}, "drops": {"Lucky_Bag": 12, "Tortoise_Clan_Ema": 21}},
-                {"type": "Quest", "number": 12, "cost": 15, "initial": {"Lucky_Bag": 500}, "drops": {"Lucky_Bag": 30}},
+                {"type": "Quest", "number": 1, "cost": 10, "group": 1, "initial": {"Lucky_Bag": 200, "Peroro_Mochi": 50, "Tortoise_Clan_Ema": 50}, "drops": {"Lucky_Bag": 13, "Peroro_Mochi": 2, "Tortoise_Clan_Ema": 2}},
+                {"type": "Quest", "number": 2, "cost": 10, "group": 1, "initial": {"Peroro_Mochi": 200, "Tortoise_Clan_Ema": 100}, "drops": {"Peroro_Mochi": 13, "Tortoise_Clan_Ema": 4}},
+                {"type": "Quest", "number": 3, "cost": 10, "group": 1, "initial": {"Peroro_Mochi": 100, "Tortoise_Clan_Ema": 200}, "drops": {"Peroro_Mochi": 4, "Tortoise_Clan_Ema": 13}},
+                {"type": "Quest", "number": 4, "cost": 10, "group": 1, "initial": {"Lucky_Bag": 300}, "drops": {"Lucky_Bag": 16}},
+                {"type": "Quest", "number": 5, "cost": 12, "group": 2, "initial": {"Lucky_Bag": 200, "Peroro_Mochi": 100, "Tortoise_Clan_Ema": 100}, "drops": {"Lucky_Bag": 16, "Peroro_Mochi": 3, "Tortoise_Clan_Ema": 3}},
+                {"type": "Quest", "number": 6, "cost": 12, "group": 2, "initial": {"Peroro_Mochi": 250, "Tortoise_Clan_Ema": 150}, "drops": {"Peroro_Mochi": 16, "Tortoise_Clan_Ema": 6}},
+                {"type": "Quest", "number": 7, "cost": 12, "group": 2, "initial": {"Peroro_Mochi": 150, "Tortoise_Clan_Ema": 250}, "drops": {"Peroro_Mochi": 6, "Tortoise_Clan_Ema": 16}},
+                {"type": "Quest", "number": 8, "cost": 12, "group": 2, "initial": {"Lucky_Bag": 400}, "drops": {"Lucky_Bag": 21}},
+                {"type": "Quest", "number": 9, "cost": 15, "group": 3, "initial": {"Lucky_Bag": 300, "Peroro_Mochi": 100, "Tortoise_Clan_Ema": 100}, "drops": {"Lucky_Bag": 21, "Peroro_Mochi": 6, "Tortoise_Clan_Ema": 6}},
+                {"type": "Quest", "number": 10, "cost": 15, "group": 3, "initial": {"Lucky_Bag": 50, "Peroro_Mochi": 450}, "drops": {"Lucky_Bag": 12, "Peroro_Mochi": 21}},
+                {"type": "Quest", "number": 11, "cost": 15, "group": 3, "initial": {"Lucky_Bag": 50, "Tortoise_Clan_Ema": 450}, "drops": {"Lucky_Bag": 12, "Tortoise_Clan_Ema": 21}},
+                {"type": "Quest", "number": 12, "cost": 15, "group": 3, "initial": {"Lucky_Bag": 500}, "drops": {"Lucky_Bag": 30}},
 
 
                 {"type": "Challenge", "number": 1, "cost": 5},
@@ -3206,6 +3214,7 @@
                     {"type": "Credit", "id": "Credit-50000", "count": 25, "cost": 1, "amount": 50000}
                 ]
             },
+            "stage_groups": ["1-4", "5-8", "9-12"],
             "stages": [
                 {"type": "Story", "number": 1, "cost": 10, "initial": {"Card_Pack": 10, "Meeting_Flyer": 20}},
                 {"type": "Story", "number": 2, "cost": 10, "initial": {"Card_Pack": 10, "Warakuhime_Fan": 20}},
@@ -3218,20 +3227,20 @@
                 {"type": "Story", "number": 9, "cost": 10, "initial": {"Card_Pack": 10, "Meeting_Flyer": 20}},
                 {"type": "Story", "number": 10, "cost": 10, "initial": {"Card_Pack": 10, "Warakuhime_Fan": 20}},
                 
-                {"type": "Quest", "number": 1, "cost": 10, "initial": {"Card_Pack": 200, "Meeting_Flyer": 50, "Warakuhime_Fan": 50}, "drops": {"Card_Pack": 12, "Meeting_Flyer": 3, "Warakuhime_Fan": 3}},
-                {"type": "Quest", "number": 2, "cost": 10, "initial": {"Meeting_Flyer": 200, "Warakuhime_Fan": 100}, "drops": {"Meeting_Flyer": 14, "Warakuhime_Fan": 4}},
-                {"type": "Quest", "number": 3, "cost": 10, "initial": {"Meeting_Flyer": 100, "Warakuhime_Fan": 200}, "drops": {"Meeting_Flyer": 4, "Warakuhime_Fan": 14}},
-                {"type": "Quest", "number": 4, "cost": 10, "initial": {"Card_Pack": 300}, "drops": {"Card_Pack": 18}},
+                {"type": "Quest", "number": 1, "cost": 10, "group": 1, "initial": {"Card_Pack": 200, "Meeting_Flyer": 50, "Warakuhime_Fan": 50}, "drops": {"Card_Pack": 12, "Meeting_Flyer": 3, "Warakuhime_Fan": 3}},
+                {"type": "Quest", "number": 2, "cost": 10, "group": 1, "initial": {"Meeting_Flyer": 200, "Warakuhime_Fan": 100}, "drops": {"Meeting_Flyer": 14, "Warakuhime_Fan": 4}},
+                {"type": "Quest", "number": 3, "cost": 10, "group": 1, "initial": {"Meeting_Flyer": 100, "Warakuhime_Fan": 200}, "drops": {"Meeting_Flyer": 4, "Warakuhime_Fan": 14}},
+                {"type": "Quest", "number": 4, "cost": 10, "group": 1, "initial": {"Card_Pack": 300}, "drops": {"Card_Pack": 18}},
 
-                {"type": "Quest", "number": 5, "cost": 15, "initial": {"Card_Pack": 200, "Meeting_Flyer": 100, "Warakuhime_Fan": 100}, "drops": {"Card_Pack": 19, "Meeting_Flyer": 4, "Warakuhime_Fan": 4}},
-                {"type": "Quest", "number": 6, "cost": 15, "initial": {"Meeting_Flyer": 250, "Warakuhime_Fan": 150}, "drops": {"Meeting_Flyer": 23, "Warakuhime_Fan": 4}},
-                {"type": "Quest", "number": 7, "cost": 15, "initial": {"Meeting_Flyer": 150, "Warakuhime_Fan": 250}, "drops": {"Meeting_Flyer": 4, "Warakuhime_Fan": 23}},
-                {"type": "Quest", "number": 8, "cost": 15, "initial": {"Card_Pack": 400}, "drops": {"Card_Pack": 27}},
+                {"type": "Quest", "number": 5, "cost": 15, "group": 2, "initial": {"Card_Pack": 200, "Meeting_Flyer": 100, "Warakuhime_Fan": 100}, "drops": {"Card_Pack": 19, "Meeting_Flyer": 4, "Warakuhime_Fan": 4}},
+                {"type": "Quest", "number": 6, "cost": 15, "group": 2, "initial": {"Meeting_Flyer": 250, "Warakuhime_Fan": 150}, "drops": {"Meeting_Flyer": 23, "Warakuhime_Fan": 4}},
+                {"type": "Quest", "number": 7, "cost": 15, "group": 2, "initial": {"Meeting_Flyer": 150, "Warakuhime_Fan": 250}, "drops": {"Meeting_Flyer": 4, "Warakuhime_Fan": 23}},
+                {"type": "Quest", "number": 8, "cost": 15, "group": 2, "initial": {"Card_Pack": 400}, "drops": {"Card_Pack": 27}},
 
-                {"type": "Quest", "number": 9, "cost": 20, "initial": {"Card_Pack": 300, "Meeting_Flyer": 100, "Warakuhime_Fan": 100}, "drops": {"Card_Pack": 28, "Meeting_Flyer": 4, "Warakuhime_Fan": 4}},
-                {"type": "Quest", "number": 10, "cost": 20, "initial": {"Card_Pack": 50, "Meeting_Flyer": 450}, "drops": {"Card_Pack": 4, "Meeting_Flyer": 32}},
-                {"type": "Quest", "number": 11, "cost": 20, "initial": {"Card_Pack": 50, "Warakuhime_Fan": 450}, "drops": {"Card_Pack": 4, "Warakuhime_Fan": 32}},
-                {"type": "Quest", "number": 12, "cost": 20, "initial": {"Card_Pack": 500}, "drops": {"Card_Pack": 36}},
+                {"type": "Quest", "number": 9, "cost": 20, "group": 3, "initial": {"Card_Pack": 300, "Meeting_Flyer": 100, "Warakuhime_Fan": 100}, "drops": {"Card_Pack": 28, "Meeting_Flyer": 4, "Warakuhime_Fan": 4}},
+                {"type": "Quest", "number": 10, "cost": 20, "group": 3, "initial": {"Card_Pack": 50, "Meeting_Flyer": 450}, "drops": {"Card_Pack": 4, "Meeting_Flyer": 32}},
+                {"type": "Quest", "number": 11, "cost": 20, "group": 3, "initial": {"Card_Pack": 50, "Warakuhime_Fan": 450}, "drops": {"Card_Pack": 4, "Warakuhime_Fan": 32}},
+                {"type": "Quest", "number": 12, "cost": 20, "group": 3, "initial": {"Card_Pack": 500}, "drops": {"Card_Pack": 36}},
 
 
                 {"type": "Challenge", "number": 1, "cost": 5},
@@ -3370,6 +3379,7 @@
                     {"type": "Gift", "id": "Peroro_Wheel", "count": 10, "cost": 200}
                 ]
             },
+            "stage_groups": ["1-4", "5-8", "9-12"],
             "stages": [
                 {"type": "Story", "number": 1, "cost": 10, "initial": {"Beautiful_Headband": 20, "Mansion_Invitation": 10}},
                 {"type": "Story", "number": 2, "cost": 10, "initial": {"Makeup_Set": 20, "Mansion_Invitation": 10}},
@@ -3383,20 +3393,20 @@
                 {"type": "Story", "number": 10, "cost": 10, "initial": {"Makeup_Set": 20, "Mansion_Invitation": 10}},
                 {"type": "Story", "number": 11, "cost": 10, "initial": {"Beautiful_Headband": 20, "Mansion_Invitation": 10}},
 
-                {"type": "Quest", "number": 1, "cost": 10, "initial": {"Beautiful_Headband": 50, "Makeup_Set": 50, "Mansion_Invitation": 100}, "drops": {"Beautiful_Headband": 2, "Makeup_Set": 2, "Mansion_Invitation": 14, "Baghdad_1": 0.25, "Baghdad_2": 0.15}},
-                {"type": "Quest", "number": 2, "cost": 10, "initial": {"Beautiful_Headband": 100, "Makeup_Set": 100}, "drops": {"Beautiful_Headband": 14, "Makeup_Set": 4, "Antikythera_1": 0.25, "Antikythera_2": 0.15}},
-                {"type": "Quest", "number": 3, "cost": 10, "initial": {"Beautiful_Headband": 100, "Makeup_Set": 100}, "drops": {"Beautiful_Headband": 4, "Makeup_Set": 14, "Phaistos_1": 0.25, "Phaistos_2": 0.15}},
-                {"type": "Quest", "number": 4, "cost": 10, "initial": {"Mansion_Invitation": 200}, "drops": {"Mansion_Invitation": 18, "Colgante_1": 0.25, "Colgante_2": 0.15}},
+                {"type": "Quest", "number": 1, "cost": 10, "group": 1, "initial": {"Beautiful_Headband": 50, "Makeup_Set": 50, "Mansion_Invitation": 100}, "drops": {"Beautiful_Headband": 2, "Makeup_Set": 2, "Mansion_Invitation": 14, "Baghdad_1": 0.25, "Baghdad_2": 0.15}},
+                {"type": "Quest", "number": 2, "cost": 10, "group": 1, "initial": {"Beautiful_Headband": 100, "Makeup_Set": 100}, "drops": {"Beautiful_Headband": 14, "Makeup_Set": 4, "Antikythera_1": 0.25, "Antikythera_2": 0.15}},
+                {"type": "Quest", "number": 3, "cost": 10, "group": 1, "initial": {"Beautiful_Headband": 100, "Makeup_Set": 100}, "drops": {"Beautiful_Headband": 4, "Makeup_Set": 14, "Phaistos_1": 0.25, "Phaistos_2": 0.15}},
+                {"type": "Quest", "number": 4, "cost": 10, "group": 1, "initial": {"Mansion_Invitation": 200}, "drops": {"Mansion_Invitation": 18, "Colgante_1": 0.25, "Colgante_2": 0.15}},
 
-                {"type": "Quest", "number": 5, "cost": 15, "initial": {"Beautiful_Headband": 50, "Makeup_Set": 50, "Mansion_Invitation": 200}, "drops": {"Beautiful_Headband": 4, "Makeup_Set": 3, "Mansion_Invitation": 20, "Baghdad_2": 0.25, "Baghdad_3": 0.08}},
-                {"type": "Quest", "number": 6, "cost": 15, "initial": {"Beautiful_Headband": 200, "Makeup_Set": 100}, "drops": {"Beautiful_Headband": 20, "Makeup_Set": 7, "Antikythera_2": 0.25, "Antikythera_3": 0.08}},
-                {"type": "Quest", "number": 7, "cost": 15, "initial": {"Beautiful_Headband": 100, "Makeup_Set": 200}, "drops": {"Beautiful_Headband": 7, "Makeup_Set": 20, "Phaistos_2": 0.25, "Phaistos_3": 0.08}},
-                {"type": "Quest", "number": 8, "cost": 15, "initial": {"Mansion_Invitation": 300}, "drops": {"Mansion_Invitation": 27, "Colgante_2": 0.25, "Colgante_3": 0.08}},
+                {"type": "Quest", "number": 5, "cost": 15, "group": 2, "initial": {"Beautiful_Headband": 50, "Makeup_Set": 50, "Mansion_Invitation": 200}, "drops": {"Beautiful_Headband": 4, "Makeup_Set": 3, "Mansion_Invitation": 20, "Baghdad_2": 0.25, "Baghdad_3": 0.08}},
+                {"type": "Quest", "number": 6, "cost": 15, "group": 2, "initial": {"Beautiful_Headband": 200, "Makeup_Set": 100}, "drops": {"Beautiful_Headband": 20, "Makeup_Set": 7, "Antikythera_2": 0.25, "Antikythera_3": 0.08}},
+                {"type": "Quest", "number": 7, "cost": 15, "group": 2, "initial": {"Beautiful_Headband": 100, "Makeup_Set": 200}, "drops": {"Beautiful_Headband": 7, "Makeup_Set": 20, "Phaistos_2": 0.25, "Phaistos_3": 0.08}},
+                {"type": "Quest", "number": 8, "cost": 15, "group": 2, "initial": {"Mansion_Invitation": 300}, "drops": {"Mansion_Invitation": 27, "Colgante_2": 0.25, "Colgante_3": 0.08}},
 
-                {"type": "Quest", "number": 9, "cost": 20, "initial": {"Beautiful_Headband": 50, "Makeup_Set": 50, "Mansion_Invitation": 300}, "drops": {"Beautiful_Headband": 6, "Makeup_Set": 6, "Mansion_Invitation": 24, "Baghdad_2": 0.25, "Baghdad_3": 0.12, "Baghdad_4": 0.021}},
-                {"type": "Quest", "number": 10, "cost": 20, "initial": {"Beautiful_Headband": 350, "Mansion_Invitation": 50}, "drops": {"Beautiful_Headband": 36, "Antikythera_2": 0.25, "Antikythera_3": 0.12, "Antikythera_4": 0.021}},
-                {"type": "Quest", "number": 11, "cost": 20, "initial": {"Makeup_Set": 350, "Mansion_Invitation": 50}, "drops": {"Makeup_Set": 36, "Phaistos_2": 0.25, "Phaistos_3": 0.12, "Phaistos_4": 0.021}},
-                {"type": "Quest", "number": 12, "cost": 20, "initial": {"Mansion_Invitation": 400}, "drops": {"Mansion_Invitation": 36, "Colgante_2": 0.25, "Colgante_3": 0.12, "Colgante_4": 0.021}},
+                {"type": "Quest", "number": 9, "cost": 20, "group":3 , "initial": {"Beautiful_Headband": 50, "Makeup_Set": 50, "Mansion_Invitation": 300}, "drops": {"Beautiful_Headband": 6, "Makeup_Set": 6, "Mansion_Invitation": 24, "Baghdad_2": 0.25, "Baghdad_3": 0.12, "Baghdad_4": 0.021}},
+                {"type": "Quest", "number": 10, "cost": 20, "group":3 , "initial": {"Beautiful_Headband": 350, "Mansion_Invitation": 50}, "drops": {"Beautiful_Headband": 36, "Antikythera_2": 0.25, "Antikythera_3": 0.12, "Antikythera_4": 0.021}},
+                {"type": "Quest", "number": 11, "cost": 20, "group":3 , "initial": {"Makeup_Set": 350, "Mansion_Invitation": 50}, "drops": {"Makeup_Set": 36, "Phaistos_2": 0.25, "Phaistos_3": 0.12, "Phaistos_4": 0.021}},
+                {"type": "Quest", "number": 12, "cost": 20, "group":3 , "initial": {"Mansion_Invitation": 400}, "drops": {"Mansion_Invitation": 36, "Colgante_2": 0.25, "Colgante_3": 0.12, "Colgante_4": 0.021}},
 
 
                 {"type": "Challenge", "number": 1, "cost": 5},
@@ -3528,6 +3538,7 @@
                     {"type": "Credit", "id": "Credit-100000", "count": 25, "cost": 1, "amount": 100000}
                 ]
             },
+            "stage_groups": ["1-4", "5-8", "9-12"],
             "stages": [
                 {"type": "Story", "number": 1, "cost": 10, "initial": {"Sweets_Coupon": 20, "Mint_Choco_Parfait": 20}},
                 {"type": "Story", "number": 2, "cost": 10, "initial": {"Sweets_Coupon": 20, "Macaron": 20}},
@@ -3538,18 +3549,18 @@
                 {"type": "Story", "number": 7, "cost": 10, "initial": {"Sweets_Coupon": 20, "Mint_Choco_Parfait": 20}},
                 {"type": "Story", "number": 8, "cost": 10, "initial": {"Sweets_Coupon": 20, "Macaron": 20}},
                 
-                {"type": "Quest", "number": 1, "cost": 10, "initial": {"Sweets_Coupon": 100, "Mint_Choco_Parfait": 25, "Macaron": 25}, "drops": {"Sweets_Coupon": 13, "Mint_Choco_Parfait": 2, "Macaron": 2, "Colgante_1": 0.25, "Colgante_2": 0.15}},
-                {"type": "Quest", "number": 2, "cost": 10, "initial": {"Mint_Choco_Parfait": 100, "Macaron": 50}, "drops": {"Mint_Choco_Parfait": 13, "Macaron": 4, "Aether_1": 0.25, "Aether_2": 0.15}},
-                {"type": "Quest", "number": 3, "cost": 10, "initial": {"Mint_Choco_Parfait": 50, "Macaron": 100}, "drops": {"Mint_Choco_Parfait": 4, "Macaron": 13, "Mandragora_1": 0.25, "Mandragora_2": 0.15}},
-                {"type": "Quest", "number": 4, "cost": 10, "initial": {"Sweets_Coupon": 150}, "drops": {"Sweets_Coupon": 16, "Nimrud_1": 0.25, "Nimrud_2": 0.15}},
-                {"type": "Quest", "number": 5, "cost": 15, "initial": {"Sweets_Coupon": 100, "Mint_Choco_Parfait": 50, "Macaron": 50}, "drops": {"Sweets_Coupon": 20, "Mint_Choco_Parfait": 4, "Macaron": 4, "Colgante_2": 0.25, "Colgante_3": 0.08}},
-                {"type": "Quest", "number": 6, "cost": 15, "initial": {"Mint_Choco_Parfait": 125, "Macaron": 75}, "drops": {"Mint_Choco_Parfait": 20, "Macaron": 8, "Aether_2": 0.25, "Aether_3": 0.08}},
-                {"type": "Quest", "number": 7, "cost": 15, "initial": {"Mint_Choco_Parfait": 75, "Macaron": 125}, "drops": {"Mint_Choco_Parfait": 8, "Macaron": 20, "Mandragora_2": 0.25, "Mandragora_3": 0.08}},
-                {"type": "Quest", "number": 8, "cost": 15, "initial": {"Sweets_Coupon": 200}, "drops": {"Sweets_Coupon": 26, "Nimrud_2": 0.25, "Nimrud_3": 0.08}},
-                {"type": "Quest", "number": 9, "cost": 20, "initial": {"Sweets_Coupon": 150, "Mint_Choco_Parfait": 50, "Macaron": 50}, "drops": {"Sweets_Coupon": 28, "Mint_Choco_Parfait": 8, "Macaron": 8, "Colgante_2": 0.25, "Colgante_3": 0.12, "Colgante_4": 0.021}},
-                {"type": "Quest", "number": 10, "cost": 20, "initial": {"Sweets_Coupon": 25, "Mint_Choco_Parfait": 225}, "drops": {"Sweets_Coupon": 16, "Mint_Choco_Parfait": 28, "Aether_2": 0.25, "Aether_3": 0.12, "Aether_4": 0.021}},
-                {"type": "Quest", "number": 11, "cost": 20, "initial": {"Sweets_Coupon": 25, "Macaron": 225}, "drops": {"Sweets_Coupon": 16, "Macaron": 28, "Mandragora_2": 0.25, "Mandragora_3": 0.12, "Mandragora_4": 0.021}},
-                {"type": "Quest", "number": 12, "cost": 20, "initial": {"Sweets_Coupon": 250}, "drops": {"Sweets_Coupon": 40, "Nimrud_2": 0.25, "Nimrud_3": 0.12, "Nimrud_4": 0.021}},
+                {"type": "Quest", "number": 1, "cost": 10, "group": 1, "initial": {"Sweets_Coupon": 100, "Mint_Choco_Parfait": 25, "Macaron": 25}, "drops": {"Sweets_Coupon": 13, "Mint_Choco_Parfait": 2, "Macaron": 2, "Colgante_1": 0.25, "Colgante_2": 0.15}},
+                {"type": "Quest", "number": 2, "cost": 10, "group": 1, "initial": {"Mint_Choco_Parfait": 100, "Macaron": 50}, "drops": {"Mint_Choco_Parfait": 13, "Macaron": 4, "Aether_1": 0.25, "Aether_2": 0.15}},
+                {"type": "Quest", "number": 3, "cost": 10, "group": 1, "initial": {"Mint_Choco_Parfait": 50, "Macaron": 100}, "drops": {"Mint_Choco_Parfait": 4, "Macaron": 13, "Mandragora_1": 0.25, "Mandragora_2": 0.15}},
+                {"type": "Quest", "number": 4, "cost": 10, "group": 1, "initial": {"Sweets_Coupon": 150}, "drops": {"Sweets_Coupon": 16, "Nimrud_1": 0.25, "Nimrud_2": 0.15}},
+                {"type": "Quest", "number": 5, "cost": 15, "group": 2, "initial": {"Sweets_Coupon": 100, "Mint_Choco_Parfait": 50, "Macaron": 50}, "drops": {"Sweets_Coupon": 20, "Mint_Choco_Parfait": 4, "Macaron": 4, "Colgante_2": 0.25, "Colgante_3": 0.08}},
+                {"type": "Quest", "number": 6, "cost": 15, "group": 2, "initial": {"Mint_Choco_Parfait": 125, "Macaron": 75}, "drops": {"Mint_Choco_Parfait": 20, "Macaron": 8, "Aether_2": 0.25, "Aether_3": 0.08}},
+                {"type": "Quest", "number": 7, "cost": 15, "group": 2, "initial": {"Mint_Choco_Parfait": 75, "Macaron": 125}, "drops": {"Mint_Choco_Parfait": 8, "Macaron": 20, "Mandragora_2": 0.25, "Mandragora_3": 0.08}},
+                {"type": "Quest", "number": 8, "cost": 15, "group": 2, "initial": {"Sweets_Coupon": 200}, "drops": {"Sweets_Coupon": 26, "Nimrud_2": 0.25, "Nimrud_3": 0.08}},
+                {"type": "Quest", "number": 9, "cost": 20, "group": 3, "initial": {"Sweets_Coupon": 150, "Mint_Choco_Parfait": 50, "Macaron": 50}, "drops": {"Sweets_Coupon": 28, "Mint_Choco_Parfait": 8, "Macaron": 8, "Colgante_2": 0.25, "Colgante_3": 0.12, "Colgante_4": 0.021}},
+                {"type": "Quest", "number": 10, "cost": 20, "group": 3, "initial": {"Sweets_Coupon": 25, "Mint_Choco_Parfait": 225}, "drops": {"Sweets_Coupon": 16, "Mint_Choco_Parfait": 28, "Aether_2": 0.25, "Aether_3": 0.12, "Aether_4": 0.021}},
+                {"type": "Quest", "number": 11, "cost": 20, "group": 3, "initial": {"Sweets_Coupon": 25, "Macaron": 225}, "drops": {"Sweets_Coupon": 16, "Macaron": 28, "Mandragora_2": 0.25, "Mandragora_3": 0.12, "Mandragora_4": 0.021}},
+                {"type": "Quest", "number": 12, "cost": 20, "group": 3, "initial": {"Sweets_Coupon": 250}, "drops": {"Sweets_Coupon": 40, "Nimrud_2": 0.25, "Nimrud_3": 0.12, "Nimrud_4": 0.021}},
 
                 {"type": "Challenge", "number": 1, "cost": 5},
                 {"type": "Challenge", "number": 2, "cost": 5},

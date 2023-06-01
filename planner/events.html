@@ -25,7 +25,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="css/styles.css?4">
-    <link rel="stylesheet" href="css/event-planner.css?12">
+    <link rel="stylesheet" href="css/event-planner.css?13">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
@@ -36,8 +36,8 @@
     <link rel="stylesheet" href="packages/tippyjs/light.css" />
     <script src="packages/mathjs/math.js"></script>
     <script src="js/config.js?15"></script>
-    <script src="js/common.js?7"></script>
-    <script src="js/eventPlanner.js?22"></script>
+    <script src="js/common.js?8"></script>
+    <script src="js/eventPlanner.js?23"></script>
     <title>Event Planner</title>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://justin163.com/planner/events">
@@ -103,6 +103,8 @@
                     style="display: none;" data-id="label-tabboxes"></div>
                 <div id="tab-Cards" class="event-tab-button display-string" onclick="EventTabClicked('Cards')"
                     style="display: none;" data-id="label-tabcards"></div>
+                <div id="tab-Owned" class="event-tab-button display-string" onclick="EventTabClicked('Owned')"
+                    style="display: none;" data-id="label-tabowned"></div>
             </div>
             <div id="info-notifications">
                 <div id="notification-bonus" style="display: none;">
@@ -136,6 +138,12 @@
                     <img src="icons/UI/x-mark-128.png">
                     <p class="notification-text display-string" data-id="label-cardgachaunsimulated"></p>
                     <p class="notification-button" onclick="EventTabClicked('Cards')"><u class="display-string"
+                            data-id="label-checknow"></u></p>
+                </div>
+                <div id="notification-owned" style="display: none;">
+                    <img src="icons/UI/checkmark-144.png">
+                    <p class="notification-text display-string" data-id="label-ownedcurrencyenabled"></p>
+                    <p class="notification-button" onclick="EventTabClicked('Owned')"><u class="display-string"
                             data-id="label-checknow"></u></p>
                 </div>
             </div>
@@ -229,17 +237,17 @@
             </div>
             <div class="event-tab" id="Stages-tab">
                 <div id="stages-table-container"></div>
-                <div id="stage-groups-container" style="display: none;">
+                <div id="stage-groups-container">
                     <p style="margin-left: 1em;" class="display-string" data-id="label-enabled"></p>
                     <input type="checkbox" id="include-stage-group-1" name="include-stage-group-1"
                         onclick="StageGroupsStatusUpdate()">
-                    <label id="label-stage-group-1" for="include-stage-group-1">Stages 1-4</label>
+                    <label id="label-stage-group-1" for="include-stage-group-1"></label>
                     <input type="checkbox" id="include-stage-group-2" name="include-stage-group-2"
                         onclick="StageGroupsStatusUpdate()">
-                    <label id="label-stage-group-2" for="include-stage-group-2">Stages 5-8</label>
+                    <label id="label-stage-group-2" for="include-stage-group-2"></label>
                     <input type="checkbox" id="include-stage-group-3" name="include-stage-group-3"
                         onclick="StageGroupsStatusUpdate()">
-                    <label id="label-stage-group-3" for="include-stage-group-3">Stages 9-12</label>
+                    <label id="label-stage-group-3" for="include-stage-group-3"></label>
                 </div>
                 <div id="temp-disclaimer" style="margin-bottom: 1em; display: none;">
                     <p style="margin-left: 1em;">It takes about 750 bottles per lap, after about lap 30 (~22,500
@@ -254,7 +262,7 @@
                     </p>
                 </div>
                 <div id="intial-clear-container">
-                    <p style="margin-left: 1em;" class="display-string" data-id="label-initialclearinfo"></p>
+                    <p style="margin-left: 1em;" id="initial-clear-info" class="display-string" data-id="label-initialclearinfo"></p>
                     <div id="initial-clear-display-container"></div>
                 </div>
             </div>
@@ -309,23 +317,34 @@
                 </div>
                 <div id="cards-table-container"></div>
             </div>
+            <div class="event-tab" id="Owned-tab">
+                <div id="currency-owned-container"></div>
+                <p id="label-owned-currency-info-1" class="display-string" data-id="label-ownedcurrencyinfo" style="margin-bottom: 1em; margin-left: 1em; margin-right: 3em;"></p>
+                <p id="label-owned-currency-info-2" class="display-string" data-id="label-ownedcurrencyinfo2" style="margin-bottom: 1em; margin-left: 1em; margin-right: 3em;"></p>
+                <p id="label-owned-currency-info-3" class="display-string" data-id="label-ownedcurrencyinfo3" style="margin-bottom: 1em; margin-left: 1em; margin-right: 3em;"></p>
+            </div>
             <div id="reward-display-options-container">
                 <p style="margin-left: 1em;" class="display-string" data-id="label-display"></p>
                 <input type="checkbox" id="include-shop-purchases" name="include-shop-purchases"
                     onclick="DisplayOptionClicked('ShopPurchases')">
-                <label id="label-shop-purchases" for="include-shop-purchases" class="display-string" data-id="label-includeshop"></label>
+                <label id="label-shop-purchases" for="include-shop-purchases" class="display-string"
+                    data-id="label-includeshop"></label>
                 <input type="checkbox" id="include-point-rewards" name="include-point-rewards"
                     onclick="DisplayOptionClicked('PointRewards')" style="display: none;">
-                <label id="label-point-rewards" for="include-point-rewards" style="display: none;" class="display-string" data-id="label-includepointrewards"></label>
+                <label id="label-point-rewards" for="include-point-rewards" style="display: none;"
+                    class="display-string" data-id="label-includepointrewards"></label>
                 <input type="checkbox" id="include-box-rewards" name="include-box-rewards"
                     onclick="DisplayOptionClicked('BoxRewards')" style="display: none;">
-                <label id="label-box-rewards" for="include-box-rewards" style="display: none;" class="display-string" data-id="label-includeboxes"></label>
+                <label id="label-box-rewards" for="include-box-rewards" style="display: none;" class="display-string"
+                    data-id="label-includeboxes"></label>
                 <input type="checkbox" id="include-lesson-rewards" name="include-lesson-rewards"
                     onclick="DisplayOptionClicked('LessonRewards')" style="display: none;">
-                <label id="label-lesson-rewards" for="include-lesson-rewards" style="display: none;" class="display-string" data-id="label-includelessons"></label>
+                <label id="label-lesson-rewards" for="include-lesson-rewards" style="display: none;"
+                    class="display-string" data-id="label-includelessons"></label>
                 <input type="checkbox" id="include-card-rewards" name="include-card-rewards"
                     onclick="DisplayOptionClicked('CardRewards')" style="display: none;">
-                <label id="label-card-rewards" for="include-card-rewards" style="display: none;" class="display-string" data-id="label-includecards"></label>
+                <label id="label-card-rewards" for="include-card-rewards" style="display: none;" class="display-string"
+                    data-id="label-includecards"></label>
             </div>
             <div id="disclaimer-text"></div>
             <div id="box-info-text"></div>

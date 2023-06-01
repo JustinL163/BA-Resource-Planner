@@ -199,7 +199,7 @@
     background-color: rgb(171 188 231);
 }
 
-.currency-shop-tab:hover {
+.currency-shop-tab:hover, .owned-currency-container:hover {
     background-color: rgb(160 169 195);
 }
 
@@ -761,6 +761,26 @@
     margin-left: 0.25em;
 }
 
+#currency-owned-container {
+    display: flex;
+}
+
+#currency-owned-container img {
+    max-width: 100px;
+}
+
+.owned-currency-container {
+    padding-bottom: 1em;
+}
+
+.owned-currency-input {
+    width: 5em;
+    height: 2em;
+    display: block;
+    margin-inline: auto;
+    text-align: center;
+}
+
 .dark-theme #events-list {
     background-color: rgb(47 47 47);
 }
@@ -809,7 +829,7 @@
     background-color: rgb(26 26 26);
 }
 
-.dark-theme .currency-shop-tab:hover {
+.dark-theme .currency-shop-tab:hover, .dark-theme .owned-currency-container:hover {
     background-color: rgb(76 76 76);
 }
 
@@ -1096,5 +1116,17 @@
 
     .event-reward-preview {
         visibility: visible;
+    }
+
+    #currency-owned-container img {
+        max-width: 80px;
+    }
+
+    #stage-groups-container {
+        font-size: 0.8em;
+    }
+
+    #reward-display-options-container {
+        font-size: 0.8em;
     }
 }

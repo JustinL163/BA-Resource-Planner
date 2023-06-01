@@ -626,3 +626,7 @@ function languageChanged() {
 
     location.reload();
 }
+
+function Save(seconds) {
+    saveTime = Date.now() + (1000 * seconds);
+}

@@ -45,13 +45,15 @@ let cardPullCurrencyOwned = 0;
 let cardGachaProcessed = false;
 let cardGachaProcessing = false;
 
+let midEvent = false;
+
 let stageGroup1 = true, stageGroup2 = true, stageGroup3 = true;
 
 let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?15').done(function (json) {
+    $.getJSON('json/events.json?16').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -66,7 +68,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?5').done(function (json) {
+    $.getJSON('json/strings.json?6').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -303,18 +305,6 @@ function LoadEvent(eventId) {
         return;
     }
 
-    if (eventId == "get-set-go") {
-        document.getElementById('stage-groups-container').style.display = '';
-        document.getElementById('temp-disclaimer').style.display = '';
-        document.getElementById('include-stage-group-1').checked = true;
-        document.getElementById('include-stage-group-2').checked = true;
-        document.getElementById('include-stage-group-3').checked = true;
-    }
-    else {
-        document.getElementById('stage-groups-container').style.display = "none";
-        document.getElementById('temp-disclaimer').style.display = 'none';
-    }
-
     document.getElementById('event-list-button-label').innerText = "Event List - " + event_config.events[eventId].display_name;
 
     eventLoading = true;
@@ -344,9 +334,6 @@ function LoadEvent(eventId) {
     setSD = 0;
     cardGachaProcessed = false;
     cardPullCurrencyOwned = 0;
-    stageGroup1 = true;
-    stageGroup2 = true;
-    stageGroup3 = true;
 
     if (events_data[current_event]) {
         event_data = events_data[current_event];
@@ -365,6 +352,16 @@ function LoadEvent(eventId) {
         event_data.currency_needed = {};
         event_data.cafe_rank = cafeDefault;
     }
+
+    let enabledStageGroups = event_data?.enabled_stage_groups ?? [true, true, true];
+
+    document.getElementById('include-stage-group-1').checked = stageGroup1 = enabledStageGroups[0];
+    document.getElementById('include-stage-group-2').checked = stageGroup2 = enabledStageGroups[1];
+    document.getElementById('include-stage-group-3').checked = stageGroup3 = enabledStageGroups[2];
+
+    document.getElementById('label-stage-group-1').innerText = GetLanguageString("label-tabstages") + " " + event_config.events[current_event].stage_groups[0];
+    document.getElementById('label-stage-group-2').innerText = GetLanguageString("label-tabstages") + " " + event_config.events[current_event].stage_groups[1];
+    document.getElementById('label-stage-group-3').innerText = GetLanguageString("label-tabstages") + " " + event_config.events[current_event].stage_groups[2];
 
     if (Object.keys(cardGachaAvgSD).length > 0) {
         cardGachaProcessed = true;
@@ -400,6 +397,17 @@ function LoadEvent(eventId) {
         }
     }
 
+    let ownedCurrencies = Object.keys(event_data.currency_owned ?? {});
+
+    midEvent = false;
+
+    for (let i = 0; i < ownedCurrencies.length; i++) {
+        let amount = event_data.currency_owned[ownedCurrencies[i]];
+        if (amount && parseInt(amount) > 0) {
+            midEvent = true;
+        }
+    }
+
     ClearRewards();
     GenerateBonusTab();
     CalculateBonuses();
@@ -409,6 +417,7 @@ function LoadEvent(eventId) {
     CalculateInitalClear();
     CalculateEnergyAvailable();
     CalculateNeededFinal();
+    InitOwnedTab();
     InitTargetsTab();
     GenerateStagesTable();
     GeneratePointsTable();
@@ -596,7 +605,7 @@ function ToggleBonusChar(id) {
 
     event_data.enabled_bonus_units = enabledBonusUnits;
 
-    saveTime = Date.now() + (1000 * 5);
+    Save(5);
 
     CalculateBonuses();
     UpdateBonuses();
@@ -759,7 +768,7 @@ async function EnergySourceClicked(source) {
 
         CalculateEnergyAvailable();
 
-        saveTime = Date.now() + (1000 * 5);
+        Save(5);
 
         if (event_data.pyro_refreshes == undefined) {
             event_data.pyro_refreshes = 0;
@@ -1027,7 +1036,7 @@ function ShopTabClicked(currency) {
     if (current_currency) {
         HarvestItemPurchases();
         if (shopPurchaseModified) {
-            saveTime = Date.now() + (1000);
+            Save(1);
         }
     }
 
@@ -1369,7 +1378,7 @@ function HarvestItemPurchases() {
 
     document.getElementById('currency-label-' + current_currency).innerText = totalPurchaseCost;
 
-    saveTime = Date.now() + (1000 * 5);
+    Save(5);
 
     RefreshDropsDisplay();
 }
@@ -1411,15 +1420,50 @@ function CalculateNeededFinal() {
 
     for (let i = 0; i < currencies.length; i++) {
 
-        if (initialClearRewards[currencies[i]]) {
+        let currencyOwned = 0;
+
+        if (event_data.currency_owned && event_data.currency_owned[currencies[i]]) {
+            let currencyInt = parseInt(event_data.currency_owned[currencies[i]]);
+
+            if (currencyInt > 0) {
+                currencyOwned = currencyInt;
+            }
+        }
+
+        if (initialClearRewards[currencies[i]] && !midEvent) {
             currencyNeeded[currencies[i]] = Math.max(currencyNeededPre[currencies[i]] - initialClearRewards[currencies[i]], 0);
         }
         else {
-            currencyNeeded[currencies[i]] = currencyNeededPre[currencies[i]];
+            currencyNeeded[currencies[i]] = Math.max(currencyNeededPre[currencies[i]] - currencyOwned, 0);
         }
     }
 
-    event_point_target = Math.max(event_point_target - initialClearRewards["Event_Point"], 0);
+    if (event_data.point_target) {
+        event_point_target = event_data.point_target;
+    }
+    else if (event_config.events[current_event].event_point_target) {
+        event_point_target = event_config.events[current_event].event_point_target;
+    }
+    else {
+        event_point_target = 0;
+    }
+
+    let currencyOwned = 0;
+
+    if (event_data.currency_owned && event_data.currency_owned["Event_Point"]) {
+        let currencyInt = parseInt(event_data.currency_owned["Event_Point"]);
+
+        if (currencyInt > 0) {
+            currencyOwned = currencyInt;
+        }
+    }
+
+    if (midEvent) {
+        event_point_target = Math.max(event_point_target - currencyOwned, 0);
+    }
+    else {
+        event_point_target = Math.max(event_point_target - initialClearRewards["Event_Point"], 0);
+    }
 
 }
 
@@ -1475,14 +1519,21 @@ function GenerateStagesTable() {
         currenciesContainer.children[0].remove();
     }
 
-    currenciesContainer.appendChild(CreateRewardItem("icons/EventIcon/EnergyIcon/EnergyPadded.png", initialClearCost, ""));
+    if (!midEvent) {
+        document.getElementById("initial-clear-info").style.display = "";
 
-    let currencyNames = Object.keys(initialClearRewards);
+        currenciesContainer.appendChild(CreateRewardItem("icons/EventIcon/EnergyIcon/EnergyPadded.png", initialClearCost, ""));
 
-    currencyNames.forEach((name) => {
+        let currencyNames = Object.keys(initialClearRewards);
 
-        currenciesContainer.appendChild(CreateRewardItem("icons/EventIcon/CurrencyIcon/" + name + ".png", initialClearRewards[name], ""));
-    })
+        currencyNames.forEach((name) => {
+
+            currenciesContainer.appendChild(CreateRewardItem("icons/EventIcon/CurrencyIcon/" + name + ".png", initialClearRewards[name], ""));
+        })
+    }
+    else {
+        document.getElementById("initial-clear-info").style.display = "none";
+    }
 }
 
 function CreateTableRowCells(row, cells, cellType) {
@@ -1665,16 +1716,14 @@ function GetStagesLinearModelVariables() {
 
             modelVariables[stage.number] = {};
 
-            if (current_event == "get-set-go") {
-                if (!stageGroup1 && Math.floor((stage.number - 1) / 4) == 0) {
-                    continue;
-                }
-                else if (!stageGroup2 && Math.floor((stage.number - 1) / 4) == 1) {
-                    continue;
-                }
-                else if (!stageGroup3 && Math.floor((stage.number - 1) / 4) == 2) {
-                    continue;
-                }
+            if (!stageGroup1 && stage.group == 1) {
+                continue;
+            }
+            else if (!stageGroup2 && stage.group == 2) {
+                continue;
+            }
+            else if (!stageGroup3 && stage.group == 3) {
+                continue;
             }
 
             Object.assign(modelVariables[stage.number], stage.drops);
@@ -1760,7 +1809,7 @@ function SetOptimise(optimisation) {
 
         if (!eventLoading) {
             RefreshDropsDisplay();
-            saveTime = Date.now() + (1000 * 5);
+            Save(5);
         }
 
     }
@@ -1899,7 +1948,7 @@ function ToggleTargetMat(divId) {
 
     if (!eventLoading) {
         RefreshDropsDisplay();
-        saveTime = Date.now() + (1000 * 5);
+        Save(5);
     }
 }
 
@@ -2049,7 +2098,9 @@ function CalculateStageDrops(result, ignoreRequirement) {
         feasible = false;
     }
 
-    energyCost += initialClearCost;
+    if (!midEvent) {
+        energyCost += initialClearCost;
+    }
 
     if (displayIncluded['ShopPurchases']) {
         let intResults = AddShopPurchases(totalArtifacts, totalSchoolMats, totalEleph, totalXps, 0, 0, 0);
@@ -2081,15 +2132,34 @@ function CalculateStageDrops(result, ignoreRequirement) {
         }
     }
 
-    initialCurrencyNames = Object.keys(initialClearRewards);
+    if (!midEvent) {
+        initialCurrencyNames = Object.keys(initialClearRewards);
 
-    for (let i = 0; i < initialCurrencyNames.length; i++) {
+        for (let i = 0; i < initialCurrencyNames.length; i++) {
 
-        if (!totalCurrencies[initialCurrencyNames[i]]) {
-            totalCurrencies[initialCurrencyNames[i]] = 0;
+            if (!totalCurrencies[initialCurrencyNames[i]]) {
+                totalCurrencies[initialCurrencyNames[i]] = 0;
+            }
+
+            totalCurrencies[initialCurrencyNames[i]] += initialClearRewards[initialCurrencyNames[i]];
         }
+    }
+    else {
+        ownedCurrencyNames = Object.keys(event_data.currency_owned ?? {});
 
-        totalCurrencies[initialCurrencyNames[i]] += initialClearRewards[initialCurrencyNames[i]];
+        for (let i = 0; i < ownedCurrencyNames.length; i++) {
+
+            if (!totalCurrencies[ownedCurrencyNames[i]]) {
+                totalCurrencies[ownedCurrencyNames[i]] = 0;
+            }
+
+            let currencyInt = 0;
+            if (event_data.currency_owned[ownedCurrencyNames[i]]) {
+                currencyInt = parseInt(event_data.currency_owned[ownedCurrencyNames[i]]);
+            }
+
+            totalCurrencies[ownedCurrencyNames[i]] += currencyInt;
+        }
     }
 
     if (displayIncluded['BoxRewards']) {
@@ -2118,12 +2188,16 @@ function CalculateStageDrops(result, ignoreRequirement) {
         document.getElementById('box-info-text').innerText = '';
     }
 
-    if (initialClearRewards["Event_Point"]) {
-        if (!totalCurrencies["Event_Point"]) {
-            totalCurrencies["Event_Point"] = 0;
-        }
+    if (!midEvent) {
+        if (initialClearRewards["Event_Point"]) {
+            if (!totalCurrencies["Event_Point"]) {
+                totalCurrencies["Event_Point"] = 0;
+            }
 
-        //totalCurrencies["Event_Point"] += initialClearRewards["Event_Point"];
+            maxEventPoints = totalCurrencies["Event_Point"];
+        }
+    }
+    else {
         maxEventPoints = totalCurrencies["Event_Point"];
     }
 
@@ -2488,7 +2562,7 @@ function AddLessonRewards(totalArtifacts, totalSchoolMats, totalEleph, totalXps,
             else if (lessonRewardTemplate[ii].type == "Eligma") {
                 totalEligma += itemAmountAdded;
             }
-            else if (lessonRewardTemplate[ii].type == "Credit") { 
+            else if (lessonRewardTemplate[ii].type == "Credit") {
                 totalCredit += lessonRewardTemplate[ii].count;
             }
             else if (lessonRewardTemplate[ii].type == "SecretTech") { }
@@ -2554,7 +2628,7 @@ function AddLessonRewards(totalArtifacts, totalSchoolMats, totalEleph, totalXps,
             else if (lessonRewardTemplate[ii].type == "Eligma") {
                 totalEligma += itemAmountAdded;
             }
-            else if (lessonRewardTemplate[ii].type == "Credit") { 
+            else if (lessonRewardTemplate[ii].type == "Credit") {
                 totalCredit += itemAmountAdded;
             }
             else if (lessonRewardTemplate[ii].type == "SecretTech") { }
@@ -2858,7 +2932,7 @@ function OptimiseCurrency(divId) {
 
     if (!eventLoading) {
         RefreshDropsDisplay();
-        saveTime = Date.now() + (1000 * 5);
+        Save(5);
     }
 }
 
@@ -2886,7 +2960,7 @@ function HarvestStageRuns() {
 
     RefreshDropsDisplay();
     if (!eventLoading) {
-        saveTime = Date.now() + (1000 * 5);
+        Save(5);
     }
 }
 
@@ -2967,13 +3041,23 @@ function GeneratePointsTable() {
             let pointTargetClicked = event.currentTarget.id.substring(11);
 
             event_data.point_target = pointTargetClicked;
-            event_point_target = Math.max(pointTargetClicked - initialClearRewards["Event_Point"], 0);
+            if (midEvent) {
+                let currencyInt = 0;
+                if (event_data.currency_owned && event_data.currency_owned["Event_Point"]) {
+                    currencyInt = parseInt(event_data.currency_owned["Event_Point"]);
+                }
+
+                event_point_target = Math.max(pointTargetClicked - currencyInt);
+            }
+            else {
+                event_point_target = Math.max(pointTargetClicked - initialClearRewards["Event_Point"], 0);
+            }
 
             RefreshDropsDisplay();
 
             HighlightPointTiers(pointTargetClicked);
 
-            saveTime = Date.now() + (1000 * 5);
+            Save(5);
         })
 
         CreateTableRowCells(tableRow, [pTier.points, CreatePointRewardDiv(pTier.type, pTier.id, pTier.count)], 'td');
@@ -3235,7 +3319,7 @@ function GenerateLessonsTab() {
                     lessonPostRuns[event.currentTarget.id.substring(18)] = lInputRun;
                     event_data.lesson_post_runs = lessonPostRuns;
 
-                    saveTime = Date.now() + (1000 * 5);
+                    Save(5);
 
                     GenerateLessonsTab();
                 }
@@ -3309,7 +3393,7 @@ function LessonButtonClicked(lessonNum, max) {
 
     event_data.lesson_pre_runs = lessonPreRuns;
 
-    saveTime = Date.now() + (1000 * 5);
+    Save(5);
 
     GenerateLessonsTab();
 }
@@ -3388,7 +3472,7 @@ function ResetLessons() {
     event_data.lesson_pre_runs = lessonPreRuns = [];
     event_data.lesson_post_runs = lessonPostRuns = {};
 
-    saveTime = Date.now() + (1000 * 5);
+    Save(5);
 
     GenerateLessonsTab();
 }
@@ -3425,6 +3509,26 @@ function UpdateNotifications() {
     }
     else {
         document.getElementById('notification-cards').style.display = 'none';
+    }
+
+    let ownedCurrencies = Object.keys(event_data.currency_owned ?? {});
+
+    let anyOwned = false;
+    midEvent = false;
+
+    for (let i = 0; i < ownedCurrencies.length; i++) {
+        let amount = event_data.currency_owned[ownedCurrencies[i]];
+        if (amount && parseInt(amount) > 0) {
+            anyOwned = true;
+            midEvent = true;
+        }
+    }
+
+    if (anyOwned) {
+        document.getElementById('notification-owned').style.display = '';
+    }
+    else {
+        document.getElementById('notification-owned').style.display = 'none';
     }
 }
 
@@ -3473,7 +3577,7 @@ function BonusCharsEnableAll() {
     UpdateNotifications();
     RefreshDropsDisplay();
 
-    saveTime = Date.now() + (1000 * 5);
+    Save(5);
 }
 
 function InitMaxShopPurchases() {
@@ -3667,7 +3771,7 @@ function ProcessSimResults(eventName) {
 
     UpdateNotifications();
 
-    saveTime = Date.now() + (1000 * 5);
+    Save(5);
 }
 
 function CombineObjectArrays(source, target) {
@@ -3842,7 +3946,7 @@ function SDSliderSet() {
 
     RefreshDropsDisplay();
 
-    saveTime = Date.now() + (1000 * 5);
+    Save(5);
 }
 
 function HideCards() {
@@ -3887,6 +3991,109 @@ function StageGroupsStatusUpdate(stagenum) {
         stageGroup3 = true;
     }
 
+    events_data[current_event].enabled_stage_groups = [stageGroup1, stageGroup2, stageGroup3];
+
+    Save(5);
+
     RefreshDropsDisplay();
     GenerateStagesTable();
+}
+
+function InitOwnedTab() {
+
+    let elOwnedCurrencies = document.getElementById('currency-owned-container');
+
+    while (elOwnedCurrencies.children.length > 0) {
+        elOwnedCurrencies.children[0].remove();
+    }
+
+    let eventActive = event_config.events[current_event].active;
+
+    if (!eventActive) {
+        document.getElementById('tab-Owned').style.display = 'none';
+        document.getElementById("label-owned-currency-info-1").style.display = "none";
+        document.getElementById("label-owned-currency-info-2").style.display = "none";
+        document.getElementById("label-owned-currency-info-3").style.display = "none";
+        return;
+    }
+    else {
+        document.getElementById('tab-Owned').style.display = '';
+        document.getElementById("label-owned-currency-info-1").style.display = "";
+        document.getElementById("label-owned-currency-info-2").style.display = "";
+        document.getElementById("label-owned-currency-info-3").style.display = "";
+    }
+
+    let currencies = event_config.events[current_event].currencies;
+    let dropCurrencies = Object.keys(currencies);
+
+    for (let i = 0; i < dropCurrencies.length; i++) {
+
+        if (currencies[dropCurrencies[i]].source != "StageDrop" && dropCurrencies[i] != "Event_Point") {
+            continue;
+        }
+
+        let curDiv = document.createElement('div');
+        curDiv.className = "owned-currency-container";
+        curDiv.id = "owned-currency-" + dropCurrencies[i];
+
+        // tabDiv.addEventListener('click', (event) => {
+        //     ShopTabClicked(event.currentTarget.id);
+        // })
+
+        let curImg = document.createElement('img');
+
+        curImg.src = "icons/EventIcon/CurrencyIcon/" + currencies[dropCurrencies[i]].icon;
+
+        curDiv.appendChild(curImg);
+
+        let curInput = document.createElement('input');
+        curInput.type = "number";
+        curInput.id = "currency-input-" + dropCurrencies[i];
+        curInput.className = "owned-currency-input";
+        curInput.min = 0;
+        curInput.max = 200000;
+
+        if (event_data.currency_owned && event_data.currency_owned[dropCurrencies[i]]) {
+            curInput.value = parseInt(event_data.currency_owned[dropCurrencies[i]]);
+        }
+        else {
+            curInput.value = 0;
+        }
+
+        curInput.addEventListener('input', (event) => {
+            validateBasic(event.currentTarget.id);
+        });
+
+        curInput.addEventListener('beforeinput', (event) => {
+            preInput = event.target.value;
+        });
+
+        curInput.addEventListener('focusout', (event) => {
+            let validation = validateBasic(event.currentTarget.id);
+
+            if (validation == "validated") {
+
+                let currency = event.currentTarget.id.substring(15);
+
+                if (!event_data.currency_owned) {
+                    event_data.currency_owned = {};
+                }
+
+                event_data.currency_owned[currency] = event.currentTarget.value;
+
+                Save(5);
+
+                UpdateNotifications();
+                CalculateNeededFinal();
+                RefreshDropsDisplay();
+            }
+
+            preInput = '';
+        });
+
+        curDiv.appendChild(curInput);
+
+        elOwnedCurrencies.appendChild(curDiv);
+    }
+
 }
