@@ -720,29 +720,29 @@
     max-width: 10em;
 }
 
-#cards-sd-container {
+#cards-sd-container, #omikuji-sd-container {
     display: flex;
     flex-wrap: wrap;
     margin-left: 1em;
     align-items: center;
 }
 
-#sd-slider {
+#sd-slider, #omikuji-sd-slider {
     margin-right: 1em;
 }
 
-#display-standard-deviation {
+#display-standard-deviation, #display-standard-deviation-omikuji {
     margin-right: 1em;
 }
 
-#gacha-sim-button {
+#gacha-sim-button, #omikuji-sim-button {
     padding: 0.5em;
     font-size: 1em;
     background: linear-gradient(to left, buttonface 50%, #c7ffe3 50%) right;
     background-size: 200% 100%;
 }
 
-#gacha-sim-button.active {
+#gacha-sim-button.active, #omikuji-sim-button.active {
     transition: all 3.5s linear;
     background-position: left;
 }
@@ -1108,7 +1108,7 @@
         padding: 0.5em;
     }
 
-    #gacha-sim-button {
+    #gacha-sim-button, #omikuji-sim-button {
         margin-top: 0.5em;
         margin-left: auto;
         margin-right: 1em;

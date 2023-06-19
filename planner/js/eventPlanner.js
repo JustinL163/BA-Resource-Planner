@@ -36,14 +36,24 @@ let shopItemTippies = [];
 
 let cardGachaChances = [];
 
+let omikujiChances = [];
+let omikujiRewards = [];
+
 let cardGachaSimResults = {};
 let completedWorkers = [];
 let cardGachaAvgSD = {};
 let setSD = 0;
 let cardPullCurrencyOwned = 0;
 
+let omikujiGachaSimResults = {};
+let omikujiGachaAvgSD = {};
+let omikujiPullCurrencyOwned = 0;
+
 let cardGachaProcessed = false;
 let cardGachaProcessing = false;
+
+let omikujiGachaProcessed = false;
+let omikujiGachaProcessing = false;
 
 let midEvent = false;
 
@@ -53,7 +63,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?19').done(function (json) {
+    $.getJSON('json/events.json?20').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -68,7 +78,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?6').done(function (json) {
+    $.getJSON('json/strings.json?7').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -209,7 +219,7 @@ function GenerateEventsList() {
             eventInfo = event_config.events[eventName];
         }
         else if (eventInfo.display_name) {
-            eventLabel.innerText = eventInfo.display_name;
+            eventLabel.innerText = GetLanguageString("event-" + eventName); //eventInfo.display_name;
         }
 
         eventImg.src = "icons/EventIcon/" + eventInfo.icon;
@@ -291,7 +301,7 @@ function InitTippies() {
 
 function LoadEvent(eventId) {
 
-    if (cardGachaProcessing) {
+    if (cardGachaProcessing || omikujiGachaProcessing) {
         return;
     }
 
@@ -334,6 +344,12 @@ function LoadEvent(eventId) {
     setSD = 0;
     cardGachaProcessed = false;
     cardPullCurrencyOwned = 0;
+    omikujiChances = [];
+    omikujiRewards = [];
+    omikujiGachaSimResults = {};
+    omikujiGachaAvgSD = {};
+    omikujiGachaProcessed = false;
+    omikujiPullCurrencyOwned = 0;
 
     if (events_data[current_event]) {
         event_data = events_data[current_event];
@@ -343,6 +359,8 @@ function LoadEvent(eventId) {
         lessonPostRuns = event_data.lesson_post_runs ?? {};
         cardGachaAvgSD = event_data.card_pull_rewards ?? {};
         cardPullCurrencyOwned = event_data.card_pull_currency_owned ?? 0;
+        omikujiGachaAvgSD = event_data.omikuji_pull_rewards ?? {};
+        omikujiPullCurrencyOwned = event_data.omikuji_pull_currency_owned ?? 0;
         setSD = event_data.standard_deviation ?? 0;
     }
     else {
@@ -365,6 +383,10 @@ function LoadEvent(eventId) {
 
     if (Object.keys(cardGachaAvgSD).length > 0) {
         cardGachaProcessed = true;
+    }
+
+    if (Object.keys(omikujiGachaAvgSD).length > 0) {
+        omikujiGachaProcessed = true;
     }
 
     if (Object.keys(event_data.shop_purchases).length == 0) {
@@ -424,6 +446,7 @@ function LoadEvent(eventId) {
     GenerateLessonsTab();
     InitCardsTab();
     LoadCardGachaChances();
+    LoadOmikuji();
     LoadFirstShop();
     UpdateNotifications();
 
@@ -786,9 +809,14 @@ function CalculateEnergyAvailable() {
 
     let eventObject = event_config.events[current_event];
 
-    let resets = 0;
+    let daysPassed = 0;
+    if (midEvent) {
+        daysPassed = Math.floor((Date.now() / 1000 - eventObject.reset_time) / 86400);
+    }
 
-    for (let i = eventObject.reset_time; i < eventObject.end_time; i += 86400) {
+    let resets = daysPassed;
+
+    for (let i = eventObject.reset_time + (daysPassed * 86400); i < eventObject.end_time; i += 86400) {
 
         let dayLength = 24;
 
@@ -1017,6 +1045,52 @@ function CalculateBoxCurrencyNeeded(boxDropCurrency) {
 
     let pullCurrencyNeeded = CalculateBoxesNeeded(boxDropCurrency) * event_config.events[current_event].box_clear_cost;
     return pullCurrencyNeeded;
+}
+
+function CalculateBoxDropCurrencyFromBoxCurrency(boxPullCurrency) {
+
+    let boxCycleSets = event_config.events[current_event].boxes;
+    let boxSelect = {};
+
+    for (let i = 0; i < boxCycleSets.length; i++) {
+
+        for (let ii = 0; ii < boxCycleSets[i].cycle.length; ii++) {
+
+            boxSelect[boxCycleSets[i].cycle[ii]] = i;
+        }
+    }
+
+    let infiniteBox = boxSelect[Object.keys(boxSelect).length];
+
+    let cycle = 0;
+    let boxCurrencyObtained = 0;
+    let boxPullCurrencyUsed = 0;
+
+    let boxClearCost = event_config.events[current_event].box_clear_cost;
+
+    while (Math.floor(boxPullCurrencyUsed / boxClearCost) < Math.floor(boxPullCurrency / boxClearCost)) {
+
+        cycle++;
+
+        let boxRewards;
+        if (boxSelect[cycle] != undefined) {
+            boxRewards = boxCycleSets[boxSelect[cycle]].rewards;
+        }
+        else {
+            boxRewards = boxCycleSets[infiniteBox].rewards;
+        }
+
+        for (let i = 0; i < boxRewards.length; i++) {
+
+            if (boxRewards[i].type == "EventCurrency") {
+                boxCurrencyObtained += boxRewards[i].amount * boxRewards[i].count;
+            }
+        }
+
+        boxPullCurrencyUsed += boxClearCost;
+    }
+
+    return boxCurrencyObtained;
 }
 
 function ShopTabClicked(currency) {
@@ -2243,6 +2317,42 @@ function CalculateStageDrops(result, ignoreRequirement) {
         }
     }
 
+    if (event_config.events[current_event].omikuji) {
+
+        let pullCurrency = event_config.events[current_event].omikuji.pull_currency;
+
+        let changed = false;
+        if (omikujiPullCurrencyOwned != totalCurrencies[pullCurrency]) {
+            changed = true;
+        }
+
+        let boxPullCurrencyForOmikuji = GetBoxPullCurrencyForOmikuji(totalCurrencies);
+        
+        if (event_config.events[current_event].boxes && omikujiPullCurrencyOwned == boxPullCurrencyForOmikuji) {
+            changed = false;
+        }
+
+        if (changed) {
+            omikujiPullCurrencyOwned = totalCurrencies[pullCurrency] ?? 0;
+            if (boxPullCurrencyForOmikuji > 0) {
+                omikujiPullCurrencyOwned = boxPullCurrencyForOmikuji;
+            }
+            omikujiGachaProcessed = false;
+            omikujiGachaAvgSD = {};
+            event_data.omikuji_pull_rewards = {};
+            event_data.omikuji_pull_currency_owned = omikujiPullCurrencyOwned ?? 0;
+        }
+
+        if (displayIncluded['OmikujiRewards']) {
+
+            let intResults = AddOmikujiRewards(totalEleph);
+            if (intResults) {
+                totalCredit += intResults[0];
+                totalEligma += intResults[1];
+            }
+        }
+    }
+
     if (event_config.events[current_event].lessons) {
         document.getElementById("notification-lessons").style.display = 'none';
         let remainingEventPoints = maxEventPoints - GetUsedLessonPoints();
@@ -2268,6 +2378,28 @@ function CalculateStageDrops(result, ignoreRequirement) {
         }
     }
 
+}
+
+function GetBoxPullCurrencyForOmikuji(totalCurrencies) {
+
+    let boxPullCurrencyForOmikuji = 0;
+    if (event_config.events[current_event].boxes) {
+        let boxPullCurrency;
+        let currencyNames = Object.keys(event_config.events[current_event].currencies);
+        let currencies = event_config.events[current_event].currencies;
+
+        for (let i = 0; i < currencyNames.length; i++) {
+
+            if (currencies[currencyNames[i]].source == "BoxPull") {
+
+                boxPullCurrency = currencies[currencyNames[i]].pull_currency;
+            }
+        }
+
+        boxPullCurrencyForOmikuji = CalculateBoxDropCurrencyFromBoxCurrency(totalCurrencies[boxPullCurrency]);
+    }
+
+    return boxPullCurrencyForOmikuji;
 }
 
 function AddShopPurchases(totalArtifacts, totalSchoolMats, totalEleph, totalXps, totalCredit, totalEligma, totalSecretTech) {
@@ -2737,6 +2869,77 @@ function AddCardRewards(pullCurrency, totalCurrencies, totalArtifacts, totalElep
     }
 
     return [totalCredit];
+}
+
+function AddOmikujiRewards(totalEleph) {
+
+    if (!event_config.events[current_event].omikuji) {
+        return;
+    }
+
+    let totalCredit = 0, totalEligma = 0;
+
+    let rewardNames = Object.keys(omikujiGachaAvgSD);
+
+    for (i = 0; i < rewardNames.length; i++) {
+
+        let rewardName = rewardNames[i];
+        let nameInt = parseInt(rewardName);
+        // let matId = matLookup.reverseMap[rewardName];
+
+        let rewardAmount = math.round(omikujiGachaAvgSD[rewardName].mean + (setSD * omikujiGachaAvgSD[rewardName].std));
+
+        if (rewardAmount == 0) {
+            continue;
+        }
+
+        if (nameInt && nameInt == 1) {
+            totalCredit += rewardAmount;
+        }
+        // else if (rewardName == pullCurrency) {
+
+        //     if (!totalCurrencies[pullCurrency]) {
+        //         totalCurrencies[pullCurrency] = 0;
+        //     }
+
+        //     totalCurrencies[pullCurrency] += rewardAmount;
+        // }
+        // else if (rewardName.includes("XP_")) {
+
+        //     if (!totalXps[rewardName]) {
+        //         totalXps[rewardName] = 0;
+        //     }
+
+        //     totalXps[rewardName] += rewardAmount;
+        // }
+        else if (nameInt && nameInt == 23) {
+            totalEligma += rewardAmount;
+        }
+        else if (nameInt) {
+
+            if (nameInt >= 10000 && nameInt < 30000) {
+
+                if (!totalEleph[rewardName]) {
+                    totalEleph[rewardName] = 0;
+                }
+
+                totalEleph[rewardName] += rewardAmount;
+            }
+        }
+        // else if (matId) {
+
+        //     if (matId < 1000) {
+
+        //         if (!totalArtifacts[rewardName]) {
+        //             totalArtifacts[rewardName] = 0;
+        //         }
+
+        //         totalArtifacts[rewardName] += rewardAmount;
+        //     }
+        // }
+    }
+
+    return [totalCredit, totalEligma];
 }
 
 function DisplayOptionClicked(option) {
@@ -3511,6 +3714,13 @@ function UpdateNotifications() {
         document.getElementById('notification-cards').style.display = 'none';
     }
 
+    if (event_config.events[current_event].omikuji && Object.keys(omikujiGachaAvgSD).length == 0 && !(omikujiPullCurrencyOwned == 0)) {
+        document.getElementById('notification-omikuji').style.display = '';
+    }
+    else {
+        document.getElementById('notification-omikuji').style.display = 'none';
+    }
+
     let ownedCurrencies = Object.keys(event_data.currency_owned ?? {});
 
     let anyOwned = false;
@@ -3788,6 +3998,153 @@ function CombineObjectArrays(source, target) {
     }
 }
 
+function LoadOmikuji() {
+
+    omikujiChances = [];
+    let omikuji = event_config.events[current_event].omikuji;
+
+    if (!omikuji) {
+
+        document.getElementById('tab-Omikuji').style.display = 'none';
+        document.getElementById('Omikuji-tab').style.display = 'none';
+        document.getElementById('include-omikuji-rewards').style.display = 'none';
+        document.getElementById('label-omikuji-rewards').style.display = 'none';
+        return;
+    }
+    else {
+        document.getElementById('include-omikuji-rewards').style.display = '';
+        document.getElementById('label-omikuji-rewards').style.display = '';
+    }
+
+    document.getElementById('tab-Omikuji').style.display = '';
+    if (currentTab == "Omikuji") {
+        document.getElementById('Omikuji-tab').style.display = 'block';
+    }
+
+    for (let i = 0; i < omikuji.MaxPullCount - omikuji.ProbModifyStartCount; i++) {
+        omikujiChances[i] = [];
+
+        let totalChance = 0;
+
+        for (let ii = 0; ii < omikuji.slips.length; ii++) {
+            let slip = omikuji.slips[ii];
+            if (slip.ProbModifyLimit == 0) {
+                let adjustedProb = Math.max(slip.Prob + (Math.max(i + 1, 0) * slip.ProbModifyValue), 0);
+                omikujiChances[i].push(totalChance);
+                totalChance += adjustedProb;
+            }
+            else {
+                let adjustedProb = Math.min(slip.Prob + (Math.max(i + 1, 0) * slip.ProbModifyValue), slip.ProbModifyLimit);
+                omikujiChances[i].push(totalChance);
+                totalChance += adjustedProb;
+            }
+        }
+    }
+
+    for (let i = 0; i < omikuji.slips.length; i++) {
+        let slip = omikuji.slips[i];
+
+        omikujiRewards.push([slip.Grade, slip.RewardId, slip.RewardAmount]);
+    }
+
+    if (setSD || setSD == 0) {
+        document.getElementById("omikuji-sd-slider").value = setSD;
+        SDSliderChanged("omikuji-sd-slider", "display-standard-deviation-omikuji");
+    }
+}
+
+function SimulateOmikujiGacha() {
+
+    if (omikujiGachaProcessed) {
+        return;
+    }
+
+    omikujiGachaSimResults = {};
+    completedWorkers = [];
+
+    let omikuji_drop_event = current_event + "";
+
+    // startsTime = new Date();
+    const worker1 = new Worker("js/omikujiGachaWorker.js");
+    const worker2 = new Worker("js/omikujiGachaWorker.js");
+    const worker3 = new Worker("js/omikujiGachaWorker.js");
+    const worker4 = new Worker("js/omikujiGachaWorker.js");
+
+    worker1.onmessage = (e) => {
+        completedWorkers.push(1);
+        CombineObjectArrays(e.data, omikujiGachaSimResults);
+        ProcessOmikujiResults(omikuji_drop_event);
+    }
+    worker2.onmessage = (e) => {
+        completedWorkers.push(2);
+        CombineObjectArrays(e.data, omikujiGachaSimResults);
+        ProcessOmikujiResults(omikuji_drop_event);
+    }
+    worker3.onmessage = (e) => {
+        completedWorkers.push(3);
+        CombineObjectArrays(e.data, omikujiGachaSimResults);
+        ProcessOmikujiResults(omikuji_drop_event);
+    }
+    worker4.onmessage = (e) => {
+        completedWorkers.push(4);
+        CombineObjectArrays(e.data, omikujiGachaSimResults);
+        ProcessOmikujiResults(omikuji_drop_event);
+    }
+
+    omikujiPullCurrencyOwned = event_data.omikuji_pull_currency_owned;
+    let pullCost = event_config.events[current_event].omikuji.pull_cost;
+
+    worker1.postMessage([omikujiRewards, omikujiChances, 3000, 100000, omikujiPullCurrencyOwned, pullCost]);
+    worker2.postMessage([omikujiRewards, omikujiChances, 3000, 100000, omikujiPullCurrencyOwned, pullCost]);
+    worker3.postMessage([omikujiRewards, omikujiChances, 3000, 100000, omikujiPullCurrencyOwned, pullCost]);
+    worker4.postMessage([omikujiRewards, omikujiChances, 3000, 100000, omikujiPullCurrencyOwned, pullCost]);
+}
+
+function ProcessOmikujiResults(eventName) {
+
+    if (completedWorkers.length != 4) {
+        return;
+    }
+
+    if (eventName != current_event) {
+        omikujiGachaSimResults = {};
+        omikujiGachaProcessing = false;
+        return;
+    }
+
+    let rewardNames = Object.keys(omikujiGachaSimResults);
+
+    for (i = 0; i < rewardNames.length; i++) {
+
+        omikujiGachaAvgSD[rewardNames[i]] = {};
+
+        omikujiGachaAvgSD[rewardNames[i]].std = math.std(omikujiGachaSimResults[rewardNames[i]]);
+        omikujiGachaAvgSD[rewardNames[i]].mean = math.mean(omikujiGachaSimResults[rewardNames[i]]);
+    }
+
+    events_data[eventName].omikuji_pull_rewards = omikujiGachaAvgSD;
+    //events_data[eventName].omikuji_pull_currency_owned = omikujiPullCurrencyOwned ?? 0;
+
+    Swal.fire({
+        toast: true,
+        position: 'top-start',
+        title: ('Simulated ' + omikujiGachaSimResults["1"].length + " attempts"),
+        showConfirmButton: false,
+        timer: 3000
+    })
+
+    omikujiGachaSimResults = {};
+
+    RefreshDropsDisplay();
+
+    omikujiGachaProcessing = false;
+    omikujiGachaProcessed = true;
+
+    UpdateNotifications();
+
+    Save(5);
+}
+
 function InitCardsTab() {
 
     let cardDrops = event_config.events[current_event].card_drops;
@@ -3816,9 +4173,9 @@ function InitCardsTab() {
         elementCardsTabs.children[0].click();
     }
 
-    if (setSD) {
+    if (setSD || setSD == 0) {
         document.getElementById("sd-slider").value = setSD;
-        SDSliderChanged();
+        SDSliderChanged("sd-slider", "display-standard-deviation");
     }
 }
 
@@ -3920,25 +4277,29 @@ function GenerateCardsRarityTable(rarity) {
     tableContainer.appendChild(table);
 }
 
-function SDSliderChanged() {
+function SDSliderChanged(sliderId, labelId) {
 
-    let sdDescs = ["(Bottom 2.3%)", "(Bottom 6.7%)", "(Bottom 15.9%)", "(Bottom 30.9%)", "", "(Top 30.9%)", "(Top 15.9%)"]
+    let labelBottom = GetLanguageString("label-bottom");
+    let labelTop = GetLanguageString("label-top");
 
-    let sd = document.getElementById("sd-slider").value;
+    let sdDescs = ["(" + labelBottom + " 2.3%)", "(" + labelBottom + " 6.7%)", "(" + labelBottom + " 15.9%)", "(" + labelBottom + " 30.9%)", "",
+    "(" + labelTop + " 30.9%)", "(" + labelTop + " 15.9%)"]
 
-    let sdLabel = document.getElementById('display-standard-deviation');
+    let sd = document.getElementById(sliderId).value;
+
+    let sdLabel = document.getElementById(labelId);
 
     if (sd == 0) {
-        sdLabel.innerText = "Avg";
+        sdLabel.innerText = GetLanguageString("label-stdinfo");
     }
     else {
         sdLabel.innerText = sd + "σ" + " " + sdDescs[parseFloat(sd) * 2 + 4];
     }
 }
 
-function SDSliderSet() {
+function SDSliderSet(sliderId) {
 
-    let sd = document.getElementById("sd-slider").value;
+    let sd = document.getElementById(sliderId).value;
 
     setSD = parseFloat(sd);
 
@@ -3974,6 +4335,24 @@ function SimButtonClicked() {
     btn.classList.add('active');
 
     SimulateCardGacha();
+
+    setTimeout(() => {
+        btn.classList.remove('active');
+    }, 4000);
+}
+
+function SimOmikujiClicked() {
+
+    if (omikujiGachaProcessing || omikujiGachaProcessed) {
+        return;
+    }
+
+    omikujiGachaProcessing = true;
+
+    let btn = document.getElementById("omikuji-sim-button");
+    btn.classList.add('active');
+
+    SimulateOmikujiGacha();
 
     setTimeout(() => {
         btn.classList.remove('active');
@@ -4084,6 +4463,7 @@ function InitOwnedTab() {
                 Save(5);
 
                 UpdateNotifications();
+                CalculateEnergyAvailable();
                 CalculateNeededFinal();
                 RefreshDropsDisplay();
             }

@@ -51,6 +51,22 @@
     </div>
     <div class="bodyText">
         <div class="changelog-section">
+            <h2>Version 1.3.13</h2>
+            <br>
+            <h3>Changes</h3>
+            <ul>
+                <li>Enabled 2 more events, NY 2 and NY 1 rerun</li>
+                <li>Updated mid event calculations to calculate energy based on remaining resets (this is based on the system clock, so if your device has the 
+                    wrong time set it will cause issues calculating energy).</li>
+                <ul>
+                        <li>This should currently slightly underestimate remaining energy, as it currently calculates based on remaining resets</li>
+                        <li>Will look at updating in future to include partial days worth of energy generation also (and input for current held energy)</li>
+                </ul>
+            </ul>
+            <br>
+        </div>
+        <br><br>
+        <div class="changelog-section">
             <h2>Version 1.3.12</h2>
             <br>
             <h3>Changes</h3>

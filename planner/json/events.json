@@ -1,12 +1,12 @@
 {
     "event_order": [
         "cathedral-christmas",
-        "|game-before-the-new-year",
+        "game-before-the-new-year",
         "|valentine-rerun",
         "bookstore-rerun",
         "|aha-conquest",
         "restoration-project",
-        "|new-year-68-rerun",
+        "new-year-68-rerun",
         "unconcealed-heart-rerun",
         "|hakua-calling-card",
         "after-school-sweets-rerun"
@@ -1434,10 +1434,10 @@
             "active": true,
             "icon": "Event_819_Jp.png",
             "display_name": "A Cathedral Christmas",
-            "reset_time": 1677524400,
-            "start_time": 1677549600,
-            "end_time": 1678759200,
-            "maint_hours": 6,
+            "reset_time": 1686596400,
+            "start_time": 1686621600,
+            "end_time": 1687831200,
+            "maint_hours": 5,
             "available_targets": ["Shop", "Materials", "Currency", "Manual"],
             "currency_targets": ["Christmas_Present"],
             "reward_preview": [
@@ -1810,7 +1810,50 @@
                 {"points": 13000, "type": "XpReport", "id": "XP_3", "count": 20},
                 {"points": 14000, "type": "Credit", "count": 2000000},
                 {"points": 15000, "type": "XpReport", "id": "XP_4", "count": 10}
-            ]
+            ],
+            "omikuji": {
+                "pull_currency": "Event_Point",
+                "pull_cost": 300,
+                "TargetGrade": 5,
+                "ProbModifyStartCount": 5,
+                "MaxPullCount": 16,
+                "slips": [
+                    {"Grade":0,"Prob":50,"ProbModifyValue":-5,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[1000000,3]},
+                    {"Grade":0,"Prob":50,"ProbModifyValue":-5,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[1000000,3]},
+                    {"Grade":0,"Prob":50,"ProbModifyValue":-5,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[1000000,3]},
+                    {"Grade":0,"Prob":50,"ProbModifyValue":-5,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[1000000,3]},
+                    {"Grade":1,"Prob":333,"ProbModifyValue":-33,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[100000,1]},
+                    {"Grade":1,"Prob":333,"ProbModifyValue":-33,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[100000,1]},
+                    {"Grade":1,"Prob":333,"ProbModifyValue":-33,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[100000,1]},
+                    {"Grade":1,"Prob":333,"ProbModifyValue":-33,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[100000,1]},
+                    {"Grade":1,"Prob":334,"ProbModifyValue":-34,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[100000,1]},
+                    {"Grade":1,"Prob":334,"ProbModifyValue":-34,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[100000,1]},
+                    {"Grade":2,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[200000,1]},
+                    {"Grade":2,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[200000,1]},
+                    {"Grade":2,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[200000,1]},
+                    {"Grade":2,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[200000,1]},
+                    {"Grade":2,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[200000,1]},
+                    {"Grade":2,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[200000,1]},
+                    {"Grade":3,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,16012,23],"RewardAmount":[400000,1,1]},
+                    {"Grade":3,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[400000,1]},
+                    {"Grade":3,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,16012,23],"RewardAmount":[400000,1,1]},
+                    {"Grade":3,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[400000,1]},
+                    {"Grade":3,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,16012,23],"RewardAmount":[400000,1,1]},
+                    {"Grade":3,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[400000,1]},
+                    {"Grade":4,"Prob":250,"ProbModifyValue":-25,"ProbModifyLimit":0,"RewardId":[1,16012,23],"RewardAmount":[600000,1,1]},
+                    {"Grade":4,"Prob":250,"ProbModifyValue":-25,"ProbModifyLimit":0,"RewardId":[1,16012,23],"RewardAmount":[600000,1,1]},
+                    {"Grade":4,"Prob":250,"ProbModifyValue":-25,"ProbModifyLimit":0,"RewardId":[1,16012,23],"RewardAmount":[600000,1,1]},
+                    {"Grade":4,"Prob":250,"ProbModifyValue":-25,"ProbModifyLimit":0,"RewardId":[1,16012,23],"RewardAmount":[600000,1,1]},
+                    {"Grade":4,"Prob":250,"ProbModifyValue":-25,"ProbModifyLimit":0,"RewardId":[1,16012,23],"RewardAmount":[600000,1,1]},
+                    {"Grade":4,"Prob":250,"ProbModifyValue":-25,"ProbModifyLimit":0,"RewardId":[1,16012,23],"RewardAmount":[600000,1,1]},
+                    {"Grade":5,"Prob":50,"ProbModifyValue":161,"ProbModifyLimit":1666,"RewardId":[1,16012,23],"RewardAmount":[800000,2,2]},
+                    {"Grade":5,"Prob":50,"ProbModifyValue":161,"ProbModifyLimit":1666,"RewardId":[1,16012,23],"RewardAmount":[800000,2,2]},
+                    {"Grade":5,"Prob":50,"ProbModifyValue":162,"ProbModifyLimit":1667,"RewardId":[1,16012,23],"RewardAmount":[800000,2,2]},
+                    {"Grade":5,"Prob":50,"ProbModifyValue":162,"ProbModifyLimit":1667,"RewardId":[1,16012,23],"RewardAmount":[800000,2,2]},
+                    {"Grade":5,"Prob":50,"ProbModifyValue":162,"ProbModifyLimit":1667,"RewardId":[1,16012,23],"RewardAmount":[800000,2,2]},
+                    {"Grade":5,"Prob":50,"ProbModifyValue":162,"ProbModifyLimit":1667,"RewardId":[1,16012,23],"RewardAmount":[800000,2,2]}
+                ]
+            }
         },
         "valentine-rerun": {
             "icon": "Event_810_En.png",
@@ -3072,7 +3115,40 @@
                         {"type": "Misc", "id": "Random_Equipment_Box_0", "amount":  1, "count": 55}
                     ]
                 }
-            ]
+            ],
+            "omikuji": {
+                "pull_currency": "Fortune_Slip_Voucher",
+                "pull_cost": 10,
+                "TargetGrade": 5,
+                "ProbModifyStartCount": 5,
+                "MaxPullCount": 15,
+                "slips": [
+                    {"Grade":0,"Prob":30,"ProbModifyValue":-3,"ProbModifyLimit":0,"RewardId":[10000],"RewardAmount":[5]},
+                    {"Grade":0,"Prob":30,"ProbModifyValue":-3,"ProbModifyLimit":0,"RewardId":[10000],"RewardAmount":[5]},
+                    {"Grade":0,"Prob":20,"ProbModifyValue":-2,"ProbModifyLimit":0,"RewardId":[10000],"RewardAmount":[5]},
+                    {"Grade":0,"Prob":20,"ProbModifyValue":-2,"ProbModifyLimit":0,"RewardId":[10000],"RewardAmount":[5]},
+                    {"Grade":1,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,10000,23],"RewardAmount":[500000,1,1]},
+                    {"Grade":1,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,10000,23],"RewardAmount":[500000,1,1]},
+                    {"Grade":1,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,10000,23],"RewardAmount":[500000,1,1]},
+                    {"Grade":1,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,10000,23],"RewardAmount":[500000,1,1]},
+                    {"Grade":2,"Prob":730,"ProbModifyValue":-73,"ProbModifyLimit":0,"RewardId":[1,10000,23],"RewardAmount":[1000000,1,1]},
+                    {"Grade":2,"Prob":730,"ProbModifyValue":-73,"ProbModifyLimit":0,"RewardId":[1,10000,23],"RewardAmount":[1000000,1,1]},
+                    {"Grade":2,"Prob":720,"ProbModifyValue":-72,"ProbModifyLimit":0,"RewardId":[1,10000,23],"RewardAmount":[1000000,1,1]},
+                    {"Grade":2,"Prob":720,"ProbModifyValue":-72,"ProbModifyLimit":0,"RewardId":[1,10000,23],"RewardAmount":[1000000,1,1]},
+                    {"Grade":3,"Prob":630,"ProbModifyValue":-63,"ProbModifyLimit":0,"RewardId":[1,10000,23],"RewardAmount":[1500000,1,2]},
+                    {"Grade":3,"Prob":630,"ProbModifyValue":-63,"ProbModifyLimit":0,"RewardId":[1,10000,23],"RewardAmount":[1500000,1,2]},
+                    {"Grade":3,"Prob":620,"ProbModifyValue":-62,"ProbModifyLimit":0,"RewardId":[1,10000,23],"RewardAmount":[1500000,1,2]},
+                    {"Grade":3,"Prob":620,"ProbModifyValue":-62,"ProbModifyLimit":0,"RewardId":[1,10000,23],"RewardAmount":[1500000,1,2]},
+                    {"Grade":4,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,10000,23],"RewardAmount":[2000000,2,3]},
+                    {"Grade":4,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,10000,23],"RewardAmount":[2000000,2,3]},
+                    {"Grade":4,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,10000,23],"RewardAmount":[2000000,2,3]},
+                    {"Grade":4,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,10000,23],"RewardAmount":[2000000,2,3]},
+                    {"Grade":5,"Prob":130,"ProbModifyValue":237,"ProbModifyLimit":2500,"RewardId":[1,10000,23],"RewardAmount":[2500000,5,5]},
+                    {"Grade":5,"Prob":130,"ProbModifyValue":237,"ProbModifyLimit":2500,"RewardId":[1,10000,23],"RewardAmount":[2500000,5,5]},
+                    {"Grade":5,"Prob":120,"ProbModifyValue":238,"ProbModifyLimit":2500,"RewardId":[1,10000,23],"RewardAmount":[2500000,5,5]},
+                    {"Grade":5,"Prob":120,"ProbModifyValue":238,"ProbModifyLimit":2500,"RewardId":[1,10000,23],"RewardAmount":[2500000,5,5]}
+                ]
+            }
         },
         "unconcealed-heart-rerun": {
             "icon": "Event_813_En.png",
