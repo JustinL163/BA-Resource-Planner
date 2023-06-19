@@ -78,7 +78,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?7').done(function (json) {
+    $.getJSON('json/strings.json?8').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -721,7 +721,7 @@ async function EnergySourceClicked(source) {
         input_placeholder = "Select number of refreshes";
     }
     else if (source == "Cafe") {
-        for (let i = 1; i <= 7; i++) {
+        for (let i = 1; i <= 8; i++) {
             options[i] = "Lvl " + i;
         }
 
