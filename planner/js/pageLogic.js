@@ -103,7 +103,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?8').done(function (json) {
+    $.getJSON('json/strings.json?9').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -498,14 +498,14 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.3.13".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.3.14".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         Swal.fire({
-            title: GetLanguageString("text-updatedversionprefix") + "1.3.13",
+            title: GetLanguageString("text-updatedversionprefix") + "1.3.14",
             color: alertColour,
             html: GetLanguageString("text-updatemessage")
         })
 
-        data.site_version = "1.3.13";
+        data.site_version = "1.3.14";
         saveToLocalStorage(false);
     }
 
@@ -4748,7 +4748,7 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
             }
 
             if (col == 0) {
-                if (language != "En" && language != "Kr" && language != "Th") {
+                if (language != "En" && language != "Kr" && language != "Th" && language != "Jp") {
                     let localisedName = mLocalisations[language]?.Data[rows[row].replace(/ /g, '')];
                     if (localisedName) {
                         newCell.innerText = localisedName;
