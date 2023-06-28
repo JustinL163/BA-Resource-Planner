@@ -1,6 +1,5 @@
 {
     "event_order": [
-        "cathedral-christmas",
         "game-before-the-new-year",
         "|valentine-rerun",
         "bookstore-rerun",
@@ -1431,7 +1430,7 @@
             ]
         },
         "cathedral-christmas": {
-            "active": true,
+            "active": false,
             "icon": "Event_819_Jp.png",
             "display_name": "A Cathedral Christmas",
             "reset_time": 1686596400,
@@ -1620,12 +1619,13 @@
             ]
         },
         "game-before-the-new-year": {
+            "active": true,
             "icon": "Event_820_Jp.png",
             "display_name": "A Game Before the New Year's Feast",
-            "reset_time": 1677524400,
-            "start_time": 1677549600,
-            "end_time": 1678759200,
-            "maint_hours": 6,
+            "reset_time": 1687806000,
+            "start_time": 1687831200,
+            "end_time": 1689040800,
+            "maint_hours": 7,
             "available_targets": ["Shop", "Materials", "Currency", "Manual"],
             "currency_targets": ["Event_Point"],
             "event_point_target": 15000,

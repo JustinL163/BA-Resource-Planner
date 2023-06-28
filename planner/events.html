@@ -25,7 +25,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="css/styles.css?4">
-    <link rel="stylesheet" href="css/event-planner.css?14">
+    <link rel="stylesheet" href="css/event-planner.css?15">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
@@ -37,7 +37,7 @@
     <script src="packages/mathjs/math.js"></script>
     <script src="js/config.js?15"></script>
     <script src="js/common.js?8"></script>
-    <script src="js/eventPlanner.js?29"></script>
+    <script src="js/eventPlanner.js?30"></script>
     <title>Event Planner</title>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://justin163.com/planner/events">
@@ -224,6 +224,11 @@
                         <img src="icons/EventIcon/EnergyIcon/Goods_Icon_Biweekly_0.png">
                         <p id="energy-energypack-total">0</p>
                     </div>
+                    <div id="energy-source-carryover" class="energy-source energy-editable"
+                        onclick="EnergySourceClicked('Carryover')">
+                        <img src="icons/EventIcon/EnergyIcon/EnergyCarryover.png">
+                        <p id="energy-carryover-total">0</p>
+                    </div>
                     <div id="energy-sources-total" class="energy-source">
                         <img src="icons/EventIcon/EnergyIcon/Energy.png">
                         <p id="energy-total">0</p>
@@ -350,6 +355,8 @@
                 <p id="label-owned-currency-info-3" class="display-string" data-id="label-ownedcurrencyinfo3"
                     style="margin-bottom: 1em; margin-left: 1em; margin-right: 3em;"></p>
                 <p id="label-owned-currency-info-4" class="display-string" data-id="label-ownedcurrencyinfo4"
+                    style="margin-bottom: 1em; margin-left: 1em; margin-right: 3em;"></p>
+                <p id="label-owned-currency-info-5" class="display-string" data-id="label-ownedcurrencyinfo5"
                     style="margin-bottom: 1em; margin-left: 1em; margin-right: 3em;"></p>
             </div>
             <div id="reward-display-options-container">

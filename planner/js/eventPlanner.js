@@ -63,7 +63,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?20').done(function (json) {
+    $.getJSON('json/events.json?21').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -78,7 +78,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?9').done(function (json) {
+    $.getJSON('json/strings.json?10').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -704,6 +704,8 @@ async function EnergySourceClicked(source) {
 
     let title, options = {}, input_placeholder;
 
+    let inputType;
+
     if (source == "Pyro") {
         for (let i = 0; i <= 20; i++) {
             options[i] = i + "x";
@@ -711,6 +713,7 @@ async function EnergySourceClicked(source) {
 
         title = "Pyro refreshes";
         input_placeholder = "Select number of refreshes";
+        inputType = "Options";
     }
     else if (source == "ArenaCoin") {
         for (let i = 0; i <= 4; i++) {
@@ -719,6 +722,7 @@ async function EnergySourceClicked(source) {
 
         title = "Pvp refreshes";
         input_placeholder = "Select number of refreshes";
+        inputType = "Options";
     }
     else if (source == "Cafe") {
         for (let i = 1; i <= 8; i++) {
@@ -727,6 +731,7 @@ async function EnergySourceClicked(source) {
 
         title = "Cafe rank";
         input_placeholder = "Select cafe rank";
+        inputType = "Options";
     }
     else if (source == "EnergyPack") {
 
@@ -737,21 +742,53 @@ async function EnergySourceClicked(source) {
 
         title = "Biweekly Energy Pack";
         input_placeholder = "Pack active?";
+        inputType = "Options";
+    }
+    else if (source == "Carryover") {
+
+        title = "Energy Carryover";
+        input_placeholder = "0-3000";
+        inputType = "Number";
     }
 
+    let result;
 
+    if (inputType == "Options") {
+        const tempResult = await Swal.fire({
+            title: title,
+            input: 'select',
+            inputOptions: options,
+            inputPlaceholder: input_placeholder,
+            showCancelButton: true
+        });
 
-    const { value: result } = await Swal.fire({
-        title: title,
-        input: 'select',
-        inputOptions: options,
-        inputPlaceholder: input_placeholder,
-        showCancelButton: true
-    })
+        result = tempResult.value;
+    }
+    else if (inputType == "Number") {
+        const tempResult = await Swal.fire({
+            title: title,
+            input: 'text',
+            inputPlaceholder: input_placeholder,
+            showCancelButton: true,
+            inputValidator: (value) => {
+                let tempVal;
+                try {
+                    tempVal = parseInt(value);
+                    if (tempVal >= 0 && tempVal <= 3000) {}
+                    else {
+                        return "Enter an integer between 0-3000";
+                    }
+                }
+                catch {
+                    return "Enter an integer between 0-3000";
+                }
+            }
+        });
 
+        result = parseInt(tempResult.value);
+    }
 
-
-    if (result) {
+    if (result || result === 0) {
 
         if (source == "Pyro") {
             event_data["pyro_refreshes"] = parseInt(result);
@@ -786,6 +823,14 @@ async function EnergySourceClicked(source) {
             }
             else {
                 event_data["energy_pack"] = false;
+            }
+        }
+        else if (source == "Carryover") {
+            if (result == 0) {
+                event_data["energy_carryover"] = 0;
+            }
+            else if (!isNaN(result)) {
+                event_data["energy_carryover"] = result;
             }
         }
 
@@ -823,8 +868,13 @@ function CalculateEnergyAvailable() {
         let natural = 0, cafe = 0, dailytask = 0, club = 0, pyrorefresh = 0, pvprefresh = 0,
             energypack = 0, weeklytask = 0, aronalogin = 0;
 
+        let carryover = 0;
+
         if (resets == 0) {
             dayLength = (((eventObject.reset_time + 86400) - eventObject.start_time) / 3600) - eventObject.maint_hours;
+            if (!midEvent) {
+                carryover = event_data.energy_carryover ?? 0;
+            }
         }
         else if (i + 86400 > eventObject.end_time) {
             dayLength = (eventObject.end_time - eventObject.reset_time - (86400 * resets)) / 3600;
@@ -841,7 +891,7 @@ function CalculateEnergyAvailable() {
             energy_energypack += energypack = 150;
         }
 
-        energyByDay[resets] = natural + cafe + dailytask + club + pyrorefresh + pvprefresh + energypack;
+        energyByDay[resets] = natural + cafe + dailytask + club + pyrorefresh + pvprefresh + energypack + carryover;
 
         resets++;
     }
@@ -849,6 +899,7 @@ function CalculateEnergyAvailable() {
     document.getElementById('energy-natural-total').innerText = energy_natural;
     document.getElementById('energy-dailytask-total').innerText = energy_dailytask;
     document.getElementById('energy-club-total').innerText = energy_club;
+    document.getElementById('energy-carryover-total').innerText = event_data.energy_carryover ?? 0;
 
     document.getElementById("energy-pyro-total").innerText = energy_pyrorefresh;
     if (event_data.pyro_refreshes) {
@@ -2327,7 +2378,7 @@ function CalculateStageDrops(result, ignoreRequirement) {
         }
 
         let boxPullCurrencyForOmikuji = GetBoxPullCurrencyForOmikuji(totalCurrencies);
-        
+
         if (event_config.events[current_event].boxes && omikujiPullCurrencyOwned == boxPullCurrencyForOmikuji) {
             changed = false;
         }
@@ -3734,6 +3785,13 @@ function UpdateNotifications() {
         }
     }
 
+    if (midEvent) {
+        document.getElementById("energy-source-carryover").style.display = "none"; //.backgroundColor = "transparent";
+    }
+    else {
+        document.getElementById("energy-source-carryover").style.display = ""; //.backgroundColor = "";
+    }
+
     if (anyOwned) {
         document.getElementById('notification-owned').style.display = '';
     }
@@ -4393,6 +4451,8 @@ function InitOwnedTab() {
         document.getElementById("label-owned-currency-info-1").style.display = "none";
         document.getElementById("label-owned-currency-info-2").style.display = "none";
         document.getElementById("label-owned-currency-info-3").style.display = "none";
+        document.getElementById("label-owned-currency-info-4").style.display = "none";
+        document.getElementById("label-owned-currency-info-5").style.display = "none";
         return;
     }
     else {
@@ -4400,6 +4460,8 @@ function InitOwnedTab() {
         document.getElementById("label-owned-currency-info-1").style.display = "";
         document.getElementById("label-owned-currency-info-2").style.display = "";
         document.getElementById("label-owned-currency-info-3").style.display = "";
+        document.getElementById("label-owned-currency-info-4").style.display = "";
+        document.getElementById("label-owned-currency-info-5").style.display = "";
     }
 
     let currencies = event_config.events[current_event].currencies;
