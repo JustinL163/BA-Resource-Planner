@@ -1,7 +1,7 @@
 {
     "event_order": [
         "game-before-the-new-year",
-        "|valentine-rerun",
+        "valentine-rerun",
         "bookstore-rerun",
         "|aha-conquest",
         "restoration-project",
@@ -1858,12 +1858,12 @@
         "valentine-rerun": {
             "icon": "Event_810_En.png",
             "display_name": "Schale's Happy ♥ Valentine Patrol",
-            "reset_time": 1677524400,
-            "start_time": 1677549600,
-            "end_time": 1678672800,
+            "reset_time": 1689015600,
+            "start_time": 1689040800,
+            "end_time": 1690250400,
             "maint_hours": 6,
             "available_targets": ["Shop", "Materials", "Currency", "Manual"],
-            "currency_targets": ["Event_Point", "Garbage_Bag"],
+            "currency_targets": ["Garbage_Bag"],
             "event_point_target": 10000,
             "reward_preview": [
                 {"type": "Eleph", "id": "16008", "preview": 1},
@@ -2105,7 +2105,8 @@
                     {"type": "Material", "id": "181", "count": 30, "cost": 10},
                     {"type": "Material", "id": "182", "count": 12, "cost": 25},
                     {"type": "Material", "id": "183", "count": 8, "cost": 50},
-                    {"type": "Furniture", "id": "Colourful_Multi-screen_TV", "count": 1, "cost": 2000, "limited": false}
+                    {"type": "Furniture", "id": "Colourful_Multi-screen_TV", "count": 1, "cost": 2000, "limited": false},
+                    {"type": "Eleph", "id": "16008", "count": -1, "cost": 200, "overflow": true, "overflow_cap": 620}
                 ]
             },
             "stage_groups": ["1-4", "5-8", "9-12"],
@@ -2175,6 +2176,16 @@
                 {"points": 8000, "type": "Eligma", "count": 15},
                 {"points": 9000, "type": "Credit", "count": 2000000},
                 {"points": 10000, "type": "SecretTech", "count": 1}
+            ],
+            "invasion_stages": [
+                {"number": 1, "level": 10, "initial": {"16008": 5}, "drops": {"16008": 1, "XP_3": 0.25, "Credit": 25000, "Event_Point": 120, "Apology_Letter": 40, "Seized_Illegal_Candy": 35, "Garbage_Bag": 30}},
+                {"number": 2, "level": 20, "initial": {"16008": 5}, "drops": {"16008": 1, "XP_3": 0.5, "Credit": 50000, "Event_Point": 120, "Apology_Letter": 40, "Seized_Illegal_Candy": 35, "Garbage_Bag": 30}},
+                {"number": 3, "level": 30, "initial": {"16008": 5}, "drops": {"16008": 1, "XP_3": 0.75, "Credit": 75000, "Event_Point": 120, "Apology_Letter": 40, "Seized_Illegal_Candy": 35, "Garbage_Bag": 30}},
+                {"number": 4, "level": 40, "initial": {"16008": 5}, "drops": {"16008": 1, "XP_3": 1, "Credit": 100000, "Event_Point": 120, "Apology_Letter": 40, "Seized_Illegal_Candy": 35, "Garbage_Bag": 30}},
+                {"number": 5, "level": 50, "initial": {"16008": 5}, "drops": {"16008": 1, "XP_3": 1.25, "Credit": 125000, "Event_Point": 120, "Apology_Letter": 40, "Seized_Illegal_Candy": 35, "Garbage_Bag": 30}},
+                {"number": 6, "level": 60, "initial": {"16008": 5}, "drops": {"16008": 1, "XP_3": 1.5, "Credit": 150000, "Event_Point": 120, "Apology_Letter": 40, "Seized_Illegal_Candy": 35, "Garbage_Bag": 30}},
+                {"number": 7, "level": 70, "initial": {"16008": 5}, "drops": {"16008": 1, "XP_3": 1.75, "Credit": 175000, "Event_Point": 120, "Apology_Letter": 40, "Seized_Illegal_Candy": 35, "Garbage_Bag": 30}},
+                {"number": 8, "level": 80, "initial": {"16008": 5}, "drops": {"16008": 1, "XP_3": 2, "Credit": 200000, "Event_Point": 120, "Apology_Letter": 40, "Seized_Illegal_Candy": 35, "Garbage_Bag": 30}}
             ]
         },
         "bookstore-rerun": {

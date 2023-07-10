@@ -37,7 +37,7 @@
     <script src="packages/mathjs/math.js"></script>
     <script src="js/config.js?15"></script>
     <script src="js/common.js?8"></script>
-    <script src="js/eventPlanner.js?30"></script>
+    <script src="js/eventPlanner.js?31"></script>
     <title>Event Planner</title>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://justin163.com/planner/events">
@@ -385,6 +385,10 @@
                     onclick="DisplayOptionClicked('OmikujiRewards')" style="display: none;">
                 <label id="label-omikuji-rewards" for="include-omikuji-rewards" style="display: none;"
                     class="display-string" data-id="label-includeomikuji"></label>
+                <input type="checkbox" id="include-invasion-rewards" name="include-invasion-rewards"
+                    onclick="DisplayOptionClicked('InvasionRewards')" style="display: none;">
+                <label id="label-invasion-rewards" for="include-invasion-rewards" style="display: none;"
+                    class="display-string" data-id="label-includeinvasion"></label>
             </div>
             <div id="disclaimer-text"></div>
             <div id="box-info-text"></div>

@@ -63,7 +63,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?21').done(function (json) {
+    $.getJSON('json/events.json?22').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -78,7 +78,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?10').done(function (json) {
+    $.getJSON('json/strings.json?11').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -447,6 +447,7 @@ function LoadEvent(eventId) {
     InitCardsTab();
     LoadCardGachaChances();
     LoadOmikuji();
+    InitInvasionTab();
     LoadFirstShop();
     UpdateNotifications();
 
@@ -475,6 +476,9 @@ function EventTabClicked(tab) {
     }
     else if (tab == "Lessons") {
         GenerateLessonsTab();
+    }
+    else if (tab == "Shop") {
+        ShopTabClicked(current_currency, true);
     }
 
     SwitchTab(tab);
@@ -774,7 +778,7 @@ async function EnergySourceClicked(source) {
                 let tempVal;
                 try {
                     tempVal = parseInt(value);
-                    if (tempVal >= 0 && tempVal <= 3000) {}
+                    if (tempVal >= 0 && tempVal <= 3000) { }
                     else {
                         return "Enter an integer between 0-3000";
                     }
@@ -1144,9 +1148,9 @@ function CalculateBoxDropCurrencyFromBoxCurrency(boxPullCurrency) {
     return boxCurrencyObtained;
 }
 
-function ShopTabClicked(currency) {
+function ShopTabClicked(currency, override) {
 
-    if (current_currency == currency) {
+    if (current_currency == currency && !override) {
         return;
     }
 
@@ -1158,7 +1162,7 @@ function ShopTabClicked(currency) {
         event_data.shop_purchases[currency] = {};
     }
 
-    if (current_currency) {
+    if (current_currency && !override) {
         HarvestItemPurchases();
         if (shopPurchaseModified) {
             Save(1);
@@ -1283,6 +1287,9 @@ function CreateShopItem(item, currency) {
     inputElement.id = "input-" + item.id;
     inputElement.type = "number";
     inputElement.max = item.count;
+    if (item.count < 0) {
+        inputElement.max = item.overflow_cap;
+    }
     inputElement.min = 0;
 
     if (item.locked) {
@@ -1290,6 +1297,10 @@ function CreateShopItem(item, currency) {
     }
 
     let initValue = event_data.shop_purchases[current_currency]?.[item.id];
+    if (event_data.shop_purchases["overflow_" + current_currency]?.[item.id]) {
+        initValue = event_data.shop_purchases["overflow_" + current_currency]?.[item.id];
+        inputElement.disabled = true;
+    }
 
     if (initValue) {
         inputElement.value = initValue;
@@ -1318,7 +1329,12 @@ function CreateShopItem(item, currency) {
     });
 
     let inputP = document.createElement('p');
-    inputP.innerText = "/ " + item.count;
+    if (item.count >= 0) {
+        inputP.innerText = "/ " + item.count;
+    }
+    else {
+        inputP.innerText = "/ ∞";
+    }
 
     inputDiv.appendChild(inputElement);
     inputDiv.appendChild(inputP);
@@ -1476,9 +1492,12 @@ function HarvestItemPurchases() {
 
         let itemId = purchaseInputs[i].id.substring(6);
 
-        shopPurchases[itemId] = purchaseInputs[i].value ?? 0;
+        if (!shop[i].overflow || !purchaseInputs[i].disabled) {
 
-        totalPurchaseCost += shopPurchases[itemId] * shop[i].cost;
+            shopPurchases[itemId] = purchaseInputs[i].value ?? 0;
+
+            totalPurchaseCost += shopPurchases[itemId] * shop[i].cost;
+        }
 
     }
 
@@ -1506,6 +1525,44 @@ function HarvestItemPurchases() {
     Save(5);
 
     RefreshDropsDisplay();
+}
+
+function CalculateItemPurchases() {
+
+    let shopPurchases = event_data.shop_purchases;
+
+    let shopNames = Object.keys(event_config.events[current_event].shops);
+    for (let s = 0; s < shopNames.length; s++) {
+
+        let totalPurchaseCost = 0;
+
+        let shop = event_config.events[current_event].shops[shopNames[s]];
+
+        let purchaseNames = Object.keys(shop);
+        for (let i = 0; i < purchaseNames.length; i++) {
+
+            totalPurchaseCost += shopPurchases[shopNames[s]][shop[i].id] * shop[i].cost;
+        }
+
+        currencyNeededPre[shopNames[s]] = totalPurchaseCost;
+
+        let currencySource = event_config.events[current_event].currencies[shopNames[s]].source;
+        if (currencySource == "StageDrop") {
+            currencyNeeded[shopNames[s]] = currencyNeededPre[shopNames[s]] - (initialClearRewards[shopNames[s]] ?? 0);
+        }
+        else if (currencySource == "BoxPull") {
+            let boxPullCurrency = event_config.events[current_event].currencies[shopNames[s]].pull_currency;
+
+            let pullCurrencyNeeded = CalculateBoxCurrencyNeeded(totalPurchaseCost);
+
+            currencyNeeded[boxPullCurrency] = pullCurrencyNeeded - (initialClearRewards[boxPullCurrency] ?? 0);
+            currencyNeededPre[boxPullCurrency] = pullCurrencyNeeded;
+        }
+
+        event_data.currency_needed = currencyNeededPre;
+
+        document.getElementById('currency-label-' + shopNames[s]).innerText = totalPurchaseCost;
+    }
 }
 
 function CalculateInitalClear() {
@@ -2095,6 +2152,39 @@ function GetStagesMaterialsTargetModel() {
 
 function RefreshDropsDisplay() {
 
+    if (optimisationType == "Currency") {
+
+        currencyNames = Object.keys(event_data.shop_purchases);
+        for (let i = 0; i < currencyNames.length; i++) {
+
+            if (currencyNames[i].substring(0, 9) == "overflow_") {
+                continue;
+            }
+
+            let shop = event_config.events[current_event].shops[currencyNames[i]];
+
+            if (!shop) {
+                continue;
+            }
+
+            for (let ii = 0; ii < shop.length; ii++) {
+                if (shop[ii].overflow) {
+                    event_data.shop_purchases[currencyNames[i]][shop[ii].id] = 0;
+                }
+            }
+        }
+    }
+    else {
+        storedPurchaseNames = Object.keys(event_data.shop_purchases);
+        for (let i = 0; i < storedPurchaseNames.length; i++) {
+            if (storedPurchaseNames[i].substring(0, 9) == "overflow_") {
+                event_data.shop_purchases[storedPurchaseNames[i]] = {};
+            }
+        }
+    }
+
+    CalculateItemPurchases();
+
     if (optimisationType == "Shop") {
 
         let model = GetStagesLinearModel("Energy_Cost", "min", false);
@@ -2225,15 +2315,6 @@ function CalculateStageDrops(result, ignoreRequirement) {
 
     if (!midEvent) {
         energyCost += initialClearCost;
-    }
-
-    if (displayIncluded['ShopPurchases']) {
-        let intResults = AddShopPurchases(totalArtifacts, totalSchoolMats, totalEleph, totalXps, 0, 0, 0);
-        if (intResults) {
-            totalCredit += intResults[0];
-            totalEligma += intResults[1];
-            totalSecretTech += intResults[2];
-        }
     }
 
     if (displayIncluded['LessonRewards']) {
@@ -2404,6 +2485,59 @@ function CalculateStageDrops(result, ignoreRequirement) {
         }
     }
 
+    if (optimisationType == "Currency") {
+
+        currencyNames = Object.keys(totalCurrencies);
+        for (let i = 0; i < currencyNames.length; i++) {
+
+            let leftoverCurrency = totalCurrencies[currencyNames[i]] - currencyNeededPre[currencyNames[i]];
+
+            let shop = event_config.events[current_event].shops[currencyNames[i]];
+
+            if (!shop) {
+                continue;
+            }
+
+            for (let ii = 0; ii < shop.length; ii++) {
+                if (shop[ii].overflow) {
+                    let overflowAmount = Math.max(Math.min(Math.floor(leftoverCurrency / shop[ii].cost), shop[ii].overflow_cap), 0);
+                    event_data.shop_purchases["overflow_" + currencyNames[i]] = {};
+                    event_data.shop_purchases["overflow_" + currencyNames[i]][shop[ii].id] = overflowAmount;
+                    event_data.shop_purchases[currencyNames[i]][shop[ii].id] = 0;
+                }
+            }
+        }
+    }
+    else {
+        storedPurchaseNames = Object.keys(event_data.shop_purchases);
+        for (let i = 0; i < storedPurchaseNames.length; i++) {
+            if (storedPurchaseNames[i].substring(0, 9) == "overflow_") {
+                event_data.shop_purchases[storedPurchaseNames[i]] = {};
+            }
+        }
+    }
+
+    if (displayIncluded['ShopPurchases']) {
+        let intResults = AddShopPurchases(totalArtifacts, totalSchoolMats, totalEleph, totalXps, 0, 0, 0);
+        if (intResults) {
+            totalCredit += intResults[0];
+            totalEligma += intResults[1];
+            totalSecretTech += intResults[2];
+        }
+    }
+
+    if (displayIncluded['InvasionRewards']) {
+        totalCredit += 24000000;
+        if (!totalXps["XP_3"]) {
+            totalXps["XP_3"] = 0;
+        }
+        totalXps["XP_3"] += 240;
+        if (!totalEleph["16008"]) {
+            totalEleph["16008"] = 0;
+        }
+        totalEleph["16008"] += 160;
+    }
+
     if (event_config.events[current_event].lessons) {
         document.getElementById("notification-lessons").style.display = 'none';
         let remainingEventPoints = maxEventPoints - GetUsedLessonPoints();
@@ -2429,6 +2563,7 @@ function CalculateStageDrops(result, ignoreRequirement) {
         }
     }
 
+    Save(5);
 }
 
 function GetBoxPullCurrencyForOmikuji(totalCurrencies) {
@@ -4538,4 +4673,17 @@ function InitOwnedTab() {
         elOwnedCurrencies.appendChild(curDiv);
     }
 
+}
+
+function InitInvasionTab() {
+
+    if (event_config.events[current_event].invasion_stages) {
+
+        document.getElementById('include-invasion-rewards').style.display = '';
+        document.getElementById('label-invasion-rewards').style.display = '';
+    }
+    else {
+        document.getElementById('include-invasion-rewards').style.display = 'none';
+        document.getElementById('label-invasion-rewards').style.display = 'none';
+    }
 }
