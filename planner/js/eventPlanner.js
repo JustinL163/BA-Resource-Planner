@@ -30,7 +30,7 @@ let displayIncluded = {};
 let initialClearRewards = {};
 let initialClearCost = 0;
 
-let cafeDefault = 7;
+let cafeDefault = 8;
 
 let shopItemTippies = [];
 
