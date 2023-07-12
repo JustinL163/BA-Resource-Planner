@@ -1,6 +1,5 @@
 {
     "event_order": [
-        "game-before-the-new-year",
         "valentine-rerun",
         "bookstore-rerun",
         "|aha-conquest",
@@ -1619,7 +1618,6 @@
             ]
         },
         "game-before-the-new-year": {
-            "active": true,
             "icon": "Event_820_Jp.png",
             "display_name": "A Game Before the New Year's Feast",
             "reset_time": 1687806000,
@@ -1856,6 +1854,7 @@
             }
         },
         "valentine-rerun": {
+            "active": true,
             "icon": "Event_810_En.png",
             "display_name": "Schale's Happy ♥ Valentine Patrol",
             "reset_time": 1689015600,
@@ -2109,6 +2108,11 @@
                     {"type": "Eleph", "id": "16008", "count": -1, "cost": 200, "overflow": true, "overflow_cap": 620}
                 ]
             },
+            "shops_unfinished": {
+                "Event_Point": [
+                    {"type": "EventCurrency", "id": "Valentines_Day_Invitation", "count": -1, "cost": 550, "overflow": true, "overflow_cap": 93}
+                ]
+            },
             "stage_groups": ["1-4", "5-8", "9-12"],
             "stages": [
                 {"type": "Story", "number": 1, "cost": 10, "initial": {"Event_Point": 20}},
@@ -2177,15 +2181,28 @@
                 {"points": 9000, "type": "Credit", "count": 2000000},
                 {"points": 10000, "type": "SecretTech", "count": 1}
             ],
+            "invasion_config": {
+                "max_stage": 8,
+                "daily_attempts": 8,
+                "first_day_attempts": 9
+            },
             "invasion_stages": [
-                {"number": 1, "level": 10, "initial": {"16008": 5}, "drops": {"16008": 1, "XP_3": 0.25, "Credit": 25000, "Event_Point": 120, "Apology_Letter": 40, "Seized_Illegal_Candy": 35, "Garbage_Bag": 30}},
-                {"number": 2, "level": 20, "initial": {"16008": 5}, "drops": {"16008": 1, "XP_3": 0.5, "Credit": 50000, "Event_Point": 120, "Apology_Letter": 40, "Seized_Illegal_Candy": 35, "Garbage_Bag": 30}},
-                {"number": 3, "level": 30, "initial": {"16008": 5}, "drops": {"16008": 1, "XP_3": 0.75, "Credit": 75000, "Event_Point": 120, "Apology_Letter": 40, "Seized_Illegal_Candy": 35, "Garbage_Bag": 30}},
-                {"number": 4, "level": 40, "initial": {"16008": 5}, "drops": {"16008": 1, "XP_3": 1, "Credit": 100000, "Event_Point": 120, "Apology_Letter": 40, "Seized_Illegal_Candy": 35, "Garbage_Bag": 30}},
-                {"number": 5, "level": 50, "initial": {"16008": 5}, "drops": {"16008": 1, "XP_3": 1.25, "Credit": 125000, "Event_Point": 120, "Apology_Letter": 40, "Seized_Illegal_Candy": 35, "Garbage_Bag": 30}},
-                {"number": 6, "level": 60, "initial": {"16008": 5}, "drops": {"16008": 1, "XP_3": 1.5, "Credit": 150000, "Event_Point": 120, "Apology_Letter": 40, "Seized_Illegal_Candy": 35, "Garbage_Bag": 30}},
-                {"number": 7, "level": 70, "initial": {"16008": 5}, "drops": {"16008": 1, "XP_3": 1.75, "Credit": 175000, "Event_Point": 120, "Apology_Letter": 40, "Seized_Illegal_Candy": 35, "Garbage_Bag": 30}},
-                {"number": 8, "level": 80, "initial": {"16008": 5}, "drops": {"16008": 1, "XP_3": 2, "Credit": 200000, "Event_Point": 120, "Apology_Letter": 40, "Seized_Illegal_Candy": 35, "Garbage_Bag": 30}}
+                {"number": 1, "level": 10, "initial": {"16008": 5}, "drops": {"16008": 1, "XP_3": 0.25, "Credit": 25000, "Event_Point": 120, "Apology_Letter": 40, "Seized_Illegal_Candy": 35, "Garbage_Bag": 30},
+                    "initial_key": ["Eleph"], "drop_key": ["Eleph", "XP", "Credit", "Currency", "Currency", "Currency", "Currency"]},
+                {"number": 2, "level": 20, "initial": {"16008": 5}, "drops": {"16008": 1, "XP_3": 0.5, "Credit": 50000, "Event_Point": 120, "Apology_Letter": 40, "Seized_Illegal_Candy": 35, "Garbage_Bag": 30},
+                    "initial_key": ["Eleph"], "drop_key": ["Eleph", "XP", "Credit", "Currency", "Currency", "Currency", "Currency"]},
+                {"number": 3, "level": 30, "initial": {"16008": 5}, "drops": {"16008": 1, "XP_3": 0.75, "Credit": 75000, "Event_Point": 120, "Apology_Letter": 40, "Seized_Illegal_Candy": 35, "Garbage_Bag": 30},
+                    "initial_key": ["Eleph"], "drop_key": ["Eleph", "XP", "Credit", "Currency", "Currency", "Currency", "Currency"]},
+                {"number": 4, "level": 40, "initial": {"16008": 5}, "drops": {"16008": 1, "XP_3": 1, "Credit": 100000, "Event_Point": 120, "Apology_Letter": 40, "Seized_Illegal_Candy": 35, "Garbage_Bag": 30},
+                    "initial_key": ["Eleph"], "drop_key": ["Eleph", "XP", "Credit", "Currency", "Currency", "Currency", "Currency"]},
+                {"number": 5, "level": 50, "initial": {"16008": 5}, "drops": {"16008": 1, "XP_3": 1.25, "Credit": 125000, "Event_Point": 120, "Apology_Letter": 40, "Seized_Illegal_Candy": 35, "Garbage_Bag": 30},
+                    "initial_key": ["Eleph"], "drop_key": ["Eleph", "XP", "Credit", "Currency", "Currency", "Currency", "Currency"]},
+                {"number": 6, "level": 60, "initial": {"16008": 5}, "drops": {"16008": 1, "XP_3": 1.5, "Credit": 150000, "Event_Point": 120, "Apology_Letter": 40, "Seized_Illegal_Candy": 35, "Garbage_Bag": 30},
+                    "initial_key": ["Eleph"], "drop_key": ["Eleph", "XP", "Credit", "Currency", "Currency", "Currency", "Currency"]},
+                {"number": 7, "level": 70, "initial": {"16008": 5}, "drops": {"16008": 1, "XP_3": 1.75, "Credit": 175000, "Event_Point": 120, "Apology_Letter": 40, "Seized_Illegal_Candy": 35, "Garbage_Bag": 30},
+                    "initial_key": ["Eleph"], "drop_key": ["Eleph", "XP", "Credit", "Currency", "Currency", "Currency", "Currency"]},
+                {"number": 8, "level": 80, "initial": {"16008": 5}, "drops": {"16008": 1, "XP_3": 2, "Credit": 200000, "Event_Point": 120, "Apology_Letter": 40, "Seized_Illegal_Candy": 35, "Garbage_Bag": 30},
+                    "initial_key": ["Eleph"], "drop_key": ["Eleph", "XP", "Credit", "Currency", "Currency", "Currency", "Currency"]}
             ]
         },
         "bookstore-rerun": {

@@ -56,6 +56,8 @@ let omikujiGachaProcessed = false;
 let omikujiGachaProcessing = false;
 
 let midEvent = false;
+let resets_left = 0;
+let resets_total = 0;
 
 let stageGroup1 = true, stageGroup2 = true, stageGroup3 = true;
 
@@ -63,7 +65,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?22').done(function (json) {
+    $.getJSON('json/events.json?23').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -350,6 +352,8 @@ function LoadEvent(eventId) {
     omikujiGachaAvgSD = {};
     omikujiGachaProcessed = false;
     omikujiPullCurrencyOwned = 0;
+    resets_left = 0;
+    resets_total = 0;
 
     if (events_data[current_event]) {
         event_data = events_data[current_event];
@@ -899,6 +903,9 @@ function CalculateEnergyAvailable() {
 
         resets++;
     }
+
+    resets_left = Math.max(resets - daysPassed, 0);
+    resets_total = resets;
 
     document.getElementById('energy-natural-total').innerText = energy_natural;
     document.getElementById('energy-dailytask-total').innerText = energy_dailytask;
@@ -1541,25 +1548,30 @@ function CalculateItemPurchases() {
         let purchaseNames = Object.keys(shop);
         for (let i = 0; i < purchaseNames.length; i++) {
 
-            totalPurchaseCost += shopPurchases[shopNames[s]][shop[i].id] * shop[i].cost;
+            let loadedShopPurchases = shopPurchases[shopNames[s]];
+            if (loadedShopPurchases) {
+                totalPurchaseCost += loadedShopPurchases[shop[i].id] * shop[i].cost;
+            }
         }
 
-        currencyNeededPre[shopNames[s]] = totalPurchaseCost;
+        // currencyNeededPre[shopNames[s]] = totalPurchaseCost;
 
-        let currencySource = event_config.events[current_event].currencies[shopNames[s]].source;
-        if (currencySource == "StageDrop") {
-            currencyNeeded[shopNames[s]] = currencyNeededPre[shopNames[s]] - (initialClearRewards[shopNames[s]] ?? 0);
-        }
-        else if (currencySource == "BoxPull") {
-            let boxPullCurrency = event_config.events[current_event].currencies[shopNames[s]].pull_currency;
+        // let currencySource = event_config.events[current_event].currencies[shopNames[s]].source;
+        // if (currencySource == "StageDrop") {
+        //     currencyNeeded[shopNames[s]] = currencyNeededPre[shopNames[s]] - (initialClearRewards[shopNames[s]] ?? 0);
+        // }
+        // else if (currencySource == "BoxPull") {
+        //     let boxPullCurrency = event_config.events[current_event].currencies[shopNames[s]].pull_currency;
 
-            let pullCurrencyNeeded = CalculateBoxCurrencyNeeded(totalPurchaseCost);
+        //     let pullCurrencyNeeded = CalculateBoxCurrencyNeeded(totalPurchaseCost);
 
-            currencyNeeded[boxPullCurrency] = pullCurrencyNeeded - (initialClearRewards[boxPullCurrency] ?? 0);
-            currencyNeededPre[boxPullCurrency] = pullCurrencyNeeded;
-        }
+        //     currencyNeeded[boxPullCurrency] = pullCurrencyNeeded - (initialClearRewards[boxPullCurrency] ?? 0);
+        //     currencyNeededPre[boxPullCurrency] = pullCurrencyNeeded;
+        // }
 
-        event_data.currency_needed = currencyNeededPre;
+        // event_data.currency_needed = currencyNeededPre;
+
+        CalculateNeededFinal();
 
         document.getElementById('currency-label-' + shopNames[s]).innerText = totalPurchaseCost;
     }
@@ -1600,6 +1612,9 @@ function CalculateNeededFinal() {
 
     let currencies = Object.keys(currencyNeededPre);
 
+    let invasionCurrencies = {};
+    AddInvasionRewards(invasionCurrencies, {}, {});
+
     for (let i = 0; i < currencies.length; i++) {
 
         let currencyOwned = 0;
@@ -1612,11 +1627,33 @@ function CalculateNeededFinal() {
             }
         }
 
+        let currencySource = event_config.events[current_event].currencies[currencies[i]].source;
+
         if (initialClearRewards[currencies[i]] && !midEvent) {
-            currencyNeeded[currencies[i]] = Math.max(currencyNeededPre[currencies[i]] - initialClearRewards[currencies[i]], 0);
+            if (currencySource == "StageDrop") {
+                currencyNeeded[currencies[i]] = Math.max(currencyNeededPre[currencies[i]] - initialClearRewards[currencies[i]] - (invasionCurrencies[currencies[i]] ?? 0), 0);
+            }
+            else if (currencySource == "BoxPull") {
+                let boxPullCurrency = event_config.events[current_event].currencies[currencies[i]].pull_currency;
+
+                let pullCurrencyNeeded = CalculateBoxCurrencyNeeded(currencyNeededPre[currencies[i]]);
+
+                currencyNeeded[boxPullCurrency] = Math.max(pullCurrencyNeeded - (initialClearRewards[boxPullCurrency] ?? 0) - (invasionCurrencies[currencies[i]] ?? 0), 0);
+            }
         }
         else {
-            currencyNeeded[currencies[i]] = Math.max(currencyNeededPre[currencies[i]] - currencyOwned, 0);
+            currencyNeeded[currencies[i]] = Math.max(currencyNeededPre[currencies[i]] - currencyOwned - invasionCurrencies[currencies[i]], 0);
+
+            if (currencySource == "StageDrop") {
+                currencyNeeded[currencies[i]] = Math.max(currencyNeededPre[currencies[i]] - currencyOwned - (invasionCurrencies[currencies[i]] ?? 0), 0);
+            }
+            else if (currencySource == "BoxPull") {
+                let boxPullCurrency = event_config.events[current_event].currencies[currencies[i]].pull_currency;
+
+                let pullCurrencyNeeded = CalculateBoxCurrencyNeeded(currencyNeededPre[currencies[i]]);
+
+                currencyNeeded[boxPullCurrency] = Math.max(pullCurrencyNeeded - currencyOwned - (invasionCurrencies[currencies[i]] ?? 0), 0);
+            }
         }
     }
 
@@ -2317,6 +2354,15 @@ function CalculateStageDrops(result, ignoreRequirement) {
         energyCost += initialClearCost;
     }
 
+    if (displayIncluded['InvasionRewards']) {
+        let intResults = AddInvasionRewards({}, totalEleph, totalXps);
+        if (intResults) {
+            totalCredit += intResults[0];
+        }
+    }
+
+    AddInvasionRewards(totalCurrencies, {}, {});
+
     if (displayIncluded['LessonRewards']) {
 
         let intResults = AddLessonRewards(totalArtifacts, totalSchoolMats, totalEleph, totalXps, 0, 0, 0);
@@ -2503,6 +2549,9 @@ function CalculateStageDrops(result, ignoreRequirement) {
                     let overflowAmount = Math.max(Math.min(Math.floor(leftoverCurrency / shop[ii].cost), shop[ii].overflow_cap), 0);
                     event_data.shop_purchases["overflow_" + currencyNames[i]] = {};
                     event_data.shop_purchases["overflow_" + currencyNames[i]][shop[ii].id] = overflowAmount;
+                    if (!event_data.shop_purchases[currencyNames[i]]) {
+                        event_data.shop_purchases[currencyNames[i]] = {};
+                    }
                     event_data.shop_purchases[currencyNames[i]][shop[ii].id] = 0;
                 }
             }
@@ -2524,18 +2573,6 @@ function CalculateStageDrops(result, ignoreRequirement) {
             totalEligma += intResults[1];
             totalSecretTech += intResults[2];
         }
-    }
-
-    if (displayIncluded['InvasionRewards']) {
-        totalCredit += 24000000;
-        if (!totalXps["XP_3"]) {
-            totalXps["XP_3"] = 0;
-        }
-        totalXps["XP_3"] += 240;
-        if (!totalEleph["16008"]) {
-            totalEleph["16008"] = 0;
-        }
-        totalEleph["16008"] += 160;
     }
 
     if (event_config.events[current_event].lessons) {
@@ -3126,6 +3163,93 @@ function AddOmikujiRewards(totalEleph) {
     }
 
     return [totalCredit, totalEligma];
+}
+
+function AddInvasionRewards(totalCurrencies, totalEleph, totalXps) {
+
+    if (!event_config.events[current_event].invasion_stages) {
+        return;
+    }
+
+    let remainingResets = resets_total - 1;
+
+    if (midEvent) {
+        remainingResets = resets_left;
+    }
+
+    let invasionStages = event_config.events[current_event].invasion_stages;
+
+    let maxStage = event_config.events[current_event].invasion_config.max_stage;
+    let dailyAttempts = event_config.events[current_event].invasion_config.daily_attempts;
+    let firstDayAttempts = event_config.events[current_event].invasion_config.first_day_attempts;
+
+    let invasionCredit = 0;
+
+    if (!midEvent) {
+        for (let i = 0; i < Math.min(invasionStages.length, maxStage); i++) {
+            let dropNames = Object.keys(invasionStages[i].drops);
+            for (let r = 0; r < dropNames.length; r++) {
+                let itemType = invasionStages[i].drop_key[r];
+
+                let itemAmountAdded = 0;
+
+                if (i + 1 == maxStage) {
+                    itemAmountAdded = invasionStages[i].drops[dropNames[r]] * (firstDayAttempts - maxStage + 1);
+                }
+                else {
+                    itemAmountAdded = invasionStages[i].drops[dropNames[r]];
+                }
+
+                let intResults = InvasionRewardAdd(itemType, dropNames[r], itemAmountAdded, totalCurrencies, totalEleph, totalXps);
+                invasionCredit += intResults[0];
+            }
+
+            dropNames = Object.keys(invasionStages[i].initial);
+            for (let r = 0; r < dropNames.length; r++) {
+                let itemType = invasionStages[i].initial_key[r];
+
+                let itemAmountAdded = invasionStages[i].initial[dropNames[r]];
+
+                let intResults = InvasionRewardAdd(itemType, dropNames[r], itemAmountAdded, totalCurrencies, totalEleph, totalXps);
+                invasionCredit += intResults[0];
+            }
+        }
+    }
+
+
+    let dropNames = Object.keys(invasionStages[maxStage - 1].drops);
+    for (let r = 0; r < dropNames.length; r++) {
+        let itemType = invasionStages[maxStage - 1].drop_key[r];
+
+        let itemAmountAdded = invasionStages[maxStage - 1].drops[dropNames[r]] * dailyAttempts * remainingResets;
+
+        let intResults = InvasionRewardAdd(itemType, dropNames[r], itemAmountAdded, totalCurrencies, totalEleph, totalXps);
+        invasionCredit += intResults[0];
+    }
+
+    return [invasionCredit];
+}
+
+function InvasionRewardAdd(itemType, itemName, itemAmount, totalCurrencies, totalEleph, totalXps) {
+    let internalAddCredit = 0;
+
+    if (itemType == "Eleph") {
+        if (!totalEleph[itemName]) { totalEleph[itemName] = 0; }
+        totalEleph[itemName] += itemAmount;
+    }
+    else if (itemType == "XP") {
+        if (!totalXps[itemName]) { totalXps[itemName] = 0; }
+        totalXps[itemName] += itemAmount;
+    }
+    else if (itemType == "Credit") {
+        internalAddCredit += itemAmount;
+    }
+    else if (itemType == "Currency") {
+        if (!totalCurrencies[itemName]) { totalCurrencies[itemName] = 0; }
+        totalCurrencies[itemName] += itemAmount;
+    }
+
+    return [internalAddCredit];
 }
 
 function DisplayOptionClicked(option) {

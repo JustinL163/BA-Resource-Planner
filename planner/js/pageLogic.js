@@ -498,14 +498,14 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.3.16".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.3.17".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         Swal.fire({
-            title: GetLanguageString("text-updatedversionprefix") + "1.3.16",
+            title: GetLanguageString("text-updatedversionprefix") + "1.3.17",
             color: alertColour,
             html: GetLanguageString("text-updatemessage")
         })
 
-        data.site_version = "1.3.16";
+        data.site_version = "1.3.17";
         saveToLocalStorage(false);
     }
 
