@@ -8591,7 +8591,7 @@
                     4,
                     4
                 ],
-                "DescEn": "Throws fried rice to one ally except self, restoring their HP. The fried rice can bounce and restore the HP of additional allies (including self) who have not yet received it, up to 4 times.\n1st & 4th targets: Restores HP equal to <?1> of Healing<?2>.\n2nd & 3rd targets: Restores HP equal to <?3> of Healing.",
+                "DescEn": "Throws fried rice to one ally except self, restoring their HP. The fried rice can bounce and restore the HP of additional allies (including self) who have not yet received it, up to 4 times.\n<b>1st & 4th targets</b>: Restores HP equal to <?1> of Healing<?2>.\n<b>2nd & 3rd targets</b>: Restores HP equal to <?3> of Healing.",
                 "Parameters": [
                     [
                         "117%",
@@ -8764,7 +8764,7 @@
                 ]
             },
             "Skill1": {
-                "DescEn": "Every 8 normal attacks, immediately reloads and deals <?1> damage to one enemy.\nDeals additional damage depending on the number of debuffs inflicted on the target.\n3 debuffs: <?2> damage.\n4 debuffs: <?3> damage.\n5 or more debuffs: <?4> damage.",
+                "DescEn": "Every 8 normal attacks, immediately reloads and deals <?1> damage to one enemy. Deals additional damage depending on the number of debuffs inflicted on the target.\n<b>3 debuffs</b>: <?2> damage.\n<b>4 debuffs</b>: <?3> damage.\n<b>5 or more debuffs</b>: <?4> damage.",
                 "Parameters": [
                     [
                         "222%",
@@ -8876,6 +8876,258 @@
                         "31.1%",
                         "32%",
                         "35.8%"
+                    ]
+                ]
+            }
+        }
+    },
+    "10071": {
+        "Skills": {
+            "Ex": {
+                "Cost": [
+                    2,
+                    2,
+                    2,
+                    2,
+                    2
+                ],
+                "DescEn": "Decreases the CRIT.DMG RES of one enemy by <?1> for 50s and deals <?2> damage to them.",
+                "Parameters": [
+                    [
+                        "10.7%",
+                        "12.3%",
+                        "15.5%",
+                        "17.1%",
+                        "20.3%",
+                        "21.9%",
+                        "25.1%",
+                        "26.7%",
+                        "29.9%",
+                        "31.5%"
+                    ],
+                    [
+                        "256%",
+                        "295%",
+                        "372%",
+                        "410%",
+                        "487%",
+                        "526%",
+                        "603%",
+                        "641%",
+                        "718%",
+                        "757%"
+                    ]
+                ]
+            },
+            "Skill1": {
+                "DescEn": "Every 30s, increases EVA by <?1> for 25s.",
+                "Parameters": [
+                    [
+                        "18.4%",
+                        "19.3%",
+                        "20.3%",
+                        "23.9%",
+                        "24.9%",
+                        "25.8%",
+                        "29.5%",
+                        "30.4%",
+                        "31.3%",
+                        "35%"
+                    ]
+                ]
+            },
+            "Skill2": {
+                "DescEn": "Increases MAX HP by <?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            },
+            "Skill3": {
+                "DescEn": "Increases EVA by <?1> and MAX HP by <?2>.",
+                "Parameters": [
+                    [
+                        "160",
+                        "168",
+                        "176",
+                        "208",
+                        "216",
+                        "224",
+                        "256",
+                        "264",
+                        "272",
+                        "304"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            },
+            "Skill4": {
+                "DescEn": "Every 50 times an attack is successfully evaded, increases Cost Recovery by <?1> for 10s.",
+                "Parameters": [
+                    [
+                        "332",
+                        "348",
+                        "365",
+                        "431",
+                        "448",
+                        "464",
+                        "530",
+                        "547",
+                        "564",
+                        "630"
+                    ]
+                ]
+            }
+        }
+    },
+    "10072": {
+        "Skills": {
+            "Ex": {
+                "Cost": [
+                    4,
+                    4,
+                    4,
+                    4,
+                    4
+                ],
+                "DescEn": "Deals <?1> damage to one enemy and decreases their DEF, ATK and Crit RES by <?2> for 50s.",
+                "Parameters": [
+                    [
+                        "290%",
+                        "334%",
+                        "421%",
+                        "464%",
+                        "552%",
+                        "595%",
+                        "682%",
+                        "726%",
+                        "813%",
+                        "857%"
+                    ],
+                    [
+                        "10.9%",
+                        "12.6%",
+                        "15.9%",
+                        "17.5%",
+                        "20.8%",
+                        "22.5%",
+                        "25.7%",
+                        "27.4%",
+                        "30.7%",
+                        "32.3%"
+                    ]
+                ]
+            },
+            "Skill1": {
+                "DescEn": "Every 15 normal attacks, deals <?1> damage to enemies in a fan-shaped area. Deals an additional <?2> damage to <b>medium</b> sized enemies.",
+                "Parameters": [
+                    [
+                        "195%",
+                        "205%",
+                        "215%",
+                        "254%",
+                        "263%",
+                        "273%",
+                        "312%",
+                        "322%",
+                        "332%",
+                        "371%"
+                    ],
+                    [
+                        "97.7%",
+                        "102%",
+                        "107%",
+                        "127%",
+                        "131%",
+                        "136%",
+                        "156%",
+                        "161%",
+                        "166%",
+                        "185%"
+                    ]
+                ]
+            },
+            "Skill2": {
+                "DescEn": "Increases ACC by <?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            },
+            "Skill3": {
+                "DescEn": "Increases DEBUFF DURATION by <?1> and ACC by <?2>.",
+                "Parameters": [
+                    [
+                        "1000",
+                        "1050",
+                        "1100",
+                        "1300",
+                        "1350",
+                        "1400",
+                        "1600",
+                        "1650",
+                        "1700",
+                        "1900"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            },
+            "Skill4": {
+                "DescEn": "Increases ATK of self and Special students by <?1>.",
+                "Parameters": [
+                    [
+                        "16.1%",
+                        "16.9%",
+                        "17.7%",
+                        "20.9%",
+                        "21.7%",
+                        "22.5%",
+                        "25.7%",
+                        "26.5%",
+                        "27.3%",
+                        "30.6%"
                     ]
                 ]
             }
@@ -14969,6 +15221,114 @@
             }
         }
     },
+    "20026": {
+        "Skills": {
+            "Ex": {
+                "Cost": [
+                    4,
+                    4,
+                    4,
+                    4,
+                    4
+                ],
+                "DescEn": "Deals <?1> damage to enemies in a circular area. Consumes up to <b>3</b> additional units of skill cost, increasing the damage dealt by 35% for each additional unit of cost consumed. (EX Cost increase/decrease effects will be calculated using the base cost)",
+                "Parameters": [
+                    [
+                        "462%",
+                        "531%",
+                        "670%",
+                        "739%",
+                        "878%",
+                        "947%",
+                        "1086%",
+                        "1155%",
+                        "1293%",
+                        "1363%"
+                    ]
+                ]
+            },
+            "Skill1": {
+                "DescEn": "Every 25s, deals <?1> damage to enemies in a circular area.",
+                "Parameters": [
+                    [
+                        "77.8%",
+                        "81.7%",
+                        "85.6%",
+                        "101%",
+                        "105%",
+                        "108%",
+                        "124%",
+                        "128%",
+                        "132%",
+                        "147%"
+                    ]
+                ]
+            },
+            "Skill2": {
+                "DescEn": "Increases ACC by <?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            },
+            "Skill3": {
+                "DescEn": "Increases ATK by <?1> and ACC by <?2>.",
+                "Parameters": [
+                    [
+                        "363",
+                        "381",
+                        "399",
+                        "472",
+                        "490",
+                        "508",
+                        "580",
+                        "598",
+                        "617",
+                        "689"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            },
+            "Skill4": {
+                "DescEn": "Increases all allies' Explosive DMG by <?1>.",
+                "Parameters": [
+                    [
+                        "15.9%",
+                        "16.7%",
+                        "17.5%",
+                        "20.7%",
+                        "21.5%",
+                        "22.3%",
+                        "25.5%",
+                        "26.3%",
+                        "27%",
+                        "30.2%"
+                    ]
+                ]
+            }
+        }
+    },
     "23000": {
         "Skills": {
             "Ex": {
@@ -17144,6 +17504,114 @@
             },
             "Skill4": {
                 "DescEn": "Increases all allies' ATK by <?1>.",
+                "Parameters": [
+                    [
+                        "9.1%",
+                        "9.5%",
+                        "10%",
+                        "11.8%",
+                        "12.3%",
+                        "12.7%",
+                        "14.5%",
+                        "15%",
+                        "15.5%",
+                        "17.3%"
+                    ]
+                ]
+            }
+        }
+    },
+    "26010": {
+        "Skills": {
+            "Ex": {
+                "Cost": [
+                    5,
+                    5,
+                    5,
+                    5,
+                    5
+                ],
+                "DescEn": "Deals <?1> guaranteed critical damage to enemies in a straight line.",
+                "Parameters": [
+                    [
+                        "388%",
+                        "446%",
+                        "562%",
+                        "621%",
+                        "737%",
+                        "795%",
+                        "912%",
+                        "970%",
+                        "1086%",
+                        "1145%"
+                    ]
+                ]
+            },
+            "Skill1": {
+                "DescEn": "Every 70s, deals <?1> damage to enemies in a fan-shaped area.",
+                "Parameters": [
+                    [
+                        "369%",
+                        "388%",
+                        "406%",
+                        "480%",
+                        "499%",
+                        "517%",
+                        "591%",
+                        "610%",
+                        "628%",
+                        "702%"
+                    ]
+                ]
+            },
+            "Skill2": {
+                "DescEn": "Increases ATK by <?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            },
+            "Skill3": {
+                "DescEn": "Increases CRIT.DMG by <?1> and ATK by <?2>.",
+                "Parameters": [
+                    [
+                        "2000",
+                        "2100",
+                        "2200",
+                        "2600",
+                        "2700",
+                        "2800",
+                        "3200",
+                        "3300",
+                        "3400",
+                        "3800"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ]
+            },
+            "Skill4": {
+                "DescEn": "Increases all allies' CRIT.DMG by <?1>.",
                 "Parameters": [
                     [
                         "9.1%",
