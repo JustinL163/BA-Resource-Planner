@@ -864,7 +864,7 @@ function CalculateEnergyAvailable() {
 
     let daysPassed = 0;
     if (midEvent) {
-        daysPassed = Math.floor((Date.now() / 1000 - eventObject.reset_time) / 86400);
+        daysPassed = Math.floor((Date.now() / 1000 - eventObject.reset_time) / 86400) + 1;
     }
 
     let resets = daysPassed;
