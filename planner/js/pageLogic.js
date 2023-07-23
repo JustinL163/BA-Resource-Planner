@@ -4562,12 +4562,12 @@ function loginClick() {
             loadRequest(true, true);
         }
         else {
-            Swal.fire({
-                icon: 'error',
-                title: GetLanguageString("text-oops"),
-                text: GetLanguageString("text-usernamelengthauthkey"),
-                color: alertColour
-            })
+            // Swal.fire({
+            //     icon: 'error',
+            //     title: GetLanguageString("text-oops"),
+            //     text: GetLanguageString("text-usernamelengthauthkey"),
+            //     color: alertColour
+            // })
         }
     }
     else {
