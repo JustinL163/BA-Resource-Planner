@@ -310,7 +310,7 @@ const inputValidation = {
         id: "input_level_current",
         location: "characterModal",
         min: "1",
-        max: "85",
+        max: "87",
         default: "1",
         name: "Level",
         "navigation": "direct",
@@ -321,7 +321,7 @@ const inputValidation = {
         id: "input_level_target",
         location: "characterModal",
         min: "1",
-        max: "85",
+        max: "87",
         default: "1",
         name: "Level Target",
         requisite: {
@@ -808,7 +808,7 @@ const inputValidation = {
         id: "input_gear3_current",
         location: "characterModal",
         min: "0",
-        max: "7",
+        max: "8",
         default: "0",
         name: "Gear 3",
         requisite: {
@@ -839,7 +839,7 @@ const inputValidation = {
         id: "input_gear3_target",
         location: "characterModal",
         min: "0",
-        max: "7",
+        max: "8",
         default: "0",
         name: "Gear 3 Target",
         requisite: {

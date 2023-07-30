@@ -5,7 +5,7 @@ var modalCharID = 0;
 var modalStars = { "star": 0, "star_target": 0, "ue": 0, "ue_target": 0 };
 var data;
 const ueStarCap = 3;
-const globalMaxWorld = 20;
+const globalMaxWorld = 21;
 
 var requiredMatDict = {};
 var neededMatDict = {};
@@ -78,7 +78,7 @@ let loaded = false;
 
 function loadResources() {
 
-    $.getJSON('json/misc_data.json?15').done(function (json) {
+    $.getJSON('json/misc_data.json?16').done(function (json) {
         misc_data = json;
         checkResources();
     });
@@ -471,7 +471,7 @@ function init() {
 
     let gearNavigation = [];
     createTable("gear-table", ["T8", "T7", "T6", "T5", "T4", "T3", "T2"], 0, ["Hat", "Gloves", "Shoes", "Bag", "Badge", "Hairpin", "Charm", "Watch", "Necklace"],
-        0, gearNavigation, document.getElementById('table-parent-4'), false, "gear", "icons/Gear/", ["T8_Necklace", "T8_Watch", "T8_Charm"], "gear-");
+        0, gearNavigation, document.getElementById('table-parent-4'), false, "gear", "icons/Gear/", [], "gear-");
 
     let navObj = {};
     for (let x in tableNavigation) {
@@ -1129,11 +1129,11 @@ function CharInputsMax() {
         cancelButtonText: GetLanguageString("label-cancel")
     }).then((result) => {
         if (result.isConfirmed) {
-            let values = [83, 83, 5, 5, 10, 10, 10, 10, 10, 10, 7, 7, 7, 7, 7, 7];
+            let values = [85, 85, 5, 5, 10, 10, 10, 10, 10, 10, 7, 7, 7, 7, 7, 7];
             SetCharInputValues(values);
         }
         else if (result.isDenied) {
-            let values = [85, 85, 5, 5, 10, 10, 10, 10, 10, 10, 8, 8, 8, 8, 7, 7];
+            let values = [87, 87, 5, 5, 10, 10, 10, 10, 10, 10, 8, 8, 8, 8, 8, 8];
             SetCharInputValues(values);
         }
     })
