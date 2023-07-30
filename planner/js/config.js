@@ -162,7 +162,7 @@ const gearLookup = ["T2_Hat", "T2_Gloves", "T2_Shoes", "T2_Bag", "T2_Badge", "T2
     "T5_Hat", "T5_Gloves", "T5_Shoes", "T5_Bag", "T5_Badge", "T5_Hairpin", "T5_Charm", "T5_Watch", "T5_Necklace",
     "T6_Hat", "T6_Gloves", "T6_Shoes", "T6_Bag", "T6_Badge", "T6_Hairpin", "T6_Charm", "T6_Watch", "T6_Necklace",
     "T7_Hat", "T7_Gloves", "T7_Shoes", "T7_Bag", "T7_Badge", "T7_Hairpin", "T7_Charm", "T7_Watch", "T7_Necklace",
-    "T8_Hat", "T8_Gloves", "T8_Shoes", "T8_Bag", "T8_Badge", "T8_Hairpin"]
+    "T8_Hat", "T8_Gloves", "T8_Shoes", "T8_Bag", "T8_Badge", "T8_Hairpin", "T8_Charm", "T8_Watch", "T8_Necklace"]
 
 var rowColours = {
     "Abydos": "#9ce4fc66", "Gehenna": "#ec7d7966", "Millennium": "#9ebdfa66", "Trinity": "#fcd19c66", "Hyakkiyako": "#f0a8c466", "Arius": "#dbdad85e",
@@ -2423,6 +2423,27 @@ const inputValidation = {
     },
     "T8_Hairpin": {
         "id": "input-T8_Hairpin",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T8_Charm": {
+        "id": "input-T8_Charm",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T8_Watch": {
+        "id": "input-T8_Watch",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T8_Necklace": {
+        "id": "input-T8_Necklace",
         "location": "gearModal",
         "min": "0",
         "max": "9999",
