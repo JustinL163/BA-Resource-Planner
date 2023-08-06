@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-3XZ18739WF"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-3XZ18739WF');
+    </script> -->
+    <script>
+        function hamburgToggle() {
+            let linkWrapper = document.getElementById('mobile-links-wrapper');
+            if (linkWrapper.style.display === "block") {
+                linkWrapper.style.display = "none";
+            } else {
+                linkWrapper.style.display = "block";
+            }
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="css/styles.css?4">
+    <link rel="stylesheet" href="css/raids.css">
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- <script src="packages/tippyjs/popper.js"></script>
+    <script src="packages/tippyjs/tippy.js"></script>
+    <link rel="stylesheet" href="packages/tippyjs/light.css" />
+    <script src="packages/mathjs/math.js"></script> -->
+    <script src="js/config.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/raids.js"></script>
+    <title>Event Planner</title>
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://justin163.com/planner/events">
+    <meta property="og:image" itemprop="image primaryImageOfPage"
+        content="https://justin163.com/planner/icons/Misc/EmbedIcon.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:domain" content="justin163.com">
+    <meta name="twitter:title" property="og:title" itemprop="name" content="Blue Archive Event Planner">
+    <meta name="twitter:description" property="og:description" itemprop="description"
+        content="A tool to optimise event resource income, plan energy spend and stage farming">
+    <meta name="theme-color" content="#ff00bb">
+</head>
+
+<body onload="loadResources()">
+    <div id="raid-background" style="position: fixed; background-image: url('icons/Backgrounds/chesed-indoor.jpg');">
+    </div>
+    <nav class="navbar navbground">
+        <span class="logo">Justin163</span>
+        <img src="icons/UI/hamburger.svg" id="hamburger" onclick="hamburgToggle()">
+        <ul class="nav-list">
+            <li><a href="index.html" class="display-string" data-id="page-resource-planner"></a></li>
+            <li><a href="events.html" class="display-string" data-id="page-event-planner"></a></li>
+            <li><a class="active display-string" data-id="page-raids"></a></li>
+            <li><a href="changelog.html" class="display-string" data-id="page-changelog"></a></li>
+            <li><a href="privacy.html" class="display-string" data-id="page-privacy"></a></li>
+            <li><a href="credit.html" class="display-string" data-id="page-credit"></a></li>
+        </ul>
+        <div class="nav-right">
+            <img id="image-style-button" src="icons/UI/ShirokoIcon.png" onclick="ToggleImageStyle()">
+            <select name="languages" id="languages" onchange="languageChanged()"></select>
+            <img src="icons/UI/sun.svg" id="theme-button" onclick="switchTheme()">
+        </div>
+    </nav>
+    <div id="mobile-links-wrapper">
+        <ul class="mobile-links">
+            <li><a href="index.html" class="display-string" data-id="page-resource-planner"></a></li>
+            <li><a class="active display-string" data-id="page-event-planner"></a></li>
+            <li><a href="changelog.html" class="display-string" data-id="page-changelog"></a></li>
+            <li><a href="privacy.html" class="display-string" data-id="page-privacy"></a></li>
+            <li><a href="credit.html" class="display-string" data-id="page-credit"></a></li>
+        </ul>
+    </div>
+    <div id="timeline-filter-container">
+        <div id="timeline-filter-button" onclick="TimelineFiltersToggle()">
+            <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                <path d="M3.9 54.9C10.5 40.9 24.5 32 40 32H472c15.5 0 29.5 8.9 36.1 22.9s4.6 30.5-5.2 42.5L320 320.9V448c0 12.1-6.8 23.2-17.7 28.6s-23.8 4.3-33.5-3l-64-48c-8.1-6-12.8-15.5-12.8-25.6V320.9L9 97.3C-.7 85.4-2.8 68.8 3.9 54.9z"/></svg>
+        </div>
+        <div id="timeline-filters">
+            <div id="raid-filter-Binah" class="raid-heavy raid-boss-filter" onclick="FilterTimeline('raid', 'Binah')">
+                <img src="icons/Raids/Boss_Portrait_Binah.png">
+            </div>
+            <div id="raid-filter-Chesed" class="raid-heavy raid-boss-filter" onclick="FilterTimeline('raid', 'Chesed')">
+                <img src="icons/Raids/Boss_Portrait_Chesed.png">
+            </div>
+            <div id="raid-filter-Hod" class="raid-heavy raid-boss-filter" onclick="FilterTimeline('raid', 'Hod')">
+                <img src="icons/Raids/Boss_Portrait_Hod.png">
+            </div>
+            <div id="raid-filter-Hieronymous" class="raid-light raid-boss-filter" onclick="FilterTimeline('raid', 'Hieronymous')">
+                <img src="icons/Raids/Boss_Portrait_Hieronymous.png">
+            </div>
+            <div id="raid-filter-Kaiten" class="raid-light raid-boss-filter" onclick="FilterTimeline('raid', 'Kaiten')">
+                <img src="icons/Raids/Boss_Portrait_Kaiten.png">
+            </div>
+            <div id="raid-filter-Gregorius" class="raid-light raid-boss-filter" onclick="FilterTimeline('raid', 'Gregorius')">
+                <img src="icons/Raids/Boss_Portrait_Gregorius.png">
+            </div>
+            <div id="raid-filter-ShiroKuro" class="raid-special raid-boss-filter" onclick="FilterTimeline('raid', 'ShiroKuro')">
+                <img src="icons/Raids/Boss_Portrait_Shirokuro.png">
+            </div>
+            <div id="raid-filter-Perorodzilla" class="raid-special raid-boss-filter" onclick="FilterTimeline('raid', 'Perorodzilla')">
+                <img src="icons/Raids/Boss_Portrait_Perorodzilla.png">
+            </div>
+            <div id="raid-filter-Goz" class="raid-special raid-boss-filter" onclick="FilterTimeline('raid', 'Goz')">
+                <img src="icons/Raids/Boss_Portrait_Goz.png">
+            </div>
+            <div id="raid-filter-divider"></div>
+            <div id="terrain-filter-Outdoor" class="raid-terrain-filter" onclick="FilterTimeline('terrain', 'Outdoor')">
+                <img src="icons/Mood/Terrain_Outdoor.png">
+            </div>
+            <div id="terrain-filter-Street" class="raid-terrain-filter" onclick="FilterTimeline('terrain', 'Street')">
+                <img src="icons/Mood/Terrain_Street.png">
+            </div>
+            <div id="terrain-filter-Indoor" class="raid-terrain-filter" onclick="FilterTimeline('terrain', 'Indoor')">
+                <img src="icons/Mood/Terrain_Indoor.png">
+            </div>
+        </div>
+        <div id="timeline-filter-right"></div>
+    </div>
+    <div id="raid-timeline">
+        <div id="server-labels">
+            <div id="Japan-timeline-label"><p>JP</p></div>
+            <div id="Global-timeline-label"><p>Gbl</p></div>
+            <div id="China-timeline-label"><p>CN</p></div>
+        </div>
+        <div id="timelines-wrapper">
+            <div id="Japan-timeline" class="server-timeline"></div>
+            <div id="Global-timeline" class="server-timeline"></div>
+            <div id="China-timeline" class="server-timeline"></div>
+        </div>
+        <div id="timelines-expand-arrow" style="display: none;" onclick="ExpandRaidTimeline()">
+            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                <path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg>
+        </div>
+    </div>
+    <!-- <div id="raid-submissions">
+
+    </div> -->
+</body>
+
+</html>

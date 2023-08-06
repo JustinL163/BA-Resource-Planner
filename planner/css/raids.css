@@ -1,0 +1,264 @@
+* {
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+img {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+}
+
+#raid-background {
+    top: 0px;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    transform: scale(1.05);
+    background: center center;
+    background-size: cover;
+    filter: blur(15px);
+}
+
+#raid-timeline {
+    margin-top: 0.5em;
+    margin-inline: auto;
+    width: 80%;
+    /* height: 300px; */
+    padding: 0.75em;
+    background-color: #282a3587;
+    display: flex;
+    position: relative;
+}
+
+#raid-submissions {
+    margin-top: 2em;
+    margin-inline: auto;
+    width: 80%;
+    padding: 0.75em;
+    background-color: #282a3587;
+    min-height: 500px;
+}
+
+#timeline-filter-container {
+    margin-top: 2%;
+    margin-inline: auto;
+    width: 80%;
+    display: flex;
+}
+
+#timeline-filter-button {
+    background-color: #282a3587;
+    padding: 0.5em;
+    width: fit-content;
+}
+
+#timeline-filter-button svg {
+    filter: invert(1);
+    margin-top: 0.25em;
+}
+
+#timeline-filters {
+    background-color: #282a3587;
+    display: flex;
+    transition-property: width, max-width;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+    width: 0;
+    max-width: 0;
+}
+
+#timeline-filters.show {
+    width: 100%;
+    max-width: 1000px;
+}
+
+#timeline-filters div {
+    width: 70px;
+    height: 35px;
+    margin-left: 1em;
+    align-self: center;
+}
+
+#timeline-filters img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+div#raid-filter-divider {
+    background-color: white;
+    width: 0.25em;
+}
+
+#timeline-filters div.raid-terrain-filter {
+    width: 50px;
+}
+
+.raid-boss-filter.selected, .raid-terrain-filter.selected {
+    outline: white 0.3em solid;
+}
+
+#timeline-filter-right {
+    width: 0;
+    height: 0;
+    border-top: 25px solid transparent;
+    border-left: 40px solid #282a3587;
+    border-bottom: 25px solid transparent;
+}
+
+#server-labels div {
+    height: 100px;
+}
+
+#server-labels div p {
+    padding-top: 2em;
+    margin-right: 1em;
+    color: white;
+}
+
+#timelines-wrapper {
+    overflow: overlay;
+    padding: 0.3em;
+}
+
+#timelines-wrapper::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+#timelines-wrapper::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+#timelines-wrapper::-webkit-scrollbar-thumb {
+    background-color: white;
+    border-radius: 10px;
+}
+
+#timelines-expand-arrow {
+    position: absolute;
+    bottom: 0.2em;
+    left: 0.2em;
+    background-color: #ffffff21;
+    width: 2em;
+    height: 2em;
+    border-radius: 10px;
+    text-align: center;
+}
+
+#timelines-expand-arrow:hover {
+    filter: brightness(0.7);
+}
+
+#timelines-expand-arrow svg {
+    filter: invert(1);
+    margin-top: 0.6em;
+}
+
+.server-timeline {
+    height: 100px;
+    display: flex;
+}
+
+.raid-card {
+    min-width: 200px;
+    max-width: 200px;
+    height: 80px;
+    margin-right: 20px;
+    display: flex;
+    position: relative;
+}
+
+.raid-card.selected {
+    outline: white 0.3em solid;
+}
+
+.raid-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.raid-heavy {
+    background-color: #b26d1f82;
+}
+
+.raid-special {
+    background-color: #216f9c82;
+}
+
+.raid-light {
+    background-color: #a70c1982;
+}
+
+.terrain-bubble {
+    position: absolute;
+    top: 0.25em;
+    left: 0.25em;
+    background-color: #282a35cf;
+    border-radius: 100%;
+    height: 40px;
+    width: 40px;
+    text-align: center;
+}
+
+.terrain-bubble img {
+    object-fit: unset;
+    width: 35px;
+    height: 35px;
+}
+
+.raid-date {
+    position: absolute;
+    bottom: 0;
+    left: 0.3em;
+    background-color: #282a35cf;
+    padding: 0.1em;
+    color: white;
+}
+
+.raid-season {
+    position: absolute;
+    top: 0;
+    right: 0.3em;
+    background-color: #282a35cf;
+    padding: 0.1em;
+    color: white;
+}
+
+.raid-bosscount {
+    position: absolute;
+    top: 1.5em;
+    right: 0.3em;
+    background-color: #282a35cf;
+    padding: 0.1em;
+    color: white;
+}
+
+.raid-terraincount {
+    position: absolute;
+    top: 3.1em;
+    right: 0.3em;
+    background-color: #282a35cf;
+    padding: 0.1em;
+    color: white;
+}
+
+.raid-difficulty {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    background-color: #282a35cf;
+    padding: 0.1em;
+    color: white;
+}
+
+.timeline-end {
+    min-width: 1px;
+}
