@@ -37,7 +37,7 @@
     <script src="js/config.js"></script>
     <script src="js/common.js"></script>
     <script src="js/raids.js"></script>
-    <title>Event Planner</title>
+    <title>Raid Videos</title>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://justin163.com/planner/events">
     <meta property="og:image" itemprop="image primaryImageOfPage"
@@ -81,8 +81,11 @@
     </div>
     <div id="timeline-filter-container">
         <div id="timeline-filter-button" onclick="TimelineFiltersToggle()">
-            <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-                <path d="M3.9 54.9C10.5 40.9 24.5 32 40 32H472c15.5 0 29.5 8.9 36.1 22.9s4.6 30.5-5.2 42.5L320 320.9V448c0 12.1-6.8 23.2-17.7 28.6s-23.8 4.3-33.5-3l-64-48c-8.1-6-12.8-15.5-12.8-25.6V320.9L9 97.3C-.7 85.4-2.8 68.8 3.9 54.9z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" height="1.5em"
+                viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                <path
+                    d="M3.9 54.9C10.5 40.9 24.5 32 40 32H472c15.5 0 29.5 8.9 36.1 22.9s4.6 30.5-5.2 42.5L320 320.9V448c0 12.1-6.8 23.2-17.7 28.6s-23.8 4.3-33.5-3l-64-48c-8.1-6-12.8-15.5-12.8-25.6V320.9L9 97.3C-.7 85.4-2.8 68.8 3.9 54.9z" />
+            </svg>
         </div>
         <div id="timeline-filters">
             <div id="raid-filter-Binah" class="raid-heavy raid-boss-filter" onclick="FilterTimeline('raid', 'Binah')">
@@ -94,19 +97,23 @@
             <div id="raid-filter-Hod" class="raid-heavy raid-boss-filter" onclick="FilterTimeline('raid', 'Hod')">
                 <img src="icons/Raids/Boss_Portrait_Hod.png">
             </div>
-            <div id="raid-filter-Hieronymous" class="raid-light raid-boss-filter" onclick="FilterTimeline('raid', 'Hieronymous')">
+            <div id="raid-filter-Hieronymous" class="raid-light raid-boss-filter"
+                onclick="FilterTimeline('raid', 'Hieronymous')">
                 <img src="icons/Raids/Boss_Portrait_Hieronymous.png">
             </div>
             <div id="raid-filter-Kaiten" class="raid-light raid-boss-filter" onclick="FilterTimeline('raid', 'Kaiten')">
                 <img src="icons/Raids/Boss_Portrait_Kaiten.png">
             </div>
-            <div id="raid-filter-Gregorius" class="raid-light raid-boss-filter" onclick="FilterTimeline('raid', 'Gregorius')">
+            <div id="raid-filter-Gregorius" class="raid-light raid-boss-filter"
+                onclick="FilterTimeline('raid', 'Gregorius')">
                 <img src="icons/Raids/Boss_Portrait_Gregorius.png">
             </div>
-            <div id="raid-filter-ShiroKuro" class="raid-special raid-boss-filter" onclick="FilterTimeline('raid', 'ShiroKuro')">
+            <div id="raid-filter-ShiroKuro" class="raid-special raid-boss-filter"
+                onclick="FilterTimeline('raid', 'ShiroKuro')">
                 <img src="icons/Raids/Boss_Portrait_Shirokuro.png">
             </div>
-            <div id="raid-filter-Perorodzilla" class="raid-special raid-boss-filter" onclick="FilterTimeline('raid', 'Perorodzilla')">
+            <div id="raid-filter-Perorodzilla" class="raid-special raid-boss-filter"
+                onclick="FilterTimeline('raid', 'Perorodzilla')">
                 <img src="icons/Raids/Boss_Portrait_Perorodzilla.png">
             </div>
             <div id="raid-filter-Goz" class="raid-special raid-boss-filter" onclick="FilterTimeline('raid', 'Goz')">
@@ -127,9 +134,15 @@
     </div>
     <div id="raid-timeline">
         <div id="server-labels">
-            <div id="Japan-timeline-label"><p>JP</p></div>
-            <div id="Global-timeline-label"><p>Gbl</p></div>
-            <div id="China-timeline-label"><p>CN</p></div>
+            <div id="Japan-timeline-label">
+                <p>JP</p>
+            </div>
+            <div id="Global-timeline-label">
+                <p>Gbl</p>
+            </div>
+            <div id="China-timeline-label">
+                <p>CN</p>
+            </div>
         </div>
         <div id="timelines-wrapper">
             <div id="Japan-timeline" class="server-timeline"></div>
@@ -137,13 +150,219 @@
             <div id="China-timeline" class="server-timeline"></div>
         </div>
         <div id="timelines-expand-arrow" style="display: none;" onclick="ExpandRaidTimeline()">
-            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-                <path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" height="1em"
+                viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                <path
+                    d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z" />
+            </svg>
         </div>
     </div>
-    <!-- <div id="raid-submissions">
-
-    </div> -->
+    <div id="raid-submissions">
+        <div id="raid-difficulties"></div>
+        <div id="raid-card-holder"></div>
+        <div id="raid-video-cards">
+            <div class="raid-video-card">
+                <div class="raid-video-card-header">
+                    <div class="raid-score">35,979,357</div>
+                    <div class="player-level">Lvl 85</div>
+                </div>
+                <div class="raid-teams">
+                    <div class="raid-team">
+                        <div class="team-num">1</div>
+                        <div class="team-strikers">
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_10045.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_10050.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_10044.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_10019.png">
+                            </div>
+                        </div>
+                        <div class="team-specials">
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_20022.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_20024.png">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="raid-team">
+                        <div class="team-num">2</div>
+                        <div class="team-strikers">
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_10045.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_10062.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_13010.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_10054.png">
+                            </div>
+                        </div>
+                        <div class="team-specials">
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_20008.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_20020.png">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="raid-video-link">
+                    <a href="https://www.youtube.com/watch?v=w1NGfXnrDeY"
+                        target="_blank">https://www.youtube.com/watch?v=w1NGfXnrDeY</a>
+                </div>
+            </div>
+            <div class="raid-video-card">
+                <div class="raid-video-card-header">
+                    <div class="raid-score">33,054,444</div>
+                    <div class="player-level">Lvl 85</div>
+                    <div class="teams-used">5 teams</div>
+                </div>
+                <div class="raid-teams">
+                    <div class="raid-team">
+                        <div class="team-num">1</div>
+                        <div class="team-strikers">
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_10059.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_16000.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_13000.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_10007.png">
+                            </div>
+                        </div>
+                        <div class="team-specials">
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_20022.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_20020.png">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="raid-team">
+                        <div class="team-num">2</div>
+                        <div class="team-strikers">
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_13003.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_10006.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_10056.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_10011.png">
+                            </div>
+                        </div>
+                        <div class="team-specials">
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_20000.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_20014.png">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="raid-team">
+                        <div class="team-num">3</div>
+                        <div class="team-strikers">
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_10001.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_10052.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_10007.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_10030.png">
+                            </div>
+                        </div>
+                        <div class="team-specials">
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_20008.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_26008.png">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="raid-team">
+                        <div class="team-num">4</div>
+                        <div class="team-strikers">
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_10042.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_10048.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_13007.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_10021.png">
+                            </div>
+                        </div>
+                        <div class="team-specials">
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_20001.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_20017.png">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="raid-team">
+                        <div class="team-num">5</div>
+                        <div class="team-strikers">
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_10008.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_10045.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_10017.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_10058.png">
+                            </div>
+                        </div>
+                        <div class="team-specials">
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_20025.png">
+                            </div>
+                            <div class="student">
+                                <img src="icons/Portrait/Icon_26007.png">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="raid-video-link">
+                    <a href="https://www.youtube.com/watch?v=moZtoMP7HAA"
+                        target="_blank">https://www.youtube.com/watch?v=moZtoMP7HAA</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

@@ -69,8 +69,9 @@ function init() {
 
     CreateRaidCards();
 
-    document.getElementById("timelines-wrapper").addEventListener("wheel", (event) => event.currentTarget.scrollLeft += event.deltaY, {passive: false});
+    document.getElementById("timelines-wrapper").addEventListener("wheel", (event) => event.currentTarget.scrollLeft += event.deltaY, { passive: false });
 
+    alert("This is under development! Not currently functional and shown raid video cards are placeholders")
 }
 
 function CreateRaidCards() {
@@ -80,14 +81,14 @@ function CreateRaidCards() {
 
         for (let i = 0; i < raid_history[server].length; i++) {
 
-            CreateRaidCard(raid_history[server][i], server);
+            CreateRaidCard(raid_history[server][i], server, "-timeline");
         }
 
-        CreateRaidCard({"End": true}, server);
+        CreateRaidCard({ "End": true }, server, "-timeline");
     }
 }
 
-function CreateRaidCard(raid, server) {
+function CreateRaidCard(raid, server, idSuffix) {
 
     let raidCard = document.createElement("div");
     raidCard.className = "raid-card";
@@ -108,6 +109,7 @@ function CreateRaidCard(raid, server) {
     raidCard.setAttribute("filter-terrain", raid.Terrain);
 
     let bossImg = document.createElement("img");
+    bossImg.className = "boss-icon";
     bossImg.src = "icons/Raids/Boss_Portrait_" + raid.Boss + ".png";
 
     let terrainBubble = document.createElement("div");
@@ -149,11 +151,13 @@ function CreateRaidCard(raid, server) {
     raidCard.setAttribute("raid-server", server);
     raidCard.id = server + "-" + raid.uid;
 
-    raidCard.addEventListener('click', (event) => {
-        RaidClicked(event.currentTarget.getAttribute("raid-server"), event.currentTarget.getAttribute("raid-uid"));
-    })
+    if (server) {
+        raidCard.addEventListener('click', (event) => {
+            RaidClicked(event.currentTarget.getAttribute("raid-server"), event.currentTarget.getAttribute("raid-uid"));
+        })
+    }
 
-    document.getElementById(server + "-timeline").appendChild(raidCard);
+    document.getElementById(server + idSuffix).appendChild(raidCard);
 }
 
 function TimelineFiltersToggle() {
@@ -329,7 +333,7 @@ function RaidClicked(server, uid) {
     }
 
     let raidCards = document.getElementsByClassName("raid-card");
-    
+
     for (let i = 0; i < raidCards.length; i++) {
         raidCards[i].classList.remove("selected");
     }
@@ -340,6 +344,16 @@ function RaidClicked(server, uid) {
     document.getElementById("timelines-expand-arrow").style.display = "";
 
     FilterTimeline("blank", true);
+
+    let raid = raid_history[server].find(obj => { return obj.uid == uid });
+
+    CreateDifficultyTabs(raid);
+
+    let cardHolder = document.getElementById("raid-card-holder").children;
+    while (cardHolder.length > 0) {
+        cardHolder[0].remove();
+    }
+    CreateRaidCard(raid, "", "raid-card-holder");
 }
 
 function ExpandRaidTimeline() {
@@ -360,4 +374,26 @@ function ExpandRaidTimeline() {
     document.getElementById("timelines-expand-arrow").style.display = "none";
 
     FilterTimeline("blank", false);
+}
+
+function CreateDifficultyTabs(raid) {
+
+    let difficultiesContainer = document.getElementById("raid-difficulties");
+
+    while (difficultiesContainer.children.length > 0) {
+        difficultiesContainer.children[0].remove();
+    }
+
+    let maxDifficulty = raid.Max_Difficulty;
+
+    let difficultyIndex = raid_history.raid_difficulties_short.indexOf(maxDifficulty);
+    let difficulties = raid_history.raid_difficulties_short.length;
+
+    for (let i = difficultyIndex; i < difficulties; i++) {
+
+        let difficultyTab = document.createElement("div");
+        difficultyTab.innerText = raid_history.raid_difficulties[i];
+
+        difficultiesContainer.appendChild(difficultyTab);
+    }
 }

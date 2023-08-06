@@ -11,7 +11,7 @@ img {
     -khtml-user-drag: none;
     -moz-user-drag: none;
     -o-user-drag: none;
-    user-drag: none;
+    /* user-drag: none; */
 }
 
 #raid-background {
@@ -34,15 +34,6 @@ img {
     background-color: #282a3587;
     display: flex;
     position: relative;
-}
-
-#raid-submissions {
-    margin-top: 2em;
-    margin-inline: auto;
-    width: 80%;
-    padding: 0.75em;
-    background-color: #282a3587;
-    min-height: 500px;
 }
 
 #timeline-filter-container {
@@ -173,6 +164,11 @@ div#raid-filter-divider {
     margin-right: 20px;
     display: flex;
     position: relative;
+    overflow: hidden;
+}
+
+.raid-card:hover .boss-icon {
+    scale: 1.2;
 }
 
 .raid-card.selected {
@@ -183,6 +179,7 @@ div#raid-filter-divider {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: scale 0.2s linear;
 }
 
 .raid-heavy {
@@ -261,4 +258,153 @@ div#raid-filter-divider {
 
 .timeline-end {
     min-width: 1px;
+}
+
+#raid-submissions {
+    margin-top: 2em;
+    margin-inline: auto;
+    width: 80%;
+    padding: 0.75em;
+    background-color: #282a3587;
+    min-height: 500px;
+    position: relative;
+}
+
+#raid-difficulties {
+    display: flex;
+}
+
+#raid-difficulties div {
+    color: white;
+    padding: 1em;
+    background-color: #ffffff12;
+}
+
+#raid-difficulties div:hover {
+    background-color: #ffffff40;
+}
+
+#raid-card-holder {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#raid-card-holder .raid-card {
+    margin-right: 0;
+}
+
+#raid-video-cards {
+    margin-top: 3em;
+    display: flex;
+}
+
+.raid-video-card {
+    max-width: 430px;
+    width: 430px;
+    max-height: 300px;
+    /* height: 300px; */
+    background-color: #282a3587;
+    margin-right: 2em;
+    border: white 0.1em solid;
+    border-radius: 15px;
+    position: relative;
+}
+
+.raid-video-card-header {
+    display: flex;
+}
+
+.raid-score {
+    color: white;
+    font-size: 1.5em;
+    margin-left: 0.5em;
+}
+
+.player-level {
+    color: white;
+    font-size: 1.5em;
+    margin-left: 1.5em;
+}
+
+.teams-used {
+    color: white;
+    font-size: 1.5em;
+    margin-left: 1.5em;
+}
+
+.raid-teams {
+    max-height: 80%;
+    overflow-x: hidden;
+    margin-bottom: 2em;
+}
+
+.raid-teams::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.raid-teams::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+.raid-teams::-webkit-scrollbar-thumb {
+    background-color: white;
+    border-radius: 10px;
+}
+
+.raid-team {
+    display: flex;
+    background-color: #ffffff12;
+    margin-bottom: 0.2em;
+    margin-inline: auto;
+    border-radius: 10px;
+    width: fit-content;
+}
+
+.student {
+    margin-right: 0.5em;
+}
+
+.student img {
+    max-width: 50px;
+    border-radius: 15px;
+}
+
+.team-strikers {
+    display: flex;
+    background-color: #ffffff3d;
+    padding-left: 0.3em;
+    padding-top: 0.2em;
+    border-radius: 15px;
+}
+
+.team-specials {
+    display: flex;
+    margin-left: 1em;
+    background-color: #ffffff3d;
+    padding-left: 0.3em;
+    padding-top: 0.2em;
+    padding-right: 0.4em;
+    border-radius: 15px;
+}
+
+.team-specials .student:last-child {
+    margin-right: 0;
+}
+
+.raid-video-link {
+    position: absolute;
+    left: 1em;
+    bottom: 0.5em;
+}
+
+.raid-video-link a {
+    color: lightskyblue;
+}
+
+.team-num {
+    color: white;
+    padding-inline: 0.8em;
+    margin-block: auto;
 }
