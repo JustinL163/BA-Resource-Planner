@@ -219,6 +219,10 @@ function GenerateEventsList() {
             eventDisabled = true;
             eventLabel.innerText = GetLanguageString("text-comingsoon");
             eventInfo = event_config.events[eventName];
+
+            if (eventName == "aha-conquest") {
+                eventLabel.innerHTML = 'I played too much Genshin oops... this event format is kinda complicated to put here without a bit of work I can\'t do in time, check this guy\'s vid instead: <a href="https://www.youtube.com/watch?v=qAH0hqpLAGY" style="color: lightskyblue;">https://www.youtube.com/watch?v=qAH0hqpLAGY</a><br>I\'ll update the other events up to JP after the weekend when I finish new raid page I\'m working on';
+            }
         }
         else if (eventInfo.display_name) {
             eventLabel.innerText = GetLanguageString("event-" + eventName); //eventInfo.display_name;
@@ -231,11 +235,13 @@ function GenerateEventsList() {
 
         let previewItems = eventInfo.reward_preview;
 
-        for (let p = 0; p < previewItems?.length; p++) {
-            let previewImg = document.createElement("img");
-            SetItemImage(previewImg, previewItems[p]);
-            previewImg.className = "event-reward-preview preview-" + previewItems[p].preview;
-            eventDiv.appendChild(previewImg);
+        if (eventName != "aha-conquest") {
+            for (let p = 0; p < previewItems?.length; p++) {
+                let previewImg = document.createElement("img");
+                SetItemImage(previewImg, previewItems[p]);
+                previewImg.className = "event-reward-preview preview-" + previewItems[p].preview;
+                eventDiv.appendChild(previewImg);
+            }
         }
 
         eventDiv.appendChild(eventLabel);
@@ -645,6 +651,11 @@ function ToggleBonusChar(id) {
 }
 
 function CalculateBonuses() {
+
+    if (current_event == "aha-conquest") {
+        currencyBonuses = { "Computation_Circuit": 1.2, "Engine_Parts": 1.2, "Chocolate_Burger": 1.2 };
+        return;
+    }
 
     currencyBonuses = {};
 
@@ -1713,6 +1724,10 @@ function GenerateStagesTable() {
 
         let stage = stages[i];
 
+        if (stage.visible === false) {
+            continue;
+        }
+
         if (stage.type == "Quest") {
 
             let tableRow = document.createElement('tr');
@@ -1721,7 +1736,12 @@ function GenerateStagesTable() {
                 tableRow.className = "alternate-row";
             }
 
-            CreateTableRowCells(tableRow, [("Q" + stage.number), CreateEnergyDiv(stage.cost), CreateRunsDiv(stage.number), CreateDropsDiv(stage.drops)], 'td');
+            let stageLabel = "Q" + stage.number;
+            if (stage.label) {
+                stageLabel = stage.label;
+            }
+
+            CreateTableRowCells(tableRow, [(stageLabel), CreateEnergyDiv(stage.cost), CreateRunsDiv(stage.number), CreateDropsDiv(stage.drops)], 'td');
 
             tableBody.appendChild(tableRow);
         }
@@ -3992,7 +4012,7 @@ function ResetLessons() {
 
 function UpdateNotifications() {
 
-    if (enabledBonusUnits.length == 0) {
+    if (enabledBonusUnits.length == 0 && current_event != "aha-conquest") {
         document.getElementById('notification-bonus').style.display = '';
     }
     else {

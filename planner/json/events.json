@@ -2512,13 +2512,14 @@
                     {"type": "XpWeapon", "id": "Needle_4", "count": 5, "cost": 500}
                 ]
             },
+            "stage_groups": ["1-4", "5-8", "9-12"],
             "stages": [
-                {"type": "Quest", "number": 1, "label": "1-1-A", "cost": 5, "drops": {"Computation_Circuit": 3, "Engine_Parts": 3}},
-                {"type": "Quest", "number": 2, "label": "1-1-B", "cost": 5, "drops": {"Computation_Circuit": 3, "Chocolate_Burger": 3}},
+                {"type": "Quest", "number": 1, "label": "1-1-A", "cost": 5, "drops": {"Computation_Circuit": 3, "Engine_Parts": 3}, "visible": false},
+                {"type": "Quest", "number": 2, "label": "1-1-B", "cost": 5, "drops": {"Computation_Circuit": 3, "Chocolate_Burger": 3}, "visible": false},
 
-                {"type": "Quest", "number": 3, "label": "2-1-A", "cost": 5, "drops": {"Computation_Circuit": 3, "Engine_Parts": 3}},
-                {"type": "Quest", "number": 4, "label": "2-1-B", "cost": 5, "drops": {"Engine_Parts": 3, "Chocolate_Burger": 3}},
-                {"type": "Quest", "number": 5, "label": "2-1-C", "cost": 5, "drops": {"Computation_Circuit": 3, "Chocolate_Burger": 3}},
+                {"type": "Quest", "number": 3, "label": "2-1-A", "cost": 5, "drops": {"Computation_Circuit": 3, "Engine_Parts": 3}, "visible": false},
+                {"type": "Quest", "number": 4, "label": "2-1-B", "cost": 5, "drops": {"Engine_Parts": 3, "Chocolate_Burger": 3}, "visible": false},
+                {"type": "Quest", "number": 5, "label": "2-1-C", "cost": 5, "drops": {"Computation_Circuit": 3, "Chocolate_Burger": 3}, "visible": false},
                 {"type": "Quest", "number": 6, "label": "2-2-A", "cost": 12, "drops": {"Computation_Circuit": 10, "Engine_Parts": 10, "Chocolate_Burger": 4, "Mystery_1": 0.3, "Mystery_2": 0.6}},
                 {"type": "Quest", "number": 7, "label": "2-2-B", "cost": 12, "drops": {"Computation_Circuit": 4, "Engine_Parts": 10, "Chocolate_Burger": 10, "Wolfsegg_1": 0.3, "Wolfsegg_2": 0.6}},
                 {"type": "Quest", "number": 8, "label": "2-2-C", "cost": 12, "drops": {"Computation_Circuit": 10, "Engine_Parts": 4, "Chocolate_Burger": 10, "Voynich_1": 0.3, "Voynich_2": 0.6}},
@@ -2526,9 +2527,9 @@
                 {"type": "Quest", "number": 10, "label": "2-3-B", "cost": 12, "drops": {"Engine_Parts": 12, "Chocolate_Burger": 12, "Aether_1": 0.3, "Aether_2": 0.6}},
                 {"type": "Quest", "number": 11, "label": "2-3-C", "cost": 12, "drops": {"Computation_Circuit": 12, "Chocolate_Burger": 12, "Haniwa_1": 0.3, "Haniwa_2": 0.6}},
 
-                {"type": "Quest", "number": 12, "label": "3-1-A", "cost": 5, "drops": {"Computation_Circuit": 3, "Engine_Parts": 3}},
-                {"type": "Quest", "number": 13, "label": "3-1-B", "cost": 5, "drops": {"Engine_Parts": 3, "Chocolate_Burger": 3}},
-                {"type": "Quest", "number": 14, "label": "3-1-C", "cost": 5, "drops": {"Computation_Circuit": 3, "Chocolate_Burger": 3}},
+                {"type": "Quest", "number": 12, "label": "3-1-A", "cost": 5, "drops": {"Computation_Circuit": 3, "Engine_Parts": 3}, "visible": false},
+                {"type": "Quest", "number": 13, "label": "3-1-B", "cost": 5, "drops": {"Engine_Parts": 3, "Chocolate_Burger": 3}, "visible": false},
+                {"type": "Quest", "number": 14, "label": "3-1-C", "cost": 5, "drops": {"Computation_Circuit": 3, "Chocolate_Burger": 3}, "visible": false},
                 {"type": "Quest", "number": 15, "label": "3-2-A", "cost": 15, "drops": {"Computation_Circuit": 16, "Engine_Parts": 7, "Chocolate_Burger": 7, "Mystery_2": 0.3, "Mystery_3": 0.24}},
                 {"type": "Quest", "number": 16, "label": "3-2-B", "cost": 15, "drops": {"Computation_Circuit": 7, "Engine_Parts": 16, "Chocolate_Burger": 7, "Wolfsegg_2": 0.3, "Wolfsegg_3": 0.24}},
                 {"type": "Quest", "number": 17, "label": "3-2-C", "cost": 15, "drops": {"Computation_Circuit": 7, "Engine_Parts": 7, "Chocolate_Burger": 16, "Voynich_2": 0.3, "Voynich_3": 0.24}},
@@ -2536,9 +2537,9 @@
                 {"type": "Quest", "number": 19, "label": "3-3-B", "cost": 15, "drops": {"Engine_Parts": 20, "Chocolate_Burger": 10, "Aether_2": 0.3, "Aether_3": 0.24}},
                 {"type": "Quest", "number": 20, "label": "3-3-C", "cost": 15, "drops": {"Computation_Circuit": 10, "Chocolate_Burger": 20, "Haniwa_2": 0.3, "Haniwa_3": 0.24}},
 
-                {"type": "Quest", "number": 21, "label": "4-1-A", "cost": 5, "drops": {"Computation_Circuit": 3, "Engine_Parts": 3}},
-                {"type": "Quest", "number": 22, "label": "4-1-B", "cost": 5, "drops": {"Engine_Parts": 3, "Chocolate_Burger": 3}},
-                {"type": "Quest", "number": 23, "label": "4-1-C", "cost": 5, "drops": {"Computation_Circuit": 3, "Chocolate_Burger": 3}},
+                {"type": "Quest", "number": 21, "label": "4-1-A", "cost": 5, "drops": {"Computation_Circuit": 3, "Engine_Parts": 3}, "visible": false},
+                {"type": "Quest", "number": 22, "label": "4-1-B", "cost": 5, "drops": {"Engine_Parts": 3, "Chocolate_Burger": 3}, "visible": false},
+                {"type": "Quest", "number": 23, "label": "4-1-C", "cost": 5, "drops": {"Computation_Circuit": 3, "Chocolate_Burger": 3}, "visible": false},
                 {"type": "Quest", "number": 24, "label": "4-2-A", "cost": 20, "drops": {"Computation_Circuit": 30, "Engine_Parts": 5, "Chocolate_Burger": 5, "Mystery_3": 0.12, "Mystery_4": 0.12}},
                 {"type": "Quest", "number": 25, "label": "4-2-B", "cost": 20, "drops": {"Computation_Circuit": 5, "Engine_Parts": 30, "Chocolate_Burger": 5, "Wolfsegg_3": 0.12, "Wolfsegg_4": 0.12}},
                 {"type": "Quest", "number": 26, "label": "4-2-C", "cost": 20, "drops": {"Computation_Circuit": 5, "Engine_Parts": 5, "Chocolate_Burger": 30, "Voynich_3": 0.12, "Voynich_4": 0.12}},

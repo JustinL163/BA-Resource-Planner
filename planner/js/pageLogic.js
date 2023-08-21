@@ -1153,11 +1153,11 @@ function CharInputsGoalMax() {
         cancelButtonText: GetLanguageString("label-cancel")
     }).then((result) => {
         if (result.isConfirmed) {
-            let values = [83, 5, 10, 10, 10, 7, 7, 7];
+            let values = [85, 5, 10, 10, 10, 7, 7, 7];
             SetCharInputGoalValues(values);
         }
         else if (result.isDenied) {
-            let values = [85, 5, 10, 10, 10, 8, 8, 7];
+            let values = [87, 5, 10, 10, 10, 8, 8, 8];
             SetCharInputGoalValues(values);
         }
     })
@@ -3201,16 +3201,6 @@ function getTextFormattedGroup(monospaced) {
         html: '<textarea style="width: 400px; height: 250px; resize: none; padding: 10px;" readonly>' + textOutput + '</textarea>'
     })
 
-}
-
-function basicAlert(alertText) {
-    Swal.fire({
-        toast: true,
-        position: 'top-start',
-        title: alertText,
-        showConfirmButton: false,
-        timer: 1500
-    })
 }
 
 async function saveToLocalStorage(notify) {

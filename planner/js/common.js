@@ -142,11 +142,11 @@ function ToggleImageStyle() {
     location.reload();
 }
 
-function validateBasic(input_id) {
+function validateBasic(input_id, checkonly) {
 
     let inputElement = document.getElementById(input_id);
 
-    return validateInputBasic(input_id, inputElement.max, inputElement.min, false);
+    return validateInputBasic(input_id, inputElement.max, inputElement.min, checkonly ?? false);
 }
 
 function validateInputBasic(input_id, max, min, checkonly) {
@@ -629,4 +629,14 @@ function languageChanged() {
 
 function Save(seconds) {
     saveTime = Date.now() + (1000 * seconds);
+}
+
+function basicAlert(alertText) {
+    Swal.fire({
+        toast: true,
+        position: 'top-start',
+        title: alertText,
+        showConfirmButton: false,
+        timer: 1500
+    })
 }
