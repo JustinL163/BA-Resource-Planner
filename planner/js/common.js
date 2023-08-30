@@ -1,4 +1,5 @@
 let pageTheme = "dark";
+let alertColour = "#e1e1e1";
 let keyPressed = {};
 let inputMap = new Map();
 let preInput;
@@ -6,6 +7,7 @@ const defaultGroups = { "Binah": [], "Chesed": [], "Hod": [], "ShiroKuro": [], "
 let lvlMAX = 87;
 const languages = ["En", "Kr", "Jp", "Tw", "Th", "Id"];
 let language = "En";
+let gUsername, gAuthkey;
 
 let aprilFools = false;
 

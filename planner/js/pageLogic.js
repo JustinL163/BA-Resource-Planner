@@ -53,7 +53,6 @@ let misc_data, charlist, skillinfo, localisations, language_strings;
 
 let charMap, charNames;
 
-let gUsername, gAuthkey;
 let saveCooldown = 0, loadCooldown = 0;
 
 let focusedInput;
@@ -64,7 +63,6 @@ let closableAfter = 0;
 let tooltips = [];
 
 let modalOpen = "";
-let alertColour = "#e1e1e1";
 
 let modelVariables, availableGear;
 let campaignMultiplier = 1;

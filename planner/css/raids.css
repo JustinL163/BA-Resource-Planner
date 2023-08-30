@@ -105,12 +105,21 @@ div#raid-filter-divider {
 
 #server-labels div {
     height: 100px;
+    position: relative;
+    width: 3em;
 }
 
 #server-labels div p {
-    padding-top: 2em;
-    margin-right: 1em;
     color: white;
+    padding: 0.5em;
+    border-radius: 5px;
+    position: absolute;
+    transform: translate(0, -50%);
+    top: 50%;
+}
+
+#server-labels div p:hover {
+    background-color: #ffffff40;
 }
 
 #timelines-wrapper {
@@ -227,11 +236,13 @@ div#raid-filter-divider {
     background-color: #282a35cf;
     padding: 0.1em;
     color: white;
+    z-index: 1;
 }
 
 .raid-bosscount {
+    opacity: 0%;
     position: absolute;
-    top: 1.5em;
+    /* top: 1.5em; */
     right: 0.3em;
     background-color: #282a35cf;
     padding: 0.1em;
@@ -239,21 +250,44 @@ div#raid-filter-divider {
 }
 
 .raid-terraincount {
+    opacity: 0%;
     position: absolute;
-    top: 3.1em;
+    /* top: 3.1em; */
     right: 0.3em;
     background-color: #282a35cf;
     padding: 0.1em;
     color: white;
 }
 
+.raid-card:hover .raid-bosscount, .raid-card:hover .raid-terraincount {
+    opacity: 100%;
+}
+
+.raid-card:hover .raid-bosscount {
+    transform: translateY(1.5em);
+}
+
+.raid-card:hover .raid-terraincount {
+    transform: translateY(3.1em);
+}
+
+.raid-bosscount, .raid-terraincount {
+    transition: transform ease 0.5s 0s, opacity ease 0.5s 0s;
+}
+
 .raid-difficulty {
     position: absolute;
     bottom: 0;
-    left: 50%;
+    /* left: 50%; */
+    right: 0.3em;
     background-color: #282a35cf;
     padding: 0.1em;
     color: white;
+    transition: transform ease 0.5s 0s;
+}
+
+.raid-card:hover .raid-difficulty {
+    transform: translateX(-3em);
 }
 
 .timeline-end {
@@ -272,6 +306,8 @@ div#raid-filter-divider {
 
 #raid-difficulties {
     display: flex;
+    margin-right: 1em;
+    margin-bottom: 0.5em;
 }
 
 #raid-difficulties div {
@@ -281,6 +317,10 @@ div#raid-filter-divider {
 }
 
 #raid-difficulties div:hover {
+    background-color: #ffffff40;
+}
+
+#raid-difficulties div.selected {
     background-color: #ffffff40;
 }
 
@@ -297,6 +337,7 @@ div#raid-filter-divider {
 #raid-video-cards {
     margin-top: 3em;
     display: flex;
+    flex-wrap: wrap;
 }
 
 .raid-video-card {
@@ -309,6 +350,7 @@ div#raid-filter-divider {
     border: white 0.1em solid;
     border-radius: 15px;
     position: relative;
+    margin-bottom: 1em;
 }
 
 .raid-video-card-header {
@@ -316,7 +358,7 @@ div#raid-filter-divider {
 }
 
 .raid-score {
-    color: white;
+    color: #ccff00;
     font-size: 1.5em;
     margin-left: 0.5em;
 }
@@ -364,6 +406,15 @@ div#raid-filter-divider {
 
 .student {
     margin-right: 0.5em;
+    position: relative;
+}
+
+.student-empty {
+    border: #ffffff5e 2px dashed;
+    border-radius: 15px;
+    min-width: 45px;
+    height: 85%;
+    margin-top: 0.1em;
 }
 
 .student img {
@@ -401,10 +452,339 @@ div#raid-filter-divider {
 
 .raid-video-link a {
     color: lightskyblue;
+    max-width: 400px;
+    white-space: nowrap;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .team-num {
     color: white;
     padding-inline: 0.8em;
     margin-block: auto;
+}
+
+#raid-submissions-header {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 80%;
+}
+
+#raid-video-filters {
+    color: white;
+    display: flex;
+    margin-bottom: 0.5em;
+}
+
+.raid-video-filter {
+    margin-right: 1em;
+    text-align: center;
+}
+
+.raid-students-filter {
+    display: flex;
+}
+
+.student-filter-slot {
+    border: white 2px dashed;
+    margin-inline: 0.5em;
+    width: 2em;
+    height: 2em;
+    border-radius: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.student-filter-slot div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5em;
+}
+
+.student-filtered div {
+    display: none;
+}
+
+.student-filter-slot img {
+    width: 100%;
+}
+
+#raid-start-submission {
+    color: white;
+    width: fit-content;
+    font-size: 1.25em;
+    background-color: #ffffff12;
+    padding: 0.5em;
+}
+
+#raid-start-submission:hover {
+    background-color: #ffffff40;
+}
+
+.raid-modal {
+    z-index: 11;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    display: block;
+    background-color: #ffffff40;
+}
+
+.raid-modal-content-wrapper {
+    max-height: 90%;
+    /* height: 800px; */
+    max-width: 1200px;
+    margin: auto;
+    border-radius: 20px;
+    background-color: #282a35fa;
+    margin-top: 30px;
+    color: white;
+    font-size: 1.5em;
+}
+
+.raid-modal-header {
+    margin-left: 1em;
+    padding-top: 0.5em;
+    display: flex;
+}
+
+#submission-save-button {
+    width: 1em;
+    margin-left: 1em;
+    filter: invert(0.7) sepia(1) hue-rotate(385deg) saturate(3);
+}
+
+#submission-save-button:hover {
+    filter: invert(0.6);
+}
+
+.raid-modal-body {
+    padding: 1em;
+}
+
+.raid-modal-body input {
+    font-size: 1em;
+    text-align: center;
+}
+
+.raid-modal-body select {
+    font-size: 1em;
+}
+
+#raid-submission-score {
+    width: 6em;
+}
+
+#raid-submission-level {
+    width: 2em;
+}
+
+#raid-submission-videolink {
+    font-size: 0.7em;
+    height: 2em;
+    width: 30em;
+}
+
+#raid-submission-basic-inputs {
+    margin-right: 1em;
+    margin-bottom: 1em;
+}
+
+#raid-submission-top {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.raid-submission-input-label {
+    margin-top: 0.5em;
+}
+
+.team-student {
+    margin-right: 0.5em;
+    width: 80px;
+    max-width: 80px;
+    height: 86.25px;
+    max-height: 86.25px;
+    border-radius: 15px;
+    margin-bottom: 0.2em;
+    display: flex;
+    overflow: hidden;
+    border: transparent 2px solid;
+    position: relative;
+}
+
+.student-blank {
+    border: white 2px dashed;
+}
+
+.team-student.student-blank img {
+    filter: invert(1);
+    width: 1.25em;
+    margin: auto;
+}
+
+.team-student img {
+    width: 100%;
+}
+
+.student-borrow::after {
+    content: "A";
+    position: absolute;
+    background-image: linear-gradient(to bottom right, #99f8fd, #63a1fe);
+    color: #133C60;
+    border-radius: 5px;
+    right: 0.3em;
+    padding-inline: 0.1em;
+}
+
+.team-specials .team-student:last-child {
+    margin-right: 0;
+}
+
+#raid-submission-teams {
+    height: calc(100vh - 22.5em);
+}
+
+#raid-submission-teams .raid-team {
+    margin-inline: unset;
+}
+
+#raid-submission-teams .raid-team:only-child .team-remove-button {
+    visibility: hidden;
+}
+
+#raid-submission-teams .raid-team:first-child .team-up-button {
+    visibility: hidden;
+}
+
+#raid-submission-teams .raid-team:last-child .team-down-button {
+    visibility: hidden;
+}
+
+.team-actionbar {
+    display: flex;
+    margin-left: 2em;
+}
+
+.team-action-button {
+    width: 1em;
+    height: 1em;
+    align-self: center;
+    padding: 0.5em;
+    border-radius: 15px;
+    filter: invert(1);
+    margin-right: 1em;
+}
+
+.team-action-button:hover {
+    background-color: #ffffff33;
+}
+
+#student-searcher {
+    position: fixed;
+    z-index: 11;
+    display: flex;
+    flex-direction: column;
+    transform: translate(0, -45px);
+}
+
+#student-searcher-body {
+    background-color: #ffffff69;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em;
+    border-radius: 10px;
+    border: white 2px solid;
+}
+
+#student-searchbox {
+    font-size: 1.5em;
+    padding-left: 0.3em;
+    max-width: 10em;
+    margin-top: 0.25em;
+}
+
+#student-search-slots {
+    display: flex;
+}
+
+.student-searched {
+    max-width: 5em;
+    border-radius: 15px;
+}
+
+#student-search-slots div {
+    position: relative;
+}
+
+#student-search-slots p {
+    top: 80%;
+    left: 80%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    font-size: 25px;
+    font-weight: bold;
+    font-family: sans-serif;
+    text-shadow: -1px -1px 0 #ffffff, 0px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 0px 1px 0 #fff, 1px 1px 0 #fff;
+    padding-bottom: 1px;
+    padding-top: 1px;
+}
+
+#search-footer {
+    display: flex;
+}
+
+#search-footer.borrow-used #search-borrow-button {
+    display: none;
+}
+
+#search-borrow-button {
+    font-size: 1.5em;
+    background-color: #ffffff1f;
+    margin-left: 1em;
+    padding-inline: 0.5em;
+    margin-top: 0.3em;
+    border-radius: 10px;
+}
+
+#search-borrow-button:hover {
+    background-color: #ffffff61;
+}
+
+#search-borrow-button.selected {
+    background-color: #ffffffa1;
+}
+
+#mobile-blocker {
+    display: none;
+}
+
+@media (max-width: 800px) {
+
+    #raid-background {
+        display: none;
+    }
+
+    #timeline-filter-container {
+        display: none;
+    }
+
+    #raid-timeline {
+        display: none;
+    }
+
+    #raid-submissions {
+        display: none;
+    }
+
+    #mobile-blocker {
+        display: block;
+        font-size: 2em;
+        text-align: center;
+        margin-top: 2em;
+    }
 }

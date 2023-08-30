@@ -3,14 +3,14 @@
 
 <head>
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-3XZ18739WF"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3XZ18739WF"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
 
         gtag('config', 'G-3XZ18739WF');
-    </script> -->
+    </script>
     <script>
         function hamburgToggle() {
             let linkWrapper = document.getElementById('mobile-links-wrapper');
@@ -25,7 +25,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="css/styles.css?4">
-    <link rel="stylesheet" href="css/raids.css">
+    <link rel="stylesheet" href="css/raids.css?1">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
@@ -34,9 +34,10 @@
     <script src="packages/tippyjs/tippy.js"></script>
     <link rel="stylesheet" href="packages/tippyjs/light.css" />
     <script src="packages/mathjs/math.js"></script> -->
-    <script src="js/config.js"></script>
-    <script src="js/common.js"></script>
-    <script src="js/raids.js"></script>
+    <script src="js/config.js?17"></script>
+    <script src="js/common.js?9"></script>
+    <script src="js/raids.js?1"></script>
+    <script src="js/cloudAPI.js?5"></script>
     <title>Raid Videos</title>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://justin163.com/planner/events">
@@ -47,7 +48,7 @@
     <meta name="twitter:title" property="og:title" itemprop="name" content="Blue Archive Event Planner">
     <meta name="twitter:description" property="og:description" itemprop="description"
         content="A tool to optimise event resource income, plan energy spend and stage farming">
-    <meta name="theme-color" content="#ff00bb">
+    <meta name="theme-color" content="#ffdd00">
 </head>
 
 <body onload="loadResources()">
@@ -134,13 +135,13 @@
     </div>
     <div id="raid-timeline">
         <div id="server-labels">
-            <div id="Japan-timeline-label">
+            <div id="Japan-timeline-label" onclick="LabelClicked('Japan')">
                 <p>JP</p>
             </div>
-            <div id="Global-timeline-label">
+            <div id="Global-timeline-label" onclick="LabelClicked('Global')">
                 <p>Gbl</p>
             </div>
-            <div id="China-timeline-label">
+            <div id="China-timeline-label" onclick="LabelClicked('China')">
                 <p>CN</p>
             </div>
         </div>
@@ -157,212 +158,81 @@
             </svg>
         </div>
     </div>
-    <div id="raid-submissions">
-        <div id="raid-difficulties"></div>
+    <div id="raid-submissions" style="display: none;">
+        <div id="raid-submissions-header">
+            <div id="raid-difficulties"></div>
+            <div id="raid-video-filters">
+                <div class="raid-video-filter">
+                    <div class="display-string" data-id="label-includedstudents"></div>
+                    <div class="raid-students-filter">
+                        <div id="student-include-slot-1" class="student-filter-slot" onclick="FilterSlotClicked('student-include-slot-1')">
+                            <div>+</div>
+                            <img>
+                        </div>
+                        <div id="student-include-slot-2" class="student-filter-slot" onclick="FilterSlotClicked('student-include-slot-2')">
+                            <div>+</div>
+                            <img>
+                        </div>
+                        <div id="student-include-slot-3" class="student-filter-slot" onclick="FilterSlotClicked('student-include-slot-3')">
+                            <div>+</div>
+                            <img>
+                        </div>
+                    </div>
+                </div>
+                <div class="raid-video-filter">
+                    <div class="display-string" data-id="label-excludedstudents"></div>
+                    <div class="raid-students-filter">
+                        <div id="student-exclude-slot-1" class="student-filter-slot" onclick="FilterSlotClicked('student-exclude-slot-1')">
+                            <div>+</div>
+                            <img>
+                        </div>
+                        <div id="student-exclude-slot-2" class="student-filter-slot" onclick="FilterSlotClicked('student-exclude-slot-2')">
+                            <div>+</div>
+                            <img>
+                        </div>
+                        <div id="student-exclude-slot-3" class="student-filter-slot" onclick="FilterSlotClicked('student-exclude-slot-3')">
+                            <div>+</div>
+                            <img>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="raid-submission-actions">
+            <div id="raid-start-submission" class="display-string" data-id="button-submitvideo"
+                onclick="SubmissionButtonClicked()"></div>
+        </div>
         <div id="raid-card-holder"></div>
-        <div id="raid-video-cards">
-            <div class="raid-video-card">
-                <div class="raid-video-card-header">
-                    <div class="raid-score">35,979,357</div>
-                    <div class="player-level">Lvl 85</div>
-                </div>
-                <div class="raid-teams">
-                    <div class="raid-team">
-                        <div class="team-num">1</div>
-                        <div class="team-strikers">
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_10045.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_10050.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_10044.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_10019.png">
-                            </div>
-                        </div>
-                        <div class="team-specials">
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_20022.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_20024.png">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="raid-team">
-                        <div class="team-num">2</div>
-                        <div class="team-strikers">
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_10045.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_10062.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_13010.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_10054.png">
-                            </div>
-                        </div>
-                        <div class="team-specials">
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_20008.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_20020.png">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="raid-video-link">
-                    <a href="https://www.youtube.com/watch?v=w1NGfXnrDeY"
-                        target="_blank">https://www.youtube.com/watch?v=w1NGfXnrDeY</a>
-                </div>
+        <div id="raid-video-cards"></div>
+    </div>
+    <div class="raid-modal" id="submission-editor" style="display: none;">
+        <div class="raid-modal-content-wrapper">
+            <div class="raid-modal-header">
+                <div id="submission-editor-title">New Video Submission</div>
+                <img src="icons/UI/floppy-disk-solid.svg" id="submission-save-button" onclick="SaveVideoSubmission()">
             </div>
-            <div class="raid-video-card">
-                <div class="raid-video-card-header">
-                    <div class="raid-score">33,054,444</div>
-                    <div class="player-level">Lvl 85</div>
-                    <div class="teams-used">5 teams</div>
+            <div class="raid-modal-body">
+                <div id="raid-submission-top">
+                    <div id="raid-submission-basic-inputs">
+                        <div class="raid-submission-input-label">Difficulty</div>
+                        <select name="raid-submission-difficulty" id="raid-difficulty-select"></select>
+                        <div class="raid-submission-input-label">Video Link</div>
+                        <input id="raid-submission-videolink" type="text" autocomplete="off" onfocusout="ValidateSubmissionField('raid-submission-videolink')" placeholder="e.g. https://www.youtube.com/watch?v=moZtoMP7HAA">
+                        <div class="raid-submission-input-label">Score</div>
+                        <input id="raid-submission-score" type="number" min="1" max="40348000" autocomplete="off">
+                        <div class="raid-submission-input-label">Level (highest non-borrow student)</div>
+                        <input id="raid-submission-level" type="number" min="1" max="87" autocomplete="off">
+                    </div>
+                    <div id="raid-submission-video-embed"></div>
                 </div>
-                <div class="raid-teams">
-                    <div class="raid-team">
-                        <div class="team-num">1</div>
-                        <div class="team-strikers">
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_10059.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_16000.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_13000.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_10007.png">
-                            </div>
-                        </div>
-                        <div class="team-specials">
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_20022.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_20020.png">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="raid-team">
-                        <div class="team-num">2</div>
-                        <div class="team-strikers">
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_13003.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_10006.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_10056.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_10011.png">
-                            </div>
-                        </div>
-                        <div class="team-specials">
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_20000.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_20014.png">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="raid-team">
-                        <div class="team-num">3</div>
-                        <div class="team-strikers">
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_10001.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_10052.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_10007.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_10030.png">
-                            </div>
-                        </div>
-                        <div class="team-specials">
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_20008.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_26008.png">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="raid-team">
-                        <div class="team-num">4</div>
-                        <div class="team-strikers">
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_10042.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_10048.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_13007.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_10021.png">
-                            </div>
-                        </div>
-                        <div class="team-specials">
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_20001.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_20017.png">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="raid-team">
-                        <div class="team-num">5</div>
-                        <div class="team-strikers">
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_10008.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_10045.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_10017.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_10058.png">
-                            </div>
-                        </div>
-                        <div class="team-specials">
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_20025.png">
-                            </div>
-                            <div class="student">
-                                <img src="icons/Portrait/Icon_26007.png">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="raid-video-link">
-                    <a href="https://www.youtube.com/watch?v=moZtoMP7HAA"
-                        target="_blank">https://www.youtube.com/watch?v=moZtoMP7HAA</a>
+                <div id="raid-submission-teams-container">
+                    <div>Teams</div>
+                    <div id="raid-submission-teams" class="raid-teams"></div>
                 </div>
             </div>
         </div>
     </div>
+    <div id="mobile-blocker">Mobile page under construction</div>
 </body>
 
 </html>
