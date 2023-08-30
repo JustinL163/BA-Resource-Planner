@@ -233,7 +233,7 @@ function CreateRaidCard(raid, server, idSuffix) {
 
     let bossImg = document.createElement("img");
     bossImg.className = "boss-icon";
-    bossImg.src = "icons/Raids/Boss_Portrait_" + raid.Boss + ".png";
+    bossImg.src = "icons/Raids/Raid_Portrait_" + raid.Boss + ".png";
 
     let terrainBubble = document.createElement("div");
     terrainBubble.className = "terrain-bubble";
