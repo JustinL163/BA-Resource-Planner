@@ -484,16 +484,18 @@ function RaidClicked(server, uid) {
     }
     CreateRaidCard(raid, "", "raid-card-holder");
 
-    LoadRaidVideoData(server, raid);
-
     ClearOldVideoCards();
 
-    if (currentDifficulty && (raid_history.raid_difficulties_short.indexOf(raid.Max_Difficulty) < raid_history.raid_difficulties.indexOf(currentDifficulty))) {
-        DifficultyClicked(currentDifficulty);
-    }
-    else {
-        DifficultyClicked(raid.Max_Difficulty);
-    }
+    raid_videos_object = {};
+
+    LoadRaidVideoData(server, raid);
+
+    // if (currentDifficulty && (raid_history.raid_difficulties_short.indexOf(raid.Max_Difficulty) < raid_history.raid_difficulties.indexOf(currentDifficulty))) {
+    //     DifficultyClicked(currentDifficulty);
+    // }
+    // else {
+    //     DifficultyClicked(raid.Max_Difficulty);
+    // }
 }
 
 // Request raid videos data for selected raid
