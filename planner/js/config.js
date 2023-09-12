@@ -13,6 +13,113 @@ class TwoWayMap {
     revGet(key) { return this.reverseMap[key]; }
 }
 
+// TEMP
+const BuffName = {
+    "Buff_AidAttitude": "Aiding Mindset",
+    "Buff_AmmoCount": "Mag Count",
+    "Buff_ATK": "ATK",
+    "Buff_AttackSpeed": "ATK SPD",
+    "Buff_BlockRate": "Block Rate",
+    "Buff_ConcentratedTarget": "Focused Assault",
+    "Buff_CostChange": "EX Skill Cost",
+    "Buff_CostRegen": "Cost Recovery",
+    "Buff_CriticalChance": "Crit",
+    "Buff_CriticalChanceResistPoint": "Crit RES",
+    "Buff_CriticalDamage": "Crit DMG",
+    "Buff_CriticalDamageRateResist": "Crit DMG RES",
+    "Buff_DamagedLimit": "Max DMG Limit",
+    "Buff_DamagedRatio": "Incoming Damage",
+    "Buff_DamageRatio": "Damage Dealt",
+    "Buff_DEF": "DEF",
+    "Buff_Dodge": "Evasion",
+    "Buff_DotHeal": "HP Regen",
+    "Buff_EnhanceExplosionRate": "Explosive Effectiveness",
+    "Buff_EnhancePierceRate": "Piercing Effectiveness",
+    "Buff_EnhanceMysticRate": "Mystic Effectiveness",
+    "Buff_EnhanceLightArmorRate": "Lgt. Armor Effectiveness",
+    "Buff_EnhanceHeavyArmorRate": "Hvy. Armor Effectiveness",
+    "Buff_EnhanceUnarmedRate": "Spc. Armor Effectiveness",
+    "Buff_ExtendBuffDuration": "Buff Retention",
+    "Buff_ExtendDebuffDuration": "Debuff Retention",
+    "Buff_ExtendCrowdControlDuration": "CC Retention",
+    "Buff_HealByHit_Damaged": "Heal When Hit",
+    "Buff_HealEffectiveness": "Recovery Boost",
+    "Buff_HealPower": "Healing",
+    "Buff_HIT": "Accuracy",
+    "Buff_MAXHP": "Max HP",
+    "Buff_MoveSpeed": "MOV SPD",
+    "Buff_OppressionPower": "CC Power",
+    "Buff_OppressionResist": "CC RES",
+    "Buff_Penetration": "Defense Piercing",
+    "Buff_Range": "Range",
+    "Buff_Shield": "Barrier",
+    "Buff_Stability": "Stability",
+    "Debuff_AmmoCount": "Mag Count",
+    "Debuff_ATK": "ATK",
+    "Debuff_AttackSpeed": "ATK SPD",
+    "Debuff_BlockRate": "Block Rate",
+    "Debuff_Burn": "Burn",
+    "Debuff_Cheerleading": "Passionate Cheering",
+    "Debuff_Chill": "Chill",
+    "Debuff_ConcentratedTarget": "Focused Assault",
+    "Debuff_CostChange": "EX Skill Cost",
+    "Debuff_CriticalChance": "Crit",
+    "Debuff_CriticalChanceResistPoint": "Crit RES",
+    "Debuff_CriticalDamage": "Crit DMG",
+    "Debuff_CriticalDamageRateResist": "Crit DMG RES",
+    "Debuff_DamageByHit_Damaged": "Weakness Detection",
+    "Debuff_DamagedRatio": "Incoming Damage",
+    "Debuff_DamageRatio": "Damage Dealt",
+    "Debuff_DEF": "DEF",
+    "Debuff_Dodge": "Evasion",
+    "Debuff_EnhanceExplosionRate": "Explosive Effectiveness",
+    "Debuff_EnhancePierceRate": "Piercing Effectiveness",
+    "Debuff_EnhanceMysticRate": "Mystic Effectiveness",
+    "Debuff_EnhanceLightArmorRate": "Lgt. Armor Effectiveness",
+    "Debuff_EnhanceHeavyArmorRate": "Hvy. Armor Effectiveness",
+    "Debuff_EnhanceUnarmedRate": "Spc. Armor Effectiveness",
+    "Debuff_HealedLimit": "Recovery Limit",
+    "Debuff_HealEffectiveness": "Recovery Boost",
+    "Debuff_HealPower": "Healing",
+    "Debuff_Hieronymus": "Curse",
+    "Debuff_HIT": "Accuracy",
+    "Debuff_MAXHP": "Max HP",
+    "Debuff_MoveSpeed": "MOV SPD",
+    "Debuff_OppressionPower": "CC Power",
+    "Debuff_OppressionResist": "CC RES",
+    "Debuff_Penetration": "Defense Piercing",
+    "Debuff_Poison": "Poison",
+    "Debuff_Range": "Range",
+    "Debuff_Stability": "Stability",
+    "Debuff_CostRegen": "Cost Recovery",
+    "CC_Fear": "Fear",
+    "CC_Stunned": "Stun",
+    "CC_Provoke": "Taunt",
+    "CC_Paralysis": "Paralysis",
+    "CC_Emp": "EMP",
+    "Special_EnergyBatteryHalf": "Energy",
+    "Special_FormChange": "Normal Attack",
+    "Special_Immortal": "Invincible",
+    "Special_ImmuneDamage": "Invulnerable",
+    "Special_Fury": "Enraged",
+    "Special_Misdeed": "Evil Deed",
+    "Special_LittleDevil": "Imp",
+    "Special_Accumulation": "Accumulation",
+    "Special_CostRegenBan": "Recovery Stop",
+    "Special_ImmuneCC": "CC Immune",
+    "Special_SuddenDeath": "Wakamo Imprint",
+    "Special_Stamp": "Stamp of Praise",
+    "Special_Holiday": "Holy Night's Blessing",
+    "Special_SilverBullet": "Normal Attack",
+    "Special_CH0187Mod": "Abi-Eshuh Mode",
+    "Special_Omamori": "Omamori",
+    "Special_Dado": "Meikyo Shisui",
+    "Special_DebuffCountGreen": "Safe",
+    "Special_DebuffCountYellow": "Warning",
+    "Special_DebuffCountRed": "Danger",
+    "Special_OldBook": "Clues"
+}
+
 const matLookup = new TwoWayMap({
     100: "Nebra_1",
     101: "Nebra_2",
@@ -62,6 +169,10 @@ const matLookup = new TwoWayMap({
     211: "Baghdad_2",
     212: "Baghdad_3",
     213: "Baghdad_4",
+    220: "Fleece_1",
+    221: "Fleece_2",
+    222: "Fleece_3",
+    223: "Fleece_4",
     230: "Okiku_1",
     231: "Okiku_2",
     232: "Okiku_3",
@@ -74,6 +185,10 @@ const matLookup = new TwoWayMap({
     241: "Colgante_2",
     242: "Colgante_3",
     243: "Colgante_4",
+    260: "RomanDice_1",
+    261: "RomanDice_2",
+    262: "RomanDice_3",
+    263: "RomanDice_4",
     290: "Mystery_1",
     291: "Mystery_2",
     292: "Mystery_3",
@@ -168,14 +283,14 @@ var rowColours = {
     "Abydos": "#9ce4fc66", "Gehenna": "#ec7d7966", "Millennium": "#9ebdfa66", "Trinity": "#fcd19c66", "Hyakkiyako": "#f0a8c466", "Arius": "#dbdad85e",
     "Shanhaijing": "#b4feca66", "Red Winter": "#d98c9e66", "Valkyrie": "#a1a9e166", "Nebra": "#99919466", "Phaistos": "#fdf7e766", "Wolfsegg": "#93a5f266",
     "Nimrud": "#67e4ef66", "Mandragora": "#a1ede566", "Rohonc": "#c9ab9366", "Aether": "#ca96e066", "Antikythera": "#f7e28866",
-    "Voynich": "#84b28066", "Haniwa": "#e7bef466", "Baghdad": "#d179a066", "Totem": "#b77e6166", "Fleece": "#faf69f66", "Okiku": "#ff88294a", "Atlantis": "#ecff2933",
-    "Colgante": "#c2cdfe70", "Mystery": "#305c894a",
+    "Voynich": "#84b28066", "Haniwa": "#e7bef466", "Baghdad": "#d179a066", "Totem": "#b77e6166", "Fleece": "#fdf76966", "Okiku": "#ff88294a", "Atlantis": "#ecff2933",
+    "Colgante": "#c2cdfe70", "Mystery": "#305c894a", "RomanDice": "#71bec566",
     "Gloves": "#84848436", "Bag": "#84848436", "Hairpin": "#84848436", "Watch": "#84848436"
 };
 
 const propertyColours = {
-    "Explosive": "#ec242487", "Piercing": "#fff10099", "Mystic": "#1070a5c2",
-    "Light": "#ec242487", "Heavy": "#fff10099", "Special": "#1070a5c2", "Elastic": "#c246d79e",
+    "Explosion": "#ec242487", "Pierce": "#fff10099", "Mystic": "#1070a5c2", "Sonic": "#c246d79e",
+    "LightArmor": "#ec242487", "HeavyArmor": "#fff10099", "Unarmed": "#1070a5c2", "ElasticArmor": "#c246d79e",
     "Striker": "#ec242487",
     "Abydos": "#9ce4fc66", "Gehenna": "#ec7d7966", "Millennium": "#9ebdfa66", "Trinity": "#fcd19c66", "Hyakkiyako": "#f0a8c466",
     "Arius": "#dbdad85e", "Shanhaijing": "#b4feca66", "RedWinter": "#d98c9e66", "Valkyrie": "#a1a9e166"
@@ -268,7 +383,7 @@ class StudentInvestment {
         var data = [
             1,
             1,
-            characterInfo?.BaseStar ?? 1,
+            characterInfo?.StarGrade ?? 1,
             0,
             0,
 
@@ -1432,7 +1547,7 @@ const inputValidation = {
         "max": "9999",
         "navigation": "resourceTable",
         "Right": "input-Phaistos_4",
-        "Up": "input-Antikythera_2"
+        "Up": "input-Voynich_2"
     },
     "Nebra_2": {
         "id": "input-Nebra_2",
@@ -1440,7 +1555,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Up": "input-Antikythera_3"
+        "Up": "input-Voynich_3"
     },
     "Nebra_3": {
         "id": "input-Nebra_3",
@@ -1448,7 +1563,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Up": "input-Antikythera_4"
+        "Up": "input-Voynich_4"
     },
     "Nebra_4": {
         "id": "input-Nebra_4",
@@ -1644,8 +1759,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-Voynich_4",
-        "Down": "input-Voynich_4"
+        "Right": "input-Voynich_4"
     },
     "Antikythera_2": {
         "id": "input-Antikythera_2",
@@ -1653,7 +1767,6 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Down": "input-Nebra_1"
     },
     "Antikythera_3": {
         "id": "input-Antikythera_3",
@@ -1661,7 +1774,6 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Down": "input-Nebra_2"
     },
     "Antikythera_4": {
         "id": "input-Antikythera_4",
@@ -1670,7 +1782,6 @@ const inputValidation = {
         "max": "9999",
         "navigation": "resourceTable",
         "Left": "input-Aether_1",
-        "Down": "input-Nebra_3"
     },
     "Voynich_1": {
         "id": "input-Voynich_1",
@@ -1679,7 +1790,7 @@ const inputValidation = {
         "max": "9999",
         "navigation": "resourceTable",
         "Right": "input-Haniwa_4",
-        "Up": "input-Atlantis_2"
+        "Down": "input-Haniwa_4"
     },
     "Voynich_2": {
         "id": "input-Voynich_2",
@@ -1687,7 +1798,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Up": "input-Atlantis_3"
+        "Down": "input-Nebra_1"
     },
     "Voynich_3": {
         "id": "input-Voynich_3",
@@ -1695,7 +1806,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Up": "input-Atlantis_4"
+        "Down": "input-Nebra_2"
     },
     "Voynich_4": {
         "id": "input-Voynich_4",
@@ -1704,7 +1815,7 @@ const inputValidation = {
         "max": "9999",
         "navigation": "resourceTable",
         "Left": "input-Antikythera_1",
-        "Up": "input-Antikythera_1"
+        "Down": "input-Nebra_3"
     },
     "Haniwa_1": {
         "id": "input-Haniwa_1",
@@ -1712,21 +1823,24 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-Totem_4"
+        "Right": "input-Totem_4",
+        "Up": "input-Fleece_2"
     },
     "Haniwa_2": {
         "id": "input-Haniwa_2",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Up": "input-Fleece_3"
     },
     "Haniwa_3": {
         "id": "input-Haniwa_3",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Up": "input-Fleece_4"
     },
     "Haniwa_4": {
         "id": "input-Haniwa_4",
@@ -1734,7 +1848,8 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Left": "input-Voynich_1"
+        "Left": "input-Voynich_1",
+        "Up": "input-Voynich_1"
     },
     "Baghdad_1": {
         "id": "input-Baghdad_1",
@@ -1766,6 +1881,38 @@ const inputValidation = {
         "navigation": "resourceTable",
         "Left": "input-Totem_1"
     },
+    "Fleece_1": {
+        "id": "input-Fleece_1",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "resourceTable"
+    },
+    "Fleece_2": {
+        "id": "input-Fleece_2",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "resourceTable",
+        "Down": "input-Haniwa_1"
+    },
+    "Fleece_3": {
+        "id": "input-Fleece_3",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "resourceTable",
+        "Down": "input-Haniwa_2"
+    },
+    "Fleece_4": {
+        "id": "input-Fleece_4",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "resourceTable",
+        "Left": "input-RomanDice_1",
+        "Down": "input-Haniwa_3"
+    },
     "Totem_1": {
         "id": "input-Totem_1",
         "location": "resourceModal",
@@ -1795,34 +1942,6 @@ const inputValidation = {
         "max": "9999",
         "navigation": "resourceTable",
         "Left": "input-Haniwa_1"
-    },
-    "Fleece_1": {
-        "id": "input-Fleece_1",
-        "location": "resourceModal",
-        "min": "0",
-        "max": "9999",
-        "navigation": "resourceTable"
-    },
-    "Fleece_2": {
-        "id": "input-Fleece_2",
-        "location": "resourceModal",
-        "min": "0",
-        "max": "9999",
-        "navigation": "resourceTable"
-    },
-    "Fleece_3": {
-        "id": "input-Fleece_3",
-        "location": "resourceModal",
-        "min": "0",
-        "max": "9999",
-        "navigation": "resourceTable"
-    },
-    "Fleece_4": {
-        "id": "input-Fleece_4",
-        "location": "resourceModal",
-        "min": "0",
-        "max": "9999",
-        "navigation": "resourceTable"
     },
     "Okiku_1": {
         "id": "input-Okiku_1",
@@ -1859,23 +1978,22 @@ const inputValidation = {
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-RomanDice_4"
     },
     "Atlantis_2": {
         "id": "input-Atlantis_2",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable",
-        "Down": "input-Voynich_1"
+        "navigation": "resourceTable"
     },
     "Atlantis_3": {
         "id": "input-Atlantis_3",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable",
-        "Down": "input-Voynich_2"
+        "navigation": "resourceTable"
     },
     "Atlantis_4": {
         "id": "input-Atlantis_4",
@@ -1883,8 +2001,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Left": "input-Okiku_1",
-        "Down": "input-Voynich_3"
+        "Left": "input-Okiku_1"
     },
     "Colgante_1": {
         "id": "input-Colgante_1",
@@ -1915,6 +2032,36 @@ const inputValidation = {
         "max": "9999",
         "navigation": "resourceTable",
         "Left": "input-Baghdad_1"
+    },
+    "RomanDice_1": {
+        "id": "input-RomanDice_1",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "resourceTable",
+        "Right": "input-Fleece_4"
+    },
+    "RomanDice_2": {
+        "id": "input-RomanDice_2",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "resourceTable"
+    },
+    "RomanDice_3": {
+        "id": "input-RomanDice_3",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "resourceTable"
+    },
+    "RomanDice_4": {
+        "id": "input-RomanDice_4",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "resourceTable",
+        "Left": "input-Atlantis_1"
     },
     "Mystery_1": {
         "id": "input-Mystery_1",

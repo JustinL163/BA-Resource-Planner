@@ -485,13 +485,13 @@ function InitInputValidation() {
                             let charInfo = charlist[modalCharID];
 
                             if (event.target.id == "input_gear1_current") {
-                                document.getElementById("gear1-img").src = "icons/Gear/T" + event.target.value + "_" + charInfo.Equipment.Slot1 + ".png";
+                                document.getElementById("gear1-img").src = "icons/Gear/T" + event.target.value + "_" + charInfo.Equipment[0] + ".png";
                             }
                             else if (event.target.id == "input_gear2_current") {
-                                document.getElementById("gear2-img").src = "icons/Gear/T" + event.target.value + "_" + charInfo.Equipment.Slot2 + ".png";
+                                document.getElementById("gear2-img").src = "icons/Gear/T" + event.target.value + "_" + charInfo.Equipment[1] + ".png";
                             }
                             else if (event.target.id == "input_gear3_current") {
-                                document.getElementById("gear3-img").src = "icons/Gear/T" + event.target.value + "_" + charInfo.Equipment.Slot3 + ".png";
+                                document.getElementById("gear3-img").src = "icons/Gear/T" + event.target.value + "_" + charInfo.Equipment[2] + ".png";
                             }
                         }
                         else {
@@ -499,13 +499,13 @@ function InitInputValidation() {
                             let charInfo = charlist[modalCharID];
 
                             if (event.target.id == "input_gear1_current") {
-                                document.getElementById("gear1-img").src = "icons/Gear/T1_" + charInfo.Equipment.Slot1 + ".png";
+                                document.getElementById("gear1-img").src = "icons/Gear/T1_" + charInfo.Equipment[0] + ".png";
                             }
                             else if (event.target.id == "input_gear2_current") {
-                                document.getElementById("gear2-img").src = "icons/Gear/T1_" + charInfo.Equipment.Slot2 + ".png";
+                                document.getElementById("gear2-img").src = "icons/Gear/T1_" + charInfo.Equipment[1] + ".png";
                             }
                             else if (event.target.id == "input_gear3_current") {
-                                document.getElementById("gear3-img").src = "icons/Gear/T1_" + charInfo.Equipment.Slot3 + ".png";
+                                document.getElementById("gear3-img").src = "icons/Gear/T1_" + charInfo.Equipment[2] + ".png";
                             }
                         }
 

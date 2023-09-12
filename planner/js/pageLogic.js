@@ -76,20 +76,21 @@ let loaded = false;
 
 function loadResources() {
 
-    $.getJSON('json/misc_data.json?16').done(function (json) {
+    $.getJSON('json/misc_data.json?17').done(function (json) {
         misc_data = json;
         checkResources();
     });
 
-    $.getJSON('json/skillinfo.json?21').done(function (json) {
+    $.getJSON('json/skillinfo.json?27').done(function (json) {
         skillinfo = json;
-        checkResources();
-    });
-
-    $.getJSON('json/charlist.json?26').done(function (json) {
         charlist = json;
         checkResources();
     });
+
+    // $.getJSON('json/skillinfo.json?26').done(function (json) {
+    //     charlist = json;
+    //     checkResources();
+    // });
 
     $.getJSON('json/localisations.json?18').done(function (json) {
         localisations = json;
@@ -101,7 +102,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?11').done(function (json) {
+    $.getJSON('json/strings.json?13').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -461,10 +462,10 @@ function init() {
         ["Hyakkiyako", "Red Winter", "Trinity", "Gehenna", "Abydos", "Millennium", "Arius", "Shanhaijing", "Valkyrie"], 0,
         tableNavigation, document.getElementById("table-parent-1"), false, "resource", "icons/SchoolMat/", [], "school-");
     createTable("artifact-table-1", ["4", "3", "2", "1"], 0,
-        ["Nebra", "Phaistos", "Wolfsegg", "Nimrud", "Mandragora", "Rohonc", "Aether", "Antikythera"], 9,
+        ["Nebra", "Phaistos", "Wolfsegg", "Nimrud", "Mandragora", "Rohonc", "Aether", "Antikythera", "Voynich"], 9,
         tableNavigation, document.getElementById("table-parent-2"), true, "resource", "icons/Artifact/", [], "artifact-");
     createTable("artifact-table-2", ["4", "3", "2", "1"], 4,
-        ["Voynich", "Haniwa", "Totem", "Baghdad", "Colgante", "Mystery", "Okiku", "Atlantis"], 9,
+        ["Haniwa", "Totem", "Baghdad", "Colgante", "Mystery", "Okiku", "Atlantis", "RomanDice", "Fleece"], 9,
         tableNavigation, document.getElementById("table-parent-3"), true, "resource", "icons/Artifact/", [], "artifact-");
 
     let gearNavigation = [];
@@ -496,14 +497,14 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.3.18".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.3.19".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         Swal.fire({
-            title: GetLanguageString("text-updatedversionprefix") + "1.3.18",
+            title: GetLanguageString("text-updatedversionprefix") + "1.3.19",
             color: alertColour,
             html: GetLanguageString("text-updatemessage")
         })
 
-        data.site_version = "1.3.18";
+        data.site_version = "1.3.19";
         saveToLocalStorage(false);
     }
 
@@ -714,13 +715,13 @@ function init() {
 
 function validateData() {
 
-    for (key in charlist) {
+    // for (key in charlist) {
 
-        if (!misc_data.gun_ue_category[charlist[key].WeaponType]) {
-            console.log("misc_data.json missing gun_ue_category value for " + charlist[key].WeaponType);
-        }
+    //     if (!misc_data.gun_ue_category[charlist[key].WeaponType]) {
+    //         console.log("misc_data.json missing gun_ue_category value for " + charlist[key].WeaponType);
+    //     }
 
-    }
+    // }
 
 }
 
@@ -1200,9 +1201,9 @@ function SetCharInputValues(values) {
 
     let charInfo = charlist[modalCharID];
 
-    document.getElementById("gear1-img").src = "icons/Gear/T" + values[10] + "_" + charInfo.Equipment.Slot1 + ".png";
-    document.getElementById("gear2-img").src = "icons/Gear/T" + values[12] + "_" + charInfo.Equipment.Slot2 + ".png";
-    document.getElementById("gear3-img").src = "icons/Gear/T" + values[14] + "_" + charInfo.Equipment.Slot3 + ".png";
+    document.getElementById("gear1-img").src = "icons/Gear/T" + values[10] + "_" + charInfo.Equipment[0] + ".png";
+    document.getElementById("gear2-img").src = "icons/Gear/T" + values[12] + "_" + charInfo.Equipment[1] + ".png";
+    document.getElementById("gear3-img").src = "icons/Gear/T" + values[14] + "_" + charInfo.Equipment[2] + ".png";
 }
 
 function deleteClicked() {
@@ -1914,13 +1915,13 @@ function generateTeamBorrowOptions() {
         let charName = charNames.get(key);
 
         //let school = charlist[key].School;
-        let damageType = charlist[key].DamageType;
-        let type = charlist[key].Type;
+        let damageType = charlist[key].BulletType;
+        let type = charlist[key].SquadType;
 
-        if (type == "Striker") {
+        if (type == "Main") {
             groupStrikerBorrows.push(charName);
         }
-        else if (type == "Special") {
+        else if (type == "Support") {
             groupSpecialBorrows.push(charName);
         }
 
@@ -1992,13 +1993,13 @@ function generateTeamCharOptions() {
             let charName = charNames.get(key);
 
             //let school = charlist[charId].School;
-            let damageType = charlist[key].DamageType;
-            let type = charlist[key].Type;
+            let damageType = charlist[key].BulletType;
+            let type = charlist[key].SquadType;
 
-            if (type == "Striker") {
+            if (type == "Main") {
                 groupStrikerOptions.push(charName);
             }
-            else if (type == "Special") {
+            else if (type == "Support") {
                 groupSpecialOptions.push(charName);
             }
 
@@ -3317,6 +3318,43 @@ function updateTextBackground(id, property) {
 
 }
 
+function GetMoodFromAdaptation(adaptationValue) {
+    return ["D", "C", "B", "A", "S", "SS"][adaptationValue];
+}
+
+function GetOldTypeFromSquadType(squadType) {
+    if (squadType == "Main") {
+        return "Striker";
+    }
+    else if (squadType == "Support") {
+        return "Special";
+    }
+}
+
+function GetOldTerrain(newTerrain) {
+    if (newTerrain == "Street") {
+        return "Urban";
+    }
+    else if (newTerrain == "Outdoor") {
+        return "Outdoors";
+    }
+    else if (newTerrain == "Indoor") {
+        return "Indoors";
+    }
+}
+
+function GetSkillObject(charId, skill) {
+    let charSkills = charlist[charId].Skills;
+
+    for (let i = 0; i < charSkills.length; i++) {
+        if (charSkills[i].SkillType == skill) {
+            return charSkills[i];
+        }
+    }
+
+    return null;
+}
+
 function populateCharModal(charId) {
 
     let charName = charNames.get(charId);
@@ -3328,26 +3366,26 @@ function populateCharModal(charId) {
 
         document.getElementById("display_school").innerText = GetLanguageString('school-' + charInfo.School.toLowerCase());
         updateTextBackground("display_school", charInfo.School);
-        document.getElementById("display_type").innerText = GetLanguageString("type-" + charInfo.Type.toLowerCase());
-        updateTextBackground("display_type", charInfo.Type);
+        document.getElementById("display_type").innerText = GetLanguageString("type-" + GetOldTypeFromSquadType(charInfo.SquadType).toLowerCase());
+        updateTextBackground("display_type", GetOldTypeFromSquadType(charInfo.SquadType));
         document.getElementById("display_role").innerText = GetLanguageString("role-" + charInfo.TacticRole.toLowerCase());
-        document.getElementById("display_position").innerText = GetLanguageString("position-" + charInfo.TacticRange.toLowerCase());
+        document.getElementById("display_position").innerText = GetLanguageString("position-" + charInfo.Position.toLowerCase());
         document.getElementById("display_gun").innerText = GetLanguageString("gun-" + charInfo.WeaponType.toLowerCase());
-        document.getElementById("display_attack_type").innerText = GetLanguageString("atktype-" + charInfo.DamageType.toLowerCase());
-        updateTextBackground("display_attack_type", charInfo.DamageType);
-        document.getElementById("display_defense_type").innerText = GetLanguageString("deftype-" + charInfo.DefenseType.toLowerCase());
-        updateTextBackground("display_defense_type", charInfo.DefenseType);
+        document.getElementById("display_attack_type").innerText = GetLanguageString("atktype-" + charInfo.BulletType.toLowerCase());
+        updateTextBackground("display_attack_type", charInfo.BulletType);
+        document.getElementById("display_defense_type").innerText = GetLanguageString("deftype-" + charInfo.ArmorType.toLowerCase());
+        updateTextBackground("display_defense_type", charInfo.ArmorType);
 
-        document.getElementById('mood-Urban').src = "icons/Mood/Mood_" + charInfo.Affinities.Urban + ".png";
-        document.getElementById('mood-Outdoors').src = "icons/Mood/Mood_" + charInfo.Affinities.Outdoors + ".png";
-        document.getElementById('mood-Indoors').src = "icons/Mood/Mood_" + charInfo.Affinities.Indoors + ".png";
+        document.getElementById('mood-Urban').src = "icons/Mood/Mood_" + GetMoodFromAdaptation(charInfo.StreetBattleAdaptation) + ".png";
+        document.getElementById('mood-Outdoors').src = "icons/Mood/Mood_" + GetMoodFromAdaptation(charInfo.OutdoorBattleAdaptation) + ".png";
+        document.getElementById('mood-Indoors').src = "icons/Mood/Mood_" + GetMoodFromAdaptation(charInfo.IndoorBattleAdaptation) + ".png";
 
         if (charData.current?.ue >= 3) {
 
-            let terrain = charInfo.CharacterWeapon.AffinityBoost;
-            let boostAmt = charInfo.CharacterWeapon.AffinityBoostAmount;
+            let terrain = charInfo.Weapon.AdaptationType;
+            let boostAmt = charInfo.Weapon.AdaptationValue;
 
-            document.getElementById('mood-' + terrain).src = "icons/Mood/Mood_" + boostedMood(charInfo.Affinities[terrain], boostAmt) + ".png";
+            document.getElementById('mood-' + GetOldTerrain(terrain)).src = "icons/Mood/Mood_" + boostedMood(GetMoodFromAdaptation(charInfo[terrain + "BattleAdaptation"]), boostAmt) + ".png";
         }
 
         document.getElementById("input_level_current").value = charData.current?.level;
@@ -3376,28 +3414,28 @@ function populateCharModal(charId) {
         document.getElementById("input_gear3_target").value = charData.target?.gear3;
 
         if (charData.current?.gear1 != "0") {
-            document.getElementById("gear1-img").src = "icons/Gear/T" + charData.current?.gear1 + "_" + charInfo.Equipment.Slot1 + ".png";
+            document.getElementById("gear1-img").src = "icons/Gear/T" + charData.current?.gear1 + "_" + charInfo.Equipment[0] + ".png";
         }
         else {
-            document.getElementById("gear1-img").src = "icons/Gear/T1_" + charInfo.Equipment.Slot1 + ".png";
+            document.getElementById("gear1-img").src = "icons/Gear/T1_" + charInfo.Equipment[0] + ".png";
         }
         if (charData.current?.gear2 != "0") {
-            document.getElementById("gear2-img").src = "icons/Gear/T" + charData.current?.gear2 + "_" + charInfo.Equipment.Slot2 + ".png";
+            document.getElementById("gear2-img").src = "icons/Gear/T" + charData.current?.gear2 + "_" + charInfo.Equipment[1] + ".png";
         }
         else {
-            document.getElementById("gear2-img").src = "icons/Gear/T1_" + charInfo.Equipment.Slot2 + ".png";
+            document.getElementById("gear2-img").src = "icons/Gear/T1_" + charInfo.Equipment[1] + ".png";
         }
         if (charData.current?.gear3 != "0") {
-            document.getElementById("gear3-img").src = "icons/Gear/T" + charData.current?.gear3 + "_" + charInfo.Equipment.Slot3 + ".png";
+            document.getElementById("gear3-img").src = "icons/Gear/T" + charData.current?.gear3 + "_" + charInfo.Equipment[2] + ".png";
         }
         else {
-            document.getElementById("gear3-img").src = "icons/Gear/T1_" + charInfo.Equipment.Slot3 + ".png";
+            document.getElementById("gear3-img").src = "icons/Gear/T1_" + charInfo.Equipment[2] + ".png";
         }
 
-        document.getElementById("ex-img").src = "icons/SkillIcon/" + charInfo.Skills.Ex.Level1.Icon + ".png";
-        document.getElementById("basic-img").src = "icons/SkillIcon/" + charInfo.Skills.Skill1.Level1.Icon + ".png";
-        document.getElementById("enhanced-img").src = "icons/SkillIcon/" + charInfo.Skills.Skill2.Level1.Icon + ".png";
-        document.getElementById("sub-img").src = "icons/SkillIcon/" + charInfo.Skills.Skill3.Level1.Icon + ".png";
+        document.getElementById("ex-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "ex").Icon + ".png";
+        document.getElementById("basic-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "normal").Icon + ".png";
+        document.getElementById("enhanced-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "passive").Icon + ".png";
+        document.getElementById("sub-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "sub").Icon + ".png";
 
 
         modalStars.star = charData.current?.star;
@@ -3444,16 +3482,16 @@ function charUnlockClick() {
 
         let charInfoObj = charlist[modalCharID];
 
-        if (modalStars.star > charInfoObj.BaseStar) {
+        if (modalStars.star > charInfoObj.StarGrade) {
 
-            modalStars.star = charInfoObj.BaseStar;
+            modalStars.star = charInfoObj.StarGrade;
 
             if (modalStars.ue > 0) {
                 modalStars.ue = 0;
 
-                let terrain = charInfoObj.CharacterWeapon.AffinityBoost;
+                let terrain = charInfoObj.Weapon.AdaptationType;
 
-                document.getElementById('mood-' + terrain).src = "icons/Mood/Mood_" + charInfoObj.Affinities[terrain] + ".png";
+                document.getElementById('mood-' + GetOldTerrain(terrain)).src = "icons/Mood/Mood_" + GetMoodFromAdaptation(charInfoObj[terrain + "BattleAdaptation"]) + ".png";
             }
 
             updateStarDisplays(modalCharID, true);
@@ -3597,8 +3635,8 @@ function getSkillFormatted(charId, skill, level, targetLevel, targetUe) {
 
         if (firstDesc && skill == "Ex") {
 
-            let curCost = charlist[charId]?.Skills?.Ex?.["Level" + level]?.Cost;
-            let tgtCost = charlist[charId]?.Skills?.Ex?.["Level" + targetLevel]?.Cost;
+            let curCost = GetSkillObject(charId, "ex").Cost[level - 1];
+            let tgtCost = GetSkillObject(charId, "ex").Cost[targetLevel - 1];
 
             let costText = 'Cost: <span style="color: #008c9b;">' + curCost + "</span>";
 
@@ -3621,11 +3659,30 @@ function getSkillFormatted(charId, skill, level, targetLevel, targetUe) {
             skill = "Skill3";
         }
 
-        let desc = skillinfo[charId]?.Skills[skill]?.DescEn;
-        let params = skillinfo[charId]?.Skills[skill]?.Parameters;
-        let cost = skillinfo[charId]?.Skills[skill]?.Cost;
+        let newSkill = "";
+        if (skill == "Ex") {
+            newSkill = "ex";
+        }
+        else if (skill == "Skill1") {
+            newSkill = "normal";
+        }
+        else if (skill == "Skill2") {
+            newSkill = "passive"
+        }
+        else if (skill == "Skill3") {
+            newSkill = "weaponpassive";
+        }
+        else if (skill == "Skill4") {
+            newSkill = "sub";
+        }
+        let skillObj = GetSkillObject(charId, newSkill);
+
+        let desc = skillObj.Desc;
+        let params = skillObj.Parameters;
+        let cost = skillObj.Cost;
 
         let paramCount = 1;
+        let infiBreak = 0;
         while (true) {
 
             let paramString = "<?" + paramCount + ">";
@@ -3643,7 +3700,52 @@ function getSkillFormatted(charId, skill, level, targetLevel, targetUe) {
 
                 paramCount++;
             }
+            else if (desc && desc.includes("<b:")) {
+                let effectIndex = desc.indexOf("<b:");
+                let closeIndex = desc.substring(effectIndex).indexOf(">");
+                
+                let effectKey = desc.substring(effectIndex + 3, effectIndex + closeIndex);
+                let effectShort = BuffName["Buff_" + effectKey];
+
+                let paramRegex = new RegExp("<b:" + effectKey + ">", "g");
+                desc = desc.replace(paramRegex, effectShort);
+            }
+            else if (desc && desc.includes("<d:")) {
+                let effectIndex = desc.indexOf("<d:");
+                let closeIndex = desc.substring(effectIndex).indexOf(">");
+                
+                let effectKey = desc.substring(effectIndex + 3, effectIndex + closeIndex);
+                let effectShort = BuffName["Debuff_" + effectKey];
+
+                let paramRegex = new RegExp("<d:" + effectKey + ">", "g");
+                desc = desc.replace(paramRegex, effectShort);
+            }
+            else if (desc && desc.includes("<c:")) {
+                let effectIndex = desc.indexOf("<c:");
+                let closeIndex = desc.substring(effectIndex).indexOf(">");
+                
+                let effectKey = desc.substring(effectIndex + 3, effectIndex + closeIndex);
+                let effectShort = BuffName["CC_" + effectKey];
+
+                let paramRegex = new RegExp("<c:" + effectKey + ">", "g");
+                desc = desc.replace(paramRegex, effectShort);
+            }
+            else if (desc && desc.includes("<s:")) {
+                let effectIndex = desc.indexOf("<s:");
+                let closeIndex = desc.substring(effectIndex).indexOf(">");
+                
+                let effectKey = desc.substring(effectIndex + 3, effectIndex + closeIndex);
+                let effectShort = BuffName["Special_" + effectKey];
+
+                let paramRegex = new RegExp("<s:" + effectKey + ">", "g");
+                desc = desc.replace(paramRegex, effectShort);
+            }
             else {
+                break;
+            }
+
+            infiBreak++;
+            if (infiBreak > 100) {
                 break;
             }
         }
@@ -3783,7 +3885,7 @@ function populateCharResources(charId) {
 
     if (resources) {
 
-        let mainMatId = charlist[charId]?.Skills?.Ex?.Level1?.LevelUpMats?.Items[1]?.ItemId;
+        let mainMatId = charlist[charId]?.SkillExMaterial[0][1];
         let mainMat = matLookup.get(mainMatId);
         if (mainMat) {
             mainMat = mainMat.substring(0, mainMat.indexOf('_'));
@@ -4038,7 +4140,7 @@ function starClicked(type, mode, pos) {
 
     if (mode == "current") {
         if (type == "star") {
-            if (pos >= charInfoObj.BaseStar && pos != modalStars.star) {
+            if (pos >= charInfoObj.StarGrade && pos != modalStars.star) {
                 modalStars.star = pos;
 
                 if (pos > modalStars.star_target) {
@@ -4075,7 +4177,7 @@ function starClicked(type, mode, pos) {
     }
     else if (mode == "target") {
         if (type == "star") {
-            if (pos >= charInfoObj.BaseStar && pos >= modalStars.star && pos != modalStars.star_target) {
+            if (pos >= charInfoObj.StarGrade && pos >= modalStars.star && pos != modalStars.star_target) {
                 modalStars.star_target = pos;
 
                 if (pos < 5) {
@@ -4102,16 +4204,16 @@ function starClicked(type, mode, pos) {
 
     if (modalStars.ue >= 3) {
 
-        let terrain = charInfoObj.CharacterWeapon.AffinityBoost;
-        let boostAmt = charInfoObj.CharacterWeapon.AffinityBoostAmount;
+        let terrain = charInfoObj.Weapon.AdaptationType;
+        let boostAmt = charInfoObj.Weapon.AdaptationValue;
 
-        document.getElementById('mood-' + terrain).src = "icons/Mood/Mood_" + boostedMood(charInfoObj.Affinities[terrain], boostAmt) + ".png";
+        document.getElementById('mood-' + GetOldTerrain(terrain)).src = "icons/Mood/Mood_" + boostedMood(GetMoodFromAdaptation(charInfoObj[terrain + "BattleAdaptation"]), boostAmt) + ".png";
     }
     else {
 
-        let terrain = charInfoObj.CharacterWeapon.AffinityBoost;
+        let terrain = charInfoObj.Weapon.AdaptationType;
 
-        document.getElementById('mood-' + terrain).src = "icons/Mood/Mood_" + charInfoObj.Affinities[terrain] + ".png";
+        document.getElementById('mood-' + GetOldTerrain(terrain)).src = "icons/Mood/Mood_" + GetMoodFromAdaptation(charInfoObj[terrain + "BattleAdaptation"]) + ".png";
     }
 
     updateStarDisplays(modalCharID, true);
@@ -5289,10 +5391,10 @@ function calculateCharResources(charData, output) {
     let charId = charData.id.toString();
     let charObj = charlist[charId];
 
-    calcSkillCost(charObj, "Ex", charData.current?.ex, charData.target?.ex, charMatDict);
-    calcSkillCost(charObj, "Skill1", charData.current?.basic, charData.target?.basic, charMatDict);
-    calcSkillCost(charObj, "Skill2", charData.current?.passive, charData.target?.passive, charMatDict);
-    calcSkillCost(charObj, "Skill3", charData.current?.sub, charData.target?.sub, charMatDict);
+    calcSkillCost(charObj, "ex", charData.current?.ex, charData.target?.ex, charMatDict);
+    calcSkillCost(charObj, "normal", charData.current?.basic, charData.target?.basic, charMatDict);
+    calcSkillCost(charObj, "passive", charData.current?.passive, charData.target?.passive, charMatDict);
+    calcSkillCost(charObj, "sub", charData.current?.sub, charData.target?.sub, charMatDict);
 
     calcXpCost(charData.current?.level, charData.target?.level, charMatDict);
 
@@ -5330,7 +5432,7 @@ function calculateCharResources(charData, output) {
             charMatDict["Eleph"] = 0;
         }
 
-        charMatDict["Eleph"] += misc_data.unlock_cost[charObj.BaseStar + "*"];
+        charMatDict["Eleph"] += misc_data.unlock_cost[charObj.StarGrade + "*"];
     }
 
     if (charMatDict["Eleph"] && charData.eleph?.owned > 0) {
@@ -5372,8 +5474,20 @@ function calculateCharResources(charData, output) {
 
 function calcSkillCost(characterObj, skill, current, target, matDict) {
 
-    let skillObj = characterObj["Skills"]?.[skill];
-    if (skillObj == undefined) { return null; }
+    let skillMaterials, skillMaterialAmounts, skillType;
+
+    if (skill == "ex") {
+        skillMaterials = characterObj.SkillExMaterial;
+        skillMaterialAmounts = characterObj.SkillExMaterialAmount;
+        skillType = "ex";
+    }
+    else {
+        skillMaterials = characterObj.SkillMaterial;
+        skillMaterialAmounts = characterObj.SkillMaterialAmount;
+        skillType = "other";
+    }
+
+    if (skillMaterials == undefined || skillMaterialAmounts == undefined) { return null; }
 
     let curLevel = parseInt(current);
     let tarLevel = parseInt(target);
@@ -5381,41 +5495,46 @@ function calcSkillCost(characterObj, skill, current, target, matDict) {
         curLevel = 1;
     }
 
+    if (tarLevel == 10 && curLevel < 10) {
+        if (!matDict["9999"]) {
+            matDict["9999"] = 0;
+        }
+
+        matDict["9999"] += 1;
+    }
+
     for (let s = curLevel; s < tarLevel; s++) {
 
-        let levelObj = skillObj["Level" + s];
-        if (levelObj == undefined) {
-            console.log("Error: Skill Level data missing") // expand error later
-            return null;
-        }
-
-        let costObj = levelObj["LevelUpMats"];
-
-        for (let i = 0; i < costObj?.["Items"].length; i++) {
-
-            let item = costObj["Items"][i];
-
-            if (item["ItemId"] != undefined && item["Quantity"] != undefined) {
-
-                if (!matDict[item["ItemId"]]) {
-                    matDict[item["ItemId"]] = 0;
-                }
-
-                matDict[item["ItemId"]] += item["Quantity"];
-            }
-        }
-
-        if (costObj["Currency"] != undefined) {
+        if (skillType != undefined) {
 
             if (!matDict["Credit"]) {
                 matDict["Credit"] = 0;
             }
 
-            matDict["Credit"] += costObj["Currency"];
-
+            matDict["Credit"] += misc_data.skill_credit_cost[skillType][s - 1];
         }
 
+        let costObj = skillMaterials[s - 1];  // skillObj["Level" + s];
+        if (costObj == undefined) {
+            // console.log("Error: Skill Level data missing") // expand error later
+            return null;
+        }
 
+        // let costObj = levelObj["LevelUpMats"];
+
+        for (let i = 0; i < costObj.length; i++) {
+
+            let item = costObj[i];
+
+            if (item != undefined && skillMaterialAmounts[s - 1][i] != undefined) {
+
+                if (!matDict[item]) {
+                    matDict[item] = 0;
+                }
+
+                matDict[item] += skillMaterialAmounts[s - 1][i];
+            }
+        }
     }
 }
 
@@ -5467,7 +5586,7 @@ function calcGearCost(charObj, gear, gearTarget, slotNum, matDict) {
             }
 
             if (charObj?.Equipment) {
-                let gearName = charObj.Equipment["Slot" + slotNum];
+                let gearName = charObj.Equipment[slotNum - 1];
 
                 for (let i = 2; i <= 8; i++) {
 
@@ -6180,6 +6299,9 @@ function createCharBox(charId, container, location) {
     }
     newImg.draggable = false;
     newImg.className = "char-img";
+    if (location == "main") {
+        newImg.loading = "lazy";
+    }
 
     const nameDiv = document.createElement("div");
     nameDiv.className = "nameBar";
