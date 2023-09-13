@@ -4322,19 +4322,7 @@ function openResourceModal() {
         return;
     }
 
-    freezeBody(true);
-
-    // if (!(bugsNotified['1'] == true)) {
-    //     Swal.fire({
-    //         icon: 'warning',
-    //         title: 'Serious bug',
-    //         text: "Credit required for increasing student's xp level was being overcalculated (in resource modal only) by up to 2x since version 1.2.19, please check the credit required now, it should be significantly decreased as of version 1.2.24",
-    //         color: alertColour
-    //     })
-
-    //     bugsNotified['1'] = true;
-    //     localStorage.setItem("bugs_notified", JSON.stringify(bugsNotified));
-    // }
+    // freezeBody(true);
 
     modalOpen = "resourceModal";
 
@@ -4358,19 +4346,19 @@ function openResourceModal() {
         updateCells(leftoverMatDict, false, 'resource-count-text', 'misc-resource');
     }
 
-    hideEmpty();
+    // hideEmpty();
 
 
-    modal.onclick = function (event) {
-        if (event.target == modal) {
-            closeResourceModal();
-        }
-    };
+    // modal.onclick = function (event) {
+    //     if (event.target == modal) {
+    //         closeResourceModal();
+    //     }
+    // };
 
-    gtag('event', 'modal_view', {
-        'event_label': 'resource',
-        'modal_name': 'resource'
-    })
+    // gtag('event', 'modal_view', {
+    //     'event_label': 'resource',
+    //     'modal_name': 'resource'
+    // })
 
 }
 
