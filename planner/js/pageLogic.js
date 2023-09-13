@@ -4330,21 +4330,33 @@ function openResourceModal() {
 
     modal.style.visibility = "visible";
 
-    updateAggregateCount();
+    basicAlert("Updating aggregate count");
 
-    if (resourceDisplay == "Remaining") {
-        updateCells(neededMatDict, false, 'resource-count-text', 'misc-resource');
-        hideResourceDisplays();
-    }
-    else if (resourceDisplay == "Owned") {
-        updateCells(ownedMatDict, true, 'resource-count-text', 'misc-resource');
-    }
-    else if (resourceDisplay == "Total") {
-        updateCells(requiredMatDict, false, 'resource-count-text', 'misc-resource');
-    }
-    else if (resourceDisplay == "Leftover") {
-        updateCells(leftoverMatDict, false, 'resource-count-text', 'misc-resource');
-    }
+    setTimeout(() => {
+        updateAggregateCount();
+
+        
+        setTimeout(() => {
+            basicAlert("Updating cells");
+
+            setTimeout(() => {
+                if (resourceDisplay == "Remaining") {
+                    updateCells(neededMatDict, false, 'resource-count-text', 'misc-resource');
+                    hideResourceDisplays();
+                }
+                else if (resourceDisplay == "Owned") {
+                    updateCells(ownedMatDict, true, 'resource-count-text', 'misc-resource');
+                }
+                else if (resourceDisplay == "Total") {
+                    updateCells(requiredMatDict, false, 'resource-count-text', 'misc-resource');
+                }
+                else if (resourceDisplay == "Leftover") {
+                    updateCells(leftoverMatDict, false, 'resource-count-text', 'misc-resource');
+                }
+            }, 1000);
+        }, 6000);
+    }, 1000);
+
 
     // hideEmpty();
 
@@ -5730,6 +5742,8 @@ function updateAggregateCount() {
     requiredMatDict = {};
     neededMatDict = {};
 
+    basicAlert("Iterating charMatDicts");
+
     for (charId in charMatDicts) {
         if (!disabledChars.includes(charId)) {
             for (matName in charMatDicts[charId]) {
@@ -5757,19 +5771,38 @@ function updateAggregateCount() {
         }
     }
 
-    for (key in requiredMatDict) {
-        updateNeededMat(key);
-    }
+    basicAlert("Updating needed mats");
+    setTimeout(() => {
+        for (key in requiredMatDict) {
+            updateNeededMat(key);
+        }
 
-    for (key in ownedMatDict) {
-        updateLeftoverMat(key);
-    }
+        basicAlert("Updating leftover mats");
+        setTimeout(() => {
+            for (key in ownedMatDict) {
+                updateLeftoverMat(key);
+            }
 
-    calculateRaidCoins();
+            basicAlert("Calculating raid coins");
+            setTimeout(() => {
+                calculateRaidCoins();
 
-    updateXP();
+                basicAlert("Calculating XP");
+                setTimeout(() => {
+                    updateXP();
 
-    updateGearXP();
+                    basicAlert("Calculating Gear XP");
+                    setTimeout(() => {
+                        updateGearXP();
+                    }, 1000);
+
+                }, 1000);
+
+            }, 1000);
+
+        }, 1000);
+
+    }, 1000);
 }
 
 function calculateRaidCoins() {
