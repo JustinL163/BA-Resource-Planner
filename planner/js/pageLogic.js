@@ -180,6 +180,10 @@ $(document).ready(function () {
     }
 
     loadResources();
+
+    if (/eruda=true/.test(window.location)) {
+        import("https://cdn.jsdelivr.net/npm/eruda").then(() => eruda.init());
+    }
 })
 
 function load() {
@@ -3703,7 +3707,7 @@ function getSkillFormatted(charId, skill, level, targetLevel, targetUe) {
             else if (desc && desc.includes("<b:")) {
                 let effectIndex = desc.indexOf("<b:");
                 let closeIndex = desc.substring(effectIndex).indexOf(">");
-                
+
                 let effectKey = desc.substring(effectIndex + 3, effectIndex + closeIndex);
                 let effectShort = BuffName["Buff_" + effectKey];
 
@@ -3713,7 +3717,7 @@ function getSkillFormatted(charId, skill, level, targetLevel, targetUe) {
             else if (desc && desc.includes("<d:")) {
                 let effectIndex = desc.indexOf("<d:");
                 let closeIndex = desc.substring(effectIndex).indexOf(">");
-                
+
                 let effectKey = desc.substring(effectIndex + 3, effectIndex + closeIndex);
                 let effectShort = BuffName["Debuff_" + effectKey];
 
@@ -3723,7 +3727,7 @@ function getSkillFormatted(charId, skill, level, targetLevel, targetUe) {
             else if (desc && desc.includes("<c:")) {
                 let effectIndex = desc.indexOf("<c:");
                 let closeIndex = desc.substring(effectIndex).indexOf(">");
-                
+
                 let effectKey = desc.substring(effectIndex + 3, effectIndex + closeIndex);
                 let effectShort = BuffName["CC_" + effectKey];
 
@@ -3733,7 +3737,7 @@ function getSkillFormatted(charId, skill, level, targetLevel, targetUe) {
             else if (desc && desc.includes("<s:")) {
                 let effectIndex = desc.indexOf("<s:");
                 let closeIndex = desc.substring(effectIndex).indexOf(">");
-                
+
                 let effectKey = desc.substring(effectIndex + 3, effectIndex + closeIndex);
                 let effectShort = BuffName["Special_" + effectKey];
 
