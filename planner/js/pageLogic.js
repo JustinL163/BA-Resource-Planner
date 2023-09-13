@@ -4326,37 +4326,40 @@ function openResourceModal() {
 
     modalOpen = "resourceModal";
 
-    var modal = document.getElementById("resourceModal");
-
-    modal.style.visibility = "visible";
-
-    basicAlert("Updating aggregate count");
+    basicAlert("Before loading resource modal");
 
     setTimeout(() => {
-        updateAggregateCount();
+        var modal = document.getElementById("resourceModal");
 
-        
+        modal.style.visibility = "visible";
+
+        basicAlert("Updating aggregate count");
+
         setTimeout(() => {
-            basicAlert("Updating cells");
+            updateAggregateCount();
+
 
             setTimeout(() => {
-                if (resourceDisplay == "Remaining") {
-                    updateCells(neededMatDict, false, 'resource-count-text', 'misc-resource');
-                    hideResourceDisplays();
-                }
-                else if (resourceDisplay == "Owned") {
-                    updateCells(ownedMatDict, true, 'resource-count-text', 'misc-resource');
-                }
-                else if (resourceDisplay == "Total") {
-                    updateCells(requiredMatDict, false, 'resource-count-text', 'misc-resource');
-                }
-                else if (resourceDisplay == "Leftover") {
-                    updateCells(leftoverMatDict, false, 'resource-count-text', 'misc-resource');
-                }
-            }, 1000);
-        }, 6000);
-    }, 1000);
+                basicAlert("Updating cells");
 
+                setTimeout(() => {
+                    if (resourceDisplay == "Remaining") {
+                        updateCells(neededMatDict, false, 'resource-count-text', 'misc-resource');
+                        hideResourceDisplays();
+                    }
+                    else if (resourceDisplay == "Owned") {
+                        updateCells(ownedMatDict, true, 'resource-count-text', 'misc-resource');
+                    }
+                    else if (resourceDisplay == "Total") {
+                        updateCells(requiredMatDict, false, 'resource-count-text', 'misc-resource');
+                    }
+                    else if (resourceDisplay == "Leftover") {
+                        updateCells(leftoverMatDict, false, 'resource-count-text', 'misc-resource');
+                    }
+                }, 1000);
+            }, 6000);
+        }, 1000);
+    }, 1000);
 
     // hideEmpty();
 
@@ -4415,46 +4418,50 @@ function openGearModal() {
         return;
     }
 
-    freezeBody(true);
+    // freezeBody(true);
 
     modalOpen = "gearModal";
 
-    var modal = document.getElementById("gearModal");
+    // var modal = document.getElementById("gearModal");
 
-    modal.style.visibility = "visible";
+    // modal.style.visibility = "visible";
 
     updateAggregateCount();
 
-    if (gearDisplay == "Remaining") {
-        updateCells(neededMatDict, false, 'gear-count-text', 'misc-gear');
-    }
-    else if (gearDisplay == "Owned") {
-        updateCells(ownedMatDict, true, 'gear-count-text', 'misc-gear');
-    }
-    else if (gearDisplay == "Total") {
-        updateCells(requiredMatDict, false, 'gear-count-text', 'misc-gear');
-    }
-    else if (gearDisplay == "Leftover") {
-        updateCells(leftoverMatDict, false, "gear-count-text", "misc-gear");
-    }
-
-    updateCells(ownedMatDict, true, 'ue-count-text', 'abrakadabra');
-    updateUeXP();
-
-    hideEmptyGear();
-
-    SolveGearFarm();
-
-    modal.onclick = function (event) {
-        if (event.target == modal) {
-            closeGearModal();
+    setTimeout(() => {
+        if (gearDisplay == "Remaining") {
+            updateCells(neededMatDict, false, 'gear-count-text', 'misc-gear');
         }
-    };
+        else if (gearDisplay == "Owned") {
+            updateCells(ownedMatDict, true, 'gear-count-text', 'misc-gear');
+        }
+        else if (gearDisplay == "Total") {
+            updateCells(requiredMatDict, false, 'gear-count-text', 'misc-gear');
+        }
+        else if (gearDisplay == "Leftover") {
+            updateCells(leftoverMatDict, false, "gear-count-text", "misc-gear");
+        }
 
-    gtag('event', 'modal_view', {
-        'event_label': 'gear',
-        'modal_name': 'gear'
-    })
+        updateCells(ownedMatDict, true, 'ue-count-text', 'abrakadabra');
+        updateUeXP();
+
+        hideEmptyGear();
+
+        SolveGearFarm();
+
+        // modal.onclick = function (event) {
+        //     if (event.target == modal) {
+        //         closeGearModal();
+        //     }
+        // };
+
+        basicAlert("Gear modal calculations done");
+
+        gtag('event', 'modal_view', {
+            'event_label': 'gear',
+            'modal_name': 'gear'
+        })
+    }, 6000);
 
 }
 
@@ -4860,6 +4867,7 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
                 const newImg = document.createElement("img");
                 newImg.draggable = false;
                 newImg.className = type + "-icon";
+                newImg.loading = "lazy";
                 if (reorder) {
                     newImg.src = (imgLoc + rows[row] + "_" + columns[col - 1] + ".png").replace(/ /g, '');
                 }
