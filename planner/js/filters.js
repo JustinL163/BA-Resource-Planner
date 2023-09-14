@@ -166,14 +166,14 @@ function buildFilterList() {
 
         for(const i in charlist) {
             const char = charlist[i];
-            filterTypes.filter_atk.options.push(char.DamageType);
-            filterTypes.filter_def.options.push(char.DefenseType);
+            filterTypes.filter_atk.options.push(char.BulletType);
+            filterTypes.filter_def.options.push(char.ArmorType);
             filterTypes.filter_school.options.push(char.School);
-            filterTypes.filter_type.options.push(char.Type);
+            filterTypes.filter_type.options.push(GetOldTypeFromSquadType(char.SquadType));
             filterTypes.filter_weapon.options.push(char.WeaponType);
-            filterTypes.filter_star.options.push(char.BaseStar.toString());
-            let mat1id = char.Skills.Skill1.Level7.LevelUpMats.Items[2].ItemId;
-            let mat2id = char.Skills.Skill1.Level7.LevelUpMats.Items[3].ItemId;
+            filterTypes.filter_star.options.push(char.StarGrade.toString());
+            let mat1id = char.SkillExMaterial[3][2];
+            let mat2id = char.SkillExMaterial[3][3];
             if(mat1id < 1000)
             {
                 let mat = matLookup.get(mat1id);
@@ -238,18 +238,18 @@ function assignClassFilters() {
         const charInfo = charlist[id];
         let attributes = [
             "added-filters",
-            "filter_atk_"+charInfo.DamageType.toLowerCase().replaceAll(" ", "_"),
-            "filter_def_"+charInfo.DefenseType.toLowerCase().replaceAll(" ", "_"),
-            "filter_star_"+charInfo.BaseStar,
+            "filter_atk_"+charInfo.BulletType.toLowerCase().replaceAll(" ", "_"),
+            "filter_def_"+charInfo.ArmorType.toLowerCase().replaceAll(" ", "_"),
+            "filter_star_"+charInfo.StarGrade,
             "filter_school_"+charInfo.School.toLowerCase().replaceAll(" ", "_"),
-            "filter_type_"+charInfo.Type.toLowerCase().replaceAll(" ", "_"),
+            "filter_type_"+GetOldTypeFromSquadType(charInfo.SquadType).toLowerCase().replaceAll(" ", "_"),
             "filter_weapon_"+charInfo.WeaponType.toLowerCase().replaceAll(" ", "_"),
         ]
         if (charInfo.JpOnly) {
             attributes.push("filter_in_jp");
         }
-        let mat1id = charInfo.Skills.Skill1.Level7.LevelUpMats.Items[2].ItemId;
-        let mat2id = charInfo.Skills.Skill1.Level7.LevelUpMats.Items[3].ItemId;
+        let mat1id = charInfo.SkillExMaterial[3][2];
+        let mat2id = charInfo.SkillExMaterial[3][3];
         if(mat1id < 1000)
         {
             let mat = matLookup.get(mat1id);
