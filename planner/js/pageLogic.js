@@ -4322,58 +4322,43 @@ function openResourceModal() {
         return;
     }
 
-    // freezeBody(true);
+    freezeBody(true);
 
     modalOpen = "resourceModal";
 
-    basicAlert("Before loading resource modal");
+    var modal = document.getElementById("resourceModal");
 
-    setTimeout(() => {
-        var modal = document.getElementById("resourceModal");
+    modal.style.visibility = "visible";
 
-        modal.style.visibility = "visible";
+    updateAggregateCount();
 
-        basicAlert("Updating aggregate count");
+    if (resourceDisplay == "Remaining") {
+        updateCells(neededMatDict, false, 'resource-count-text', 'misc-resource');
+        hideResourceDisplays();
+    }
+    else if (resourceDisplay == "Owned") {
+        updateCells(ownedMatDict, true, 'resource-count-text', 'misc-resource');
+    }
+    else if (resourceDisplay == "Total") {
+        updateCells(requiredMatDict, false, 'resource-count-text', 'misc-resource');
+    }
+    else if (resourceDisplay == "Leftover") {
+        updateCells(leftoverMatDict, false, 'resource-count-text', 'misc-resource');
+    }
 
-        setTimeout(() => {
-            updateAggregateCount();
-
-
-            setTimeout(() => {
-                basicAlert("Updating cells");
-
-                setTimeout(() => {
-                    if (resourceDisplay == "Remaining") {
-                        updateCells(neededMatDict, false, 'resource-count-text', 'misc-resource');
-                        hideResourceDisplays();
-                    }
-                    else if (resourceDisplay == "Owned") {
-                        updateCells(ownedMatDict, true, 'resource-count-text', 'misc-resource');
-                    }
-                    else if (resourceDisplay == "Total") {
-                        updateCells(requiredMatDict, false, 'resource-count-text', 'misc-resource');
-                    }
-                    else if (resourceDisplay == "Leftover") {
-                        updateCells(leftoverMatDict, false, 'resource-count-text', 'misc-resource');
-                    }
-                }, 1000);
-            }, 6000);
-        }, 1000);
-    }, 1000);
-
-    // hideEmpty();
+    hideEmpty();
 
 
-    // modal.onclick = function (event) {
-    //     if (event.target == modal) {
-    //         closeResourceModal();
-    //     }
-    // };
+    modal.onclick = function (event) {
+        if (event.target == modal) {
+            closeResourceModal();
+        }
+    };
 
-    // gtag('event', 'modal_view', {
-    //     'event_label': 'resource',
-    //     'modal_name': 'resource'
-    // })
+    gtag('event', 'modal_view', {
+        'event_label': 'resource',
+        'modal_name': 'resource'
+    })
 
 }
 
@@ -4418,50 +4403,46 @@ function openGearModal() {
         return;
     }
 
-    // freezeBody(true);
+    freezeBody(true);
 
     modalOpen = "gearModal";
 
-    // var modal = document.getElementById("gearModal");
+    var modal = document.getElementById("gearModal");
 
-    // modal.style.visibility = "visible";
+    modal.style.visibility = "visible";
 
     updateAggregateCount();
 
-    setTimeout(() => {
-        if (gearDisplay == "Remaining") {
-            updateCells(neededMatDict, false, 'gear-count-text', 'misc-gear');
+    if (gearDisplay == "Remaining") {
+        updateCells(neededMatDict, false, 'gear-count-text', 'misc-gear');
+    }
+    else if (gearDisplay == "Owned") {
+        updateCells(ownedMatDict, true, 'gear-count-text', 'misc-gear');
+    }
+    else if (gearDisplay == "Total") {
+        updateCells(requiredMatDict, false, 'gear-count-text', 'misc-gear');
+    }
+    else if (gearDisplay == "Leftover") {
+        updateCells(leftoverMatDict, false, "gear-count-text", "misc-gear");
+    }
+
+    updateCells(ownedMatDict, true, 'ue-count-text', 'abrakadabra');
+    updateUeXP();
+
+    hideEmptyGear();
+
+    SolveGearFarm();
+
+    modal.onclick = function (event) {
+        if (event.target == modal) {
+            closeGearModal();
         }
-        else if (gearDisplay == "Owned") {
-            updateCells(ownedMatDict, true, 'gear-count-text', 'misc-gear');
-        }
-        else if (gearDisplay == "Total") {
-            updateCells(requiredMatDict, false, 'gear-count-text', 'misc-gear');
-        }
-        else if (gearDisplay == "Leftover") {
-            updateCells(leftoverMatDict, false, "gear-count-text", "misc-gear");
-        }
+    };
 
-        updateCells(ownedMatDict, true, 'ue-count-text', 'abrakadabra');
-        updateUeXP();
-
-        hideEmptyGear();
-
-        SolveGearFarm();
-
-        // modal.onclick = function (event) {
-        //     if (event.target == modal) {
-        //         closeGearModal();
-        //     }
-        // };
-
-        basicAlert("Gear modal calculations done");
-
-        gtag('event', 'modal_view', {
-            'event_label': 'gear',
-            'modal_name': 'gear'
-        })
-    }, 6000);
+    gtag('event', 'modal_view', {
+        'event_label': 'gear',
+        'modal_name': 'gear'
+    })
 
 }
 
@@ -4869,10 +4850,10 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
                 newImg.className = type + "-icon";
                 newImg.loading = "lazy";
                 if (reorder) {
-                    newImg.src = (imgLoc + rows[row] + "_" + columns[col - 1] + ".png").replace(/ /g, '');
+                    newImg.src = (imgLoc + rows[row] + "_" + columns[col - 1] + "_small.webp").replace(/ /g, '');
                 }
                 else {
-                    newImg.src = (imgLoc + columns[col - 1] + "_" + rows[row] + ".png").replace(/ /g, '');
+                    newImg.src = (imgLoc + columns[col - 1] + "_" + rows[row] + "_small.webp").replace(/ /g, '');
                 }
 
                 const newP = document.createElement("p");
@@ -5750,8 +5731,6 @@ function updateAggregateCount() {
     requiredMatDict = {};
     neededMatDict = {};
 
-    basicAlert("Iterating charMatDicts");
-
     for (charId in charMatDicts) {
         if (!disabledChars.includes(charId)) {
             for (matName in charMatDicts[charId]) {
@@ -5779,38 +5758,19 @@ function updateAggregateCount() {
         }
     }
 
-    basicAlert("Updating needed mats");
-    setTimeout(() => {
-        for (key in requiredMatDict) {
-            updateNeededMat(key);
-        }
+    for (key in requiredMatDict) {
+        updateNeededMat(key);
+    }
 
-        basicAlert("Updating leftover mats");
-        setTimeout(() => {
-            for (key in ownedMatDict) {
-                updateLeftoverMat(key);
-            }
+    for (key in ownedMatDict) {
+        updateLeftoverMat(key);
+    }
 
-            basicAlert("Calculating raid coins");
-            setTimeout(() => {
-                calculateRaidCoins();
+    calculateRaidCoins();
 
-                basicAlert("Calculating XP");
-                setTimeout(() => {
-                    updateXP();
+    updateXP();
 
-                    basicAlert("Calculating Gear XP");
-                    setTimeout(() => {
-                        updateGearXP();
-                    }, 1000);
-
-                }, 1000);
-
-            }, 1000);
-
-        }, 1000);
-
-    }, 1000);
+    updateGearXP();
 }
 
 function calculateRaidCoins() {

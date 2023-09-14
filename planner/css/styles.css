@@ -482,11 +482,14 @@ label {
 .resource-icon {
     max-width: 60px;
     max-height: 60px;
+    width: 60px;
+    height: 47px;
 }
 
 .gear-icon {
     max-width: 80px;
     max-height: 80px;
+    width: 80px;
 }
 
 .artifact-icon {
@@ -1648,6 +1651,7 @@ input.filter-option {
 
     .resource-icon {
         width: 100%;
+        height: unset;
     }
 
     .gear-icon {
