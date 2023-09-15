@@ -4322,6 +4322,11 @@ function openResourceModal() {
         return;
     }
 
+    let test = document.getElementsByClassName("main-display-char");
+    for (let i = 0; i < test.length; i++) {
+        test[i].style.display = "none";
+    }
+
     freezeBody(true);
 
     modalOpen = "resourceModal";
@@ -4403,46 +4408,55 @@ function openGearModal() {
         return;
     }
 
-    freezeBody(true);
-
-    modalOpen = "gearModal";
-
-    var modal = document.getElementById("gearModal");
-
-    modal.style.visibility = "visible";
-
-    updateAggregateCount();
-
-    if (gearDisplay == "Remaining") {
-        updateCells(neededMatDict, false, 'gear-count-text', 'misc-gear');
-    }
-    else if (gearDisplay == "Owned") {
-        updateCells(ownedMatDict, true, 'gear-count-text', 'misc-gear');
-    }
-    else if (gearDisplay == "Total") {
-        updateCells(requiredMatDict, false, 'gear-count-text', 'misc-gear');
-    }
-    else if (gearDisplay == "Leftover") {
-        updateCells(leftoverMatDict, false, "gear-count-text", "misc-gear");
+    let test = document.getElementsByClassName("main-display-char");
+    for (let i = 0; i < test.length; i++) {
+        test[i].style.display = "none";
     }
 
-    updateCells(ownedMatDict, true, 'ue-count-text', 'abrakadabra');
-    updateUeXP();
+    basicAlert("Short delay before modal");
 
-    hideEmptyGear();
+    setTimeout(() => {
+        freezeBody(true);
 
-    SolveGearFarm();
+        modalOpen = "gearModal";
 
-    modal.onclick = function (event) {
-        if (event.target == modal) {
-            closeGearModal();
+        var modal = document.getElementById("gearModal");
+
+        modal.style.visibility = "visible";
+
+        updateAggregateCount();
+
+        if (gearDisplay == "Remaining") {
+            updateCells(neededMatDict, false, 'gear-count-text', 'misc-gear');
         }
-    };
+        else if (gearDisplay == "Owned") {
+            updateCells(ownedMatDict, true, 'gear-count-text', 'misc-gear');
+        }
+        else if (gearDisplay == "Total") {
+            updateCells(requiredMatDict, false, 'gear-count-text', 'misc-gear');
+        }
+        else if (gearDisplay == "Leftover") {
+            updateCells(leftoverMatDict, false, "gear-count-text", "misc-gear");
+        }
 
-    gtag('event', 'modal_view', {
-        'event_label': 'gear',
-        'modal_name': 'gear'
-    })
+        updateCells(ownedMatDict, true, 'ue-count-text', 'abrakadabra');
+        updateUeXP();
+
+        hideEmptyGear();
+
+        SolveGearFarm();
+
+        modal.onclick = function (event) {
+            if (event.target == modal) {
+                closeGearModal();
+            }
+        };
+
+        gtag('event', 'modal_view', {
+            'event_label': 'gear',
+            'modal_name': 'gear'
+        })
+    }, 3000);
 
 }
 
@@ -4550,6 +4564,11 @@ function closeResourceModal() {
 
     modalOpen = "";
 
+    let test = document.getElementsByClassName("main-display-char");
+    for (let i = 0; i < test.length; i++) {
+        test[i].style.display = "";
+    }
+
 }
 
 function closeGearModal() {
@@ -4564,6 +4583,11 @@ function closeGearModal() {
     modal.style.visibility = "hidden";
 
     modalOpen = "";
+
+    let test = document.getElementsByClassName("main-display-char");
+    for (let i = 0; i < test.length; i++) {
+        test[i].style.display = "";
+    }
 
 }
 
