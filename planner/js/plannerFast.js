@@ -17,6 +17,11 @@ try {
     console.log(e);
 }
 
+if (data == null) {
+    data = { exportVersion: exportDataVersion, characters: [], disabled_characters: [], owned_materials: {}, groups: defaultGroups, language: "EN", level_cap: lvlMAX };
+    localStorage.setItem("save-data", JSON.stringify(data));
+}
+
 $.getJSON('json/skillinfo/en.json?1').done(function (json) {
     charlist = json;
     if (nameReady && (data.language == "EN" || data.language == "Id")) {
@@ -64,8 +69,6 @@ delete imgStyle;
 $(document).ready(function () {
 
     if (data == null) {
-        data = { exportVersion: exportDataVersion, characters: [], disabled_characters: [], owned_materials: {}, groups: defaultGroups, language: "EN", level_cap: lvlMAX };
-        localStorage.setItem("save-data", JSON.stringify(data));
     }
     else {
 
