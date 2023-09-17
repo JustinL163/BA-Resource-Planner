@@ -18,7 +18,7 @@ try {
 }
 
 if (data == null) {
-    data = { exportVersion: exportDataVersion, characters: [], disabled_characters: [], owned_materials: {}, groups: defaultGroups, language: "EN", level_cap: lvlMAX };
+    data = { exportVersion: 2, characters: [], disabled_characters: [], owned_materials: {}, groups: defaultGroups, language: "EN", level_cap: 87 };
     localStorage.setItem("save-data", JSON.stringify(data));
 }
 
