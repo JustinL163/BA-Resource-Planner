@@ -602,7 +602,7 @@ function GenerateBonusTab() {
 
         let charImg = document.createElement('img');
 
-        charImg.src = "icons/Portrait/Icon_" + bonusCharsList[i] + ".png";
+        charImg.src = "icons/Portrait/Icon_" + bonusCharsList[i] + ".webp";
         if (aprilFools) {
             charImg.src = "icons/Portrait/April/Icon_" + bonusCharsList[i] + ".png";
         }

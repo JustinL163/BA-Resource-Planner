@@ -192,6 +192,8 @@
     text-align: center;
     width: 100%;
     min-width: 50px;
+    width: 160px;
+    height: 180px;
 }
 
 .charBox *, .multiSelectChar * {
@@ -1511,6 +1513,11 @@ input.filter-option {
 
 @media (max-width: 1280px) {
 
+    .charBoxwrap img {
+        width: 100%;
+        height: unset;
+    }
+
     #other-resource-wrapper {
         flex-direction: row;
         flex-wrap: wrap;
@@ -1574,19 +1581,63 @@ input.filter-option {
         flex-direction: column;
         flex-wrap: nowrap;
     }
+
+    .logo {
+        display: none;
+    }
+
+    .nav-list {
+        margin-left: 0;
+        display: none;
+    }
+
+    #theme-button {
+        margin-right: 0;
+        max-width: 20px;
+    }
+
+    #hamburger {
+        display: block;
+        margin-left: 15px;
+    }
+
+    .mobile-links li a {
+        padding: 14px 16px;
+        text-decoration: none;
+        display: block;
+        background-color: #35394c;
+        color: white;
+    }
+
+    .mobile-links li a.active {
+        background-color: #454858;
+        color: rgb(250, 250, 135);
+    }
+
+    #mobile-links-wrapper {
+        position: fixed;
+        width: 100%;
+        z-index: 12;
+    }
+
+    #languages {
+        font-size: 1em;
+    }
 }
 
 @media (max-width: 800px) {
 
     .charBox {
-        width: 27%;
+        width: calc(70vw / 3);
+        height: calc(70vw / 3 * 1.19);
         max-width: 300px;
-        min-width: auto;
+        min-width: 27%;
         margin: 0.5rem;
     }
 
     .charBoxwrap img {
-        max-width: 100px;
+        width: 100%;
+        height: unset;
     }
 
     .team-wrapper .charBox:first-child {
@@ -1875,48 +1926,6 @@ input.filter-option {
         min-width: 130px;
         min-height: 35px;
         margin-right: 20px;
-        font-size: 1em;
-    }
-
-    .logo {
-        display: none;
-    }
-
-    .nav-list {
-        margin-left: 0;
-        display: none;
-    }
-
-    #theme-button {
-        margin-right: 0;
-        max-width: 20px;
-    }
-
-    #hamburger {
-        display: block;
-        margin-left: 15px;
-    }
-
-    .mobile-links li a {
-        padding: 14px 16px;
-        text-decoration: none;
-        display: block;
-        background-color: #35394c;
-        color: white;
-    }
-
-    .mobile-links li a.active {
-        background-color: #454858;
-        color: rgb(250, 250, 135);
-    }
-
-    #mobile-links-wrapper {
-        position: fixed;
-        width: 100%;
-        z-index: 12;
-    }
-
-    #languages {
         font-size: 1em;
     }
 
