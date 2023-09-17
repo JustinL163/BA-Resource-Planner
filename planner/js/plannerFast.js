@@ -7,6 +7,7 @@ let disabledChars = [];
 let charlist, chartranslate, language_strings, skillbuffnames = {};
 let nameReady = false;
 let uiReady = false;
+let loaded = false;
 
 try {
     let tryJSON = JSON.parse(localStorage.getItem('save-data'));
@@ -280,18 +281,22 @@ function createCharBox(charId, container, location) {
     nameDiv.id = charId + idInject + "-namebar";
 
     const nameTag = document.createElement("p");
-    // if (charName.includes(' ')) {
-    //     nameTag.innerText = charName.substring(0, charName.indexOf(' '));
-    // }
-    // else if (charName.includes('(')) {
-    //     nameTag.innerText = charName.substring(0, charName.indexOf('('));
-    // }
-    // else if (charName.includes('（')) {
-    //     nameTag.innerText = charName.substring(0, charName.indexOf('（'));
-    // }
-    // else {
-    //     nameTag.innerText = charName;
-    // }
+    if (loaded) {
+        let charName = charNames.get(charId);
+
+        if (charName.includes(' ')) {
+            nameTag.innerText = charName.substring(0, charName.indexOf(' '));
+        }
+        else if (charName.includes('(')) {
+            nameTag.innerText = charName.substring(0, charName.indexOf('('));
+        }
+        else if (charName.includes('（')) {
+            nameTag.innerText = charName.substring(0, charName.indexOf('（'));
+        }
+        else {
+            nameTag.innerText = charName;
+        }
+    }
 
     let borrowDiv, borrowTag;
 

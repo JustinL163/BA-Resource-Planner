@@ -70,8 +70,6 @@ let docScrollTop = 0;
 
 let bugsNotified = {};
 
-let loaded = false;
-
 const strNullImage = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";
 
 const platform = navigator.userAgentData?.platform || navigator.platform;
