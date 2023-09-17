@@ -2,6 +2,9 @@ let charlist, language_strings, raid_history, student_info;
 
 let currentServer = "", currentUid = "", currentDifficulty = "", currentType = "";
 
+let currentRaidVideo = "";
+let submissionMode = "";
+
 let localSubmissions;
 
 let studentSearchMapping, studentSearchKeys;
@@ -11,6 +14,7 @@ let charSearchActive = false;
 let charSearchMode = "";
 
 let borrowMode = false;
+let debug = false;
 
 let selectedStudentSlot = "";
 let selectedFilterSlot = "";
@@ -28,22 +32,24 @@ let raid_videos_object = {};
 
 let global = {};
 
+let serverNames = { "Japan": "JP", "Global": "Gbl", "China": "CN" };
+
 global.selectedRaid = {};
 global.selectedRaid.maxDifficulty = "";
 
 function loadResources() {
 
-    $.getJSON('json/charlist.json?24').done(function (json) {
+    $.getJSON('json/skillinfo/en.json?1').done(function (json) {
         charlist = json;
         checkResources();
     });
 
-    $.getJSON('json/strings.json?12').done(function (json) {
+    $.getJSON('json/strings.json?13').done(function (json) {
         language_strings = json;
         checkResources();
     });
 
-    $.getJSON('json/raids.json?1').done(function (json) {
+    $.getJSON('json/raids.json?2').done(function (json) {
         raid_history = json;
         checkResources();
     });
@@ -110,6 +116,9 @@ function init() {
         textElements[i].innerText = GetLanguageString(dataId);
     }
 
+    buildLanguages();
+    document.getElementById('languages').value = language;
+
     CreateRaidCards();
 
     document.getElementById("timelines-wrapper").addEventListener("wheel", (event) => event.currentTarget.scrollLeft += event.deltaY, { passive: false });
@@ -132,6 +141,14 @@ function init() {
     $("#submission-editor").click(function (e) {
         if (!document.getElementById("submission-editor").children[0].contains(e.target)) {
             document.getElementById("submission-editor").style.display = "none";
+            currentRaidVideo = "";
+        }
+    })
+
+    $("#submission-viewer").click(function (e) {
+        if (!document.getElementById("submission-viewer").children[0].contains(e.target)) {
+            document.getElementById("submission-viewer").style.display = "none";
+            currentRaidVideo = "";
         }
     })
 }
@@ -443,6 +460,8 @@ function RaidClicked(server, uid) {
     currentUid = uid;
     currentType = "raids";
 
+    document.getElementById("mobile-collapsed-server-indicator").innerText = serverNames[server];
+
     let serverTimelines = document.getElementsByClassName("server-timeline");
 
     for (let i = 0; i < serverTimelines.length; i++) {
@@ -471,6 +490,7 @@ function RaidClicked(server, uid) {
 
     document.getElementById("timeline-filter-container").style.display = "none";
     document.getElementById("timelines-expand-arrow").style.display = "";
+    document.getElementById("raid-timeline").classList.add("collapsed");
 
     FilterTimeline("blank", true);
 
@@ -530,6 +550,8 @@ function ExpandRaidTimeline() {
 
     document.getElementById("timeline-filter-container").style.display = "";
     document.getElementById("timelines-expand-arrow").style.display = "none";
+    document.getElementById("raid-submissions").style.display = "none";
+    document.getElementById("raid-timeline").classList.remove("collapsed");
 
     FilterTimeline("blank", false);
 }
@@ -572,6 +594,10 @@ function CreateRaidVideoCard(cardObject) {
     raidVideoCard.className = "raid-video-card";
     raidVideoCard.id = cardObject.uuid;
 
+    if (gUsername === cardObject.author) {
+        raidVideoCard.style.backgroundColor = "#4d775687";
+    }
+
     let raidVideoCardHeader = document.createElement("div");
     raidVideoCardHeader.className = "raid-video-card-header";
 
@@ -605,7 +631,7 @@ function CreateRaidVideoCard(cardObject) {
 
             if (team[ii]) {
                 let studentImg = document.createElement("img");
-                studentImg.src = "icons/Portrait/Icon_" + team[ii] + ".png";
+                studentImg.src = "icons/Portrait/Icon_" + team[ii] + ".webp";
 
                 teamStudent.appendChild(studentImg);
 
@@ -643,6 +669,10 @@ function CreateRaidVideoCard(cardObject) {
     raidVideoCard.appendChild(raidVideoLink);
 
     document.getElementById("raid-video-cards").appendChild(raidVideoCard);
+
+    raidVideoCard.addEventListener('click', (event) => {
+        LoadVideoModal(event.currentTarget.id);
+    })
 }
 
 function CreateRaidTeamElement(teamNum) {
@@ -665,6 +695,174 @@ function CreateRaidTeamElement(teamNum) {
     raidTeam.appendChild(teamSpecials);
 
     return raidTeam;
+}
+
+function LoadVideoModal(uuid) {
+
+    let raidObject = raidClears.find(obj => { return obj.uuid == uuid });
+
+    if (!raidObject) {
+        console.log("Raid not found")
+        return;
+    }
+
+    currentRaidVideo = uuid;
+
+    document.getElementById("raid-viewer-videolink").innerHTML = '<a href="' + raidObject.link + '">' + raidObject.link + '</a>';
+    document.getElementById("raid-viewer-score").innerText = commafy(raidObject.score);
+    document.getElementById("raid-viewer-level").innerText = raidObject.level;
+
+    let raidViewerTeams = document.getElementById("raid-viewer-teams");
+
+    while (raidViewerTeams.children.length > 0) {
+        raidViewerTeams.children[0].remove();
+    }
+
+    let teams = raidObject.teams;
+    for (let i = 0; i < teams.length; i++) {
+
+        let raidTeam = CreateRaidTeamElement(i + 1);
+
+        let teamStrikers = raidTeam.children[1];
+        let teamSpecials = raidTeam.children[2];
+
+        let team = teams[i];
+        for (let ii = 0; ii < 6; ii++) {
+
+            let teamStudent = document.createElement("div");
+            teamStudent.className = "student";
+
+            if (team[ii]) {
+                let studentImg = document.createElement("img");
+                studentImg.src = "icons/Portrait/Icon_" + team[ii] + ".webp";
+
+                teamStudent.appendChild(studentImg);
+
+                if (typeof (team[ii]) == "object") {
+                    teamStudent.classList.add("student-borrow");
+                }
+            }
+            else {
+                teamStudent.className = "student student-empty";
+            }
+
+            if (ii < 4) {
+                teamStrikers.appendChild(teamStudent);
+            }
+            else {
+                teamSpecials.appendChild(teamStudent);
+            }
+        }
+
+        raidViewerTeams.appendChild(raidTeam);
+    }
+
+    document.getElementById("submission-viewer").style.display = "";
+
+    if (raidObject.author === gUsername) {
+        document.getElementById("submission-edit-button").style.display = "";
+    }
+    else {
+        document.getElementById("submission-edit-button").style.display = "none";
+    }
+}
+
+function EditVideoSubmission() {
+
+    let raidObject = raidClears.find(obj => { return obj.uuid == currentRaidVideo });
+
+    if ((!gAuthkey || !gUsername) && !debug) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: GetLanguageString("text-goregisteraccount"),
+            color: alertColour
+        })
+        return;
+    }
+
+    usedStudents = [];
+    usedBorrow = false;
+    document.getElementById("search-footer")?.classList.remove("borrow-used");
+    borrowMode = false;
+
+    submissionMode = "Edit";
+
+    document.getElementById("submission-viewer").style.display = "none";
+    document.getElementById("submission-editor").style.display = "";
+
+    document.getElementById("submission-editor-title").innerText = GetLanguageString("text-editvideosubmission");
+
+    let difficultiesSelect = document.getElementById("raid-difficulty-select");
+
+    while (difficultiesSelect.children.length > 0) {
+        difficultiesSelect.children[0].remove();
+    }
+
+    let maxDifficulty = global.selectedRaid.maxDifficulty;
+
+    let difficultyIndex = raid_history.raid_difficulties_short.indexOf(maxDifficulty);
+    let difficulties = raid_history.raid_difficulties_short.length;
+
+    for (let i = difficultyIndex; i < difficulties; i++) {
+        addOption(difficultiesSelect, raid_history.raid_difficulties[i], raid_history.raid_difficulties[i]);
+    }
+
+    if (currentDifficulty) {
+        difficultiesSelect.value = currentDifficulty;
+    }
+    
+    if (!difficultiesSelect.value) {
+        difficultiesSelect.value = raid_history.raid_difficulties[difficultyIndex];
+    }
+
+    let raidSubmissionTeams = document.getElementById("raid-submission-teams");
+
+    while (raidSubmissionTeams.children.length > 0) {
+        raidSubmissionTeams.children[0].remove();
+    }
+
+    let teams = raidObject.teams;
+    for (let i = 0; i < teams.length; i++) {
+
+        let raidTeam = CreateRaidTeamElement(i + 1);
+
+        let teamStrikers = raidTeam.children[1];
+        let teamSpecials = raidTeam.children[2];
+
+        let team = teams[i];
+        for (let ii = 0; ii < 6; ii++) {
+
+            let teamStudent = GetBlankTeamSlot();
+
+            if (team[ii]) {
+                teamStudent.children[0].src = "icons/Portrait/Icon_" + team[ii] + ".webp";
+                teamStudent.className = "team-student"
+                teamStudent.setAttribute("character-id", team[ii].toString());
+
+                if (typeof (team[ii]) == "object") {
+                    teamStudent.classList.add("student-borrow");
+                }
+            }
+            else { }
+
+            if (ii < 4) {
+                teamStrikers.appendChild(teamStudent);
+            }
+            else {
+                teamSpecials.appendChild(teamStudent);
+            }
+        }
+
+        raidTeam.appendChild(CreateRaidTeamActionbar());
+
+        raidSubmissionTeams.appendChild(raidTeam);
+    }
+
+    document.getElementById("raid-submission-videolink").value = raidObject.link;
+    document.getElementById("raid-submission-score").value = raidObject.score;
+    document.getElementById("raid-submission-level").value = raidObject.level;
+
 }
 
 function DifficultyClicked(difficulty) {
@@ -716,6 +914,8 @@ function DifficultyClicked(difficulty) {
         raidClears = raidClears.concat(localClears);
     }
 
+    raidClears.sort((a, b) => b.score - a.score)
+
     for (let i = 0; i < raidClears?.length; i++) {
         CreateRaidVideoCard(raidClears[i]);
     }
@@ -735,11 +935,11 @@ function ClearOldVideoCards() {
 
 function SubmissionButtonClicked() {
 
-    if (!gAuthkey || !gUsername) {
+    if ((!gAuthkey || !gUsername) && !debug) {
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: "Please register or log into a cloud save account, go to the main planner page to do so for now (this page is still in progress)",
+            text: GetLanguageString("text-goregisteraccount"),
             color: alertColour
         })
         return;
@@ -750,8 +950,11 @@ function SubmissionButtonClicked() {
     document.getElementById("search-footer")?.classList.remove("borrow-used");
     borrowMode = false;
 
+    submissionMode = "New";
 
     document.getElementById("submission-editor").style.display = "";
+
+    document.getElementById("submission-editor-title").innerText = GetLanguageString("text-newvideosubmission");
 
     let difficultiesSelect = document.getElementById("raid-difficulty-select");
 
@@ -768,7 +971,13 @@ function SubmissionButtonClicked() {
         addOption(difficultiesSelect, raid_history.raid_difficulties[i], raid_history.raid_difficulties[i]);
     }
 
-    difficultiesSelect.value = currentDifficulty;
+    if (currentDifficulty) {
+        difficultiesSelect.value = currentDifficulty;
+    }
+    
+    if (!difficultiesSelect.value) {
+        difficultiesSelect.value = raid_history.raid_difficulties[difficultyIndex];
+    }
 
     let raidSubmissionTeams = document.getElementById("raid-submission-teams");
 
@@ -840,7 +1049,7 @@ function CreateRaidTeamActionbar() {
 function InsertBlankRaidTeam(sibling) {
     let raidTeamContainer = document.getElementById("raid-submission-teams");
     if (raidTeamContainer.children.length >= 25) {
-        basicAlert("Can't add more than 25 teams");
+        basicAlert(GetLanguageString("text-teamslimit"));
         return;
     }
 
@@ -892,7 +1101,12 @@ function GetBlankTeamSlot() {
 
     let teamStudent = document.createElement("div");
     teamStudent.className = "team-student student-blank";
-    teamStudent.id = crypto.randomUUID();
+    if (debug) {
+        teamStudent.id = debugUUID();
+    }
+    else {
+        teamStudent.id = crypto.randomUUID();
+    }
 
     let teamStudentImg = document.createElement("img");
     teamStudentImg.src = "icons/UI/plus-solid.svg";
@@ -913,6 +1127,7 @@ function ClearStudentSlot(parentid) {
 
     if (!parent.classList.contains("student-blank")) {
         parent.classList.add("student-blank");
+        parent.classList.remove("student-borrow");
         parent.children[0].src = "icons/UI/plus-solid.svg";
         parent.removeAttribute("character-id");
         UpdateUsedStudents();
@@ -949,7 +1164,13 @@ function LoadStudentSearch(parentid, mode) {
     let parent = document.getElementById(parentid);
     let parentRect = parent.getBoundingClientRect();
 
-    searcher.style.top = (parentRect.bottom - 195) + "px";
+    if (document.body.clientWidth <= 800) {
+        searcher.style.top = (parentRect.bottom - 115) + "px";
+    }
+    else {
+        searcher.style.top = (parentRect.bottom - 195) + "px";
+    }
+
     searcher.style.left = parentRect.left + "px";
 }
 
@@ -992,6 +1213,7 @@ function CreateStudentSearch() {
 
     let searchBox = document.createElement("input");
     searchBox.id = "student-searchbox";
+    searchBox.autocomplete = "off";
 
     let borrowButton = document.createElement("div");
     borrowButton.id = "search-borrow-button";
@@ -1061,6 +1283,10 @@ function SearchSelection(id) {
 
         if (nextSlotId) {
             LoadStudentSearch(nextSlotId, "submission-slot");
+        }
+
+        if (usedBorrow) {
+            document.getElementById("search-borrow-button").classList.remove("selected");
         }
     }
     else if (charSearchMode == "filter-slot") {
@@ -1169,7 +1395,7 @@ function UpdateStudentSlot(guid, studentId) {
         studentSlot.classList.add("student-borrow");
     }
 
-    studentSlot.children[0].src = "icons/Portrait/Icon_" + studentId + ".png";
+    studentSlot.children[0].src = "icons/Portrait/Icon_" + studentId + ".webp";
 }
 
 function UpdateFilterSlot(studentId) {
@@ -1178,7 +1404,7 @@ function UpdateFilterSlot(studentId) {
     filterSlot.classList.add("student-filtered");
     filterSlot.setAttribute("character-id", studentId);
 
-    filterSlot.children[1].src = "icons/Portrait/Icon_" + studentId + ".png";
+    filterSlot.children[1].src = "icons/Portrait/Icon_" + studentId + ".webp";
 }
 
 // https://stackoverflow.com/a/62216738
@@ -1300,7 +1526,7 @@ function UpdateStudentSearch() {
         let el = document.getElementById("student-searched-" + i);
 
         if (bestMatches.length >= i) {
-            el.src = "icons/Portrait/Icon_" + bestMatches[i] + ".png";
+            el.src = "icons/Portrait/Icon_" + bestMatches[i] + ".webp";
             el.setAttribute("character-id", bestMatches[i]);
         }
         else {
@@ -1479,7 +1705,7 @@ function SaveVideoSubmission() {
 
     let linkfield = document.getElementById("raid-submission-videolink");
     if (linkfield.value.length > 100) {
-        basicAlert("Video link should be less than 100 characters long");
+        basicAlert(GetLanguageString("text-linktoolong"));
         return;
     }
 
@@ -1512,7 +1738,12 @@ function SaveVideoSubmission() {
 
     let difficulty = document.getElementById("raid-difficulty-select").value;
 
-    UploadSubmission(submissionObject, currentServer, "raids", currentUid, difficulty);
+    if (submissionMode == "New") {
+        UploadSubmission(submissionObject, currentServer, "raids", currentUid, difficulty);
+    }
+    else if (submissionMode == "Edit") {
+        EditSubmission(submissionObject, currentServer, "raids", currentUid, difficulty, currentRaidVideo);
+    }
 
     document.getElementById("submission-editor").style.display = "none";
 }
@@ -1537,6 +1768,13 @@ function LocalSubmission(submissionObject, difficulty, uuid) {
 
     if (!localSubmissions[currentServer]["raids"][currentUid][difficulty]) {
         localSubmissions[currentServer]["raids"][currentUid][difficulty] = [];
+    }
+
+    for (let i = 0; i < localSubmissions[currentServer]["raids"][currentUid][difficulty].length; i++) {
+        if (localSubmissions[currentServer]["raids"][currentUid][difficulty][i].uuid = uuid) {
+            localSubmissions[currentServer]["raids"][currentUid][difficulty].splice(i, 1);
+            break;
+        }
     }
 
     submissionObject.expiry = Date.now() + (60 * 60 * 1000) // Expiry in 1 hour
@@ -1620,4 +1858,14 @@ function ClearFilterSlots() {
 
         ClearFilterSlot(filterSlots[i]);
     }
+}
+
+function debugUUID() {
+    var dt = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = (dt + Math.random() * 16) % 16 | 0;
+        dt = Math.floor(dt / 16);
+        return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+    return uuid;
 }

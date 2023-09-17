@@ -3,7 +3,6 @@
 var curID = 0;
 var modalCharID = 0;
 var modalStars = { "star": 0, "star_target": 0, "ue": 0, "ue_target": 0 };
-var data;
 const ueStarCap = 3;
 const globalMaxWorld = 21;
 
@@ -17,7 +16,6 @@ var gearDisplay = "Remaining";
 var mainDisplay = "Characters";
 
 var charOptions = {};
-var disabledChars = [];
 
 let swappableStrikers, swappableSpecials;
 
@@ -49,7 +47,7 @@ var toastCooldownMsg = "";
 
 var charMode = "Edit";
 
-let misc_data, charlist, skillinfo, localisations, language_strings;
+let misc_data, mLocalisations;
 
 let charMap, charNames;
 
@@ -72,7 +70,11 @@ let docScrollTop = 0;
 
 let bugsNotified = {};
 
-let loaded = false;
+const strNullImage = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";
+
+const platform = navigator.userAgentData?.platform || navigator.platform;
+const isIOS = /iPad|iPhone|iPod/.test(platform)
+    || (platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
 function loadResources() {
 
@@ -81,76 +83,33 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/skillinfo.json?27').done(function (json) {
-        skillinfo = json;
-        charlist = json;
-        checkResources();
-    });
-
-    // $.getJSON('json/skillinfo.json?26').done(function (json) {
-    //     charlist = json;
-    //     checkResources();
-    // });
-
-    $.getJSON('json/localisations.json?18').done(function (json) {
-        localisations = json;
-        checkResources();
-    });
-
     $.getJSON('json/manualLocalisations.json?3').done(function (json) {
         mLocalisations = json;
         checkResources();
     });
-
-    $.getJSON('json/strings.json?13').done(function (json) {
-        language_strings = json;
-        checkResources();
-    });
-
 }
 
 function checkResources() {
 
-    if (charlist && misc_data && skillinfo && localisations && mLocalisations && language_strings) {
+    if (charlist && misc_data && mLocalisations && language_strings) {
 
         if (!localStorage.getItem('data-backup')) {
             localStorage.setItem('data-backup', localStorage.getItem('save-data'));
-        }
-
-        data = tryParseJSON(localStorage.getItem('save-data'));
-
-        if (data?.language) {
-            language = data.language;
-            if (language == "EN") {
-                language = "En";
-            }
-            else if (language == "KR") {
-                language = "Kr";
-            }
-            else if (language == "JP") {
-                language = "Jp";
-            }
-            else if (language == "CN") {
-                language = "Tw";
-            }
-            else if (language == "TH") {
-                language = "Th";
-            }
         }
 
         charMap = new Map()
         charNames = new Map()
 
         for (key in charlist) {
-            let locName = localisations[language]?.Characters[key]?.Name;
-            if (locName) {
-                charMap.set(locName, key);
-                charNames.set(key, locName);
+            let locName;
+            if (chartranslate) {
+                locName = chartranslate[key]?.Name;
             }
             else {
-                charMap.set(charlist[key].Name, key);
-                charNames.set(key, charlist[key].Name);
+                locName = charlist[key]?.Name;
             }
+            charMap.set(locName, key);
+            charNames.set(key, locName);
         }
 
         if (data != null) {
@@ -161,7 +120,6 @@ function checkResources() {
             }
         }
 
-        //generateCharOptions();
         generateTeamBorrowOptions();
         validateData();
         convertOld();
@@ -220,55 +178,6 @@ function convertOld() {
     }
 }
 
-function updateUiLanguage() {
-
-    let textElements = document.getElementsByClassName('display-string');
-
-    for (let i = 0; i < textElements.length; i++) {
-
-        let dataId = textElements[i].getAttribute('data-id');
-
-        textElements[i].innerText = GetLanguageString(dataId);
-    }
-
-    // if (language == "En" || language == "Kr") {
-    //     return;
-    // }
-
-    // let uiStringsID = mLocalisations[language].UI?.ID;
-    // let uiStringsClass = mLocalisations[language].UI?.CLASS;
-
-    // if (uiStringsID) {
-
-    //     let toUpdate = Object.keys(uiStringsID);
-
-    //     for (let i = 0; i < toUpdate.length; i++) {
-
-    //         let element = document.getElementById(toUpdate[i]);
-
-    //         if (element) {
-    //             element.innerText = uiStringsID[toUpdate[i]];
-    //         }
-
-    //     }
-    // }
-
-    // if (uiStringsClass) {
-
-    //     let toUpdate = Object.keys(uiStringsClass);
-
-    //     for (let i = 0; i < toUpdate.length; i++) {
-
-    //         let elements = document.getElementsByClassName(toUpdate[i]);
-
-    //         for (let e = 0; e < elements.length; e++) {
-    //             elements[e].innerText = uiStringsClass[toUpdate[i]];
-    //         }
-
-    //     }
-    // }
-}
-
 function init() {
 
     bugsNotified = JSON.parse(localStorage.getItem("bugs_notified")) ?? {};
@@ -284,66 +193,38 @@ function init() {
         document.getElementById('transfer-register-button').style.visibility = "hidden";
     }
 
-    if (data == null) {
-        data = { exportVersion: exportDataVersion, characters: [], disabled_characters: [], owned_materials: {}, groups: defaultGroups, language: "EN", level_cap: lvlMAX };
-        localStorage.setItem("save-data", JSON.stringify(data));
+    if (fastLanguage) {
+        language = fastLanguage;
     }
 
-    updateUiLanguage();
     buildLanguages();
     document.getElementById('languages').value = language;
 
-    let imgStyle = localStorage.getItem("image-style");
-
-    if (imgStyle == 'true') {
-        aprilFools = true;
-        document.getElementById('image-style-button').src = "icons/UI/ShirokoIcon.png";
-    }
-    else {
-        aprilFools = false;
-        document.getElementById('image-style-button').src = "icons/UI/ShirokoScribble.png";
-    }
-
     if (data != null) {
-        if (data.disabled_characters != undefined) {
-            disabledChars = data.disabled_characters;
-        }
 
         if (!data.groups) {
             data.groups = {};
         }
 
-        let charsContainer = document.getElementById("charsContainer");
+        // for (var i = 0; i < data.characters.length; i++) {
 
-        if (data.character_order) {
-            for (let i = 0; i < data.character_order.length; i++) {
-                let char = data.characters.find(obj => { return obj.id == data.character_order[i] });
+        //     // remove later maybe
+        //     if (data.characters[i].eleph == undefined) {
+        //         let eleph = data.characters[i].eleph = {};
+        //         eleph.owned = 0;
+        //         eleph.unlocked = true;
+        //         eleph.cost = 1;
+        //         eleph.purchasable = 20;
+        //         eleph.farm_nodes = 0;
+        //         eleph.node_refresh = false;
+        //         eleph.use_eligma = false;
+        //         eleph.use_shop = false;
+        //     }
 
-                if (char) {
-                    createCharBox(char.id, charsContainer, "main");
-                }
-            }
-        }
-
-        for (var i = 0; i < data.characters.length; i++) {
-
-            // remove later maybe
-            if (data.characters[i].eleph == undefined) {
-                let eleph = data.characters[i].eleph = {};
-                eleph.owned = 0;
-                eleph.unlocked = true;
-                eleph.cost = 1;
-                eleph.purchasable = 20;
-                eleph.farm_nodes = 0;
-                eleph.node_refresh = false;
-                eleph.use_eligma = false;
-                eleph.use_shop = false;
-            }
-
-            if (document.getElementById('char_' + data.characters[i].id) == undefined) {
-                createCharBox(data.characters[i].id, charsContainer, "main");
-            }
-        }
+        //     if (document.getElementById('char_' + data.characters[i].id) == undefined) {
+        //         createCharBox(data.characters[i].id, charsContainer, "main");
+        //     }
+        // }
 
         if (data.owned_materials != undefined) {
             for (key in data.owned_materials) {
@@ -501,14 +382,14 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.3.19".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.4.0".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         Swal.fire({
-            title: GetLanguageString("text-updatedversionprefix") + "1.3.19",
+            title: GetLanguageString("text-updatedversionprefix") + "1.4.0",
             color: alertColour,
             html: GetLanguageString("text-updatemessage")
         })
 
-        data.site_version = "1.3.19";
+        data.site_version = "1.4.0";
         saveToLocalStorage(false);
     }
 
@@ -1052,54 +933,54 @@ function modeChange() {
 //     }
 // }
 
-function generateCharOptions() {
+// function generateCharOptions() {
 
-    charOptions = {}
+//     charOptions = {}
 
-    let existing = getExistingCharacters();
+//     let existing = getExistingCharacters();
 
-    for (key in charlist) {
+//     for (key in charlist) {
 
-        let charName, school;
+//         let charName, school;
 
-        let locName = localisations[language]?.Characters[key]?.Name;
-        if (locName) {
-            charName = locName;
-        }
-        else {
-            charName = charlist[key].Name;
-        }
+//         let locName = localisations[language]?.Characters[key]?.Name;
+//         if (locName) {
+//             charName = locName;
+//         }
+//         else {
+//             charName = charlist[key].Name;
+//         }
 
-        school = mLocalisations[language].Data[charlist[key].School];
+//         school = mLocalisations[language].Data[charlist[key].School];
 
-        if (!existing.includes(key)) {
+//         if (!existing.includes(key)) {
 
-            if (school) {
+//             if (school) {
 
-                if (!charOptions[school]) {
-                    charOptions[school] = {};
-                }
+//                 if (!charOptions[school]) {
+//                     charOptions[school] = {};
+//                 }
 
-                charOptions[school][key] = charName;
-            }
-            else {
+//                 charOptions[school][key] = charName;
+//             }
+//             else {
 
-                if (!charOptions["Unassigned"]) {
-                    charOptions["Unassigned"] = {};
-                }
+//                 if (!charOptions["Unassigned"]) {
+//                     charOptions["Unassigned"] = {};
+//                 }
 
-                charOptions["Unassigned"][key] = charName;
-            }
-        }
-    }
+//                 charOptions["Unassigned"][key] = charName;
+//             }
+//         }
+//     }
 
-    charOptions = sortObject(charOptions);
+//     charOptions = sortObject(charOptions);
 
-    for (key in charOptions) {
-        charOptions[key] = sortObject(charOptions[key]);
-    }
+//     for (key in charOptions) {
+//         charOptions[key] = sortObject(charOptions[key]);
+//     }
 
-}
+// }
 
 function sortObject(obj) {
     return Object.keys(obj).sort().reduce(function (result, key) {
@@ -1205,9 +1086,9 @@ function SetCharInputValues(values) {
 
     let charInfo = charlist[modalCharID];
 
-    document.getElementById("gear1-img").src = "icons/Gear/T" + values[10] + "_" + charInfo.Equipment[0] + ".png";
-    document.getElementById("gear2-img").src = "icons/Gear/T" + values[12] + "_" + charInfo.Equipment[1] + ".png";
-    document.getElementById("gear3-img").src = "icons/Gear/T" + values[14] + "_" + charInfo.Equipment[2] + ".png";
+    document.getElementById("gear1-img").src = "icons/Gear/T" + values[10] + "_" + charInfo.Equipment[0] + "_small.webp";
+    document.getElementById("gear2-img").src = "icons/Gear/T" + values[12] + "_" + charInfo.Equipment[1] + "_small.webp";
+    document.getElementById("gear3-img").src = "icons/Gear/T" + values[14] + "_" + charInfo.Equipment[2] + "_small.webp";
 }
 
 function deleteClicked() {
@@ -1250,8 +1131,6 @@ function deleteChar(charId) {
         if (charBox != null) {
             charBox.remove();
         }
-
-        // generateCharOptions();
 
         saveTime = Date.now() + (1000 * 5);
     }
@@ -1454,7 +1333,7 @@ function openModal(e) {
         }
 
         var displayImg = document.getElementById("displayImg");
-        displayImg.src = "icons/Portrait/Icon_" + charId + ".png";
+        displayImg.src = "icons/Portrait/Icon_" + charId + ".webp";
         if (aprilFools) {
             displayImg.src = "icons/Portrait/April/Icon_" + charId + ".png";
         }
@@ -1714,7 +1593,7 @@ function createMultiSelectChar(charId, container, mode) {
     newCharDiv.id = "multi_" + charId;
 
     const newImg = document.createElement("img");
-    newImg.src = "icons/Portrait/Icon_" + charId + ".png";
+    newImg.src = "icons/Portrait/Icon_" + charId + ".webp";
     if (aprilFools) {
         newImg.src = "icons/Portrait/April/Icon_" + charId + ".png";
     }
@@ -3326,15 +3205,6 @@ function GetMoodFromAdaptation(adaptationValue) {
     return ["D", "C", "B", "A", "S", "SS"][adaptationValue];
 }
 
-function GetOldTypeFromSquadType(squadType) {
-    if (squadType == "Main") {
-        return "Striker";
-    }
-    else if (squadType == "Support") {
-        return "Special";
-    }
-}
-
 function GetOldTerrain(newTerrain) {
     if (newTerrain == "Street") {
         return "Urban";
@@ -3348,7 +3218,14 @@ function GetOldTerrain(newTerrain) {
 }
 
 function GetSkillObject(charId, skill) {
-    let charSkills = charlist[charId].Skills;
+    let charSkills;
+
+    if (chartranslate) {
+        charSkills = chartranslate[charId].Skills;
+    }
+    else {
+        charSkills = charlist[charId].Skills;
+    }
 
     for (let i = 0; i < charSkills.length; i++) {
         if (charSkills[i].SkillType == skill) {
@@ -3418,22 +3295,22 @@ function populateCharModal(charId) {
         document.getElementById("input_gear3_target").value = charData.target?.gear3;
 
         if (charData.current?.gear1 != "0") {
-            document.getElementById("gear1-img").src = "icons/Gear/T" + charData.current?.gear1 + "_" + charInfo.Equipment[0] + ".png";
+            document.getElementById("gear1-img").src = "icons/Gear/T" + charData.current?.gear1 + "_" + charInfo.Equipment[0] + "_small.webp";
         }
         else {
-            document.getElementById("gear1-img").src = "icons/Gear/T1_" + charInfo.Equipment[0] + ".png";
+            document.getElementById("gear1-img").src = "icons/Gear/T1_" + charInfo.Equipment[0] + "_small.webp";
         }
         if (charData.current?.gear2 != "0") {
-            document.getElementById("gear2-img").src = "icons/Gear/T" + charData.current?.gear2 + "_" + charInfo.Equipment[1] + ".png";
+            document.getElementById("gear2-img").src = "icons/Gear/T" + charData.current?.gear2 + "_" + charInfo.Equipment[1] + "_small.webp";
         }
         else {
-            document.getElementById("gear2-img").src = "icons/Gear/T1_" + charInfo.Equipment[1] + ".png";
+            document.getElementById("gear2-img").src = "icons/Gear/T1_" + charInfo.Equipment[1] + "_small.webp";
         }
         if (charData.current?.gear3 != "0") {
-            document.getElementById("gear3-img").src = "icons/Gear/T" + charData.current?.gear3 + "_" + charInfo.Equipment[2] + ".png";
+            document.getElementById("gear3-img").src = "icons/Gear/T" + charData.current?.gear3 + "_" + charInfo.Equipment[2] + "_small.webp";
         }
         else {
-            document.getElementById("gear3-img").src = "icons/Gear/T1_" + charInfo.Equipment[2] + ".png";
+            document.getElementById("gear3-img").src = "icons/Gear/T1_" + charInfo.Equipment[2] + "_small.webp";
         }
 
         document.getElementById("ex-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "ex").Icon + ".png";
@@ -3593,6 +3470,17 @@ function updateTooltip(charId, skill) {
     }
 }
 
+function GetBuffName(buffid) {
+
+    let buffName = skillbuffnames[language.toLowerCase()]?.BuffName[buffid];
+
+    if (!buffName) {
+        buffName = skillbuffnames["en"]?.BuffName[buffid];
+    }
+
+    return buffName;
+}
+
 function getSkillFormatted(charId, skill, level, targetLevel, targetUe) {
 
     if (level == 0) {
@@ -3602,171 +3490,171 @@ function getSkillFormatted(charId, skill, level, targetLevel, targetUe) {
         targetLevel = 1;
     }
 
-    if (localisations[language]?.Characters[charId]?.Skills[skill]?.Name) {
+    // if (localisations[language]?.Characters[charId]?.Skills[skill]?.Name) {
 
-        if (skill == "Skill2" && targetUe >= 2) {
-            skill = "Skill2Upgrade";
-        }
+    //     if (skill == "Skill2" && targetUe >= 2) {
+    //         skill = "Skill2Upgrade";
+    //     }
 
-        let firstDesc = localisations[language]?.Characters[charId]?.Skills[skill]["Level" + level].Description;
+    //     let firstDesc = localisations[language]?.Characters[charId]?.Skills[skill]["Level" + level].Description;
 
-        let secondDesc;
-        if (level != targetLevel) {
-            secondDesc = localisations[language]?.Characters[charId]?.Skills[skill]["Level" + targetLevel].Description;
-        }
+    //     let secondDesc;
+    //     if (level != targetLevel) {
+    //         secondDesc = localisations[language]?.Characters[charId]?.Skills[skill]["Level" + targetLevel].Description;
+    //     }
 
-        while (firstDesc.includes('[c][007eff]')) {
-            let firstParam = firstDesc.substring(firstDesc.indexOf('[c][007eff]') + 11, firstDesc.indexOf('[-][/c]'));
-            firstDesc = firstDesc.replace('[c][007eff]', '<span style="color: #008c9b;">');
-            if (secondDesc) {
-                let secondParam = secondDesc.substring(secondDesc.indexOf('[c][007eff]') + 11, secondDesc.indexOf('[-][/c]'));
-                if (firstParam != secondParam) {
-                    firstDesc = firstDesc.replace('[-][/c]', '</span>/<span style="color: #588f00;">' + secondParam + '</span>');
-                }
-                else {
-                    firstDesc = firstDesc.replace('[-][/c]', '</span>');
-                }
-                secondDesc = secondDesc.replace('[c][007eff]', '').replace('[-][/c]', '');
-            }
-            else {
-                firstDesc = firstDesc.replace('[-][/c]', '</span>');
-            }
-        }
+    //     while (firstDesc.includes('[c][007eff]')) {
+    //         let firstParam = firstDesc.substring(firstDesc.indexOf('[c][007eff]') + 11, firstDesc.indexOf('[-][/c]'));
+    //         firstDesc = firstDesc.replace('[c][007eff]', '<span style="color: #008c9b;">');
+    //         if (secondDesc) {
+    //             let secondParam = secondDesc.substring(secondDesc.indexOf('[c][007eff]') + 11, secondDesc.indexOf('[-][/c]'));
+    //             if (firstParam != secondParam) {
+    //                 firstDesc = firstDesc.replace('[-][/c]', '</span>/<span style="color: #588f00;">' + secondParam + '</span>');
+    //             }
+    //             else {
+    //                 firstDesc = firstDesc.replace('[-][/c]', '</span>');
+    //             }
+    //             secondDesc = secondDesc.replace('[c][007eff]', '').replace('[-][/c]', '');
+    //         }
+    //         else {
+    //             firstDesc = firstDesc.replace('[-][/c]', '</span>');
+    //         }
+    //     }
 
-        while (firstDesc.includes('\n')) {
-            firstDesc = firstDesc.replace('\n', "<br>")
-        }
+    //     while (firstDesc.includes('\n')) {
+    //         firstDesc = firstDesc.replace('\n', "<br>")
+    //     }
 
-        if (firstDesc && skill == "Ex") {
+    //     if (firstDesc && skill == "Ex") {
 
-            let curCost = GetSkillObject(charId, "ex").Cost[level - 1];
-            let tgtCost = GetSkillObject(charId, "ex").Cost[targetLevel - 1];
+    //         let curCost = GetSkillObject(charId, "ex").Cost[level - 1];
+    //         let tgtCost = GetSkillObject(charId, "ex").Cost[targetLevel - 1];
 
-            let costText = 'Cost: <span style="color: #008c9b;">' + curCost + "</span>";
+    //         let costText = 'Cost: <span style="color: #008c9b;">' + curCost + "</span>";
 
-            if (level != targetLevel && curCost != tgtCost) {
-                costText += '/<span style="color: #588f00;">' + tgtCost + "</span>";
-            }
+    //         if (level != targetLevel && curCost != tgtCost) {
+    //             costText += '/<span style="color: #588f00;">' + tgtCost + "</span>";
+    //         }
 
-            firstDesc = costText + "<br>" + firstDesc;
-        }
+    //         firstDesc = costText + "<br>" + firstDesc;
+    //     }
 
-        return firstDesc;
+    //     return firstDesc;
+    // }
+    // else {
+
+    if (skill == "Skill3") {
+        skill = "Skill4";
     }
-    else {
 
-        if (skill == "Skill3") {
-            skill = "Skill4";
-        }
-
-        if (skill == "Skill2" && targetUe >= 2) {
-            skill = "Skill3";
-        }
-
-        let newSkill = "";
-        if (skill == "Ex") {
-            newSkill = "ex";
-        }
-        else if (skill == "Skill1") {
-            newSkill = "normal";
-        }
-        else if (skill == "Skill2") {
-            newSkill = "passive"
-        }
-        else if (skill == "Skill3") {
-            newSkill = "weaponpassive";
-        }
-        else if (skill == "Skill4") {
-            newSkill = "sub";
-        }
-        let skillObj = GetSkillObject(charId, newSkill);
-
-        let desc = skillObj.Desc;
-        let params = skillObj.Parameters;
-        let cost = skillObj.Cost;
-
-        let paramCount = 1;
-        let infiBreak = 0;
-        while (true) {
-
-            let paramString = "<?" + paramCount + ">";
-
-            if (desc && desc.includes(paramString)) {
-
-                let paramFilled = '<span style="color: #008c9b;">' + params[paramCount - 1][level - 1] + "</span>";
-
-                if (level != targetLevel) {
-                    paramFilled += '/<span style="color: #588f00;">' + params[paramCount - 1][targetLevel - 1] + "</span>";
-                }
-
-                let paramRegex = new RegExp(paramString, "g");
-                desc = desc.replace(paramRegex, paramFilled);
-
-                paramCount++;
-            }
-            else if (desc && desc.includes("<b:")) {
-                let effectIndex = desc.indexOf("<b:");
-                let closeIndex = desc.substring(effectIndex).indexOf(">");
-
-                let effectKey = desc.substring(effectIndex + 3, effectIndex + closeIndex);
-                let effectShort = BuffName["Buff_" + effectKey];
-
-                let paramRegex = new RegExp("<b:" + effectKey + ">", "g");
-                desc = desc.replace(paramRegex, effectShort);
-            }
-            else if (desc && desc.includes("<d:")) {
-                let effectIndex = desc.indexOf("<d:");
-                let closeIndex = desc.substring(effectIndex).indexOf(">");
-
-                let effectKey = desc.substring(effectIndex + 3, effectIndex + closeIndex);
-                let effectShort = BuffName["Debuff_" + effectKey];
-
-                let paramRegex = new RegExp("<d:" + effectKey + ">", "g");
-                desc = desc.replace(paramRegex, effectShort);
-            }
-            else if (desc && desc.includes("<c:")) {
-                let effectIndex = desc.indexOf("<c:");
-                let closeIndex = desc.substring(effectIndex).indexOf(">");
-
-                let effectKey = desc.substring(effectIndex + 3, effectIndex + closeIndex);
-                let effectShort = BuffName["CC_" + effectKey];
-
-                let paramRegex = new RegExp("<c:" + effectKey + ">", "g");
-                desc = desc.replace(paramRegex, effectShort);
-            }
-            else if (desc && desc.includes("<s:")) {
-                let effectIndex = desc.indexOf("<s:");
-                let closeIndex = desc.substring(effectIndex).indexOf(">");
-
-                let effectKey = desc.substring(effectIndex + 3, effectIndex + closeIndex);
-                let effectShort = BuffName["Special_" + effectKey];
-
-                let paramRegex = new RegExp("<s:" + effectKey + ">", "g");
-                desc = desc.replace(paramRegex, effectShort);
-            }
-            else {
-                break;
-            }
-
-            infiBreak++;
-            if (infiBreak > 100) {
-                break;
-            }
-        }
-
-        if (desc && skill == "Ex") {
-
-            let costText = 'Cost: <span style="color: #008c9b;">' + cost[level - 1] + "</span>";
-
-            if (level != targetLevel && cost[level - 1] != cost[targetLevel - 1]) {
-                costText += '/<span style="color: #588f00;">' + cost[targetLevel - 1] + "</span>";
-            }
-
-            desc = costText + "<br>" + desc;
-        }
-
-        return desc;
+    if (skill == "Skill2" && targetUe >= 2) {
+        skill = "Skill3";
     }
+
+    let newSkill = "";
+    if (skill == "Ex") {
+        newSkill = "ex";
+    }
+    else if (skill == "Skill1") {
+        newSkill = "normal";
+    }
+    else if (skill == "Skill2") {
+        newSkill = "passive"
+    }
+    else if (skill == "Skill3") {
+        newSkill = "weaponpassive";
+    }
+    else if (skill == "Skill4") {
+        newSkill = "sub";
+    }
+    let skillObj = GetSkillObject(charId, newSkill);
+
+    let desc = skillObj.Desc;
+    let params = skillObj.Parameters;
+    let cost = skillObj.Cost;
+
+    let paramCount = 1;
+    let infiBreak = 0;
+    while (true) {
+
+        let paramString = "<?" + paramCount + ">";
+
+        if (desc && desc.includes(paramString)) {
+
+            let paramFilled = '<span style="color: #008c9b;">' + params[paramCount - 1][level - 1] + "</span>";
+
+            if (level != targetLevel) {
+                paramFilled += '/<span style="color: #588f00;">' + params[paramCount - 1][targetLevel - 1] + "</span>";
+            }
+
+            let paramRegex = new RegExp(paramString, "g");
+            desc = desc.replace(paramRegex, paramFilled);
+
+            paramCount++;
+        }
+        else if (desc && desc.includes("<b:")) {
+            let effectIndex = desc.indexOf("<b:");
+            let closeIndex = desc.substring(effectIndex).indexOf(">");
+
+            let effectKey = desc.substring(effectIndex + 3, effectIndex + closeIndex);
+            let effectShort = GetBuffName("Buff_" + effectKey);
+
+            let paramRegex = new RegExp("<b:" + effectKey + ">", "g");
+            desc = desc.replace(paramRegex, effectShort);
+        }
+        else if (desc && desc.includes("<d:")) {
+            let effectIndex = desc.indexOf("<d:");
+            let closeIndex = desc.substring(effectIndex).indexOf(">");
+
+            let effectKey = desc.substring(effectIndex + 3, effectIndex + closeIndex);
+            let effectShort = GetBuffName("Debuff_" + effectKey);
+
+            let paramRegex = new RegExp("<d:" + effectKey + ">", "g");
+            desc = desc.replace(paramRegex, effectShort);
+        }
+        else if (desc && desc.includes("<c:")) {
+            let effectIndex = desc.indexOf("<c:");
+            let closeIndex = desc.substring(effectIndex).indexOf(">");
+
+            let effectKey = desc.substring(effectIndex + 3, effectIndex + closeIndex);
+            let effectShort = GetBuffName("CC_" + effectKey);
+
+            let paramRegex = new RegExp("<c:" + effectKey + ">", "g");
+            desc = desc.replace(paramRegex, effectShort);
+        }
+        else if (desc && desc.includes("<s:")) {
+            let effectIndex = desc.indexOf("<s:");
+            let closeIndex = desc.substring(effectIndex).indexOf(">");
+
+            let effectKey = desc.substring(effectIndex + 3, effectIndex + closeIndex);
+            let effectShort = GetBuffName("Special_" + effectKey);
+
+            let paramRegex = new RegExp("<s:" + effectKey + ">", "g");
+            desc = desc.replace(paramRegex, effectShort);
+        }
+        else {
+            break;
+        }
+
+        infiBreak++;
+        if (infiBreak > 100) {
+            break;
+        }
+    }
+
+    if (desc && skill == "Ex") {
+
+        let costText = 'Cost: <span style="color: #008c9b;">' + cost[level - 1] + "</span>";
+
+        if (level != targetLevel && cost[level - 1] != cost[targetLevel - 1]) {
+            costText += '/<span style="color: #588f00;">' + cost[targetLevel - 1] + "</span>";
+        }
+
+        desc = costText + "<br>" + desc;
+    }
+
+    return desc;
+    // }
 }
 
 function charDataFromModal(charId) {
@@ -3922,10 +3810,10 @@ function populateCharResources(charId) {
                 resourceImg.className = "char-resource-img";
 
                 if (matName.includes("BD") || matName.includes("TN")) {
-                    resourceImg.src = "icons/SchoolMat/" + matName + ".png";
+                    resourceImg.src = "icons/SchoolMat/" + matName + ".webp";
                 }
                 else {
-                    resourceImg.src = "icons/Artifact/" + matName + ".png";
+                    resourceImg.src = "icons/Artifact/" + matName + ".webp";
                 }
 
                 const resourceText = document.createElement('p');
@@ -4238,82 +4126,30 @@ function updateStarDisplays(charId, fromTemp) {
 
 }
 
-function updateStarDisplay(id, charId, type, fromTemp) {
+function UnloadStudentImgs() {
 
-    var starContainer = document.getElementById(id);
+    let charImgs = $(".main-display-char .char-img");
 
-    var star, star_target, ue, ue_target;
-
-    if (fromTemp) {
-        star = modalStars.star;
-        star_target = modalStars.star_target;
-        ue = modalStars.ue;
-        ue_target = modalStars.ue_target;
+    for (let i = 0; i < charImgs.length; i++) {
+        if (charImgs[i].getAttribute("tempurl")) {
+            continue;
+        }
+        charImgs[i].setAttribute("tempurl", charImgs[i].src);
+        charImgs[i].src = strNullImage;
     }
-    else {
-        var charData = data.characters.find(obj => { return obj.id == charId });
+}
 
-        star = charData.current?.star;
-        star_target = charData.target?.star;
-        ue = charData.current?.ue;
-        ue_target = charData.target?.ue;
+function ReloadStudentImgs() {
+
+    let charImgs = $(".main-display-char .char-img");
+
+    for (let i = 0; i < charImgs.length; i++) {
+        if (!charImgs[i].getAttribute("tempurl")) {
+            continue;
+        }
+        charImgs[i].src = charImgs[i].getAttribute("tempurl");
+        charImgs[i].removeAttribute("tempurl");
     }
-
-    for (s = 0; s < 5; s++) {
-        if (type == "star-current" || type == "star-target") {
-            if (star > s) {
-                starContainer.children[s].style.filter = "grayscale(0)";
-            }
-            else if (type == "star-target" && star_target > s) {
-                starContainer.children[s].style.filter = "grayscale(0) hue-rotate(300deg) saturate(0.9)";
-            }
-            else {
-                starContainer.children[s].style.filter = "grayscale(1)";
-            }
-        }
-        else if (type == "ue-current" || type == "ue-target") {
-            if (ue > s) {
-                starContainer.children[s].style.filter = "grayscale(0) hue-rotate(150deg)";
-            }
-            else if (type == "ue-target" && ue_target > s) {
-                starContainer.children[s].style.filter = "grayscale(0) hue-rotate(40deg) saturate(0.8)";
-            }
-            else {
-                starContainer.children[s].style.filter = "grayscale(1)";
-            }
-        }
-        else if (type == "star-display") {
-            if (star > s) {
-                starContainer.children[s].style.visibility = "";
-                //starContainer.children[s].style.filter = "";
-                starContainer.children[s].src = "icons/Misc/star.png"
-            }
-            else if (star_target > s) {
-                starContainer.children[s].style.visibility = "";
-                //starContainer.children[s].style.filter = "grayscale(0.5) contrast(0.5)";
-                starContainer.children[s].src = "icons/Misc/star-greyed.png"
-            }
-            else {
-                starContainer.children[s].style.visibility = "hidden";
-            }
-        }
-        else if (type == "ue-display") {
-            if (ue > s) {
-                starContainer.children[s].style.visibility = "";
-                //starContainer.children[s].style.filter = "grayscale(0) hue-rotate(150deg)";
-                starContainer.children[s].src = "icons/Misc/star-blue.png"
-            }
-            else if (ue_target > s) {
-                starContainer.children[s].style.visibility = "";
-                //starContainer.children[s].style.filter = "grayscale(0.5) hue-rotate(150deg) contrast(0.5)";
-                starContainer.children[s].src = "icons/Misc/star-blue-greyed.png"
-            }
-            else {
-                starContainer.children[s].style.visibility = "hidden";
-            }
-        }
-    }
-
 }
 
 function openResourceModal() {
@@ -4322,25 +4158,53 @@ function openResourceModal() {
         return;
     }
 
-    freezeBody(true);
+    let openDelay = 0;
 
-    // if (!(bugsNotified['1'] == true)) {
-    //     Swal.fire({
-    //         icon: 'warning',
-    //         title: 'Serious bug',
-    //         text: "Credit required for increasing student's xp level was being overcalculated (in resource modal only) by up to 2x since version 1.2.19, please check the credit required now, it should be significantly decreased as of version 1.2.24",
-    //         color: alertColour
-    //     })
+    if (isIOS) {
+        let test = document.getElementsByClassName("main-display-char");
+        for (let i = 0; i < test.length; i++) {
+            test[i].style.display = "none";
+        }
 
-    //     bugsNotified['1'] = true;
-    //     localStorage.setItem("bugs_notified", JSON.stringify(bugsNotified));
-    // }
+        UnloadStudentImgs();
+
+        document.getElementById("table-parent-1").style.display = "none";
+        document.getElementById("table-parent-2").style.display = "none";
+        document.getElementById("table-parent-3").style.display = "none";
+        document.getElementById("other-resource-wrapper").style.display = "none";
+
+        openDelay = 2500;
+    }
+
+    let modal = document.getElementById("resourceModal");
 
     modalOpen = "resourceModal";
 
-    var modal = document.getElementById("resourceModal");
+    freezeBody(true);
 
-    modal.style.visibility = "visible";
+    setTimeout(() => {
+        modal.style.visibility = "visible";
+
+        if (isIOS) {
+            setTimeout(() => {
+                document.getElementById("table-parent-1").style.display = "";
+            }, 1000);
+            setTimeout(() => {
+                document.getElementById("table-parent-2").style.display = "";
+            }, 2000);
+            setTimeout(() => {
+                document.getElementById("table-parent-3").style.display = "";
+            }, 3000);
+            setTimeout(() => {
+                document.getElementById("other-resource-wrapper").style.display = "";
+                hideEmpty();
+            }, 4000);
+        }
+        else {
+            hideEmpty();
+            hideResourceDisplays();
+        }
+    }, openDelay);
 
     updateAggregateCount();
 
@@ -4357,9 +4221,6 @@ function openResourceModal() {
     else if (resourceDisplay == "Leftover") {
         updateCells(leftoverMatDict, false, 'resource-count-text', 'misc-resource');
     }
-
-    hideEmpty();
-
 
     modal.onclick = function (event) {
         if (event.target == modal) {
@@ -4415,13 +4276,37 @@ function openGearModal() {
         return;
     }
 
-    freezeBody(true);
+    let openDelay = 0;
+
+    if (isIOS) {
+        let test = document.getElementsByClassName("main-display-char");
+        for (let i = 0; i < test.length; i++) {
+            test[i].style.display = "none";
+        }
+
+        UnloadStudentImgs();
+
+        openDelay = 2500;
+    }
+
+    let modal = document.getElementById("gearModal");
 
     modalOpen = "gearModal";
 
-    var modal = document.getElementById("gearModal");
+    freezeBody(true);
 
-    modal.style.visibility = "visible";
+    setTimeout(() => {
+        modal.style.visibility = "visible";
+
+        if (isIOS) {
+            setTimeout(() => {
+                hideEmptyGear();
+            }, 1000);
+        }
+        else {
+            hideEmptyGear();
+        }
+    }, openDelay);
 
     updateAggregateCount();
 
@@ -4440,8 +4325,6 @@ function openGearModal() {
 
     updateCells(ownedMatDict, true, 'ue-count-text', 'abrakadabra');
     updateUeXP();
-
-    hideEmptyGear();
 
     SolveGearFarm();
 
@@ -4562,6 +4445,15 @@ function closeResourceModal() {
 
     modalOpen = "";
 
+    if (isIOS) {
+        let test = document.getElementsByClassName("main-display-char");
+        for (let i = 0; i < test.length; i++) {
+            test[i].style.display = "";
+        }
+
+        ReloadStudentImgs();
+    }
+
 }
 
 function closeGearModal() {
@@ -4576,6 +4468,15 @@ function closeGearModal() {
     modal.style.visibility = "hidden";
 
     modalOpen = "";
+
+    if (isIOS) {
+        let test = document.getElementsByClassName("main-display-char");
+        for (let i = 0; i < test.length; i++) {
+            test[i].style.display = "";
+        }
+
+        ReloadStudentImgs();
+    }
 
 }
 
@@ -4860,11 +4761,12 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
                 const newImg = document.createElement("img");
                 newImg.draggable = false;
                 newImg.className = type + "-icon";
+                newImg.loading = "lazy";
                 if (reorder) {
-                    newImg.src = (imgLoc + rows[row] + "_" + columns[col - 1] + ".png").replace(/ /g, '');
+                    newImg.src = (imgLoc + rows[row] + "_" + columns[col - 1] + "_small.webp").replace(/ /g, '');
                 }
                 else {
-                    newImg.src = (imgLoc + columns[col - 1] + "_" + rows[row] + ".png").replace(/ /g, '');
+                    newImg.src = (imgLoc + columns[col - 1] + "_" + rows[row] + "_small.webp").replace(/ /g, '');
                 }
 
                 const newP = document.createElement("p");
@@ -5035,7 +4937,7 @@ function DisplayMatUsers(mat) {
         charDiv.className = "char-row-mats";
 
         let charImg = document.createElement('img');
-        charImg.src = "icons/Portrait/Icon_" + matUsers[i].charId + ".png";
+        charImg.src = "icons/Portrait/Icon_" + matUsers[i].charId + ".webp";
         if (aprilFools) {
             charImg.src = "icons/Portrait/April/Icon_" + matUsers[i].charId + ".png";
         }
@@ -5991,53 +5893,6 @@ function switchGearDisplay(displayType) {
 
 }
 
-function updateInfoDisplay(character, charId, idInject) {
-
-    var charData = data.characters.find(obj => { return obj.id == charId });
-
-    var skillCurrent = formatLevel("Ex", charData.current?.ex) + formatLevel("Other", charData.current?.basic) +
-        formatLevel("Other", charData.current?.passive) + formatLevel("Other", charData.current?.sub);
-
-    var skillTarget = formatLevel("Ex", charData.target?.ex) + formatLevel("Other", charData.target?.basic) +
-        formatLevel("Other", charData.target?.passive) + formatLevel("Other", charData.target?.sub);
-
-    var gearCurrent = formatLevel("Gear", charData.current?.gear1) + formatLevel("Gear", charData.current?.gear2) + formatLevel("Gear", charData.current?.gear3);
-    var gearTarget = formatLevel("Gear", charData.target?.gear1) + formatLevel("Gear", charData.target?.gear2) +
-        formatLevel("Gear", charData.target?.gear3);
-
-    document.getElementById(character + idInject + "-skill-current").innerText = skillCurrent;
-    if (skillCurrent != skillTarget) {
-        document.getElementById(character + idInject + "-skill-target").innerText = skillTarget;
-    }
-    else {
-        document.getElementById(character + idInject + "-skill-target").innerText = "";
-    }
-
-    document.getElementById(character + idInject + "-gear-current").innerText = gearCurrent;
-    if (gearCurrent != gearTarget) {
-        document.getElementById(character + idInject + "-gear-target").innerText = gearTarget;
-    }
-    else {
-        document.getElementById(character + idInject + "-gear-target").innerText = "";
-    }
-
-    document.getElementById(character + idInject + "-level-current").innerText = formatLevel("Level", charData.current.level);
-    if (charData.current.level != charData.target.level) {
-        document.getElementById(character + idInject + "-level-target").innerText = formatLevel("Level", charData.target.level);
-    }
-    else {
-        document.getElementById(character + idInject + "-level-target").innerText = "";
-    }
-
-    document.getElementById(character + idInject + "-bond-current").innerText = charData.current?.bond;
-    if (charData.current?.bond != charData.target?.bond) {
-        document.getElementById(character + idInject + "-bond-target").innerText = charData.target?.bond;
-    }
-    else {
-        document.getElementById(character + idInject + "-bond-target").innerText = "";
-    }
-}
-
 // function transferDialog() {
 
 //     Swal.fire({
@@ -6175,199 +6030,6 @@ function formatLevel(type, level) {
         return '';
     }
 
-}
-
-function createCharBox(charId, container, location) {
-
-    let idInject = "";
-    let charName = charNames.get(charId.toString());
-
-    if (location == "teams") {
-        idInject = "-teams";
-    }
-    else if (location == "borrow") {
-        idInject = "-borrow";
-        borrowed = true;
-    }
-
-    const newDiv = document.createElement("div");
-    if (location == "main") {
-        newDiv.className = "charBox main-display-char";
-        newDiv.id = "char_" + charId;
-    }
-    else if (location == "teams") {
-        newDiv.className = "charBox teams-display-char";
-        newDiv.id = "char_teams_" + charId;
-    }
-    else if (location == "borrow") {
-        newDiv.className = "charBox teams-display-char";
-        newDiv.id = "char_borrow_" + charId;
-    }
-
-    if (location == "main") {
-        if (disabledChars.includes(charId)) {
-            newDiv.classList.add("deselected");
-        } else {
-            newDiv.classList.add("selected");
-        }
-
-        if (window.matchMedia("(pointer: fine)").matches) {
-            newDiv.title = GetLanguageString("tooltip-charhoverinfo");
-        }
-    }
-
-    const newContent = document.createElement("div");
-    newContent.className = "charBoxwrap";
-
-    const newContentBox = document.createElement("div");
-    newContentBox.className = "main-box-content";
-
-    let newStarContainer;
-    let newUEContainer;
-    let newBondContainer;
-
-    let char = data.characters.find(obj => { return obj.id == charId });
-
-    if (location != "borrow" && char) {
-
-        newStarContainer = document.createElement("div");
-        newStarContainer.className = "star-container";
-        newStarContainer.id = charName + idInject + "-star-container";
-
-        newBondContainer = document.createElement("div");
-        newBondContainer.className = "char-heart-container";
-
-        const newBondImg = document.createElement("img");
-        newBondImg.src = "icons/Misc/bond.png";
-        newBondImg.draggable = false;
-
-        const newBondP = document.createElement("p");
-        newBondP.id = charName + idInject + "-bond-current";
-        newBondP.style = "transform: translate(-50%, -95%)";
-
-        const newBondP2 = document.createElement("p");
-        newBondP2.id = charName + idInject + "-bond-target";
-        newBondP2.style = "transform: translate(-50%, -25%)";
-
-        newBondContainer.appendChild(newBondImg);
-        newBondContainer.appendChild(newBondP);
-        newBondContainer.appendChild(newBondP2);
-
-        for (i = 0; i < 5; i++) {
-            const newStar = document.createElement("img");
-            newStar.draggable = false;
-            newStar.className = "display-star";
-            newStar.src = "icons/Misc/star.png";
-
-            newStarContainer.appendChild(newStar);
-        }
-
-        newUEContainer = document.createElement("div");
-        newUEContainer.className = "ue-container";
-        newUEContainer.id = charName + idInject + "-ue-container";
-
-        for (i = 0; i < 5; i++) {
-            const newStar = document.createElement("img");
-            newStar.draggable = false;
-            newStar.className = "display-star";
-            newStar.src = "icons/Misc/star.png";
-
-            newUEContainer.appendChild(newStar);
-        }
-
-        var classes = ["skill-bar", "gear-bar", "level-bar"];
-
-        for (i = 0; i < 3; i++) {
-            const newBar = document.createElement("div");
-            newBar.className = classes[i] + " info-bar";
-
-            const newP = document.createElement("p");
-            newP.className = "info-display";
-            newP.id = charName + idInject + "-" + classes[i].substring(0, classes[i].indexOf('-')) + "-current";
-            newBar.appendChild(newP);
-
-            const newP2 = document.createElement("p");
-            newP2.className = "info-display";
-            newP2.id = charName + idInject + "-" + classes[i].substring(0, classes[i].indexOf('-')) + "-target";
-            newBar.appendChild(newP2);
-
-            newContentBox.appendChild(newBar);
-        }
-
-    }
-
-    const newImg = document.createElement("img");
-    newImg.src = "icons/Portrait/Icon_" + charId + ".png";
-    if (aprilFools) {
-        newImg.src = "icons/Portrait/April/Icon_" + charId + ".png";
-    }
-    newImg.draggable = false;
-    newImg.className = "char-img";
-    if (location == "main") {
-        newImg.loading = "lazy";
-    }
-
-    const nameDiv = document.createElement("div");
-    nameDiv.className = "nameBar";
-
-    const nameTag = document.createElement("p");
-    if (charName.includes(' ')) {
-        nameTag.innerText = charName.substring(0, charName.indexOf(' '));
-    }
-    else if (charName.includes('(')) {
-        nameTag.innerText = charName.substring(0, charName.indexOf('('));
-    }
-    else if (charName.includes('（')) {
-        nameTag.innerText = charName.substring(0, charName.indexOf('（'));
-    }
-    else {
-        nameTag.innerText = charName;
-    }
-
-    let borrowDiv, borrowTag;
-
-    if (location == "borrow") {
-        borrowDiv = document.createElement("div");
-        borrowDiv.className = "borrowBar";
-
-        borrowTag = document.createElement("p");
-        borrowTag.innerText = GetLanguageString("label-borrowed");
-    }
-
-    newContentBox.appendChild(newImg);
-    newContentBox.appendChild(nameDiv).appendChild(nameTag);
-    if (location == "borrow") {
-        newContentBox.appendChild(borrowDiv).appendChild(borrowTag);
-    }
-
-    newContent.appendChild(newContentBox);
-
-    newDiv.appendChild(newContent);
-    if (location != "borrow" && char) {
-        newDiv.appendChild(newStarContainer);
-        newDiv.appendChild(newUEContainer);
-        newDiv.appendChild(newBondContainer);
-    }
-    if (location == "main") {
-        newDiv.onclick = openModal
-    }
-
-    if (location == "main") {
-
-        let lastNode = document.getElementById('addCharButton')
-
-        container.insertBefore(newDiv, lastNode);
-    }
-    else if (location == "teams" || location == "borrow") {
-
-        container.appendChild(newDiv);
-    }
-
-    if (location != "borrow" && char) {
-        updateInfoDisplay(charName, charId, idInject);
-        updateStarDisplay(charName + idInject + "-star-container", charId, "star-display", false);
-        updateStarDisplay(charName + idInject + "-ue-container", charId, "ue-display", false);
-    }
 }
 
 function getOffset(el) {

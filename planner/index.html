@@ -24,7 +24,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="manifest.json" />
-    <link rel="stylesheet" href="css/styles.css?36">
+    <link rel="stylesheet" href="css/styles.css?37">
     <title>Blue Archive Resource Planner</title>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://justin163.com/planner">
@@ -38,6 +38,7 @@
     <meta name="theme-color" content="#ff00bb">
     <style id="toggleViewStyle" class="modifyable"></style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="js/plannerFast.js?3"></script>
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
@@ -47,12 +48,10 @@
     <script src="packages/javascript-lp-solver/solver.js"></script>
     <script src="packages/html2canvas/html2canvas.js"></script>
     <link rel="stylesheet" href="packages/tippyjs/light.css" />
-    <script src="js/config.js?18"></script>
-    <script src="js/common.js?10"></script>
-    <script src="js/pageLogic.js?113"></script>
+    <script src="js/config.js?19"></script>
     <script src="js/filters.js?6"></script>
     <script src="js/lzma_worker.js?1"></script>
-    <script src="js/cloudAPI.js?5"></script>
+    <script src="js/cloudAPI.js?6"></script>
     <style id="toggleViewStyle" class="modifyable"></style>
 </head>
 
@@ -63,6 +62,7 @@
         <ul class="nav-list">
             <li><a class="active display-string" data-id="page-resource-planner"></a></li>
             <li><a href="events.html" class="display-string" data-id="page-event-planner"></a></li>
+            <li><a href="raids.html" class="display-string" data-id="page-raids"></a></li>
             <li><a href="changelog.html" class="display-string" data-id="page-changelog"></a></li>
             <li><a href="privacy.html" class="display-string" data-id="page-privacy"></a></li>
             <li><a href="credit.html" class="display-string" data-id="page-credit"></a></li>
@@ -77,6 +77,7 @@
         <ul class="mobile-links">
             <li><a class="active display-string" data-id="page-resource-planner"></a></li>
             <li><a href="events.html" class="display-string" data-id="page-event-planner"></a></li>
+            <li><a href="raids.html" class="display-string" data-id="page-raids"></a></li>
             <li><a href="changelog.html" class="display-string" data-id="page-changelog"></a></li>
             <li><a href="privacy.html" class="display-string" data-id="page-privacy"></a></li>
             <li><a href="credit.html" class="display-string" data-id="page-credit"></a></li>
@@ -1012,7 +1013,7 @@
                     <p class="display-string" data-id="footer-resources"></p>
                 </div>
                 <div class="footer-button" onclick="openGearModal()" style="display: flex; align-items: center;">
-                    <img draggable="false" src="icons/Gear/T6_Badge.png">
+                    <img draggable="false" src="icons/Gear/T6_Badge_small.webp">
                     <p class="display-string" data-id="footer-gear"></p>
                 </div>
                 <div class="footer-button" onclick="teamsToggle()">
