@@ -4184,7 +4184,7 @@ function openResourceModal() {
         document.getElementById("table-parent-3").style.display = "none";
         document.getElementById("other-resource-wrapper").style.display = "none";
 
-        openDelay = 1500;
+        openDelay = 2500;
     }
 
     let modal = document.getElementById("resourceModal");
@@ -4195,8 +4195,6 @@ function openResourceModal() {
 
     setTimeout(() => {
         modal.style.visibility = "visible";
-
-        hideEmpty();
 
         if (isIOS) {
             setTimeout(() => {
@@ -4210,7 +4208,11 @@ function openResourceModal() {
             }, 3000);
             setTimeout(() => {
                 document.getElementById("other-resource-wrapper").style.display = "";
+                hideEmpty();
             }, 4000);
+        }
+        else {
+            hideEmpty();
         }
     }, openDelay);
 
@@ -4294,7 +4296,7 @@ function openGearModal() {
 
         UnloadStudentImgs();
 
-        openDelay = 1500;
+        openDelay = 2500;
     }
 
     let modal = document.getElementById("gearModal");
@@ -4306,7 +4308,14 @@ function openGearModal() {
     setTimeout(() => {
         modal.style.visibility = "visible";
 
-        hideEmptyGear();
+        if (isIOS) {
+            setTimeout(() => {
+                hideEmptyGear();
+            }, 1000);
+        }
+        else {
+            hideEmptyGear();
+        }
     }, openDelay);
 
     updateAggregateCount();
