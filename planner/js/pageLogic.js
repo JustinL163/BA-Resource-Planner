@@ -4179,6 +4179,11 @@ function openResourceModal() {
 
         UnloadStudentImgs();
 
+        document.getElementById("table-parent-1").style.display = "none";
+        document.getElementById("table-parent-2").style.display = "none";
+        document.getElementById("table-parent-3").style.display = "none";
+        document.getElementById("other-resource-wrapper").style.display = "none";
+
         openDelay = 1500;
     }
 
@@ -4186,12 +4191,27 @@ function openResourceModal() {
 
     modalOpen = "resourceModal";
 
-    setTimeout(() => {
-        freezeBody(true);
+    freezeBody(true);
 
+    setTimeout(() => {
         modal.style.visibility = "visible";
 
         hideEmpty();
+
+        if (isIOS) {
+            setTimeout(() => {
+                document.getElementById("table-parent-1").style.display = "";
+            }, 1000);
+            setTimeout(() => {
+                document.getElementById("table-parent-2").style.display = "";
+            }, 2000);
+            setTimeout(() => {
+                document.getElementById("table-parent-3").style.display = "";
+            }, 3000);
+            setTimeout(() => {
+                document.getElementById("other-resource-wrapper").style.display = "";
+            }, 4000);
+        }
     }, openDelay);
 
     updateAggregateCount();
@@ -4281,9 +4301,9 @@ function openGearModal() {
 
     modalOpen = "gearModal";
 
-    setTimeout(() => {
-        freezeBody(true);
+    freezeBody(true);
 
+    setTimeout(() => {
         modal.style.visibility = "visible";
 
         hideEmptyGear();
