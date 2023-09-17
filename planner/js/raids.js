@@ -1267,7 +1267,7 @@ function SearchSelection(id) {
     let searchSelected = document.getElementById(id);
     let studentId = searchSelected.getAttribute("character-id");
 
-    let studentType = charlist[studentId].Type;
+    let studentType = GetOldTypeFromSquadType(charlist[studentId].SquadType);
 
 
     if (charSearchMode == "submission-slot") {
