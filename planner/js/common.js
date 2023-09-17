@@ -127,6 +127,15 @@ function InitKeyTracking() {
     }, false);
 }
 
+function GetOldTypeFromSquadType(squadType) {
+    if (squadType == "Main") {
+        return "Striker";
+    }
+    else if (squadType == "Support") {
+        return "Special";
+    }
+}
+
 function ToggleImageStyle() {
 
     if (aprilFools) {

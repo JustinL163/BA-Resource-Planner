@@ -75,7 +75,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/charlist.json?24').done(function (json) {
+    $.getJSON('json/skillinfo/en.json?1').done(function (json) {
         charlist = json;
         checkResources();
     });
@@ -238,7 +238,7 @@ function GenerateEventsList() {
         if (eventName != "aha-conquest") {
             for (let p = 0; p < previewItems?.length; p++) {
                 let previewImg = document.createElement("img");
-                SetItemImage(previewImg, previewItems[p]);
+                SetItemImage(previewImg, previewItems[p], null, true);
                 previewImg.className = "event-reward-preview preview-" + previewItems[p].preview;
                 eventDiv.appendChild(previewImg);
             }
@@ -674,7 +674,7 @@ function CalculateBonuses() {
                 continue;
             }
 
-            let type = charlist[bonus_units[ii].id].Type;
+            let type = GetOldTypeFromSquadType(charlist[bonus_units[ii].id].SquadType);
 
             if (type == "Striker" && strikersUsed < 4) {
                 strikersUsed++;
@@ -1294,7 +1294,7 @@ function CreateShopItem(item, currency) {
 
     let itemImg = document.createElement('img');
 
-    SetItemImage(itemImg, item, '');
+    SetItemImage(itemImg, item, null, false);
 
     itemDiv.appendChild(itemImg);
 
@@ -1408,7 +1408,7 @@ function CreateBoxItem(item) {
 
     let itemImg = document.createElement('img');
 
-    SetItemImage(itemImg, item, '');
+    SetItemImage(itemImg, item, null, false);
 
     itemDiv.appendChild(itemImg);
 
@@ -1432,11 +1432,16 @@ function CreateBoxItem(item) {
     return itemDiv;
 }
 
-function SetItemImage(itemImg, item, replacementId) {
+function SetItemImage(itemImg, item, replacementId, small) {
 
     let itemId = item.id;
     if (replacementId) {
         itemId = replacementId;
+    }
+
+    let smallInsert = "";
+    if (small) {
+        smallInsert = "_small";
     }
 
     if (item.type == "Eleph") {
@@ -1455,10 +1460,10 @@ function SetItemImage(itemImg, item, replacementId) {
         let matName = matLookup.map[itemId];
 
         if (parseInt(itemId) < 1000) {
-            itemImg.src = "icons/Artifact/" + matName + ".png";
+            itemImg.src = "icons/Artifact/" + matName + smallInsert + ".webp";
         }
         else {
-            itemImg.src = "icons/SchoolMat/" + matName + ".png";
+            itemImg.src = "icons/SchoolMat/" + matName + smallInsert + ".webp";
         }
     }
     else if (item.type == "Furniture") {
@@ -1850,10 +1855,10 @@ function CreateDropsDiv(drops) {
         else if (matId) {
 
             if (parseInt(matId) < 1000) {
-                dropImg.src = "icons/Artifact/" + drop + ".png";
+                dropImg.src = "icons/Artifact/" + drop + ".webp";
             }
             else {
-                dropImg.src = "icons/SchoolMat/" + drop + ".png";
+                dropImg.src = "icons/SchoolMat/" + drop + ".webp";
             }
 
             if (Number.isInteger(drops[drop])) {
@@ -2136,12 +2141,12 @@ function GenerateMaterialSelections() {
         let matId = matLookup.reverseMap[drop];
 
         if (matId && matId < 1000) {
-            matImg.src = "icons/Artifact/" + drop + ".png";
+            matImg.src = "icons/Artifact/" + drop + ".webp";
             dropSliced = drop.slice(0, -2);
             dropRarity = drop.slice(-1);
         }
         else {
-            matImg.src = "icons/SchoolMat/" + drop + ".png";
+            matImg.src = "icons/SchoolMat/" + drop + ".webp";
             dropSliced = drop.slice(5);
             dropRarity = drop.slice(3, 4);
         }
@@ -3341,7 +3346,7 @@ function UpdateRewardsObtained(totalCurrencies, energyCost, totalArtifacts, tota
             currentMatType = dropSliced;
         }
 
-        currentSubDiv.appendChild(CreateRewardItem("icons/Artifact/" + name + ".png", totalArtifacts[name].toFixed(1),
+        currentSubDiv.appendChild(CreateRewardItem("icons/Artifact/" + name + ".webp", totalArtifacts[name].toFixed(1),
             'drop-resource-rarity-' + dropRarity + ' drop-resource'));
     })
 
@@ -3362,7 +3367,7 @@ function UpdateRewardsObtained(totalCurrencies, energyCost, totalArtifacts, tota
             currentMatType = dropSliced;
         }
 
-        currentSubDiv.appendChild(CreateRewardItem("icons/SchoolMat/" + name + ".png", totalSchoolMats[name].toFixed(1), ''));
+        currentSubDiv.appendChild(CreateRewardItem("icons/SchoolMat/" + name + ".webp", totalSchoolMats[name].toFixed(1), ''));
         //'drop-resource-rarity-' + dropRarity + ' drop-resource'));
     })
 
@@ -3981,7 +3986,7 @@ function CreateLessonRewardItem(item, lesson) {
 
     let itemImg = document.createElement('img');
 
-    SetItemImage(itemImg, item, replacementId);
+    SetItemImage(itemImg, item, replacementId, false);
 
     itemDiv.appendChild(itemImg);
 

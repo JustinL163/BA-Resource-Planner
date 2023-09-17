@@ -384,14 +384,14 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.3.19".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.4.0".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         Swal.fire({
-            title: GetLanguageString("text-updatedversionprefix") + "1.3.19",
+            title: GetLanguageString("text-updatedversionprefix") + "1.4.0",
             color: alertColour,
             html: GetLanguageString("text-updatemessage")
         })
 
-        data.site_version = "1.3.19";
+        data.site_version = "1.4.0";
         saveToLocalStorage(false);
     }
 
@@ -3205,15 +3205,6 @@ function updateTextBackground(id, property) {
 
 function GetMoodFromAdaptation(adaptationValue) {
     return ["D", "C", "B", "A", "S", "SS"][adaptationValue];
-}
-
-function GetOldTypeFromSquadType(squadType) {
-    if (squadType == "Main") {
-        return "Striker";
-    }
-    else if (squadType == "Support") {
-        return "Special";
-    }
 }
 
 function GetOldTerrain(newTerrain) {

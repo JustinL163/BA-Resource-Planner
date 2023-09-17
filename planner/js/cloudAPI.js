@@ -258,3 +258,70 @@ function UploadSubmission(submissionObject, server, type, uid, difficulty) {
         "Teams": submissionObject.teams
     }))
 }
+
+function EditSubmission(submissionObject, server, type, uid, difficulty, uuid) {
+
+    if (!gAuthkey || !gUsername) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: "Please register or log into a cloud save account, go to the main planner page to do so for now (this page is still in progress)",
+            color: alertColour
+        })
+        return;
+    }
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', 'https://api.justin163.com/editraid');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Username', gUsername);
+    xhr.setRequestHeader('Auth-Key', gAuthkey);
+    xhr.onload = function () {
+
+        if (this.status == 200) {
+
+            if (this.response) {
+                let respJSON = JSON.parse(this.response);
+
+                if (respJSON && respJSON.UUID) {
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Submitted',
+                        text: "Successfully edited: " + respJSON.UUID,
+                        color: alertColour
+                    })
+
+                    LocalSubmission(submissionObject, difficulty, respJSON.UUID);
+                }
+            }
+        }
+        else {
+
+            if (this.response) {
+                let respJSON = JSON.parse(this.response);
+
+                if (respJSON && respJSON.Error) {
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: respJSON.Error,
+                        color: alertColour
+                    })
+                }
+            }
+        }
+    }
+    xhr.send(JSON.stringify({
+        "Server": server,
+        "Type": type,
+        "Raid_Index": uid,
+        "Difficulty": difficulty,
+        "Score": submissionObject.score,
+        "Level": submissionObject.level,
+        "Video_Link": submissionObject.link,
+        "Teams": submissionObject.teams,
+        "UUID": uuid
+    }))
+}
