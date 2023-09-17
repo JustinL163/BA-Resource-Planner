@@ -4204,6 +4204,7 @@ function openResourceModal() {
         }
         else {
             hideEmpty();
+            hideResourceDisplays();
         }
     }, openDelay);
 
