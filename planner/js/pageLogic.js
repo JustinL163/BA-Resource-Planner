@@ -208,25 +208,25 @@ function init() {
             data.groups = {};
         }
 
-        for (var i = 0; i < data.characters.length; i++) {
+        // for (var i = 0; i < data.characters.length; i++) {
 
-            // remove later maybe
-            if (data.characters[i].eleph == undefined) {
-                let eleph = data.characters[i].eleph = {};
-                eleph.owned = 0;
-                eleph.unlocked = true;
-                eleph.cost = 1;
-                eleph.purchasable = 20;
-                eleph.farm_nodes = 0;
-                eleph.node_refresh = false;
-                eleph.use_eligma = false;
-                eleph.use_shop = false;
-            }
+        //     // remove later maybe
+        //     if (data.characters[i].eleph == undefined) {
+        //         let eleph = data.characters[i].eleph = {};
+        //         eleph.owned = 0;
+        //         eleph.unlocked = true;
+        //         eleph.cost = 1;
+        //         eleph.purchasable = 20;
+        //         eleph.farm_nodes = 0;
+        //         eleph.node_refresh = false;
+        //         eleph.use_eligma = false;
+        //         eleph.use_shop = false;
+        //     }
 
-            if (document.getElementById('char_' + data.characters[i].id) == undefined) {
-                createCharBox(data.characters[i].id, charsContainer, "main");
-            }
-        }
+        //     if (document.getElementById('char_' + data.characters[i].id) == undefined) {
+        //         createCharBox(data.characters[i].id, charsContainer, "main");
+        //     }
+        // }
 
         if (data.owned_materials != undefined) {
             for (key in data.owned_materials) {
@@ -4152,10 +4152,6 @@ function UnloadStudentImgs() {
 
 function ReloadStudentImgs() {
 
-    if (isIOS) {
-        return;
-    }
-
     let charImgs = $(".main-display-char .char-img");
 
     for (let i = 0; i < charImgs.length; i++) {
@@ -4173,6 +4169,8 @@ function openResourceModal() {
         return;
     }
 
+    let openDelay = 0;
+
     if (isIOS) {
         let test = document.getElementsByClassName("main-display-char");
         for (let i = 0; i < test.length; i++) {
@@ -4180,15 +4178,21 @@ function openResourceModal() {
         }
 
         UnloadStudentImgs();
+
+        openDelay = 1500;
     }
 
-    freezeBody(true);
+    let modal = document.getElementById("resourceModal");
 
     modalOpen = "resourceModal";
 
-    var modal = document.getElementById("resourceModal");
+    setTimeout(() => {
+        freezeBody(true);
 
-    modal.style.visibility = "visible";
+        modal.style.visibility = "visible";
+
+        hideEmpty();
+    }, openDelay);
 
     updateAggregateCount();
 
@@ -4205,9 +4209,6 @@ function openResourceModal() {
     else if (resourceDisplay == "Leftover") {
         updateCells(leftoverMatDict, false, 'resource-count-text', 'misc-resource');
     }
-
-    hideEmpty();
-
 
     modal.onclick = function (event) {
         if (event.target == modal) {
@@ -4263,6 +4264,8 @@ function openGearModal() {
         return;
     }
 
+    let openDelay = 0;
+
     if (isIOS) {
         let test = document.getElementsByClassName("main-display-char");
         for (let i = 0; i < test.length; i++) {
@@ -4270,52 +4273,52 @@ function openGearModal() {
         }
 
         UnloadStudentImgs();
+
+        openDelay = 1500;
     }
 
-    basicAlert("Short delay before modal");
+    let modal = document.getElementById("gearModal");
+
+    modalOpen = "gearModal";
 
     setTimeout(() => {
         freezeBody(true);
 
-        modalOpen = "gearModal";
-
-        var modal = document.getElementById("gearModal");
-
         modal.style.visibility = "visible";
 
-        updateAggregateCount();
-
-        if (gearDisplay == "Remaining") {
-            updateCells(neededMatDict, false, 'gear-count-text', 'misc-gear');
-        }
-        else if (gearDisplay == "Owned") {
-            updateCells(ownedMatDict, true, 'gear-count-text', 'misc-gear');
-        }
-        else if (gearDisplay == "Total") {
-            updateCells(requiredMatDict, false, 'gear-count-text', 'misc-gear');
-        }
-        else if (gearDisplay == "Leftover") {
-            updateCells(leftoverMatDict, false, "gear-count-text", "misc-gear");
-        }
-
-        updateCells(ownedMatDict, true, 'ue-count-text', 'abrakadabra');
-        updateUeXP();
-
         hideEmptyGear();
+    }, openDelay);
 
-        SolveGearFarm();
+    updateAggregateCount();
 
-        modal.onclick = function (event) {
-            if (event.target == modal) {
-                closeGearModal();
-            }
-        };
+    if (gearDisplay == "Remaining") {
+        updateCells(neededMatDict, false, 'gear-count-text', 'misc-gear');
+    }
+    else if (gearDisplay == "Owned") {
+        updateCells(ownedMatDict, true, 'gear-count-text', 'misc-gear');
+    }
+    else if (gearDisplay == "Total") {
+        updateCells(requiredMatDict, false, 'gear-count-text', 'misc-gear');
+    }
+    else if (gearDisplay == "Leftover") {
+        updateCells(leftoverMatDict, false, "gear-count-text", "misc-gear");
+    }
 
-        gtag('event', 'modal_view', {
-            'event_label': 'gear',
-            'modal_name': 'gear'
-        })
-    }, 2000);
+    updateCells(ownedMatDict, true, 'ue-count-text', 'abrakadabra');
+    updateUeXP();
+
+    SolveGearFarm();
+
+    modal.onclick = function (event) {
+        if (event.target == modal) {
+            closeGearModal();
+        }
+    };
+
+    gtag('event', 'modal_view', {
+        'event_label': 'gear',
+        'modal_name': 'gear'
+    })
 
 }
 

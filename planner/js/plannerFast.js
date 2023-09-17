@@ -120,6 +120,12 @@ $(document).ready(function () {
             }
         }
 
+        for (var i = 0; i < data.characters.length; i++) {
+            if (document.getElementById('char_' + data.characters[i].id) == undefined) {
+                createCharBox(data.characters[i].id, charsContainer, "main");
+            }
+        }
+
         if (chartranslate) {
             ShowNames(chartranslate);
         }
