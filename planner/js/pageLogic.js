@@ -3183,10 +3183,10 @@ function saveCharChanges() {
 
     calculateCharResources(charData, false);
 
-    updateInfoDisplay(charName, charId, "");
+    updateInfoDisplay(charId, "", charData);
 
-    updateStarDisplay(charName + "-star-container", charId, "star-display", true);
-    updateStarDisplay(charName + "-ue-container", charId, "ue-display", true);
+    updateStarDisplay(charId + "-star-container", charId, "star-display", true, charData);
+    updateStarDisplay(charId + "-ue-container", charId, "ue-display", true, charData);
 
     closeModal(true);
 }
