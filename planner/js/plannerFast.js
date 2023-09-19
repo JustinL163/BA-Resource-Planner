@@ -207,7 +207,7 @@ function createCharBox(charId, container, location) {
         newBondContainer.className = "char-heart-container";
 
         const newBondImg = document.createElement("img");
-        newBondImg.src = "icons/Misc/bond.png";
+        newBondImg.src = "icons/Misc/bondheart.png";
         newBondImg.draggable = false;
 
         const newBondP = document.createElement("p");
@@ -226,7 +226,7 @@ function createCharBox(charId, container, location) {
             const newStar = document.createElement("img");
             newStar.draggable = false;
             newStar.className = "display-star";
-            newStar.src = "icons/Misc/star.png";
+            newStar.src = "icons/Misc/mysticstar.png";
 
             newStarContainer.appendChild(newStar);
         }
@@ -239,7 +239,7 @@ function createCharBox(charId, container, location) {
             const newStar = document.createElement("img");
             newStar.draggable = false;
             newStar.className = "display-star";
-            newStar.src = "icons/Misc/star.png";
+            newStar.src = "icons/Misc/mysticstar.png";
 
             newUEContainer.appendChild(newStar);
         }
@@ -439,12 +439,12 @@ function updateStarDisplay(id, charId, type, fromTemp, charData) {
             if (star > s) {
                 starContainer.children[s].style.visibility = "";
                 //starContainer.children[s].style.filter = "";
-                starContainer.children[s].src = "icons/Misc/star.png"
+                starContainer.children[s].src = "icons/Misc/mysticstar.png"
             }
             else if (star_target > s) {
                 starContainer.children[s].style.visibility = "";
                 //starContainer.children[s].style.filter = "grayscale(0.5) contrast(0.5)";
-                starContainer.children[s].src = "icons/Misc/star-greyed.png"
+                starContainer.children[s].src = "icons/Misc/mysticstar-greyed.png"
             }
             else {
                 starContainer.children[s].style.visibility = "hidden";
@@ -454,12 +454,12 @@ function updateStarDisplay(id, charId, type, fromTemp, charData) {
             if (ue > s) {
                 starContainer.children[s].style.visibility = "";
                 //starContainer.children[s].style.filter = "grayscale(0) hue-rotate(150deg)";
-                starContainer.children[s].src = "icons/Misc/star-blue.png"
+                starContainer.children[s].src = "icons/Misc/mysticstar-blue.png"
             }
             else if (ue_target > s) {
                 starContainer.children[s].style.visibility = "";
                 //starContainer.children[s].style.filter = "grayscale(0.5) hue-rotate(150deg) contrast(0.5)";
-                starContainer.children[s].src = "icons/Misc/star-blue-greyed.png"
+                starContainer.children[s].src = "icons/Misc/mysticstar-blue-greyed.png"
             }
             else {
                 starContainer.children[s].style.visibility = "hidden";
