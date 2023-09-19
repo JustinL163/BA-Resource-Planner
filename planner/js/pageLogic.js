@@ -197,6 +197,10 @@ function init() {
         language = fastLanguage;
     }
 
+    if (fastAprilFools) {
+        aprilFools = fastAprilFools;
+    }
+
     buildLanguages();
     document.getElementById('languages').value = language;
 
