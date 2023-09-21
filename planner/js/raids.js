@@ -44,12 +44,12 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?13').done(function (json) {
+    $.getJSON('json/strings.json?14').done(function (json) {
         language_strings = json;
         checkResources();
     });
 
-    $.getJSON('json/raids.json?2').done(function (json) {
+    $.getJSON('json/raids.json?3').done(function (json) {
         raid_history = json;
         checkResources();
     });

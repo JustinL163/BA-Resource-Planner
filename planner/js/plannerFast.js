@@ -30,7 +30,7 @@ $.getJSON('json/skillinfo/en.json?1').done(function (json) {
     }
 });
 
-$.getJSON('json/strings.json?13').done(function (json) {
+$.getJSON('json/strings.json?14').done(function (json) {
     language_strings = json;
     if (uiReady) {
         updateUiLanguage();
@@ -100,6 +100,8 @@ $(document).ready(function () {
         }
 
         if (data.characters) {
+            DupeCheck();
+
             for (let i = 0; i < data.characters.length; i++) {
                 dataCharIndex[data.characters[i].id] = i;
             }
@@ -145,6 +147,27 @@ $(document).ready(function () {
         }
     }
 })
+
+function DupeCheck() {
+
+    let studentIds = [];
+    let anyDupes = false;
+    for (let i = 0; i < data.characters.length; i++) {
+        if (studentIds.includes(data.characters[i].id)) {
+            data.characters[i] = "dupe";
+            anyDupes = true;
+        }
+        studentIds.push(data.characters[i].id);
+    }
+
+    if (anyDupes) {
+        data.characters = data.characters.filter(a => a !== "dupe");
+
+        localStorage.setItem("save-data", JSON.stringify(data));
+
+        location.reload();
+    }
+}
 
 function createCharBox(charId, container, location) {
 
