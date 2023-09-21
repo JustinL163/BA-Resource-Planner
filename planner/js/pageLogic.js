@@ -4204,38 +4204,37 @@ function openResourceModal() {
                 hideEmpty();
             }, 4000);
         }
-        else {
-            hideEmpty();
+
+        updateAggregateCount();
+
+        if (resourceDisplay == "Remaining") {
+            updateCells(neededMatDict, false, 'resource-count-text', 'misc-resource');
             hideResourceDisplays();
         }
-    }, openDelay);
-
-    updateAggregateCount();
-
-    if (resourceDisplay == "Remaining") {
-        updateCells(neededMatDict, false, 'resource-count-text', 'misc-resource');
-        hideResourceDisplays();
-    }
-    else if (resourceDisplay == "Owned") {
-        updateCells(ownedMatDict, true, 'resource-count-text', 'misc-resource');
-    }
-    else if (resourceDisplay == "Total") {
-        updateCells(requiredMatDict, false, 'resource-count-text', 'misc-resource');
-    }
-    else if (resourceDisplay == "Leftover") {
-        updateCells(leftoverMatDict, false, 'resource-count-text', 'misc-resource');
-    }
-
-    modal.onclick = function (event) {
-        if (event.target == modal) {
-            closeResourceModal();
+        else if (resourceDisplay == "Owned") {
+            updateCells(ownedMatDict, true, 'resource-count-text', 'misc-resource');
         }
-    };
+        else if (resourceDisplay == "Total") {
+            updateCells(requiredMatDict, false, 'resource-count-text', 'misc-resource');
+        }
+        else if (resourceDisplay == "Leftover") {
+            updateCells(leftoverMatDict, false, 'resource-count-text', 'misc-resource');
+        }
 
-    gtag('event', 'modal_view', {
-        'event_label': 'resource',
-        'modal_name': 'resource'
-    })
+        modal.onclick = function (event) {
+            if (event.target == modal) {
+                closeResourceModal();
+            }
+        };
+
+        gtag('event', 'modal_view', {
+            'event_label': 'resource',
+            'modal_name': 'resource'
+        })
+
+        hideEmpty();
+        hideResourceDisplays();
+    }, openDelay);
 
 }
 
@@ -4307,41 +4306,40 @@ function openGearModal() {
                 hideEmptyGear();
             }, 1000);
         }
-        else {
-            hideEmptyGear();
+
+        updateAggregateCount();
+
+        if (gearDisplay == "Remaining") {
+            updateCells(neededMatDict, false, 'gear-count-text', 'misc-gear');
         }
+        else if (gearDisplay == "Owned") {
+            updateCells(ownedMatDict, true, 'gear-count-text', 'misc-gear');
+        }
+        else if (gearDisplay == "Total") {
+            updateCells(requiredMatDict, false, 'gear-count-text', 'misc-gear');
+        }
+        else if (gearDisplay == "Leftover") {
+            updateCells(leftoverMatDict, false, "gear-count-text", "misc-gear");
+        }
+
+        updateCells(ownedMatDict, true, 'ue-count-text', 'abrakadabra');
+        updateUeXP();
+
+        SolveGearFarm();
+
+        modal.onclick = function (event) {
+            if (event.target == modal) {
+                closeGearModal();
+            }
+        };
+
+        gtag('event', 'modal_view', {
+            'event_label': 'gear',
+            'modal_name': 'gear'
+        })
+
+        hideEmptyGear();
     }, openDelay);
-
-    updateAggregateCount();
-
-    if (gearDisplay == "Remaining") {
-        updateCells(neededMatDict, false, 'gear-count-text', 'misc-gear');
-    }
-    else if (gearDisplay == "Owned") {
-        updateCells(ownedMatDict, true, 'gear-count-text', 'misc-gear');
-    }
-    else if (gearDisplay == "Total") {
-        updateCells(requiredMatDict, false, 'gear-count-text', 'misc-gear');
-    }
-    else if (gearDisplay == "Leftover") {
-        updateCells(leftoverMatDict, false, "gear-count-text", "misc-gear");
-    }
-
-    updateCells(ownedMatDict, true, 'ue-count-text', 'abrakadabra');
-    updateUeXP();
-
-    SolveGearFarm();
-
-    modal.onclick = function (event) {
-        if (event.target == modal) {
-            closeGearModal();
-        }
-    };
-
-    gtag('event', 'modal_view', {
-        'event_label': 'gear',
-        'modal_name': 'gear'
-    })
 
 }
 
