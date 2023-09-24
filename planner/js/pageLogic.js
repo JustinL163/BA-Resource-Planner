@@ -80,13 +80,13 @@ function loadResources() {
 
     $.getJSON('json/misc_data.json?17').done(function (json) {
         misc_data = json;
-        checkResources();
     });
 
     $.getJSON('json/manualLocalisations.json?3').done(function (json) {
         mLocalisations = json;
-        checkResources();
     });
+
+    checkResources();
 }
 
 function checkResources() {
@@ -127,6 +127,11 @@ function checkResources() {
         loaded = true;
 
         init();
+    }
+    else {
+        setTimeout(() => {
+            checkResources();
+        }, 200);
     }
 
 }
