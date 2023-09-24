@@ -1,7 +1,7 @@
 let data;
 let fastLanguage = "En";
 let fastAprilFools = false;
-const defaultGroups = { "Binah": [], "Chesed": [], "Hod": [], "ShiroKuro": [], "Perorodzilla": [], "Goz": [], "Hieronymous": [], "Kaiten": [] }
+const fastDefaultGroups = { "Binah": [], "Chesed": [], "Hod": [], "ShiroKuro": [], "Perorodzilla": [], "Goz": [], "Hieronymous": [], "Kaiten": [] }
 let dataCharIndex = {};
 let disabledChars = [];
 let charlist, chartranslate, language_strings, skillbuffnames = {};
@@ -19,7 +19,7 @@ try {
 }
 
 if (data == null) {
-    data = { exportVersion: 2, characters: [], disabled_characters: [], owned_materials: {}, groups: defaultGroups, language: "EN", level_cap: 87 };
+    data = { exportVersion: 2, characters: [], disabled_characters: [], owned_materials: {}, groups: fastDefaultGroups, language: "EN", level_cap: 87 };
     localStorage.setItem("save-data", JSON.stringify(data));
 }
 
@@ -58,7 +58,7 @@ if (data?.language) {
 
 let imgStyle = localStorage.getItem("image-style");
 
-if (imgStyle == 'true') {
+if (imgStyle === 'true') {
     fastAprilFools = true;
 }
 else {

@@ -4,6 +4,7 @@ let keyPressed = {};
 let inputMap = new Map();
 let preInput;
 let lvlMAX = 87;
+const defaultGroups = { "Binah": [], "Chesed": [], "Hod": [], "ShiroKuro": [], "Perorodzilla": [], "Goz": [], "Hieronymous": [], "Kaiten": [] }
 const languages = ["En", "Kr", "Jp", "Tw", "Th", "Id"];
 let language = "En";
 let gUsername, gAuthkey;

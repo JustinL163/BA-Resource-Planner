@@ -135,7 +135,7 @@ function init() {
 
     let imgStyle = localStorage.getItem("image-style");
 
-    if (imgStyle == 'true') {
+    if (imgStyle === 'true') {
         aprilFools = true;
         document.getElementById('image-style-button').src = "icons/UI/ShirokoIcon.png";
     }
