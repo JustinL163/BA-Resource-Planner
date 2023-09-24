@@ -139,18 +139,27 @@ function GetOldTypeFromSquadType(squadType) {
 
 function ToggleImageStyle() {
 
-    if (aprilFools) {
-        aprilFools = false;
-        document.getElementById('image-style-button').src = "icons/UI/ShirokoScribble.png";
-    }
-    else {
-        aprilFools = true;
-        document.getElementById('image-style-button').src = "icons/UI/ShirokoIcon.png"
-    }
-
-    localStorage.setItem('image-style', aprilFools);
-
-    location.reload();
+    Swal.fire({
+        title: GetLanguageString("text-switchscribbleimages"),
+        showCancelButton: true,
+        confirmButtonText: GetLanguageString("button-ok"),
+        cancelButtonText: GetLanguageString("label-cancel")
+    }).then((result) => {
+        if (result.isConfirmed) {
+            if (aprilFools) {
+                aprilFools = false;
+                document.getElementById('image-style-button').src = "icons/UI/ShirokoScribble.png";
+            }
+            else {
+                aprilFools = true;
+                document.getElementById('image-style-button').src = "icons/UI/ShirokoIcon.png"
+            }
+        
+            localStorage.setItem('image-style', aprilFools);
+        
+            location.reload();
+        }
+    })
 }
 
 function validateBasic(input_id, checkonly) {
