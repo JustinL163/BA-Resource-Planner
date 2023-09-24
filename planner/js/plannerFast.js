@@ -23,34 +23,34 @@ if (data == null) {
     localStorage.setItem("save-data", JSON.stringify(data));
 }
 
-$.getJSON('json/skillinfo/en.json?1').done(function (json) {
+fetch('json/skillinfo/en.json?1').then((response) => response.json()).then((json) => {
     charlist = json;
     if (nameReady && (data.language == "EN" || data.language == "Id")) {
         ShowNames(charlist);
     }
 });
 
-$.getJSON('json/strings.json?14').done(function (json) {
+fetch('json/strings.json?14').then((response) => response.json()).then((json) => {
     language_strings = json;
     if (uiReady) {
         updateUiLanguage();
     }
 });
 
-$.getJSON('json/skillinfo/localisation_en.json?1').done(function (json) {
+fetch('json/skillinfo/localisation_en.json?1').then((response) => response.json()).then((json) => {
     skillbuffnames["en"] = json;
 });
 
 if (data?.language) {
     if (data.language != "EN" && data.language != "Id") {
-        $.getJSON('json/skillinfo/' + data.language.toLowerCase() + ".json?1").done(function (json) {
+        fetch('json/skillinfo/' + data.language.toLowerCase() + ".json?1").then((response) => response.json()).then((json) => {
             chartranslate = json;
             if (nameReady) {
                 ShowNames(chartranslate);
             }
-        })
+        });
 
-        $.getJSON('json/skillinfo/localisation_' + data.language.toLowerCase() + '.json?1').done(function (json) {
+        fetch('json/skillinfo/localisation_' + data.language.toLowerCase() + '.json?1').then((response) => response.json()).then((json) => {
             skillbuffnames[data.language.toLowerCase()] = json;
         });
     }
@@ -114,18 +114,23 @@ $(document).ready(function () {
         let charsContainer = document.getElementById("charsContainer");
 
         if (data.character_order) {
+            let lazy = false;
+
             for (let i = 0; i < data.character_order.length; i++) {
                 // let char = data.characters[dataCharIndex[data.character_order[i]]];
 
+                if (i > 40) {
+                    lazy = true;
+                }
                 // if (char) {
-                createCharBox(data.character_order[i], charsContainer, "main");
+                createCharBox(data.character_order[i], charsContainer, "main", lazy);
                 // }
             }
         }
 
         for (var i = 0; i < data.characters.length; i++) {
             if (document.getElementById('char_' + data.characters[i].id) == undefined) {
-                createCharBox(data.characters[i].id, charsContainer, "main");
+                createCharBox(data.characters[i].id, charsContainer, "main", true);
             }
         }
 
@@ -169,7 +174,7 @@ function DupeCheck() {
     }
 }
 
-function createCharBox(charId, container, location) {
+function createCharBox(charId, container, location, lazy) {
 
     let idInject = "";
     // let charName = charNames.get(charId.toString());
@@ -295,8 +300,11 @@ function createCharBox(charId, container, location) {
     }
     newImg.draggable = false;
     newImg.className = "char-img";
-    if (location == "main") {
+    if (location == "main" && lazy) {
         newImg.loading = "lazy";
+    }
+    else {
+        newImg.loading = "eager";
     }
 
     const nameDiv = document.createElement("div");
@@ -494,7 +502,7 @@ function updateStarDisplay(id, charId, type, fromTemp, charData) {
 
 function ShowNames(source) {
 
-    let nameBars = $(".main-display-char .nameBar");
+    let nameBars = document.querySelectorAll(".main-display-char .nameBar");
 
     for (let i = 0; i < nameBars.length; i++) {
         let charId = nameBars[i]?.id.substring(0, 5);

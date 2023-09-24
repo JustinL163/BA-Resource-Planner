@@ -119,6 +119,22 @@ function init() {
     buildLanguages();
     document.getElementById('languages').value = language;
 
+    let imgStyle = localStorage.getItem("image-style");
+
+    if (imgStyle === 'true') {
+        aprilFools = true;
+    }
+    else {
+        aprilFools = false;
+    }
+
+    if (aprilFools) {
+        document.getElementById('image-style-button').src = "icons/UI/ShirokoIcon.png";
+    }
+    else {
+        document.getElementById('image-style-button').src = "icons/UI/ShirokoScribble.png";
+    }
+
     CreateRaidCards();
 
     document.getElementById("timelines-wrapper").addEventListener("wheel", (event) => event.currentTarget.scrollLeft += event.deltaY, { passive: false });
@@ -811,7 +827,7 @@ function EditVideoSubmission() {
     if (currentDifficulty) {
         difficultiesSelect.value = currentDifficulty;
     }
-    
+
     if (!difficultiesSelect.value) {
         difficultiesSelect.value = raid_history.raid_difficulties[difficultyIndex];
     }
@@ -974,7 +990,7 @@ function SubmissionButtonClicked() {
     if (currentDifficulty) {
         difficultiesSelect.value = currentDifficulty;
     }
-    
+
     if (!difficultiesSelect.value) {
         difficultiesSelect.value = raid_history.raid_difficulties[difficultyIndex];
     }

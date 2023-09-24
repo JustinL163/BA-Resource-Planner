@@ -1654,7 +1654,7 @@ function singleSelect(boxId) {
             slotChildren[i].remove();
         }
 
-        createCharBox(charId, slotContainer, "teams");
+        createCharBox(charId, slotContainer, "teams", false);
         groupChars.push(charNames.get(charId));
 
         saveGroup();
@@ -1672,7 +1672,7 @@ function singleSelect(boxId) {
             slotChildren[i].remove();
         }
 
-        createCharBox(charId, slotContainer, "borrow");
+        createCharBox(charId, slotContainer, "borrow", false);
 
         borrowed = true;
         saveGroup();
@@ -1996,14 +1996,14 @@ function addNewTeam(team) {
             if (typeof (team[i]) == "object") {
                 let charName = charNames.get(team[i].id);
                 if (charName) {
-                    createCharBox(team[i].id, blankSlot, "borrow");
+                    createCharBox(team[i].id, blankSlot, "borrow", false);
                     //groupChars.push(charName);
                 }
             }
             else {
                 let charName = charNames.get(team[i]);
                 if (charName) {
-                    createCharBox(team[i], blankSlot, "teams");
+                    createCharBox(team[i], blankSlot, "teams", false);
                     groupChars.push(charName);
                 }
             }
@@ -2025,14 +2025,14 @@ function addNewTeam(team) {
             if (typeof (team[i + 4]) == "object") {
                 let charName = charNames.get(team[i + 4].id);
                 if (charName) {
-                    createCharBox(team[i + 4].id, blankSlot, "borrow");
+                    createCharBox(team[i + 4].id, blankSlot, "borrow", false);
                     //groupChars.push(charName);
                 }
             }
             else {
                 let charName = charNames.get(team[i + 4]);
                 if (charName) {
-                    createCharBox(team[i + 4], blankSlot, "teams");
+                    createCharBox(team[i + 4], blankSlot, "teams", false);
                     groupChars.push(charName);
                 }
             }
@@ -5979,7 +5979,7 @@ function refreshAllChars() {
             let char = data.characters.find(obj => { return obj.id == data.character_order[i] });
 
             if (char) {
-                createCharBox(char.name, char.id, charsContainer, "main");
+                createCharBox(char.name, char.id, charsContainer, "main", false);
                 calculateCharResources(char, false);
             }
         }
@@ -5989,7 +5989,7 @@ function refreshAllChars() {
 
         if (document.getElementById('char_' + data.characters[i].id) == undefined) {
 
-            createCharBox(data.characters[i].id, charsContainer, "main");
+            createCharBox(data.characters[i].id, charsContainer, "main", false);
 
             calculateCharResources(data.characters[i], false);
         }
