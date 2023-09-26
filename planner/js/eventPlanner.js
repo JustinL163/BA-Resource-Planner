@@ -65,7 +65,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?26').done(function (json) {
+    $.getJSON('json/events.json?27').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -379,6 +379,11 @@ function LoadEvent(eventId) {
         event_data.shop_purchases = {};
         event_data.currency_needed = {};
         event_data.cafe_rank = cafeDefault;
+    }
+
+    if (current_event === "new-year-68-rerun") {
+        currencyNeededPre["Fortune_Slip_Voucher"] = 140;
+        event_data.currency_needed["Fortune_Slip_Voucher"] = 140;
     }
 
     let enabledStageGroups = event_data?.enabled_stage_groups ?? [true, true, true];

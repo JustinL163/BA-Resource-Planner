@@ -1,6 +1,5 @@
 {
     "event_order": [
-        "restoration-project",
         "new-year-68-rerun",
         "unconcealed-heart-rerun",
         "|hakua-calling-card",
@@ -2552,7 +2551,6 @@
             ]
         },
         "restoration-project": {
-            "active": true,
             "icon": "Event_824_Jp.png",
             "display_name": "Restoration Project: DU Shiratori District",
             "reset_time": 1694199600,
@@ -2924,12 +2922,13 @@
             ]
         },
         "new-year-68-rerun": {
+            "active": true,
             "icon": "Event_809_En.png",
             "display_name": "New Year's Rhapsody No. 68",
-            "reset_time": 1677524400,
-            "start_time": 1677549600,
-            "end_time": 1678759200,
-            "maint_hours": 6,
+            "reset_time": 1695668400,
+            "start_time": 1695693600,
+            "end_time": 1696899600,
+            "maint_hours": 9,
             "available_targets": ["Shop", "Currency", "Manual"],
             "currency_targets": ["Lucky_Bag"],
             "reward_preview": [
@@ -2949,7 +2948,7 @@
                     "icon": "Lucky_Bag.png",
                     "shortname": "Lucky Bag",
                     "source": "StageDrop",
-                    "clear": 0,
+                    "clear": 14400,
                     "bonus_units": [
                         {"id": "10064", "bonus": 0.2},
                         {"id": "10031", "bonus": 0.2},
@@ -2994,7 +2993,7 @@
                     "shortname": "Fortune Slip Voucher",
                     "source": "BoxPull",
                     "pull_currency": "Lucky_Bag",
-                    "clear": 0,
+                    "clear": 140,
                     "bonus_units": []
                 }
             },
