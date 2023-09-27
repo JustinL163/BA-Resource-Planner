@@ -382,8 +382,10 @@ function LoadEvent(eventId) {
     }
 
     if (current_event === "new-year-68-rerun") {
-        currencyNeededPre["Fortune_Slip_Voucher"] = 140;
-        event_data.currency_needed["Fortune_Slip_Voucher"] = 140;
+        currencyNeededPre["Lucky_Bag"] = 14400;
+        event_data.currency_needed["Lucky_Bag"] = 14400;
+        // currencyNeededPre["Fortune_Slip_Voucher"] = 140;
+        // event_data.currency_needed["Fortune_Slip_Voucher"] = 140;
     }
 
     let enabledStageGroups = event_data?.enabled_stage_groups ?? [true, true, true];
