@@ -149,7 +149,7 @@ function init() {
         ScrollToServer(defaultRaidServer);
     }, 500);
 
-    document.getElementById("timelines-wrapper").addEventListener("wheel", (event) => event.currentTarget.scrollLeft += event.deltaY, { passive: false });
+    document.getElementById("timelines-wrapper").addEventListener("wheel", (event) => { event.currentTarget.scrollLeft += event.deltaY; event.preventDefault() }, { passive: false });
 
     InitKeyTracking();
 
