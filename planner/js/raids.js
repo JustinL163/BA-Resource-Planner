@@ -940,7 +940,7 @@ function DifficultyClicked(difficulty) {
         }
     }
 
-    localSubmissions = localStorage.getItem("local-submissions");
+    localSubmissions = JSON.parse(localStorage.getItem("local-submissions"));
     let localClears = localSubmissions?.[currentServer]?.["raids"]?.[currentUid]?.[difficulty];
 
     let tempLocal = [], clearExpired = false;
