@@ -940,7 +940,7 @@ function DifficultyClicked(difficulty) {
         }
     }
 
-    localSubmissions = JSON.parse(localStorage.getItem("local-submissions"));
+    // localSubmissions = JSON.parse(localStorage.getItem("local-submissions"));
     let localClears = localSubmissions?.[currentServer]?.["raids"]?.[currentUid]?.[difficulty];
 
     let tempLocal = [], clearExpired = false;
@@ -1820,12 +1820,12 @@ function LocalSubmission(submissionObject, difficulty, uuid) {
         localSubmissions[currentServer]["raids"][currentUid][difficulty] = [];
     }
 
-    for (let i = 0; i < localSubmissions[currentServer]["raids"][currentUid][difficulty].length; i++) {
-        if (localSubmissions[currentServer]["raids"][currentUid][difficulty][i].uuid = uuid) {
-            localSubmissions[currentServer]["raids"][currentUid][difficulty].splice(i, 1);
-            break;
-        }
-    }
+    // for (let i = 0; i < localSubmissions[currentServer]["raids"][currentUid][difficulty].length; i++) {
+    //     if (localSubmissions[currentServer]["raids"][currentUid][difficulty][i].uuid = uuid) {
+    //         localSubmissions[currentServer]["raids"][currentUid][difficulty].splice(i, 1);
+    //         break;
+    //     }
+    // }
 
     submissionObject.expiry = Date.now() + (60 * 60 * 1000) // Expiry in 1 hour
     submissionObject.uuid = uuid;
