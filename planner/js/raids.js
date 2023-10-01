@@ -932,21 +932,21 @@ function DifficultyClicked(difficulty) {
     // Create new video cards
     raidClears = raid_videos_object?.[difficulty] ?? [];
 
-    let raidUuids = [];
+    let raidUuids = [], localUuids = {};
     for (let i = 0; i < raidClears?.length; i++) {
         raidUuids.push(raidClears[i].uuid);
+        localUuids[raidClears[i].uuid] = "false";
     }
 
     let localClears = localSubmissions?.[currentServer]?.["raids"]?.[currentUid]?.[difficulty];
-    let localUuids = [];
-
-    for (let i = 0; i < localClears?.length; i++) {
-        localUuids.push(localClears[i].uuid);
-    }
 
     let tempLocal = [], clearExpired = false;
     for (let i = 0; i < localClears?.length; i++) {
-        if (!localClears[i].expiry || localClears[i].expiry < Date.now() || (raidUuids.includes(localClears[i].uuid) && !localUuids.includes(localClears[i].uuid))) {
+        if (localUuids[localClears[i].uuid] === "false") {
+            localUuids[localClears[i].uuid] = "true";
+        }
+
+        if (!localClears[i].expiry || localClears[i].expiry < Date.now() || localUuids[localClears[i].uuid] === "true") {
             clearExpired = true;
         }
         else {
@@ -961,6 +961,10 @@ function DifficultyClicked(difficulty) {
     }
 
     if (localClears) {
+        for (let i = 0; i < localClears.length; i++) {
+            localClears[i].local_clear = true;
+        }
+
         raidClears = raidClears.concat(localClears);
     }
 
