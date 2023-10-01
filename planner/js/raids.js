@@ -940,12 +940,13 @@ function DifficultyClicked(difficulty) {
         }
     }
 
+    localSubmissions = localStorage.getItem("local-submissions");
     let localClears = localSubmissions?.[currentServer]?.["raids"]?.[currentUid]?.[difficulty];
 
     let tempLocal = [], clearExpired = false;
     for (let i = 0; i < localClears?.length; i++) {
 
-        if (!localClears[i].expiry || localClears[i].expiry < Date.now() || localUuids[localClears[i].uuid]) {
+        if (!localClears[i].expiry || localClears[i].expiry < Date.now() || localUuids[localClears[i].uuid] === true) {
             clearExpired = true;
         }
         else {
@@ -960,10 +961,6 @@ function DifficultyClicked(difficulty) {
     }
 
     if (localClears) {
-        for (let i = 0; i < localClears.length; i++) {
-            localClears[i].local_clear = true;
-        }
-
         raidClears = raidClears.concat(localClears);
     }
 
