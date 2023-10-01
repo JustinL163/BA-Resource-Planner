@@ -935,18 +935,17 @@ function DifficultyClicked(difficulty) {
     let raidUuids = [], localUuids = {};
     for (let i = 0; i < raidClears?.length; i++) {
         raidUuids.push(raidClears[i].uuid);
-        localUuids[raidClears[i].uuid] = "false";
+        if (!raidClears[i].local_submission) {
+            localUuids[raidClears[i].uuid] = true;
+        }
     }
 
     let localClears = localSubmissions?.[currentServer]?.["raids"]?.[currentUid]?.[difficulty];
 
     let tempLocal = [], clearExpired = false;
     for (let i = 0; i < localClears?.length; i++) {
-        if (localUuids[localClears[i].uuid] === "false") {
-            localUuids[localClears[i].uuid] = "true";
-        }
 
-        if (!localClears[i].expiry || localClears[i].expiry < Date.now() || localUuids[localClears[i].uuid] === "true") {
+        if (!localClears[i].expiry || localClears[i].expiry < Date.now() || localUuids[localClears[i].uuid]) {
             clearExpired = true;
         }
         else {
@@ -1833,6 +1832,7 @@ function LocalSubmission(submissionObject, difficulty, uuid) {
 
     submissionObject.expiry = Date.now() + (60 * 60 * 1000) // Expiry in 1 hour
     submissionObject.uuid = uuid;
+    submissionObject.local_submission = true;
 
     localSubmissions[currentServer]["raids"][currentUid][difficulty].push(submissionObject);
 
