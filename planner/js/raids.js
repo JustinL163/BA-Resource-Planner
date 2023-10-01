@@ -34,6 +34,8 @@ let global = {};
 
 let serverNames = { "Japan": "JP", "Global": "Gbl", "China": "CN" };
 
+let defaultRaidServer = "Global";
+
 global.selectedRaid = {};
 global.selectedRaid.maxDifficulty = "";
 
@@ -135,7 +137,17 @@ function init() {
         document.getElementById('image-style-button').src = "icons/UI/ShirokoScribble.png";
     }
 
+    let savedRaidServer = localStorage.getItem("default-raids-server");
+
+    if (savedRaidServer) {
+        defaultRaidServer = savedRaidServer;
+    }
+
     CreateRaidCards();
+
+    setTimeout(() => {
+        ScrollToServer(defaultRaidServer);
+    }, 500);
 
     document.getElementById("timelines-wrapper").addEventListener("wheel", (event) => event.currentTarget.scrollLeft += event.deltaY, { passive: false });
 
@@ -235,23 +247,40 @@ function CreateRaidCards() {
     for (let r = 0; r < raid_history.servers.length; r++) {
         let server = raid_history.servers[r];
 
-        for (let i = 0; i < raid_history[server].length; i++) {
+        // for (let i = 0; i < raid_history[server].length; i++) {
+        for (let i = raid_history[server].length - 1; i >= 0; i--) {
 
-            CreateRaidCard(raid_history[server][i], server, "-timeline");
+            CreateRaidCard(raid_history[server][i], server, "-timeline", false);
         }
 
-        CreateRaidCard({ "End": true }, server, "-timeline");
+        CreateRaidCard({ "End": true }, server, "-timeline", false);
+    }
+
+    let lenJP = document.getElementById("Japan-timeline").children.length;
+    let lenGbl = document.getElementById("Global-timeline").children.length;
+    let lenCN = document.getElementById("China-timeline").children.length;
+
+    for (let i = lenGbl; i < lenJP; i++) {
+        CreateRaidCard({ "Blank": true }, "Global", "-timeline", true);
+    }
+
+    for (let i = lenCN; i < lenJP; i++) {
+        CreateRaidCard({ "Blank": true }, "China", "-timeline", true);
     }
 }
 
-function CreateRaidCard(raid, server, idSuffix) {
+function CreateRaidCard(raid, server, idSuffix, reverseInsert) {
 
     let raidCard = document.createElement("div");
     raidCard.className = "raid-card";
 
     if (raid.Blank) {
         raidCard.classList.add("blank");
-        document.getElementById(server + "-timeline").appendChild(raidCard);
+        if (reverseInsert) {
+            document.getElementById(server + idSuffix).prepend(raidCard);
+        } else {
+            document.getElementById(server + "-timeline").appendChild(raidCard);
+        }
         return;
     }
     else if (raid.End) {
@@ -277,7 +306,7 @@ function CreateRaidCard(raid, server, idSuffix) {
 
     let raidDate = document.createElement("div");
     raidDate.className = "raid-date";
-    raidDate.innerText = (raid.Start_Date.Day + "/" + raid.Start_Date.Month + "/" + raid.Start_Date.Year);
+    raidDate.innerText = (raid.Start_Date.Year + "-" + raid.Start_Date.Month + "-" + raid.Start_Date.Day);
 
     let raidSeason = document.createElement("div");
     raidSeason.className = "raid-season";
@@ -1832,11 +1861,26 @@ function EmbedVideo(containerId, platform, properties) {
 
 function LabelClicked(server) {
 
-    let lastRaidCard = document.getElementById(server + "-timeline").lastChild.previousElementSibling;
+    localStorage.setItem("default-raids-server", server);
 
-    if (lastRaidCard) {
+    ScrollToServer(server);
+}
 
-        lastRaidCard.scrollIntoView({
+function ScrollToServer(server) {
+
+    let timelineChildren = document.getElementById(server + "-timeline").children;
+
+    let firstNonBlank;
+    for (let i = 0; i < timelineChildren.length; i++) {
+        if (!timelineChildren[i].classList.contains("blank")) {
+            firstNonBlank = timelineChildren[i];
+            break;
+        }
+    }
+
+    if (firstNonBlank) {
+
+        firstNonBlank.scrollIntoView({
             "behavior": "smooth",
             "block": "center",
             "inline": "center"
