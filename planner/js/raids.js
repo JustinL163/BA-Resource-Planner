@@ -938,10 +938,15 @@ function DifficultyClicked(difficulty) {
     }
 
     let localClears = localSubmissions?.[currentServer]?.["raids"]?.[currentUid]?.[difficulty];
+    let localUuids = [];
+
+    for (let i = 0; i < localClears?.length; i++) {
+        localUuids.push(localClears[i].uuid);
+    }
 
     let tempLocal = [], clearExpired = false;
     for (let i = 0; i < localClears?.length; i++) {
-        if (!localClears[i].expiry || localClears[i].expiry < Date.now() || raidUuids.includes(localClears[i].uuid)) {
+        if (!localClears[i].expiry || localClears[i].expiry < Date.now() || (raidUuids.includes(localClears[i].uuid) && !localUuids.includes(localClears[i].uuid))) {
             clearExpired = true;
         }
         else {
