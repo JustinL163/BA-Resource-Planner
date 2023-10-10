@@ -4,7 +4,7 @@ var curID = 0;
 var modalCharID = 0;
 var modalStars = { "star": 0, "star_target": 0, "ue": 0, "ue_target": 0 };
 const ueStarCap = 3;
-const globalMaxWorld = 21;
+const globalMaxWorld = 22;
 
 var requiredMatDict = {};
 var neededMatDict = {};
@@ -1022,7 +1022,7 @@ function CharInputsMax() {
         cancelButtonText: GetLanguageString("label-cancel")
     }).then((result) => {
         if (result.isConfirmed) {
-            let values = [85, 85, 5, 5, 10, 10, 10, 10, 10, 10, 7, 7, 7, 7, 7, 7];
+            let values = [85, 85, 5, 5, 10, 10, 10, 10, 10, 10, 8, 8, 8, 8, 7, 7];
             SetCharInputValues(values);
         }
         else if (result.isDenied) {
@@ -1046,7 +1046,7 @@ function CharInputsGoalMax() {
         cancelButtonText: GetLanguageString("label-cancel")
     }).then((result) => {
         if (result.isConfirmed) {
-            let values = [85, 5, 10, 10, 10, 7, 7, 7];
+            let values = [85, 5, 10, 10, 10, 8, 8, 7];
             SetCharInputGoalValues(values);
         }
         else if (result.isDenied) {
