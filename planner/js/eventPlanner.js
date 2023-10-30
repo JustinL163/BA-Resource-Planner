@@ -388,6 +388,13 @@ function LoadEvent(eventId) {
         // event_data.currency_needed["Fortune_Slip_Voucher"] = 140;
     }
 
+    if (current_event === "hakua-calling-card") {
+        document.getElementById("temp-disclaimer").style.display = "";
+    }
+    else {
+        document.getElementById("temp-disclaimer").style.display = "none";
+    }
+
     let enabledStageGroups = event_data?.enabled_stage_groups ?? [true, true, true];
 
     document.getElementById('include-stage-group-1').checked = stageGroup1 = enabledStageGroups[0];
