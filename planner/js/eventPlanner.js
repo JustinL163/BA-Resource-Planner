@@ -65,7 +65,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?28').done(function (json) {
+    $.getJSON('json/events.json?29').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -2616,6 +2616,26 @@ function CalculateStageDrops(result, ignoreRequirement) {
         }
         else if (remainingEventPoints > event_config.events[current_event].lessons_template.lesson_cost) {
             document.getElementById("notification-lessons").style.display = '';
+        }
+    }
+
+    //TEMP
+    if (current_event == "hakua-calling-card") {
+        let minigameRuns = math.max(math.floor(totalCurrencies["Mansion_Invitation"] / 400), 0);
+        if (minigameRuns > 0) {
+            if (!totalEleph["26009"]) {
+                totalEleph["26009"] = 0;
+            }
+            totalEleph["26009"] += 2 * minigameRuns;
+            totalCredit += 250000 * minigameRuns;
+            if (!totalXps["XP_3"]) {
+                totalXps["XP_3"] = 0;
+            }
+            totalXps["XP_3"] += minigameRuns;
+            if (!totalXps["GXP_3"]) {
+                totalXps["GXP_3"] = 0;
+            }
+            totalXps["GXP_3"] += minigameRuns;
         }
     }
 
