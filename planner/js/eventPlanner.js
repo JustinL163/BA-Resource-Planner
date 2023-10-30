@@ -395,7 +395,14 @@ function LoadEvent(eventId) {
         document.getElementById("temp-disclaimer").style.display = "none";
     }
 
-    let enabledStageGroups = event_data?.enabled_stage_groups ?? [true, true, true];
+    let enabledStageGroups;
+
+    if (current_event == "hakua-calling-card") {
+        enabledStageGroups = event_data?.enabled_stage_groups ?? [false, true, true];
+    }
+    else {
+        enabledStageGroups = event_data?.enabled_stage_groups ?? [true, true, true];
+    }
 
     document.getElementById('include-stage-group-1').checked = stageGroup1 = enabledStageGroups[0];
     document.getElementById('include-stage-group-2').checked = stageGroup2 = enabledStageGroups[1];
