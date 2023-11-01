@@ -65,7 +65,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?29').done(function (json) {
+    $.getJSON('json/events.json?30').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -396,7 +396,7 @@ function LoadEvent(eventId) {
     }
 
     let enabledStageGroups;
-
+    //TEMP
     if (current_event == "hakua-calling-card") {
         enabledStageGroups = event_data?.enabled_stage_groups ?? [false, true, true];
     }
