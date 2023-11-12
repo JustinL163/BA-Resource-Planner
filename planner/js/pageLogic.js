@@ -4750,7 +4750,7 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
             }
 
             if (col == 0) {
-                if (language != "En" && language != "Kr" && language != "Th" && language != "Jp") {
+                if (language != "En" && language != "Kr" && language != "Th" && language != "Jp" && language != "Cn") {
                     let localisedName = mLocalisations[language]?.Data[rows[row].replace(/ /g, '')];
                     if (localisedName) {
                         newCell.innerText = localisedName;
