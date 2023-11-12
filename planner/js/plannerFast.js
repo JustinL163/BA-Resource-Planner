@@ -23,34 +23,34 @@ if (data == null) {
     localStorage.setItem("save-data", JSON.stringify(data));
 }
 
-fetch('json/skillinfo/en.json?1').then((response) => response.json()).then((json) => {
+fetch('json/skillinfo/en.json?2').then((response) => response.json()).then((json) => {
     charlist = json;
     if (nameReady && (data.language == "EN" || data.language == "Id")) {
         ShowNames(charlist);
     }
 });
 
-fetch('json/strings.json?14').then((response) => response.json()).then((json) => {
+fetch('json/strings.json?15').then((response) => response.json()).then((json) => {
     language_strings = json;
     if (uiReady) {
         updateUiLanguage();
     }
 });
 
-fetch('json/skillinfo/localisation_en.json?1').then((response) => response.json()).then((json) => {
+fetch('json/skillinfo/localisation_en.json?2').then((response) => response.json()).then((json) => {
     skillbuffnames["en"] = json;
 });
 
 if (data?.language) {
     if (data.language != "EN" && data.language != "Id") {
-        fetch('json/skillinfo/' + data.language.toLowerCase() + ".json?1").then((response) => response.json()).then((json) => {
+        fetch('json/skillinfo/' + data.language.toLowerCase() + ".json?2").then((response) => response.json()).then((json) => {
             chartranslate = json;
             if (nameReady) {
                 ShowNames(chartranslate);
             }
         });
 
-        fetch('json/skillinfo/localisation_' + data.language.toLowerCase() + '.json?1').then((response) => response.json()).then((json) => {
+        fetch('json/skillinfo/localisation_' + data.language.toLowerCase() + '.json?2').then((response) => response.json()).then((json) => {
             skillbuffnames[data.language.toLowerCase()] = json;
         });
     }
