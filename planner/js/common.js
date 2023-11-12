@@ -5,7 +5,8 @@ let inputMap = new Map();
 let preInput;
 let lvlMAX = 87;
 const defaultGroups = { "Binah": [], "Chesed": [], "Hod": [], "ShiroKuro": [], "Perorodzilla": [], "Goz": [], "Hieronymous": [], "Kaiten": [] }
-const languages = ["En", "Kr", "Jp", "Tw", "Th", "Id"];
+const languages = ["En", "Kr", "Jp", "Tw", "Cn", "Th", "Id"];
+const languagesLabel = ["English", "한국어", "日本語", "繁體中文", "简体中文(民译)", "ภาษาไทย", "Indonesian"]
 let language = "En";
 let gUsername, gAuthkey;
 
@@ -619,11 +620,11 @@ function buildLanguages() {
 
     for (let i = 0; i < languages.length; i++) {
 
-        if (languages[i] == "Tw") {
-            addOption(selectElement, "CN", "Tw");
-            continue;
-        }
-        addOption(selectElement, languages[i].toUpperCase(), languages[i]);
+        // if (languages[i] == "Tw") {
+        //     addOption(selectElement, "CN", "Tw");
+        //     continue;
+        // }
+        addOption(selectElement, languagesLabel[i], languages[i]);
     }
 }
 

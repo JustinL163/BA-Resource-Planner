@@ -75,12 +75,12 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/skillinfo/en.json?1').done(function (json) {
+    $.getJSON('json/skillinfo/en.json?2').done(function (json) {
         charlist = json;
         checkResources();
     });
 
-    $.getJSON('json/strings.json?14').done(function (json) {
+    $.getJSON('json/strings.json?15').done(function (json) {
         language_strings = json;
         checkResources();
     });
