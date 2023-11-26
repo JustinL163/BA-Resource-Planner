@@ -65,7 +65,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?31').done(function (json) {
+    $.getJSON('json/events.json?32').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -80,7 +80,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?15').done(function (json) {
+    $.getJSON('json/strings.json?16').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -4648,7 +4648,7 @@ function GenerateCardsRarityTable(rarity) {
             tableRow.className = "alternate-row";
         }
 
-        CreateTableRowCells(tableRow, [useIcon, (card.chance * 100).toFixed(1) + "%", CreateDropsDiv(card.drops)], 'td');
+        CreateTableRowCells(tableRow, [useIcon, (card.chance * 100).toFixed(2) + "%", CreateDropsDiv(card.drops)], 'td');
 
         tableBody.appendChild(tableRow);
 

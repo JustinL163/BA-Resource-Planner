@@ -1,6 +1,15 @@
 {
     "event_order": [
-        "after-school-sweets-rerun"
+        "dragon-and-tortoise",
+        "|summer-rabbit-squad",
+        "|abydos-resort-restoration",
+        "|hidden-heritage",
+        "|momoyodou-beach-house",
+        "|gakuman-doujin-monogatari",
+        "|on-your-mark-rerun",
+        "|get-set-go-rerun",
+        "|trip-trap-train",
+        "|certain-scientific-archive"
     ],
     "events": {
         "after-school-sweets": {
@@ -3714,6 +3723,643 @@
                     ]
                 }
             ]
+        },
+        "dragon-and-tortoise": {
+            "icon": "Event_826_Jp.png",
+            "display_name": "Dragon and Tortoise: A Future Together",
+            "reset_time": 1698688800,
+            "start_time": 1698714000,
+            "end_time": 1699923600,
+            "maint_hours": 6,
+            "available_targets": ["Shop", "Currency", "Manual"],
+            "currency_targets": ["Card_Set"],
+            "reward_preview": [
+                {"type": "Eleph", "id": "20002", "preview": 1},
+                {"type": "Material", "id": "3073", "preview": 2},
+                {"type": "Material", "id": "203", "preview": 5},
+                {"type": "Material", "id": "233", "preview": 6}
+            ],
+            "currencies": {
+                "Card_Set": {
+                    "icon": "Card_Set.png",
+                    "shortname": "Card Set",
+                    "source": "StageDrop",
+                    "clear": 13000,
+                    "bonus_units": [
+                        {"id": "10069", "bonus": 0.25},
+                        {"id": "10070", "bonus": 0.25},
+
+                        {"id": "10050", "bonus": 0.15},
+                        {"id": "10011", "bonus": 0.15},
+                        {"id": "10025", "bonus": 0.15},
+                        {"id": "10000", "bonus": 0.15},
+                        {"id": "16000", "bonus": 0.15},
+                        {"id": "13006", "bonus": 0.15},
+                        {"id": "13005", "bonus": 0.15},
+                        {"id": "10064", "bonus": 0.15},
+                        {"id": "10049", "bonus": 0.15},
+                        {"id": "10029", "bonus": 0.15},
+                        {"id": "20002", "bonus": 0.15},
+                        {"id": "20006", "bonus": 0.15},
+                        {"id": "20025", "bonus": 0.15},
+                        {"id": "23000", "bonus": 0.15},
+                        {"id": "26005", "bonus": 0.15},
+                        {"id": "23001", "bonus": 0.15},
+                        {"id": "26002", "bonus": 0.15}
+                    ]
+                },
+                "Black_Tortoise_Meal_Ticket": {
+                    "icon": "Black_Tortoise_Meal_Ticket.png",
+                    "shortname": "Black Tortoise Meal Ticket",
+                    "source": "StageDrop",
+                    "clear": 15675,
+                    "bonus_units": [
+                        {"id": "10050", "bonus": 0.2},
+                        {"id": "10025", "bonus": 0.2},
+                        {"id": "20006", "bonus": 0.2},
+
+                        {"id": "10069", "bonus": 0.15},
+                        {"id": "13005", "bonus": 0.15},
+                        {"id": "10064", "bonus": 0.15},
+                        {"id": "10029", "bonus": 0.15},
+                        {"id": "26005", "bonus": 0.15},
+                        {"id": "26002", "bonus": 0.15}
+                    ]
+                },
+                "Genryumon_Badge": {
+                    "icon": "Genryumon_Badge.png",
+                    "shortname": "Genryumon Badge",
+                    "source": "StageDrop",
+                    "clear": 14650,
+                    "bonus_units": [
+                        {"id": "10011", "bonus": 0.2},
+                        {"id": "20002", "bonus": 0.2},
+
+                        {"id": "10070", "bonus": 0.15},
+                        {"id": "10000", "bonus": 0.15},
+                        {"id": "16000", "bonus": 0.15},
+                        {"id": "13006", "bonus": 0.15},
+                        {"id": "10049", "bonus": 0.15},
+                        {"id": "20025", "bonus": 0.15},
+                        {"id": "23000", "bonus": 0.15},
+                        {"id": "23001", "bonus": 0.15}
+                    ]
+                },
+                "Solvent_Extraction_Set": {
+                    "icon": "Solvent_Extraction_Set.png",
+                    "shortname": "Solvent Extraction Set",
+                    "source": "CardPull",
+                    "pull_currency": "Card_Set",
+                    "clear": 120,
+                    "bonus_units": []
+                }
+            },
+            "shops": {
+                "Black_Tortoise_Meal_Ticket": [
+                    {"type": "XpReport", "id": "XP_1", "count": 150, "cost": 1},
+                    {"type": "XpReport", "id": "XP_2", "count": 75, "cost": 10},
+                    {"type": "XpReport", "id": "XP_3", "count": 25, "cost": 40},
+                    {"type": "XpReport", "id": "XP_4", "count": 10, "cost": 200},
+                    {"type": "Material", "id": "3070", "count": 25, "cost": 10},
+                    {"type": "Material", "id": "3071", "count": 15, "cost": 30},
+                    {"type": "Material", "id": "3072", "count": 10, "cost": 100},
+                    {"type": "Material", "id": "3073", "count": 3, "cost": 300},
+                    {"type": "Material", "id": "200", "count": 70, "cost": 5},
+                    {"type": "Material", "id": "201", "count": 35, "cost": 15},
+                    {"type": "Material", "id": "202", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "203", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Embroidered_Handkerchief", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Extravagant_Gilded_Jar_of_Greed", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Stylish_Comb", "count": 1, "cost": 300},
+                    {"type": "Furniture", "id": "Chinese-style_Hot_Showcase", "count": 1, "cost": 1000, "limited": true}
+                ],
+                "Genryumon_Badge": [
+                    {"type": "XpOrb", "id": "GXP_1", "count": 150, "cost": 1},
+                    {"type": "XpOrb", "id": "GXP_2", "count": 75, "cost": 4},
+                    {"type": "XpOrb", "id": "GXP_3", "count": 25, "cost": 15},
+                    {"type": "XpOrb", "id": "GXP_4", "count": 10, "cost": 60},
+                    {"type": "Material", "id": "4070", "count": 40, "cost": 5},
+                    {"type": "Material", "id": "4071", "count": 30, "cost": 15},
+                    {"type": "Material", "id": "4072", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "4073", "count": 12, "cost": 200},
+                    {"type": "Material", "id": "230", "count": 70, "cost": 5},
+                    {"type": "Material", "id": "231", "count": 35, "cost": 15},
+                    {"type": "Material", "id": "232", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "233", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Cute_Dishware_Set", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Wind-Up_Music_Box", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Retro_Jewelled_Egg", "count": 1, "cost": 300},
+                    {"type": "Furniture", "id": "Chinese-style_Chair", "count": 1, "cost": 1000, "limited": true}
+                ],
+                "Solvent_Extraction_Set": [
+                    {"type": "Eleph", "id": "20002", "count": 40, "cost": 1},
+                    {"type": "Pyroxene", "id": "Pyroxene-120", "count": 5, "cost": 4, "amount": 120},
+                    {"type": "Eligma", "id": "Eligma-5", "count": 20, "cost": 2, "amount": 5},
+                    {"type": "SecretTech", "id": "SecretTech", "count": 1, "cost": 20},
+                    {"type": "Credit", "id": "Credit-500000", "count": 5, "cost": 5, "amount": 500000},
+                    {"type": "Credit", "id": "Credit-200000", "count": 10, "cost": 3, "amount": 200000},
+                    {"type": "Credit", "id": "Credit-50000", "count": 25, "cost": 1, "amount": 50000}
+                ]
+            },
+            "stage_groups": ["1-4", "5-8", "9-12"],
+            "stages": [
+                {"type": "Story", "number": 1, "cost": 10, "initial": {"Card_Set": 10, "Black_Tortoise_Meal_Ticket": 20}},
+                {"type": "Story", "number": 2, "cost": 10, "initial": {"Card_Set": 10, "Genryumon_Badge": 20}},
+                {"type": "Story", "number": 3, "cost": 10, "initial": {"Card_Set": 10, "Black_Tortoise_Meal_Ticket": 20}},
+                {"type": "Story", "number": 4, "cost": 10, "initial": {"Card_Set": 10, "Genryumon_Badge": 20}},
+                {"type": "Story", "number": 5, "cost": 10, "initial": {"Card_Set": 10, "Black_Tortoise_Meal_Ticket": 20}},
+                {"type": "Story", "number": 6, "cost": 10, "initial": {"Card_Set": 10, "Genryumon_Badge": 20}},
+                {"type": "Story", "number": 7, "cost": 10, "initial": {"Card_Set": 10, "Black_Tortoise_Meal_Ticket": 20}},
+                {"type": "Story", "number": 8, "cost": 10, "initial": {"Card_Set": 10, "Genryumon_Badge": 20}},
+                {"type": "Story", "number": 9, "cost": 10, "initial": {"Card_Set": 10, "Black_Tortoise_Meal_Ticket": 20}},
+                {"type": "Story", "number": 10, "cost": 10, "initial": {"Card_Set": 10, "Genryumon_Badge": 20}},
+                
+                {"type": "Quest", "number": 1, "cost": 10, "group": 1, "initial": {"Card_Set": 200, "Black_Tortoise_Meal_Ticket": 50, "Genryumon_Badge": 50}, "drops": {"Card_Set": 12, "Black_Tortoise_Meal_Ticket": 3, "Genryumon_Badge": 3, "Totem_1": 0.25, "Totem_2": 0.15}},
+                {"type": "Quest", "number": 2, "cost": 10, "group": 1, "initial": {"Black_Tortoise_Meal_Ticket": 200, "Genryumon_Badge": 100}, "drops": {"Black_Tortoise_Meal_Ticket": 14, "Genryumon_Badge": 4, "Okiku_1": 0.25, "Okiku_2": 0.15}},
+                {"type": "Quest", "number": 3, "cost": 10, "group": 1, "initial": {"Black_Tortoise_Meal_Ticket": 100, "Genryumon_Badge": 200}, "drops": {"Black_Tortoise_Meal_Ticket": 4, "Genryumon_Badge": 14, "Voynich_1": 0.25, "Voynich_2": 0.15}},
+                {"type": "Quest", "number": 4, "cost": 10, "group": 1, "initial": {"Card_Set": 300}, "drops": {"Card_Set": 18, "Mandragora_1": 0.25, "Mandragora_2": 0.15}},
+
+                {"type": "Quest", "number": 5, "cost": 15, "group": 2, "initial": {"Card_Set": 200, "Black_Tortoise_Meal_Ticket": 100, "Genryumon_Badge": 100}, "drops": {"Card_Set": 19, "Black_Tortoise_Meal_Ticket": 4, "Genryumon_Badge": 4, "Totem_2": 0.25, "Totem_3": 0.08}},
+                {"type": "Quest", "number": 6, "cost": 15, "group": 2, "initial": {"Black_Tortoise_Meal_Ticket": 250, "Genryumon_Badge": 150}, "drops": {"Black_Tortoise_Meal_Ticket": 23, "Genryumon_Badge": 4, "Okiku_2": 0.25, "Okiku_3": 0.08}},
+                {"type": "Quest", "number": 7, "cost": 15, "group": 2, "initial": {"Black_Tortoise_Meal_Ticket": 150, "Genryumon_Badge": 250}, "drops": {"Black_Tortoise_Meal_Ticket": 4, "Genryumon_Badge": 23, "Voynich_2": 0.25, "Voynich_3": 0.08}},
+                {"type": "Quest", "number": 8, "cost": 15, "group": 2, "initial": {"Card_Set": 400}, "drops": {"Card_Set": 27, "Mandragora_2": 0.25, "Mandragora_3": 0.08}},
+
+                {"type": "Quest", "number": 9, "cost": 20, "group": 3, "initial": {"Card_Set": 300, "Black_Tortoise_Meal_Ticket": 100, "Genryumon_Badge": 100}, "drops": {"Card_Set": 28, "Black_Tortoise_Meal_Ticket": 4, "Genryumon_Badge": 4, "Totem_2": 0.25, "Totem_3": 0.12, "Totem_4": 0.021}},
+                {"type": "Quest", "number": 10, "cost": 20, "group": 3, "initial": {"Card_Set": 50, "Black_Tortoise_Meal_Ticket": 450}, "drops": {"Card_Set": 4, "Black_Tortoise_Meal_Ticket": 32, "Okiku_2": 0.25, "Okiku_3": 0.12, "Okiku_4": 0.021}},
+                {"type": "Quest", "number": 11, "cost": 20, "group": 3, "initial": {"Card_Set": 50, "Genryumon_Badge": 450}, "drops": {"Card_Set": 4, "Genryumon_Badge": 32, "Voynich_2": 0.25, "Voynich_3": 0.12, "Voynich_4": 0.021}},
+                {"type": "Quest", "number": 12, "cost": 20, "group": 3, "initial": {"Card_Set": 500}, "drops": {"Card_Set": 36, "Mandragora_2": 0.25, "Mandragora_3": 0.12, "Mandragora_4": 0.021}},
+
+
+                {"type": "Challenge", "number": 1, "cost": 5},
+                {"type": "Challenge", "number": 2, "cost": 5},
+                {"type": "Challenge", "number": 3, "cost": 5},
+                {"type": "Challenge", "number": 4, "cost": 5},
+                {"type": "Challenge", "number": 5, "cost": 5}
+            ],
+            "card_drops": [
+                {"icon": "UR_Mina", "chance": 0.0267, "chance4": 0.03, "drops": {"Credit": 1500000, "Solvent_Extraction_Set": 4, "Voynich_3": 1, "Mandragora_3": 2, "Mandragora_4": 1, "GXP_4": 1}},
+                {"icon": "UR_Rumi", "chance": 0.0267, "chance4": 0.03, "drops": {"Credit": 1600000, "Solvent_Extraction_Set": 4, "Voynich_3": 2, "Voynich_4": 1, "Mandragora_3": 1, "GXP_4": 1}},
+                {"icon": "UR_Kisaki", "chance": 0.0266, "chance4": 0.03, "drops": {"Credit": 1700000, "Solvent_Extraction_Set": 3, "Voynich_3": 1, "Voynich_4": 1, "Mandragora_4": 1, "GXP_4": 1}},
+
+                {"icon": "SR_Reijo", "chance": 0.05, "chance4": 0.2275, "drops": {"Credit": 100000, "Solvent_Extraction_Set": 2, "XP_4": 1, "Voynich_2": 1, "Voynich_3": 1}},
+                {"icon": "SR_Shun", "chance": 0.05, "chance4": 0.2275, "drops": {"Credit": 100000, "Solvent_Extraction_Set": 2, "XP_3": 3, "GXP_3": 1, "GXP_4": 1, "Mandragora_2": 1}},
+                {"icon": "SR_Shunny", "chance": 0.05, "chance4": 0.2275, "drops": {"Credit": 100000, "Solvent_Extraction_Set": 2, "XP_4": 1, "Voynich_2": 1, "Voynich_3": 1}},
+                {"icon": "SR_Kokona", "chance": 0.05, "chance4": 0.2275, "drops": {"Credit": 100000, "Solvent_Extraction_Set": 2, "XP_3": 3, "GXP_3": 1, "GXP_4": 1, "Mandragora_2": 1}},
+
+                {"icon": "R_Saya", "chance": 0.16, "drops": {"Credit": 50000, "Solvent_Extraction_Set": 2, "XP_2": 5, "XP_3": 3, "Voynich_1": 3, "Voynich_2": 2}},
+                {"icon": "R_CSaya", "chance": 0.16, "drops": {"Credit": 50000, "Solvent_Extraction_Set": 2, "XP_2": 9, "XP_3": 2, "Mandragora_1": 3, "Mandragora_2": 2}},
+
+                {"icon": "N_Shan_Mob1", "chance": 0.2, "drops": {"Credit": 20000, "Solvent_Extraction_Set": 1, "GXP_2": 7, "GXP_3": 1, "Voynich_1": 3, "Voynich_2": 1}},
+                {"icon": "N_Shan_Mob2", "chance": 0.2, "drops": {"Credit": 20000, "Solvent_Extraction_Set": 1, "GXP_2": 4, "GXP_3": 3, "Mandragora_1": 4, "Mandragora_2": 1}}
+            ]
+        },
+        "summer-rabbit-squad": {
+            "icon": "Event_827_Jp.png",
+            "display_name": "RABBIT SQUAD and the Mystery of the Missing Shrimp"
+        },
+        "abydos-resort-restoration": {
+            "icon": "Event_814_En.png",
+            "display_name": "Abydos Resort Restoration Task Force"
+        },
+        "hidden-heritage": {
+            "icon": "Event_828_Jp.png",
+            "display_name": "In Search of a Hidden Heritage"
+        },
+        "momoyodou-beach-house": {
+            "icon": "Event_815_En.png",
+            "display_name": "Business Trip! Momoyodou Beach Shack Franchise Plan"
+        },
+        "gakuman-doujin-monogatari": {
+            "icon": "Event_829_Jp.png",
+            "display_name": "Gakuman Doujin Monogatari: Two Seeking the Final Episode"
+        },
+        "on-your-mark-rerun": {
+            "icon": "Event_817_Jp.png",
+            "display_name": "On Your Mark @ Millennium",
+            "reset_time": 1677524400,
+            "start_time": 1677549600,
+            "end_time": 1678759200,
+            "maint_hours": 6,
+            "available_targets": ["Shop", "Currency", "Manual"],
+            "currency_targets": ["Event_Point"],
+            "event_point_target": 15000,
+            "currencies": {
+                "Bean_Bag": {
+                    "icon": "Bean_Bag.png",
+                    "shortname": "Bean Bag",
+                    "source": "StageDrop",
+                    "clear": 13670,
+                    "bonus_units": [
+                        {"id": "16010", "bonus": 0.3},
+                        {"id": "10007", "bonus": 0.3},
+                        {"id": "26001", "bonus": 0.3},
+                        {"id": "23004", "bonus": 0.1}
+                    ]
+                },
+                "Millennium_Flag": {
+                    "icon": "Millennium_Flag.png",
+                    "shortname": "Millennium Flag",
+                    "source": "StageDrop",
+                    "clear": 11930,
+                    "bonus_units": [
+                        {"id": "10051", "bonus": 0.3},
+                        {"id": "16002", "bonus": 0.3},
+                        {"id": "23003", "bonus": 0.3},
+                        {"id": "20000", "bonus": 0.1}
+                    ]
+                },
+                "Whistle": {
+                    "icon": "Whistle.png",
+                    "shortname": "Whistle",
+                    "source": "StageDrop",
+                    "clear": 5900,
+                    "bonus_units": [
+                        {"id": "10052", "bonus": 0.3},
+                        {"id": "13010", "bonus": 0.3},
+                        {"id": "10012", "bonus": 0.3},
+                        {"id": "20013", "bonus": 0.1}
+                    ]
+                },
+                "Event_Point": {
+                    "icon": "Event_Point.png",
+                    "shortname": "Event Point",
+                    "bonus_units": [
+                        {"id": "10052", "bonus": 0.2},
+                        {"id": "10051", "bonus": 0.2},
+                        {"id": "16010", "bonus": 0.2},
+                        {"id": "23004", "bonus": 0.2},
+                        {"id": "20000", "bonus": 0.2},
+                        {"id": "20013", "bonus": 0.2}
+                    ]
+                }
+            },
+            "shops": {
+                "Bean_Bag": [
+                    {"type": "Eleph", "id": "23004", "count": 50, "cost": 25},
+                    {"type": "XpReport", "id": "XP_1", "count": 700, "cost": 1},
+                    {"type": "XpReport", "id": "XP_2", "count": 200, "cost": 10},
+                    {"type": "XpReport", "id": "XP_3", "count": 50, "cost": 40},
+                    {"type": "XpReport", "id": "XP_4", "count": 20, "cost": 200},
+                    {"type": "Material", "id": "4050", "count": 40, "cost": 7},
+                    {"type": "Material", "id": "4051", "count": 30, "cost": 12},
+                    {"type": "Material", "id": "4052", "count": 20, "cost": 24},
+                    {"type": "Material", "id": "4053", "count": 10, "cost": 60},
+                    {"type": "Furniture", "id": "Athletic_Stand", "count": 1, "cost": 2000, "limited": true}
+                ],
+                "Millennium_Flag": [
+                    {"type": "Eleph", "id": "16002", "count": 50, "cost": 25},
+                    {"type": "XpOrb", "id": "GXP_1", "count": 500, "cost": 1},
+                    {"type": "XpOrb", "id": "GXP_2", "count": 200, "cost": 4},
+                    {"type": "XpOrb", "id": "GXP_3", "count": 50, "cost": 16},
+                    {"type": "XpOrb", "id": "GXP_4", "count": 20, "cost": 64},
+                    {"type": "Material", "id": "3050", "count": 35, "cost": 20},
+                    {"type": "Material", "id": "3051", "count": 30, "cost": 40},
+                    {"type": "Material", "id": "3052", "count": 25, "cost": 100},
+                    {"type": "Material", "id": "3053", "count": 7, "cost": 200},
+                    {"type": "Furniture", "id": "Athletic_Equipment_Storage_Box", "count": 1, "cost": 1500, "limited": true}
+                ],
+                "Whistle": [
+                    {"type": "Eleph", "id": "20013", "count": 50, "cost": 16},
+                    {"type": "Material", "id": "190", "count": 150, "cost": 3},
+                    {"type": "Material", "id": "191", "count": 60, "cost": 10},
+                    {"type": "Material", "id": "192", "count": 30, "cost": 25},
+                    {"type": "Material", "id": "193", "count": 15, "cost": 50},
+                    {"type": "Material", "id": "120", "count": 150, "cost": 3},
+                    {"type": "Material", "id": "121", "count": 60, "cost": 10},
+                    {"type": "Material", "id": "122", "count": 30, "cost": 25},
+                    {"type": "Material", "id": "123", "count": 15, "cost": 50}
+                ]
+            },
+            "stages": [
+                {"type": "Story", "number": 1, "cost": 10, "initial": {"Event_Point": 10, "Bean_Bag": 10, "Whistle": 5}},
+                {"type": "Story", "number": 2, "cost": 10, "initial": {"Event_Point": 15, "Millennium_Flag": 10, "Whistle": 5}},
+                {"type": "Story", "number": 3, "cost": 10, "initial": {"Event_Point": 20, "Bean_Bag": 10, "Whistle": 5}},
+                {"type": "Story", "number": 4, "cost": 10, "initial": {"Event_Point": 25, "Millennium_Flag": 10, "Whistle": 5}},
+                {"type": "Story", "number": 5, "cost": 10, "initial": {"Event_Point": 30, "Bean_Bag": 10, "Whistle": 5}},
+                {"type": "Story", "number": 6, "cost": 10, "initial": {"Event_Point": 35, "Millennium_Flag": 10, "Whistle": 5}},
+                {"type": "Story", "number": 7, "cost": 10, "initial": {"Event_Point": 40, "Bean_Bag": 10, "Millennium_Flag": 10, "Whistle": 5}},
+
+                {"type": "Quest", "number": 1, "cost": 10, "initial": {"Event_Point": 100, "Bean_Bag": 100, "Millennium_Flag": 40}, "drops": {"Event_Point": 4, "Bean_Bag": 6, "Millennium_Flag": 2}},
+                {"type": "Quest", "number": 2, "cost": 10, "initial": {"Event_Point": 100, "Millennium_Flag": 80, "Whistle": 40}, "drops": {"Event_Point": 4, "Millennium_Flag": 5, "Whistle": 2}},
+                {"type": "Quest", "number": 3, "cost": 10, "initial": {"Event_Point": 100, "Bean_Bag": 40, "Whistle": 80}, "drops": {"Event_Point": 4, "Bean_Bag": 2, "Whistle": 5}},
+                {"type": "Quest", "number": 4, "cost": 10, "initial": {"Event_Point": 200, "Bean_Bag": 20, "Millennium_Flag": 20, "Whistle": 20}, "drops": {"Event_Point": 16, "Bean_Bag": 1, "Millennium_Flag": 1, "Whistle": 1}},
+                {"type": "Quest", "number": 5, "cost": 15, "initial": {"Event_Point": 100, "Bean_Bag": 280}, "drops": {"Event_Point": 6, "Bean_Bag": 20}},
+                {"type": "Quest", "number": 6, "cost": 15, "initial": {"Event_Point": 100, "Millennium_Flag": 240}, "drops": {"Event_Point": 6, "Millennium_Flag": 17}},
+                {"type": "Quest", "number": 7, "cost": 15, "initial": {"Event_Point": 100, "Whistle": 200}, "drops": {"Event_Point": 6, "Whistle": 15}},
+                {"type": "Quest", "number": 8, "cost": 15, "initial": {"Event_Point": 280, "Bean_Bag": 40, "Millennium_Flag": 40, "Whistle": 40}, "drops": {"Event_Point": 24, "Bean_Bag": 3, "Millennium_Flag": 3, "Whistle": 3}},
+                {"type": "Quest", "number": 9, "cost": 20, "initial": {"Event_Point": 100, "Bean_Bag": 600}, "drops": {"Event_Point": 8, "Bean_Bag": 40}},
+                {"type": "Quest", "number": 10, "cost": 20, "initial": {"Event_Point": 100, "Millennium_Flag": 480}, "drops": {"Event_Point": 8, "Millennium_Flag": 32}},
+                {"type": "Quest", "number": 11, "cost": 20, "initial": {"Event_Point": 100, "Whistle": 400}, "drops": {"Event_Point": 8, "Whistle": 27}},
+                {"type": "Quest", "number": 12, "cost": 20, "initial": {"Event_Point": 400, "Bean_Bag": 80, "Millennium_Flag": 80, "Whistle": 80}, "drops": {"Event_Point": 32, "Bean_Bag": 6, "Millennium_Flag": 6, "Whistle": 6}},
+
+
+                {"type": "Challenge", "number": 1, "cost": 10},
+                {"type": "Challenge", "number": 2, "cost": 10},
+                {"type": "Challenge", "number": 3, "cost": 10},
+                {"type": "Challenge", "number": 4, "cost": 10},
+                {"type": "Challenge", "number": 5, "cost": 10}
+            ],
+            "point_rewards": [
+                {"points": 10, "type": "XpReport", "id": "XP_1", "count": 10},
+                {"points": 50, "type": "XpOrb", "id": "GXP_1", "count": 10},
+                {"points": 100, "type": "XpReport", "id": "XP_2", "count": 5},
+                {"points": 200, "type": "XpOrb", "id": "GXP_2", "count": 5},
+                {"points": 300, "type": "Eleph", "id": "16010", "count": 10},
+                {"points": 400, "type": "XpReport", "id": "XP_1", "count": 10},
+                {"points": 500, "type": "XpOrb", "id": "GXP_1", "count": 10},
+                {"points": 600, "type": "XpReport", "id": "XP_2", "count": 5},
+                {"points": 700, "type": "XpOrb", "id": "GXP_2", "count": 5},
+                {"points": 800, "type": "XpReport", "id": "XP_3", "count": 2},
+                {"points": 900, "type": "XpOrb", "id": "GXP_3", "count": 2},
+                {"points": 1000, "type": "Eleph", "id": "16010", "count": 10},
+                {"points": 1200, "type": "XpReport", "id": "XP_1", "count": 20},
+                {"points": 1400, "type": "XpOrb", "id": "GXP_1", "count": 20},
+                {"points": 1600, "type": "XpReport", "id": "XP_2", "count": 10},
+                {"points": 1800, "type": "XpOrb", "id": "GXP_2", "count": 10},
+                {"points": 2000, "type": "Eligma", "count": 15},
+                {"points": 2200, "type": "XpReport", "id": "XP_3", "count": 2},
+                {"points": 2400, "type": "XpOrb", "id": "GXP_3", "count": 2},
+                {"points": 2600, "type": "Credit", "count": 1000000},
+                {"points": 2800, "type": "XpReport", "id": "XP_4", "count": 1},
+                {"points": 3000, "type": "Eleph", "id": "16010", "count": 10},
+                {"points": 3200, "type": "XpOrb", "id": "GXP_4", "count": 1},
+                {"points": 3400, "type": "Credit", "count": 1000000},
+                {"points": 3600, "type": "XpReport", "id": "XP_3", "count": 3},
+                {"points": 3800, "type": "XpOrb", "id": "GXP_3", "count": 3},
+                {"points": 4000, "type": "Eligma", "count": 20},
+                {"points": 4200, "type": "XpReport", "id": "XP_4", "count": 2},
+                {"points": 4400, "type": "XpOrb", "id": "GXP_4", "count": 2},
+                {"points": 4600, "type": "Credit", "count": 1500000},
+                {"points": 4800, "type": "XpReport", "id": "XP_3", "count": 3},
+                {"points": 5000, "type": "Eleph", "id": "16010", "count": 10},
+                {"points": 5500, "type": "XpOrb", "id": "GXP_3", "count": 3},
+                {"points": 6000, "type": "Eleph", "id": "16010", "count": 10},
+                {"points": 6500, "type": "Credit", "count": 1500000},
+                {"points": 7000, "type": "XpReport", "id": "XP_4", "count": 2},
+                {"points": 7500, "type": "XpOrb", "id": "GXP_4", "count": 2},
+                {"points": 8000, "type": "Eligma", "count": 15},
+                {"points": 9000, "type": "Credit", "count": 2000000},
+                {"points": 10000, "type": "SecretTech", "count": 1},
+                {"points": 11000, "type": "XpReport", "id": "XP_3", "count": 20},
+                {"points": 12000, "type": "Credit", "count": 2000000},
+                {"points": 13000, "type": "XpReport", "id": "XP_3", "count": 20},
+                {"points": 14000, "type": "Credit", "count": 2000000},
+                {"points": 15000, "type": "XpReport", "id": "XP_4", "count": 10}
+            ],
+            "lessons_template": {
+                "rank_upgrades": [500, 1500, 3000, 5000, 7500, 10500, 14000],
+                "level_unlocks": [1, 2, 4, 6, 8],
+                "lesson_cost": 500,
+                "rewards": [
+                    [
+                        {"type": "Eleph", "id": "16010", "chance": 0.6},
+                        {"type": "Eligma", "chance": 0.1},
+                        {"type": "Material", "id": "swap_0", "count": 1}
+                    ],
+                    [
+                        {"type": "Eleph", "id": "16010", "chance": 0.8},
+                        {"type": "Eligma", "chance": 0.11},
+                        {"type": "Material", "id": "swap_1", "chance": 0.7},
+                        {"type": "Material", "id": "swap_0", "count": 2}
+                    ],
+                    [
+                        {"type": "Eleph", "id": "16010", "count": 1},
+                        {"type": "Eligma", "chance": 0.13},
+                        {"type": "Material", "id": "swap_1", "count": 1},
+                        {"type": "Material", "id": "swap_1", "chance": 0.3},
+                        {"type": "Material", "id": "swap_0", "count": 3}
+                    ],
+                    [
+                        {"type": "Eleph", "id": "16010", "count": 1},
+                        {"type": "Eleph", "id": "16010", "chance": 0.2},
+                        {"type": "Eligma", "chance": 0.15},
+                        {"type": "Material", "id": "swap_2", "chance": 0.5},
+                        {"type": "Material", "id": "swap_1", "count": 1},
+                        {"type": "Material", "id": "swap_1", "chance": 0.9},
+                        {"type": "Material", "id": "swap_0", "count": 4}
+                    ],
+                    [
+                        {"type": "Eleph", "id": "16010", "count": 1},
+                        {"type": "Eleph", "id": "16010", "chance": 0.4},
+                        {"type": "Eligma", "chance": 0.17},
+                        {"type": "Material", "id": "swap_2", "count": 1},
+                        {"type": "Material", "id": "swap_1", "count": 2},
+                        {"type": "Material", "id": "swap_1", "chance": 0.5},
+                        {"type": "Material", "id": "swap_0", "count": 5}
+                    ]
+                ]
+            },
+            "lessons": [
+                {
+                    "name1": "Operations Headquarters",
+                    "name2": "Ground",
+                    "unlock_rank": 1,
+                    "unlock_2": 5,
+                    "id_swap": {
+                        "swap_0": "170",
+                        "swap_1": "171",
+                        "swap_2": "172"
+                    }
+                },
+                {
+                    "name1": "Truck",
+                    "name2": "Large Warehouse",
+                    "unlock_rank": 2,
+                    "unlock_2": 6,
+                    "id_swap": {
+                        "swap_0": "110",
+                        "swap_1": "111",
+                        "swap_2": "112"
+                    }
+                },
+                {
+                    "name1": "Gymnasium",
+                    "name2": "Broadcasting Room",
+                    "unlock_rank": 3,
+                    "unlock_2": 7,
+                    "id_swap": {
+                        "swap_0": "190",
+                        "swap_1": "191",
+                        "swap_2": "192"
+                    }
+                },
+                {
+                    "name1": "Audience Seat",
+                    "name2": "Lounge",
+                    "unlock_rank": 4,
+                    "unlock_2": 8,
+                    "id_swap": {
+                        "swap_0": "120",
+                        "swap_1": "121",
+                        "swap_2": "122"
+                    }
+                }
+            ]
+        },
+        "get-set-go-rerun": {
+            "icon": "Event_818_Jp.png",
+            "display_name": "Get Set, Go!",
+            "reset_time": 1677524400,
+            "start_time": 1677549600,
+            "end_time": 1678759200,
+            "maint_hours": 6,
+            "available_targets": ["Shop", "Currency", "Manual"],
+            "currency_targets": ["Sports_Drink"],
+            "currencies": {
+                "Sports_Drink": {
+                    "icon": "Sports_Drink.png",
+                    "shortname": "Sports Drink",
+                    "source": "StageDrop",
+                    "clear": 15000,
+                    "bonus_units": [
+                        {"id": "10053", "bonus": 0.2},
+                        {"id": "10054", "bonus": 0.2},
+                        {"id": "16011", "bonus": 0.2},
+                        {"id": "20013", "bonus": 0.2},
+                        {"id": "23003", "bonus": 0.2},
+
+                        {"id": "13010", "bonus": 0.1},
+                        {"id": "13003", "bonus": 0.1},
+                        {"id": "23008", "bonus": 0.1}
+                    ]
+                },
+                "Relay_Baton": {
+                    "icon": "Relay_Baton.png",
+                    "shortname": "Relay Baton",
+                    "source": "StageDrop",
+                    "clear": 13440,
+                    "bonus_units": [
+                        {"id": "10053", "bonus": 0.2},
+                        {"id": "10051", "bonus": 0.2},
+                        {"id": "10038", "bonus": 0.2},
+                        {"id": "13002", "bonus": 0.2},
+                        {"id": "20018", "bonus": 0.2},
+                        {"id": "26003", "bonus": 0.2},
+
+                        {"id": "13003", "bonus": 0.1}
+                    ]
+                },
+                "Anpan": {
+                    "icon": "Anpan.png",
+                    "shortname": "Anpan",
+                    "source": "StageDrop",
+                    "clear": 16710,
+                    "bonus_units": [
+                        {"id": "16011", "bonus": 0.2},
+                        {"id": "16010", "bonus": 0.2},
+                        {"id": "10039", "bonus": 0.2},
+                        {"id": "13007", "bonus": 0.2},
+                        {"id": "20014", "bonus": 0.2},
+                        {"id": "23002", "bonus": 0.2},
+
+                        {"id": "23008", "bonus": 0.1}
+                    ]
+                },
+                "Information_Pamphlet": {
+                    "icon": "Information_Pamphlet.png",
+                    "shortname": "Information Pamphlet",
+                    "source": "StageDrop",
+                    "clear": 12700,
+                    "bonus_units": [
+                        {"id": "10054", "bonus": 0.2},
+                        {"id": "10052", "bonus": 0.2},
+                        {"id": "10002", "bonus": 0.2},
+                        {"id": "10009", "bonus": 0.2},
+                        {"id": "20008", "bonus": 0.2},
+                        {"id": "26001", "bonus": 0.2},
+
+                        {"id": "13010", "bonus": 0.1}
+                    ]
+                }
+            },
+            "shops": {
+                "Relay_Baton": [
+                    {"type": "Eleph", "id": "13003", "count": 50, "cost": 25},
+                    {"type": "XpReport", "id": "XP_1", "count": 250, "cost": 1},
+                    {"type": "XpReport", "id": "XP_2", "count": 150, "cost": 10},
+                    {"type": "XpReport", "id": "XP_3", "count": 50, "cost": 40},
+                    {"type": "XpReport", "id": "XP_4", "count": 15, "cost": 200},
+                    {"type": "Material", "id": "4050", "count": 40, "cost": 7},
+                    {"type": "Material", "id": "4051", "count": 30, "cost": 12},
+                    {"type": "Material", "id": "4052", "count": 20, "cost": 24},
+                    {"type": "Material", "id": "4053", "count": 10, "cost": 60},
+                    {"type": "Material", "id": "4020", "count": 40, "cost": 7},
+                    {"type": "Material", "id": "4021", "count": 30, "cost": 12},
+                    {"type": "Material", "id": "4022", "count": 20, "cost": 24},
+                    {"type": "Material", "id": "4023", "count": 10, "cost": 60},
+                    {"type": "Furniture", "id": "Sports_Day_Mat_Sky_Blue", "count": 1, "cost": 2000, "limited": false}
+                ],
+                "Anpan": [
+                    {"type": "Eleph", "id": "13010", "count": 50, "cost": 20},
+                    {"type": "XpOrb", "id": "GXP_1", "count": 250, "cost": 1},
+                    {"type": "XpOrb", "id": "GXP_2", "count": 150, "cost": 4},
+                    {"type": "XpOrb", "id": "GXP_3", "count": 50, "cost": 16},
+                    {"type": "XpOrb", "id": "GXP_4", "count": 15, "cost": 64},
+                    {"type": "Material", "id": "3050", "count": 35, "cost": 20},
+                    {"type": "Material", "id": "3051", "count": 30, "cost": 40},
+                    {"type": "Material", "id": "3052", "count": 25, "cost": 100},
+                    {"type": "Material", "id": "3053", "count": 7, "cost": 200},
+                    {"type": "Material", "id": "3020", "count": 35, "cost": 20},
+                    {"type": "Material", "id": "3021", "count": 30, "cost": 40},
+                    {"type": "Material", "id": "3022", "count": 25, "cost": 100},
+                    {"type": "Material", "id": "3023", "count": 7, "cost": 200},
+                    {"type": "Furniture", "id": "Sports_Day_Bread-eating_Race_Stand", "count": 1, "cost": 1500, "limited": false}
+                ],
+                "Information_Pamphlet": [
+                    {"type": "Eleph", "id": "10002", "count": 50, "cost": 20},
+                    {"type": "Gift", "id": "Large_Whole_Cake", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Embroidered_Handkerchief", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Brain_Teaser_Puzzle_Cube", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Nutrient-rich_Multivitamin_Jellies", "count": 2, "cost": 300},
+                    {"type": "Material", "id": "290", "count": 150, "cost": 3},
+                    {"type": "Material", "id": "291", "count": 60, "cost": 10},
+                    {"type": "Material", "id": "292", "count": 30, "cost": 25},
+                    {"type": "Material", "id": "293", "count": 15, "cost": 50},
+                    {"type": "Material", "id": "150", "count": 150, "cost": 3},
+                    {"type": "Material", "id": "151", "count": 60, "cost": 10},
+                    {"type": "Material", "id": "152", "count": 30, "cost": 25},
+                    {"type": "Material", "id": "153", "count": 15, "cost": 50}
+                ]
+            },
+            "stages": [
+                {"type": "Story", "number": 1, "cost": 10, "initial": {"Sports_Drink": 50, "Relay_Baton": 50}},
+                {"type": "Story", "number": 2, "cost": 10, "initial": {"Sports_Drink": 50, "Anpan": 50}},
+                {"type": "Story", "number": 3, "cost": 10, "initial": {"Sports_Drink": 50, "Information_Pamphlet": 50}},
+                {"type": "Story", "number": 4, "cost": 10, "initial": {"Sports_Drink": 50, "Relay_Baton": 50}},
+                {"type": "Story", "number": 5, "cost": 10, "initial": {"Sports_Drink": 50, "Anpan": 50}},
+                {"type": "Story", "number": 6, "cost": 10, "initial": {"Sports_Drink": 50, "Information_Pamphlet": 50}},
+                {"type": "Story", "number": 7, "cost": 10, "initial": {"Sports_Drink": 50, "Relay_Baton": 50}},
+                {"type": "Story", "number": 8, "cost": 10, "initial": {"Sports_Drink": 50, "Anpan": 50}},
+                {"type": "Story", "number": 9, "cost": 10, "initial": {"Sports_Drink": 50, "Information_Pamphlet": 50}},
+                {"type": "Story", "number": 10, "cost": 10, "initial": {"Sports_Drink": 50, "Relay_Baton": 20, "Anpan": 20, "Information_Pamphlet": 20}},
+                
+                {"type": "Quest", "number": 1, "cost": 10,  "initial": {"Sports_Drink": 150, "Relay_Baton": 150, "Anpan": 150}, "drops": {"Sports_Drink": 6, "Relay_Baton": 6, "Anpan": 6, "Nimrud_1": 0.25, "Nimrud_2": 0.15}},
+                {"type": "Quest", "number": 2, "cost": 10,  "initial": {"Sports_Drink": 150, "Anpan": 150, "Information_Pamphlet": 150}, "drops": {"Sports_Drink": 6, "Anpan": 6, "Information_Pamphlet": 6, "Haniwa_1": 0.25, "Haniwa_2": 0.15}},
+                {"type": "Quest", "number": 3, "cost": 10,  "initial": {"Sports_Drink": 150, "Relay_Baton": 150, "Information_Pamphlet": 150}, "drops": {"Sports_Drink": 6, "Relay_Baton": 6, "Information_Pamphlet": 6, "Voynich_1": 0.25, "Voynich_2": 0.15}},
+                {"type": "Quest", "number": 4, "cost": 10,  "initial": {"Sports_Drink": 250, "Relay_Baton": 50, "Anpan": 50, "Information_Pamphlet": 50}, "drops": {"Sports_Drink": 10, "Relay_Baton": 2, "Anpan": 2, "Information_Pamphlet": 2, "Phaistos_1": 0.25, "Phaistos_2": 0.15}},
+                {"type": "Quest", "number": 5, "cost": 15,  "initial": {"Sports_Drink": 225, "Relay_Baton": 300, "Anpan": 150}, "drops": {"Sports_Drink": 9, "Relay_Baton": 12, "Anpan": 6, "Nimrud_2": 0.25, "Nimrud_3": 0.08}},
+                {"type": "Quest", "number": 6, "cost": 15,  "initial": {"Sports_Drink": 225, "Anpan": 300, "Information_Pamphlet": 150}, "drops": {"Sports_Drink": 9, "Anpan": 12, "Information_Pamphlet": 6, "Haniwa_2": 0.25, "Haniwa_3": 0.08}},
+                {"type": "Quest", "number": 7, "cost": 15,  "initial": {"Sports_Drink": 225, "Relay_Baton": 150, "Information_Pamphlet": 300}, "drops": {"Sports_Drink": 9, "Relay_Baton": 6, "Information_Pamphlet": 12, "Voynich_2": 0.25, "Voynich_3": 0.08}},
+                {"type": "Quest", "number": 8, "cost": 15,  "initial": {"Sports_Drink": 450, "Relay_Baton": 50, "Anpan": 50, "Information_Pamphlet": 50}, "drops": {"Sports_Drink": 18, "Relay_Baton": 2, "Anpan": 2, "Information_Pamphlet": 2, "Phaistos_2": 0.25, "Phaistos_3": 0.08}},
+                {"type": "Quest", "number": 9, "cost": 20,  "initial": {"Relay_Baton": 900}, "drops": {"Relay_Baton": 36, "Nimrud_2": 0.25, "Nimrud_3": 0.12, "Nimrud_4": 0.02}},
+                {"type": "Quest", "number": 10, "cost": 20, "initial": {"Anpan": 900}, "drops": {"Anpan": 36, "Haniwa_2": 0.25, "Haniwa_3": 0.12, "Haniwa_4": 0.02}},
+                {"type": "Quest", "number": 11, "cost": 20, "initial": {"Information_Pamphlet": 900}, "drops": {"Information_Pamphlet": 36, "Voynich_2": 0.25, "Voynich_3": 0.12, "Voynich_4": 0.02}},
+                {"type": "Quest", "number": 12, "cost": 20, "initial": {"Sports_Drink": 800}, "drops": {"Sports_Drink": 32, "Phaistos_2": 0.25, "Phaistos_3": 0.12, "Phaistos_4": 0.02}},
+
+                {"type": "Challenge", "number": 1, "cost": 5},
+                {"type": "Challenge", "number": 2, "cost": 5},
+                {"type": "Challenge", "number": 3, "cost": 5},
+                {"type": "Challenge", "number": 4, "cost": 5},
+                {"type": "Challenge", "number": 5, "cost": 5}
+            ]
+        },
+        "trip-trap-train": {
+            "icon": "Event_830_Jp.png",
+            "display_name": "Trip Trap Train"
+        },
+        "certain-scientific-archive": {
+            "icon": "Event_831_Jp.png",
+            "display_name": "A Certain Scientific Youth Record"
         }
     }
 }
