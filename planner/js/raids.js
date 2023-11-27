@@ -56,7 +56,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/student_info.json?1').done(function (json) {
+    $.getJSON('json/student_info.json?2').done(function (json) {
         student_info = json;
         LoadStudentInfo();
     })

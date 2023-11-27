@@ -65,7 +65,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?32').done(function (json) {
+    $.getJSON('json/events.json?33').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -420,8 +420,24 @@ function LoadEvent(eventId) {
         omikujiGachaProcessed = true;
     }
 
-    if (Object.keys(event_data.shop_purchases).length == 0) {
+    if (event_config.events[current_event].shops && Object.keys(event_data.shop_purchases).length == 0) {
         event_data.shop_purchases = InitMaxShopPurchases();
+    }
+    else {
+        let currencies = event_config.events[current_event].currencies;
+        currencyNames = Object.keys(currencies);
+
+        event_data.currency_needed = {};
+
+        currencyNames.forEach((name) => {
+
+            if (currencies[name].clear) {
+
+                event_data.currency_needed[name] = currencies[name].clear;
+            }
+        })
+
+        currencyNeededPre = event_data.currency_needed;
     }
 
     if (event_data.point_target) {
@@ -639,6 +655,10 @@ function GenerateBonusTab() {
 }
 
 function LoadFirstShop() {
+
+    if (!event_config.events[current_event].shops) {
+        return;
+    }
 
     let currencyShopTabs = document.getElementById("currency-shop-tabs");
     if (currencyShopTabs.children) {
@@ -987,6 +1007,14 @@ function CalculateEnergyAvailable() {
 }
 
 function GenerateShopTabs() {
+
+    if (!event_config.events[current_event].shops) {
+        document.getElementById("tab-Shop").style.display = "none";
+        return;
+    }
+    else {
+        document.getElementById("tab-Shop").style.display = "";
+    }
 
     let currencies = event_config.events[current_event].currencies;
     let shops = event_config.events[current_event].shops;
@@ -1886,7 +1914,7 @@ function CreateDropsDiv(drops) {
                 dropP.innerText = (drops[drop]);
             }
             else {
-                dropP.innerText = (drops[drop] * 100) + "%";
+                dropP.innerText = parseFloat((drops[drop] * 100).toFixed(2)) + "%";
             }
 
             dropDiv.classList.add('drop-resource-rarity-' + drop.slice(-1));
@@ -2266,7 +2294,9 @@ function RefreshDropsDisplay() {
         }
     }
 
-    CalculateItemPurchases();
+    if (event_config.events[current_event].shops) {
+        CalculateItemPurchases();
+    }
 
     if (optimisationType == "Shop") {
 
@@ -2356,6 +2386,8 @@ function CalculateStageDrops(result, ignoreRequirement) {
 
         dropNames.forEach((drop) => {
 
+            let matId = matLookup.revGet(drop);
+
             if (currencyBonuses[drop] || currencyBonuses[drop] == 0) {
                 if (!totalCurrencies[drop]) {
                     totalCurrencies[drop] = 0;
@@ -2363,13 +2395,24 @@ function CalculateStageDrops(result, ignoreRequirement) {
 
                 totalCurrencies[drop] += runs * Math.ceil(drops[drop] + (drops[drop] * (currencyBonuses[drop] ?? 0))).toFixed(5);
             }
-            else {
+            else if (drop == "Credit") {
+                totalCredit += runs * drops[drop];
+            }
+            else if (matId && matId < 1000) {
                 if (!totalArtifacts[drop]) {
                     totalArtifacts[drop] = 0;
                 }
 
                 totalArtifacts[drop] += runs * drops[drop];
             }
+            else if (matId) {
+                if (!totalSchoolMats[drop]) {
+                    totalSchoolMats[drop] = 0;
+                }
+
+                totalSchoolMats[drop] += runs * drops[drop];
+            }
+
         })
 
         energyCost += questStages[stagesRun[i] - 1].cost * runs;
@@ -2479,7 +2522,9 @@ function CalculateStageDrops(result, ignoreRequirement) {
             totalCredit += results[0];
             totalEligma += results[1];
             totalSecretTech += results[2];
-            totalCurrencies[results[4]] = results[3];
+            if (results[3]) {
+                totalCurrencies[results[4]] = results[3];
+            }
         }
     }
     else {
@@ -2583,6 +2628,10 @@ function CalculateStageDrops(result, ignoreRequirement) {
         for (let i = 0; i < currencyNames.length; i++) {
 
             let leftoverCurrency = totalCurrencies[currencyNames[i]] - currencyNeededPre[currencyNames[i]];
+
+            if (!event_config.events[current_event].shops) {
+                continue;
+            }
 
             let shop = event_config.events[current_event].shops[currencyNames[i]];
 
