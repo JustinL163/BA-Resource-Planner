@@ -423,7 +423,7 @@ function LoadEvent(eventId) {
     if (event_config.events[current_event].shops && Object.keys(event_data.shop_purchases).length == 0) {
         event_data.shop_purchases = InitMaxShopPurchases();
     }
-    else {
+    else if (Object.keys(event_data.currency_needed).length == 0) {
         let currencies = event_config.events[current_event].currencies;
         currencyNames = Object.keys(currencies);
 
