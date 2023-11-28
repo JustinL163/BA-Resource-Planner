@@ -395,6 +395,16 @@ function LoadEvent(eventId) {
         document.getElementById("temp-disclaimer").style.display = "none";
     }
 
+    if (current_event == "dragon-and-tortoise") {
+        Swal.fire({
+            toast: true,
+            position: 'top-start',
+            title: "There was a bug with shop currency not saving for this event, should be fixed now",
+            showConfirmButton: false,
+            timer: 5000
+        })
+    }
+
     let enabledStageGroups;
     //TEMP
     if (current_event == "hakua-calling-card") {
@@ -1617,6 +1627,13 @@ function CalculateItemPurchases() {
             if (loadedShopPurchases) {
                 totalPurchaseCost += loadedShopPurchases[shop[i].id] * shop[i].cost;
             }
+        }
+
+        if (current_event == "dragon-and-tortoise" && shopNames[s] == "Black_Tortoise_Meal_Ticket") {
+            event_data.currency_needed["Black_Tortoise_Meal_Ticket"] = totalPurchaseCost
+        }
+        else if (current_event == "dragon-and-tortoise" && shopNames[s] == "Genryumon_Badge") {
+            event_data.currency_needed["Genryumon_Badge"] = totalPurchaseCost
         }
 
         // currencyNeededPre[shopNames[s]] = totalPurchaseCost;
