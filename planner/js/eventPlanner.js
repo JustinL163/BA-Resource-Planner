@@ -65,7 +65,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?33').done(function (json) {
+    $.getJSON('json/events.json?34').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -399,7 +399,7 @@ function LoadEvent(eventId) {
         Swal.fire({
             toast: true,
             position: 'top-start',
-            title: "There was a bug with shop currency not saving for this event, should be fixed now",
+            title: "The planner now supports reducing the card sets obtained with min clear target, based on the shop purchases set in the Shop tab",
             showConfirmButton: false,
             timer: 5000
         })
@@ -1735,6 +1735,23 @@ function CalculateNeededFinal() {
                 let pullCurrencyNeeded = CalculateBoxCurrencyNeeded(currencyNeededPre[currencies[i]]);
 
                 currencyNeeded[boxPullCurrency] = Math.max(pullCurrencyNeeded - currencyOwned - (invasionCurrencies[currencies[i]] ?? 0), 0);
+            }
+            else if (currencySource == "CardPull") {
+                let cardPullCurrency = event_config.events[current_event].currencies[currencies[i]].pull_currency;
+
+                let cardCurrencyOwned = 0;
+                if (event_data.currency_owned && event_data.currency_owned[cardPullCurrency]) {
+                    let currencyInt = parseInt(event_data.currency_owned[cardPullCurrency]);
+        
+                    if (currencyInt > 0) {
+                        cardCurrencyOwned = currencyInt;
+                    }
+                }
+
+                let pullCurrencyNeeded = currencyNeededPre[currencies[i]];
+
+                // TEMP
+                currencyNeeded[cardPullCurrency] = Math.max(Math.ceil(pullCurrencyNeeded * 0.544811320) * 200 - (initialClearRewards[cardPullCurrency] ?? 0) - cardCurrencyOwned - (invasionCurrencies[currencies[i]] ?? 0), 0);
             }
         }
     }
