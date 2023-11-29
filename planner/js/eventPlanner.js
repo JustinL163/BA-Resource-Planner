@@ -1748,10 +1748,19 @@ function CalculateNeededFinal() {
                     }
                 }
 
+                let currencySubtract = 0;
+
+                if (cardCurrencyOwned > 0) {
+                    currencySubtract = cardCurrencyOwned;
+                }
+                else {
+                    currencySubtract = (initialClearRewards[cardPullCurrency] ?? 0);
+                }
+
                 let pullCurrencyNeeded = currencyNeededPre[currencies[i]];
 
                 // TEMP
-                currencyNeeded[cardPullCurrency] = Math.max(Math.ceil(pullCurrencyNeeded * 0.544811320) * 200 - (initialClearRewards[cardPullCurrency] ?? 0) - cardCurrencyOwned - (invasionCurrencies[currencies[i]] ?? 0), 0);
+                currencyNeeded[cardPullCurrency] = Math.max(Math.ceil(pullCurrencyNeeded * 0.544811320) * 200 - currencySubtract - (invasionCurrencies[currencies[i]] ?? 0), 0);
             }
         }
     }
