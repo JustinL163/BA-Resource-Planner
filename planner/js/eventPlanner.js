@@ -80,7 +80,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?16').done(function (json) {
+    $.getJSON('json/strings.json?17').done(function (json) {
         language_strings = json;
         checkResources();
     });
