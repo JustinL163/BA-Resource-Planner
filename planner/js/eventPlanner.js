@@ -65,7 +65,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?34').done(function (json) {
+    $.getJSON('json/events.json?35').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -395,11 +395,11 @@ function LoadEvent(eventId) {
         document.getElementById("temp-disclaimer").style.display = "none";
     }
 
-    if (current_event == "dragon-and-tortoise") {
+    if (current_event == "summer-rabbit-squad") {
         Swal.fire({
             toast: true,
             position: 'top-start',
-            title: "The planner now supports reducing the card sets obtained with min clear target, based on the shop purchases set in the Shop tab",
+            title: "The dice race reward simulation will be available in a few hours, just working on it now",
             showConfirmButton: false,
             timer: 5000
         })

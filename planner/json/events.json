@@ -1,7 +1,6 @@
 {
     "event_order": [
-        "dragon-and-tortoise",
-        "|summer-rabbit-squad",
+        "summer-rabbit-squad",
         "abydos-resort-restoration",
         "|hidden-heritage",
         "|momoyodou-beach-house",
@@ -3916,7 +3915,183 @@
         },
         "summer-rabbit-squad": {
             "icon": "Event_827_Jp.png",
-            "display_name": "RABBIT SQUAD and the Mystery of the Missing Shrimp"
+            "display_name": "RABBIT SQUAD and the Mystery of the Missing Shrimp",
+            "reset_time": 1677524400,
+            "start_time": 1677549600,
+            "end_time": 1678759200,
+            "maint_hours": 6,
+            "available_targets": ["Shop", "Currency", "Manual"],
+            "currency_targets": ["Frozen_Shrimp"],
+            "reward_preview": [
+                {"type": "Eleph", "id": "26010", "preview": 1}
+            ],
+            "currencies": {
+                "Frozen_Shrimp": {
+                    "icon": "Frozen_Shrimp.png",
+                    "shortname": "Frozen Shrimp",
+                    "source": "StageDrop",
+                    "clear": 15000,
+                    "bonus_units": [
+                        {"id": "10071", "bonus": 0.25},
+                        {"id": "10072", "bonus": 0.25},
+                        {"id": "26010", "bonus": 0.25},
+                        
+                        {"id": "10038", "bonus": 0.15},
+                        {"id": "13012", "bonus": 0.15},
+                        {"id": "10009", "bonus": 0.15},
+                        {"id": "16006", "bonus": 0.15},
+                        {"id": "16005", "bonus": 0.15},
+                        {"id": "20018", "bonus": 0.15}
+                    ]
+                },
+                "Pebble": {
+                    "icon": "Pebble.png",
+                    "shortname": "Pebble",
+                    "source": "StageDrop",
+                    "clear": 14100,
+                    "bonus_units": [
+                        {"id": "10071", "bonus": 0.25},
+
+                        {"id": "10038", "bonus": 0.15},
+                        {"id": "16008", "bonus": 0.15},
+                        {"id": "16006", "bonus": 0.15},
+                        {"id": "20014", "bonus": 0.15},
+                        {"id": "20023", "bonus": 0.15},
+                        {"id": "26002", "bonus": 0.15}
+                    ]
+                },
+                "Shell": {
+                    "icon": "Shell.png",
+                    "shortname": "Shell",
+                    "source": "StageDrop",
+                    "clear": 13760,
+                    "bonus_units": [
+                        {"id": "26010", "bonus": 0.25},
+
+                        {"id": "10039", "bonus": 0.15},
+                        {"id": "13012", "bonus": 0.15},
+                        {"id": "16008", "bonus": 0.15},
+                        {"id": "10009", "bonus": 0.15},
+                        {"id": "10013", "bonus": 0.15},
+                        {"id": "20014", "bonus": 0.15}
+                    ]
+                },
+                "Dried_Starfish": {
+                    "icon": "Dried_Starfish.png",
+                    "shortname": "Dried Starfish",
+                    "source": "StageDrop",
+                    "clear": 14600,
+                    "bonus_units": [
+                        {"id": "10072", "bonus": 0.25},
+
+                        {"id": "10039", "bonus": 0.15},
+                        {"id": "10013", "bonus": 0.15},
+                        {"id": "16005", "bonus": 0.15},
+                        {"id": "20018", "bonus": 0.15},
+                        {"id": "20023", "bonus": 0.15},
+                        {"id": "26002", "bonus": 0.15}
+                    ]
+                }
+            },
+            "shops": {
+                "Pebble": [
+                    {"type": "XpReport", "id": "XP_1", "count": 250, "cost": 1},
+                    {"type": "XpReport", "id": "XP_2", "count": 150, "cost": 10},
+                    {"type": "XpReport", "id": "XP_3", "count": 50, "cost": 40},
+                    {"type": "XpReport", "id": "XP_4", "count": 15, "cost": 200},
+                    {"type": "Material", "id": "4080", "count": 40, "cost": 5},
+                    {"type": "Material", "id": "4081", "count": 30, "cost": 15},
+                    {"type": "Material", "id": "4082", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "4083", "count": 12, "cost": 200},
+                    {"type": "Gift", "id": "Guns_Charm_and_Zeal", "count": 10, "cost": 100},
+                    {"type": "Gift", "id": "Military_Camo_Foundation_Trio", "count": 10, "cost": 100},
+                    {"type": "Gift", "id": "Lace_Pillow", "count": 1, "cost": 300},
+                    {"type": "Furniture", "id": "Shower_Booth", "count": 1, "cost": 1000, "limited": true}
+                ],
+                "Shell": [
+                    {"type": "XpOrb", "id": "GXP_1", "count": 250, "cost": 1},
+                    {"type": "XpOrb", "id": "GXP_2", "count": 150, "cost": 4},
+                    {"type": "XpOrb", "id": "GXP_3", "count": 50, "cost": 16},
+                    {"type": "XpOrb", "id": "GXP_4", "count": 15, "cost": 64},
+                    {"type": "Material", "id": "3080", "count": 35, "cost": 10},
+                    {"type": "Material", "id": "3081", "count": 30, "cost": 30},
+                    {"type": "Material", "id": "3082", "count": 25, "cost": 100},
+                    {"type": "Material", "id": "3083", "count": 7, "cost": 300},
+                    {"type": "Gift", "id": "Buried_Treasure_Map", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Health_Food_Supplement", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Nutrient-rich_Multivitamin_Jellies", "count": 1, "cost": 300},
+                    {"type": "Furniture", "id": "Scuba_Diving_Gear_Rack", "count": 1, "cost": 1000, "limited": true}
+                ],
+                "Dried_Starfish": [
+                    {"type": "Material", "id": "170", "count": 150, "cost": 5},
+                    {"type": "Material", "id": "171", "count": 60, "cost": 15},
+                    {"type": "Material", "id": "172", "count": 30, "cost": 50},
+                    {"type": "Material", "id": "173", "count": 15, "cost": 100},
+                    {"type": "Material", "id": "120", "count": 150, "cost": 5},
+                    {"type": "Material", "id": "121", "count": 60, "cost": 15},
+                    {"type": "Material", "id": "122", "count": 30, "cost": 50},
+                    {"type": "Material", "id": "123", "count": 15, "cost": 100},
+                    {"type": "Gift", "id": "Embroidered_Handkerchief", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "MX-Ration_C-Type_Dessert_Flavor", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Stylish_Comb", "count": 1, "cost": 300},
+                    {"type": "Furniture", "id": "Fresh_Fish_Box", "count": 1, "cost": 1000, "limited": true}
+                ]
+            },
+            "stage_groups": ["1-4", "5-8", "9-12"],
+            "stages": [
+                {"type": "Story", "number": 1, "cost": 10, "initial": {"Frozen_Shrimp": 50, "Pebble": 50}},
+                {"type": "Story", "number": 2, "cost": 10, "initial": {"Frozen_Shrimp": 50, "Shell": 50}},
+                {"type": "Story", "number": 3, "cost": 10, "initial": {"Frozen_Shrimp": 50, "Dried_Starfish": 50}},
+                {"type": "Story", "number": 4, "cost": 10, "initial": {"Frozen_Shrimp": 50, "Pebble": 50}},
+                {"type": "Story", "number": 5, "cost": 10, "initial": {"Frozen_Shrimp": 50, "Shell": 50}},
+                {"type": "Story", "number": 6, "cost": 10, "initial": {"Frozen_Shrimp": 50, "Dried_Starfish": 50}},
+                {"type": "Story", "number": 7, "cost": 10, "initial": {"Frozen_Shrimp": 50, "Pebble": 50}},
+                {"type": "Story", "number": 8, "cost": 10, "initial": {"Frozen_Shrimp": 50, "Shell": 50}},
+                {"type": "Story", "number": 9, "cost": 10, "initial": {"Frozen_Shrimp": 50, "Dried_Starfish": 50}},
+                {"type": "Story", "number": 10, "cost": 10, "initial": {"Frozen_Shrimp": 50, "Dried_Starfish": 50}},
+                {"type": "Story", "number": 11, "cost": 10, "initial": {"Frozen_Shrimp": 50, "Pebble": 20, "Shell": 20, "Dried_Starfish": 20}},
+                
+                {"type": "Quest", "number": 1, "cost": 10, "group": 1, "initial": {"Frozen_Shrimp": 150, "Pebble": 150, "Shell": 150}, "drops": {"Frozen_Shrimp": 6, "Pebble": 6, "Shell": 6, "Antikythera_1": 0.25, "Antikythera_2": 0.15}},
+                {"type": "Quest", "number": 2, "cost": 10, "group": 1, "initial": {"Frozen_Shrimp": 150, "Shell": 150, "Dried_Starfish": 150}, "drops": {"Frozen_Shrimp": 6, "Shell": 6, "Dried_Starfish": 6, "Wolfsegg_1": 0.25, "Wolfsegg_2": 0.15}},
+                {"type": "Quest", "number": 3, "cost": 10, "group": 1, "initial": {"Frozen_Shrimp": 150, "Pebble": 150, "Dried_Starfish": 150}, "drops": {"Frozen_Shrimp": 6, "Pebble": 6, "Dried_Starfish": 6, "Phaistos_1": 0.25, "Phaistos_2": 0.15}},
+                {"type": "Quest", "number": 4, "cost": 10, "group": 1, "initial": {"Frozen_Shrimp": 300, "Pebble": 50, "Shell": 50, "Dried_Starfish": 50}, "drops": {"Frozen_Shrimp": 12, "Pebble": 2, "Shell": 2, "Dried_Starfish": 2, "Aether_1": 0.25, "Aether_2": 0.15}},
+                {"type": "Quest", "number": 5, "cost": 15, "group": 2, "initial": {"Frozen_Shrimp": 225, "Pebble": 300, "Shell": 150}, "drops": {"Frozen_Shrimp": 9, "Pebble": 12, "Shell": 6, "Antikythera_2": 0.25, "Antikythera_3": 0.08}},
+                {"type": "Quest", "number": 6, "cost": 15, "group": 2, "initial": {"Frozen_Shrimp": 225, "Shell": 300, "Dried_Starfish": 150}, "drops": {"Frozen_Shrimp": 9, "Shell": 12, "Dried_Starfish": 6, "Wolfsegg_2": 0.25, "Wolfsegg_3": 0.08}},
+                {"type": "Quest", "number": 7, "cost": 15, "group": 2, "initial": {"Frozen_Shrimp": 225, "Pebble": 150, "Dried_Starfish": 300}, "drops": {"Frozen_Shrimp": 9, "Pebble": 6, "Dried_Starfish": 12, "Phaistos_2": 0.25, "Phaistos_3": 0.08}},
+                {"type": "Quest", "number": 8, "cost": 15, "group": 2, "initial": {"Frozen_Shrimp": 525, "Pebble": 50, "Shell": 50, "Dried_Starfish": 50}, "drops": {"Frozen_Shrimp": 21, "Pebble": 2, "Shell": 2, "Dried_Starfish": 2, "Aether_2": 0.25, "Aether_3": 0.08}},
+                {"type": "Quest", "number": 9, "cost": 20, "group": 3, "initial": {"Pebble": 900}, "drops": {"Pebble": 36, "Antikythera_2": 0.25, "Antikythera_3": 0.12, "Antikythera_4": 0.021}},
+                {"type": "Quest", "number": 10, "cost": 20, "group": 3, "initial": {"Shell": 900}, "drops": {"Shell": 36, "Wolfsegg_2": 0.25, "Wolfsegg_3": 0.12, "Wolfsegg_4": 0.021}},
+                {"type": "Quest", "number": 11, "cost": 20, "group": 3, "initial": {"Dried_Starfish": 900}, "drops": {"Dried_Starfish": 36, "Phaistos_2": 0.25, "Phaistos_3": 0.12, "Phaistos_4": 0.021}},
+                {"type": "Quest", "number": 12, "cost": 20, "group": 3, "initial": {"Frozen_Shrimp": 900}, "drops": {"Frozen_Shrimp": 36, "Aether_2": 0.25, "Aether_3": 0.12, "Aether_4": 0.021}},
+
+                {"type": "Challenge", "number": 1, "cost": 5},
+                {"type": "Challenge", "number": 2, "cost": 5},
+                {"type": "Challenge", "number": 3, "cost": 5},
+                {"type": "Challenge", "number": 4, "cost": 5},
+                {"type": "Challenge", "number": 5, "cost": 5}
+            ],
+            "dice_race": {
+                "tiles": [
+                    {"type": "Eleph", "id": 26010, "amount": 5},
+                    {"type": "Credit", "amount": 3200000},
+                    {"type": "XpReport", "id": "GXP_3", "amount": 15},
+                    {"type": "XpReport", "id": "XP_3", "amount": 22},
+                    {"type": "Eligma", "amount": 8},
+                    {"type": "Eleph", "id": 26010, "amount": 7},
+                    {"type": "Eligma", "amount": 12},
+                    {"type": "Credit", "amount": 2400000},
+                    {"type": "MoveBonus", "amount": 6},
+                    {"type": "Credit", "amount": 1600000},
+                    {"type": "XpReport", "id": "GXP_3", "amount": 12},
+                    {"type": "XpReport", "id": "XP_3", "amount": 10},
+                    {"type": "Eligma", "amount": 6},
+                    {"type": "Eleph", "id": 26010, "amount": 4},
+                    {"type": "FixedDice"},
+                    {"type": "XpReport", "id": "GXP_3", "amount": 10},
+                    {"type": "Credit", "amount": 2000000},
+                    {"type": "XpReport", "id": "XP_3", "amount": 17}
+                ]
+            }
         },
         "abydos-resort-restoration": {
             "icon": "Event_814_En.png",
@@ -3983,7 +4158,6 @@
                 {"type": "Quest", "number": 10, "cost": 20, "group": 3, "initial": {"Material_Box": 200}, "drops": {"Material_Box": 40, "Credit": 500, "TN_4_Millennium": 0.041, "TN_4_Shanhaijing": 0.009, "BD_4_Millennium": 0.0098, "BD_4_Shanhaijing": 0.0022}},
                 {"type": "Quest", "number": 11, "cost": 20, "group": 3, "initial": {"Material_Box": 250}, "drops": {"Material_Box": 40, "Credit": 500, "TN_4_Trinity": 0.0369, "TN_4_Abydos": 0.0131, "BD_4_Trinity": 0.0089, "BD_4_Abydos": 0.0031}},
                 {"type": "Quest", "number": 12, "cost": 20, "group": 3, "initial": {"Material_Box": 300}, "drops": {"Material_Box": 40, "Credit": 500, "TN_4_Gehenna": 0.0389, "TN_4_RedWinter": 0.0111, "BD_4_Gehenna": 0.0093, "BD_4_RedWinter": 0.0027}},
-
 
                 {"type": "Challenge", "number": 1, "cost": 5},
                 {"type": "Challenge", "number": 2, "cost": 5},
