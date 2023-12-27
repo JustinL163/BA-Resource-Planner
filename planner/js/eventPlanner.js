@@ -49,11 +49,17 @@ let omikujiGachaSimResults = {};
 let omikujiGachaAvgSD = {};
 let omikujiPullCurrencyOwned = 0;
 
-let cardGachaProcessed = false;
-let cardGachaProcessing = false;
+let diceGachaSimResults = {};
+let diceGachaAvgSD = {};
+let diceRollCurrencyOwned = 0;
 
+let cardGachaProcessed = false;
 let omikujiGachaProcessed = false;
+let diceGachaProcessed = false;
+
+let cardGachaProcessing = false;
 let omikujiGachaProcessing = false;
+let diceGachaProcessing = false;
 
 let midEvent = false;
 let resets_left = 0;
@@ -65,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?35').done(function (json) {
+    $.getJSON('json/events.json?36').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -358,6 +364,7 @@ function LoadEvent(eventId) {
     omikujiGachaAvgSD = {};
     omikujiGachaProcessed = false;
     omikujiPullCurrencyOwned = 0;
+    diceGachaProcessed = false;
     resets_left = 0;
     resets_total = 0;
 
@@ -428,6 +435,10 @@ function LoadEvent(eventId) {
 
     if (Object.keys(omikujiGachaAvgSD).length > 0) {
         omikujiGachaProcessed = true;
+    }
+
+    if (Object.keys(diceGachaAvgSD).length > 0) {
+        diceGachaProcessed = true;
     }
 
     if (event_config.events[current_event].shops && Object.keys(event_data.shop_purchases).length == 0) {
@@ -1742,7 +1753,7 @@ function CalculateNeededFinal() {
                 let cardCurrencyOwned = 0;
                 if (event_data.currency_owned && event_data.currency_owned[cardPullCurrency]) {
                     let currencyInt = parseInt(event_data.currency_owned[cardPullCurrency]);
-        
+
                     if (currencyInt > 0) {
                         cardCurrencyOwned = currencyInt;
                     }
@@ -4618,6 +4629,419 @@ function ProcessOmikujiResults(eventName) {
     UpdateNotifications();
 
     Save(5);
+}
+test = {};
+function SimulateDiceGacha() {
+
+    if (diceGachaProcessed) {
+        return;
+    }
+
+    diceGachaSimResults = {};
+    completedWorkers = [];
+
+    let dice_drop_event = current_event + "";
+
+    const worker1 = new Worker("js/diceGachaWorker.js");
+
+    worker1.onmessage = (e) => {
+        completedWorkers.push(1);
+        CombineObjectArrays(e.data, diceGachaSimResults);
+        ProcessDiceResults(dice_drop_event);
+        // console.log(e.data);
+        test = e.data;
+    }
+
+    let diceRace = event_config.events[current_event].dice_race;
+
+    worker1.postMessage([diceRace, 3000, 100000, 120500]);
+}
+
+function ProcessDiceResults(eventName) {
+
+    // if (completedWorkers.length != 4) {
+    //     return;
+    // }
+
+    if (eventName != current_event) {
+        diceGachaSimResults = {};
+        diceGachaProcessing = false;
+        return;
+    }
+
+    let rewardNames = Object.keys(diceGachaSimResults);
+
+    for (i = 0; i < rewardNames.length; i++) {
+
+        diceGachaAvgSD[rewardNames[i]] = {};
+
+        diceGachaAvgSD[rewardNames[i]].std = math.std(diceGachaSimResults[rewardNames[i]]);
+        diceGachaAvgSD[rewardNames[i]].mean = math.mean(diceGachaSimResults[rewardNames[i]]);
+    }
+
+    // events_data[eventName].omikuji_pull_rewards = omikujiGachaAvgSD;
+
+    Swal.fire({
+        toast: true,
+        position: 'top-start',
+        title: ('Simulated ' + diceGachaSimResults["Credit"].length + " attempts"),
+        showConfirmButton: false,
+        timer: 3000
+    })
+
+    diceGachaSimResults = {};
+
+    // RefreshDropsDisplay();
+
+    diceGachaProcessing = false;
+    diceGachaProcessed = true;
+
+    // UpdateNotifications();
+
+    // Save(5);
+}
+
+let devPathListProcessed = {};
+function devProcessDiceResults(data, pathIndex) {
+
+    let rewardNames = Object.keys(data);
+
+    devPathListProcessed[pathIndex] = {};
+
+    for (i = 0; i < rewardNames.length; i++) {
+
+        devPathListProcessed[pathIndex][rewardNames[i]] = {};
+
+        devPathListProcessed[pathIndex][rewardNames[i]].std = math.std(data[rewardNames[i]]);
+        devPathListProcessed[pathIndex][rewardNames[i]].mean = math.mean(data[rewardNames[i]]);
+    }
+}
+
+function devWorkerFinished() {
+    if (completedWorkers.length == 8) {
+        devDownloadDiceResult(curChunk + "_sim.json");
+        completedWorkers = [];
+        devPathListProcessed = {};
+        devTestNextDiceChunk();
+    }
+}
+
+function devTestAllDiceChunks() {
+    devSplitDicePathList();
+    devTestNextDiceChunk();
+}
+
+let curChunk = 0;
+function devTestNextDiceChunk() {
+    if (devSplitPaths[curChunk]) {
+        devRecursePathList = devSplitPaths[curChunk];
+        devTestAllDicePaths(100, 50000);
+        curChunk++;
+    }
+}
+
+function devTestAllDicePaths(trials, currencyAvailable) {
+
+    let pathIndex = 0;
+
+    let modulus = 1000;
+    if (trials * currencyAvailable > 10000000) {
+        modulus = 100;
+    }
+
+    let diceRace = event_config.events[current_event].dice_race;
+
+    const worker1 = new Worker("js/diceGachaWorker.js");
+    const worker2 = new Worker("js/diceGachaWorker.js");
+    const worker3 = new Worker("js/diceGachaWorker.js");
+    const worker4 = new Worker("js/diceGachaWorker.js");
+    const worker5 = new Worker("js/diceGachaWorker.js");
+    const worker6 = new Worker("js/diceGachaWorker.js");
+    const worker7 = new Worker("js/diceGachaWorker.js");
+    const worker8 = new Worker("js/diceGachaWorker.js");
+
+    worker1.onmessage = (e) => {
+        if (e.data == "dead") {
+            completedWorkers.push("1");
+            devWorkerFinished();
+        }
+        else {
+            devProcessDiceResults(e.data[0], e.data[1]);
+            e.data = {};
+            if (pathIndex % modulus == 0) {
+                console.log("worker1: " + pathIndex + "/" + devRecursePathList.length);
+            }
+            if (devRecursePathList.length > pathIndex) {
+                worker1.postMessage([diceRace, devRecursePathList[pathIndex], 1000, trials, currencyAvailable, pathIndex, true]);
+                pathIndex++;
+            }
+            else {
+                worker1.postMessage("sudoku");
+            }
+        }
+    }
+
+    worker2.onmessage = (e) => {
+        if (e.data == "dead") {
+            completedWorkers.push("2");
+            devWorkerFinished();
+        }
+        else {
+            devProcessDiceResults(e.data[0], e.data[1]);
+            e.data = {};
+            if (pathIndex % modulus == 0) {
+                console.log("worker2: " + pathIndex + "/" + devRecursePathList.length);
+            }
+            if (devRecursePathList.length > pathIndex) {
+                worker2.postMessage([diceRace, devRecursePathList[pathIndex], 1000, trials, currencyAvailable, pathIndex, true]);
+                pathIndex++;
+            }
+            else {
+                worker2.postMessage("sudoku");
+            }
+        }
+    }
+
+    worker3.onmessage = (e) => {
+        if (e.data == "dead") {
+            completedWorkers.push("3");
+            devWorkerFinished();
+        }
+        else {
+            devProcessDiceResults(e.data[0], e.data[1]);
+            e.data = {};
+            if (pathIndex % modulus == 0) {
+                console.log("worker3: " + pathIndex + "/" + devRecursePathList.length);
+            }
+            if (devRecursePathList.length > pathIndex) {
+                worker3.postMessage([diceRace, devRecursePathList[pathIndex], 1000, trials, currencyAvailable, pathIndex, true]);
+                pathIndex++;
+            }
+            else {
+                worker3.postMessage("sudoku");
+            }
+        }
+    }
+
+    worker4.onmessage = (e) => {
+        if (e.data == "dead") {
+            completedWorkers.push("4");
+            devWorkerFinished();
+        }
+        else {
+            devProcessDiceResults(e.data[0], e.data[1]);
+            e.data = {};
+            if (pathIndex % modulus == 0) {
+                console.log("worker4: " + pathIndex + "/" + devRecursePathList.length);
+            }
+            if (devRecursePathList.length > pathIndex) {
+                worker4.postMessage([diceRace, devRecursePathList[pathIndex], 1000, trials, currencyAvailable, pathIndex, true]);
+                pathIndex++;
+            }
+            else {
+                worker4.postMessage("sudoku");
+            }
+        }
+    }
+
+    worker5.onmessage = (e) => {
+        if (e.data == "dead") {
+            completedWorkers.push("5");
+            devWorkerFinished();
+        }
+        else {
+            devProcessDiceResults(e.data[0], e.data[1]);
+            e.data = {};
+            if (pathIndex % modulus == 0) {
+                console.log("worker5: " + pathIndex + "/" + devRecursePathList.length);
+            }
+            if (devRecursePathList.length > pathIndex) {
+                worker5.postMessage([diceRace, devRecursePathList[pathIndex], 1000, trials, currencyAvailable, pathIndex, true]);
+                pathIndex++;
+            }
+            else {
+                worker5.postMessage("sudoku");
+            }
+        }
+    }
+
+    worker6.onmessage = (e) => {
+        if (e.data == "dead") {
+            completedWorkers.push("6");
+            devWorkerFinished();
+        }
+        else {
+            devProcessDiceResults(e.data[0], e.data[1]);
+            e.data = {};
+            if (pathIndex % modulus == 0) {
+                console.log("worker6: " + pathIndex + "/" + devRecursePathList.length);
+            }
+            if (devRecursePathList.length > pathIndex) {
+                worker6.postMessage([diceRace, devRecursePathList[pathIndex], 1000, trials, currencyAvailable, pathIndex, true]);
+                pathIndex++;
+            }
+            else {
+                worker6.postMessage("sudoku");
+            }
+        }
+    }
+
+    worker7.onmessage = (e) => {
+        if (e.data == "dead") {
+            completedWorkers.push("7");
+            devWorkerFinished();
+        }
+        else {
+            devProcessDiceResults(e.data[0], e.data[1]);
+            e.data = {};
+            if (pathIndex % modulus == 0) {
+                console.log("worker7: " + pathIndex + "/" + devRecursePathList.length);
+            }
+            if (devRecursePathList.length > pathIndex) {
+                worker7.postMessage([diceRace, devRecursePathList[pathIndex], 1000, trials, currencyAvailable, pathIndex, true]);
+                pathIndex++;
+            }
+            else {
+                worker7.postMessage("sudoku");
+            }
+        }
+    }
+
+    worker8.onmessage = (e) => {
+        if (e.data == "dead") {
+            completedWorkers.push("8");
+            devWorkerFinished();
+        }
+        else {
+            devProcessDiceResults(e.data[0], e.data[1]);
+            e.data = {};
+            if (pathIndex % modulus == 0) {
+                console.log("worker8: " + pathIndex + "/" + devRecursePathList.length);
+            }
+            if (devRecursePathList.length > pathIndex) {
+                worker8.postMessage([diceRace, devRecursePathList[pathIndex], 1000, trials, currencyAvailable, pathIndex, true]);
+                pathIndex++;
+            }
+            else {
+                worker8.postMessage("sudoku");
+            }
+        }
+    }
+
+    worker1.postMessage([diceRace, devRecursePathList[pathIndex], 1000, trials, currencyAvailable, pathIndex, true]);
+    pathIndex++;
+
+    worker2.postMessage([diceRace, devRecursePathList[pathIndex], 1000, trials, currencyAvailable, pathIndex, true]);
+    pathIndex++;
+
+    worker3.postMessage([diceRace, devRecursePathList[pathIndex], 1000, trials, currencyAvailable, pathIndex, true]);
+    pathIndex++;
+
+    worker4.postMessage([diceRace, devRecursePathList[pathIndex], 1000, trials, currencyAvailable, pathIndex, true]);
+    pathIndex++;
+
+    worker5.postMessage([diceRace, devRecursePathList[pathIndex], 1000, trials, currencyAvailable, pathIndex, true]);
+    pathIndex++;
+
+    worker6.postMessage([diceRace, devRecursePathList[pathIndex], 1000, trials, currencyAvailable, pathIndex, true]);
+    pathIndex++;
+
+    worker7.postMessage([diceRace, devRecursePathList[pathIndex], 1000, trials, currencyAvailable, pathIndex, true]);
+    pathIndex++;
+
+    worker8.postMessage([diceRace, devRecursePathList[pathIndex], 1000, trials, currencyAvailable, pathIndex, true]);
+    pathIndex++;
+}
+
+function devDownloadDiceResult(filename) {
+
+    devPathListProcessed = JSON.stringify(devPathListProcessed);
+
+    var blob = new Blob([devPathListProcessed], { type: 'text/json' }),
+        e = document.createEvent('MouseEvents'),
+        a = document.createElement('a')
+
+    a.download = filename
+    a.href = window.URL.createObjectURL(blob)
+    a.dataset.downloadurl = ['text/json', a.download, a.href].join(':')
+    e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
+    a.dispatchEvent(e)
+}
+
+function devGenerateDicePath(targets) {
+
+    let tiles = event_config.events[current_event].dice_race.tiles
+
+    let dicePaths = Array(tiles.length);
+
+    for (let i = 0; i < tiles.length; i++) {
+        dicePaths[i] = [];
+        for (let d = 1; d <= 6; d++) {
+            let tileCheck = i + d;
+            if (tileCheck >= tiles.length) {
+                tileCheck -= tiles.length;
+            }
+            if (targets.includes(tiles[tileCheck].type)) {
+                dicePaths[i].push(d);
+            }
+        }
+    }
+
+    return dicePaths;
+}
+
+let devRecursePathList = [];
+function devRecurseGetAllDicePaths(dicePath, prePath = []) {
+
+    if (prePath.length == 0) {
+        devRecursePathList = [];
+    }
+
+    let combinations = Combinations(dicePath[0]);
+
+    if (dicePath.length > 1) {
+        for (let i = 0; i < combinations.length; i++) {
+            devRecurseGetAllDicePaths(dicePath.slice(1), prePath.concat([combinations[i]]));
+        }
+    }
+    else {
+        for (let i = 0; i < combinations.length; i++) {
+            devRecursePathList.push(prePath.concat([combinations[i]]));
+        }
+    }
+
+}
+
+let devSplitPaths = [];
+let chunkSize = 250000;
+function devSplitDicePathList() {
+    for (let i = 0; i < devRecursePathList.length; i += chunkSize) {
+        devSplitPaths.push(devRecursePathList.slice(i, i + chunkSize));
+    }
+}
+
+function Combinations(a) {
+    var fn = function (n, src, got, all) {
+        if (n == 0) {
+            if (got.length > 0) {
+                all[all.length] = got;
+            }
+            return;
+        }
+        for (var j = 0; j < src.length; j++) {
+            fn(n - 1, src.slice(j + 1), got.concat([src[j]]), all);
+        }
+        return;
+    }
+    var all = [];
+    for (var i = 0; i < a.length; i++) {
+        fn(i, a, [], all);
+    }
+    all.push(a);
+    if (a.length) {
+        all.push([]);
+    }
+    return all;
 }
 
 function InitCardsTab() {
