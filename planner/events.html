@@ -25,7 +25,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="css/styles.css?4">
-    <link rel="stylesheet" href="css/event-planner.css?15">
+    <link rel="stylesheet" href="css/event-planner.css?16">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
@@ -37,7 +37,7 @@
     <script src="packages/mathjs/math.js"></script>
     <script src="js/config.js?15"></script>
     <script src="js/common.js?16"></script>
-    <script src="js/eventPlanner.js?57"></script>
+    <script src="js/eventPlanner.js?58"></script>
     <title>Event Planner</title>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://justin163.com/planner/events">
@@ -107,6 +107,8 @@
                     style="display: none;" data-id="label-tabcards"></div>
                 <div id="tab-Omikuji" class="event-tab-button display-string" onclick="EventTabClicked('Omikuji')"
                     style="display: none;" data-id="label-tabomikuji"></div>
+                <div id="tab-Dice" class="event-tab-button display-string" onclick="EventTabClicked('Dice')"
+                    style="display: none;" data-id="label-tabdice"></div>
                 <div id="tab-Owned" class="event-tab-button display-string" onclick="EventTabClicked('Owned')"
                     style="display: none;" data-id="label-tabowned"></div>
             </div>
@@ -341,6 +343,20 @@
                         data-id="button-simulategacha"></button>
                 </div>
             </div>
+            <div class="event-tab" id="Dice-tab" style="margin-bottom: 1em;">
+                <div id="dice-sd-container">
+                    <p style="margin-right: 1em;" class="display-string" data-id="label-rngadjust"></p>
+                    <input type="range" min="-2" max="1" value="0" step="0.5"
+                        oninput="SDSliderChanged('dice-sd-slider', 'display-standard-deviation-dice')"
+                        onchange="SDSliderSet('dice-sd-slider')" id="dice-sd-slider">
+                    <p id="display-standard-deviation-dice" class="display-string" data-id="label-stdinfo"></p>
+                    <button id="dice-sim-button" onclick="SimDiceClicked()" class="display-string"
+                        data-id="button-simulategacha"></button>
+                </div>
+                <br>
+                <div style="margin-left: 1em;">This image shows what I think is the (for majority of people) optimal dice usage strategy for Miyu eleph + Eligma based on simulations of ~20 million strategies I tested (the pink circle is just to clarify which tile the dice is on)</div>
+                <img src="icons/EventIcon/Misc/SummerRabbitDice.png" style="max-width: 100%;">
+            </div>
             <div class="event-tab" id="Owned-tab">
                 <div id="currency-owned-container"></div>
                 <p id="label-owned-currency-info-1" class="display-string" data-id="label-ownedcurrencyinfo"
@@ -380,6 +396,10 @@
                     onclick="DisplayOptionClicked('OmikujiRewards')" style="display: none;">
                 <label id="label-omikuji-rewards" for="include-omikuji-rewards" style="display: none;"
                     class="display-string" data-id="label-includeomikuji"></label>
+                <input type="checkbox" id="include-dice-rewards" name="include-dice-rewards"
+                    onclick="DisplayOptionClicked('DiceRewards')" style="display: none;">
+                <label id="label-dice-rewards" for="include-dice-rewards" style="display: none;"
+                    class="display-string" data-id="label-includedice"></label>
                 <input type="checkbox" id="include-invasion-rewards" name="include-invasion-rewards"
                     onclick="DisplayOptionClicked('InvasionRewards')" style="display: none;">
                 <label id="label-invasion-rewards" for="include-invasion-rewards" style="display: none;"

@@ -73,7 +73,7 @@ function Init(diceRace) {
 
 function SimulateAttempts(diceRace, targetParams, timeout, attemptsNum, currencyOwned, devIndex, keepAlive) {
 
-    // let startTime = new Date();
+    let startTime = new Date();
 
     let rewardArrays = {};
     for (i = 0; i < rewardsAvailable.length; i++) {

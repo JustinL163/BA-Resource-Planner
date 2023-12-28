@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?36').done(function (json) {
+    $.getJSON('json/events.json?37').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -86,7 +86,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?17').done(function (json) {
+    $.getJSON('json/strings.json?18').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -378,6 +378,8 @@ function LoadEvent(eventId) {
         cardPullCurrencyOwned = event_data.card_pull_currency_owned ?? 0;
         omikujiGachaAvgSD = event_data.omikuji_pull_rewards ?? {};
         omikujiPullCurrencyOwned = event_data.omikuji_pull_currency_owned ?? 0;
+        diceGachaAvgSD = event_data.dice_roll_rewards ?? {};
+        diceRollCurrencyOwned = event_data.dice_roll_currency_owned ?? 0;
         setSD = event_data.standard_deviation ?? 0;
     }
     else {
@@ -402,15 +404,15 @@ function LoadEvent(eventId) {
         document.getElementById("temp-disclaimer").style.display = "none";
     }
 
-    if (current_event == "summer-rabbit-squad") {
-        Swal.fire({
-            toast: true,
-            position: 'top-start',
-            title: "The dice race reward simulation will be available in a few hours, just working on it now",
-            showConfirmButton: false,
-            timer: 5000
-        })
-    }
+    // if (current_event == "summer-rabbit-squad") {
+    //     Swal.fire({
+    //         toast: true,
+    //         position: 'top-start',
+    //         title: "The dice race reward simulation will be available in a few hours, just working on it now",
+    //         showConfirmButton: false,
+    //         timer: 5000
+    //     })
+    // }
 
     let enabledStageGroups;
     //TEMP
@@ -515,6 +517,7 @@ function LoadEvent(eventId) {
     InitCardsTab();
     LoadCardGachaChances();
     LoadOmikuji();
+    LoadDice();
     InitInvasionTab();
     LoadFirstShop();
     UpdateNotifications();
@@ -2676,6 +2679,34 @@ function CalculateStageDrops(result, ignoreRequirement) {
         }
     }
 
+    if (event_config.events[current_event].dice_race) {
+
+        let rollCurrency = event_config.events[current_event].dice_race.roll_currency;
+
+        let changed = false;
+        if (diceRollCurrencyOwned != totalCurrencies[rollCurrency]) {
+            changed = true;
+        }
+
+        if (changed) {
+            diceRollCurrencyOwned = totalCurrencies[rollCurrency] ?? 0;
+            diceGachaProcessed = false;
+            diceGachaAvgSD = {};
+            event_data.dice_roll_rewards = {};
+            event_data.dice_roll_currency_owned = diceRollCurrencyOwned ?? 0;
+        }
+
+        if (displayIncluded['DiceRewards']) {
+
+            let intResults = AddDiceRewards(totalEleph, totalXps);
+            if (intResults) {
+                totalCredit += intResults[0];
+                totalEligma += intResults[1];
+                totalSecretTech += intResults[2];
+            }
+        }
+    }
+
     if (optimisationType == "Currency") {
 
         currencyNames = Object.keys(totalCurrencies);
@@ -3332,6 +3363,80 @@ function AddOmikujiRewards(totalEleph) {
     }
 
     return [totalCredit, totalEligma];
+}
+
+function AddDiceRewards(totalEleph, totalXps) {
+
+    if (!event_config.events[current_event].dice_race) {
+        return;
+    }
+
+    let totalCredit = 0, totalEligma = 0, totalSecretTech = 0;
+
+    let rewardNames = Object.keys(diceGachaAvgSD);
+
+    for (i = 0; i < rewardNames.length; i++) {
+
+        let rewardName = rewardNames[i];
+        let nameInt = parseInt(rewardName);
+        // let matId = matLookup.reverseMap[rewardName];
+
+        let rewardAmount = math.round(diceGachaAvgSD[rewardName].mean + (setSD * diceGachaAvgSD[rewardName].std));
+
+        if (rewardAmount == 0) {
+            continue;
+        }
+
+        if (rewardName == "Credit") {
+            totalCredit += rewardAmount;
+        }
+        // else if (rewardName == pullCurrency) {
+
+        //     if (!totalCurrencies[pullCurrency]) {
+        //         totalCurrencies[pullCurrency] = 0;
+        //     }
+
+        //     totalCurrencies[pullCurrency] += rewardAmount;
+        // }
+        else if (rewardName.includes("XP_")) {
+
+            if (!totalXps[rewardName]) {
+                totalXps[rewardName] = 0;
+            }
+
+            totalXps[rewardName] += rewardAmount;
+        }
+        else if (rewardName == "Eligma") {
+            totalEligma += rewardAmount;
+        }
+        else if (rewardName == "SecretTech") {
+            totalSecretTech += rewardAmount;
+        }
+        else if (nameInt) {
+
+            if (nameInt >= 10000 && nameInt < 30000) {
+
+                if (!totalEleph[rewardName]) {
+                    totalEleph[rewardName] = 0;
+                }
+
+                totalEleph[rewardName] += rewardAmount;
+            }
+        }
+        // else if (matId) {
+
+        //     if (matId < 1000) {
+
+        //         if (!totalArtifacts[rewardName]) {
+        //             totalArtifacts[rewardName] = 0;
+        //         }
+
+        //         totalArtifacts[rewardName] += rewardAmount;
+        //     }
+        // }
+    }
+
+    return [totalCredit, totalEligma, totalSecretTech]
 }
 
 function AddInvasionRewards(totalCurrencies, totalEleph, totalXps) {
@@ -4484,6 +4589,34 @@ function CombineObjectArrays(source, target) {
     }
 }
 
+function LoadDice() {
+
+    let diceRace = event_config.events[current_event].dice_race;
+
+    if (!diceRace) {
+
+        document.getElementById("tab-Dice").style.display = 'none';
+        document.getElementById('Dice-tab').style.display = 'none';
+        document.getElementById('include-dice-rewards').style.display = 'none';
+        document.getElementById('label-dice-rewards').style.display = 'none';
+        return;
+    }
+    else {
+        document.getElementById('include-dice-rewards').style.display = '';
+        document.getElementById('label-dice-rewards').style.display = '';
+    }
+
+    document.getElementById("tab-Dice").style.display = '';
+    if (currentTab == "Dice") {
+        document.getElementById('Dice-tab').style.display = 'block';
+    }
+
+    if (setSD || setSD == 0) {
+        document.getElementById("dice-sd-slider").value = setSD;
+        SDSliderChanged("dice-sd-slider", "display-standard-deviation-dice");
+    }
+}
+
 function LoadOmikuji() {
 
     omikujiChances = [];
@@ -4630,7 +4763,7 @@ function ProcessOmikujiResults(eventName) {
 
     Save(5);
 }
-test = {};
+
 function SimulateDiceGacha() {
 
     if (diceGachaProcessed) {
@@ -4643,25 +4776,44 @@ function SimulateDiceGacha() {
     let dice_drop_event = current_event + "";
 
     const worker1 = new Worker("js/diceGachaWorker.js");
+    const worker2 = new Worker("js/diceGachaWorker.js");
+    const worker3 = new Worker("js/diceGachaWorker.js");
+    const worker4 = new Worker("js/diceGachaWorker.js");
 
     worker1.onmessage = (e) => {
         completedWorkers.push(1);
         CombineObjectArrays(e.data, diceGachaSimResults);
         ProcessDiceResults(dice_drop_event);
-        // console.log(e.data);
-        test = e.data;
+    }
+    worker2.onmessage = (e) => {
+        completedWorkers.push(2);
+        CombineObjectArrays(e.data, diceGachaSimResults);
+        ProcessDiceResults(dice_drop_event);
+    }
+    worker3.onmessage = (e) => {
+        completedWorkers.push(3);
+        CombineObjectArrays(e.data, diceGachaSimResults);
+        ProcessDiceResults(dice_drop_event);
+    }
+    worker4.onmessage = (e) => {
+        completedWorkers.push(4);
+        CombineObjectArrays(e.data, diceGachaSimResults);
+        ProcessDiceResults(dice_drop_event);
     }
 
     let diceRace = event_config.events[current_event].dice_race;
 
-    worker1.postMessage([diceRace, 3000, 100000, 120500]);
+    worker1.postMessage([diceRace, [[],[],[],[2],[1],[],[2],[],[],[],[],[],[6],[5],[4],[3],[2],[6]], 3000, 100000, diceRollCurrencyOwned]);
+    worker2.postMessage([diceRace, [[],[],[],[2],[1],[],[2],[],[],[],[],[],[6],[5],[4],[3],[2],[6]], 3000, 100000, diceRollCurrencyOwned]);
+    worker3.postMessage([diceRace, [[],[],[],[2],[1],[],[2],[],[],[],[],[],[6],[5],[4],[3],[2],[6]], 3000, 100000, diceRollCurrencyOwned]);
+    worker4.postMessage([diceRace, [[],[],[],[2],[1],[],[2],[],[],[],[],[],[6],[5],[4],[3],[2],[6]], 3000, 100000, diceRollCurrencyOwned]);
 }
 
 function ProcessDiceResults(eventName) {
 
-    // if (completedWorkers.length != 4) {
-    //     return;
-    // }
+    if (completedWorkers.length != 4) {
+        return;
+    }
 
     if (eventName != current_event) {
         diceGachaSimResults = {};
@@ -4679,7 +4831,7 @@ function ProcessDiceResults(eventName) {
         diceGachaAvgSD[rewardNames[i]].mean = math.mean(diceGachaSimResults[rewardNames[i]]);
     }
 
-    // events_data[eventName].omikuji_pull_rewards = omikujiGachaAvgSD;
+    events_data[eventName].dice_roll_rewards = diceGachaAvgSD;
 
     Swal.fire({
         toast: true,
@@ -4691,14 +4843,14 @@ function ProcessDiceResults(eventName) {
 
     diceGachaSimResults = {};
 
-    // RefreshDropsDisplay();
+    RefreshDropsDisplay();
 
     diceGachaProcessing = false;
     diceGachaProcessed = true;
 
-    // UpdateNotifications();
+    UpdateNotifications();
 
-    // Save(5);
+    Save(5);
 }
 
 let devPathListProcessed = {};
@@ -4738,6 +4890,15 @@ function devTestNextDiceChunk() {
         devTestAllDicePaths(100, 50000);
         curChunk++;
     }
+}
+
+function devGetTrimmedPathList(idList) {
+    let newPathList = [];
+    for (let i = 0; i < idList.length; i++) {
+        newPathList.push(devRecursePathList[idList[i]]);
+    }
+
+    devRecursePathList = newPathList;
 }
 
 function devTestAllDicePaths(trials, currencyAvailable) {
@@ -5252,6 +5413,24 @@ function SimOmikujiClicked() {
     btn.classList.add('active');
 
     SimulateOmikujiGacha();
+
+    setTimeout(() => {
+        btn.classList.remove('active');
+    }, 4000);
+}
+
+function SimDiceClicked() {
+
+    if (diceGachaProcessing || diceGachaProcessed) {
+        return;
+    }
+
+    diceGachaProcessing = true;
+
+    let btn = document.getElementById("dice-sim-button");
+    btn.classList.add('active');
+
+    SimulateDiceGacha();
 
     setTimeout(() => {
         btn.classList.remove('active');

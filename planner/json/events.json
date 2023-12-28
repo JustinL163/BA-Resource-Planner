@@ -3724,7 +3724,6 @@
             ]
         },
         "dragon-and-tortoise": {
-            "active": true,
             "icon": "Event_826_Jp.png",
             "display_name": "Dragon and Tortoise: A Future Together",
             "reset_time": 1701108000,
@@ -3914,12 +3913,13 @@
             ]
         },
         "summer-rabbit-squad": {
+            "active": true,
             "icon": "Event_827_Jp.png",
             "display_name": "RABBIT SQUAD and the Mystery of the Missing Shrimp",
-            "reset_time": 1677524400,
-            "start_time": 1677549600,
-            "end_time": 1678759200,
-            "maint_hours": 6,
+            "reset_time": 1703530800,
+            "start_time": 1703556000,
+            "end_time": 1704765600,
+            "maint_hours": 1,
             "available_targets": ["Shop", "Currency", "Manual"],
             "currency_targets": ["Frozen_Shrimp"],
             "reward_preview": [
@@ -4071,6 +4071,7 @@
                 {"type": "Challenge", "number": 5, "cost": 5}
             ],
             "dice_race": {
+                "roll_currency": "Frozen_Shrimp",
                 "roll_cost": 500,
                 "tiles": [
                     {"type": "Eleph", "id": 26010, "amount": 5},
