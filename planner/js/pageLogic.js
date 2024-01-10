@@ -4,7 +4,7 @@ var curID = 0;
 var modalCharID = 0;
 var modalStars = { "star": 0, "star_target": 0, "ue": 0, "ue_target": 0 };
 const ueStarCap = 3;
-const globalMaxWorld = 22;
+const globalMaxWorld = 23;
 
 var requiredMatDict = {};
 var neededMatDict = {};
@@ -356,10 +356,10 @@ function init() {
         ["Hyakkiyako", "Red Winter", "Trinity", "Gehenna", "Abydos", "Millennium", "Arius", "Shanhaijing", "Valkyrie"], 0,
         tableNavigation, document.getElementById("table-parent-1"), false, "resource", "icons/SchoolMat/", [], "school-");
     createTable("artifact-table-1", ["4", "3", "2", "1"], 0,
-        ["Nebra", "Phaistos", "Wolfsegg", "Nimrud", "Mandragora", "Rohonc", "Aether", "Antikythera", "Voynich"], 9,
+        ["Nebra", "Phaistos", "Wolfsegg", "Nimrud", "Mandragora", "Rohonc", "Aether", "Antikythera", "Voynich", "Haniwa"], 9,
         tableNavigation, document.getElementById("table-parent-2"), true, "resource", "icons/Artifact/", [], "artifact-");
     createTable("artifact-table-2", ["4", "3", "2", "1"], 4,
-        ["Haniwa", "Totem", "Baghdad", "Colgante", "Mystery", "Okiku", "Atlantis", "RomanDice", "Fleece"], 9,
+        ["Totem", "Baghdad", "Colgante", "Mystery", "Okiku", "Atlantis", "RomanDice", "Fleece", "Rocket", "Quimbaya"], 9,
         tableNavigation, document.getElementById("table-parent-3"), true, "resource", "icons/Artifact/", [], "artifact-");
 
     let gearNavigation = [];
@@ -391,14 +391,14 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.4.1".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.4.2".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         Swal.fire({
-            title: GetLanguageString("text-updatedversionprefix") + "1.4.1",
+            title: GetLanguageString("text-updatedversionprefix") + "1.4.2",
             color: alertColour,
             html: GetLanguageString("text-updatemessage")
         })
 
-        data.site_version = "1.4.1";
+        data.site_version = "1.4.2";
         saveToLocalStorage(false);
     }
 
@@ -1022,7 +1022,7 @@ function CharInputsMax() {
         cancelButtonText: GetLanguageString("label-cancel")
     }).then((result) => {
         if (result.isConfirmed) {
-            let values = [85, 85, 5, 5, 10, 10, 10, 10, 10, 10, 8, 8, 8, 8, 7, 7];
+            let values = [85, 85, 5, 5, 10, 10, 10, 10, 10, 10, 8, 8, 8, 8, 8, 8];
             SetCharInputValues(values);
         }
         else if (result.isDenied) {
@@ -1046,7 +1046,7 @@ function CharInputsGoalMax() {
         cancelButtonText: GetLanguageString("label-cancel")
     }).then((result) => {
         if (result.isConfirmed) {
-            let values = [85, 5, 10, 10, 10, 8, 8, 7];
+            let values = [85, 5, 10, 10, 10, 8, 8, 8];
             SetCharInputGoalValues(values);
         }
         else if (result.isDenied) {

@@ -1445,7 +1445,7 @@
             {
                 "SkillType": "ex",
                 "Name": "Help Me, Peroro!",
-                "Desc": "Summons a Peroro plush with 160% of Hifumi's <b:MAXHP>, dealing <?1> damage to enemies in a circular area and inflicting <c:Provoke> for <?2>.",
+                "Desc": "Deals <?1> damage to enemies in a circular area and summons a Peroro plush with 160% of Hifumi's <b:MAXHP> that inflicts <c:Provoke> on enemies in a circular area around it for <?2>.",
                 "Parameters": [
                     [
                         "202%",
@@ -1493,18 +1493,6 @@
                             14777,
                             16304,
                             19358
-                        ]
-                    },
-                    {
-                        "Type": "CrowdControl",
-                        "Chance": "10000",
-                        "Icon": "Provoke",
-                        "Scale": [
-                            3400,
-                            3400,
-                            3400,
-                            3400,
-                            3900
                         ]
                     }
                 ]
@@ -3745,7 +3733,7 @@
                             181,
                             181
                         ],
-                        "HitsParameter": 1,
+                        "HitsParameter": 0,
                         "Scale": [
                             71518,
                             82246,
@@ -20209,13 +20197,36 @@
                         ]
                     },
                     {
-                        "Type": "IgnoreDelay",
-                        "Scale": [
+                        "Type": "FormChange",
+                        "Frames": {
+                            "AttackEnterDuration": 65,
+                            "AttackStartDuration": 35,
+                            "AttackEndDuration": 37,
+                            "AttackBurstRoundOverDelay": 40,
+                            "AttackIngDuration": 23,
+                            "AttackReloadDuration": 90
+                        },
+                        "Hits": [
+                            2000,
+                            2000,
+                            2000,
+                            2000,
+                            2000
+                        ],
+                        "IgnoreDelay": [
                             2,
                             2,
                             3,
                             3,
                             4
+                        ],
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            10000,
+                            10000,
+                            10000,
+                            10000,
+                            10000
                         ]
                     }
                 ]
@@ -25724,6 +25735,104 @@
                                 3541,
                                 3950,
                                 4359
+                            ],
+                            [
+                                2724,
+                                3133,
+                                3541,
+                                3950,
+                                4359
+                            ],
+                            [
+                                2724,
+                                3133,
+                                3541,
+                                3950,
+                                4359
+                            ],
+                            [
+                                2724,
+                                3133,
+                                3541,
+                                3950,
+                                4359
+                            ],
+                            [
+                                2724,
+                                3133,
+                                3541,
+                                3950,
+                                4359
+                            ],
+                            [
+                                2724,
+                                3133,
+                                3541,
+                                3950,
+                                4359
+                            ],
+                            [
+                                2724,
+                                3133,
+                                3541,
+                                3950,
+                                4359
+                            ],
+                            [
+                                2724,
+                                3133,
+                                3541,
+                                3950,
+                                4359
+                            ],
+                            [
+                                2724,
+                                3133,
+                                3541,
+                                3950,
+                                4359
+                            ],
+                            [
+                                2724,
+                                3133,
+                                3541,
+                                3950,
+                                4359
+                            ],
+                            [
+                                2724,
+                                3133,
+                                3541,
+                                3950,
+                                4359
+                            ],
+                            [
+                                2724,
+                                3133,
+                                3541,
+                                3950,
+                                4359
+                            ],
+                            [
+                                2724,
+                                3133,
+                                3541,
+                                3950,
+                                4359
+                            ],
+                            [
+                                2724,
+                                3133,
+                                3541,
+                                3950,
+                                4359
+                            ],
+                            [
+                                2724,
+                                3133,
+                                3541,
+                                3950,
+                                4359
                             ]
                         ],
                         "Stat": "CriticalDamageRate_Coefficient",
@@ -27399,8 +27508,14 @@
                 "Icon": "COMMON_SKILLICON_TARGET",
                 "Effects": [
                     {
-                        "Type": "DMGSingle",
+                        "Type": "DMGMulti",
                         "CriticalCheck": "Always",
+                        "Hits": [
+                            3333,
+                            3333,
+                            3334
+                        ],
+                        "HitsParameter": 1,
                         "Scale": [
                             8945,
                             9395,
@@ -27415,14 +27530,8 @@
                         ]
                     },
                     {
-                        "Type": "DMGMulti",
+                        "Type": "DMGSingle",
                         "CriticalCheck": "Always",
-                        "Hits": [
-                            3333,
-                            3333,
-                            3334
-                        ],
-                        "HitsParameter": 1,
                         "Scale": [
                             17889,
                             18783,
@@ -27857,6 +27966,39 @@
                         ],
                         "Stat": "AttackPower_Coefficient",
                         "Channel": 2
+                    },
+                    {
+                        "Type": "FormChange",
+                        "Frames": {
+                            "AttackEnterDuration": 26,
+                            "AttackStartDuration": 15,
+                            "AttackIngDuration": 55,
+                            "AttackEndDuration": 22,
+                            "AttackBurstRoundOverDelay": 45,
+                            "AttackReloadDuration": 64
+                        },
+                        "Hits": [
+                            2000,
+                            2000,
+                            2000,
+                            2000,
+                            2000
+                        ],
+                        "IgnoreDelay": [
+                            8492,
+                            8492,
+                            8492,
+                            8492,
+                            8492
+                        ],
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            10000,
+                            10000,
+                            10000,
+                            10000,
+                            10000
+                        ]
                     }
                 ]
             },
@@ -28827,6 +28969,14 @@
                             2213,
                             2213,
                             2219
+                        ],
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            10000,
+                            10000,
+                            10000,
+                            10000,
+                            10000
                         ]
                     },
                     {
@@ -31839,7 +31989,7 @@
             },
             {
                 "SkillType": "ex",
-                "Name": "Accept My Challenge!",
+                "Name": "Duel Me!",
                 "Desc": "Deals <?1> damage to enemies in a fan-shaped area. Removes one debuff from self.",
                 "Parameters": [
                     [
@@ -31929,7 +32079,7 @@
             },
             {
                 "SkillType": "passive",
-                "Name": "All Day Long!",
+                "Name": "I Can Do This All Day",
                 "Desc": "Increases <b:ATK> by <?1> and <b:MAXHP> by <?2>.",
                 "Parameters": [
                     [
@@ -31995,7 +32145,7 @@
             },
             {
                 "SkillType": "weaponpassive",
-                "Name": "All Day Long!+",
+                "Name": "I Can Do This All Day+",
                 "Desc": "Increases <b:ATK> by <?1> plus a further <?3> and <b:MAXHP> by <?2> plus a further <?4>.",
                 "Parameters": [
                     [
@@ -32085,7 +32235,7 @@
             },
             {
                 "SkillType": "sub",
-                "Name": "Uzawa Reisa's Presence",
+                "Name": "The Reisa Effect",
                 "Desc": "Reisa's EX skill also decreases the <d:DEF> of enemies hit by <?1> for 25s and inflicts <c:Provoke> for 1s.",
                 "Parameters": [
                     [
@@ -32143,8 +32293,8 @@
             }
         ],
         "Weapon": {
-            "Name": "シューティング☆スター",
-            "Desc": "レイサの大切なショットガン。丁寧にカスタマイズされた銃身は誰が見てもレイサの銃だ。\n\nかわいい外観とは異なり、数々の戦場をくぐり抜けたであろう痕跡が見て取れる。",
+            "Name": "Shooting☆Star",
+            "Desc": "Reisa's precious shotgun.\n\nIt's immediately obvious whose weapon this is with the carefully customized gun barrel. She may be small and cute, but her experience defending justice in Trinity makes her just as fierce!",
             "AdaptationType": "Indoor",
             "AdaptationValue": 1,
             "AttackPower1": 75,
@@ -32332,7 +32482,7 @@
             },
             {
                 "SkillType": "ex",
-                "Name": "Heavenly Flavor!",
+                "Name": "World's Tastiest!",
                 "Desc": "Throws fried rice to one ally except self, restoring their HP. The fried rice can bounce and restore the HP of additional allies (including self) who have not yet received it, up to 4 times.\n<b>1st & 4th targets</b>: Restores HP equal to <?1> of Healing<?2>.\n<b>2nd & 3rd targets</b>: Restores HP equal to <?3> of Healing.",
                 "Parameters": [
                     [
@@ -32398,7 +32548,7 @@
             },
             {
                 "SkillType": "normal",
-                "Name": "No Complainers!",
+                "Name": "Business Safety Regulations",
                 "Desc": "Every 30s, deals <?1> damage to enemies in a fan-shaped area.",
                 "Parameters": [
                     [
@@ -32458,7 +32608,7 @@
             },
             {
                 "SkillType": "passive",
-                "Name": "Trade Chairwoman's Pride",
+                "Name": "Merchant Guild President's Pride",
                 "Desc": "Increases <b:Range> by <b>100</b> and <b:HealPower> by <?1>.",
                 "Parameters": [
                     [
@@ -32512,7 +32662,7 @@
             },
             {
                 "SkillType": "weaponpassive",
-                "Name": "Trade Chairwoman's Pride+",
+                "Name": "Merchant Guild President's Pride+",
                 "Desc": "Increases <b:Range> by <b>100</b> and <b:HealPower> by <?1> plus a further <?2>.",
                 "Parameters": [
                     [
@@ -32562,7 +32712,7 @@
             },
             {
                 "SkillType": "sub",
-                "Name": "Memorable Flavors",
+                "Name": "Memorable Taste",
                 "Desc": "Grants <b:DotHeal> to allies healed by Rumi's EX skill, continuously restoring HP equal to <?1> of Healing every 4s for 60s.",
                 "Parameters": [
                     [
@@ -32601,8 +32751,8 @@
             }
         ],
         "Weapon": {
-            "Name": "温故知新",
-            "Desc": "ルミが愛用するサブマシンガン。\n\n「古いものをたずね求めて新しい事柄を知る」という意味だが、どうやら彼女は「新しいこと」の方に目が行くようだ。",
+            "Name": "Learn the Old, Know the New",
+            "Desc": "Rumi's favorite submachine gun.\n\nNamed after an old idiom that goes, \"learn from the old to know the new.\" Rumi has always seemed more interested in the \"new\" aspect.",
             "AdaptationType": "Indoor",
             "AdaptationValue": 1,
             "AttackPower1": 59,
@@ -32790,7 +32940,7 @@
             },
             {
                 "SkillType": "ex",
-                "Name": "Tiger and Dragon",
+                "Name": "Well Matched",
                 "Desc": "Deals <?1> damage to one enemy and decreases their <d:ATK><?2> by <?3> for 50s.",
                 "Parameters": [
                     [
@@ -32802,9 +32952,9 @@
                     ],
                     [
                         "",
+                        "",
                         " and <d:Dodge>",
                         " and <d:Dodge>",
-                        ", <d:Dodge> and <d:HIT>",
                         ", <d:Dodge> and <d:HIT>"
                     ],
                     [
@@ -32889,7 +33039,7 @@
             },
             {
                 "SkillType": "normal",
-                "Name": "Great Strength",
+                "Name": "Unstoppable",
                 "Desc": "Every 8 normal attacks, immediately reloads and deals <?1> damage to one enemy. Deals additional damage depending on the number of debuffs inflicted on the target.\n<b>3 debuffs</b>: <?2> damage.\n<b>4 debuffs</b>: <?3> damage.\n<b>5 or more debuffs</b>: <?4> damage.",
                 "Parameters": [
                     [
@@ -33024,7 +33174,7 @@
             },
             {
                 "SkillType": "passive",
-                "Name": "Undaunted Determination",
+                "Name": "Stand Your Ground",
                 "Desc": "Increases <b:Dodge> by <?1>.",
                 "Parameters": [
                     [
@@ -33062,7 +33212,7 @@
             },
             {
                 "SkillType": "weaponpassive",
-                "Name": "Undaunted Determination+",
+                "Name": "Stand Your Ground+",
                 "Desc": "Increases <b:HIT> by <?1> and <b:Dodge> by <?2>.",
                 "Parameters": [
                     [
@@ -33112,7 +33262,7 @@
             },
             {
                 "SkillType": "sub",
-                "Name": "Mounted Tiger",
+                "Name": "Determination",
                 "Desc": "Whenever Mina uses her EX skill, increases <b:ATK>, <b:Dodge> and <b:HIT> by <?1> for 20s.",
                 "Parameters": [
                     [
@@ -33191,8 +33341,8 @@
             }
         ],
         "Weapon": {
-            "Name": "玄龍＆白虎",
-            "Desc": "ミナの愛用する二丁拳銃。\n\n右手に白虎、左手に玄龍。これこそが最高の戦友である……と彼女は主張する。理性より感性が重要な時があるのかもしれない。",
+            "Name": "Wise Dragon, White Tiger",
+            "Desc": "Mina's beloved two-handed pistols.\n\nThe White Tiger in her right hand and the Wise Dragon in her left, she affectionally calls these two her true comrades-in-arms. Perhaps emotion and reason can work in tandem at times.",
             "AdaptationType": "Indoor",
             "AdaptationValue": 1,
             "AttackPower1": 69,
@@ -33382,7 +33532,7 @@
             },
             {
                 "SkillType": "ex",
-                "Name": "Activate Flying Drone",
+                "Name": "Flying Drone Launch",
                 "Desc": "Decreases the <d:CriticalDamageRateResist> of one enemy by <?1> for 50s and deals <?2> damage to them.",
                 "Parameters": [
                     [
@@ -33487,7 +33637,7 @@
             },
             {
                 "SkillType": "passive",
-                "Name": "Consistent Training",
+                "Name": "Disciplined Training",
                 "Desc": "Increases <b:MAXHP> by <?1>.",
                 "Parameters": [
                     [
@@ -33525,7 +33675,7 @@
             },
             {
                 "SkillType": "weaponpassive",
-                "Name": "Consistent Training+",
+                "Name": "Disciplined Training+",
                 "Desc": "Increases <b:Dodge> by <?1> and <b:MAXHP> by <?2>.",
                 "Parameters": [
                     [
@@ -33616,8 +33766,8 @@
             }
         ],
         "Weapon": {
-            "Name": "RABBIT-31式短機関銃",
-            "Desc": "ミヤコがSRT特殊学園から支給された、制式サブマシンガン。\n\n高い信頼性を誇る銃であり、高温多湿の海辺でも効率的に作戦を遂行できる。",
+            "Name": "RABBIT Type 31 Submachine Gun",
+            "Desc": "A submachine gun Miyako received from the SRT Special Academy.\nIt's incredibly reliable and can operate effectively in hot and humid environments.",
             "AdaptationType": "Indoor",
             "AdaptationValue": 1,
             "AttackPower1": 67,
@@ -33807,7 +33957,7 @@
             },
             {
                 "SkillType": "ex",
-                "Name": "Signal Flare, Launch!",
+                "Name": "Throw Flare!",
                 "Desc": "Deals <?1> damage to one enemy and decreases their <d:DEF>, <d:ATK> and <d:CriticalChanceResistPoint> by <?2> for 50s.",
                 "Parameters": [
                     [
@@ -33893,7 +34043,7 @@
             },
             {
                 "SkillType": "normal",
-                "Name": "Covering Fire",
+                "Name": "Cover Fire",
                 "Desc": "Every 15 normal attacks, deals <?1> damage to enemies in a fan-shaped area. Deals an additional <?2> damage to <b>medium</b> sized enemies.",
                 "Parameters": [
                     [
@@ -34133,8 +34283,8 @@
             }
         ],
         "Weapon": {
-            "Name": "RABBIT-26式機関銃",
-            "Desc": "サキがSRT特殊学園から支給された、制式マシンガン。\n\n湿気や塩に弱いため、海では頻繁に機能不全を起こすが、真面目なサキにとっては大した問題ではない。",
+            "Name": "RABBIT Type 26 Machine Gun",
+            "Desc": "Standard machine gun issued to Saki from the SRT Academy.\n\nIt frequently malfunctions in humid environments like the beach, because it's vulnerable to rusting. This isn't a problem to Saki though, who diligently cleans her guns with every use.",
             "AdaptationType": "Indoor",
             "AdaptationValue": 1,
             "AttackPower1": 125,
@@ -38412,6 +38562,1758 @@
                 12,
                 8,
                 13
+            ]
+        ]
+    },
+    "10082": {
+        "Name": "Renge",
+        "Id": 10082,
+        "School": "Hyakkiyako",
+        "StarGrade": 3,
+        "SquadType": "Main",
+        "TacticRole": "DamageDealer",
+        "Position": "Back",
+        "BulletType": "Sonic",
+        "ArmorType": "HeavyArmor",
+        "StreetBattleAdaptation": 4,
+        "OutdoorBattleAdaptation": 2,
+        "IndoorBattleAdaptation": 0,
+        "WeaponType": "SR",
+        "Equipment": [
+            "Hat",
+            "Hairpin",
+            "Watch"
+        ],
+        "Skills": [
+            {
+                "SkillType": "autoattack",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "Hits": [
+                            10000
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Frames": {
+                            "AttackEnterDuration": 40,
+                            "AttackStartDuration": 33,
+                            "AttackIngDuration": 30,
+                            "AttackEndDuration": 21,
+                            "AttackBurstRoundOverDelay": 40,
+                            "AttackReloadDuration": 63
+                        },
+                        "CriticalCheck": "Check"
+                    }
+                ]
+            },
+            {
+                "SkillType": "ex",
+                "Name": "百花繚乱式射撃術",
+                "Desc": "Inflicts <d:Burn> on enemies in a fan-shaped area, continuously dealing <?1> damage every 4s for 20s, and deals <?2> damage to them.",
+                "Parameters": [
+                    [
+                        "14.5%",
+                        "16.7%",
+                        "21.1%",
+                        "23.3%",
+                        "27.6%"
+                    ],
+                    [
+                        "263.5%",
+                        "303.7%",
+                        "383%",
+                        "422.2%",
+                        "501.5%"
+                    ]
+                ],
+                "Cost": [
+                    3,
+                    3,
+                    3,
+                    3,
+                    3
+                ],
+                "Duration": 143,
+                "Range": 1100,
+                "Radius": [
+                    {
+                        "Type": "Fan",
+                        "Radius": 1100,
+                        "Degree": 30
+                    }
+                ],
+                "Icon": "COMMON_SKILLICON_FAN",
+                "Effects": [
+                    {
+                        "Type": "DMGMulti",
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            1300,
+                            609,
+                            609,
+                            609,
+                            609,
+                            609,
+                            609,
+                            609,
+                            4437
+                        ],
+                        "HitsParameter": 2,
+                        "Scale": [
+                            26451,
+                            30422,
+                            38352,
+                            42323,
+                            50253
+                        ]
+                    },
+                    {
+                        "Type": "DMGDot",
+                        "Duration": "20000",
+                        "Period": "4000",
+                        "Icon": "Burn",
+                        "Scale": [
+                            1458,
+                            1676,
+                            2113,
+                            2333,
+                            2768
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "燃え上がる情熱",
+                "Desc": "Every 30s, gains the effect of <s:CH0224_Public> and increases <b:ATK> by <?1> for 22s.",
+                "Parameters": [
+                    [
+                        "19.8%",
+                        "20.8%",
+                        "21.8%",
+                        "25.7%",
+                        "26.7%",
+                        "27.7%",
+                        "31.7%",
+                        "32.7%",
+                        "33.7%",
+                        "37.6%"
+                    ]
+                ],
+                "Duration": 135,
+                "Icon": "SKILLICON_CH0224_PUBLICSKILL",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                1983,
+                                2082,
+                                2181,
+                                2577,
+                                2677,
+                                2775,
+                                3171,
+                                3271,
+                                3370,
+                                3766
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2
+                    }
+                ]
+            },
+            {
+                "SkillType": "passive",
+                "Name": "百花繚乱の鬼教官",
+                "Desc": "Increases <b:ATK> by <?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "AttackPower_Coefficient",
+                        "Scale": [
+                            1400,
+                            1470,
+                            1540,
+                            1820,
+                            1890,
+                            1960,
+                            2240,
+                            2310,
+                            2380,
+                            2660
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "百花繚乱の鬼教官+",
+                "Desc": "Increases <b:CriticalDamage> by <?1> and <b:ATK> by <?2>.",
+                "Parameters": [
+                    [
+                        "2000",
+                        "2100",
+                        "2200",
+                        "2600",
+                        "2700",
+                        "2800",
+                        "3200",
+                        "3300",
+                        "3400",
+                        "3800"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "CriticalDamageRate_Base",
+                        "Scale": [
+                            2000,
+                            2100,
+                            2200,
+                            2600,
+                            2700,
+                            2800,
+                            3200,
+                            3300,
+                            3400,
+                            3800
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "切り込み隊長としての本分",
+                "Desc": "Deals <?1> damage as an additional hit when attacking while under the effect of <s:CH0224_Public>.",
+                "Parameters": [
+                    [
+                        "4.5%",
+                        "4.7%",
+                        "5%",
+                        "5.9%",
+                        "6.1%",
+                        "6.3%",
+                        "7.2%",
+                        "7.5%",
+                        "7.7%",
+                        "8.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_EXTRADAMAGE",
+                "Effects": [
+                    {
+                        "Type": "DMGEcho",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            457,
+                            478,
+                            504,
+                            592,
+                            619,
+                            639,
+                            726,
+                            753,
+                            773,
+                            867
+                        ]
+                    }
+                ]
+            }
+        ],
+        "Weapon": {
+            "Name": "百花繚乱制式ライフル-青春の火花",
+            "Desc": "レンゲが愛用するライフル。\n\n百花繚乱の制式ライフルをレンゲ自身が改造した物。突撃する時の頼もしい相棒なのだとか。この銃を活用した百花繚乱の射撃術は、他の追随を許さない。",
+            "AdaptationType": "Street",
+            "AdaptationValue": 1,
+            "AttackPower1": 137,
+            "AttackPower100": 1369,
+            "MaxHP1": 557,
+            "MaxHP100": 5572,
+            "HealPower1": 0,
+            "HealPower100": 0,
+            "StatLevelUpType": "Standard"
+        },
+        "SkillExMaterial": [
+            [
+                3000,
+                160
+            ],
+            [
+                3001,
+                3000,
+                161,
+                270
+            ],
+            [
+                3002,
+                3001,
+                162,
+                271
+            ],
+            [
+                3003,
+                3002,
+                163,
+                272
+            ]
+        ],
+        "SkillExMaterialAmount": [
+            [
+                12,
+                16
+            ],
+            [
+                12,
+                18,
+                16,
+                29
+            ],
+            [
+                12,
+                18,
+                9,
+                26
+            ],
+            [
+                8,
+                18,
+                10,
+                21
+            ]
+        ],
+        "SkillMaterial": [
+            [
+                4000
+            ],
+            [
+                4000
+            ],
+            [
+                4001,
+                4000,
+                160
+            ],
+            [
+                4001,
+                161,
+                270
+            ],
+            [
+                4002,
+                4001,
+                161,
+                270
+            ],
+            [
+                4002,
+                162,
+                271
+            ],
+            [
+                4003,
+                4002,
+                163,
+                272
+            ],
+            [
+                4003,
+                163,
+                272
+            ]
+        ],
+        "SkillMaterialAmount": [
+            [
+                5
+            ],
+            [
+                8
+            ],
+            [
+                5,
+                12,
+                6
+            ],
+            [
+                8,
+                6,
+                12
+            ],
+            [
+                5,
+                12,
+                9,
+                18
+            ],
+            [
+                8,
+                5,
+                15
+            ],
+            [
+                8,
+                12,
+                5,
+                8
+            ],
+            [
+                12,
+                7,
+                12
+            ]
+        ]
+    },
+    "10083": {
+        "Name": "Kikyou",
+        "Id": 10083,
+        "School": "Hyakkiyako",
+        "StarGrade": 3,
+        "SquadType": "Main",
+        "TacticRole": "Supporter",
+        "Position": "Back",
+        "BulletType": "Sonic",
+        "ArmorType": "HeavyArmor",
+        "StreetBattleAdaptation": 4,
+        "OutdoorBattleAdaptation": 2,
+        "IndoorBattleAdaptation": 0,
+        "WeaponType": "SR",
+        "Equipment": [
+            "Gloves",
+            "Hairpin",
+            "Watch"
+        ],
+        "Skills": [
+            {
+                "SkillType": "autoattack",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "Hits": [
+                            10000
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Frames": {
+                            "AttackEnterDuration": 40,
+                            "AttackStartDuration": 15,
+                            "AttackEndDuration": 18,
+                            "AttackBurstRoundOverDelay": 38,
+                            "AttackIngDuration": 40,
+                            "AttackReloadDuration": 80
+                        },
+                        "CriticalCheck": "Check"
+                    }
+                ]
+            },
+            {
+                "SkillType": "ex",
+                "Name": "神機妙算の一手",
+                "Desc": "Decreases the <d:DEF> of enemies in a cross-shaped area by <?1> for 30s, and deals <?2> damage to them.",
+                "Parameters": [
+                    [
+                        "17.6%",
+                        "17.6%",
+                        "22.9%",
+                        "22.9%",
+                        "28.1%"
+                    ],
+                    [
+                        "252%",
+                        "291%",
+                        "366%",
+                        "405%",
+                        "480%"
+                    ]
+                ],
+                "Cost": [
+                    5,
+                    5,
+                    5,
+                    5,
+                    5
+                ],
+                "Duration": 178,
+                "Range": 950,
+                "Radius": [
+                    {
+                        "Type": "Obb",
+                        "Width": 300,
+                        "Height": 500
+                    }
+                ],
+                "Icon": "COMMON_SKILLICON_CROSS",
+                "Effects": [
+                    {
+                        "Type": "DMGMulti",
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            333,
+                            333,
+                            333,
+                            333,
+                            333,
+                            333,
+                            333,
+                            333,
+                            333,
+                            333,
+                            333,
+                            333,
+                            333,
+                            333,
+                            333,
+                            333,
+                            333,
+                            333,
+                            333,
+                            333,
+                            333,
+                            333,
+                            333,
+                            333,
+                            333,
+                            333,
+                            333,
+                            333,
+                            333,
+                            333
+                        ],
+                        "HitsParameter": 2,
+                        "Scale": [
+                            25440,
+                            29160,
+                            36840,
+                            40560,
+                            48240
+                        ]
+                    },
+                    {
+                        "Type": "BuffTarget",
+                        "Value": [
+                            [
+                                -1762,
+                                -1762,
+                                -2291,
+                                -2291,
+                                -2819
+                            ]
+                        ],
+                        "Stat": "DefensePower_Coefficient",
+                        "Channel": 603
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "敵を知り己を知れば百戦殆からず",
+                "Desc": "Every 35s, increases the <b:EnhanceSonicRate> of all allies except self in a circular area by an amount depending on the number of allies that are affected, for 25s.\n<b>1 ally:</b> <?1>.\n<b>2 allies:</b> <?2>.\n<b>3 or more allies:</b> <?3>.",
+                "Parameters": [
+                    [
+                        "14.6%",
+                        "15.3%",
+                        "16.1%",
+                        "19%",
+                        "19.7%",
+                        "20.4%",
+                        "23.4%",
+                        "24.1%",
+                        "24.8%",
+                        "27.8%"
+                    ],
+                    [
+                        "18%",
+                        "18.9%",
+                        "19.8%",
+                        "23.4%",
+                        "24.3%",
+                        "25.2%",
+                        "28.8%",
+                        "29.7%",
+                        "30.6%",
+                        "34.2%"
+                    ],
+                    [
+                        "21.4%",
+                        "22.5%",
+                        "23.6%",
+                        "27.8%",
+                        "28.9%",
+                        "30%",
+                        "34.3%",
+                        "35.3%",
+                        "36.4%",
+                        "40.7%"
+                    ]
+                ],
+                "Duration": 128,
+                "Range": 350,
+                "Radius": [
+                    {
+                        "Type": "Circle",
+                        "Radius": 350
+                    }
+                ],
+                "Icon": "COMMON_SKILLICON_BULLETTYPEBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffAlly",
+                        "Value": [
+                            [
+                                1464,
+                                1536,
+                                1610,
+                                1901,
+                                1975,
+                                2049,
+                                2340,
+                                2414,
+                                2486,
+                                2780
+                            ],
+                            [
+                                1804,
+                                1894,
+                                1984,
+                                2346,
+                                2436,
+                                2526,
+                                2886,
+                                2976,
+                                3066,
+                                3428
+                            ],
+                            [
+                                2146,
+                                2252,
+                                2360,
+                                2789,
+                                2897,
+                                3003,
+                                3433,
+                                3539,
+                                3647,
+                                4076
+                            ]
+                        ],
+                        "Stat": "EnhanceSonicRate_Base",
+                        "Channel": 140
+                    }
+                ]
+            },
+            {
+                "SkillType": "passive",
+                "Name": "作戦参謀としての素養",
+                "Desc": "Increases <b:ATK> by <?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "AttackPower_Coefficient",
+                        "Scale": [
+                            1400,
+                            1470,
+                            1540,
+                            1820,
+                            1890,
+                            1960,
+                            2240,
+                            2310,
+                            2380,
+                            2660
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "作戦参謀としての素養+",
+                "Desc": "Increases <b:ExtendDebuffDuration> by <?1> and <b:ATK> by <?2>.",
+                "Parameters": [
+                    [
+                        "1000",
+                        "1050",
+                        "1100",
+                        "1300",
+                        "1350",
+                        "1400",
+                        "1600",
+                        "1650",
+                        "1700",
+                        "1900"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "ExtendDebuffDuration_Base",
+                        "Scale": [
+                            1000,
+                            1050,
+                            1100,
+                            1300,
+                            1350,
+                            1400,
+                            1600,
+                            1650,
+                            1700,
+                            1900
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "風林火山の計略",
+                "Desc": "Every 30s, increases <b:ATK> by <?1> for 20s and gains one stack of <s:CH0225_ExtraPassive> (max. 3 stacks).\nWhen at 3 stacks of <s:CH0225_ExtraPassive>, activating the EX Skill will additionally consume all stacks of <s:CH0225_ExtraPassive> and reduce the <b:CostChange> of all allies except self by <b>1</b> (for <b>1</b> EX Skill use).",
+                "Parameters": [
+                    [
+                        "17.2%",
+                        "18.1%",
+                        "18.9%",
+                        "22.4%",
+                        "23.3%",
+                        "24.1%",
+                        "27.6%",
+                        "28.4%",
+                        "29.3%",
+                        "32.8%"
+                    ]
+                ],
+                "Icon": "SKILLICON_CH0225_EXTRAPASSIVESKILL",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                1727,
+                                1813,
+                                1899,
+                                2244,
+                                2331,
+                                2417,
+                                2762,
+                                2848,
+                                2934,
+                                3280
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2
+                    }
+                ]
+            }
+        ],
+        "Weapon": {
+            "Name": "百花繚乱制式ライフル-紺碧の知恵",
+            "Desc": "キキョウが肌身離さず持ち歩いているライフル。\n\n作戦参謀を務めているため、実際にこれを使うことは稀である。しかし、完璧な勝利のためなら自ら囮になるのも厭わないキキョウは、この銃に助けられたことも多々あるのだとか。",
+            "AdaptationType": "Street",
+            "AdaptationValue": 1,
+            "AttackPower1": 109,
+            "AttackPower100": 1091,
+            "MaxHP1": 534,
+            "MaxHP100": 5343,
+            "HealPower1": 0,
+            "HealPower100": 0,
+            "StatLevelUpType": "Standard"
+        },
+        "SkillExMaterial": [
+            [
+                3000,
+                190
+            ],
+            [
+                3001,
+                3000,
+                191,
+                280
+            ],
+            [
+                3002,
+                3001,
+                192,
+                281
+            ],
+            [
+                3003,
+                3002,
+                193,
+                282
+            ]
+        ],
+        "SkillExMaterialAmount": [
+            [
+                12,
+                16
+            ],
+            [
+                12,
+                18,
+                16,
+                30
+            ],
+            [
+                12,
+                18,
+                7,
+                24
+            ],
+            [
+                8,
+                18,
+                9,
+                21
+            ]
+        ],
+        "SkillMaterial": [
+            [
+                4000
+            ],
+            [
+                4000
+            ],
+            [
+                4001,
+                4000,
+                190
+            ],
+            [
+                4001,
+                191,
+                280
+            ],
+            [
+                4002,
+                4001,
+                191,
+                280
+            ],
+            [
+                4002,
+                192,
+                281
+            ],
+            [
+                4003,
+                4002,
+                193,
+                282
+            ],
+            [
+                4003,
+                193,
+                282
+            ]
+        ],
+        "SkillMaterialAmount": [
+            [
+                5
+            ],
+            [
+                8
+            ],
+            [
+                5,
+                12,
+                7
+            ],
+            [
+                8,
+                4,
+                13
+            ],
+            [
+                5,
+                12,
+                10,
+                17
+            ],
+            [
+                8,
+                5,
+                16
+            ],
+            [
+                8,
+                12,
+                6,
+                9
+            ],
+            [
+                12,
+                6,
+                12
+            ]
+        ]
+    },
+    "10084": {
+        "Name": "Kotama (Camping)",
+        "Id": 10084,
+        "School": "Millennium",
+        "StarGrade": 3,
+        "SquadType": "Main",
+        "TacticRole": "Supporter",
+        "Position": "Middle",
+        "BulletType": "Pierce",
+        "ArmorType": "HeavyArmor",
+        "StreetBattleAdaptation": 2,
+        "OutdoorBattleAdaptation": 4,
+        "IndoorBattleAdaptation": 0,
+        "WeaponType": "HG",
+        "Equipment": [
+            "Gloves",
+            "Badge",
+            "Necklace"
+        ],
+        "Skills": [
+            {
+                "SkillType": "autoattack",
+                "Effects": [
+                    {
+                        "Type": "DMGMulti",
+                        "Hits": [
+                            5000,
+                            5000
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Frames": {
+                            "AttackEnterDuration": 34,
+                            "AttackStartDuration": 18,
+                            "AttackIngDuration": 28,
+                            "AttackEndDuration": 19,
+                            "AttackBurstRoundOverDelay": 40,
+                            "AttackReloadDuration": 74
+                        },
+                        "CriticalCheck": "Check"
+                    }
+                ]
+            },
+            {
+                "SkillType": "ex",
+                "Name": "熊よけ鈴投げ",
+                "Desc": "Deals <?1> damage to one enemy and inflicts <c:Confusion> for <?2>.",
+                "Parameters": [
+                    [
+                        "477%",
+                        "548%",
+                        "691%",
+                        "763%",
+                        "906%"
+                    ],
+                    [
+                        "7.2s",
+                        "7.2s",
+                        "9.4s",
+                        "9.4s",
+                        "11.5s"
+                    ]
+                ],
+                "Cost": [
+                    6,
+                    6,
+                    6,
+                    6,
+                    6
+                ],
+                "Duration": 160,
+                "Range": 750,
+                "Icon": "COMMON_SKILLICON_CONFUSION",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            47721,
+                            54885,
+                            69198,
+                            76355,
+                            90676
+                        ]
+                    },
+                    {
+                        "Type": "CrowdControl",
+                        "Chance": "10000",
+                        "Icon": "Confusion",
+                        "Scale": [
+                            7200,
+                            7200,
+                            9400,
+                            9400,
+                            11500
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "共鳴効果",
+                "Desc": "Every 45s, increases the <b:ATK> of both self and one other ally by <?1> for 35s.",
+                "Parameters": [
+                    [
+                        "5.9%",
+                        "6.2%",
+                        "6.5%",
+                        "7.7%",
+                        "8%",
+                        "8.3%",
+                        "9.5%",
+                        "9.8%",
+                        "10.1%",
+                        "11.3%"
+                    ]
+                ],
+                "Duration": 120,
+                "Range": 750,
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffAlly",
+                        "Value": [
+                            [
+                                598,
+                                627,
+                                657,
+                                776,
+                                806,
+                                836,
+                                955,
+                                985,
+                                1015,
+                                1134
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2
+                    }
+                ]
+            },
+            {
+                "SkillType": "passive",
+                "Name": "ノイズ増幅",
+                "Desc": "Increases <b:ATK> by <?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "AttackPower_Coefficient",
+                        "Scale": [
+                            1400,
+                            1470,
+                            1540,
+                            1820,
+                            1890,
+                            1960,
+                            2240,
+                            2310,
+                            2380,
+                            2660
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "ノイズ増幅+",
+                "Desc": "Increases <b:OppressionPower> by <?1> and <b:ATK> by <?2>.",
+                "Parameters": [
+                    [
+                        "14",
+                        "15",
+                        "16",
+                        "19",
+                        "19",
+                        "20",
+                        "23",
+                        "24",
+                        "24",
+                        "27"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "OppressionPower_Base",
+                        "Scale": [
+                            14,
+                            15,
+                            16,
+                            19,
+                            19,
+                            20,
+                            23,
+                            24,
+                            24,
+                            27
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "電波干渉",
+                "Desc": "Deals <?1> damage as an additional hit when attacking enemies.",
+                "Parameters": [
+                    [
+                        "24.1%",
+                        "25.3%",
+                        "26.5%",
+                        "31.4%",
+                        "32.6%",
+                        "33.8%",
+                        "38.6%",
+                        "39.8%",
+                        "41%",
+                        "45.8%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_EXTRADAMAGE",
+                "Effects": [
+                    {
+                        "Type": "DMGEcho",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            2415,
+                            2536,
+                            2657,
+                            3140,
+                            3261,
+                            3381,
+                            3864,
+                            3985,
+                            4106,
+                            4589
+                        ]
+                    }
+                ]
+            }
+        ],
+        "Weapon": {
+            "Name": "エコーリンク",
+            "Desc": "コタマがいつも持ち歩いている拳銃。\n\n発砲音を極限まで抑えたこの拳銃は、静かな山の中でも野生動物から警戒されることなく、作戦を遂行することができる。",
+            "AdaptationType": "Outdoor",
+            "AdaptationValue": 1,
+            "AttackPower1": 59,
+            "AttackPower100": 590,
+            "MaxHP1": 705,
+            "MaxHP100": 7053,
+            "HealPower1": 0,
+            "HealPower100": 0,
+            "StatLevelUpType": "Standard"
+        },
+        "SkillExMaterial": [
+            [
+                3050,
+                260
+            ],
+            [
+                3051,
+                3050,
+                261,
+                150
+            ],
+            [
+                3052,
+                3051,
+                262,
+                151
+            ],
+            [
+                3053,
+                3052,
+                263,
+                152
+            ]
+        ],
+        "SkillExMaterialAmount": [
+            [
+                12,
+                13
+            ],
+            [
+                12,
+                18,
+                13,
+                30
+            ],
+            [
+                12,
+                18,
+                8,
+                29
+            ],
+            [
+                8,
+                18,
+                7,
+                23
+            ]
+        ],
+        "SkillMaterial": [
+            [
+                4050
+            ],
+            [
+                4050
+            ],
+            [
+                4051,
+                4050,
+                260
+            ],
+            [
+                4051,
+                261,
+                150
+            ],
+            [
+                4052,
+                4051,
+                261,
+                150
+            ],
+            [
+                4052,
+                262,
+                151
+            ],
+            [
+                4053,
+                4052,
+                263,
+                152
+            ],
+            [
+                4053,
+                263,
+                152
+            ]
+        ],
+        "SkillMaterialAmount": [
+            [
+                5
+            ],
+            [
+                8
+            ],
+            [
+                5,
+                12,
+                5
+            ],
+            [
+                8,
+                6,
+                14
+            ],
+            [
+                5,
+                12,
+                7,
+                19
+            ],
+            [
+                8,
+                3,
+                17
+            ],
+            [
+                8,
+                12,
+                5,
+                10
+            ],
+            [
+                12,
+                7,
+                14
+            ]
+        ]
+    },
+    "10085": {
+        "Name": "Hare (Camping)",
+        "Id": 10085,
+        "School": "Millennium",
+        "StarGrade": 3,
+        "SquadType": "Main",
+        "TacticRole": "Supporter",
+        "Position": "Middle",
+        "BulletType": "Explosion",
+        "ArmorType": "LightArmor",
+        "StreetBattleAdaptation": 0,
+        "OutdoorBattleAdaptation": 4,
+        "IndoorBattleAdaptation": 2,
+        "WeaponType": "AR",
+        "Equipment": [
+            "Hat",
+            "Hairpin",
+            "Charm"
+        ],
+        "Skills": [
+            {
+                "SkillType": "autoattack",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "Hits": [
+                            10000
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Frames": {
+                            "AttackEnterDuration": 40,
+                            "AttackStartDuration": 24,
+                            "AttackEndDuration": 25,
+                            "AttackBurstRoundOverDelay": 20,
+                            "AttackIngDuration": 36,
+                            "AttackReloadDuration": 85
+                        },
+                        "CriticalCheck": "Check"
+                    }
+                ]
+            },
+            {
+                "SkillType": "ex",
+                "Name": "焚き火の甘味",
+                "Desc": "Increases the <b:ATK> of one ally except self by <?1> for 26s.\nAdditionally, grants 5 <s:CH0233_ExtraPassive> to self (max. 15 stacks)",
+                "Parameters": [
+                    [
+                        "42.3%",
+                        "48.6%",
+                        "61.3%",
+                        "67.7%",
+                        "80.4%"
+                    ]
+                ],
+                "Cost": [
+                    2,
+                    2,
+                    2,
+                    2,
+                    2
+                ],
+                "Duration": 120,
+                "Range": 850,
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffAlly",
+                        "Value": [
+                            [
+                                4232,
+                                4867,
+                                6136,
+                                6771,
+                                8040
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 102
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "広がる温もり",
+                "Desc": "Every 50s, increases the <b:ATK> of all allies in a circular area by <?1> for 30s.",
+                "Parameters": [
+                    [
+                        "14.5%",
+                        "14.9%",
+                        "15.2%",
+                        "18.1%",
+                        "18.5%",
+                        "18.9%",
+                        "20.3%",
+                        "21%",
+                        "21.4%",
+                        "24.3%"
+                    ]
+                ],
+                "Duration": 120,
+                "Radius": [
+                    {
+                        "Type": "Circle",
+                        "Radius": 250
+                    }
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffAlly",
+                        "Value": [
+                            [
+                                1454,
+                                1491,
+                                1527,
+                                1818,
+                                1854,
+                                1890,
+                                2036,
+                                2109,
+                                2145,
+                                2436
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 102
+                    }
+                ]
+            },
+            {
+                "SkillType": "passive",
+                "Name": "デトックス効果",
+                "Desc": "Increases <b:ATK> by <?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "AttackPower_Coefficient",
+                        "Scale": [
+                            1400,
+                            1470,
+                            1540,
+                            1820,
+                            1890,
+                            1960,
+                            2240,
+                            2310,
+                            2380,
+                            2660
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "デトックス効果+",
+                "Desc": "Increases <b:ExtendBuffDuration> by <?1> and <b:ATK> by <?2>.",
+                "Parameters": [
+                    [
+                        "1000",
+                        "1050",
+                        "1100",
+                        "1300",
+                        "1350",
+                        "1400",
+                        "1600",
+                        "1650",
+                        "1700",
+                        "1900"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "ExtendBuffDuration_Base",
+                        "Scale": [
+                            1000,
+                            1050,
+                            1100,
+                            1300,
+                            1350,
+                            1400,
+                            1600,
+                            1650,
+                            1700,
+                            1900
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "キャンプの醍醐味",
+                "Desc": "While holding stacks of <s:CH0233_ExtraPassive>, deals <?1> damage as an additional hit when attacking enemies (consumes 1 stack of <s:CH0233_ExtraPassive>).",
+                "Parameters": [
+                    [
+                        "51.6%",
+                        "54.2%",
+                        "56.8%",
+                        "67.1%",
+                        "69.6%",
+                        "72.2%",
+                        "82.5%",
+                        "85.2%",
+                        "87.7%",
+                        "98%"
+                    ]
+                ],
+                "Icon": "SKILLICON_CH0233_ExtraPassive",
+                "Effects": [
+                    {
+                        "Type": "DMGEcho",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            5160,
+                            5425,
+                            5681,
+                            6713,
+                            6968,
+                            7224,
+                            8256,
+                            8521,
+                            8776,
+                            9808
+                        ]
+                    }
+                ]
+            }
+        ],
+        "Weapon": {
+            "Name": "オートエイマー",
+            "Desc": "ハレが使用するブルパップ方式のアサルトライフル。\n\n屋外でも簡単に点火できる着火機能が付いており、猛獣が現れた時は自動的にサポートしてくれる標的照準装置などが搭載されている。しかし、実際に熊が現れた時のハレは慌ててしまい、その機能をまともに使ったことはないのだとか。",
+            "AdaptationType": "Outdoor",
+            "AdaptationValue": 1,
+            "AttackPower1": 70,
+            "AttackPower100": 698,
+            "MaxHP1": 637,
+            "MaxHP100": 6366,
+            "HealPower1": 0,
+            "HealPower100": 0,
+            "StatLevelUpType": "Standard"
+        },
+        "SkillExMaterial": [
+            [
+                3050,
+                250
+            ],
+            [
+                3051,
+                3050,
+                251,
+                170
+            ],
+            [
+                3052,
+                3051,
+                252,
+                171
+            ],
+            [
+                3053,
+                3052,
+                253,
+                172
+            ]
+        ],
+        "SkillExMaterialAmount": [
+            [
+                12,
+                15
+            ],
+            [
+                12,
+                18,
+                11,
+                30
+            ],
+            [
+                12,
+                18,
+                7,
+                28
+            ],
+            [
+                8,
+                18,
+                8,
+                21
+            ]
+        ],
+        "SkillMaterial": [
+            [
+                4050
+            ],
+            [
+                4050
+            ],
+            [
+                4051,
+                4050,
+                250
+            ],
+            [
+                4051,
+                251,
+                170
+            ],
+            [
+                4052,
+                4051,
+                251,
+                170
+            ],
+            [
+                4052,
+                252,
+                171
+            ],
+            [
+                4053,
+                4052,
+                253,
+                172
+            ],
+            [
+                4053,
+                253,
+                172
+            ]
+        ],
+        "SkillMaterialAmount": [
+            [
+                5
+            ],
+            [
+                8
+            ],
+            [
+                5,
+                12,
+                5
+            ],
+            [
+                8,
+                4,
+                13
+            ],
+            [
+                5,
+                12,
+                10,
+                19
+            ],
+            [
+                8,
+                3,
+                18
+            ],
+            [
+                8,
+                12,
+                6,
+                10
+            ],
+            [
+                12,
+                6,
+                14
             ]
         ]
     },
@@ -46258,13 +48160,38 @@
                 "Icon": "COMMON_SKILLICON_IGNOREDELAY",
                 "Effects": [
                     {
-                        "Type": "IgnoreDelay",
-                        "Scale": [
+                        "Type": "FormChange",
+                        "Frames": {
+                            "AttackEnterDuration": 56,
+                            "AttackStartDuration": 21,
+                            "AttackEndDuration": 32,
+                            "AttackBurstRoundOverDelay": 42,
+                            "AttackIngDuration": 19,
+                            "AttackReadyStartDuration": 30,
+                            "AttackReadyEndDuration": 30,
+                            "AttackReloadDuration": 52
+                        },
+                        "Hits": [
+                            2000,
+                            2000,
+                            2000,
+                            2000,
+                            2000
+                        ],
+                        "IgnoreDelay": [
                             3,
                             3,
                             4,
                             4,
                             5
+                        ],
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            10000,
+                            10000,
+                            10000,
+                            10000,
+                            10000
                         ]
                     },
                     {
@@ -46684,6 +48611,14 @@
                         "Hits": [
                             5000,
                             5000
+                        ],
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            10000,
+                            10000,
+                            10000,
+                            10000,
+                            10000
                         ]
                     },
                     {
@@ -54777,7 +56712,7 @@
             {
                 "SkillType": "normal",
                 "Name": "The Hostess' Welcome",
-                "Desc": "Every 25s, increases the <b:HealEffectiveness> of the ally with the lowest HP by <?1>.",
+                "Desc": "Every 25s, increases the <b:HealEffectiveness> of the ally with the lowest HP by <?1> for 20s.",
                 "Parameters": [
                     [
                         "16.6%",
@@ -61407,7 +63342,7 @@
         "Skills": [
             {
                 "SkillType": "ex",
-                "Name": "Onward and Upward!",
+                "Name": "Onward and Onward!",
                 "Desc": "Deals <?1> damage to enemies in a circular area. Consumes up to <b>3</b> additional units of skill cost, increasing the damage dealt by 35% for each additional unit of cost consumed. (EX Cost increase/decrease effects will be calculated using the base cost)",
                 "Parameters": [
                     [
@@ -61629,7 +63564,7 @@
             },
             {
                 "SkillType": "sub",
-                "Name": "Fruits of Our Labor",
+                "Name": "Fruits of Labor",
                 "Desc": "Increases all allies' <b:EnhanceExplosionRate> by <?1>.",
                 "Parameters": [
                     [
@@ -61670,8 +63605,8 @@
             }
         ],
         "Weapon": {
-            "Name": "鋼鉄の松明",
-            "Desc": "ミノリが愛用する頑丈なアサルトライフル。\n\nシンプルな構造のこのアサルトライフルは、その名の通りミノリが進む闘争の道の前で黙々と火を灯してきた。",
+            "Name": "Torch of Steel",
+            "Desc": "Minori's favorite sturdy assault rifle.\n\nAs its name suggests, this simple assault rifle has continued to faithfully light up Minori's path of struggle.",
             "AdaptationType": "Indoor",
             "AdaptationValue": 1,
             "AttackPower1": 133,
@@ -63794,6 +65729,404 @@
                 8,
                 12,
                 4,
+                8
+            ],
+            [
+                12,
+                7,
+                13
+            ]
+        ]
+    },
+    "20032": {
+        "Name": "Eimi (Swimsuit)",
+        "Id": 20032,
+        "School": "Millennium",
+        "StarGrade": 3,
+        "SquadType": "Support",
+        "TacticRole": "Supporter",
+        "Position": "Back",
+        "BulletType": "Mystic",
+        "ArmorType": "Unarmed",
+        "StreetBattleAdaptation": 0,
+        "OutdoorBattleAdaptation": 4,
+        "IndoorBattleAdaptation": 2,
+        "WeaponType": "SG",
+        "Equipment": [
+            "Shoes",
+            "Bag",
+            "Necklace"
+        ],
+        "Skills": [
+            {
+                "SkillType": "ex",
+                "Name": "頼もしい支援",
+                "Desc": "Repositions up to 6 allies in a circular area to the selected location, granting them a <b:Shield> with HP equal to <?1> of Healing lasting up to 30s<?2>.",
+                "Parameters": [
+                    [
+                        "104%",
+                        "119%",
+                        "151%",
+                        "166%",
+                        "197%"
+                    ],
+                    [
+                        "",
+                        "",
+                        " and increasing their <b:ATK> by 10.2% for 30s",
+                        " and increasing their <b:ATK> by 10.2% for 30s",
+                        " and increasing their <b:ATK> by 12.6% for 30s"
+                    ]
+                ],
+                "Cost": [
+                    4,
+                    4,
+                    4,
+                    4,
+                    4
+                ],
+                "Duration": 80,
+                "Range": 1000,
+                "Radius": [
+                    {
+                        "Type": "Circle",
+                        "Radius": 510
+                    }
+                ],
+                "Icon": "COMMON_SKILLICON_BATTLEITEM",
+                "Effects": [
+                    {
+                        "Type": "Shield",
+                        "Scale": [
+                            10414,
+                            11978,
+                            15102,
+                            16665,
+                            19789
+                        ]
+                    },
+                    {
+                        "Type": "BuffAlly",
+                        "Value": [
+                            [
+                                0,
+                                0,
+                                1027,
+                                1027,
+                                1264
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 102
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "エイミの自信作",
+                "Desc": "Every 45s, increases the <b:AttackSpeed> of 4 allies by <?1> for 25s.",
+                "Parameters": [
+                    [
+                        "11%",
+                        "11.6%",
+                        "12.1%",
+                        "14.3%",
+                        "14.9%",
+                        "15.4%",
+                        "17.6%",
+                        "18.2%",
+                        "18.7%",
+                        "21%"
+                    ]
+                ],
+                "Duration": 90,
+                "Range": 1000,
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffAlly",
+                        "Value": [
+                            [
+                                1106,
+                                1160,
+                                1216,
+                                1437,
+                                1492,
+                                1547,
+                                1768,
+                                1823,
+                                1879,
+                                2100
+                            ]
+                        ],
+                        "Stat": "AttackSpeed_Coefficient",
+                        "Channel": 124
+                    }
+                ]
+            },
+            {
+                "SkillType": "passive",
+                "Name": "水を得た魚",
+                "Desc": "Increases <b:HealPower> by <?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_STATBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "HealPower_Coefficient",
+                        "Scale": [
+                            1400,
+                            1470,
+                            1540,
+                            1820,
+                            1890,
+                            1960,
+                            2240,
+                            2310,
+                            2380,
+                            2660
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "水を得た魚+",
+                "Desc": "Increases <b:ExtendBuffDuration> by <?1> and <b:HealPower> by <?2>.",
+                "Parameters": [
+                    [
+                        "1000",
+                        "1050",
+                        "1100",
+                        "1300",
+                        "1350",
+                        "1400",
+                        "1600",
+                        "1650",
+                        "1700",
+                        "1900"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_STATBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "ExtendBuffDuration_Base",
+                        "Scale": [
+                            1000,
+                            1050,
+                            1100,
+                            1300,
+                            1350,
+                            1400,
+                            1600,
+                            1650,
+                            1700,
+                            1900
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "滑るように",
+                "Desc": "Increases all allies' <b:AttackSpeed> by <?1>.",
+                "Parameters": [
+                    [
+                        "9.1%",
+                        "9.5%",
+                        "10%",
+                        "11.8%",
+                        "12.3%",
+                        "12.7%",
+                        "14.5%",
+                        "15%",
+                        "15.5%",
+                        "17.3%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffAlly",
+                        "Value": [
+                            [
+                                912,
+                                957,
+                                1003,
+                                1186,
+                                1231,
+                                1277,
+                                1459,
+                                1504,
+                                1550,
+                                1732
+                            ]
+                        ],
+                        "Stat": "AttackSpeed_Coefficient",
+                        "Channel": 324
+                    }
+                ]
+            }
+        ],
+        "Weapon": {
+            "Name": "マルチタクティカル",
+            "Desc": "エイミが愛用する平凡なデザインのショットガン。\n\nその名にふさわしく酷寒地でも多方面で活躍できる。",
+            "AdaptationType": "Outdoor",
+            "AdaptationValue": 1,
+            "AttackPower1": 110,
+            "AttackPower100": 1104,
+            "MaxHP1": 619,
+            "MaxHP100": 6186,
+            "HealPower1": 206,
+            "HealPower100": 2063,
+            "StatLevelUpType": "Standard"
+        },
+        "SkillExMaterial": [
+            [
+                3050,
+                230
+            ],
+            [
+                3051,
+                3050,
+                231,
+                240
+            ],
+            [
+                3052,
+                3051,
+                232,
+                241
+            ],
+            [
+                3053,
+                3052,
+                233,
+                242
+            ]
+        ],
+        "SkillExMaterialAmount": [
+            [
+                12,
+                14
+            ],
+            [
+                12,
+                18,
+                13,
+                32
+            ],
+            [
+                12,
+                18,
+                10,
+                26
+            ],
+            [
+                8,
+                18,
+                11,
+                20
+            ]
+        ],
+        "SkillMaterial": [
+            [
+                4050
+            ],
+            [
+                4050
+            ],
+            [
+                4051,
+                4050,
+                230
+            ],
+            [
+                4051,
+                231,
+                240
+            ],
+            [
+                4052,
+                4051,
+                231,
+                240
+            ],
+            [
+                4052,
+                232,
+                241
+            ],
+            [
+                4053,
+                4052,
+                233,
+                242
+            ],
+            [
+                4053,
+                233,
+                242
+            ]
+        ],
+        "SkillMaterialAmount": [
+            [
+                5
+            ],
+            [
+                8
+            ],
+            [
+                5,
+                12,
+                5
+            ],
+            [
+                8,
+                5,
+                15
+            ],
+            [
+                5,
+                12,
+                10,
+                17
+            ],
+            [
+                8,
+                3,
+                17
+            ],
+            [
+                8,
+                12,
+                5,
                 8
             ],
             [
@@ -71168,7 +73501,7 @@
         ],
         "Weapon": {
             "Name": "Nyan's Dash",
-            "Desc": "Yuzu's grenade launcher.\n\nHer grenades fire even from inside a box.Yuzu's grenade launcher.\n\nIt's designed to be able to fire grenades under any circumstances, even if she is hiding inside a box.",
+            "Desc": "Yuzu's grenade launcher.\n\nIt had to be designed to be able to fire grenades under any circumstances, considering her habit of trying to fight from the safety of her box.",
             "AdaptationType": "Outdoor",
             "AdaptationValue": 2,
             "AttackPower1": 85,
@@ -71330,7 +73663,7 @@
         "Skills": [
             {
                 "SkillType": "ex",
-                "Name": "Seagull Attack",
+                "Name": "Attack of the Seagulls",
                 "Desc": "Deals <?1> guaranteed critical damage to enemies in a rectangular area.",
                 "Parameters": [
                     [
@@ -71385,7 +73718,7 @@
             },
             {
                 "SkillType": "normal",
-                "Name": "Sneak Strike",
+                "Name": "Secret Strike",
                 "Desc": "Every 70s, deals <?1> damage to enemies in a fan-shaped area.",
                 "Parameters": [
                     [
@@ -71432,7 +73765,7 @@
             },
             {
                 "SkillType": "passive",
-                "Name": "Underwater Composite Bullets",
+                "Name": "Underwater Composite Ammo",
                 "Desc": "Increases <b:ATK> by <?1>.",
                 "Parameters": [
                     [
@@ -71470,7 +73803,7 @@
             },
             {
                 "SkillType": "weaponpassive",
-                "Name": "Underwater Composite Bullets+",
+                "Name": "Underwater Composite Ammo+",
                 "Desc": "Increases <b:CriticalDamage> by <?1> and <b:ATK> by <?2>.",
                 "Parameters": [
                     [
@@ -71520,7 +73853,7 @@
             },
             {
                 "SkillType": "sub",
-                "Name": "Observation Report",
+                "Name": "Observation Status Report",
                 "Desc": "Increases all allies' <b:CriticalDamage> by <?1>.",
                 "Parameters": [
                     [
@@ -71561,8 +73894,8 @@
             }
         ],
         "Weapon": {
-            "Name": "RABBIT-39式小銃",
-            "Desc": "ミユがSRT特殊学園から支給された、制式スナイパーライフル。\n\nボルトアクション特有のシンプルで頑丈な構造のおかげで、潮風が強い中でも故障することなく敵を狙撃することができる。",
+            "Name": "RABBIT Type 39 Rifle",
+            "Desc": "Standard rifle issued to Miyu from the SRT Academy.\n\nThe simple yet sturdy construction of the bolt-action allows you to snipe down enemies in harsh sea winds without malfunctioning.",
             "AdaptationType": "Street",
             "AdaptationValue": 2,
             "AttackPower1": 82,
