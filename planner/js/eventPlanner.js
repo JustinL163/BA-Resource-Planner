@@ -397,7 +397,7 @@ function LoadEvent(eventId) {
         // event_data.currency_needed["Fortune_Slip_Voucher"] = 140;
     }
 
-    if (current_event === "hakua-calling-card") {
+    if (current_event === "hidden-heritage") {
         document.getElementById("temp-disclaimer").style.display = "";
     }
     else {
