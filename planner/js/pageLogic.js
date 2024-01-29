@@ -28,6 +28,11 @@ let groupEditMode = "Move";
 let currentGroup = "";
 let borrowed = false;
 
+let bulkMode = false;
+let bulkChars = [];
+
+let movingControlPanel = false;
+
 let GroupFilterMode = "OnlyGroup";
 
 let selectingSlotId = "";
@@ -391,14 +396,14 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.4.2".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.4.3".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         Swal.fire({
-            title: GetLanguageString("text-updatedversionprefix") + "1.4.2",
+            title: GetLanguageString("text-updatedversionprefix") + "1.4.3",
             color: alertColour,
             html: GetLanguageString("text-updatemessage")
         })
 
-        data.site_version = "1.4.2";
+        data.site_version = "1.4.3";
         saveToLocalStorage(false);
     }
 
@@ -468,7 +473,7 @@ function init() {
         })
     }
 
-    var starButtons = document.getElementsByClassName("star-icon");
+    let starButtons = document.getElementsByClassName("star-icon");
 
     for (i = 0; i < starButtons.length; i++) {
         var starButton = starButtons[i];
@@ -480,6 +485,21 @@ function init() {
             var pos = id.substring(id.lastIndexOf('-') + 1);
 
             starClicked(type, mode, pos);
+        })
+    }
+
+    starButtons = document.getElementsByClassName("bulk-star-icon");
+
+    for (i = 0; i < starButtons.length; i++) {
+        var starButton = starButtons[i];
+        starButton.addEventListener('click', (event) => {
+
+            var id = event.target.id.substring(5);
+            var type = id.substring(0, id.indexOf('-'));
+            var mode = id.substring(id.indexOf('-') + 1, id.lastIndexOf('-'));
+            var pos = id.substring(id.lastIndexOf('-') + 1);
+
+            bulkStarClicked(type, mode, pos);
         })
     }
 
@@ -604,6 +624,33 @@ function init() {
     }, 300);
 
     InitKeyTracking();
+    TouchDraggableControlPanel();
+
+    let controlPanel = document.getElementById("control-panel");
+    setInterval(() => {
+        if (!movingControlPanel) {
+            let rect = controlPanel.getBoundingClientRect();
+
+            if (rect.right < rect.width) {
+                controlPanel.style.left = "10px";
+            }
+            else if (rect.left > (innerWidth - rect.width)) {
+                controlPanel.style.left = (innerWidth - rect.width - 30) + "px";
+            }
+
+            if (rect.bottom < rect.height) {
+                controlPanel.style.top = "100px";
+            }
+            else if (rect.top > (innerHeight - rect.height)) {
+                controlPanel.style.top = (innerHeight - rect.height - 30) + "px";
+            }
+        }
+    }, 500);
+
+    let controlPanelSize = localStorage.getItem("control-panel-size");
+    if (controlPanelSize) {
+        controlPanel.style.fontSize = controlPanelSize;
+    }
 
 }
 
@@ -673,6 +720,9 @@ function handleKeydown(e, keyPressed) {
         }
         else if (modalOpen == "transferModal") {
             closeTransferModal();
+        }
+        else if (modalOpen == "bulkEditModal") {
+            CloseBulkModal();
         }
     }
 
@@ -1186,6 +1236,21 @@ function openModal(e) {
         fromChar = true;
     }
 
+    if (bulkMode) { // include alt key shortcut
+        let charId = this.id.substring(5);
+
+        if (bulkChars.includes(charId)) {
+            bulkChars.splice(bulkChars.indexOf(charId), 1);
+            this.classList.remove("multiSelected");
+        }
+        else {
+            bulkChars.push(charId);
+            this.classList.add("multiSelected");
+        }
+
+        return;
+    }
+
     if (charMode == "Disable" || (e.ctrlKey && fromChar == true)) {
         let charId = this.id.substring(5);
 
@@ -1476,6 +1541,7 @@ function multiCharCancel() {
     multiCharsClear();
 
     if (multiCharSource == "AddNewChars") {
+        document.getElementById("control-panel").style.display = "";
         multiSelected = [];
 
         boxesContainer.style.display = "";
@@ -1534,6 +1600,7 @@ function showMultiSelect(source) {
     let mode = "";
 
     if (source == "AddNewChars") {
+        document.getElementById("control-panel").style.display = "none";
         let existingChars = getExistingCharacters();
 
         for (key in charlist) {
@@ -1775,6 +1842,7 @@ function teamsToggle() {
     let buttonText = document.getElementById('teamsEditorButton');
 
     if (mainDisplay == "Characters") {
+        document.getElementById("control-panel").style.display = "none";
         mainDisplay = "Teams";
         boxesContainer.style.display = "none";
         teamsEditorContainer.style.display = "";
@@ -1788,6 +1856,7 @@ function teamsToggle() {
         }
     }
     else if (mainDisplay == "Teams") {
+        document.getElementById("control-panel").style.display = "";
         mainDisplay = "Characters";
         boxesContainer.style.display = "";
         teamsEditorContainer.style.display = "none";
@@ -3113,7 +3182,7 @@ async function saveToLocalStorage(notify) {
 
 function saveCharChanges() {
 
-    var allValid = true;
+    let allValid = true;
     let invalidMessages = "";
 
     for (let key in inputValidation) {
@@ -6095,4 +6164,540 @@ function DownloadImage(data, filename = 'untitled.png') {
     document.body.appendChild(a);
     a.click();
     a.remove();
+}
+
+// Make the DIV element draggable:
+dragElement(document.getElementById("control-panel"));
+
+function dragElement(elmnt) {
+    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    // if (document.getElementById(elmnt.id + "-header")) {
+    //     // if present, the header is where you move the DIV from:
+    //     document.getElementById(elmnt.id + "-header").onmousedown = dragMouseDown;
+    // } else {
+    // otherwise, move the DIV from anywhere inside the DIV:
+    elmnt.onmousedown = dragMouseDown;
+    // }
+
+    function dragMouseDown(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // get the mouse cursor position at startup:
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        // call a function whenever the cursor moves:
+        document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // calculate the new cursor position:
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        // set the element's new position:
+        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+
+        movingControlPanel = true;
+    }
+
+    function closeDragElement() {
+        // stop moving when mouse button is released:
+        document.onmouseup = null;
+        document.onmousemove = null;
+
+        movingControlPanel = false;
+    }
+}
+
+function TouchDraggableControlPanel() {
+    // find the element that you want to drag.
+    var mPos1 = 0, mPos2 = 0, mPos3 = 0, mPos4 = 0;
+    var box = document.getElementById('control-panel');
+
+    box.addEventListener('touchstart', function (e) {
+        mPos3 = e.clientX;
+        mPos4 = e.clientY;
+    })
+
+    /* listen to the touchMove event,
+    every time it fires, grab the location
+    of touch and assign it to box */
+
+    box.addEventListener('touchmove', function (e) {
+        e.preventDefault();
+        // grab the location of touch
+        var touchLocation = e.targetTouches[0];
+
+        mPos1 = mPos3 - touchLocation.clientX;
+        mPos2 = mPos4 - touchLocation.clientY;
+        mPos3 = touchLocation.clientX;
+        mPos4 = touchLocation.clientY;
+
+        // assign box new coordinates based on the touch.
+        box.style.left = (box.offsetLeft - mPos1) + 'px';
+        box.style.top = (box.offsetTop - mPos2) + 'px';
+
+        movingControlPanel = true;
+    })
+
+    /* record the position of the touch
+    when released using touchend event.
+    This will be the drop position. */
+
+    box.addEventListener('touchend', function (e) {
+        movingControlPanel = false;
+    })
+
+}
+
+function ControlPanelSize(change) {
+    let controlPanel = document.getElementById("control-panel");
+    let fontEm = parseFloat(controlPanel.style.fontSize.substring(0, controlPanel.style.fontSize.indexOf("em")));
+
+    if (change == "Expand") {
+        if (fontEm < 1) {
+            controlPanel.style.fontSize = (fontEm + 0.1) + "em";
+            localStorage.setItem("control-panel-size", controlPanel.style.fontSize);
+        }
+    }
+    else if (change == "Shrink") {
+        if (fontEm > 0.6) {
+            controlPanel.style.fontSize = (fontEm - 0.1) + "em";
+            localStorage.setItem("control-panel-size", controlPanel.style.fontSize);
+        }
+    }
+}
+
+function ControlPanelClicked(button) {
+
+    if (button == "Edit") {
+        if (bulkMode && bulkChars.length > 0) {
+            OpenBulkModal();
+        }
+        else {
+            document.getElementById("control-button-edit").classList.add("selected");
+            document.getElementById("control-button-move").classList.remove("selected");
+            document.getElementById("control-button-disable").classList.remove("selected");
+            charMode = "Edit";
+            ResetBulkMode();
+        }
+    }
+    else if (button == "Move") {
+        document.getElementById("control-button-edit").classList.remove("selected");
+        document.getElementById("control-button-move").classList.add("selected");
+        document.getElementById("control-button-disable").classList.remove("selected");
+        charMode = "Move";
+        ResetBulkMode();
+    }
+    else if (button == "Disable") {
+        document.getElementById("control-button-edit").classList.remove("selected");
+        document.getElementById("control-button-move").classList.remove("selected");
+        document.getElementById("control-button-disable").classList.add("selected");
+        charMode = "Disable";
+        ResetBulkMode();
+    }
+    else if (button == "AddStudent") {
+        showMultiSelect('AddNewChars');
+        ResetBulkMode();
+    }
+    else if (button == "Filter") {
+        toggleViewFilters();
+        ResetBulkMode();
+    }
+    else if (button == "Bulk") {
+        if (!bulkMode) {
+            document.getElementById("control-button-bulk").classList.add("selected");
+            document.getElementById("control-button-edit").classList.remove("selected");
+            document.getElementById("control-button-move").classList.remove("selected");
+            document.getElementById("control-button-move").classList.add("disabled");
+            document.getElementById("control-button-disable").classList.remove("selected");
+            document.getElementById("control-button-disable").classList.add("disabled");
+            document.getElementById("control-button-add-student").classList.add("disabled");
+            document.getElementById("control-button-filter").classList.add("disabled");
+
+            bulkMode = true;
+            charMode = "Edit";
+        }
+        else {
+            ResetBulkMode();
+            document.getElementById("control-button-edit").classList.add("selected");
+        }
+    }
+}
+
+function ResetBulkMode() {
+    bulkMode = false;
+    document.getElementById("control-button-bulk").classList.remove("selected");
+
+    document.getElementById("control-button-move").classList.remove("disabled");
+    document.getElementById("control-button-disable").classList.remove("disabled");
+    document.getElementById("control-button-add-student").classList.remove("disabled");
+    document.getElementById("control-button-filter").classList.remove("disabled");
+
+    let bulkSelected = document.getElementsByClassName("charBox multiSelected");
+
+    while (bulkSelected.length > 0) {
+        bulkSelected[0].classList.remove("multiSelected");
+    }
+
+    bulkChars = [];
+
+    CloseBulkModal();
+}
+
+function OpenBulkModal() {
+
+    let modal = document.getElementById("bulkEditModal");
+    modal.style.visibility = "visible";
+
+    document.getElementById("bulk-input_level_current").value = "";
+    document.getElementById("bulk-input_level_target").value = "";
+
+    document.getElementById("bulk-input_ue_level_current").value = "";
+    document.getElementById("bulk-input_ue_level_target").value = "";
+
+    document.getElementById("bulk-input_bond_current").value = "";
+    document.getElementById("bulk-input_bond_target").value = "";
+
+    document.getElementById("bulk-input_ex_current").value = "";
+    document.getElementById("bulk-input_ex_target").value = "";
+    document.getElementById("bulk-input_basic_current").value = "";
+    document.getElementById("bulk-input_basic_target").value = "";
+    document.getElementById("bulk-input_enhanced_current").value = "";
+    document.getElementById("bulk-input_enhanced_target").value = "";
+    document.getElementById("bulk-input_sub_current").value = "";
+    document.getElementById("bulk-input_sub_target").value = "";
+
+    document.getElementById("bulk-input_gear1_current").value = "";
+    document.getElementById("bulk-input_gear1_target").value = "";
+    document.getElementById("bulk-input_gear2_current").value = "";
+    document.getElementById("bulk-input_gear2_target").value = "";
+    document.getElementById("bulk-input_gear3_current").value = "";
+    document.getElementById("bulk-input_gear3_target").value = "";
+
+    modalStars = { star: 0, star_target: 0, ue: 0, ue_target: 0 };
+    updateBulkStarDisplays("", true);
+
+    modalOpen = "bulkEditModal";
+
+    modal.onclick = function (event) {
+        if (event.target == modal) {
+            CloseBulkModal();
+        }
+    };
+}
+
+function CloseBulkModal() {
+
+    document.getElementById("bulkEditModal").style.visibility = "";
+
+    modalOpen = "";
+}
+
+function ConfirmBulkUpdate() {
+
+    let allValid = true;
+    let invalidMessages = "";
+
+    for (let key in inputValidation) {
+        if (inputValidation[key].location == "bulkEditModal") {
+            let result = validateInput(key, false, true);
+            if (result != "validated") {
+                //invalidMessages.push(result);
+                invalidMessages += result + "<br>";
+                allValid = false;
+            }
+        }
+    }
+
+    if (allValid == false) {
+        // Swal.fire({
+        //     title: 'Invalid inputs',
+        //     html: invalidMessages,
+        //     color: alertColour
+        // })
+
+        return false;
+    }
+
+    let bulkUpdate = {};
+
+    bulkUpdate.current = {};
+    bulkUpdate.target = {};
+    bulkUpdate.eleph = {};
+
+    bulkUpdate.current.level = document.getElementById("bulk-input_level_current").value;
+    bulkUpdate.target.level = document.getElementById("bulk-input_level_target").value;
+
+    bulkUpdate.current.ue_level = document.getElementById("bulk-input_ue_level_current").value;
+    bulkUpdate.target.ue_level = document.getElementById("bulk-input_ue_level_target").value;
+
+    bulkUpdate.current.bond = document.getElementById("bulk-input_bond_current").value;
+    bulkUpdate.target.bond = document.getElementById("bulk-input_bond_target").value;
+
+    bulkUpdate.current.ex = document.getElementById("bulk-input_ex_current").value;
+    bulkUpdate.target.ex = document.getElementById("bulk-input_ex_target").value;
+    bulkUpdate.current.basic = document.getElementById("bulk-input_basic_current").value;
+    bulkUpdate.target.basic = document.getElementById("bulk-input_basic_target").value;
+    bulkUpdate.current.passive = document.getElementById("bulk-input_enhanced_current").value;
+    bulkUpdate.target.passive = document.getElementById("bulk-input_enhanced_target").value;
+    bulkUpdate.current.sub = document.getElementById("bulk-input_sub_current").value;
+    bulkUpdate.target.sub = document.getElementById("bulk-input_sub_target").value;
+
+    bulkUpdate.current.gear1 = document.getElementById("bulk-input_gear1_current").value;
+    bulkUpdate.target.gear1 = document.getElementById("bulk-input_gear1_target").value;
+    bulkUpdate.current.gear2 = document.getElementById("bulk-input_gear2_current").value;
+    bulkUpdate.target.gear2 = document.getElementById("bulk-input_gear2_target").value;
+    bulkUpdate.current.gear3 = document.getElementById("bulk-input_gear3_current").value;
+    bulkUpdate.target.gear3 = document.getElementById("bulk-input_gear3_target").value;
+
+    // charData.current.star = modalStars.star;
+    // charData.target.star = modalStars.star_target;
+    // charData.current.ue = modalStars.ue;
+    // charData.target.ue = modalStars.ue_target;
+
+    Swal.fire({
+        title: GetLanguageString("label-areyousure"),
+        text: GetLanguageString("text-bulkupdateprompt"),
+        color: alertColour,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: GetLanguageString("confirmupdate"),
+        cancelButtonText: GetLanguageString("label-cancel")
+    }).then((result) => {
+        if (result.isConfirmed) {
+            CloseBulkModal();
+            ApplyBulkUpdate(bulkUpdate);
+        }
+    })
+
+}
+
+function ApplyBulkUpdate(bulkUpdate) {
+
+    for (let i = 0; i < bulkChars.length; i++) {
+
+        let charData = data.characters.find(obj => { return obj.id == bulkChars[i] });
+
+        if (charData != undefined) {
+            let uc = bulkUpdate.current;
+            let ut = bulkUpdate.target;
+
+            let cc = charData.current;
+            let ct = charData.target;
+
+            let params = ["level", "ex", "basic", "passive", "sub", "gear1", "gear2", "gear3"];
+            for (let p = 0; p < params.length; p++) {
+                if (uc[params[p]]) {
+                    cc[params[p]] = uc[params[p]];
+                }
+
+                if (ut[params[p]]) {
+                    ct[params[p]] = Math.max(ut[params[p]], cc[params[p]]);
+                }
+                else {
+                    if (parseInt(ct[params[p]]) < parseInt(cc[params[p]])) {
+                        ct[params[p]] = cc[params[p]];
+                    }
+                }
+            }
+
+            let charInfoObj = charlist[bulkChars[i]];
+
+            if (modalStars.star) {
+                cc.star = Math.max(modalStars.star, charInfoObj.StarGrade);
+                cc.ue = modalStars.ue;
+            }
+
+            if (modalStars.star_target) {
+                ct.star = Math.max(modalStars.star_target, cc.star);
+                ct.ue = Math.max(modalStars.ue_target, cc.ue);
+            }
+            else {
+                if (ct.star < cc.star) {
+                    ct.star = cc.star;
+                }
+
+                if (ct.ue < cc.ue) {
+                    ct.ue = cc.ue;
+                }
+            }
+
+            if (uc.ue_level) {
+                if (parseInt(cc.ue) >= 3) {
+                    cc.ue_level = uc.ue_level;
+                }
+                else if (cc.ue == 2) {
+                    cc.ue_level = Math.min(uc.ue_level, 40);
+                }
+                else if (cc.ue == 1) {
+                    cc.ue_level = Math.min(uc.ue_level, 30);
+                }
+                else {
+                    cc.ue_level = 0;
+                }
+            }
+
+            if (ut.ue_level) {
+                if (parseInt(ct.ue) >= 3) {
+                    ct.ue_level = Math.max(ut.ue_level, cc.ue_level);
+                }
+                else if (ct.ue == 2) {
+                    ct.ue_level = Math.min(Math.max(ut.ue_level, cc.ue_level), 40);
+                }
+                else if (ct.ue == 1) {
+                    ct.ue_level = Math.min(Math.max(ut.ue_level, cc.ue_level), 30);
+                }
+                else {
+                    ct.ue_level = 0;
+                }
+            }
+            else {
+                if (parseInt(ct.ue_level) < parseInt(cc.ue_level)) {
+                    ct.ue_level = cc.ue_level;
+                }
+            }
+
+            if (uc.bond) {
+                if (parseInt(cc.star) >= 5) {
+                    cc.bond = uc.bond;
+                }
+                else if (parseInt(cc.star) >= 3) {
+                    cc.bond = Math.min(uc.bond, 20);
+                }
+                else {
+                    cc.bond = Math.min(uc.bond, 10);
+                }
+            }
+
+            if (ut.bond) {
+                if (parseInt(ct.star) >= 5) {
+                    ct.bond = Math.max(ut.bond, cc.bond);
+                }
+                else if (parseInt(cc.star) >= 3) {
+                    ct.bond = Math.min(Math.max(ut.bond, cc.bond), 20);
+                }
+                else {
+                    ct.bond = Math.min(Math.max(ut.bond, cc.bond), 10);
+                }
+            }
+            else {
+                if (parseInt(ct.bond) < parseInt(cc.bond)) {
+                    ct.bond = cc.bond;
+                }
+            }
+        }
+    }
+
+    saveToLocalStorage(false);
+
+    location.reload();
+}
+
+function bulkStarClicked(type, mode, pos) {
+
+    pos = parseInt(pos);
+
+    if (mode == "current") {
+        if (type == "star") {
+            if (pos != modalStars.star) {
+                modalStars.star = pos;
+
+                if (modalStars.star < 5) {
+                    modalStars.ue = 0;
+                }
+
+                if (modalStars.star == 5) {
+                    modalStars.ue = 1;
+                }
+            }
+            else {
+                if (modalStars.ue <= 1) {
+                    modalStars.star = 0;
+                    modalStars.ue = 0;
+                }
+                else {
+                    if (modalStars.star == 5) {
+                        modalStars.ue = 1;
+                    }
+                }
+            }
+        }
+        else if (type == "ue") {
+            if (pos != modalStars.ue) {
+                modalStars.ue = pos;
+
+                if (modalStars.star != 5) {
+                    modalStars.star = 5;
+                }
+            }
+            else {
+                modalStars.star = 0;
+                modalStars.ue = 0;
+            }
+        }
+    }
+    else if (mode == "target") {
+        if (type == "star") {
+            if (pos > modalStars.star && pos != modalStars.star_target) {
+                modalStars.star_target = pos;
+
+                if (pos < 5) {
+                    modalStars.ue = 0;
+                    modalStars.ue_target = 0;
+                }
+
+                if (modalStars.star_target == 5) {
+                    modalStars.ue_target = 1;
+                }
+            }
+            else {
+                if (modalStars.ue_target <= 1) {
+                    modalStars.star_target = 0;
+                    modalStars.ue_target = 0;
+                }
+                else {
+                    if (modalStars.star_target == 5) {
+                        modalStars.ue_target = 1;
+                    }
+                }
+            }
+        }
+        else if (type == "ue") {
+            if (pos > modalStars.ue && pos != modalStars.ue_target) {
+                if (pos == 1 && modalStars.ue_target == 1) {
+                    modalStars.ue_target = 0;
+                }
+                else {
+                    modalStars.ue_target = pos;
+
+                    if (modalStars.star_target != 5) {
+                        modalStars.star_target = 5;
+                    }
+                }
+            }
+            else {
+                modalStars.star_target = 0;
+                modalStars.ue_target = 0;
+            }
+        }
+    }
+
+    updateBulkStarDisplays("", true);
+}
+
+function updateBulkStarDisplays(charId, fromTemp) {
+
+    updateStarDisplay("bulk-star-current-container", charId, "star-current", fromTemp);
+    updateStarDisplay("bulk-star-target-container", charId, "star-target", fromTemp);
+    updateStarDisplay("bulk-ue-current-container", charId, "ue-current", fromTemp);
+    updateStarDisplay("bulk-ue-target-container", charId, "ue-target", fromTemp);
+
 }

@@ -30,7 +30,7 @@ fetch('json/skillinfo/en.json?3').then((response) => response.json()).then((json
     }
 });
 
-fetch('json/strings.json?18').then((response) => response.json()).then((json) => {
+fetch('json/strings.json?20').then((response) => response.json()).then((json) => {
     language_strings = json;
     if (uiReady) {
         updateUiLanguage();
@@ -449,7 +449,7 @@ function updateStarDisplay(id, charId, type, fromTemp, charData) {
                 starContainer.children[s].style.filter = "grayscale(0)";
             }
             else if (type == "star-target" && star_target > s) {
-                starContainer.children[s].style.filter = "grayscale(0) hue-rotate(300deg) saturate(0.9)";
+                starContainer.children[s].style.filter = "grayscale(0)";
             }
             else {
                 starContainer.children[s].style.filter = "grayscale(1)";
@@ -460,7 +460,7 @@ function updateStarDisplay(id, charId, type, fromTemp, charData) {
                 starContainer.children[s].style.filter = "grayscale(0) hue-rotate(150deg)";
             }
             else if (type == "ue-target" && ue_target > s) {
-                starContainer.children[s].style.filter = "grayscale(0) hue-rotate(40deg) saturate(0.8)";
+                starContainer.children[s].style.filter = "grayscale(0) hue-rotate(150deg)";
             }
             else {
                 starContainer.children[s].style.filter = "grayscale(1)";

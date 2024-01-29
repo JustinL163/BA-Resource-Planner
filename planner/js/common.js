@@ -187,7 +187,7 @@ function validateInputBasic(input_id, max, min, checkonly) {
     }
 
     if (inputElement.value == '') {
-        if ((preInput || preInput == 0) && keyPressed.Delete != true && keyPressed.Backspace != true) {
+        if ((preInput || preInput == 0) && keyPressed.Delete != true && keyPressed.Backspace != true && !inputElement.getAttribute("blankable")) {
             inputElement.value = preInput;
         }
         else {
@@ -439,6 +439,10 @@ function InitInputValidation() {
 
             if (inputValidation[key].max != undefined) {
                 inputElement.max = inputValidation[key].max;
+            }
+
+            if (inputValidation[key].blankable) {
+                inputElement.setAttribute("blankable", true);
             }
 
             inputElement.addEventListener('input', (event) => {

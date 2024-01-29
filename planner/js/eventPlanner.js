@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?37').done(function (json) {
+    $.getJSON('json/events.json?38').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -86,7 +86,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?18').done(function (json) {
+    $.getJSON('json/strings.json?20').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -416,8 +416,8 @@ function LoadEvent(eventId) {
 
     let enabledStageGroups;
     //TEMP
-    if (current_event == "hakua-calling-card") {
-        enabledStageGroups = event_data?.enabled_stage_groups ?? [false, true, true];
+    if (current_event == "hidden-heritage") {
+        enabledStageGroups = event_data?.enabled_stage_groups ?? [false, false, true];
     }
     else {
         enabledStageGroups = event_data?.enabled_stage_groups ?? [true, true, true];
@@ -2786,6 +2786,169 @@ function CalculateStageDrops(result, ignoreRequirement) {
             totalXps["GXP_3"] += minigameRuns;
         }
     }
+    else if (current_event == "hidden-heritage") {
+        let tempPoints = totalCurrencies["Event_Point"] - 8000;
+        let boardLaps = Math.max(Math.floor(tempPoints / 5100), 0);
+
+        let leftoverPoints = tempPoints - boardLaps * 5100;
+        let lapLeftover = 0;
+        if (leftoverPoints >= 3900) {
+            lapLeftover = 3;
+        }
+        else if (leftoverPoints >= 2700) {
+            lapLeftover = 2;
+        }
+        else if (leftoverPoints >= 1200) {
+            lapLeftover = 1;
+        }
+
+        totalEleph["16013"] = 0;
+
+        totalCredit += 8000000 * Math.min(boardLaps, 3);
+        totalEleph["16013"] += 40 * Math.min(boardLaps, 3);
+        if (!totalArtifacts["Wolfsegg_1"]) {
+            totalArtifacts["Wolfsegg_1"] = 0;
+        }
+        totalArtifacts["Wolfsegg_1"] += 20 * Math.min(boardLaps, 3);
+        if (!totalArtifacts["Wolfsegg_2"]) {
+            totalArtifacts["Wolfsegg_2"] = 0;
+        }
+        totalArtifacts["Wolfsegg_2"] += 6 * Math.min(boardLaps, 3);
+        if (!totalArtifacts["Wolfsegg_3"]) {
+            totalArtifacts["Wolfsegg_3"] = 0;
+        }
+        totalArtifacts["Wolfsegg_3"] += 4 * Math.min(boardLaps, 3);
+        if (!totalArtifacts["Wolfsegg_4"]) {
+            totalArtifacts["Wolfsegg_4"] = 0;
+        }
+        totalArtifacts["Wolfsegg_4"] += 2 * Math.min(boardLaps, 3);
+        if (!totalArtifacts["Antikythera_1"]) {
+            totalArtifacts["Antikythera_1"] = 0;
+        }
+        totalArtifacts["Antikythera_1"] += 20 * Math.min(boardLaps, 3);
+        if (!totalArtifacts["Antikythera_2"]) {
+            totalArtifacts["Antikythera_2"] = 0;
+        }
+        totalArtifacts["Antikythera_2"] += 6 * Math.min(boardLaps, 3);
+        if (!totalArtifacts["Antikythera_3"]) {
+            totalArtifacts["Antikythera_3"] = 0;
+        }
+        totalArtifacts["Antikythera_3"] += 4 * Math.min(boardLaps, 3);
+        if (!totalArtifacts["Antikythera_4"]) {
+            totalArtifacts["Antikythera_4"] = 0;
+        }
+        totalArtifacts["Antikythera_4"] += 2 * Math.min(boardLaps, 3);
+        if (!totalArtifacts["Fleece_1"]) {
+            totalArtifacts["Fleece_1"] = 0;
+        }
+        totalArtifacts["Fleece_1"] += 20 * Math.min(boardLaps, 3);
+        if (!totalArtifacts["Fleece_2"]) {
+            totalArtifacts["Fleece_2"] = 0;
+        }
+        totalArtifacts["Fleece_2"] += 6 * Math.min(boardLaps, 3);
+        if (!totalArtifacts["Fleece_3"]) {
+            totalArtifacts["Fleece_3"] = 0;
+        }
+        totalArtifacts["Fleece_3"] += 4 * Math.min(boardLaps, 3);
+        if (!totalArtifacts["Fleece_4"]) {
+            totalArtifacts["Fleece_4"] = 0;
+        }
+        totalArtifacts["Fleece_4"] += 2 * Math.min(boardLaps, 3);
+        if (!totalArtifacts["RomanDice_1"]) {
+            totalArtifacts["RomanDice_1"] = 0;
+        }
+        totalArtifacts["RomanDice_1"] += 20 * Math.min(boardLaps, 3);
+        if (!totalArtifacts["RomanDice_2"]) {
+            totalArtifacts["RomanDice_2"] = 0;
+        }
+        totalArtifacts["RomanDice_2"] += 6 * Math.min(boardLaps, 3);
+        if (!totalArtifacts["RomanDice_3"]) {
+            totalArtifacts["RomanDice_3"] = 0;
+        }
+        totalArtifacts["RomanDice_3"] += 4 * Math.min(boardLaps, 3);
+        if (!totalArtifacts["RomanDice_4"]) {
+            totalArtifacts["RomanDice_4"] = 0;
+        }
+        totalArtifacts["RomanDice_4"] += 2 * Math.min(boardLaps, 3);
+
+        if (boardLaps > 3) {
+            totalCredit += 4000000 * (boardLaps - 3);
+            totalEleph["16013"] += 20 * (boardLaps - 3);
+            totalArtifacts["Wolfsegg_1"] += 4 * (boardLaps - 3);
+            totalArtifacts["Wolfsegg_2"] += 3 * (boardLaps - 3);
+            totalArtifacts["Wolfsegg_3"] += 2 * (boardLaps - 3);
+            totalArtifacts["Wolfsegg_4"] += 1 * (boardLaps - 3);
+            totalArtifacts["Antikythera_1"] += 4 * (boardLaps - 3);
+            totalArtifacts["Antikythera_2"] += 3 * (boardLaps - 3);
+            totalArtifacts["Antikythera_3"] += 2 * (boardLaps - 3);
+            totalArtifacts["Antikythera_4"] += 1 * (boardLaps - 3);
+            totalArtifacts["Fleece_1"] += 4 * (boardLaps - 3);
+            totalArtifacts["Fleece_2"] += 3 * (boardLaps - 3);
+            totalArtifacts["Fleece_3"] += 2 * (boardLaps - 3);
+            totalArtifacts["Fleece_4"] += 1 * (boardLaps - 3);
+            totalArtifacts["RomanDice_1"] += 4 * (boardLaps - 3);
+            totalArtifacts["RomanDice_2"] += 3 * (boardLaps - 3);
+            totalArtifacts["RomanDice_3"] += 2 * (boardLaps - 3);
+            totalArtifacts["RomanDice_4"] += 1 * (boardLaps - 3);
+        }
+
+        if (lapLeftover >= 1) {
+            if (boardLaps > 2) {
+                totalCredit += 1000000;
+                totalEleph["16013"] += 5;
+                totalArtifacts["Wolfsegg_1"] += 4;
+                totalArtifacts["Wolfsegg_2"] += 3;
+                totalArtifacts["Wolfsegg_3"] += 2;
+                totalArtifacts["Wolfsegg_4"] += 1;
+            }
+            else {
+                totalCredit += 2000000;
+                totalEleph["16013"] += 10;
+                totalArtifacts["Wolfsegg_1"] += 20;
+                totalArtifacts["Wolfsegg_2"] += 6;
+                totalArtifacts["Wolfsegg_3"] += 4;
+                totalArtifacts["Wolfsegg_4"] += 2;
+            }
+
+            if (lapLeftover >= 2) {
+                if (boardLaps > 2) {
+                    totalCredit += 1000000;
+                    totalEleph["16013"] += 5;
+                    totalArtifacts["Antikythera_1"] += 4;
+                    totalArtifacts["Antikythera_2"] += 3;
+                    totalArtifacts["Antikythera_3"] += 2;
+                    totalArtifacts["Antikythera_4"] += 1;
+                }
+                else {
+                    totalCredit += 2000000;
+                    totalEleph["16013"] += 10;
+                    totalArtifacts["Antikythera_1"] += 20;
+                    totalArtifacts["Antikythera_2"] += 6;
+                    totalArtifacts["Antikythera_3"] += 4;
+                    totalArtifacts["Antikythera_4"] += 2;
+                }
+
+                if (lapLeftover == 3) {
+                    if (boardLaps > 2) {
+                        totalCredit += 1000000;
+                        totalEleph["16013"] += 5;
+                        totalArtifacts["Fleece_1"] += 4;
+                        totalArtifacts["Fleece_2"] += 3;
+                        totalArtifacts["Fleece_3"] += 2;
+                        totalArtifacts["Fleece_4"] += 1;
+                    }
+                    else {
+                        totalCredit += 2000000;
+                        totalEleph["16013"] += 10;
+                        totalArtifacts["Fleece_1"] += 20;
+                        totalArtifacts["Fleece_2"] += 6;
+                        totalArtifacts["Fleece_3"] += 4;
+                        totalArtifacts["Fleece_4"] += 2;
+                    }
+                }
+            }
+        }
+    }
 
     if (feasible) {
         UpdateRewardsObtained(totalCurrencies, energyCost, totalArtifacts, totalSchoolMats, totalEleph, totalXps,
@@ -4803,10 +4966,10 @@ function SimulateDiceGacha() {
 
     let diceRace = event_config.events[current_event].dice_race;
 
-    worker1.postMessage([diceRace, [[],[],[],[2],[1],[],[2],[],[],[],[],[],[6],[5],[4],[3],[2],[6]], 3000, 100000, diceRollCurrencyOwned]);
-    worker2.postMessage([diceRace, [[],[],[],[2],[1],[],[2],[],[],[],[],[],[6],[5],[4],[3],[2],[6]], 3000, 100000, diceRollCurrencyOwned]);
-    worker3.postMessage([diceRace, [[],[],[],[2],[1],[],[2],[],[],[],[],[],[6],[5],[4],[3],[2],[6]], 3000, 100000, diceRollCurrencyOwned]);
-    worker4.postMessage([diceRace, [[],[],[],[2],[1],[],[2],[],[],[],[],[],[6],[5],[4],[3],[2],[6]], 3000, 100000, diceRollCurrencyOwned]);
+    worker1.postMessage([diceRace, [[], [], [], [2], [1], [], [2], [], [], [], [], [], [6], [5], [4], [3], [2], [6]], 3000, 100000, diceRollCurrencyOwned]);
+    worker2.postMessage([diceRace, [[], [], [], [2], [1], [], [2], [], [], [], [], [], [6], [5], [4], [3], [2], [6]], 3000, 100000, diceRollCurrencyOwned]);
+    worker3.postMessage([diceRace, [[], [], [], [2], [1], [], [2], [], [], [], [], [], [6], [5], [4], [3], [2], [6]], 3000, 100000, diceRollCurrencyOwned]);
+    worker4.postMessage([diceRace, [[], [], [], [2], [1], [], [2], [], [], [], [], [], [6], [5], [4], [3], [2], [6]], 3000, 100000, diceRollCurrencyOwned]);
 }
 
 function ProcessDiceResults(eventName) {

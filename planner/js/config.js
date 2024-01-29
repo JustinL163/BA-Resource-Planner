@@ -192,7 +192,7 @@ var rowColours = {
 const propertyColours = {
     "Explosion": "#ec242487", "Pierce": "#fff10099", "Mystic": "#1070a5c2", "Sonic": "#c246d79e",
     "LightArmor": "#ec242487", "HeavyArmor": "#fff10099", "Unarmed": "#1070a5c2", "ElasticArmor": "#c246d79e",
-    "Striker": "#ec242487",
+    "Striker": "#cc1a2587", "Special": "#006aff87",
     "Abydos": "#9ce4fc66", "Gehenna": "#ec7d7966", "Millennium": "#9ebdfa66", "Trinity": "#fcd19c66", "Hyakkiyako": "#f0a8c466",
     "Arius": "#dbdad85e", "Shanhaijing": "#b4feca66", "RedWinter": "#d98c9e66", "Valkyrie": "#a1a9e166"
 }
@@ -352,7 +352,41 @@ const inputValidation = {
         "Up": "input_level_current",
         "Left": "input_level_current",
         "Down": "input_ex_current",
-        "Right": "input_ue_level_current"
+        "Right": "input_bond_current"
+    },
+    "bulk-level": {
+        id: "bulk-input_level_current",
+        location: "bulkEditModal",
+        min: "1",
+        max: "87",
+        default: "1",
+        blankable: true,
+        name: "Level",
+        "navigation": "direct",
+        "Down": "bulk-input_level_target",
+        "Right": "bulk-input_level_target"
+    },
+    "bulk-level_target": {
+        id: "bulk-input_level_target",
+        location: "bulkEditModal",
+        min: "1",
+        max: "87",
+        default: "1",
+        blankable: true,
+        name: "Level Target",
+        requisite: {
+            "bulk-level": {
+                type: "input",
+                compare: "equal_greater",
+                mode: "direct",
+                sanitise: true
+            }
+        },
+        "navigation": "direct",
+        "Up": "bulk-input_level_current",
+        "Left": "bulk-input_level_current",
+        "Down": "bulk-input_ex_current",
+        "Right": "bulk-input_bond_current"
     },
     "ue_level": {
         id: "input_ue_level_current",
@@ -388,8 +422,8 @@ const inputValidation = {
             }
         },
         "navigation": "direct",
-        "Up": "input_level_target",
-        "Left": "input_level_target",
+        "Up": "input_bond_target",
+        "Left": "input_bond_target",
         "Down": "input_ue_level_target",
         "Right": "input_ue_level_target"
     },
@@ -435,8 +469,45 @@ const inputValidation = {
         "navigation": "direct",
         "Up": "input_ue_level_current",
         "Left": "input_ue_level_current",
-        "Down": "input_bond_current",
-        "Right": "input_bond_current"
+        "Down": "input_ex_current",
+        "Right": "input_ex_current"
+    },
+    "bulk-ue_level": {
+        id: "bulk-input_ue_level_current",
+        location: "bulkEditModal",
+        min: "0",
+        max: "50",
+        default: "0",
+        blankable: true,
+        name: "UE Level",
+        requisite: {},
+        "navigation": "direct",
+        "Up": "bulk-input_bond_target",
+        "Left": "bulk-input_bond_target",
+        "Down": "bulk-input_ue_level_target",
+        "Right": "bulk-input_ue_level_target"
+    },
+    "bulk-ue_level_target": {
+        id: "bulk-input_ue_level_target",
+        location: "bulkEditModal",
+        min: "0",
+        max: "50",
+        default: "0",
+        blankable: true,
+        name: "UE Level Target",
+        requisite: {
+            "bulk-ue_level": {
+                type: "input",
+                compare: "equal_greater",
+                mode: "direct",
+                sanitise: true
+            }
+        },
+        "navigation": "direct",
+        "Up": "bulk-input_ue_level_current",
+        "Left": "bulk-input_ue_level_current",
+        "Down": "bulk-input_ex_current",
+        "Right": "bulk-input_ex_current"
     },
     "bond": {
         id: "input_bond_current",
@@ -468,8 +539,8 @@ const inputValidation = {
             }
         },
         "navigation": "direct",
-        "Up": "input_ue_level_target",
-        "Left": "input_ue_level_target",
+        "Up": "input_level_target",
+        "Left": "input_level_target",
         "Down": "input_bond_target",
         "Right": "input_bond_target"
     },
@@ -512,7 +583,44 @@ const inputValidation = {
         "Up": "input_bond_current",
         "Left": "input_bond_current",
         "Down": "input_ex_current",
-        "Right": "input_ex_current"
+        "Right": "input_ue_level_current"
+    },
+    "bulk-bond": {
+        id: "bulk-input_bond_current",
+        location: "bulkEditModal",
+        min: "1",
+        max: "100",
+        default: "1",
+        blankable: true,
+        name: "Bond",
+        requisite: {},
+        "navigation": "direct",
+        "Up": "bulk-input_level_target",
+        "Left": "bulk-input_level_target",
+        "Down": "bulk-input_bond_target",
+        "Right": "bulk-input_bond_target"
+    },
+    "bulk-bond_target": {
+        id: "bulk-input_bond_target",
+        location: "bulkEditModal",
+        min: "1",
+        max: "100",
+        default: "1",
+        blankable: true,
+        name: "Bond Target",
+        requisite: {
+            "bulk-bond": {
+                type: "input",
+                compare: "equal_greater",
+                mode: "direct",
+                sanitise: true
+            }
+        },
+        "navigation": "direct",
+        "Up": "bulk-input_bond_current",
+        "Left": "bulk-input_bond_current",
+        "Down": "bulk-input_ex_current",
+        "Right": "bulk-input_ue_level_current"
     },
     "ex": {
         id: "input_ex_current",
@@ -548,6 +656,42 @@ const inputValidation = {
         "Down": "input_basic_current",
         "Right": "input_basic_target"
     },
+    "bulk-ex": {
+        id: "bulk-input_ex_current",
+        location: "bulkEditModal",
+        min: "1",
+        max: "5",
+        default: "1",
+        blankable: true,
+        name: "EX",
+        "navigation": "direct",
+        "Up": "bulk-input_level_target",
+        "Left": "bulk-input_level_target",
+        "Down": "bulk-input_ex_target",
+        "Right": "bulk-input_basic_current"
+    },
+    "bulk-ex_target": {
+        id: "bulk-input_ex_target",
+        location: "bulkEditModal",
+        min: "1",
+        max: "5",
+        default: "1",
+        blankable: true,
+        name: "EX Target",
+        requisite: {
+            "bulk-ex": {
+                type: "input",
+                compare: "equal_greater",
+                mode: "direct",
+                sanitise: true
+            }
+        },
+        "navigation": "direct",
+        "Up": "bulk-input_ex_current",
+        "Left": "bulk-input_sub_current",
+        "Down": "bulk-input_basic_current",
+        "Right": "bulk-input_basic_target"
+    },
     "basic": {
         id: "input_basic_current",
         location: "characterModal",
@@ -582,6 +726,42 @@ const inputValidation = {
         "Down": "input_enhanced_current",
         "Right": "input_enhanced_target"
     },
+    "bulk-basic": {
+        id: "bulk-input_basic_current",
+        location: "bulkEditModal",
+        min: "1",
+        max: "10",
+        default: "1",
+        blankable: true,
+        name: "Basic",
+        "navigation": "direct",
+        "Up": "bulk-input_ex_target",
+        "Left": "bulk-input_ex_current",
+        "Down": "bulk-input_basic_target",
+        "Right": "bulk-input_enhanced_current"
+    },
+    "bulk-basic_target": {
+        id: "bulk-input_basic_target",
+        location: "bulkEditModal",
+        min: "1",
+        max: "10",
+        default: "1",
+        blankable: true,
+        name: "Basic Target",
+        requisite: {
+            "bulk-basic": {
+                type: "input",
+                compare: "equal_greater",
+                mode: "direct",
+                sanitise: true
+            }
+        },
+        "navigation": "direct",
+        "Up": "bulk-input_basic_current",
+        "Left": "bulk-input_ex_target",
+        "Down": "bulk-input_enhanced_current",
+        "Right": "bulk-input_enhanced_target"
+    },
     "passive": {
         id: "input_enhanced_current",
         location: "characterModal",
@@ -589,24 +769,7 @@ const inputValidation = {
         max: "10",
         default: "0",
         name: "Enhanced",
-        requisite: {
-            // "modalStars.star_target": {
-            //     type: "object",
-            //     name: "Target Stars",
-            //     compare: "equal_greater",
-            //     mode: "threshold",
-            //     sanitise: true,
-            //     levels: [
-            //         {
-            //             required: "2",
-            //             max: "10"
-            //         },
-            //         {
-            //             max: "0"
-            //         }
-            //     ]
-            // }
-        },
+        requisite: {},
         "navigation": "direct",
         "Up": "input_basic_target",
         "Left": "input_basic_current",
@@ -621,22 +784,6 @@ const inputValidation = {
         default: "0",
         name: "Enhanced Target",
         requisite: {
-            // "modalStars.star_target": {
-            //     type: "object",
-            //     name: "Target Stars",
-            //     compare: "equal_greater",
-            //     mode: "threshold",
-            //     sanitise: true,
-            //     levels: [
-            //         {
-            //             required: "2",
-            //             max: "10"
-            //         },
-            //         {
-            //             max: "0"
-            //         }
-            //     ]
-            // },
             "passive": {
                 type: "input",
                 compare: "equal_greater",
@@ -650,6 +797,43 @@ const inputValidation = {
         "Down": "input_sub_current",
         "Right": "input_sub_target"
     },
+    "bulk-passive": {
+        id: "bulk-input_enhanced_current",
+        location: "bulkEditModal",
+        min: "0",
+        max: "10",
+        default: "0",
+        blankable: true,
+        name: "Enhanced",
+        requisite: {},
+        "navigation": "direct",
+        "Up": "bulk-input_basic_target",
+        "Left": "bulk-input_basic_current",
+        "Down": "bulk-input_enhanced_target",
+        "Right": "bulk-input_sub_current"
+    },
+    "bulk-passive_target": {
+        id: "bulk-input_enhanced_target",
+        location: "bulkEditModal",
+        min: "0",
+        max: "10",
+        default: "0",
+        blankable: true,
+        name: "Enhanced Target",
+        requisite: {
+            "bulk-passive": {
+                type: "input",
+                compare: "equal_greater",
+                mode: "direct",
+                sanitise: true
+            }
+        },
+        "navigation": "direct",
+        "Up": "bulk-input_enhanced_current",
+        "Left": "bulk-input_basic_target",
+        "Down": "bulk-input_sub_current",
+        "Right": "bulk-input_sub_target"
+    },
     "sub": {
         id: "input_sub_current",
         location: "characterModal",
@@ -657,24 +841,7 @@ const inputValidation = {
         max: "10",
         default: "0",
         name: "Sub",
-        requisite: {
-            // "modalStars.star_target": {
-            //     type: "object",
-            //     name: "Target Stars",
-            //     compare: "equal_greater",
-            //     mode: "threshold",
-            //     sanitise: true,
-            //     levels: [
-            //         {
-            //             required: "3",
-            //             max: "10"
-            //         },
-            //         {
-            //             max: "0"
-            //         }
-            //     ]
-            // }
-        },
+        requisite: {},
         "navigation": "direct",
         "Up": "input_enhanced_target",
         "Left": "input_enhanced_current",
@@ -689,22 +856,6 @@ const inputValidation = {
         default: "0",
         name: "Sub Target",
         requisite: {
-            // "modalStars.star_target": {
-            //     type: "object",
-            //     name: "Target Stars",
-            //     compare: "equal_greater",
-            //     mode: "threshold",
-            //     sanitise: true,
-            //     levels: [
-            //         {
-            //             required: "3",
-            //             max: "10"
-            //         },
-            //         {
-            //             max: "0"
-            //         }
-            //     ]
-            // },
             "sub": {
                 type: "input",
                 compare: "equal_greater",
@@ -717,6 +868,43 @@ const inputValidation = {
         "Left": "input_enhanced_target",
         "Down": "input_gear1_current",
         "Right": "input_gear1_current"
+    },
+    "bulk-sub": {
+        id: "bulk-input_sub_current",
+        location: "bulkEditModal",
+        min: "0",
+        max: "10",
+        default: "0",
+        blankable: true,
+        name: "Sub",
+        requisite: {},
+        "navigation": "direct",
+        "Up": "bulk-input_enhanced_target",
+        "Left": "bulk-input_enhanced_current",
+        "Down": "bulk-input_sub_target",
+        "Right": "bulk-input_ex_target"
+    },
+    "bulk-sub_target": {
+        id: "bulk-input_sub_target",
+        location: "bulkEditModal",
+        min: "0",
+        max: "10",
+        default: "0",
+        blankable: true,
+        name: "Sub Target",
+        requisite: {
+            "bulk-sub": {
+                type: "input",
+                compare: "equal_greater",
+                mode: "direct",
+                sanitise: true
+            }
+        },
+        "navigation": "direct",
+        "Up": "bulk-input_sub_current",
+        "Left": "bulk-input_enhanced_target",
+        "Down": "bulk-input_gear1_current",
+        "Right": "bulk-input_gear1_current"
     },
     "gear1": {
         id: "input_gear1_current",
@@ -752,6 +940,42 @@ const inputValidation = {
         "Down": "input_gear2_current",
         "Right": "input_gear2_target"
     },
+    "bulk-gear1": {
+        id: "bulk-input_gear1_current",
+        location: "bulkEditModal",
+        min: "0",
+        max: "8",
+        default: "0",
+        blankable: true,
+        name: "Gear 1",
+        "navigation": "direct",
+        "Up": "bulk-input_sub_target",
+        "Left": "bulk-input_sub_target",
+        "Down": "bulk-input_gear1_target",
+        "Right": "bulk-input_gear2_current"
+    },
+    "bulk-gear1_target": {
+        id: "bulk-input_gear1_target",
+        location: "bulkEditModal",
+        min: "0",
+        max: "8",
+        default: "0",
+        blankable: true,
+        name: "Gear 1 Target",
+        requisite: {
+            "bulk-gear1": {
+                type: "input",
+                compare: "equal_greater",
+                mode: "direct",
+                sanitise: true
+            }
+        },
+        "navigation": "direct",
+        "Up": "bulk-input_gear1_current",
+        "Left": "bulk-input_gear3_current",
+        "Down": "bulk-input_gear2_current",
+        "Right": "bulk-input_gear2_target"
+    },
     "gear2": {
         id: "input_gear2_current",
         location: "characterModal",
@@ -759,24 +983,7 @@ const inputValidation = {
         max: "8",
         default: "0",
         name: "Gear 2",
-        requisite: {
-            // "level_target": {
-            //     type: "input",
-            //     name: "Level Target",
-            //     compare: "equal_greater",
-            //     mode: "threshold",
-            //     sanitise: true,
-            //     levels: [
-            //         {
-            //             required: "15",
-            //             max: "7"
-            //         },
-            //         {
-            //             max: "0"
-            //         }
-            //     ]
-            // }
-        },
+        requisite: {},
         "navigation": "direct",
         "Up": "input_gear1_target",
         "Left": "input_gear1_current",
@@ -791,22 +998,6 @@ const inputValidation = {
         default: "0",
         name: "Gear 2 Target",
         requisite: {
-            // "level_target": {
-            //     type: "input",
-            //     name: "Level Target",
-            //     compare: "equal_greater",
-            //     mode: "threshold",
-            //     sanitise: true,
-            //     levels: [
-            //         {
-            //             required: "15",
-            //             max: "7"
-            //         },
-            //         {
-            //             max: "0"
-            //         }
-            //     ]
-            // },
             "gear2": {
                 type: "input",
                 compare: "equal_greater",
@@ -819,6 +1010,43 @@ const inputValidation = {
         "Left": "input_gear1_target",
         "Down": "input_gear3_current",
         "Right": "input_gear3_target"
+    },
+    "bulk-gear2": {
+        id: "bulk-input_gear2_current",
+        location: "bulkEditModal",
+        min: "0",
+        max: "8",
+        default: "0",
+        blankable: true,
+        name: "Gear 2",
+        requisite: {},
+        "navigation": "direct",
+        "Up": "bulk-input_gear1_target",
+        "Left": "bulk-input_gear1_current",
+        "Down": "bulk-input_gear2_target",
+        "Right": "bulk-input_gear3_current"
+    },
+    "bulk-gear2_target": {
+        id: "bulk-input_gear2_target",
+        location: "bulkEditModal",
+        min: "0",
+        max: "8",
+        default: "0",
+        blankable: true,
+        name: "Gear 2 Target",
+        requisite: {
+            "bulk-gear2": {
+                type: "input",
+                compare: "equal_greater",
+                mode: "direct",
+                sanitise: true
+            }
+        },
+        "navigation": "direct",
+        "Up": "bulk-input_gear2_current",
+        "Left": "bulk-input_gear1_target",
+        "Down": "bulk-input_gear3_current",
+        "Right": "bulk-input_gear3_target"
     },
     "gear3": {
         id: "input_gear3_current",
@@ -886,6 +1114,42 @@ const inputValidation = {
         "Up": "input_gear3_current",
         "Left": "input_gear2_target",
         "Down": "input_ue_level_current"
+    },
+    "bulk-gear3": {
+        id: "bulk-input_gear3_current",
+        location: "bulkEditModal",
+        min: "0",
+        max: "8",
+        default: "0",
+        blankable: true,
+        name: "Gear 3",
+        requisite: {},
+        "navigation": "direct",
+        "Up": "bulk-input_gear2_target",
+        "Left": "bulk-input_gear2_current",
+        "Down": "bulk-input_gear3_target",
+        "Right": "bulk-input_gear1_target"
+    },
+    "bulk-gear3_target": {
+        id: "bulk-input_gear3_target",
+        location: "bulkEditModal",
+        min: "0",
+        max: "8",
+        default: "0",
+        blankable: true,
+        name: "Gear 3 Target",
+        requisite: {
+            "bulk-gear3": {
+                type: "input",
+                compare: "equal_greater",
+                mode: "direct",
+                sanitise: true
+            }
+        },
+        "navigation": "direct",
+        "Up": "bulk-input_gear3_current",
+        "Left": "bulk-input_gear2_target",
+        "Down": "bulk-input_ue_level_current"
     },
     "BD_1_Abydos": {
         "id": "input-BD_1_Abydos",
