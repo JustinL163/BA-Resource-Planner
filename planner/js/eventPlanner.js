@@ -2788,6 +2788,9 @@ function CalculateStageDrops(result, ignoreRequirement) {
     }
     else if (current_event == "hidden-heritage") {
         let tempPoints = totalCurrencies["Event_Point"] - 8000;
+        if (midEvent) {
+            tempPoints = totalCurrencies["Event_Point"];
+        }
         let boardLaps = Math.max(Math.floor(tempPoints / 5100), 0);
 
         let leftoverPoints = tempPoints - boardLaps * 5100;
@@ -2803,73 +2806,96 @@ function CalculateStageDrops(result, ignoreRequirement) {
         }
 
         totalEleph["16013"] = 0;
-
-        totalCredit += 8000000 * Math.min(boardLaps, 3);
-        totalEleph["16013"] += 40 * Math.min(boardLaps, 3);
         if (!totalArtifacts["Wolfsegg_1"]) {
             totalArtifacts["Wolfsegg_1"] = 0;
         }
-        totalArtifacts["Wolfsegg_1"] += 20 * Math.min(boardLaps, 3);
         if (!totalArtifacts["Wolfsegg_2"]) {
             totalArtifacts["Wolfsegg_2"] = 0;
         }
-        totalArtifacts["Wolfsegg_2"] += 6 * Math.min(boardLaps, 3);
         if (!totalArtifacts["Wolfsegg_3"]) {
             totalArtifacts["Wolfsegg_3"] = 0;
         }
-        totalArtifacts["Wolfsegg_3"] += 4 * Math.min(boardLaps, 3);
         if (!totalArtifacts["Wolfsegg_4"]) {
             totalArtifacts["Wolfsegg_4"] = 0;
         }
-        totalArtifacts["Wolfsegg_4"] += 2 * Math.min(boardLaps, 3);
         if (!totalArtifacts["Antikythera_1"]) {
             totalArtifacts["Antikythera_1"] = 0;
         }
-        totalArtifacts["Antikythera_1"] += 20 * Math.min(boardLaps, 3);
         if (!totalArtifacts["Antikythera_2"]) {
             totalArtifacts["Antikythera_2"] = 0;
         }
-        totalArtifacts["Antikythera_2"] += 6 * Math.min(boardLaps, 3);
         if (!totalArtifacts["Antikythera_3"]) {
             totalArtifacts["Antikythera_3"] = 0;
         }
-        totalArtifacts["Antikythera_3"] += 4 * Math.min(boardLaps, 3);
         if (!totalArtifacts["Antikythera_4"]) {
             totalArtifacts["Antikythera_4"] = 0;
         }
-        totalArtifacts["Antikythera_4"] += 2 * Math.min(boardLaps, 3);
         if (!totalArtifacts["Fleece_1"]) {
             totalArtifacts["Fleece_1"] = 0;
         }
-        totalArtifacts["Fleece_1"] += 20 * Math.min(boardLaps, 3);
         if (!totalArtifacts["Fleece_2"]) {
             totalArtifacts["Fleece_2"] = 0;
         }
-        totalArtifacts["Fleece_2"] += 6 * Math.min(boardLaps, 3);
         if (!totalArtifacts["Fleece_3"]) {
             totalArtifacts["Fleece_3"] = 0;
         }
-        totalArtifacts["Fleece_3"] += 4 * Math.min(boardLaps, 3);
         if (!totalArtifacts["Fleece_4"]) {
             totalArtifacts["Fleece_4"] = 0;
         }
-        totalArtifacts["Fleece_4"] += 2 * Math.min(boardLaps, 3);
         if (!totalArtifacts["RomanDice_1"]) {
             totalArtifacts["RomanDice_1"] = 0;
         }
-        totalArtifacts["RomanDice_1"] += 20 * Math.min(boardLaps, 3);
         if (!totalArtifacts["RomanDice_2"]) {
             totalArtifacts["RomanDice_2"] = 0;
         }
-        totalArtifacts["RomanDice_2"] += 6 * Math.min(boardLaps, 3);
         if (!totalArtifacts["RomanDice_3"]) {
             totalArtifacts["RomanDice_3"] = 0;
         }
-        totalArtifacts["RomanDice_3"] += 4 * Math.min(boardLaps, 3);
         if (!totalArtifacts["RomanDice_4"]) {
             totalArtifacts["RomanDice_4"] = 0;
         }
-        totalArtifacts["RomanDice_4"] += 2 * Math.min(boardLaps, 3);
+
+        if (midEvent) {
+            boardLaps += 3;
+        }
+        else {
+
+            totalCredit += 8000000 * Math.min(boardLaps, 3);
+            totalEleph["16013"] += 40 * Math.min(boardLaps, 3);
+
+            totalArtifacts["Wolfsegg_1"] += 20 * Math.min(boardLaps, 3);
+
+            totalArtifacts["Wolfsegg_2"] += 6 * Math.min(boardLaps, 3);
+
+            totalArtifacts["Wolfsegg_3"] += 4 * Math.min(boardLaps, 3);
+
+            totalArtifacts["Wolfsegg_4"] += 2 * Math.min(boardLaps, 3);
+
+            totalArtifacts["Antikythera_1"] += 20 * Math.min(boardLaps, 3);
+
+            totalArtifacts["Antikythera_2"] += 6 * Math.min(boardLaps, 3);
+
+            totalArtifacts["Antikythera_3"] += 4 * Math.min(boardLaps, 3);
+
+            totalArtifacts["Antikythera_4"] += 2 * Math.min(boardLaps, 3);
+
+            totalArtifacts["Fleece_1"] += 20 * Math.min(boardLaps, 3);
+
+            totalArtifacts["Fleece_2"] += 6 * Math.min(boardLaps, 3);
+
+            totalArtifacts["Fleece_3"] += 4 * Math.min(boardLaps, 3);
+
+            totalArtifacts["Fleece_4"] += 2 * Math.min(boardLaps, 3);
+
+            totalArtifacts["RomanDice_1"] += 20 * Math.min(boardLaps, 3);
+
+            totalArtifacts["RomanDice_2"] += 6 * Math.min(boardLaps, 3);
+
+            totalArtifacts["RomanDice_3"] += 4 * Math.min(boardLaps, 3);
+
+            totalArtifacts["RomanDice_4"] += 2 * Math.min(boardLaps, 3);
+
+        }
 
         if (boardLaps > 3) {
             totalCredit += 4000000 * (boardLaps - 3);
