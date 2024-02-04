@@ -77,7 +77,6 @@ body {
 #mode-freeform {
     width: 20em;
     margin-inline: auto;
-    display: flex;
     justify-content: center;
 }
 
@@ -86,6 +85,15 @@ body {
     width: 10em;
     height: 2em;
     text-align: center;
+}
+
+#mode-freeform div {
+    font-size: 3em;
+    margin-top: 0.5em;
+    background-color: white;
+    text-align: center;
+    border-radius: 20px;
+    margin-left: 0.1em;
 }
 
 #mode-freeform input.failed {

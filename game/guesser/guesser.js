@@ -101,6 +101,10 @@
             Restart();
         });
 
+        $("#submit-button").click(() => {
+            Submit();
+        })
+
         setInterval(() => {
             if (gameActive && timeLimit && !failedState) {
                 let curTime = Date.now();
