@@ -25,7 +25,7 @@
     let correct = 0, wrong = 0;
 
     let data;
-    fetch('guesser/data.json').then((response) => response.json()).then((json) => {
+    fetch('guesser/data.json?1').then((response) => response.json()).then((json) => {
         data = json;
 
         ProcessData();
