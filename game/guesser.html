@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3XZ18739WF"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-3XZ18739WF');
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="guesser/styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="guesser/guesser.js"></script>
+    <title>Who's that Halo?</title>
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://justin163.com/game/guesser">
+    <meta property="og:image" itemprop="image primaryImageOfPage"
+        content="https://justin163.com/game/EmbedIcon.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:domain" content="justin163.com">
+    <meta name="twitter:title" property="og:title" itemprop="name" content="Who's that Halo?">
+    <meta name="twitter:description" property="og:description" itemprop="description"
+        content="A Blue Archive halo guessing minigame">
+    <meta name="theme-color" content="#42f55d">
+</head>
+
+<body class="background">
+    <div id="background-image"></div>
+    <div id="content-container">
+        <div id="content-body">
+            <div id="title">Who's that Halo?</div>
+            <div id="guesses-container">
+                <div id="correct-guesses"></div>
+                <div id="wrong-guesses"></div>
+                <div id="remaining-guesses"></div>
+            </div>
+            <div id="timer"></div>
+            <div id="display-image">
+                <img id="guess-picture" src="guesser/BA_halo.webp">
+            </div>
+            <div id="mode-freeform" style="display: none;">
+                <input id="freeform-input" spellcheck="false">
+            </div>
+            <div id="mode-multichoice" style="display: none;"></div>
+            <div id="settings">
+                <div class="option-label">Input Type:</div>
+                <div id="input-type">
+                    <div id="input-freeform">Freeform</div>
+                    <div id="input-multichoice">Multi Choice</div>
+                </div>
+                <div class="option-label">Time Limit:</div>
+                <div id="time-limit">
+                    <div class="time-limits" id="time-1.5s" style="display: none;">1.5s</div>
+                    <div class="time-limits" id="time-3s">3s</div>
+                    <div class="time-limits" id="time-10s">10s</div>
+                    <div class="time-limits" id="time-none">No Limit</div>
+                </div>
+                <div id="guess-limit-label" class="option-label">Max Guesses:</div>
+                <div id="guess-limit">
+                    <div id="guesses-1">1</div>
+                    <div id="guesses-2">2</div>
+                    <div id="guesses-3">3</div>
+                </div>
+                <div class="option-label">Colour:</div>
+                <div id="colour-mode">
+                    <div id="mode-colour">Colour</div>
+                    <div id="mode-grayscale">Grayscale</div>
+                </div>
+                <div id="start-banner">
+                    <div>TOUCH TO START</div>
+                </div>
+            </div>
+            <div id="final-guesses" style="display: none;">
+                <div id="final-correct-guesses">0</div>
+                <div id="final-wrong-guesses">0</div>
+            </div>
+            <div id="total-time" style="display: none;"></div>
+            <div id="final-score" style="display: none;"></div>
+            <div id="modifiers-short" style="display: none;"></div>
+            <div id="return-button" style="display: none;">
+                <div>Return</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

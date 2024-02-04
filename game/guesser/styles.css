@@ -1,0 +1,229 @@
+body {
+    margin: 0;
+    height: 100vh;
+}
+
+#content-container {
+    background-color: #f7f7f7;
+    height: 100%;
+    margin-inline: auto;
+    display: flex;
+}
+
+#background-image {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    background-image: url(/game/guesser/BG_ReceptionRoom.jpg);
+    background-size: cover;
+    filter: blur(24px);
+}
+
+#content-body {
+    width: 95%;
+    height: 95%;
+    margin: auto;
+    position: relative;
+}
+
+#title {
+    font-size: 2em;
+    text-align: center;
+}
+
+#guesses-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    font-family: monospace;
+}
+
+#correct-guesses {
+    color: #87df00;
+    margin-right: 1em;
+    font-size: 3em;
+}
+
+#wrong-guesses {
+    color: #cd0000;
+    margin-right: 1em;
+    font-size: 3em;
+}
+
+#remaining-guesses {
+    color: black;
+    font-size: 3em;
+}
+
+#timer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 2em;
+    color: #cd0000;
+}
+
+#display-image {
+    width: 20em;
+    height: 20em;
+    margin-inline: auto;
+}
+
+#display-image img {
+    width: 100%;
+}
+
+#mode-freeform {
+    width: 20em;
+    margin-inline: auto;
+    display: flex;
+    justify-content: center;
+}
+
+#mode-freeform input {
+    font-size: 2em;
+    width: 10em;
+    height: 2em;
+    text-align: center;
+}
+
+#mode-freeform input.failed {
+    color: red;
+}
+
+#mode-multichoice {
+    width: 20em;
+    margin-inline: auto;
+    margin-top: 2em;
+}
+
+#mode-multichoice div {
+    font-size: 2em;
+    padding-block: 0.5em;
+    margin-bottom: 0.2em;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+#mode-multichoice div:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+#mode-multichoice div.wrong-choice {
+    background-color: rgb(255 77 77 / 20%);
+}
+
+#mode-multichoice div.correct-choice {
+    background-color: rgb(41 247 47 / 20%);
+}
+
+#input-type,
+#time-limit,
+#guess-limit,
+#colour-mode {
+    display: flex;
+    width: 30em;
+    margin-inline: auto;
+    justify-content: center;
+}
+
+.option-label {
+    font-size: 1.5em;
+    text-align: center;
+    margin-block: 0.2em;
+}
+
+#input-type div,
+#time-limit div,
+#guess-limit div,
+#colour-mode div {
+    font-size: 1.5em;
+    padding: 0.5em;
+    margin-inline: 0.5em;
+    background-color: rgba(0, 0, 0, 0.1);
+    min-width: 2em;
+    text-align: center;
+}
+
+#input-type div:hover,
+#time-limit div:hover,
+#guess-limit div:hover,
+#colour-mode div:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+#input-type div.selected,
+#time-limit div.selected,
+#guess-limit div.selected,
+#colour-mode div.selected {
+    background-color: rgba(0, 0, 0, 0.3);
+    outline: solid 0.1em white;
+}
+
+#start-banner,
+#return-button {
+    width: 30em;
+    margin-inline: auto;
+    text-align: center;
+    margin-top: 2em;
+    background-color: white;
+}
+
+#start-banner div,
+#return-button div {
+    font-size: 2.2em;
+    color: #627faa;
+    font-family: monospace;
+}
+
+#start-banner:hover,
+#return-button:hover {
+    filter: brightness(0.9);
+}
+
+#total-time {
+    text-align: center;
+    font-size: 5em;
+}
+
+#final-score {
+    font-size: 3em;
+    text-align: center;
+}
+
+#final-guesses {
+    display: flex;
+    background-color: #ffffff7a;
+    inline-size: fit-content;
+    margin-inline: auto;
+    border-radius: 20px;
+}
+
+#final-correct-guesses {
+    color: #87df00;
+    font-size: 3em;
+    font-family: monospace;
+    margin-inline: 0.5em;
+}
+
+#final-wrong-guesses {
+    color: #cd0000;
+    font-size: 3em;
+    font-family: monospace;
+    margin-inline: 0.5em;
+}
+
+#modifiers-short {
+    text-align: center;
+}
+
+@media (max-width: 800px) {
+    #content-body {
+        font-size: 0.7em;
+    }
+
+    #title {
+        margin-top: 2em;
+    }
+}
