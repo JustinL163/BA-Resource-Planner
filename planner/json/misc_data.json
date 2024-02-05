@@ -97,6 +97,18 @@
             "T6": 55,
             "T7": 40,
             "T8": 40
+        },
+        "T9": {
+            "xp": 183214,
+            "credit": 1269356,
+            "T2": 40,
+            "T3": 45,
+            "T4": 50,
+            "T5": 55,
+            "T6": 65,
+            "T7": 55,
+            "T8": 40,
+            "T9": 50
         }
     },
     "skill_credit_cost": {
@@ -205,7 +217,10 @@
         771370,
         814665,
         866930,
-        936130
+        936130,
+        1020550,
+        1123540,
+        1249185
     ],
     "ue_xp": [
         0,
@@ -444,19 +459,46 @@
         },
         "10046": "MasteryCertificate",
         "10047": "MasteryCertificate",
+        "10053": "MasteryCertificate",
+        "10054": "MasteryCertificate",
+        "10059": {
+            "currency": "MasteryCertificate",
+            "amount": 5,
+            "cost": 2400,
+            "times": 2
+        },
         "13000": "RaidToken",
-        "13004": "MasteryCertificate",
+        "13004": {
+            "currency": "MasteryCertificate",
+            "amount": 5,
+            "cost": 1800,
+            "times": 6
+        },
         "13011": "RaidToken",
+        "16005": {
+            "currency": "MasteryCertificate",
+            "amount": 5,
+            "cost": 1800,
+            "times": 6
+        },
         "20002": "ArenaCoin",
         "20003": "ArenaCoin",
         "20004": "MasteryCertificate",
+        "20022": "MasteryCertificate",
+        "20030": "MasteryCertificate",
         "23001": "ArenaCoin",
         "23002": "RaidToken",
         "23004": "ArenaCoin",
         "23006": "ArenaCoin",
         "23007": "RaidToken",
         "26000": "RaidToken",
-        "26001": "RaidToken"
+        "26001": "RaidToken",
+        "26006": {
+            "currency": "MasteryCertificate",
+            "amount": 5,
+            "cost": 1800,
+            "times": 6
+        }
     },
     "shop_eleph": {
         "RaidToken": {
@@ -847,6 +889,11 @@
             {
                 "Tier": "2",
                 "Rates": [
+                    1.2,
+                    0.9,
+                    0.9
+                ],
+                "OldRates": [
                     0.344,
                     0.258,
                     0.258
@@ -857,6 +904,11 @@
             {
                 "Tier": "2",
                 "Rates": [
+                    1.2,
+                    0.9,
+                    0.9
+                ],
+                "OldRates": [
                     0.344,
                     0.258,
                     0.258
@@ -867,6 +919,11 @@
             {
                 "Tier": "3",
                 "Rates": [
+                    0.9,
+                    0.675,
+                    0.675
+                ],
+                "OldRates": [
                     0.344,
                     0.258,
                     0.258
@@ -877,6 +934,11 @@
             {
                 "Tier": "3",
                 "Rates": [
+                    0.9,
+                    0.675,
+                    0.675
+                ],
+                "OldRates": [
                     0.344,
                     0.258,
                     0.258
@@ -887,6 +949,11 @@
             {
                 "Tier": "4",
                 "Rates": [
+                    0.6,
+                    0.45,
+                    0.45
+                ],
+                "OldRates": [
                     0.344,
                     0.258,
                     0.258
@@ -905,6 +972,11 @@
             {
                 "Tier": "4",
                 "Rates": [
+                    0.6,
+                    0.45,
+                    0.45
+                ],
+                "OldRates": [
                     0.344,
                     0.258,
                     0.258

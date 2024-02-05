@@ -178,7 +178,8 @@ const gearLookup = ["T2_Hat", "T2_Gloves", "T2_Shoes", "T2_Bag", "T2_Badge", "T2
     "T5_Hat", "T5_Gloves", "T5_Shoes", "T5_Bag", "T5_Badge", "T5_Hairpin", "T5_Charm", "T5_Watch", "T5_Necklace",
     "T6_Hat", "T6_Gloves", "T6_Shoes", "T6_Bag", "T6_Badge", "T6_Hairpin", "T6_Charm", "T6_Watch", "T6_Necklace",
     "T7_Hat", "T7_Gloves", "T7_Shoes", "T7_Bag", "T7_Badge", "T7_Hairpin", "T7_Charm", "T7_Watch", "T7_Necklace",
-    "T8_Hat", "T8_Gloves", "T8_Shoes", "T8_Bag", "T8_Badge", "T8_Hairpin", "T8_Charm", "T8_Watch", "T8_Necklace"]
+    "T8_Hat", "T8_Gloves", "T8_Shoes", "T8_Bag", "T8_Badge", "T8_Hairpin", "T8_Charm", "T8_Watch", "T8_Necklace",
+    "T9_Hat", "T9_Gloves", "T9_Shoes", "T9_Bag", "T9_Badge", "T9_Hairpin"]
 
 var rowColours = {
     "Abydos": "#9ce4fc66", "Gehenna": "#ec7d7966", "Millennium": "#9ebdfa66", "Trinity": "#fcd19c66", "Hyakkiyako": "#f0a8c466", "Arius": "#dbdad85e",
@@ -326,7 +327,7 @@ const inputValidation = {
         id: "input_level_current",
         location: "characterModal",
         min: "1",
-        max: "87",
+        max: "90",
         default: "1",
         name: "Level",
         "navigation": "direct",
@@ -337,7 +338,7 @@ const inputValidation = {
         id: "input_level_target",
         location: "characterModal",
         min: "1",
-        max: "87",
+        max: "90",
         default: "1",
         name: "Level Target",
         requisite: {
@@ -358,7 +359,7 @@ const inputValidation = {
         id: "bulk-input_level_current",
         location: "bulkEditModal",
         min: "1",
-        max: "87",
+        max: "90",
         default: "1",
         blankable: true,
         name: "Level",
@@ -370,7 +371,7 @@ const inputValidation = {
         id: "bulk-input_level_target",
         location: "bulkEditModal",
         min: "1",
-        max: "87",
+        max: "90",
         default: "1",
         blankable: true,
         name: "Level Target",
@@ -910,7 +911,7 @@ const inputValidation = {
         id: "input_gear1_current",
         location: "characterModal",
         min: "0",
-        max: "8",
+        max: "9",
         default: "0",
         name: "Gear 1",
         "navigation": "direct",
@@ -923,7 +924,7 @@ const inputValidation = {
         id: "input_gear1_target",
         location: "characterModal",
         min: "0",
-        max: "8",
+        max: "9",
         default: "0",
         name: "Gear 1 Target",
         requisite: {
@@ -944,7 +945,7 @@ const inputValidation = {
         id: "bulk-input_gear1_current",
         location: "bulkEditModal",
         min: "0",
-        max: "8",
+        max: "9",
         default: "0",
         blankable: true,
         name: "Gear 1",
@@ -958,7 +959,7 @@ const inputValidation = {
         id: "bulk-input_gear1_target",
         location: "bulkEditModal",
         min: "0",
-        max: "8",
+        max: "9",
         default: "0",
         blankable: true,
         name: "Gear 1 Target",
@@ -980,7 +981,7 @@ const inputValidation = {
         id: "input_gear2_current",
         location: "characterModal",
         min: "0",
-        max: "8",
+        max: "9",
         default: "0",
         name: "Gear 2",
         requisite: {},
@@ -994,7 +995,7 @@ const inputValidation = {
         id: "input_gear2_target",
         location: "characterModal",
         min: "0",
-        max: "8",
+        max: "9",
         default: "0",
         name: "Gear 2 Target",
         requisite: {
@@ -1015,7 +1016,7 @@ const inputValidation = {
         id: "bulk-input_gear2_current",
         location: "bulkEditModal",
         min: "0",
-        max: "8",
+        max: "9",
         default: "0",
         blankable: true,
         name: "Gear 2",
@@ -1030,7 +1031,7 @@ const inputValidation = {
         id: "bulk-input_gear2_target",
         location: "bulkEditModal",
         min: "0",
-        max: "8",
+        max: "9",
         default: "0",
         blankable: true,
         name: "Gear 2 Target",
@@ -2816,6 +2817,48 @@ const inputValidation = {
     },
     "T8_Necklace": {
         "id": "input-T8_Necklace",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T9_Hat": {
+        "id": "input-T9_Hat",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T9_Gloves": {
+        "id": "input-T9_Gloves",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T9_Shoes": {
+        "id": "input-T9_Shoes",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T9_Bag": {
+        "id": "input-T9_Bag",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T9_Badge": {
+        "id": "input-T9_Badge",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T9_Hairpin": {
+        "id": "input-T9_Hairpin",
         "location": "gearModal",
         "min": "0",
         "max": "9999",

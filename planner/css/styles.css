@@ -796,6 +796,7 @@ div.resource-box.editable.focused p {
 .char-miscresource-wrapper {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 div.char-misc-box .char-misc-text {
@@ -831,6 +832,7 @@ div.char-resource-wrapper .resource-display-text {
     padding-right: 10px;
     margin-right: 20px;
     box-shadow: 3px 3px #bbbbbb;
+    margin-bottom: 20px;
 }
 
 .char-misc-box img {
@@ -1851,7 +1853,10 @@ input.filter-option {
         font-size: 0.75em;
     }
 
-    .gear-count-text,
+    .gear-count-text {
+        font-size: 0.9em;
+    }
+
     .ue-count-text {
         font-size: 1.2em;
     }

@@ -5,6 +5,7 @@ var modalCharID = 0;
 var modalStars = { "star": 0, "star_target": 0, "ue": 0, "ue_target": 0 };
 const ueStarCap = 3;
 const globalMaxWorld = 23;
+const cnMaxWorld = 17;
 
 var requiredMatDict = {};
 var neededMatDict = {};
@@ -44,7 +45,7 @@ let multiSelectVisible = false;
 var sweepMax = 0;
 let sweepMin = 0;
 
-let lvlCalcsCap = 85;
+let lvlCalcsCap = 90;
 
 var saveTime = 0;
 var toastCooldownTime = 0;
@@ -83,7 +84,7 @@ const isIOS = /iPad|iPhone|iPod/.test(platform)
 
 function loadResources() {
 
-    $.getJSON('json/misc_data.json?17').done(function (json) {
+    $.getJSON('json/misc_data.json?18').done(function (json) {
         misc_data = json;
     });
 
@@ -265,13 +266,17 @@ function init() {
             serverToggleBtn.innerText = "JP";
             serverToggleBtn2.innerText = "JP";
         }
+        else if (data.server == "CN") {
+            serverToggleBtn.innerText = "CN";
+            serverToggleBtn2.innerText = "CN";
+        }
 
         if (!data.language) {
             data.language = "EN";
         }
 
         if (!data.level_cap) {
-            data.level_cap = 85;
+            data.level_cap = 90;
         }
 
         lvlCalcsCap = data.level_cap;
@@ -368,8 +373,8 @@ function init() {
         tableNavigation, document.getElementById("table-parent-3"), true, "resource", "icons/Artifact/", [], "artifact-");
 
     let gearNavigation = [];
-    createTable("gear-table", ["T8", "T7", "T6", "T5", "T4", "T3", "T2"], 0, ["Hat", "Gloves", "Shoes", "Bag", "Badge", "Hairpin", "Charm", "Watch", "Necklace"],
-        0, gearNavigation, document.getElementById('table-parent-4'), false, "gear", "icons/Gear/", [], "gear-");
+    createTable("gear-table", ["T9", "T8", "T7", "T6", "T5", "T4", "T3", "T2"], 0, ["Hat", "Gloves", "Shoes", "Bag", "Badge", "Hairpin", "Charm", "Watch", "Necklace"],
+        0, gearNavigation, document.getElementById('table-parent-4'), false, "gear", "icons/Gear/", ["T9_Watch", "T9_Necklace", "T9_Charm"], "gear-");
 
     let navObj = {};
     for (let x in tableNavigation) {
@@ -396,14 +401,14 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.4.3".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.4.4".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         Swal.fire({
-            title: GetLanguageString("text-updatedversionprefix") + "1.4.3",
+            title: GetLanguageString("text-updatedversionprefix") + "1.4.4",
             color: alertColour,
             html: GetLanguageString("text-updatemessage")
         })
 
-        data.site_version = "1.4.3";
+        data.site_version = "1.4.4";
         saveToLocalStorage(false);
     }
 
@@ -1072,11 +1077,11 @@ function CharInputsMax() {
         cancelButtonText: GetLanguageString("label-cancel")
     }).then((result) => {
         if (result.isConfirmed) {
-            let values = [85, 85, 5, 5, 10, 10, 10, 10, 10, 10, 8, 8, 8, 8, 8, 8];
+            let values = [87, 87, 5, 5, 10, 10, 10, 10, 10, 10, 8, 8, 8, 8, 8, 8];
             SetCharInputValues(values);
         }
         else if (result.isDenied) {
-            let values = [87, 87, 5, 5, 10, 10, 10, 10, 10, 10, 8, 8, 8, 8, 8, 8];
+            let values = [90, 90, 5, 5, 10, 10, 10, 10, 10, 10, 9, 9, 9, 9, 8, 8];
             SetCharInputValues(values);
         }
     })
@@ -1096,11 +1101,11 @@ function CharInputsGoalMax() {
         cancelButtonText: GetLanguageString("label-cancel")
     }).then((result) => {
         if (result.isConfirmed) {
-            let values = [85, 5, 10, 10, 10, 8, 8, 8];
+            let values = [87, 5, 10, 10, 10, 8, 8, 8];
             SetCharInputGoalValues(values);
         }
         else if (result.isDenied) {
-            let values = [87, 5, 10, 10, 10, 8, 8, 8];
+            let values = [90, 5, 10, 10, 10, 9, 9, 8];
             SetCharInputGoalValues(values);
         }
     })
@@ -1348,6 +1353,15 @@ function openModal(e) {
             }
             else if (data.server == "JP") {
                 hardModeNodes = hardModes.length;
+            }
+            else if (data.server == "CN") {
+                
+                for (let i = 0; i < hardModes.length; i++) {
+
+                    if (parseInt(hardModes[i].substring(0, hardModes[i].indexOf('-'))) <= cnMaxWorld) {
+                        hardModeNodes++;
+                    }
+                }
             }
 
             sweepMax = hardModeNodes * 3; sweepMin = hardModeNodes * 3;
@@ -3476,6 +3490,11 @@ function serverToggle(e) {
         serverToggleBtn2.innerText = "JP";
     }
     else if (data.server == "JP") {
+        data.server = "CN"
+        serverToggleBtn.innerText = "CN";
+        serverToggleBtn2.innerText = "CN";
+    }
+    else if (data.server == "CN") {
         data.server = "Global"
         serverToggleBtn.innerText = "Gbl";
         serverToggleBtn2.innerText = "Gbl";
@@ -3501,6 +3520,14 @@ function serverToggle(e) {
     }
     else if (data.server == "JP") {
         hardModeNodes = hardModes.length;
+    }
+    else if (data.server == "CN") {
+        for (let i = 0; i < hardModes.length; i++) {
+
+            if (parseInt(hardModes[i].substring(0, hardModes[i].indexOf('-'))) <= cnMaxWorld) {
+                hardModeNodes++;
+            }
+        }
     }
 
     sweepMax = hardModeNodes * 3; sweepMin = hardModeNodes * 3;
@@ -5161,7 +5188,7 @@ function GenerateModelVariables(multiplier) {
 
     for (let i = 0; i < areas.length; i++) {
 
-        if (data.server == "Global" && parseInt(areas[i]) > globalMaxWorld) {
+        if ((data.server == "Global" && parseInt(areas[i]) > globalMaxWorld) || (data.server == "CN" && parseInt(areas[i]) > cnMaxWorld)) {
             break;
         }
 
@@ -5174,9 +5201,14 @@ function GenerateModelVariables(multiplier) {
 
                 let tier = rates[areas[i]][gr].Tier;
 
-                newVariable["T" + tier + "_" + drops[stage][0]] = rates[areas[i]][gr].Rates[0] * multiplier;
-                newVariable["T" + tier + "_" + drops[stage][1]] = rates[areas[i]][gr].Rates[1] * multiplier;
-                newVariable["T" + tier + "_" + drops[stage][2]] = rates[areas[i]][gr].Rates[2] * multiplier;
+                let rateArray = rates[areas[i]][gr].Rates;
+                if (data.server == "CN" && rates[areas[i]][gr].OldRates) {
+                    rateArray = rates[areas[i]][gr].OldRates;
+                }
+
+                newVariable["T" + tier + "_" + drops[stage][0]] = rateArray[0] * multiplier;
+                newVariable["T" + tier + "_" + drops[stage][1]] = rateArray[1] * multiplier;
+                newVariable["T" + tier + "_" + drops[stage][2]] = rateArray[2] * multiplier;
                 newVariable["AP"] = 10;
 
                 availableGear["T" + tier + "_" + drops[stage][0]] = true;
@@ -5570,7 +5602,7 @@ function calcGearCost(charObj, gear, gearTarget, slotNum, matDict) {
             if (charObj?.Equipment) {
                 let gearName = charObj.Equipment[slotNum - 1];
 
-                for (let i = 2; i <= 8; i++) {
+                for (let i = 2; i <= 9; i++) {
 
                     let currentBP = gearObj["T" + i] ?? 0;
                     let targetBP = targetGearObj["T" + i];
