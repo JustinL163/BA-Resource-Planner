@@ -13,9 +13,11 @@
     </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="guesser/styles.css?2">
+    <link rel="stylesheet" href="guesser/styles.css?3">
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="guesser/guesser.js?1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script src="guesser/guesser.js?2"></script>
     <title>Who's that Halo?</title>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://justin163.com/game/guesser">
@@ -29,7 +31,7 @@
     <meta name="theme-color" content="#42f55d">
 </head>
 
-<body class="background">
+<body id="body">
     <div id="background-image"></div>
     <div id="content-container">
         <div id="content-body">
@@ -40,7 +42,7 @@
                 <div id="remaining-guesses"></div>
             </div>
             <div id="timer"></div>
-            <div id="display-image">
+            <div id="display-image" class="menu">
                 <img id="guess-picture" src="guesser/BA_halo.webp">
             </div>
             <div id="mode-freeform" style="display: none;">
@@ -49,6 +51,12 @@
             </div>
             <div id="mode-multichoice" style="display: none;"></div>
             <div id="settings">
+                <div class="option-label">Content Type:</div>
+                <div id="content-type">
+                    <div id="content-Halos">Halos</div>
+                    <div id="content-Weapons">Weapons</div>
+                    <div id="content-Chocolates">Chocolates</div>
+                </div>
                 <div class="option-label">Input Type:</div>
                 <div id="input-type">
                     <div id="input-freeform">Freeform</div>
@@ -86,6 +94,7 @@
             <div id="return-button" style="display: none;">
                 <div>Return</div>
             </div>
+            <img src="../planner/icons/UI/rotate-left-solid.svg" id="restart-button" style="display: none;">
         </div>
     </div>
 </body>

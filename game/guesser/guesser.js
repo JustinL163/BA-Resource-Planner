@@ -1,5 +1,5 @@
 (() => {
-    let inputType, timeLimit, maxGuesses, colourMode;
+    let inputType, timeLimit, maxGuesses, colourMode, gameContent;
     let input;
     let multiChoice;
     let timer;
@@ -9,6 +9,8 @@
     let failBonus = false;
 
     let students_released = [];
+    let UE_weapons = [];
+    let chocolates = [];
     let validGuesses = [];
 
     let haloOrder = [];
@@ -25,7 +27,7 @@
     let correct = 0, wrong = 0;
 
     let data;
-    fetch('guesser/data.json?1').then((response) => response.json()).then((json) => {
+    fetch('guesser/data.json?2').then((response) => response.json()).then((json) => {
         data = json;
 
         ProcessData();
@@ -35,6 +37,7 @@
 
     function Init() {
 
+        ContentType("Halos");
         InputType("Freeform");
         TimeLimit(false);
         MaxGuess(1);
@@ -55,6 +58,18 @@
                 e.preventDefault();
             }
         })
+
+        $("#content-Halos").click(() => {
+            ContentType("Halos");
+        });
+
+        $("#content-Weapons").click(() => {
+            ContentType("Weapons");
+        });
+
+        $("#content-Chocolates").click(() => {
+            ContentType("Chocolates");
+        });
 
         $("#input-freeform").click(() => {
             InputType("Freeform")
@@ -105,6 +120,10 @@
             Submit();
         })
 
+        $("#restart-button").click(() => {
+            PromptReset();
+        })
+
         setInterval(() => {
             if (gameActive && timeLimit && !failedState) {
                 let curTime = Date.now();
@@ -128,9 +147,42 @@
 
         for (let i = 0; i < haloKeys.length; i++) {
             if (data.halos[haloKeys[i]].released) {
-                students_released.push(data.halos[haloKeys[i]]);
+                students_released.push($.extend({}, data.halos[haloKeys[i]]));
                 students_released[students_released.length - 1].id = haloKeys[i];
             }
+
+            if (data.halos[haloKeys[i]].weapons) {
+                for (let ii = 0; ii < data.halos[haloKeys[i]].weapons.length; ii++) {
+                    UE_weapons.push($.extend({}, data.halos[haloKeys[i]]));
+                    UE_weapons[UE_weapons.length - 1].weapon = data.halos[haloKeys[i]].weapons[ii];
+                }
+            }
+
+            if (data.halos[haloKeys[i]].chocolate) {
+                chocolates.push($.extend({}, data.halos[haloKeys[i]]));
+                chocolates[chocolates.length - 1].id = haloKeys[i];
+            }
+        }
+    }
+
+    function ContentType(content) {
+
+        gameContent = content;
+
+        document.getElementById("content-Halos").classList.remove("selected");
+        document.getElementById("content-Weapons").classList.remove("selected");
+        document.getElementById("content-Chocolates").classList.remove("selected");
+
+        document.getElementById("content-" + content).classList.add("selected");
+
+        if (gameContent == "Halos") {
+            document.getElementById("title").innerText = "Who's that Halo?";
+        }
+        else if (gameContent == "Weapons") {
+            document.getElementById("title").innerText = "Who's that Weapon?";
+        }
+        else if (gameContent == "Chocolates") {
+            document.getElementById("title").innerText = "Who's that Chocolate?";
         }
     }
 
@@ -224,6 +276,8 @@
         document.getElementById("settings").style.display = "none";
         document.getElementById("guesses-container").style.display = "";
         document.getElementById("timer").style.display = "";
+        document.getElementById("restart-button").style.display = "";
+        document.getElementById("display-image").classList.remove("menu");
 
         if (inputType == "Freeform") {
             document.getElementById("mode-freeform").style.display = "";
@@ -235,7 +289,18 @@
 
         haloOrder = [];
 
-        haloOrder = haloOrder.concat(students_released);
+        if (gameContent == "Halos") {
+            haloOrder = haloOrder.concat(students_released);
+        }
+        else if (gameContent == "Weapons") {
+            haloOrder = haloOrder.concat(UE_weapons);
+            document.getElementById("display-image").classList.add("weapon");
+        }
+        else if (gameContent == "Chocolates") {
+            haloOrder = haloOrder.concat(chocolates);
+        }
+
+        validGuesses = [];
 
         for (let i = 0; i < haloOrder.length; i++) {
             validGuesses.push(haloOrder[i].name.toLowerCase());
@@ -263,7 +328,15 @@
     function LoadNext() {
         let halo = haloOrder[currentImage];
 
-        document.getElementById("guess-picture").src = "halo/" + halo.id + ".webp";
+        if (gameContent == "Halos") {
+            document.getElementById("guess-picture").src = "halo/" + halo.id + ".webp";
+        }
+        else if (gameContent == "Weapons") {
+            document.getElementById("guess-picture").src = "../planner/icons/UE/weapon_icon_" + halo.weapon + ".webp";
+        }
+        else if (gameContent == "Chocolates") {
+            document.getElementById("guess-picture").src = "chocolate/" + halo.id + ".webp";
+        }
 
         if (colourMode == "Colour") {
             document.getElementById("guess-picture").style.filter = "";
@@ -347,7 +420,7 @@
             correct++;
 
             if (currentImage == haloOrder.length) {
-                Finish();
+                Finish(true);
             }
             else {
                 LoadNext();
@@ -385,7 +458,7 @@
             input.value = "";
             failedState = false;
             if (currentImage == haloOrder.length) {
-                Finish();
+                Finish(true);
             }
             else {
                 LoadNext();
@@ -393,7 +466,7 @@
         }, 2000);
     }
 
-    function Finish() {
+    function Finish(completed) {
         endTime = Date.now();
         gameActive = false;
 
@@ -401,9 +474,7 @@
         document.getElementById("mode-freeform").style.display = "none";
         document.getElementById("mode-multichoice").style.display = "none";
         document.getElementById("timer").style.display = "none";
-
-        document.getElementById("guess-picture").src = "guesser/BA_halo.webp";
-        document.getElementById("guess-picture").style.filter = "";
+        document.getElementById("restart-button").style.display = "none";
 
         document.getElementById("final-guesses").style.display = "";
         document.getElementById("total-time").style.display = "";
@@ -411,43 +482,47 @@
         document.getElementById("modifiers-short").style.display = "";
         document.getElementById("return-button").style.display = "";
 
-        let timeElapsed = (endTime - startTime) / 1000;
+        if (completed) {
+            let timeElapsed = (endTime - startTime) / 1000;
 
-        let minutesElapsed = Math.floor(timeElapsed / 60);
-        let secondsElapsed = timeElapsed - minutesElapsed * 60;
+            let minutesElapsed = Math.floor(timeElapsed / 60);
+            let secondsElapsed = timeElapsed - minutesElapsed * 60;
 
-        if (Math.trunc(secondsElapsed).toString().length == 1) {
-            secondsElapsed = "0" + secondsElapsed.toFixed(2);
+            if (Math.trunc(secondsElapsed).toString().length == 1) {
+                secondsElapsed = "0" + secondsElapsed.toFixed(2);
+            }
+            else {
+                secondsElapsed = secondsElapsed.toFixed(2);
+            }
+
+            document.getElementById("total-time").innerText = minutesElapsed + ":" + secondsElapsed;
+            document.getElementById("final-score").innerText = GetScore(timeElapsed);
+
+            document.getElementById("final-correct-guesses").innerText = correct;
+            document.getElementById("final-wrong-guesses").innerText = wrong;
+
+
+            let modifierShort = "";
+
+            // Build modifier short string
+            modifierShort += gameContent + " ";
+            modifierShort += inputType.substring(0, 1) + " ";
+
+            if (!timeLimit) {
+                modifierShort += "0s ";
+            }
+            else {
+                modifierShort += timeLimit + "s ";
+            }
+
+            if (inputType == "Freeform") {
+                modifierShort += maxGuesses + " ";
+            }
+
+            modifierShort += colourMode.substring(0, 1);
+
+            document.getElementById("modifiers-short").innerText = modifierShort;
         }
-        else {
-            secondsElapsed = secondsElapsed.toFixed(2);
-        }
-
-        document.getElementById("total-time").innerText = minutesElapsed + ":" + secondsElapsed;
-        document.getElementById("final-score").innerText = GetScore(timeElapsed);
-
-        document.getElementById("final-correct-guesses").innerText = correct;
-        document.getElementById("final-wrong-guesses").innerText = wrong;
-
-        let modifierShort = "";
-
-        // Build modifier short string
-        modifierShort += inputType.substring(0, 1) + " ";
-        
-        if (!timeLimit) {
-            modifierShort += "0s ";
-        }
-        else {
-            modifierShort += timeLimit + "s ";
-        }
-
-        if (inputType == "Freeform") {
-            modifierShort += maxGuesses + " ";
-        }
-
-        modifierShort += colourMode.substring(0, 1);
-
-        document.getElementById("modifiers-short").innerText = modifierShort;
 
     }
 
@@ -477,7 +552,7 @@
 
         let maxTimeRoot = Math.sqrt(haloOrder.length * 30);
         let minTimeRoot = Math.sqrt(haloOrder.length);
-        
+
         let timeScore = timeScores[difficulty] - timeScores[difficulty] * Math.min(Math.max((Math.sqrt(timeElapsed) - minTimeRoot) / (maxTimeRoot - minTimeRoot), 0), 1);
 
         let colourModifier = 1;
@@ -497,8 +572,33 @@
         document.getElementById("final-score").style.display = "none";
         document.getElementById("modifiers-short").style.display = "none";
         document.getElementById("return-button").style.display = "none";
+        document.getElementById("restart-button").style.display = "none";
+
+        document.getElementById("guess-picture").src = "guesser/BA_halo.webp";
+        document.getElementById("guess-picture").style.filter = "";
+        document.getElementById("display-image").classList.remove("weapon");
+        document.getElementById("display-image").classList.add("menu");
 
         document.getElementById("settings").style.display = "";
+    }
+
+    function PromptReset() {
+
+        Swal.fire({
+            title: "Return to menu?",
+            color: "#000000",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: "Quit",
+            cancelButtonText: "Cancel"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Finish(false);
+                Restart();
+            }
+        })
     }
 
     function UpdateDisplay() {

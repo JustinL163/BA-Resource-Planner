@@ -3,6 +3,10 @@ body {
     height: 100vh;
 }
 
+#body {
+    height: 100vh !important;
+}
+
 #content-container {
     background-color: #f7f7f7;
     height: 100%;
@@ -64,10 +68,32 @@ body {
     color: #cd0000;
 }
 
+#restart-button {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    max-width: 3em;
+    filter: invert(1);
+}
+
+#restart-button:hover {
+    filter: invert(1) brightness(0.7);
+}
+
 #display-image {
     width: 20em;
     height: 20em;
     margin-inline: auto;
+}
+
+#display-image.menu {
+    width: 15em;
+    height: 15em;
+}
+
+#display-image.weapon {
+    width: 100%;
+    max-width: 1000px;
 }
 
 #display-image img {
@@ -129,7 +155,8 @@ body {
 #input-type,
 #time-limit,
 #guess-limit,
-#colour-mode {
+#colour-mode,
+#content-type {
     display: flex;
     width: 30em;
     margin-inline: auto;
@@ -145,7 +172,8 @@ body {
 #input-type div,
 #time-limit div,
 #guess-limit div,
-#colour-mode div {
+#colour-mode div,
+#content-type div {
     font-size: 1.5em;
     padding: 0.5em;
     margin-inline: 0.5em;
@@ -157,14 +185,16 @@ body {
 #input-type div:hover,
 #time-limit div:hover,
 #guess-limit div:hover,
-#colour-mode div:hover {
+#colour-mode div:hover,
+#content-type div:hover {
     background-color: rgba(0, 0, 0, 0.2);
 }
 
 #input-type div.selected,
 #time-limit div.selected,
 #guess-limit div.selected,
-#colour-mode div.selected {
+#colour-mode div.selected,
+#content-type div.selected {
     background-color: rgba(0, 0, 0, 0.3);
     outline: solid 0.1em white;
 }
