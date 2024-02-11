@@ -13,11 +13,11 @@
     </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="guesser/styles.css?3">
+    <link rel="stylesheet" href="guesser/styles.css?4">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
-    <script src="guesser/guesser.js?2"></script>
+    <script src="guesser/guesser.js?3"></script>
     <title>Who's that Halo?</title>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://justin163.com/game/guesser">
@@ -56,6 +56,11 @@
                     <div id="content-Halos">Halos</div>
                     <div id="content-Weapons">Weapons</div>
                     <div id="content-Chocolates">Chocolates</div>
+                    <div id="content-Silhouettes">Silhuoettes</div>
+                    <div id="content-Surnames">Surnames</div>
+                    <div id="content-Ages">Ages</div>
+                    <div id="content-Birthdays">Birthdays</div>
+                    <div id="content-Heights">Heights</div>
                 </div>
                 <div class="option-label">Input Type:</div>
                 <div id="input-type">
@@ -75,10 +80,26 @@
                     <div id="guesses-2">2</div>
                     <div id="guesses-3">3</div>
                 </div>
-                <div class="option-label">Colour:</div>
+                <div id="colour-setting-label" class="option-label">Colour:</div>
                 <div id="colour-mode">
                     <div id="mode-colour">Colour</div>
                     <div id="mode-grayscale">Grayscale</div>
+                </div>
+                <div id="lenience-setting-label" class="option-label" style="display: none;">Lenience:</div>
+                <div id="lenience-setting" style="display: none;">
+                    <div id="lenience-0">Exact</div>
+                    <div id="lenience-1">1cm</div>
+                    <div id="lenience-3">3cm</div>
+                </div>
+                <div id="datemode-setting-label" class="option-label" style="display: none;">Date Mode:</div>
+                <div id="datemode" style="display: none;">
+                    <div id="datemode-month">Month</div>
+                    <div id="datemode-date">Date</div>
+                </div>
+                <div id="conscious-setting-label" class="option-label" style="display: none;">Conscious:</div>
+                <div id="conscious-setting" style="display: none;">
+                    <div id="state-conscious">Awake</div>
+                    <div id="state-sleeping">Sleeping</div>
                 </div>
                 <div id="start-banner">
                     <div>TOUCH TO START</div>

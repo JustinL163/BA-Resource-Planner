@@ -96,8 +96,19 @@ body {
     max-width: 1000px;
 }
 
+#display-image.splashart {
+    text-align: center;
+    height: 30em;
+    width: unset;
+}
+
 #display-image img {
     width: 100%;
+}
+
+#display-image.splashart img {
+    height: 100%;
+    width: unset;
 }
 
 #mode-freeform {
@@ -124,6 +135,10 @@ body {
 
 #mode-freeform input.failed {
     color: red;
+}
+
+#mode-freeform input.halfcorrect {
+    color: orange;
 }
 
 #mode-multichoice {
@@ -156,11 +171,22 @@ body {
 #time-limit,
 #guess-limit,
 #colour-mode,
-#content-type {
+#content-type,
+#lenience-setting,
+#datemode,
+#conscious-setting {
     display: flex;
     width: 30em;
     margin-inline: auto;
     justify-content: center;
+}
+
+#content-type {
+    flex-wrap: wrap;
+}
+
+#content-type div {
+    margin-bottom: 0.5em;
 }
 
 .option-label {
@@ -173,8 +199,11 @@ body {
 #time-limit div,
 #guess-limit div,
 #colour-mode div,
-#content-type div {
-    font-size: 1.5em;
+#content-type div,
+#lenience-setting div,
+#datemode div,
+#conscious-setting div {
+    font-size: 1.2em;
     padding: 0.5em;
     margin-inline: 0.5em;
     background-color: rgba(0, 0, 0, 0.1);
@@ -186,7 +215,10 @@ body {
 #time-limit div:hover,
 #guess-limit div:hover,
 #colour-mode div:hover,
-#content-type div:hover {
+#content-type div:hover,
+#lenience-setting div:hover,
+#datemode div:hover,
+#conscious-setting div:hover {
     background-color: rgba(0, 0, 0, 0.2);
 }
 
@@ -194,7 +226,10 @@ body {
 #time-limit div.selected,
 #guess-limit div.selected,
 #colour-mode div.selected,
-#content-type div.selected {
+#content-type div.selected,
+#lenience-setting div.selected,
+#datemode div.selected,
+#conscious-setting div.selected {
     background-color: rgba(0, 0, 0, 0.3);
     outline: solid 0.1em white;
 }
@@ -263,5 +298,9 @@ body {
 
     #title {
         margin-top: 2em;
+    }
+
+    #restart-button {
+        bottom: 5em;
     }
 }
