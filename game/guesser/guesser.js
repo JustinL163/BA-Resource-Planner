@@ -200,9 +200,14 @@
                 }
                 else if (curTime > guessEndTime) {
                     timer.innerText = 0;
-                    wrong++;
-                    Failed();
-                    UpdateDisplay();
+                    if (inputType == "Freeform") {
+                        if (Submit() === false) {
+                            Failed();
+                        }
+                    }
+                    else {
+                        Failed();
+                    }
                 }
             }
         }, 30);
@@ -541,7 +546,7 @@
         }
 
         shuffle(haloOrder);
-        
+
         currentImage = 0;
 
         LoadNext();
@@ -686,7 +691,7 @@
         let answer;
 
         if (failedState) {
-            return;
+            return false;
         }
 
         if (choice) {
@@ -702,7 +707,7 @@
                 if (answer && gameContent == "Birthdays" && dateMode == "Date" && answer.indexOf(" ") > 0 && validGuesses.includes(answer.substring(0, answer.indexOf(" ")))
                     && oneToThirtyOne.includes(answer.substring(answer.indexOf(" ") + 1))) { }
                 else {
-                    return;
+                    return false;
                 }
             }
 
@@ -718,7 +723,6 @@
         }
         else if (gameContent == "Surnames" && haloOrder[currentImage].surname.toLowerCase() == answer) {
             Correct();
-
         }
         else if (gameContent == "Ages" && haloOrder[currentImage].age == answer) {
             Correct();
@@ -744,6 +748,7 @@
         }
         else if (currentGuesses >= maxGuesses) {
             Failed(answer);
+            return "failed";
         }
 
         UpdateDisplay();
