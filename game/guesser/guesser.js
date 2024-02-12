@@ -488,7 +488,6 @@
 
         if (retry) {
             haloOrder = haloOrder.concat(haloOrder, failedGuesses);
-            failedGuesses = [];
         }
         else {
 
@@ -508,6 +507,8 @@
                 haloOrder = haloOrder.concat(students_released);
             }
         }
+
+        failedGuesses = [];
 
         validGuesses = [];
 
