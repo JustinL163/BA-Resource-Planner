@@ -235,7 +235,8 @@ body {
 }
 
 #start-banner,
-#return-button {
+#return-button,
+#retry-button {
     width: 30em;
     margin-inline: auto;
     text-align: center;
@@ -244,14 +245,16 @@ body {
 }
 
 #start-banner div,
-#return-button div {
+#return-button div,
+#retry-button div {
     font-size: 2.2em;
     color: #627faa;
     font-family: monospace;
 }
 
 #start-banner:hover,
-#return-button:hover {
+#return-button:hover,
+#retry-button:hover {
     filter: brightness(0.9);
 }
 

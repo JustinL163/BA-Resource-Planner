@@ -4,6 +4,7 @@
     let multiChoice;
     let timer;
     let gameActive = false;
+    let retryingGame = false;
 
     let failedState = false;
     let failBonus = false;
@@ -17,6 +18,8 @@
     let haloOrder = [];
     let currentImage = 0;
     let currentGuesses = 0;
+
+    let failedGuesses = [];
 
     let baseScores = [2108000, 4216000, 10160000, 21016000, 31708000];
     let timeScores = [1728000, 3456000, 5184000, 6912000, 8640000];
@@ -165,12 +168,16 @@
         });
 
         $("#start-banner").click(() => {
-            Start();
+            Start(false);
         });
 
         $("#return-button").click(() => {
             Restart();
         });
+
+        $("#retry-button").click(() => {
+            Retry();
+        })
 
         $("#submit-button").click(() => {
             Submit();
@@ -433,7 +440,9 @@
         }
     }
 
-    function Start() {
+    function Start(retry) {
+
+        retryingGame = retry;
 
         if (!data) {
             return;
@@ -456,25 +465,39 @@
             maxGuesses = 1;
         }
 
-        haloOrder = [];
-
-        if (gameContent == "Halos") {
-            haloOrder = haloOrder.concat(students_released);
-        }
-        else if (gameContent == "Weapons") {
-            haloOrder = haloOrder.concat(UE_weapons);
+        if (gameContent == "Weapons") {
             document.getElementById("display-image").classList.add("weapon");
         }
-        else if (gameContent == "Chocolates") {
-            haloOrder = haloOrder.concat(chocolates);
-        }
         else if (gameContent == "Silhouettes") {
-            haloOrder = haloOrder.concat(alt_students);
             document.getElementById("display-image").classList.add("splashart");
         }
         else if (gameContent == "Surnames" || gameContent == "Ages" || gameContent == "Birthdays" || gameContent == "Heights") {
-            haloOrder = haloOrder.concat(students_released);
             document.getElementById("display-image").classList.add("splashart");
+        }
+
+        haloOrder = [];
+
+        if (retry) {
+            haloOrder = haloOrder.concat(haloOrder, failedGuesses);
+            failedGuesses = [];
+        }
+        else {
+
+            if (gameContent == "Halos") {
+                haloOrder = haloOrder.concat(students_released);
+            }
+            else if (gameContent == "Weapons") {
+                haloOrder = haloOrder.concat(UE_weapons);
+            }
+            else if (gameContent == "Chocolates") {
+                haloOrder = haloOrder.concat(chocolates);
+            }
+            else if (gameContent == "Silhouettes") {
+                haloOrder = haloOrder.concat(alt_students);
+            }
+            else if (gameContent == "Surnames" || gameContent == "Ages" || gameContent == "Birthdays" || gameContent == "Heights") {
+                haloOrder = haloOrder.concat(students_released);
+            }
         }
 
         validGuesses = [];
@@ -518,6 +541,7 @@
         }
 
         shuffle(haloOrder);
+        
         currentImage = 0;
 
         LoadNext();
@@ -588,7 +612,7 @@
 
         if (inputType == "MultiChoice") {
 
-            while (guessChoices.length < 4) {
+            while (guessChoices.length < Math.min(4, haloOrder.length)) {
                 let random = Math.floor(Math.random() * haloOrder.length);
                 let choiceName;
                 if (["Halos", "Weapons", "Chocolates", "Silhouettes"].includes(gameContent)) {
@@ -623,7 +647,7 @@
                 multiChoice.children[0].remove();
             }
 
-            for (let i = 0; i < 4; i++) {
+            for (let i = 0; i < guessChoices.length; i++) {
                 let newChoice = document.createElement("div");
                 newChoice.innerText = guessChoices[i];
                 if (typeof (guessChoices[i]) == "number") {
@@ -730,7 +754,7 @@
         correct++;
 
         if (currentImage == haloOrder.length) {
-            Finish(true);
+            Finish(!retryingGame);
         }
         else {
             LoadNext();
@@ -765,14 +789,16 @@
         UpdateDisplay();
 
         setTimeout(() => {
-            input.classList.remove("halfcorrect");
-            input.value = "";
-            failedState = false;
-            if (currentImage == haloOrder.length) {
-                Finish(true);
-            }
-            else {
-                LoadNext();
+            if (gameActive) {
+                input.classList.remove("halfcorrect");
+                input.value = "";
+                failedState = false;
+                if (currentImage == haloOrder.length) {
+                    Finish(!retryingGame);
+                }
+                else {
+                    LoadNext();
+                }
             }
         }, 2000);
     }
@@ -783,6 +809,8 @@
 
         failedState = true;
         failBonus = true;
+
+        failedGuesses.push(haloOrder[currentImage]);
 
         let correctAnswer;
         if (["Halos", "Weapons", "Chocolates", "Silhouettes"].includes(gameContent)) {
@@ -831,14 +859,16 @@
         UpdateDisplay();
 
         setTimeout(() => {
-            input.classList.remove("failed");
-            input.value = "";
-            failedState = false;
-            if (currentImage == haloOrder.length) {
-                Finish(true);
-            }
-            else {
-                LoadNext();
+            if (gameActive) {
+                input.classList.remove("failed");
+                input.value = "";
+                failedState = false;
+                if (currentImage == haloOrder.length) {
+                    Finish(!retryingGame);
+                }
+                else {
+                    LoadNext();
+                }
             }
         }, 2000);
     }
@@ -855,28 +885,34 @@
 
         document.getElementById("final-guesses").style.display = "";
         document.getElementById("total-time").style.display = "";
-        document.getElementById("final-score").style.display = "";
-        document.getElementById("modifiers-short").style.display = "";
         document.getElementById("return-button").style.display = "";
+        if (failedGuesses.length > 0) {
+            document.getElementById("retry-button").style.display = "";
+        }
+
+        document.getElementById("final-correct-guesses").innerText = correct;
+        document.getElementById("final-wrong-guesses").innerText = wrong;
+        document.getElementById("modifiers-short").innerText = "Retry";
+
+        let timeElapsed = (endTime - startTime) / 1000;
+
+        let minutesElapsed = Math.floor(timeElapsed / 60);
+        let secondsElapsed = timeElapsed - minutesElapsed * 60;
+
+        if (Math.trunc(secondsElapsed).toString().length == 1) {
+            secondsElapsed = "0" + secondsElapsed.toFixed(2);
+        }
+        else {
+            secondsElapsed = secondsElapsed.toFixed(2);
+        }
+
+        document.getElementById("total-time").innerText = minutesElapsed + ":" + secondsElapsed;
 
         if (completed) {
-            let timeElapsed = (endTime - startTime) / 1000;
+            document.getElementById("final-score").style.display = "";
+            document.getElementById("modifiers-short").style.display = "";
 
-            let minutesElapsed = Math.floor(timeElapsed / 60);
-            let secondsElapsed = timeElapsed - minutesElapsed * 60;
-
-            if (Math.trunc(secondsElapsed).toString().length == 1) {
-                secondsElapsed = "0" + secondsElapsed.toFixed(2);
-            }
-            else {
-                secondsElapsed = secondsElapsed.toFixed(2);
-            }
-
-            document.getElementById("total-time").innerText = minutesElapsed + ":" + secondsElapsed;
             document.getElementById("final-score").innerText = GetScore(timeElapsed);
-
-            document.getElementById("final-correct-guesses").innerText = correct;
-            document.getElementById("final-wrong-guesses").innerText = wrong;
 
 
             let modifierShort = "";
@@ -955,11 +991,17 @@
 
     function Restart() {
 
+        input.classList.remove("failed");
+        input.classList.remove("halfcorrect");
+        input.value = "";
+        failedState = false;
+
         document.getElementById("final-guesses").style.display = "none";
         document.getElementById("total-time").style.display = "none";
         document.getElementById("final-score").style.display = "none";
         document.getElementById("modifiers-short").style.display = "none";
         document.getElementById("return-button").style.display = "none";
+        document.getElementById("retry-button").style.display = "none";
         document.getElementById("restart-button").style.display = "none";
 
         document.getElementById("guess-picture").src = "guesser/BA_halo.webp";
@@ -969,6 +1011,18 @@
         document.getElementById("display-image").classList.add("menu");
 
         document.getElementById("settings").style.display = "";
+    }
+
+    function Retry() {
+        document.getElementById("final-guesses").style.display = "none";
+        document.getElementById("total-time").style.display = "none";
+        document.getElementById("final-score").style.display = "none";
+        document.getElementById("modifiers-short").style.display = "none";
+        document.getElementById("return-button").style.display = "none";
+        document.getElementById("retry-button").style.display = "none";
+        document.getElementById("restart-button").style.display = "none";
+
+        Start(true);
     }
 
     function PromptReset() {
