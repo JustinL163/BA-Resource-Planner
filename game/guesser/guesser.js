@@ -43,6 +43,10 @@
 
     function Init() {
 
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw-game.js');
+        }
+
         ContentType("Halos");
         InputType("Freeform");
         TimeLimit(false);

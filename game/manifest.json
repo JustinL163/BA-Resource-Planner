@@ -1,0 +1,37 @@
+{
+    "short_name": "Guessing",
+    "name": "Guessing Game",
+    "id": "/game/",
+    "icons": [
+        {
+            "src": "../planner/icons/PWA/512-maskable.png",
+            "type": "image/png",
+            "sizes": "512x512",
+            "purpose": "maskable"
+        },
+        {
+            "src": "../planner/icons/PWA/192-maskable.png",
+            "type": "image/png",
+            "sizes": "192x192",
+            "purpose": "maskable"
+        },
+        {
+            "src": "../planner/icons/PWA/512.png",
+            "type": "image/png",
+            "sizes": "512x512",
+            "purpose": "any"
+        },
+        {
+            "src": "../planner/icons/PWA/192.png",
+            "type": "image/png",
+            "sizes": "192x192",
+            "purpose": "any"
+        }
+    ],
+    "start_url": ".",
+    "background_color": "#242424",
+    "display": "standalone",
+    "scope": "/game/",
+    "theme_color": "#7c5b7d",
+    "description": "A guessing game for Blue Archive"
+}
