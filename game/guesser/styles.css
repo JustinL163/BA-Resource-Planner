@@ -308,7 +308,8 @@ body {
 
 #start-banner,
 #return-button,
-#retry-button {
+#retry-button,
+#preload-banner {
     width: 30em;
     margin-inline: auto;
     text-align: center;
@@ -318,7 +319,8 @@ body {
 
 #start-banner div,
 #return-button div,
-#retry-button div {
+#retry-button div,
+#preload-banner div {
     font-size: 2.2em;
     color: #627faa;
     font-family: monospace;
@@ -326,7 +328,8 @@ body {
 
 #start-banner:hover,
 #return-button:hover,
-#retry-button:hover {
+#retry-button:hover,
+#preload-banner:hover {
     filter: brightness(0.9);
 }
 
@@ -369,6 +372,26 @@ body {
 .record-hash {
     text-align: center;
     color: rgb(255 255 255 / 15%);
+}
+
+#preload-section {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#preload-section img {
+    height: 5em;
+}
+
+.last-piece {
+    width: 5em;
+    height: 5em;
+    background: 
+    repeating-conic-gradient(black 0% 25%, white 0% 50%) 
+      50% / 20px 20px
 }
 
 @media (max-width: 1200px) {
