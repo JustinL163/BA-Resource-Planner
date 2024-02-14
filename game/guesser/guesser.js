@@ -470,59 +470,72 @@
 
         EmptyPreload();
 
-        haloOrder = [];
+        Swal.fire({
+            title: "Load images to cache?",
+            color: "#000000",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: "Load",
+            cancelButtonText: "Cancel"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                haloOrder = [];
 
-        if (gameContent == "Halos") {
-            haloOrder = haloOrder.concat(students_released);
-        }
-        else if (gameContent == "Weapons") {
-            haloOrder = haloOrder.concat(UE_weapons);
-        }
-        else if (gameContent == "Chocolates") {
-            haloOrder = haloOrder.concat(chocolates);
-        }
-        else if (gameContent == "Silhouettes") {
-            haloOrder = haloOrder.concat(alt_students);
-        }
-        else if (gameContent == "Surnames" || gameContent == "Ages" || gameContent == "Birthdays" || gameContent == "Heights") {
-            haloOrder = haloOrder.concat(students_released);
-        }
-
-        let preloadContainer = document.getElementById("preload-section");
-
-        for (let i = 0; i < haloOrder.length; i++) {
-            let preloadImage = document.createElement("img");
-
-            let halo = haloOrder[i];
-
-            if (gameContent == "Halos") {
-                preloadImage.src = "halo/" + halo.id + ".webp";
-            }
-            else if (gameContent == "Weapons") {
-                preloadImage.src = "../planner/icons/UE/weapon_icon_" + halo.weapon + ".webp";
-            }
-            else if (gameContent == "Chocolates") {
-                preloadImage.src = "chocolate/" + halo.id + ".webp";
-            }
-            else if (gameContent == "Silhouettes") {
-                if (consciousState == "Sleeping") {
-                    preloadImage.src = "sleeping/" + halo.alt + ".webp";
+                if (gameContent == "Halos") {
+                    haloOrder = haloOrder.concat(students_released);
                 }
-                else if (consciousState == "Awake") {
-                    preloadImage.src = "../planner/icons/splashart/" + halo.alt + ".webp";
+                else if (gameContent == "Weapons") {
+                    haloOrder = haloOrder.concat(UE_weapons);
                 }
+                else if (gameContent == "Chocolates") {
+                    haloOrder = haloOrder.concat(chocolates);
+                }
+                else if (gameContent == "Silhouettes") {
+                    haloOrder = haloOrder.concat(alt_students);
+                }
+                else if (gameContent == "Surnames" || gameContent == "Ages" || gameContent == "Birthdays" || gameContent == "Heights") {
+                    haloOrder = haloOrder.concat(students_released);
+                }
+
+                let preloadContainer = document.getElementById("preload-section");
+
+                for (let i = 0; i < haloOrder.length; i++) {
+                    let preloadImage = document.createElement("img");
+
+                    let halo = haloOrder[i];
+
+                    if (gameContent == "Halos") {
+                        preloadImage.src = "halo/" + halo.id + ".webp";
+                    }
+                    else if (gameContent == "Weapons") {
+                        preloadImage.src = "../planner/icons/UE/weapon_icon_" + halo.weapon + ".webp";
+                    }
+                    else if (gameContent == "Chocolates") {
+                        preloadImage.src = "chocolate/" + halo.id + ".webp";
+                    }
+                    else if (gameContent == "Silhouettes") {
+                        if (consciousState == "Sleeping") {
+                            preloadImage.src = "sleeping/" + halo.alt + ".webp";
+                        }
+                        else if (consciousState == "Awake") {
+                            preloadImage.src = "../planner/icons/splashart/" + halo.alt + ".webp";
+                        }
+                    }
+                    else if (gameContent == "Surnames" || gameContent == "Ages" || gameContent == "Birthdays" || gameContent == "Heights") {
+                        preloadImage.src = "../planner/icons/splashart/" + halo.alts[0] + ".webp";
+                    }
+
+                    preloadContainer.appendChild(preloadImage);
+                }
+
+                let lastPiece = document.createElement("div");
+                lastPiece.className = "last-piece";
+
+                preloadContainer.appendChild(lastPiece);
             }
-            else if (gameContent == "Surnames" || gameContent == "Ages" || gameContent == "Birthdays" || gameContent == "Heights") {
-                preloadImage.src = "../planner/icons/splashart/" + halo.alts[0] + ".webp";
-            }
-
-            preloadContainer.appendChild(preloadImage);
-        }
-
-        let lastPiece = document.createElement("div");
-        lastPiece.className = "last-piece";
-
-        preloadContainer.appendChild(lastPiece);
+        })
     }
 
     function Start(retry) {
