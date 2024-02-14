@@ -6,6 +6,8 @@
     let gameActive = false;
     let retryingGame = false;
 
+    let records = {};
+
     let failedState = false;
     let failBonus = false;
 
@@ -215,6 +217,9 @@
                 }
             }
         }, 30);
+
+        records = JSON.parse(localStorage.getItem("records")) ?? {};
+        UpdateScoreCards();
     }
 
     function ProcessData() {
@@ -465,6 +470,8 @@
         document.getElementById("timer").style.display = "";
         document.getElementById("restart-button").style.display = "";
         document.getElementById("display-image").classList.remove("menu");
+
+        document.getElementById("content-3").style.visibility = "hidden";
 
         if (inputType == "Freeform") {
             document.getElementById("mode-freeform").style.display = "";
@@ -916,14 +923,16 @@
             secondsElapsed = secondsElapsed.toFixed(2);
         }
 
-        document.getElementById("total-time").innerText = minutesElapsed + ":" + secondsElapsed;
+        let elapsedTimeStamp = minutesElapsed + ":" + secondsElapsed;
+        document.getElementById("total-time").innerText = elapsedTimeStamp;
 
         if (completed) {
             document.getElementById("final-score").style.display = "";
+            document.getElementById("string-code").style.display = "";
             document.getElementById("modifiers-short").style.display = "";
 
-            document.getElementById("final-score").innerText = GetScore(timeElapsed);
-
+            let score = GetScore(timeElapsed);
+            document.getElementById("final-score").innerText = commafy(score);
 
             let modifierShort = "";
 
@@ -956,9 +965,37 @@
             }
 
             document.getElementById("modifiers-short").innerText = modifierShort;
+
+            let stringCode = cyrb53(score + elapsedTimeStamp + correct + wrong + modifierShort);
+
+            document.getElementById("string-code").innerText = stringCode;
+
+            if (!records[gameContent] || score > parseInt(records[gameContent].score)) {
+                records[gameContent] = {
+                    "score": score, "time": elapsedTimeStamp, "correct": correct, "wrong": wrong, "title": modifierShort,
+                    "string": stringCode
+                };
+                localStorage.setItem("records", JSON.stringify(records));
+                UpdateScoreCards();
+            }
         }
 
     }
+
+    const cyrb53 = (str, seed = 0) => {
+        let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+        for (let i = 0, ch; i < str.length; i++) {
+            ch = str.charCodeAt(i);
+            h1 = Math.imul(h1 ^ ch, 2654435761);
+            h2 = Math.imul(h2 ^ ch, 1597334677);
+        }
+        h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507);
+        h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+        h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507);
+        h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+
+        return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+    };
 
     function GetScore(timeElapsed) {
 
@@ -990,13 +1027,84 @@
         let timeScore = timeScores[difficulty] - timeScores[difficulty] * Math.min(Math.max((Math.sqrt(timeElapsed) - minTimeRoot) / (maxTimeRoot - minTimeRoot), 0), 1);
 
         let colourModifier = 1;
-        if (colourMode == "Grayscale") {
+        if (["Halos", "Weapons", "Chocolates"].includes(gameContent) && colourMode == "Grayscale") {
             colourModifier = 1.05;
         }
 
-        let score = commafy(Math.ceil((baseScore + timeScore) * colourModifier));
+        let consciousModifier = 1;
+        if (gameContent == "Silhouettes" && consciousState == "Sleeping") {
+            consciousModifier = 1.05;
+        }
+
+        let dateModifier = 1;
+        if (gameContent == "Birthdays" && dateMode == "Date") {
+            dateModifier = 1.2;
+        }
+
+        let heightModifier = 1;
+        if (gameContent == "Heights" && lenience == 1) {
+            heightModifier = 1.05;
+        }
+        else if (gameContent == "Heights" && lenience == 0) {
+            heightModifier = 1.1;
+        }
+
+        let score = Math.ceil((baseScore + timeScore) * colourModifier * consciousModifier * dateModifier * heightModifier);
 
         return score;
+    }
+
+    function UpdateScoreCards() {
+
+        let content3 = document.getElementById("content-3");
+
+        while (content3.children.length > 0) {
+            content3.children[0].remove();
+        }
+
+        let categories = ["Halos", "Weapons", "Chocolates", "Silhouettes", "Surnames", "Ages", "Birthdays", "Heights"];
+
+        let nulled = false;
+        for (let i = 0; i < categories.length; i++) {
+            let r = records[categories[i]];
+            if (r) {
+                let hash = cyrb53(r.score + r.time + r.correct + r.wrong + r.title);
+                if (r.string == hash) {
+                    CreateScoreCard(r.title, commafy(r.score), r.time, r.correct, r.wrong, r.string);
+                }
+                else {
+                    records[categories[i]] = "";
+                    nulled = true;
+                }
+            }
+        }
+
+        if (nulled) {
+            localStorage.setItem("records", JSON.stringify(records));
+        }
+    }
+
+    function CreateScoreCard(title, score, time, recordCorrect, recordWrong, hash) {
+
+        let card = document.createElement("div");
+        card.className = "record-box";
+
+        card.innerHTML =
+            `
+        <div class="record-category">${title}</div>
+        <div class="record-info">
+            <div class="record-score">${score}</div>
+            <div class="record-time">${time}</div>
+            <div class="record-guesses">
+                <div class="record-correct">${recordCorrect}</div>
+                <div class="record-wrong">${recordWrong}</div>
+            </div>
+        </div>
+        <div class="record-hash">${hash}</div>
+        `
+
+        document.getElementById("content-3").appendChild(card);
+
     }
 
     function Restart() {
@@ -1009,6 +1117,7 @@
         document.getElementById("final-guesses").style.display = "none";
         document.getElementById("total-time").style.display = "none";
         document.getElementById("final-score").style.display = "none";
+        document.getElementById("string-code").style.display = "none";
         document.getElementById("modifiers-short").style.display = "none";
         document.getElementById("return-button").style.display = "none";
         document.getElementById("retry-button").style.display = "none";
@@ -1021,12 +1130,15 @@
         document.getElementById("display-image").classList.add("menu");
 
         document.getElementById("settings").style.display = "";
+
+        document.getElementById("content-3").style.visibility = "";
     }
 
     function Retry() {
         document.getElementById("final-guesses").style.display = "none";
         document.getElementById("total-time").style.display = "none";
         document.getElementById("final-score").style.display = "none";
+        document.getElementById("string-code").style.display = "none";
         document.getElementById("modifiers-short").style.display = "none";
         document.getElementById("return-button").style.display = "none";
         document.getElementById("retry-button").style.display = "none";

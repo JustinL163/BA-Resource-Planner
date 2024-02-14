@@ -1,6 +1,12 @@
 body {
     margin: 0;
     height: 100vh;
+
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 
 #body {
@@ -28,6 +34,72 @@ body {
     height: 95%;
     margin: auto;
     position: relative;
+    display: flex;
+}
+
+#content-1,
+#content-3 {
+    width: 30%;
+}
+
+#content-2 {
+    width: 40%;
+}
+
+#content-3 {
+    display: flex;
+    flex-wrap: wrap;
+    height: fit-content;
+}
+
+.record-box {
+    background-color: #ffffffc9;
+    padding: 0.5em;
+    border-radius: 20px;
+    inline-size: fit-content;
+    margin-bottom: 0.5em;
+    margin-inline: auto;
+    height: fit-content;
+}
+
+.record-category {
+    background-color: #00000012;
+    border-radius: 20px;
+    padding: 0.5em;
+    width: fit-content;
+    margin-bottom: 0.2em;
+}
+
+.record-info {
+    display: flex;
+}
+
+.record-score,
+.record-time,
+.record-guesses {
+    padding: 0.5em;
+    align-self: center;
+    background-color: white;
+    margin: 0.2em;
+    border-radius: 10px;
+}
+
+.record-guesses {
+    display: flex;
+}
+
+.record-correct {
+    color: #87df00;
+    margin-right: 0.5em;
+}
+
+.record-wrong {
+    color: #cd0000;
+}
+
+#string-code {
+    text-align: center;
+    color: #ffffff0a;
 }
 
 #title {
@@ -292,6 +364,33 @@ body {
 
 #modifiers-short {
     text-align: center;
+}
+
+.record-hash {
+    text-align: center;
+    color: rgb(255 255 255 / 15%);
+}
+
+@media (max-width: 1200px) {
+    #content-body {
+        flex-wrap: wrap;
+    }
+
+    #content-1 {
+        display: none;
+    }
+
+    #content-2 {
+        width: 100%;
+    }
+
+    #content-3 {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 2em;
+    }
 }
 
 @media (max-width: 1000px) {
