@@ -1,6 +1,5 @@
 {
     "event_order": [
-        "hidden-heritage",
         "|momoyodou-beach-house",
         "|gakuman-doujin-monogatari",
         "|on-your-mark-rerun",
@@ -4300,7 +4299,6 @@
             ]
         },
         "hidden-heritage": {
-            "active": true,
             "icon": "Event_828_Jp.png",
             "display_name": "In Search of a Hidden Heritage",
             "reset_time": 1706554800,
@@ -4544,7 +4542,142 @@
         },
         "momoyodou-beach-house": {
             "icon": "Event_815_En.png",
-            "display_name": "Business Trip! Momoyodou Beach Shack Franchise Plan"
+            "display_name": "Business Trip! Momoyodou Beach Shack Franchise Plan",
+            "reset_time": 1677524400,
+            "start_time": 1677549600,
+            "end_time": 1678759200,
+            "maint_hours": 6,
+            "available_targets": ["Shop", "Currency", "Materials", "Manual"],
+            "currency_targets": ["Local_Currency"],
+            "reward_preview": [
+            ],
+            "currencies": {
+                "Momoyodou_Glitter_Coin": {
+                    "icon": "Momoyodou_Glitter_Coin.png",
+                    "shortname": "Momoyodou Coin",
+                    "source": "StageDrop",
+                    "clear": 15590,
+                    "bonus_units": []
+                },
+                "Turban_Shell": {
+                    "icon": "Turban_Shell.png",
+                    "shortname": "Turban Shell",
+                    "source": "StageDrop",
+                    "clear": 12082,
+                    "bonus_units": []
+                },
+                "Summer_Ninjutsu_Instructions_Scroll": {
+                    "icon": "Summer_Ninjutsu_Instructions_Scroll.png",
+                    "shortname": "Ninjutsu Scroll",
+                    "source": "StageDrop",
+                    "clear": 13600,
+                    "bonus_units": []
+                },
+                "Local_Currency": {
+                    "icon": "Local_Currency.png",
+                    "shortname": "Local Currency",
+                    "source": "StageDrop",
+                    "bonus_units": []
+                }
+            },
+            "shops": {
+                "Momoyodou_Glitter_Coin": [
+                    {"type": "Eleph", "id": "13008", "count": 50, "cost": 25},
+                    {"type": "AreaKey", "id": "HotSpringResort", "icon": "Resort_Use_Rights", "count": 1, "cost": 1000, "locked": true},
+                    {"type": "XpReport", "id": "XP_1", "count": 500, "cost": 1},
+                    {"type": "XpReport", "id": "XP_2", "count": 100, "cost": 10},
+                    {"type": "XpReport", "id": "XP_3", "count": 35, "cost": 40},
+                    {"type": "XpReport", "id": "XP_4", "count": 15, "cost": 200},
+                    {"type": "Material", "id": "4000", "count": 50, "cost": 7},
+                    {"type": "Material", "id": "4001", "count": 35, "cost": 12},
+                    {"type": "Material", "id": "4002", "count": 25, "cost": 24},
+                    {"type": "Material", "id": "4003", "count": 10, "cost": 60},
+                    {"type": "Material", "id": "4040", "count": 50, "cost": 7},
+                    {"type": "Material", "id": "4041", "count": 35, "cost": 12},
+                    {"type": "Material", "id": "4042", "count": 25, "cost": 24},
+                    {"type": "Material", "id": "4043", "count": 10, "cost": 60},
+                    {"type": "Furniture", "id": "Beachside_Cooling_Fan", "count": 1, "cost": 1500, "limited": false},
+                    {"type": "Furniture", "id": "Lemon_Parasol_White_Table", "count": 1, "cost": 2000, "limited": false}
+                ],
+                "Turban_Shell": [
+                    {"type": "Eleph", "id": "23005", "count": 50, "cost": 25},
+                    {"type": "AreaKey", "id": "MushiQueenResort", "icon": "Resort_Use_Rights", "count": 1, "cost": 2000, "locked": true},
+                    {"type": "XpOrb", "id": "GXP_1", "count": 200, "cost": 1},
+                    {"type": "XpOrb", "id": "GXP_2", "count": 50, "cost": 4},
+                    {"type": "XpOrb", "id": "GXP_3", "count": 15, "cost": 16},
+                    {"type": "XpOrb", "id": "GXP_4", "count": 3, "cost": 64},
+                    {"type": "Material", "id": "3000", "count": 20, "cost": 20},
+                    {"type": "Material", "id": "3001", "count": 15, "cost": 40},
+                    {"type": "Material", "id": "3002", "count": 12, "cost": 100},
+                    {"type": "Material", "id": "3003", "count": 4, "cost": 200},
+                    {"type": "Material", "id": "3040", "count": 20, "cost": 20},
+                    {"type": "Material", "id": "3041", "count": 15, "cost": 40},
+                    {"type": "Material", "id": "3042", "count": 12, "cost": 100},
+                    {"type": "Material", "id": "3043", "count": 4, "cost": 200},
+                    {"type": "Furniture", "id": "Chill_Cool_Ice_Cream_Refrigerator", "count": 1, "cost": 2000, "limited": false}
+                ],
+                "Summer_Ninjutsu_Instructions_Scroll": [
+                    {"type": "Eleph", "id": "23003", "count": 50, "cost": 25},
+                    {"type": "AreaKey", "id": "UltraLuxuryResort", "icon": "Resort_Use_Rights", "count": 1, "cost": 2000, "locked": true},
+                    {"type": "XpWeapon", "id": "Needle_1", "count": 100, "cost": 5},
+                    {"type": "XpWeapon", "id": "Needle_2", "count": 40, "cost": 25},
+                    {"type": "XpWeapon", "id": "Needle_3", "count": 20, "cost": 100},
+                    {"type": "XpWeapon", "id": "Needle_4", "count": 5, "cost": 500},
+                    {"type": "Material", "id": "200", "count": 100, "cost": 3},
+                    {"type": "Material", "id": "201", "count": 40, "cost": 10},
+                    {"type": "Material", "id": "202", "count": 20, "cost": 25},
+                    {"type": "Material", "id": "203", "count": 5, "cost": 50},
+                    {"type": "Material", "id": "140", "count": 100, "cost": 3},
+                    {"type": "Material", "id": "141", "count": 40, "cost": 10},
+                    {"type": "Material", "id": "142", "count": 20, "cost": 25},
+                    {"type": "Material", "id": "143", "count": 5, "cost": 50},
+                    {"type": "Material", "id": "130", "count": 100, "cost": 3},
+                    {"type": "Material", "id": "131", "count": 40, "cost": 10},
+                    {"type": "Material", "id": "132", "count": 20, "cost": 25},
+                    {"type": "Material", "id": "133", "count": 5, "cost": 50}
+                ]
+            },
+            "stage_groups": ["1-4", "5-8", "9-12"],
+            "stages": [
+                {"type": "Quest", "number": 1, "label": "1-1-A", "cost": 5, "drops": {"Local_Currency": 5, "Momoyodou_Glitter_Coin": 5}, "visible": false},
+                {"type": "Quest", "number": 2, "label": "1-1-B", "cost": 5, "drops": {"Momoyodou_Glitter_Coin": 5, "Turban_Shell": 5}, "visible": false},
+
+                {"type": "Quest", "number": 3, "label": "2-1-A", "cost": 5, "group": 1, "drops": {"Local_Currency": 5}, "visible": false},
+                {"type": "Quest", "number": 4, "label": "2-1-B", "cost": 5, "group": 1, "drops": {"Momoyodou_Glitter_Coin": 5, "Summer_Ninjutsu_Instructions_Scroll": 5}, "visible": false},
+                {"type": "Quest", "number": 5, "label": "2-1-C", "cost": 5, "group": 1, "drops": {"Turban_Shell": 5, "Summer_Ninjutsu_Instructions_Scroll": 5}, "visible": false},
+                {"type": "Quest", "number": 6, "label": "2-2-A", "cost": 12, "group": 1, "drops": {"Local_Currency": 36, "Nebra_1": 0.3, "Nebra_2": 0.6}},
+                {"type": "Quest", "number": 7, "label": "2-2-B", "cost": 12, "group": 1, "drops": {"Momoyodou_Glitter_Coin": 15, "Turban_Shell": 15, "Summer_Ninjutsu_Instructions_Scroll": 6, "Mandragora_1": 0.3, "Mandragora_2": 0.6}},
+                {"type": "Quest", "number": 8, "label": "2-2-C", "cost": 12, "group": 1, "drops": {"Momoyodou_Glitter_Coin": 6, "Turban_Shell": 15, "Summer_Ninjutsu_Instructions_Scroll": 15, "Nimrud_1": 0.3, "Nimrud_2": 0.6}},
+                {"type": "Quest", "number": 9, "label": "2-3-A", "cost": 12, "group": 1, "drops": {"Momoyodou_Glitter_Coin": 18, "Turban_Shell": 18, "Voynich_1": 0.3, "Voynich_2": 0.6}},
+                {"type": "Quest", "number": 10, "label": "2-3-B", "cost": 12, "group": 1, "drops": {"Turban_Shell": 18, "Summer_Ninjutsu_Instructions_Scroll": 18, "Totem_1": 0.3, "Totem_2": 0.6}},
+                {"type": "Quest", "number": 11, "label": "2-3-C", "cost": 12, "group": 1, "drops": {"Momoyodou_Glitter_Coin": 18, "Summer_Ninjutsu_Instructions_Scroll": 18, "Haniwa_1": 0.3, "Haniwa_2": 0.6}},
+
+                {"type": "Quest", "number": 12, "label": "3-1-A", "cost": 5, "group": 2, "drops": {"Local_Currency": 10}, "visible": false},
+                {"type": "Quest", "number": 13, "label": "3-1-B", "cost": 5, "group": 2, "drops": {"Momoyodou_Glitter_Coin": 5, "Summer_Ninjutsu_Instructions_Scroll": 5}, "visible": false},
+                {"type": "Quest", "number": 14, "label": "3-1-C", "cost": 5, "group": 2, "drops": {"Turban_Shell": 5, "Summer_Ninjutsu_Instructions_Scroll": 5}, "visible": false},
+                {"type": "Quest", "number": 15, "label": "3-2-A", "cost": 15, "group": 2, "drops": {"Local_Currency": 45, "Baghdad_2": 0.3, "Baghdad_3": 0.24}},
+                {"type": "Quest", "number": 16, "label": "3-2-B", "cost": 15, "group": 2, "drops": {"Momoyodou_Glitter_Coin": 25, "Turban_Shell": 10, "Summer_Ninjutsu_Instructions_Scroll": 10, "Aether_2": 0.3, "Aether_3": 0.24}},
+                {"type": "Quest", "number": 17, "label": "3-2-C", "cost": 15, "group": 2, "drops": {"Momoyodou_Glitter_Coin": 10, "Turban_Shell": 25, "Summer_Ninjutsu_Instructions_Scroll": 10, "Antikythera_2": 0.3, "Antikythera_3": 0.24}},
+                {"type": "Quest", "number": 18, "label": "3-3-A", "cost": 15, "group": 2, "drops": {"Momoyodou_Glitter_Coin": 30, "Turban_Shell": 15, "Nebra_2": 0.3, "Nebra_3": 0.24}},
+                {"type": "Quest", "number": 19, "label": "3-3-B", "cost": 15, "group": 2, "drops": {"Turban_Shell": 30, "Summer_Ninjutsu_Instructions_Scroll": 15, "Mandragora_2": 0.3, "Mandragora_3": 0.24}},
+                {"type": "Quest", "number": 20, "label": "3-3-C", "cost": 15, "group": 2, "drops": {"Momoyodou_Glitter_Coin": 15, "Summer_Ninjutsu_Instructions_Scroll": 30, "Nimrud_2": 0.3, "Nimrud_3": 0.24}},
+
+                {"type": "Quest", "number": 21, "label": "4-1-A", "cost": 5, "group": 3, "drops": {"Local_Currency": 10}, "visible": false},
+                {"type": "Quest", "number": 22, "label": "4-1-B", "cost": 5, "group": 3, "drops": {"Momoyodou_Glitter_Coin": 5, "Summer_Ninjutsu_Instructions_Scroll": 5}, "visible": false},
+                {"type": "Quest", "number": 23, "label": "4-1-C", "cost": 5, "group": 3, "drops": {"Turban_Shell": 5, "Summer_Ninjutsu_Instructions_Scroll": 5}, "visible": false},
+                {"type": "Quest", "number": 24, "label": "4-2-A", "cost": 20, "group": 3, "drops": {"Local_Currency": 60, "Voynich_3": 0.12, "Voynich_4": 0.12}},
+                {"type": "Quest", "number": 25, "label": "4-2-B", "cost": 20, "group": 3, "drops": {"Momoyodou_Glitter_Coin": 25, "Turban_Shell": 20, "Summer_Ninjutsu_Instructions_Scroll": 15, "Totem_3": 0.12, "Totem_4": 0.12}},
+                {"type": "Quest", "number": 26, "label": "4-2-C", "cost": 20, "group": 3, "drops": {"Momoyodou_Glitter_Coin": 15, "Turban_Shell": 20, "Summer_Ninjutsu_Instructions_Scroll": 25, "Haniwa_3": 0.12, "Haniwa_4": 0.12}},
+                {"type": "Quest", "number": 27, "label": "4-3-A", "cost": 20, "group": 3, "drops": {"Momoyodou_Glitter_Coin": 60, "Baghdad_3": 0.12, "Baghdad_4": 0.12}},
+                {"type": "Quest", "number": 28, "label": "4-3-B", "cost": 20, "group": 3, "drops": {"Turban_Shell": 60, "Aether_3": 0.12, "Aether_4": 0.12}},
+                {"type": "Quest", "number": 29, "label": "4-3-C", "cost": 20, "group": 3, "drops": {"Summer_Ninjutsu_Instructions_Scroll": 60, "Antikythera_3": 0.12, "Antikythera_4": 0.12}},
+
+                {"type": "Challenge", "number": 1, "cost": 5},
+                {"type": "Challenge", "number": 2, "cost": 5},
+                {"type": "Challenge", "number": 3, "cost": 5},
+                {"type": "Challenge", "number": 4, "cost": 5},
+                {"type": "Challenge", "number": 5, "cost": 5}
+            ]
         },
         "gakuman-doujin-monogatari": {
             "icon": "Event_829_Jp.png",

@@ -111,6 +111,31 @@
         overflow: hidden;*/
 }
 
+.size-5 .charBox {
+    width: 160px;
+    font-size: 1em;
+}
+
+.size-4 .charBox {
+    width: 140px;
+    font-size: 1em;
+}
+
+.size-3 .charBox {
+    width: 120px;
+    font-size: 1em;
+}
+
+.size-2 .charBox {
+    width: 100px;
+    font-size: 0.8em;
+}
+
+.size-1 .charBox {
+    width: 80px;
+    font-size: 0.7em;
+}
+
 .char-img {
     width: 100%;
 }
@@ -192,8 +217,6 @@
     text-align: center;
     width: 100%;
     min-width: 50px;
-    width: 160px;
-    height: 180px;
 }
 
 .charBox *, .multiSelectChar * {
@@ -1572,7 +1595,7 @@ input.filter-option {
     height: 25em;
     background-color: #7b7b8df0;
     bottom: 100px;
-    right: 50px;
+    left: 0;
     border-radius: 20px;
 
     -moz-user-select: -moz-none;
@@ -1616,6 +1639,51 @@ input.filter-option {
 
 .panel-size-button:hover {
     background-color: #00000047;
+}
+
+#control-panel.docked {
+    font-size: 0.6em !important;
+    left: 0px;
+    bottom: 50px;
+    width: 7em;
+    height: fit-content;
+    scale: unset;
+}
+
+.docked #control-panel-header {
+    display: none;
+}
+
+#control-panel-shortcut-info {
+    text-align: center;
+    color: white;
+    font-size: 2em;
+}
+
+#control-panel-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.control-panel-button-label {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    color: white;
+    font-size: 3em;
+    font-family: monospace;
+    text-shadow: -1px -1px 0 #000, 0px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.control-panel-button-wrapper {
+    position: relative;
+}
+
+#character-size-label {
+    align-self: center;
+    padding-inline: 0.3em;
+    font-size: 1.5em;
 }
 
 @media (max-width: 1280px) {
@@ -1736,8 +1804,7 @@ input.filter-option {
 
     .charBox {
         width: calc(70vw / 3);
-        height: calc(70vw / 3 * 1.19);
-        max-width: 300px;
+        max-width: 150px;
         min-width: 27%;
         margin: 0.5rem;
     }
@@ -2203,6 +2270,50 @@ input.filter-option {
 
     #control-panel {
         scale: 0.6;
+    }
+
+    #control-panel.docked {
+        font-size: 0.5em !important;
+    }
+
+    #control-panel-shortcut-info {
+        display: none;
+    }
+
+    #charsContainer.docked {
+        padding-right: 0;
+        justify-content: right;
+        padding-left: 2em;
+    }
+
+    .size-5 .charBox {
+        min-width: 27%;
+        font-size: 1.2em;
+        width: 0;
+    }
+    
+    .size-4 .charBox {
+        min-width: 19%;
+        font-size: 0.9em;
+        width: 0;
+    }
+    
+    .size-3 .charBox {
+        min-width: 19%;
+        font-size: 0.9em;
+        width: 0;
+    }
+    
+    .size-2 .charBox {
+        min-width: 14%;
+        font-size: 0.7em;
+        width: 0;
+    }
+    
+    .size-1 .charBox {
+        min-width: 14%;
+        font-size: 0.7em;
+        width: 0;
     }
 }
 

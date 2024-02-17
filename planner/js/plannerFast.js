@@ -23,6 +23,8 @@ if (data == null) {
     localStorage.setItem("save-data", JSON.stringify(data));
 }
 
+let charBoxSize = localStorage.getItem("character_box_size") ?? "5";
+
 fetch('json/skillinfo/en.json?4').then((response) => response.json()).then((json) => {
     charlist = json;
     if (nameReady && (data.language == "EN" || data.language == "Id")) {
@@ -30,7 +32,7 @@ fetch('json/skillinfo/en.json?4').then((response) => response.json()).then((json
     }
 });
 
-fetch('json/strings.json?20').then((response) => response.json()).then((json) => {
+fetch('json/strings.json?21').then((response) => response.json()).then((json) => {
     language_strings = json;
     if (uiReady) {
         updateUiLanguage();
@@ -68,6 +70,9 @@ else {
 delete imgStyle;
 
 $(document).ready(function () {
+
+    document.getElementById("charsContainer").classList.add("size-" + charBoxSize);
+    document.getElementById("character-size").value = charBoxSize;
 
     if (data == null) {
     }

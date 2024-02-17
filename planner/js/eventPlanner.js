@@ -721,6 +721,10 @@ function CalculateBonuses() {
         currencyBonuses = { "Computation_Circuit": 1.2, "Engine_Parts": 1.2, "Chocolate_Burger": 1.2 };
         return;
     }
+    else if (current_event == "momoyodou-beach-house") {
+        currencyBonuses = { "Momoyodou_Glitter_Coin": 1.2, "Turban_Shell": 1.2, "Summer_Ninjutsu_Instructions_Scroll": 1.2, "Local_Currency": 1.2 }
+        return;
+    }
 
     currencyBonuses = {};
 

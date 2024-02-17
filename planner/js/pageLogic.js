@@ -76,6 +76,8 @@ let docScrollTop = 0;
 
 let bugsNotified = {};
 
+let controlPanelDocked = true;
+
 const strNullImage = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";
 
 const platform = navigator.userAgentData?.platform || navigator.platform;
@@ -84,7 +86,7 @@ const isIOS = /iPad|iPhone|iPod/.test(platform)
 
 function loadResources() {
 
-    $.getJSON('json/misc_data.json?18').done(function (json) {
+    $.getJSON('json/misc_data.json?19').done(function (json) {
         misc_data = json;
     });
 
@@ -401,14 +403,14 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.4.4".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.4.5".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         Swal.fire({
-            title: GetLanguageString("text-updatedversionprefix") + "1.4.4",
+            title: GetLanguageString("text-updatedversionprefix") + "1.4.5",
             color: alertColour,
             html: GetLanguageString("text-updatemessage")
         })
 
-        data.site_version = "1.4.4";
+        data.site_version = "1.4.5";
         saveToLocalStorage(false);
     }
 
@@ -740,6 +742,27 @@ function handleKeydown(e, keyPressed) {
         let searchElement = document.getElementById("multiCharSearch");
         if (document.activeElement != searchElement) {
             searchElement.focus();
+        }
+    }
+
+    if (keycount == 2 && keyPressed.Shift == true) {
+        if (e.code == "Digit1") {
+            ControlPanelClicked('Edit');
+        }
+        else if (e.code == "Digit2") {
+            ControlPanelClicked('Move');
+        }
+        else if (e.code == "Digit3") {
+            ControlPanelClicked('Disable');
+        }
+        else if (e.code == "Digit4") {
+            ControlPanelClicked('AddStudent');
+        }
+        else if (e.code == "Digit5") {
+            ControlPanelClicked('Filter');
+        }
+        else if (e.code == "Digit6") {
+            ControlPanelClicked('Bulk');
         }
     }
 }
@@ -1355,7 +1378,7 @@ function openModal(e) {
                 hardModeNodes = hardModes.length;
             }
             else if (data.server == "CN") {
-                
+
                 for (let i = 0; i < hardModes.length; i++) {
 
                     if (parseInt(hardModes[i].substring(0, hardModes[i].indexOf('-'))) <= cnMaxWorld) {
@@ -4425,6 +4448,7 @@ function openGearModal() {
 
         updateCells(ownedMatDict, true, 'ue-count-text', 'abrakadabra');
         updateUeXP();
+        document.getElementById("leftover-xp").innerText = commafy(CalculateLeftoverGearXp());
 
         SolveGearFarm();
 
@@ -4999,6 +5023,10 @@ function updatedResource() {
 
     if (isUEinput) {
         updateUeXP();
+    }
+
+    if (gearLookup.includes(matName)) {
+        document.getElementById("leftover-xp").innerText = commafy(CalculateLeftoverGearXp());
     }
 
     saveTime = Date.now() + (1000 * 5);
@@ -5935,6 +5963,21 @@ function switchResourceDisplay(displayType) {
 
 }
 
+function CalculateLeftoverGearXp() {
+
+    let totalLeftover = 0;
+
+    let matKeys = Object.keys(leftoverMatDict);
+    for (let i = 0; i < matKeys.length; i++) {
+        if (gearLookup.includes(matKeys[i])) {
+            let tier = matKeys[i].substring(0, matKeys[i].indexOf("_"));
+            totalLeftover += leftoverMatDict[matKeys[i]] * misc_data.gear_bp_value[tier];
+        }
+    }
+
+    return totalLeftover;
+}
+
 function switchGearDisplay(displayType) {
 
     let btnOwned = document.getElementById("switch-gear-owned");
@@ -5945,6 +5988,7 @@ function switchGearDisplay(displayType) {
     let gxpInputs = document.getElementById("gear-xp-input-wrapper");
     let campaignMulti = document.getElementById("normal-campaign-multi");
     let apDisplay = document.getElementById("gear-farm-energy");
+    let leftoverDisplay = document.getElementById("leftover-xp");
     //var inputs = document.getElementsByClassName("input-wrapper");
 
     if (displayType == "Owned") {
@@ -5956,6 +6000,7 @@ function switchGearDisplay(displayType) {
         gxpInputs.style.display = "";
         campaignMulti.parentElement.style.display = "none";
         apDisplay.parentElement.style.display = "none";
+        leftoverDisplay.parentElement.style.display = "none";
         displayText.innerText = GetLanguageString("label-owned");
         updateCells(ownedMatDict, true, 'gear-count-text', 'misc-gear');
     }
@@ -5968,6 +6013,7 @@ function switchGearDisplay(displayType) {
         gxpInputs.style.display = "none";
         campaignMulti.parentElement.style.display = "";
         apDisplay.parentElement.style.display = "";
+        leftoverDisplay.parentElement.style.display = "none";
         displayText.innerText = GetLanguageString("label-remainingneeded");
         updateCells(neededMatDict, false, 'gear-count-text', 'misc-gear');
         SolveGearFarm();
@@ -5981,6 +6027,7 @@ function switchGearDisplay(displayType) {
         gxpInputs.style.display = "none";
         campaignMulti.parentElement.style.display = "none";
         apDisplay.parentElement.style.display = "none";
+        leftoverDisplay.parentElement.style.display = "none";
         displayText.innerText = GetLanguageString("label-totalneeded");
         updateCells(requiredMatDict, false, 'gear-count-text', 'misc-gear');
     }
@@ -5993,6 +6040,7 @@ function switchGearDisplay(displayType) {
         gxpInputs.style.display = "none";
         campaignMulti.parentElement.style.display = "none";
         apDisplay.parentElement.style.display = "none";
+        leftoverDisplay.parentElement.style.display = "";
         displayText.innerText = GetLanguageString("label-leftover");
         updateCells(leftoverMatDict, false, 'gear-count-text', 'misc-gear');
     }
@@ -6232,9 +6280,13 @@ function dragElement(elmnt) {
         pos4 = e.clientY;
         // set the element's new position:
         elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        if (!controlPanelDocked) {
+            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        }
 
-        movingControlPanel = true;
+        setTimeout(() => {
+            movingControlPanel = true;
+        }, 100);
     }
 
     function closeDragElement() {
@@ -6242,7 +6294,9 @@ function dragElement(elmnt) {
         document.onmouseup = null;
         document.onmousemove = null;
 
-        movingControlPanel = false;
+        setTimeout(() => {
+            movingControlPanel = false;
+        }, 300);
     }
 }
 
@@ -6271,10 +6325,14 @@ function TouchDraggableControlPanel() {
         mPos4 = touchLocation.clientY;
 
         // assign box new coordinates based on the touch.
-        box.style.left = (box.offsetLeft - mPos1) + 'px';
+        if (!controlPanelDocked) {
+            box.style.left = (box.offsetLeft - mPos1) + 'px';
+        }
         box.style.top = (box.offsetTop - mPos2) + 'px';
 
-        movingControlPanel = true;
+        setTimeout(() => {
+            movingControlPanel = true;
+        }, 100);
     })
 
     /* record the position of the touch
@@ -6282,7 +6340,9 @@ function TouchDraggableControlPanel() {
     This will be the drop position. */
 
     box.addEventListener('touchend', function (e) {
-        movingControlPanel = false;
+        setTimeout(() => {
+            movingControlPanel = false;
+        }, 300);
     })
 
 }
@@ -6306,6 +6366,14 @@ function ControlPanelSize(change) {
 }
 
 function ControlPanelClicked(button) {
+
+    if (movingControlPanel) {
+        return;
+    }
+
+    if (multiSelectVisible || modalOpen || mainDisplay == "Teams") {
+        return;
+    }
 
     if (button == "Edit") {
         if (bulkMode && bulkChars.length > 0) {
@@ -6360,6 +6428,39 @@ function ControlPanelClicked(button) {
             document.getElementById("control-button-edit").classList.add("selected");
         }
     }
+    else if (button == "Dock") {
+        let controlPanel = document.getElementById("control-panel");
+        let charsContainer = document.getElementById("charsContainer");
+
+        if (controlPanel.classList.contains("docked")) {
+            controlPanel.classList.remove("docked");
+            charsContainer.classList.remove("docked");
+            controlPanelDocked = false;
+        }
+        else {
+            controlPanel.classList.add("docked");
+            charsContainer.classList.add("docked");
+            controlPanelDocked = true;
+            controlPanel.style.left = 0;
+        }
+    }
+}
+
+function ChangeCharSizes(input, set) {
+    let charsContainer = document.getElementById("charsContainer");
+
+    if (set) {
+        localStorage.setItem("character_box_size", input.value.toString());
+        return;
+    }
+
+    charsContainer.classList.remove("size-1");
+    charsContainer.classList.remove("size-2");
+    charsContainer.classList.remove("size-3");
+    charsContainer.classList.remove("size-4");
+    charsContainer.classList.remove("size-5");
+
+    charsContainer.classList.add("size-" + input.value);
 }
 
 function ResetBulkMode() {
