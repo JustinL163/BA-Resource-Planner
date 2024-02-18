@@ -411,7 +411,7 @@ function init() {
         })
 
         data.site_version = "1.4.5";
-        saveToLocalStorage(false);
+        // saveToLocalStorage(false);
     }
 
     document.body.addEventListener('click', (event) => {
