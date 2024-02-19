@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?38').done(function (json) {
+    $.getJSON('json/events.json?39').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -404,19 +404,19 @@ function LoadEvent(eventId) {
         document.getElementById("temp-disclaimer").style.display = "none";
     }
 
-    // if (current_event == "summer-rabbit-squad") {
-    //     Swal.fire({
-    //         toast: true,
-    //         position: 'top-start',
-    //         title: "The dice race reward simulation will be available in a few hours, just working on it now",
-    //         showConfirmButton: false,
-    //         timer: 5000
-    //     })
-    // }
+    if (current_event == "momoyodou-beach-house") {
+        Swal.fire({
+            toast: true,
+            position: 'top-start',
+            title: "CAUTION: The S.Shizuko shard calculation and stage calculation is quite jank this time, should be more accurate after doing initial clears and enabling Owned mode though",
+            showConfirmButton: false,
+            timer: 8000
+        })
+    }
 
     let enabledStageGroups;
     //TEMP
-    if (current_event == "hidden-heritage") {
+    if (current_event == "momoyodou-beach-house") {
         enabledStageGroups = event_data?.enabled_stage_groups ?? [false, false, true];
     }
     else {
@@ -1019,7 +1019,13 @@ function CalculateEnergyAvailable() {
 
     document.getElementById("energy-total").innerText = energyAvailable;
 
-    energyAvailable = Math.max(energyAvailable - 100 - initialClearCost, 0);
+    // TEMP
+    if (current_event == "momoyodou-beach-house" && !midEvent) {
+        energyAvailable = Math.max(energyAvailable - 900 - initialClearCost, 0);
+    }
+    else {
+        energyAvailable = Math.max(energyAvailable - 100 - initialClearCost, 0);
+    }
 
     /////
     document.getElementById('energy-weeklytask-total').innerText = 500;
@@ -2111,9 +2117,18 @@ function GetStagesLinearModel(optimise, opType, energyConstrained) {
 
     let currencyNames = Object.keys(currencyNeeded);
 
+    let basesChecked = document.getElementById("upgrade-bases").checked;
+
     currencyNames.forEach((name) => {
         if (optimise != name && event_config.events[current_event]?.currencies[name]?.source == "StageDrop") {
-            model.constraints[name] = { "min": currencyNeeded[name] };
+            // TEMP
+            if (current_event == "momoyodou-beach-house" && basesChecked) {
+                let tempCurrency = { "Momoyodou_Glitter_Coin": 4200, "Turban_Shell": 4200, "Summer_Ninjutsu_Instructions_Scroll": 4110 };
+                model.constraints[name] = { "min": (currencyNeeded[name] + tempCurrency[name]) };
+            }
+            else {
+                model.constraints[name] = { "min": currencyNeeded[name] };
+            }
         }
     })
 
@@ -2977,6 +2992,12 @@ function CalculateStageDrops(result, ignoreRequirement) {
                     }
                 }
             }
+        }
+    }
+    else if (current_event == "momoyodou-beach-house") {
+        totalEleph["26008"] = Math.floor((totalCurrencies["Local_Currency"] ?? 0) / 300);
+        if (document.getElementById("upgrade-bases").checked) {
+            totalEleph["26008"] += 87;
         }
     }
 

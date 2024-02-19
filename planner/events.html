@@ -37,7 +37,7 @@
     <script src="packages/mathjs/math.js"></script>
     <script src="js/config.js?21"></script>
     <script src="js/common.js?17"></script>
-    <script src="js/eventPlanner.js?61"></script>
+    <script src="js/eventPlanner.js?62"></script>
     <title>Event Planner</title>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://justin163.com/planner/events">
@@ -174,6 +174,10 @@
                         onclick="SetOptimise('Manual')" data-id="label-optimanual"></div>
                 </div>
                 <div id="optimisation-settings-container"></div>
+                <div style="display: flex; margin-left: 0.5em; margin-bottom: 0.5em; font-size: 1.5em;">
+                    <label for="upgrade-bases" style="margin-right: 1em;">Use currency to upgrade bases</label>
+                    <input type="checkbox" id="upgrade-bases" checked="true" onchange="RefreshDropsDisplay()">
+                </div>
             </div>
             <div class="event-tab" id="Energy-tab">
                 <div id="energy-sources-fixed-container">
@@ -272,7 +276,8 @@
                 <div id="temp-disclaimer" style="margin-bottom: 1em; display: none;">
                     <p style="margin-left: 1em;">
                         Event mechanics guide:<br>
-                        <a href="https://www.youtube.com/watch?v=4MeNNbW2Qhs" style="color: cornflowerblue;">https://www.youtube.com/watch?v=4MeNNbW2Qhs</a>
+                        <a href="https://www.youtube.com/watch?v=4MeNNbW2Qhs"
+                            style="color: cornflowerblue;">https://www.youtube.com/watch?v=4MeNNbW2Qhs</a>
                     </p>
                 </div>
                 <div id="intial-clear-container">
@@ -355,7 +360,9 @@
                         data-id="button-simulategacha"></button>
                 </div>
                 <br>
-                <div style="margin-left: 1em;">This image shows what I think is the (for majority of people) optimal dice usage strategy for Miyu eleph + Eligma based on simulations of ~20 million strategies I tested (the pink circle is just to clarify which tile the dice is on)</div>
+                <div style="margin-left: 1em;">This image shows what I think is the (for majority of people) optimal
+                    dice usage strategy for Miyu eleph + Eligma based on simulations of ~20 million strategies I tested
+                    (the pink circle is just to clarify which tile the dice is on)</div>
                 <img src="icons/EventIcon/Misc/SummerRabbitDice.png" style="max-width: 100%;">
             </div>
             <div class="event-tab" id="Owned-tab">
@@ -399,8 +406,8 @@
                     class="display-string" data-id="label-includeomikuji"></label>
                 <input type="checkbox" id="include-dice-rewards" name="include-dice-rewards"
                     onclick="DisplayOptionClicked('DiceRewards')" style="display: none;">
-                <label id="label-dice-rewards" for="include-dice-rewards" style="display: none;"
-                    class="display-string" data-id="label-includedice"></label>
+                <label id="label-dice-rewards" for="include-dice-rewards" style="display: none;" class="display-string"
+                    data-id="label-includedice"></label>
                 <input type="checkbox" id="include-invasion-rewards" name="include-invasion-rewards"
                     onclick="DisplayOptionClicked('InvasionRewards')" style="display: none;">
                 <label id="label-invasion-rewards" for="include-invasion-rewards" style="display: none;"
