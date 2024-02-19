@@ -2519,6 +2519,10 @@ function CalculateStageDrops(result, ignoreRequirement) {
         energyCost += initialClearCost;
     }
 
+    if (current_event == "momoyodou-beach-house") {
+        energyCost += 800;
+    }
+
     if (displayIncluded['InvasionRewards']) {
         let intResults = AddInvasionRewards({}, totalEleph, totalXps);
         if (intResults) {
