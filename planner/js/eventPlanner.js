@@ -1393,7 +1393,7 @@ function CreateShopItem(item, currency) {
     }
     inputElement.min = 0;
 
-    if (item.locked) {
+    if (item.locked && !midEvent) {
         inputElement.disabled = true;
     }
 
