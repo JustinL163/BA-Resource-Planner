@@ -37,7 +37,7 @@
     <script src="packages/mathjs/math.js"></script>
     <script src="js/config.js?21"></script>
     <script src="js/common.js?17"></script>
-    <script src="js/eventPlanner.js?64"></script>
+    <script src="js/eventPlanner.js?65"></script>
     <title>Event Planner</title>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://justin163.com/planner/events">
@@ -174,7 +174,7 @@
                         onclick="SetOptimise('Manual')" data-id="label-optimanual"></div>
                 </div>
                 <div id="optimisation-settings-container"></div>
-                <div style="display: flex; margin-left: 0.5em; margin-bottom: 0.5em; font-size: 1.5em;">
+                <div style="display: none; margin-left: 0.5em; margin-bottom: 0.5em; font-size: 1.5em;" id="summer-hyakki-temp">
                     <label for="upgrade-bases" style="margin-right: 1em;">Use currency to upgrade bases</label>
                     <input type="checkbox" id="upgrade-bases" checked="true" onchange="RefreshDropsDisplay()">
                 </div>
@@ -330,8 +330,10 @@
                 <div id="cards-tabs">
                     <div class="cards-rarity-tab display-string" id="tab-cards-ur"
                         onclick="GenerateCardsRarityTable(['UR'])" data-id="label-rarityur"></div>
-                    <div class="cards-rarity-tab display-string" id="tab-cards-sr-r"
-                        onclick="GenerateCardsRarityTable(['SR', 'R_'])" data-id="label-raritysr/r"></div>
+                    <div class="cards-rarity-tab display-string" id="tab-cards-sr"
+                        onclick="GenerateCardsRarityTable(['SR'])" data-id="label-raritysr"></div>
+                    <div class="cards-rarity-tab display-string" id="tab-cards-r"
+                        onclick="GenerateCardsRarityTable(['R_'])" data-id="label-rarityr"></div>
                     <div class="cards-rarity-tab display-string" id="tab-cards-n"
                         onclick="GenerateCardsRarityTable(['N_'])" data-id="label-rarityn"></div>
                     <div class="cards-rarity-tab display-string" onclick="HideCards()" data-id="label-hidecards"></div>

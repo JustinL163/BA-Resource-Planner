@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?39').done(function (json) {
+    $.getJSON('json/events.json?40').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -86,7 +86,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?20').done(function (json) {
+    $.getJSON('json/strings.json?22').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -412,6 +412,10 @@ function LoadEvent(eventId) {
             showConfirmButton: false,
             timer: 8000
         })
+        document.getElementById("summer-hyakki-temp").style.display = "flex";
+    }
+    else {
+        document.getElementById("summer-hyakki-temp").style.display = "none";
     }
 
     let enabledStageGroups;
@@ -2662,6 +2666,7 @@ function CalculateStageDrops(result, ignoreRequirement) {
             let intResults = AddCardRewards(pulledCurrency, totalCurrencies, totalArtifacts, totalEleph, totalXps);
             if (intResults) {
                 totalCredit += intResults[0];
+                totalEligma += intResults[1];
             }
         }
     }
@@ -3451,6 +3456,7 @@ function AddCardRewards(pullCurrency, totalCurrencies, totalArtifacts, totalElep
     }
 
     let totalCredit = 0;
+    let totalEligma = 0;
 
     let rewardNames = Object.keys(cardGachaAvgSD);
 
@@ -3468,6 +3474,9 @@ function AddCardRewards(pullCurrency, totalCurrencies, totalArtifacts, totalElep
 
         if (rewardName == "Credit") {
             totalCredit += rewardAmount;
+        }
+        else if (rewardName == "Eligma") {
+            totalEligma += rewardAmount;
         }
         else if (rewardName == pullCurrency) {
 
@@ -3509,7 +3518,7 @@ function AddCardRewards(pullCurrency, totalCurrencies, totalArtifacts, totalElep
         }
     }
 
-    return [totalCredit];
+    return [totalCredit, totalEligma];
 }
 
 function AddOmikujiRewards(totalEleph) {
@@ -5469,7 +5478,10 @@ function GenerateCardsRarityTable(rarity) {
         document.getElementById('tab-cards-ur').classList.add('selected');
     }
     else if (rarity[0] == 'SR') {
-        document.getElementById('tab-cards-sr-r').classList.add('selected');
+        document.getElementById('tab-cards-sr').classList.add('selected');
+    }
+    else if (rarity[0] == 'R') {
+        document.getElementById('tab-cards-r').classList.add('selected');
     }
     else if (rarity[0] == 'N_') {
         document.getElementById('tab-cards-n').classList.add('selected');

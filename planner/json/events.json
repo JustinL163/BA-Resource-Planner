@@ -1,7 +1,7 @@
 {
     "event_order": [
         "momoyodou-beach-house",
-        "|gakuman-doujin-monogatari",
+        "gakuman-doujin-monogatari",
         "|on-your-mark-rerun",
         "|get-set-go-rerun",
         "|trip-trap-train",
@@ -4681,8 +4681,193 @@
             ]
         },
         "gakuman-doujin-monogatari": {
+            "active": true,
             "icon": "Event_829_Jp.png",
-            "display_name": "Gakuman Doujin Monogatari: Two Seeking the Final Episode"
+            "display_name": "Gakuman Doujin Monogatari: Two Seeking the Final Episode",
+            "reset_time": 1708974000,
+            "start_time": 1708999200,
+            "end_time": 1710208800,
+            "maint_hours": 6,
+            "available_targets": ["Shop", "Currency", "Manual"],
+            "currency_targets": ["Tarot_Della_Luna"],
+            "reward_preview": [
+                {"type": "Eligma", "preview": 1},
+                {"type": "Eleph", "id": "20009", "preview": 2},
+                {"type": "Credit", "preview": 3},
+                {"type": "XpOrb", "id": "GXP_4", "preview": 4},
+                {"type": "Material", "id": "133", "preview": 5},
+                {"type": "Material", "id": "143", "preview": 6},
+                {"type": "Material", "id": "183", "preview": 7},
+                {"type": "Material", "id": "293", "preview": 8}
+            ],
+            "currencies": {
+                "Tarot_Della_Luna": {
+                    "icon": "Tarot_Della_Luna.png",
+                    "shortname": "Tarot Della Luna",
+                    "source": "StageDrop",
+                    "clear": 15000,
+                    "bonus_units": [
+                        {"id": "10075", "bonus": 0.25},
+                        {"id": "13013", "bonus": 0.25},
+
+                        {"id": "10037", "bonus": 0.15},
+                        {"id": "10017", "bonus": 0.15},
+                        {"id": "10055", "bonus": 0.15},
+                        {"id": "10030", "bonus": 0.15},
+                        {"id": "10004", "bonus": 0.15},
+                        {"id": "10006", "bonus": 0.15},
+                        {"id": "10035", "bonus": 0.15},
+                        {"id": "20026", "bonus": 0.15},
+                        {"id": "20010", "bonus": 0.15},
+                        {"id": "20009", "bonus": 0.15},
+                        {"id": "26000", "bonus": 0.15},
+                        {"id": "20008", "bonus": 0.15},
+                        {"id": "26004", "bonus": 0.15}
+                    ]
+                },
+                "Ink_Cartridge": {
+                    "icon": "Ink_Cartridge.png",
+                    "shortname": "Ink Cartridge",
+                    "source": "StageDrop",
+                    "clear": 14500,
+                    "bonus_units": [
+                        {"id": "10075", "bonus": 0.2},
+                        {"id": "10017", "bonus": 0.2},
+
+                        {"id": "10004", "bonus": 0.15},
+                        {"id": "10035", "bonus": 0.15},
+                        {"id": "20026", "bonus": 0.15},
+                        {"id": "26000", "bonus": 0.15},
+                        {"id": "20008", "bonus": 0.15}
+                    ]
+                },
+                "Stylus_Pen": {
+                    "icon": "Stylus_Pen.png",
+                    "shortname": "Stylus Pen",
+                    "source": "StageDrop",
+                    "clear": 14650,
+                    "bonus_units": [
+                        {"id": "13013", "bonus": 0.2},
+                        {"id": "10037", "bonus": 0.2},
+
+                        {"id": "10055", "bonus": 0.15},
+                        {"id": "10030", "bonus": 0.15},
+                        {"id": "10006", "bonus": 0.15},
+                        {"id": "20010", "bonus": 0.15},
+                        {"id": "20009", "bonus": 0.15},
+                        {"id": "26004", "bonus": 0.15}
+                    ]
+                },
+                "Petit_Only_Ticket": {
+                    "icon": "Petit_Only_Ticket.png",
+                    "shortname": "Petit Only Ticket",
+                    "source": "CardPull",
+                    "pull_currency": "Tarot_Della_Luna",
+                    "clear": 200,
+                    "bonus_units": []
+                }
+            },
+            "shops": {
+                "Ink_Cartridge": [
+                    {"type": "XpReport", "id": "XP_1", "count": 150, "cost": 1},
+                    {"type": "XpReport", "id": "XP_2", "count": 75, "cost": 5},
+                    {"type": "XpReport", "id": "XP_3", "count": 35, "cost": 20},
+                    {"type": "XpReport", "id": "XP_4", "count": 15, "cost": 100},
+                    {"type": "Material", "id": "3010", "count": 25, "cost": 10},
+                    {"type": "Material", "id": "3011", "count": 15, "cost": 30},
+                    {"type": "Material", "id": "3012", "count": 10, "cost": 100},
+                    {"type": "Material", "id": "3013", "count": 3, "cost": 300},
+                    {"type": "Material", "id": "290", "count": 70, "cost": 5},
+                    {"type": "Material", "id": "291", "count": 35, "cost": 15},
+                    {"type": "Material", "id": "292", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "293", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Thirty-Color_Paint_Set", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Astronomical_Telescope", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "The_Life_Board_Game", "count": 1, "cost": 300},
+                    {"type": "Furniture", "id": "Manuscript_Desk", "count": 1, "cost": 1000, "limited": true}
+                ],
+                "Stylus_Pen": [
+                    {"type": "XpOrb", "id": "GXP_1", "count": 150, "cost": 1},
+                    {"type": "XpOrb", "id": "GXP_2", "count": 75, "cost": 4},
+                    {"type": "XpOrb", "id": "GXP_3", "count": 25, "cost": 15},
+                    {"type": "XpOrb", "id": "GXP_4", "count": 10, "cost": 60},
+                    {"type": "Material", "id": "4010", "count": 40, "cost": 5},
+                    {"type": "Material", "id": "4011", "count": 30, "cost": 15},
+                    {"type": "Material", "id": "4012", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "4013", "count": 12, "cost": 200},
+                    {"type": "Material", "id": "180", "count": 70, "cost": 5},
+                    {"type": "Material", "id": "181", "count": 35, "cost": 15},
+                    {"type": "Material", "id": "182", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "183", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Forbidden_Love", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Cherry-Rose_Lip_Gloss", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Street_of_Yankees_Volume_1", "count": 1, "cost": 300},
+                    {"type": "Furniture", "id": "Classic_Library_Chair", "count": 1, "cost": 1000, "limited": true}
+                ],
+                "Petit_Only_Ticket": [
+                    {"type": "Eleph", "id": "20009", "count": 40, "cost": 1},
+                    {"type": "Pyroxene", "id": "Pyroxene-120", "count": 5, "cost": 4, "amount": 120},
+                    {"type": "Eligma", "id": "Eligma-5", "count": 20, "cost": 2, "amount": 5},
+                    {"type": "SecretTech", "id": "SecretTech", "count": 1, "cost": 20},
+                    {"type": "Credit", "id": "Credit-500000", "count": 5, "cost": 5, "amount": 500000},
+                    {"type": "Credit", "id": "Credit-200000", "count": 10, "cost": 3, "amount": 200000},
+                    {"type": "Credit", "id": "Credit-50000", "count": 25, "cost": 1, "amount": 50000}
+                ]
+            },
+            "stage_groups": ["1-4", "5-8", "9-12"],
+            "stages": [
+                {"type": "Story", "number": 1, "cost": 10, "initial": {"Tarot_Della_Luna": 10, "Ink_Cartridge": 20}},
+                {"type": "Story", "number": 2, "cost": 10, "initial": {"Tarot_Della_Luna": 10, "Stylus_Pen": 20}},
+                {"type": "Story", "number": 3, "cost": 10, "initial": {"Tarot_Della_Luna": 10, "Ink_Cartridge": 20}},
+                {"type": "Story", "number": 4, "cost": 10, "initial": {"Tarot_Della_Luna": 10, "Stylus_Pen": 20}},
+                {"type": "Story", "number": 5, "cost": 10, "initial": {"Tarot_Della_Luna": 10, "Ink_Cartridge": 20}},
+                {"type": "Story", "number": 6, "cost": 10, "initial": {"Tarot_Della_Luna": 10, "Stylus_Pen": 20}},
+                {"type": "Story", "number": 7, "cost": 10, "initial": {"Tarot_Della_Luna": 10, "Ink_Cartridge": 20}},
+                {"type": "Story", "number": 8, "cost": 10, "initial": {"Tarot_Della_Luna": 10, "Stylus_Pen": 20}},
+                {"type": "Story", "number": 9, "cost": 10, "initial": {"Tarot_Della_Luna": 10, "Ink_Cartridge": 20}},
+                {"type": "Story", "number": 10, "cost": 10, "initial": {"Tarot_Della_Luna": 10, "Stylus_Pen": 20}},
+                {"type": "Story", "number": 11, "cost": 10, "initial": {"Tarot_Della_Luna": 10, "Ink_Cartridge": 20}},
+                {"type": "Story", "number": 12, "cost": 10, "initial": {"Tarot_Della_Luna": 10, "Stylus_Pen": 20}},
+                
+                {"type": "Quest", "number": 1, "cost": 10, "group": 1, "initial": {"Tarot_Della_Luna": 200, "Ink_Cartridge": 50, "Stylus_Pen": 50}, "drops": {"Tarot_Della_Luna": 10, "Ink_Cartridge": 3, "Stylus_Pen": 3}},
+                {"type": "Quest", "number": 2, "cost": 10, "group": 1, "initial": {"Ink_Cartridge": 200, "Stylus_Pen": 100}, "drops": {"Ink_Cartridge": 13, "Stylus_Pen": 3}},
+                {"type": "Quest", "number": 3, "cost": 10, "group": 1, "initial": {"Ink_Cartridge": 100, "Stylus_Pen": 200}, "drops": {"Ink_Cartridge": 3, "Stylus_Pen": 13}},
+                {"type": "Quest", "number": 4, "cost": 10, "group": 1, "initial": {"Tarot_Della_Luna": 300}, "drops": {"Tarot_Della_Luna": 16}},
+
+                {"type": "Quest", "number": 5, "cost": 15, "group": 2, "initial": {"Tarot_Della_Luna": 200, "Ink_Cartridge": 100, "Stylus_Pen": 100}, "drops": {"Tarot_Della_Luna": 16, "Ink_Cartridge": 4, "Stylus_Pen": 4}},
+                {"type": "Quest", "number": 6, "cost": 15, "group": 2, "initial": {"Ink_Cartridge": 250, "Stylus_Pen": 150}, "drops": {"Ink_Cartridge": 20, "Stylus_Pen": 4}},
+                {"type": "Quest", "number": 7, "cost": 15, "group": 2, "initial": {"Ink_Cartridge": 150, "Stylus_Pen": 250}, "drops": {"Ink_Cartridge": 4, "Stylus_Pen": 20}},
+                {"type": "Quest", "number": 8, "cost": 15, "group": 2, "initial": {"Tarot_Della_Luna": 400}, "drops": {"Tarot_Della_Luna": 24}},
+
+                {"type": "Quest", "number": 9, "cost": 20, "group": 3, "initial": {"Tarot_Della_Luna": 300, "Ink_Cartridge": 100, "Stylus_Pen": 100}, "drops": {"Tarot_Della_Luna": 24, "Ink_Cartridge": 4, "Stylus_Pen": 4}},
+                {"type": "Quest", "number": 10, "cost": 20, "group": 3, "initial": {"Tarot_Della_Luna": 50, "Ink_Cartridge": 450}, "drops": {"Tarot_Della_Luna": 4, "Ink_Cartridge": 28}},
+                {"type": "Quest", "number": 11, "cost": 20, "group": 3, "initial": {"Tarot_Della_Luna": 50, "Stylus_Pen": 450}, "drops": {"Tarot_Della_Luna": 4, "Stylus_Pen": 28}},
+                {"type": "Quest", "number": 12, "cost": 20, "group": 3, "initial": {"Tarot_Della_Luna": 500}, "drops": {"Tarot_Della_Luna": 32}},
+
+
+                {"type": "Challenge", "number": 1, "cost": 5},
+                {"type": "Challenge", "number": 2, "cost": 5},
+                {"type": "Challenge", "number": 3, "cost": 5},
+                {"type": "Challenge", "number": 4, "cost": 5}
+            ],
+            "card_drops": [
+                {"icon": "UR_Meru", "chance": 0.02, "chance4": 0.025, "drops": {"Credit": 1000000, "Petit_Only_Ticket": 3, "Nimrud_3": 1, "Nimrud_4": 1, "Eligma": 22}},
+                {"icon": "UR_Momiji", "chance": 0.02, "chance4": 0.025, "drops": {"Credit": 1000000, "Petit_Only_Ticket": 3, "Nimrud_3": 2, "Nimrud_4": 1, "Eligma": 21}},
+                {"icon": "UR_Yakumo", "chance": 0.02, "chance4": 0.025, "drops": {"Credit": 1200000, "Petit_Only_Ticket": 4, "Mandragora_3": 1, "Mandragora_4": 1, "Eligma": 20}},
+                {"icon": "UR_Takane", "chance": 0.02, "chance4": 0.025, "drops": {"Credit": 1200000, "Petit_Only_Ticket": 4, "Mandragora_3": 1, "Mandragora_4": 1, "Eligma": 21}},
+
+                {"icon": "SR_Nodoka", "chance": 0.065, "chance4": 0.3, "drops": {"Credit": 100000, "Petit_Only_Ticket": 2, "XP_3": 3, "XP_4": 1, "Mandragora_2": 1, "Mandragora_3": 1}},
+                {"icon": "SR_Shigure", "chance": 0.065, "chance4": 0.3, "drops": {"Credit": 100000, "Petit_Only_Ticket": 2, "XP_3": 4, "GXP_3": 1, "GXP_4": 1, "Nimrud_2": 1, "Nimrud_3": 1}},
+                {"icon": "SR_Minori", "chance": 0.065, "chance4": 0.3, "drops": {"Credit": 100000, "Petit_Only_Ticket": 2, "XP_3": 1, "XP_4": 1, "GXP_3": 1, "Mandragora_3": 1, "Nimrud_3": 1}},
+
+                {"icon": "R_Tomoe", "chance": 0.16, "drops": {"Credit": 50000, "Petit_Only_Ticket": 2, "XP_2": 3, "XP_3": 3, "Mandragora_1": 3, "Mandragora_2": 2}},
+                {"icon": "R_Marina", "chance": 0.16, "drops": {"Credit": 50000, "Petit_Only_Ticket": 2, "XP_2": 7, "XP_3": 2, "Nimrud_1": 3, "Nimrud_2": 2}},
+
+                {"icon": "N_Guard", "chance": 0.1015, "drops": {"Credit": 20000, "Petit_Only_Ticket": 1, "GXP_2": 3, "GXP_3": 1, "Mandragora_1": 4, "Mandragora_2": 1}},
+                {"icon": "N_Labor", "chance": 0.1015, "drops": {"Credit": 20000, "Petit_Only_Ticket": 1, "XP_2": 5, "Nimrud_1": 4, "Nimrud_2": 1}},
+                {"icon": "N_Citizen", "chance": 0.101, "drops": {"Credit": 20000, "Petit_Only_Ticket": 1, "XP_2": 5, "Mandragora_1": 4, "Mandragora_2": 1}},
+                {"icon": "N_Child", "chance": 0.101, "drops": {"Credit": 20000, "Petit_Only_Ticket": 1, "GXP_2": 3, "GXP_3": 1, "Nimrud_1": 4, "Nimrud_2": 1}}
+            ]
         },
         "on-your-mark-rerun": {
             "icon": "Event_817_Jp.png",
