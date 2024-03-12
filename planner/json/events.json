@@ -1,8 +1,6 @@
 {
     "event_order": [
-        "momoyodou-beach-house",
-        "gakuman-doujin-monogatari",
-        "|on-your-mark-rerun",
+        "on-your-mark-rerun",
         "|get-set-go-rerun",
         "|trip-trap-train",
         "|certain-scientific-archive"
@@ -4870,12 +4868,13 @@
             ]
         },
         "on-your-mark-rerun": {
+            "active": true,
             "icon": "Event_817_Jp.png",
             "display_name": "On Your Mark @ Millennium",
-            "reset_time": 1677524400,
-            "start_time": 1677549600,
-            "end_time": 1678759200,
-            "maint_hours": 6,
+            "reset_time": 1710183600,
+            "start_time": 1710208800,
+            "end_time": 1710986400,
+            "maint_hours": 5,
             "available_targets": ["Shop", "Currency", "Manual"],
             "currency_targets": ["Event_Point"],
             "event_point_target": 15000,
@@ -4884,8 +4883,9 @@
                     "icon": "Bean_Bag.png",
                     "shortname": "Bean Bag",
                     "source": "StageDrop",
-                    "clear": 13670,
+                    "clear": 13270,
                     "bonus_units": [
+                        {"id": "10076", "bonus": 0.3},
                         {"id": "16010", "bonus": 0.3},
                         {"id": "10007", "bonus": 0.3},
                         {"id": "26001", "bonus": 0.3},
@@ -4896,7 +4896,7 @@
                     "icon": "Millennium_Flag.png",
                     "shortname": "Millennium Flag",
                     "source": "StageDrop",
-                    "clear": 11930,
+                    "clear": 11780,
                     "bonus_units": [
                         {"id": "10051", "bonus": 0.3},
                         {"id": "16002", "bonus": 0.3},
@@ -4908,7 +4908,7 @@
                     "icon": "Whistle.png",
                     "shortname": "Whistle",
                     "source": "StageDrop",
-                    "clear": 5900,
+                    "clear": 7500,
                     "bonus_units": [
                         {"id": "10052", "bonus": 0.3},
                         {"id": "13010", "bonus": 0.3},
@@ -4920,6 +4920,7 @@
                     "icon": "Event_Point.png",
                     "shortname": "Event Point",
                     "bonus_units": [
+                        {"id": "10076", "bonus": 0.2},
                         {"id": "10052", "bonus": 0.2},
                         {"id": "10051", "bonus": 0.2},
                         {"id": "16010", "bonus": 0.2},
@@ -4940,10 +4941,11 @@
                     {"type": "Material", "id": "4051", "count": 30, "cost": 12},
                     {"type": "Material", "id": "4052", "count": 20, "cost": 24},
                     {"type": "Material", "id": "4053", "count": 10, "cost": 60},
-                    {"type": "Furniture", "id": "Athletic_Stand", "count": 1, "cost": 2000, "limited": true}
+                    {"type": "Furniture", "id": "Sports_Day_Mat_Blue", "count": 1, "cost": 1000},
+                    {"type": "Gift", "id": "Thrice-a-day_Dumbbell_Set", "count": 3, "cost": 200}
                 ],
                 "Millennium_Flag": [
-                    {"type": "Eleph", "id": "16002", "count": 50, "cost": 25},
+                    {"type": "Eleph", "id": "16002", "count": 50, "cost": 20},
                     {"type": "XpOrb", "id": "GXP_1", "count": 500, "cost": 1},
                     {"type": "XpOrb", "id": "GXP_2", "count": 200, "cost": 4},
                     {"type": "XpOrb", "id": "GXP_3", "count": 50, "cost": 16},
@@ -4952,7 +4954,8 @@
                     {"type": "Material", "id": "3051", "count": 30, "cost": 40},
                     {"type": "Material", "id": "3052", "count": 25, "cost": 100},
                     {"type": "Material", "id": "3053", "count": 7, "cost": 200},
-                    {"type": "Furniture", "id": "Athletic_Equipment_Storage_Box", "count": 1, "cost": 1500, "limited": true}
+                    {"type": "Furniture", "id": "Sports_Day_Bread-eating_Race_Stand", "count": 1, "cost": 1000},
+                    {"type": "Gift", "id": "I-book_Rare", "count": 3, "cost": 200}
                 ],
                 "Whistle": [
                     {"type": "Eleph", "id": "20013", "count": 50, "cost": 16},
@@ -4963,9 +4966,12 @@
                     {"type": "Material", "id": "120", "count": 150, "cost": 3},
                     {"type": "Material", "id": "121", "count": 60, "cost": 10},
                     {"type": "Material", "id": "122", "count": 30, "cost": 25},
-                    {"type": "Material", "id": "123", "count": 15, "cost": 50}
+                    {"type": "Material", "id": "123", "count": 15, "cost": 50},
+                    {"type": "Furniture", "id": "Athletic_Equipment_Storage_Box", "count": 1, "cost": 1000},
+                    {"type": "Gift", "id": "Streets_of_Thugs_Volume_1", "count": 3, "cost": 200}
                 ]
             },
+            "stage_groups": ["1-4", "5-8", "9-12"],
             "stages": [
                 {"type": "Story", "number": 1, "cost": 10, "initial": {"Event_Point": 10, "Bean_Bag": 10, "Whistle": 5}},
                 {"type": "Story", "number": 2, "cost": 10, "initial": {"Event_Point": 15, "Millennium_Flag": 10, "Whistle": 5}},
