@@ -325,3 +325,101 @@ function EditSubmission(submissionObject, server, type, uid, difficulty, uuid) {
         "UUID": uuid
     }))
 }
+
+function UpdateTournamentRecord(submissionObject, password) {
+
+    if (!password) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: "Please set the tournament password",
+            color: alertColour
+        })
+        return;
+    }
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', 'https://api.justin163.com/settourneydata');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('TournamentPassword', password);
+    xhr.onload = function () {
+
+        if (this.status == 200) {
+
+            if (this.response) {
+                let respJSON = JSON.parse(this.response);
+
+                if (respJSON) {
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Submitted',
+                        text: "Successfully updated",
+                        color: alertColour
+                    })
+
+                    LocalTourneyUpdate(submissionObject);
+                }
+            }
+        }
+        else {
+
+            if (this.response) {
+                let respJSON = JSON.parse(this.response);
+
+                if (respJSON && respJSON.Error) {
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: respJSON.Error,
+                        color: alertColour
+                    })
+                }
+            }
+        }
+    }
+    xhr.send(JSON.stringify(submissionObject))
+}
+
+function GetTournamentData(password, notify) {
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', 'https://api.justin163.com/loadtourneydata');
+    xhr.setRequestHeader('TournamentPassword', password);
+    // xhr.overrideMimeType('text\/plain; charset=x-user-defined');
+    xhr.onload = function () {
+        if (this.status == 200) {
+
+            ProcessLoadedData(JSON.parse(this.response));
+            lastLoad = Date.now();
+
+            if (notify) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Updated',
+                    text: "Successfully updated",
+                    color: alertColour
+                })
+            }
+        }
+        else {
+
+            if (this.response) {
+
+                let respJSON = JSON.parse(this.response);
+
+                if (respJSON && respJSON.Error) {
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: respJSON.Error,
+                        color: alertColour
+                    })
+                }
+            }
+        }
+    }
+    xhr.send();
+}

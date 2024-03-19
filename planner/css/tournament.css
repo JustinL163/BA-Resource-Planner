@@ -1,0 +1,335 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+label {
+    display: block;
+    font-size: 1.5em;
+}
+
+body {
+    background-color: rgb(60 68 89);
+}
+
+select {
+    font-size: 1.5em;
+}
+
+input {
+    font-size: 1.5em;
+    text-align: center;
+}
+
+#tournament-background {
+    position: fixed;
+    top: 0px;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+}
+
+#tournament-container {
+    text-align: center;
+    width: 40%;
+    margin-inline: auto;
+    margin-top: 50px;
+    color: white;
+}
+
+.slots-container {
+    display: flex;
+    justify-content: center;
+}
+
+.student-slot {
+    border: white 2px dashed;
+    margin-inline: 0.5em;
+    width: 2em;
+    height: 2em;
+    border-radius: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.student-slot div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5em;
+}
+
+.student-filtered div {
+    display: none;
+}
+
+.student-slot img {
+    width: 100%;
+}
+
+#student-searcher {
+    position: fixed;
+    z-index: 11;
+    display: flex;
+    flex-direction: column;
+    transform: translate(0, -45px);
+}
+
+#student-searcher-body {
+    background-color: #ffffff69;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em;
+    border-radius: 10px;
+    border: white 2px solid;
+}
+
+#student-searchbox {
+    font-size: 1.5em;
+    padding-left: 0.3em;
+    max-width: 10em;
+    margin-top: 0.25em;
+}
+
+#student-search-slots {
+    display: flex;
+}
+
+.student-searched {
+    max-width: 5em;
+    border-radius: 15px;
+}
+
+#student-search-slots div {
+    position: relative;
+}
+
+#student-search-slots p {
+    top: 80%;
+    left: 80%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    font-size: 25px;
+    font-weight: bold;
+    font-family: sans-serif;
+    text-shadow: -1px -1px 0 #ffffff, 0px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 0px 1px 0 #fff, 1px 1px 0 #fff;
+    padding-bottom: 1px;
+    padding-top: 1px;
+}
+
+#search-footer {
+    display: flex;
+}
+
+#search-footer.borrow-used #search-borrow-button {
+    display: none;
+}
+
+#search-borrow-button {
+    font-size: 1.5em;
+    background-color: #ffffff1f;
+    margin-left: 1em;
+    padding-inline: 0.5em;
+    margin-top: 0.3em;
+    border-radius: 10px;
+}
+
+#search-borrow-button:hover {
+    background-color: #ffffff61;
+}
+
+#search-borrow-button.selected {
+    background-color: #ffffffa1;
+}
+
+.raid-teams {
+    max-height: 80%;
+    overflow-x: hidden;
+    margin-bottom: 2em;
+}
+
+.raid-teams::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.raid-teams::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+.raid-teams::-webkit-scrollbar-thumb {
+    background-color: white;
+    border-radius: 10px;
+}
+
+.raid-team {
+    display: flex;
+    background-color: #ffffff12;
+    margin-bottom: 0.2em;
+    margin-inline: auto;
+    border-radius: 10px;
+    width: fit-content;
+}
+
+.student {
+    margin-right: 0.5em;
+    position: relative;
+}
+
+.student-empty {
+    border: #ffffff5e 2px dashed;
+    border-radius: 15px;
+    min-width: 45px;
+    height: 85%;
+    margin-top: 0.1em;
+}
+
+.student img {
+    max-width: 50px;
+    border-radius: 15px;
+}
+
+.team-strikers {
+    display: flex;
+    background-color: #ffffff3d;
+    padding-left: 0.3em;
+    padding-top: 0.2em;
+    border-radius: 15px;
+}
+
+.team-specials {
+    display: flex;
+    margin-left: 1em;
+    background-color: #ffffff3d;
+    padding-left: 0.3em;
+    padding-top: 0.2em;
+    padding-right: 0.4em;
+    border-radius: 15px;
+}
+
+.team-specials .student:last-child {
+    margin-right: 0;
+}
+
+.raid-video-link {
+    position: absolute;
+    left: 1em;
+    bottom: 0.5em;
+}
+
+.raid-video-link a {
+    color: lightskyblue;
+    max-width: 400px;
+    white-space: nowrap;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.team-num {
+    color: white;
+    padding-inline: 0.8em;
+    margin-block: auto;
+}
+
+.team-student {
+    margin-right: 0.5em;
+    width: 80px;
+    max-width: 80px;
+    height: 86.25px;
+    max-height: 86.25px;
+    border-radius: 15px;
+    margin-bottom: 0.2em;
+    display: flex;
+    overflow: hidden;
+    border: transparent 2px solid;
+    position: relative;
+}
+
+.student-blank {
+    border: white 2px dashed;
+}
+
+.team-student.student-blank img {
+    filter: invert(1);
+    width: 1.25em;
+    margin: auto;
+}
+
+.team-student img {
+    width: 100%;
+}
+
+.student-borrow::after {
+    content: "A";
+    position: absolute;
+    background-image: linear-gradient(to bottom right, #99f8fd, #63a1fe);
+    color: #133C60;
+    border-radius: 5px;
+    right: 0.3em;
+    padding-inline: 0.1em;
+}
+
+.team-specials .team-student:last-child {
+    margin-right: 0;
+}
+
+#player-1-teams .raid-team:only-child .team-remove-button, #player-2-teams .raid-team:only-child .team-remove-button  {
+    visibility: hidden;
+}
+
+#player-1-teams .raid-team:first-child .team-up-button, #player-2-teams .raid-team:first-child .team-up-button {
+    visibility: hidden;
+}
+
+#player-1-teams .raid-team:last-child .team-down-button, #player-2-teams .raid-team:last-child .team-down-button {
+    visibility: hidden;
+}
+
+.team-actionbar {
+    display: flex;
+    margin-left: 2em;
+}
+
+.team-action-button {
+    width: 1em;
+    height: 1em;
+    align-self: center;
+    padding: 0.5em;
+    border-radius: 15px;
+    filter: invert(1);
+    margin-right: 1em;
+}
+
+.team-action-button:hover {
+    background-color: #ffffff33;
+}
+
+#save-button, #update-button {
+    display: block;
+    margin-inline: auto;
+    font-size: 1.5em;
+    margin-top: 1em;
+    padding: 0.5em;
+}
+
+#update-button {
+    margin-bottom: 3em;
+}
+
+#export-button {
+    width: 3em;
+    position: fixed;
+    top: 2em;
+    right: 2em;
+    filter: invert(1);
+}
+
+#last-update-label {
+    font-size: 2em;
+    position: fixed;
+    top: 1em;
+    left: 1em;
+    color: white;
+}

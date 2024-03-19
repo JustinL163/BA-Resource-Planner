@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3XZ18739WF"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-3XZ18739WF');
+    </script>
+    <script>
+        function hamburgToggle() {
+            let linkWrapper = document.getElementById('mobile-links-wrapper');
+            if (linkWrapper.style.display === "block") {
+                linkWrapper.style.display = "none";
+            } else {
+                linkWrapper.style.display = "block";
+            }
+        }
+    </script>
+    <meta name="robots" content="noindex">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="css/tournament.css?1">
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="js/common.js?18"></script>
+    <script src="js/tournament.js?1"></script>
+    <script src="js/cloudAPI.js?7"></script>
+    <script src="packages/fileSaver/FileSaver.js"></script>
+    <title>Tournaments</title>
+</head>
+
+<body onload="Loaded()">
+    <div id="tournament-background"></div>
+    <div id="tournament-container">
+        <select name="tournaments" id="tournaments" onchange="InputUpdated(this.id)">
+            <option value="tournament-1">S2 ShiroKuro</option>
+        </select>
+        <label>Stage</label>
+        <select name="stage" id="stage" onchange="InputUpdated(this.id)">
+            <option value="qualifiers">Qualifiers</option>
+            <option value="groups">Groups</option>
+            <option value="elimination">Elimination</option>
+        </select>
+        <label>Player 1</label>
+        <select name="player1" id="player1" onchange="InputUpdated(this.id)">
+            <option value="n/a">Select a player</option>
+            <option value="Tornade">Tornade</option>
+            <option value="STaboo">STaboo</option>
+            <option value="lethe">lethe</option>
+            <option value="Dajin">Dajin</option>
+            <option value="Meggumi">Meggumi</option>
+            <option value="Draa">Draa</option>
+            <option value="Reka">Reka</option>
+            <option value="Anima">Anima</option>
+            <option value="clear_skies_2023">clear_skies_2023</option>
+            <option value="papi">papi</option>
+            <option value="airu">airu</option>
+        </select>
+        <label>Player 2</label>
+        <select name="player2" id="player2" onchange="InputUpdated(this.id)">
+            <option value="n/a">n/a</option>
+            <option value="Tornade">Tornade</option>
+            <option value="STaboo">STaboo</option>
+            <option value="lethe">lethe</option>
+            <option value="Dajin">Dajin</option>
+            <option value="Meggumi">Meggumi</option>
+            <option value="Draa">Draa</option>
+            <option value="Reka">Reka</option>
+            <option value="Anima">Anima</option>
+            <option value="clear_skies_2023">clear_skies_2023</option>
+            <option value="papi">papi</option>
+            <option value="airu">airu</option>
+        </select>
+        <label>Game</label>
+        <select name="game" id="game" onchange="InputUpdated(this.id)">
+            <option value="game-1">1</option>
+            <option value="game-2">2</option>
+            <option value="game-3">3</option>
+            <option value="game-4">4</option>
+        </select>
+        <label>Armour Type</label>
+        <select name="armour" id="armour" onchange="InputUpdated(this.id)">
+            <option value="light">Light</option>
+            <option value="heavy">Heavy</option>
+            <option value="special">Special</option>
+            <option value="elastic">Elastic</option>
+        </select>
+        <label>Force Pick</label>
+        <div class="slots-container">
+            <div id="student-force-pick" class="student-slot" onclick="SlotClicked('student-force-pick')">
+                <div>+</div>
+                <img src="">
+            </div>
+        </div>
+        <label>Player 1 Bans</label>
+        <div class="slots-container">
+            <div id="student-ban-1-slot-1" class="student-slot" onclick="SlotClicked('student-ban-1-slot-1')">
+                <div>+</div>
+                <img src="">
+            </div>
+            <div id="student-ban-1-slot-2" class="student-slot" onclick="SlotClicked('student-ban-1-slot-2')">
+                <div>+</div>
+                <img src="">
+            </div>
+            <div id="student-ban-1-slot-3" class="student-slot" onclick="SlotClicked('student-ban-1-slot-3')">
+                <div>+</div>
+                <img src="">
+            </div>
+            <div id="student-ban-1-slot-4" class="student-slot" onclick="SlotClicked('student-ban-1-slot-4')">
+                <div>+</div>
+                <img src="">
+            </div>
+        </div>
+        <label>Player 2 Bans</label>
+        <div class="slots-container">
+            <div id="student-ban-2-slot-1" class="student-slot" onclick="SlotClicked('student-ban-2-slot-1')">
+                <div>+</div>
+                <img src="">
+            </div>
+            <div id="student-ban-2-slot-2" class="student-slot" onclick="SlotClicked('student-ban-2-slot-2')">
+                <div>+</div>
+                <img src="">
+            </div>
+            <div id="student-ban-2-slot-3" class="student-slot" onclick="SlotClicked('student-ban-2-slot-3')">
+                <div>+</div>
+                <img src="">
+            </div>
+            <div id="student-ban-2-slot-4" class="student-slot" onclick="SlotClicked('student-ban-2-slot-4')">
+                <div>+</div>
+                <img src="">
+            </div>
+        </div>
+        <label>Player 1 Teams</label>
+        <div id="player-1-teams"></div>
+        <label>Player 2 Teams</label>
+        <div id="player-2-teams"></div>
+        <label>Player 1 Score</label>
+        <input id="player-1-score" type="number" autocomplete="off">
+        <label>Player 2 Score</label>
+        <input id="player-2-score" type="number" autocomplete="off">
+        <label>Tournament Password</label>
+        <input id="tournament-password" type="password" autocomplete="off" onchange="SetPassword()">
+        <button id="save-button" onclick="SaveData()">Save</button>
+        <button id="update-button" onclick="GetData()">Get Updates</button>
+    </div>
+    <div id="export-button" onclick="DownloadExport()">
+        <img src="icons/UI/floppy-disk-solid.svg">
+    </div>
+    <div id="last-update-label">
+        <p id="last-update-text">Last data update: 0s</p>
+    </div>
+</body>
+
+</html>
