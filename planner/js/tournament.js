@@ -16,6 +16,11 @@ let selectedContainer = "";
 let localData = [];
 let lastLoadDisplay;
 
+let dTournaments = { "tournament-1": "S2 ShiroKuro" };
+let dStages = { "qualifiers": "Qualifiers", "groups": "Groups", "elimination": "Elimination" };
+let dGames = { "game-1": "1", "game-2": "2", "game-3": "3", "game-4": "4" };
+let dArmour = { "light": "Light", "heavy": "Heavy", "special": "Special", "elastic": "Elastic" };
+
 $.getJSON('json/student_info.json?2').done(function (json) {
     student_info = json;
     LoadStudentInfo();
@@ -1103,13 +1108,115 @@ function ToggleBorrowMode() {
 
 function DownloadExport() {
 
-    let fileName = "export.json";
+    let exportable = "Tournament,Stage,Player1,Player2,Game,Armour,ForcePick,Player1Bans,Player2Bans,Player1Teams,Player2Teams,Player1Score,Player2Score\r\n";
 
-    let fileToSave = new Blob([JSON.stringify(localData, null, 4)], {
-        type: "application/json"
+    for (let i = 0; i < localData.length; i++) {
+        let csvRow = "";
+        csvRow += dTournaments[localData[i].Tournament] + ",";
+        csvRow += dStages[localData[i].Stage] + ",";
+        csvRow += localData[i].Player1 + ",";
+        if (localData[i].Player2 == "n/a") {
+            csvRow += ",";
+        }
+        else {
+            csvRow += localData[i].Player2 + ",";
+        }
+        csvRow += dGames[localData[i].Game] + ",";
+        csvRow += dArmour[localData[i].Armour] + ",";
+        if (localData[i].ForcePick) {
+            csvRow += student_info[localData[i].ForcePick].EN[0] + ",";
+        }
+        else {
+            csvRow += ",";
+        }
+        let bans1 = GetNamedBans(localData[i].Player1Bans);
+        if (bans1) {
+            csvRow += "\"" + JSON.stringify(bans1).replaceAll("\"", "") + "\",";
+        }
+        else {
+            csvRow += ",";
+        }
+        let bans2 = GetNamedBans(localData[i].Player2Bans);
+        if (bans2) {
+            csvRow += "\"" + JSON.stringify(bans2).replaceAll("\"", "") + "\",";
+        }
+        else {
+            csvRow += ",";
+        }
+        let teams1 = GetNamedTeams(localData[i].Player1Teams);
+        if (teams1) {
+            csvRow += "\"" + JSON.stringify(teams1).replaceAll("\"", "") + "\",";
+        }
+        else {
+            csvRow += ",";
+        }
+        let teams2 = GetNamedTeams(localData[i].Player2Teams);
+        if (teams2) {
+            csvRow += "\"" + JSON.stringify(teams2).replaceAll("\"", "") + "\",";
+        }
+        else {
+            csvRow += ",";
+        }
+        csvRow += localData[i].Player1Score + ",";
+        csvRow += localData[i].Player2Score;
+
+        exportable += csvRow + "\r\n";
+    }
+
+    let fileName = "export-" + Math.floor(Date.now() / 1000) + ".csv";
+
+    let fileToSave = new Blob([exportable], {
+        type: "application/csv"
     })
 
     saveAs(fileToSave, fileName);
+}
+
+function GetNamedBans(bans) {
+
+    let namedBans = [];
+
+    for (let i = 0; i < bans.length; i++) {
+        namedBans.push(student_info[bans[i]].EN[0]);
+    }
+
+    if (namedBans.length == 0) {
+        return false;
+    }
+    else {
+        return namedBans;
+    }
+}
+
+function GetNamedTeams(teams) {
+
+    let namedTeams = [];
+
+    let allNull = true;
+
+    for (let i = 0; i < teams.length; i++) {
+        let team = [];
+
+        for (let ii = 0; ii < teams[i].length; ii++) {
+            if (teams[i][ii] != null) {
+                team.push(student_info[teams[i][ii]].EN[0]);
+                allNull = false;
+            }
+            else {
+                team.push(null);
+            }
+        }
+
+        namedTeams.push(team);
+    }
+
+    if (allNull) {
+        return false;
+    }
+    else {
+        return namedTeams;
+    }
+
 }
 
 function LocalTourneyUpdate(submissionObject) {
