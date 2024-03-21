@@ -258,7 +258,7 @@ function SimulateAttempts(diceRace, targetParams, timeout, attemptsNum, currency
         }
 
         for (i = 0; i < rewardsAvailable.length; i++) {
-            rewardArrays[rewardsAvailable[i]].push(trialRewards[rewardsAvailable[i]]);
+            rewardArrays[rewardsAvailable[i]].push(trialRewards[rewardsAvailable[i]] ?? 0);
         }
     }
 

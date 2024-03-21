@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?44').done(function (json) {
+    $.getJSON('json/events.json?45').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -5011,10 +5011,10 @@ function SimulateDiceGacha() {
 
     let dice_drop_event = current_event + "";
 
-    const worker1 = new Worker("js/diceGachaWorker.js?1");
-    const worker2 = new Worker("js/diceGachaWorker.js?1");
-    const worker3 = new Worker("js/diceGachaWorker.js?1");
-    const worker4 = new Worker("js/diceGachaWorker.js?1");
+    const worker1 = new Worker("js/diceGachaWorker.js?2");
+    const worker2 = new Worker("js/diceGachaWorker.js?2");
+    const worker3 = new Worker("js/diceGachaWorker.js?2");
+    const worker4 = new Worker("js/diceGachaWorker.js?2");
 
     worker1.onmessage = (e) => {
         completedWorkers.push(1);
@@ -5044,7 +5044,7 @@ function SimulateDiceGacha() {
     worker3.postMessage([diceRace, [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []], 3000, 100000, diceRollCurrencyOwned, [1, 1, 1, 1, 1, 1]]);
     worker4.postMessage([diceRace, [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []], 3000, 100000, diceRollCurrencyOwned, [1, 1, 1, 1, 1, 1]]);
 }
-
+let test;
 function ProcessDiceResults(eventName) {
 
     if (completedWorkers.length != 4) {
