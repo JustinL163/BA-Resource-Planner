@@ -1,7 +1,6 @@
 {
     "event_order": [
-        "on-your-mark-rerun",
-        "|get-set-go-rerun",
+        "get-set-go-rerun",
         "|trip-trap-train",
         "|certain-scientific-archive"
     ],
@@ -5139,12 +5138,13 @@
             ]
         },
         "get-set-go-rerun": {
+            "active": true,
             "icon": "Event_818_Jp.png",
             "display_name": "Get Set, Go!",
-            "reset_time": 1677524400,
-            "start_time": 1677549600,
-            "end_time": 1678759200,
-            "maint_hours": 6,
+            "reset_time": 1710961200,
+            "start_time": 1710986400,
+            "end_time": 1712023200,
+            "maint_hours": 0,
             "available_targets": ["Shop", "Currency", "Manual"],
             "currency_targets": ["Sports_Drink"],
             "currencies": {
@@ -5172,6 +5172,7 @@
                     "clear": 13440,
                     "bonus_units": [
                         {"id": "10053", "bonus": 0.2},
+                        {"id": "10076", "bonus": 0.2},
                         {"id": "10051", "bonus": 0.2},
                         {"id": "10038", "bonus": 0.2},
                         {"id": "13002", "bonus": 0.2},
@@ -5191,6 +5192,7 @@
                         {"id": "16010", "bonus": 0.2},
                         {"id": "10039", "bonus": 0.2},
                         {"id": "13007", "bonus": 0.2},
+                        {"id": "20030", "bonus": 0.2},
                         {"id": "20014", "bonus": 0.2},
                         {"id": "23002", "bonus": 0.2},
 
@@ -5201,12 +5203,13 @@
                     "icon": "Information_Pamphlet.png",
                     "shortname": "Information Pamphlet",
                     "source": "StageDrop",
-                    "clear": 12700,
+                    "clear": 14700,
                     "bonus_units": [
                         {"id": "10054", "bonus": 0.2},
                         {"id": "10052", "bonus": 0.2},
                         {"id": "10002", "bonus": 0.2},
                         {"id": "10009", "bonus": 0.2},
+                        {"id": "20030", "bonus": 0.2},
                         {"id": "20008", "bonus": 0.2},
                         {"id": "26001", "bonus": 0.2},
 
@@ -5260,9 +5263,11 @@
                     {"type": "Material", "id": "150", "count": 150, "cost": 3},
                     {"type": "Material", "id": "151", "count": 60, "cost": 10},
                     {"type": "Material", "id": "152", "count": 30, "cost": 25},
-                    {"type": "Material", "id": "153", "count": 15, "cost": 50}
+                    {"type": "Material", "id": "153", "count": 15, "cost": 50},
+                    {"type": "Furniture", "id": "Recess_Bench_Table", "count": 1, "cost": 2000, "limited": true}
                 ]
             },
+            "stage_groups": ["1-4", "5-8", "9-12"],
             "stages": [
                 {"type": "Story", "number": 1, "cost": 10, "initial": {"Sports_Drink": 50, "Relay_Baton": 50}},
                 {"type": "Story", "number": 2, "cost": 10, "initial": {"Sports_Drink": 50, "Anpan": 50}},
@@ -5275,25 +5280,127 @@
                 {"type": "Story", "number": 9, "cost": 10, "initial": {"Sports_Drink": 50, "Information_Pamphlet": 50}},
                 {"type": "Story", "number": 10, "cost": 10, "initial": {"Sports_Drink": 50, "Relay_Baton": 20, "Anpan": 20, "Information_Pamphlet": 20}},
                 
-                {"type": "Quest", "number": 1, "cost": 10,  "initial": {"Sports_Drink": 150, "Relay_Baton": 150, "Anpan": 150}, "drops": {"Sports_Drink": 6, "Relay_Baton": 6, "Anpan": 6, "Nimrud_1": 0.25, "Nimrud_2": 0.15}},
-                {"type": "Quest", "number": 2, "cost": 10,  "initial": {"Sports_Drink": 150, "Anpan": 150, "Information_Pamphlet": 150}, "drops": {"Sports_Drink": 6, "Anpan": 6, "Information_Pamphlet": 6, "Haniwa_1": 0.25, "Haniwa_2": 0.15}},
-                {"type": "Quest", "number": 3, "cost": 10,  "initial": {"Sports_Drink": 150, "Relay_Baton": 150, "Information_Pamphlet": 150}, "drops": {"Sports_Drink": 6, "Relay_Baton": 6, "Information_Pamphlet": 6, "Voynich_1": 0.25, "Voynich_2": 0.15}},
-                {"type": "Quest", "number": 4, "cost": 10,  "initial": {"Sports_Drink": 250, "Relay_Baton": 50, "Anpan": 50, "Information_Pamphlet": 50}, "drops": {"Sports_Drink": 10, "Relay_Baton": 2, "Anpan": 2, "Information_Pamphlet": 2, "Phaistos_1": 0.25, "Phaistos_2": 0.15}},
-                {"type": "Quest", "number": 5, "cost": 15,  "initial": {"Sports_Drink": 225, "Relay_Baton": 300, "Anpan": 150}, "drops": {"Sports_Drink": 9, "Relay_Baton": 12, "Anpan": 6, "Nimrud_2": 0.25, "Nimrud_3": 0.08}},
-                {"type": "Quest", "number": 6, "cost": 15,  "initial": {"Sports_Drink": 225, "Anpan": 300, "Information_Pamphlet": 150}, "drops": {"Sports_Drink": 9, "Anpan": 12, "Information_Pamphlet": 6, "Haniwa_2": 0.25, "Haniwa_3": 0.08}},
-                {"type": "Quest", "number": 7, "cost": 15,  "initial": {"Sports_Drink": 225, "Relay_Baton": 150, "Information_Pamphlet": 300}, "drops": {"Sports_Drink": 9, "Relay_Baton": 6, "Information_Pamphlet": 12, "Voynich_2": 0.25, "Voynich_3": 0.08}},
-                {"type": "Quest", "number": 8, "cost": 15,  "initial": {"Sports_Drink": 450, "Relay_Baton": 50, "Anpan": 50, "Information_Pamphlet": 50}, "drops": {"Sports_Drink": 18, "Relay_Baton": 2, "Anpan": 2, "Information_Pamphlet": 2, "Phaistos_2": 0.25, "Phaistos_3": 0.08}},
-                {"type": "Quest", "number": 9, "cost": 20,  "initial": {"Relay_Baton": 900}, "drops": {"Relay_Baton": 36, "Nimrud_2": 0.25, "Nimrud_3": 0.12, "Nimrud_4": 0.02}},
-                {"type": "Quest", "number": 10, "cost": 20, "initial": {"Anpan": 900}, "drops": {"Anpan": 36, "Haniwa_2": 0.25, "Haniwa_3": 0.12, "Haniwa_4": 0.02}},
-                {"type": "Quest", "number": 11, "cost": 20, "initial": {"Information_Pamphlet": 900}, "drops": {"Information_Pamphlet": 36, "Voynich_2": 0.25, "Voynich_3": 0.12, "Voynich_4": 0.02}},
-                {"type": "Quest", "number": 12, "cost": 20, "initial": {"Sports_Drink": 800}, "drops": {"Sports_Drink": 32, "Phaistos_2": 0.25, "Phaistos_3": 0.12, "Phaistos_4": 0.02}},
+                {"type": "Quest", "number": 1, "cost": 10, "group": 1, "initial": {"Sports_Drink": 150, "Relay_Baton": 150, "Anpan": 150}, "drops": {"Sports_Drink": 6, "Relay_Baton": 6, "Anpan": 6, "Nimrud_1": 0.25, "Nimrud_2": 0.15}},
+                {"type": "Quest", "number": 2, "cost": 10, "group": 1, "initial": {"Sports_Drink": 150, "Anpan": 150, "Information_Pamphlet": 150}, "drops": {"Sports_Drink": 6, "Anpan": 6, "Information_Pamphlet": 6, "Haniwa_1": 0.25, "Haniwa_2": 0.15}},
+                {"type": "Quest", "number": 3, "cost": 10, "group": 1, "initial": {"Sports_Drink": 150, "Relay_Baton": 150, "Information_Pamphlet": 150}, "drops": {"Sports_Drink": 6, "Relay_Baton": 6, "Information_Pamphlet": 6, "Voynich_1": 0.25, "Voynich_2": 0.15}},
+                {"type": "Quest", "number": 4, "cost": 10, "group": 1, "initial": {"Sports_Drink": 250, "Relay_Baton": 50, "Anpan": 50, "Information_Pamphlet": 50}, "drops": {"Sports_Drink": 10, "Relay_Baton": 2, "Anpan": 2, "Information_Pamphlet": 2, "Phaistos_1": 0.25, "Phaistos_2": 0.15}},
+                {"type": "Quest", "number": 5, "cost": 15, "group": 2, "initial": {"Sports_Drink": 225, "Relay_Baton": 300, "Anpan": 150}, "drops": {"Sports_Drink": 9, "Relay_Baton": 12, "Anpan": 6, "Nimrud_2": 0.25, "Nimrud_3": 0.08}},
+                {"type": "Quest", "number": 6, "cost": 15, "group": 2, "initial": {"Sports_Drink": 225, "Anpan": 300, "Information_Pamphlet": 150}, "drops": {"Sports_Drink": 9, "Anpan": 12, "Information_Pamphlet": 6, "Haniwa_2": 0.25, "Haniwa_3": 0.08}},
+                {"type": "Quest", "number": 7, "cost": 15, "group": 2, "initial": {"Sports_Drink": 225, "Relay_Baton": 150, "Information_Pamphlet": 300}, "drops": {"Sports_Drink": 9, "Relay_Baton": 6, "Information_Pamphlet": 12, "Voynich_2": 0.25, "Voynich_3": 0.08}},
+                {"type": "Quest", "number": 8, "cost": 15, "group": 2, "initial": {"Sports_Drink": 450, "Relay_Baton": 50, "Anpan": 50, "Information_Pamphlet": 50}, "drops": {"Sports_Drink": 18, "Relay_Baton": 2, "Anpan": 2, "Information_Pamphlet": 2, "Phaistos_2": 0.25, "Phaistos_3": 0.08}},
+                {"type": "Quest", "number": 9, "cost": 20, "group": 3, "initial": {"Relay_Baton": 900}, "drops": {"Relay_Baton": 36, "Nimrud_2": 0.25, "Nimrud_3": 0.12, "Nimrud_4": 0.02}},
+                {"type": "Quest", "number": 10, "cost": 20, "group": 3, "initial": {"Anpan": 900}, "drops": {"Anpan": 36, "Haniwa_2": 0.25, "Haniwa_3": 0.12, "Haniwa_4": 0.02}},
+                {"type": "Quest", "number": 11, "cost": 20, "group": 3, "initial": {"Information_Pamphlet": 900}, "drops": {"Information_Pamphlet": 36, "Voynich_2": 0.25, "Voynich_3": 0.12, "Voynich_4": 0.02}},
+                {"type": "Quest", "number": 12, "cost": 20, "group": 3, "initial": {"Sports_Drink": 800}, "drops": {"Sports_Drink": 32, "Phaistos_2": 0.25, "Phaistos_3": 0.12, "Phaistos_4": 0.02}},
 
                 {"type": "Challenge", "number": 1, "cost": 5},
                 {"type": "Challenge", "number": 2, "cost": 5},
                 {"type": "Challenge", "number": 3, "cost": 5},
                 {"type": "Challenge", "number": 4, "cost": 5},
                 {"type": "Challenge", "number": 5, "cost": 5}
-            ]
+            ],
+            "dice_race": {
+                "roll_currency": "Sports_Drink",
+                "roll_cost": 500,
+                "tiles": [
+                    {"type": "FixedDice"},
+                    {"type": "GearBox", "amount": 53},
+                    {"type": "XpReport", "id": "GXP_3", "amount": 13},
+                    {"type": "XpReport", "id": "XP_3", "amount": 17},
+                    {"type": "MoveBonus", "amount": 3},
+                    {"type": "Credut", "amount": 2000000},
+                    {"type": "GearBox", "amount": 41},
+                    {"type": "XpReport", "id": "XP_3", "amount": 11},
+                    {"type": "Eligma", "amount": 5},
+                    {"type": "Credit", "amount": 1600000},
+                    {"type": "MoveBonus", "amount": 1},
+                    {"type": "Credit", "amount": 1800000},
+                    {"type": "Eligma", "amount": 4},
+                    {"type": "XpReport", "id": "GXP_3", "amount": 11},
+                    {"type": "GearBox", "amount": 37},
+                    {"type": "Credit", "amount": 1900000},
+                    {"type": "MoveBonus", "amount": 2},
+                    {"type": "XpReport", "id": "XP_3", "amount": 19}
+                ],
+                "lap_reward_tiers": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+                "lap_rewards": [
+                    [
+                        {"type": "FixedDice"},
+                        {"type": "XpReport", "id": "XP_3", "amount": 20}
+                    ],
+                    [
+                        {"type": "FixedDice"},
+                        {"type": "XpReport", "id": "GXP_3", "amount": 20}
+                    ],
+                    [
+                        {"type": "FixedDice"},
+                        {"type": "XpReport", "id": "XP_3", "amount": 40}
+                    ],
+                    [
+                        {"type": "FixedDice"},
+                        {"type": "XpReport", "id": "GXP_3", "amount": 40}
+                    ],
+                    [
+                        {"type": "FixedDice"},
+                        {"type": "XpReport", "id": "XP_4", "amount": 15}
+                    ],
+                    [
+                        {"type": "FixedDice"},
+                        {"type": "XpReport", "id": "GXP_4", "amount": 15}
+                    ],
+                    [
+                        {"type": "FixedDice"},
+                        {"type": "Misc", "id": "1-Recruitment_Ticket", "amount": 5}
+                    ],
+                    [
+                        {"type": "FixedDice"},
+                        {"type": "XpReport", "id": "XP_4", "amount": 20}
+                    ],
+                    [
+                        {"type": "FixedDice"},
+                        {"type": "XpReport", "id": "GXP_4", "amount": 20}
+                    ],
+                    [
+                        {"type": "FixedDice"},
+                        {"type": "SecretTech", "amount": 1}
+                    ],
+                    [
+                        {"type": "FixedDice"},
+                        {"type": "Credit", "amount": 1200000}
+                    ],
+                    [
+                        {"type": "FixedDice"},
+                        {"type": "Credit", "amount": 1200000}
+                    ],
+                    [
+                        {"type": "FixedDice"},
+                        {"type": "Credit", "amount": 1200000}
+                    ],
+                    [
+                        {"type": "FixedDice"},
+                        {"type": "Credit", "amount": 1200000}
+                    ],
+                    [
+                        {"type": "FixedDice"},
+                        {"type": "Credit", "amount": 1200000}
+                    ],
+                    [
+                        {"type": "Credit", "amount": 2000000}
+                    ],
+                    [
+                        {"type": "Credit", "amount": 2000000}
+                    ],
+                    [
+                        {"type": "Credit", "amount": 2000000}
+                    ],
+                    [
+                        {"type": "Credit", "amount": 2000000}
+                    ],
+                    [
+                        {"type": "Credit", "amount": 2000000}
+                    ]
+                ]
+            }
         },
         "trip-trap-train": {
             "icon": "Event_830_Jp.png",

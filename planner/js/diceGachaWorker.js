@@ -10,7 +10,7 @@ onmessage = (e) => {
         Init(e.data[0]);
     }
 
-    SimulateAttempts(e.data[0], e.data[1], e.data[2], e.data[3], e.data[4], e.data[5], e.data[6]);
+    SimulateAttempts(e.data[0], e.data[1], e.data[2], e.data[3], e.data[4], e.data[5], e.data[6], e.data[7]);
 }
 
 let diceRewards;
@@ -71,7 +71,7 @@ function Init(diceRace) {
     }
 }
 
-function SimulateAttempts(diceRace, targetParams, timeout, attemptsNum, currencyOwned, devIndex, keepAlive) {
+function SimulateAttempts(diceRace, targetParams, timeout, attemptsNum, currencyOwned, initialDiceTickets, devIndex, keepAlive) {
 
     let startTime = new Date();
 
@@ -95,7 +95,13 @@ function SimulateAttempts(diceRace, targetParams, timeout, attemptsNum, currency
 
         let tilesRolled = Array(maxTile + 1).fill(0);
 
-        let diceTickets = Array(6).fill(0);
+        let diceTickets;
+        if (initialDiceTickets && initialDiceTickets.length > 0) {
+            diceTickets = JSON.parse(JSON.stringify(initialDiceTickets));
+        }
+        else {
+            diceTickets = Array(6).fill(0);
+        }
 
         let useDice;
         let move;
@@ -136,6 +142,14 @@ function SimulateAttempts(diceRace, targetParams, timeout, attemptsNum, currency
             }
 
             pos += moveBonuses[pos];
+
+            if (pos > maxTile) {
+                pos -= (maxTile + 1);
+                lap++;
+                if (ticketLapTiers[lap]) {
+                    diceTickets[Math.ceil(Math.random() * 6) - 1]++;
+                }
+            }
 
             tilesRolled[pos]++;
 
@@ -188,6 +202,14 @@ function SimulateAttempts(diceRace, targetParams, timeout, attemptsNum, currency
             }
 
             pos += moveBonuses[pos];
+
+            if (pos > maxTile) {
+                pos -= (maxTile + 1);
+                lap++;
+                if (ticketLapTiers[lap]) {
+                    diceTickets[Math.ceil(Math.random() * 6) - 1]++;
+                }
+            }
 
             tilesRolled[pos]++;
 

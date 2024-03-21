@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?43').done(function (json) {
+    $.getJSON('json/events.json?44').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -86,7 +86,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?23').done(function (json) {
+    $.getJSON('json/strings.json?24').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -420,7 +420,7 @@ function LoadEvent(eventId) {
 
     let enabledStageGroups;
     //TEMP
-    if (current_event == "momoyodou-beach-house") {
+    if (current_event == "get-set-go-rerun") {
         enabledStageGroups = event_data?.enabled_stage_groups ?? [false, false, true];
     }
     else {
@@ -2439,6 +2439,7 @@ function CalculateStageDrops(result, ignoreRequirement) {
     let totalEligma = 0;
     let totalCredit = 0;
     let totalSecretTech = 0;
+    let totalGearBoxes = 0;
     let energyCost = 0;
 
     let stageRuns = {};
@@ -2731,6 +2732,7 @@ function CalculateStageDrops(result, ignoreRequirement) {
                 totalCredit += intResults[0];
                 totalEligma += intResults[1];
                 totalSecretTech += intResults[2];
+                totalGearBoxes += intResults[3];
             }
         }
     }
@@ -3012,7 +3014,7 @@ function CalculateStageDrops(result, ignoreRequirement) {
 
     if (feasible) {
         UpdateRewardsObtained(totalCurrencies, energyCost, totalArtifacts, totalSchoolMats, totalEleph, totalXps,
-            totalCredit, totalEligma, totalSecretTech);
+            totalCredit, totalEligma, totalSecretTech, totalGearBoxes);
         stage_runs = stageRuns;
     }
     else {
@@ -3598,7 +3600,7 @@ function AddDiceRewards(totalEleph, totalXps) {
         return;
     }
 
-    let totalCredit = 0, totalEligma = 0, totalSecretTech = 0;
+    let totalCredit = 0, totalEligma = 0, totalSecretTech = 0, totalGearBoxes = 0;
 
     let rewardNames = Object.keys(diceGachaAvgSD);
 
@@ -3639,6 +3641,9 @@ function AddDiceRewards(totalEleph, totalXps) {
         else if (rewardName == "SecretTech") {
             totalSecretTech += rewardAmount;
         }
+        else if (rewardName == "GearBox") {
+            totalGearBoxes += rewardAmount;
+        }
         else if (nameInt) {
 
             if (nameInt >= 10000 && nameInt < 30000) {
@@ -3663,7 +3668,7 @@ function AddDiceRewards(totalEleph, totalXps) {
         // }
     }
 
-    return [totalCredit, totalEligma, totalSecretTech]
+    return [totalCredit, totalEligma, totalSecretTech, totalGearBoxes]
 }
 
 function AddInvasionRewards(totalCurrencies, totalEleph, totalXps) {
@@ -3774,7 +3779,7 @@ function ClearRewards() {
     }
 }
 
-function UpdateRewardsObtained(totalCurrencies, energyCost, totalArtifacts, totalSchoolMats, totalEleph, totalXps, totalCredit, totalEligma, totalSecretTech) {
+function UpdateRewardsObtained(totalCurrencies, energyCost, totalArtifacts, totalSchoolMats, totalEleph, totalXps, totalCredit, totalEligma, totalSecretTech, totalGearBoxes) {
 
     ClearRewards();
 
@@ -3846,6 +3851,10 @@ function UpdateRewardsObtained(totalCurrencies, energyCost, totalArtifacts, tota
         currentSubDiv.appendChild(CreateRewardItem("icons/SchoolMat/" + name + ".webp", totalSchoolMats[name].toFixed(1), ''));
         //'drop-resource-rarity-' + dropRarity + ' drop-resource'));
     })
+
+    if (totalGearBoxes) {
+        xpMatsContainer.appendChild(CreateRewardItem("icons/MiscItem/Random_Equipment_Box_0.png", totalGearBoxes, ""));
+    }
 
     let xpMatNames = Object.keys(totalXps).sort().reverse();
 
@@ -5002,10 +5011,10 @@ function SimulateDiceGacha() {
 
     let dice_drop_event = current_event + "";
 
-    const worker1 = new Worker("js/diceGachaWorker.js");
-    const worker2 = new Worker("js/diceGachaWorker.js");
-    const worker3 = new Worker("js/diceGachaWorker.js");
-    const worker4 = new Worker("js/diceGachaWorker.js");
+    const worker1 = new Worker("js/diceGachaWorker.js?1");
+    const worker2 = new Worker("js/diceGachaWorker.js?1");
+    const worker3 = new Worker("js/diceGachaWorker.js?1");
+    const worker4 = new Worker("js/diceGachaWorker.js?1");
 
     worker1.onmessage = (e) => {
         completedWorkers.push(1);
@@ -5030,10 +5039,10 @@ function SimulateDiceGacha() {
 
     let diceRace = event_config.events[current_event].dice_race;
 
-    worker1.postMessage([diceRace, [[], [], [], [2], [1], [], [2], [], [], [], [], [], [6], [5], [4], [3], [2], [6]], 3000, 100000, diceRollCurrencyOwned]);
-    worker2.postMessage([diceRace, [[], [], [], [2], [1], [], [2], [], [], [], [], [], [6], [5], [4], [3], [2], [6]], 3000, 100000, diceRollCurrencyOwned]);
-    worker3.postMessage([diceRace, [[], [], [], [2], [1], [], [2], [], [], [], [], [], [6], [5], [4], [3], [2], [6]], 3000, 100000, diceRollCurrencyOwned]);
-    worker4.postMessage([diceRace, [[], [], [], [2], [1], [], [2], [], [], [], [], [], [6], [5], [4], [3], [2], [6]], 3000, 100000, diceRollCurrencyOwned]);
+    worker1.postMessage([diceRace, [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []], 3000, 100000, diceRollCurrencyOwned, [1, 1, 1, 1, 1, 1]]);
+    worker2.postMessage([diceRace, [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []], 3000, 100000, diceRollCurrencyOwned, [1, 1, 1, 1, 1, 1]]);
+    worker3.postMessage([diceRace, [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []], 3000, 100000, diceRollCurrencyOwned, [1, 1, 1, 1, 1, 1]]);
+    worker4.postMessage([diceRace, [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []], 3000, 100000, diceRollCurrencyOwned, [1, 1, 1, 1, 1, 1]]);
 }
 
 function ProcessDiceResults(eventName) {
