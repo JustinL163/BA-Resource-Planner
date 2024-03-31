@@ -33,6 +33,12 @@ $(document).ready(function () {
 
 let toggleCount = 0;
 function toggleViewFilters() {
+
+    // APRIL FOOLS
+    if (document.getElementById("button-filters").classList.contains("april-fools-button")) {
+        return;
+    }
+
     buildFilterList();
     $("div#viewFilters").toggle();
     if(toggleCount % 2 == 0)

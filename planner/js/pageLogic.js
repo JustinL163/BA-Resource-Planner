@@ -659,6 +659,7 @@ function init() {
         controlPanel.style.fontSize = controlPanelSize;
     }
 
+    InitAprilFools();
 }
 
 function validateData() {
@@ -1264,6 +1265,11 @@ function openModal(e) {
         fromChar = true;
     }
 
+    // APRIL FOOLS
+    if (!allCharsPulled.includes(this.id.substring(5))) {
+        return;
+    }
+
     if (bulkMode) { // include alt key shortcut
         let charId = this.id.substring(5);
 
@@ -1616,6 +1622,11 @@ function multiCharBorrow() {
 
 function showMultiSelect(source) {
 
+    // APRIL FOOLS
+    if (document.getElementById("button-addcharacters").classList.contains("april-fools-button")) {
+        return;
+    }
+
     multiCharsClear();
 
     multiCharSource = source;
@@ -1869,6 +1880,10 @@ function multiCharAdd() {
 }
 
 function teamsToggle() {
+    // APRIL FOOLS
+    if (document.getElementById("button-teamstoggle").classList.contains("april-fools-button")) {
+        return;
+    }
 
     if (document.getElementById("characterMultiSelectContainer").style.display != "none") {
         return;
@@ -2934,6 +2949,11 @@ function rebuildFilters() {
 
 function ToggleGroupFilterMode() {
 
+    // APRIL FOOLS
+    if (document.getElementById("btn-group-filter-mode").classList.contains("april-fools-button")) {
+        return;
+    }
+
     if (GroupFilterMode == "OnlyGroup") {
         GroupFilterMode = "UpToGroup";
         document.getElementById('btn-group-filter-mode').innerText = GetLanguageString("button-groupmodeupto");
@@ -3011,6 +3031,11 @@ function applyFilters(filtered) {
 
 function resetFilters() {
 
+    // APRIL FOOLS
+    if (document.getElementById("button-resetfilters").classList.contains("april-fools-button")) {
+        return;
+    }
+
     let selectElement = document.getElementById('filter-groups');
     selectElement.value = "All";
 
@@ -3045,6 +3070,14 @@ function charsFromGroup(group) {
 }
 
 function charactersToggle(value) {
+
+    // APRIL FOOLS
+    if (value == "enable" && document.getElementById("button-enableall").classList.contains("april-fools-button")) {
+        return;
+    }
+    else if (value == "disable" && document.getElementById("button-disableall").classList.contains("april-fools-button")) {
+        return;
+    }
 
     disabledChars = [];
 
@@ -4282,6 +4315,11 @@ function ReloadStudentImgs() {
 
 function openResourceModal() {
 
+    // APRIL FOOLS
+    if (document.getElementById("button-resources").classList.contains("april-fools-button")) {
+        return;
+    }
+
     if (!loaded) {
         return;
     }
@@ -4398,6 +4436,10 @@ function hideResourceDisplays() {
 }
 
 function openGearModal() {
+    // APRIL FOOLS
+    if (document.getElementById("button-gear").classList.contains("april-fools-button")) {
+        return;
+    }
 
     if (!loaded) {
         return;
@@ -4469,6 +4511,10 @@ function openGearModal() {
 }
 
 function openTransferModal() {
+    // APRIL FOOLS
+    if (document.getElementById("button-transfer").classList.contains("april-fools-button")) {
+        return;
+    }
 
     if (document.getElementById("characterMultiSelectContainer").style.display != "none") {
         return;
@@ -5878,6 +5924,29 @@ function calculateRaidCoins() {
 
 function switchResourceDisplay(displayType) {
 
+    // APRIL FOOLS
+    if (displayType == "Owned") {
+        if (document.getElementById("switch-resource-owned").classList.contains("april-fools-button")) {
+            return;
+        }
+    }
+    else if (displayType == "Total") {
+        if (document.getElementById("switch-resource-total").classList.contains("april-fools-button")) {
+            return;
+        }
+    }
+    else if (displayType == "Remaining") {
+        if (document.getElementById("switch-resource-remaining").classList.contains("april-fools-button")) {
+            return;
+        }
+    }
+    else if (displayType == "Leftover") {
+        if (document.getElementById("switch-resource-leftover").classList.contains("april-fools-button")) {
+            return;
+        }
+    }
+
+
     let btnOwned = document.getElementById("switch-resource-owned");
     let btnTotal = document.getElementById("switch-resource-total");
     let btnRemaining = document.getElementById("switch-resource-remaining");
@@ -5979,6 +6048,28 @@ function CalculateLeftoverGearXp() {
 }
 
 function switchGearDisplay(displayType) {
+
+    // APRIL FOOLS
+    if (displayType == "Owned") {
+        if (document.getElementById("switch-gear-owned").classList.contains("april-fools-button")) {
+            return;
+        }
+    }
+    else if (displayType == "Total") {
+        if (document.getElementById("switch-gear-total").classList.contains("april-fools-button")) {
+            return;
+        }
+    }
+    else if (displayType == "Remaining") {
+        if (document.getElementById("switch-gear-remaining").classList.contains("april-fools-button")) {
+            return;
+        }
+    }
+    else if (displayType == "Leftover") {
+        if (document.getElementById("switch-gear-leftover").classList.contains("april-fools-button")) {
+            return;
+        }
+    }
 
     let btnOwned = document.getElementById("switch-gear-owned");
     let btnTotal = document.getElementById("switch-gear-total");
@@ -6376,6 +6467,11 @@ function ControlPanelClicked(button) {
     }
 
     if (button == "Edit") {
+        // APRIL FOOLS
+        if (document.getElementById("control-edit").classList.contains("april-fools-button")) {
+            return;
+        }
+
         if (bulkMode && bulkChars.length > 0) {
             OpenBulkModal();
         }
@@ -6388,6 +6484,11 @@ function ControlPanelClicked(button) {
         }
     }
     else if (button == "Move") {
+        // APRIL FOOLS
+        if (document.getElementById("control-move").classList.contains("april-fools-button")) {
+            return;
+        }
+
         document.getElementById("control-button-edit").classList.remove("selected");
         document.getElementById("control-button-move").classList.add("selected");
         document.getElementById("control-button-disable").classList.remove("selected");
@@ -6395,6 +6496,11 @@ function ControlPanelClicked(button) {
         ResetBulkMode();
     }
     else if (button == "Disable") {
+        // APRIL FOOLS
+        if (document.getElementById("control-disable").classList.contains("april-fools-button")) {
+            return;
+        }
+
         document.getElementById("control-button-edit").classList.remove("selected");
         document.getElementById("control-button-move").classList.remove("selected");
         document.getElementById("control-button-disable").classList.add("selected");
@@ -6402,14 +6508,29 @@ function ControlPanelClicked(button) {
         ResetBulkMode();
     }
     else if (button == "AddStudent") {
+        // APRIL FOOLS
+        if (document.getElementById("control-addstudent").classList.contains("april-fools-button")) {
+            return;
+        }
+
         showMultiSelect('AddNewChars');
         ResetBulkMode();
     }
     else if (button == "Filter") {
+        // APRIL FOOLS
+        if (document.getElementById("control-filter").classList.contains("april-fools-button")) {
+            return;
+        }
+
         toggleViewFilters();
         ResetBulkMode();
     }
     else if (button == "Bulk") {
+        // APRIL FOOLS
+        if (document.getElementById("control-bulk").classList.contains("april-fools-button")) {
+            return;
+        }
+
         if (!bulkMode) {
             document.getElementById("control-button-bulk").classList.add("selected");
             document.getElementById("control-button-edit").classList.remove("selected");
@@ -6833,4 +6954,311 @@ function updateBulkStarDisplays(charId, fromTemp) {
     updateStarDisplay("bulk-ue-current-container", charId, "ue-current", fromTemp);
     updateStarDisplay("bulk-ue-target-container", charId, "ue-target", fromTemp);
 
+}
+
+let chars1Star = [], chars2Star = [], chars3Star = [];
+let charStars = [];
+let aprilPyro = 0;
+let allCharsPulled = [];
+function InitAprilFools() {
+
+    let charKeys = Object.keys(charlist);
+    for (let i = 0; i < charKeys.length; i++) {
+        let aprilStar = charlist[charKeys[i]].StarGrade;
+
+        if (aprilStar == 1) {
+            chars1Star.push(charKeys[i]);
+        }
+        else if (aprilStar == 2) {
+            chars2Star.push(charKeys[i]);
+        }
+        else if (aprilStar == 3) {
+            chars3Star.push(charKeys[i]);
+        }
+    }
+
+    charStars = [chars1Star, chars2Star, chars3Star];
+
+    let aprilTemp = localStorage.getItem("april-ids-unlocked");
+    if (aprilTemp) {
+        aprilIds = JSON.parse(aprilTemp);
+    }
+
+    let aprilTemp2 = localStorage.getItem("april-ids-chars");
+    if (aprilTemp2) {
+        allCharsPulled = JSON.parse(aprilTemp2);
+    }
+
+    let charBoxes = document.getElementsByClassName("main-display-char");
+
+    for (let i = 0; i < charBoxes.length; i++) {
+
+        let newDiv = document.createElement("div");
+
+        let coverDiv = document.createElement("div");
+        coverDiv.className = "april-fools-char-cover";
+
+        let lockImg = document.createElement("img");
+        lockImg.src = "icons/UI/unlock-solid.svg";
+        lockImg.className = "april-fools-main-display-char";
+
+        newDiv.appendChild(coverDiv);
+        newDiv.appendChild(lockImg);
+
+        charBoxes[i].appendChild(newDiv);
+
+        charBoxes[i].addEventListener("click", (event) => {
+            AprilLockClicked(event.currentTarget, "char");
+        })
+    }
+
+    let buttonsList = document.getElementsByClassName("charEditorButton");
+
+    for (let i = 0; i < buttonsList.length; i++) {
+        buttonsList[i].classList.add("april-fools-button");
+        buttonsList[i].addEventListener("click", (event) => {
+            AprilLockClicked(event.currentTarget);
+        })
+    }
+
+    buttonsList = document.getElementsByClassName("control-panel-button-wrapper");
+
+    for (let i = 0; i < buttonsList.length; i++) {
+        buttonsList[i].classList.add("april-fools-button");
+        buttonsList[i].addEventListener("click", (event) => {
+            AprilLockClicked(event.currentTarget);
+        })
+    }
+
+    buttonsList = document.getElementsByClassName("footer-button");
+
+    for (let i = 0; i < buttonsList.length; i++) {
+        buttonsList[i].classList.add("april-fools-button");
+        buttonsList[i].addEventListener("click", (event) => {
+            AprilLockClicked(event.currentTarget);
+        })
+    }
+
+    buttonsList = document.getElementsByClassName("button-switch-display");
+
+    for (let i = 0; i < buttonsList.length; i++) {
+        buttonsList[i].classList.add("april-fools-button");
+        buttonsList[i].addEventListener("click", (event) => {
+            AprilLockClicked(event.currentTarget);
+        })
+    }
+
+    for (let i = 0; i < aprilIds.length; i++) {
+        document.getElementById(aprilIds[i]).classList.remove("april-fools-button");
+    }
+
+    let aprilTempPyro = localStorage.getItem("april-pyro");
+    if (aprilTempPyro) {
+        aprilPyro = JSON.parse(aprilTempPyro);
+    }
+
+    UnlockStudents();
+    RefreshPyro();
+}
+
+let aprilIds = [];
+let currentLocked = "";
+function AprilLockClicked(target, type) {
+
+    if (type == "char") {
+        // APRIL FOOLS
+        if (!allCharsPulled.includes(target.id.substring(5))) {
+            AprilPullScreen();
+        }
+    }
+    else {
+        if (target.classList.contains("april-fools-button")) {
+            AprilBuyScreen();
+        }
+    }
+    currentLocked = target.id;
+}
+
+function BuyFeature() {
+
+    if (aprilPyro >= 2000) {
+        aprilPyro -= 2000;
+        aprilIds.push(currentLocked);
+        document.getElementById(currentLocked).classList.remove("april-fools-button");
+        RefreshPyro();
+    }
+    else {
+        document.getElementById("april-pyroxene-count").classList.add("nopyros");
+        setTimeout(() => {
+            document.getElementById("april-pyroxene-count").classList.remove("nopyros");
+        }, 1000);
+    }
+
+    localStorage.setItem("april-ids-unlocked", JSON.stringify(aprilIds));
+}
+
+function RandomPull() {
+    let randPull = Math.random();
+
+    if (randPull <= 0.7) {
+        let randChar = Math.floor(Math.random() * chars1Star.length);
+        return chars1Star[randChar];
+    }
+    else if (randPull <= 0.9) {
+        let randChar = Math.floor(Math.random() * chars2Star.length);
+        return chars2Star[randChar];
+    }
+    else {
+        let randChar = Math.floor(Math.random() * chars3Star.length);
+        return chars3Star[randChar];
+    }
+}
+
+function AprilBuyScreen() {
+    document.getElementById("april-pyroxene-popup").style.display = "";
+
+    document.getElementById("april-char-pulls").style.display = "none";
+    document.getElementById("buy-packs").style.display = "none";
+
+    document.getElementById("spend-pyros").style.display = "";
+}
+
+function AprilPyroScreen() {
+    document.getElementById("april-pyroxene-popup").style.display = "";
+
+    document.getElementById("spend-pyros").style.display = "none";
+    document.getElementById("april-char-pulls").style.display = "none";
+
+    document.getElementById("buy-packs").style.display = "";
+}
+
+function AprilPullScreen() {
+    document.getElementById("april-pyroxene-popup").style.display = "";
+
+    document.getElementById("spend-pyros").style.display = "none";
+    document.getElementById("buy-packs").style.display = "none";
+
+    document.getElementById("april-char-pulls").style.display = "";
+}
+
+function RollClicked(num) {
+    let charsPulled = [];
+    let newChars = [];
+    if (num == 120) {
+        if (aprilPyro >= 120) {
+            aprilPyro -= 120;
+        }
+        else {
+            document.getElementById("april-pyroxene-count").classList.add("nopyros");
+            setTimeout(() => {
+                document.getElementById("april-pyroxene-count").classList.remove("nopyros");
+            }, 1000);
+            return;
+        }
+        let pull = RandomPull();
+        charsPulled = [pull];
+        if (!allCharsPulled.includes(pull)) {
+            allCharsPulled.push(pull);
+            newChars.push(pull);
+        }
+    }
+    else if (num == 1200) {
+        if (aprilPyro >= 1200) {
+            aprilPyro -= 1200;
+        }
+        else {
+            document.getElementById("april-pyroxene-count").classList.add("nopyros");
+            setTimeout(() => {
+                document.getElementById("april-pyroxene-count").classList.remove("nopyros");
+            }, 1000);
+            return;
+        }
+        for (let i = 0; i < 10; i++) {
+            let pull = RandomPull();
+            charsPulled.push(pull);
+            if (!allCharsPulled.includes(pull)) {
+                allCharsPulled.push(pull);
+                newChars.push(pull);
+            }
+            else {
+                newChars.push(false);
+            }
+        }
+    }
+
+    for (let i = 0; i < 10; i++) {
+        if (charsPulled[i]) {
+            document.getElementById("char-pull-" + (i + 1)).src = "icons/Portrait/Icon_" + charsPulled[i] + ".webp";
+        }
+        else {
+            document.getElementById("char-pull-" + (i + 1)).src = "";
+        }
+
+        if (newChars[i]) {
+            document.getElementById("char-pull-" + (i + 1)).classList.add("newstudent");
+        }
+        else {
+            document.getElementById("char-pull-" + (i + 1)).classList.remove("newstudent");
+        }
+    }
+
+    UnlockStudents();
+    RefreshPyro();
+
+    localStorage.setItem("april-ids-chars", JSON.stringify(allCharsPulled));
+}
+
+function UnlockStudents() {
+
+    for (let i = 0; i < allCharsPulled.length; i++) {
+        let studentEle = document.getElementById("char_" + allCharsPulled[i]);
+
+        if (studentEle) {
+            if (studentEle.lastChild.children[0].classList.contains("april-fools-char-cover")) {
+                studentEle.lastChild.remove();
+            }
+        }
+    }
+}
+
+let purchasedPacks = [0, 0, 0];
+function BuyPack(pack) {
+
+    if (pack == 1) {
+        if (purchasedPacks[0] < 1) {
+            aprilPyro += 8000;
+            purchasedPacks[0] += 1;
+        }
+
+        if (purchasedPacks[0] >= 1) {
+            document.getElementById("pack-1").classList.add("disabled");
+        }
+    }
+    else if (pack == 2) {
+        if (purchasedPacks[1] < 3) {
+            aprilPyro += 6600;
+            purchasedPacks[1] += 1;
+        }
+
+        if (purchasedPacks[1] >= 3) {
+            document.getElementById("pack-2").classList.add("disabled");
+        }
+    }
+    else if (pack == 3) {
+        aprilPyro += 4800;
+        purchasedPacks[2] += 1;
+    }
+
+    RefreshPyro();
+}
+
+function RefreshPyro() {
+
+    document.getElementById("april-pyroxene-count").innerText = commafy(aprilPyro);
+    localStorage.setItem("april-pyro", JSON.stringify(aprilPyro));
+}
+
+function AprilClosePopup() {
+
+    document.getElementById("april-pyroxene-popup").style.display = "none";
 }
