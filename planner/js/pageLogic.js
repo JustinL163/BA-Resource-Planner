@@ -7086,11 +7086,13 @@ function BuyFeature() {
         aprilIds.push(currentLocked);
         document.getElementById(currentLocked).classList.remove("april-fools-button");
         RefreshPyro();
+        AprilClosePopup();
     }
     else {
         document.getElementById("april-pyroxene-count").classList.add("nopyros");
         setTimeout(() => {
             document.getElementById("april-pyroxene-count").classList.remove("nopyros");
+            AprilPyroScreen();
         }, 1000);
     }
 
@@ -7153,6 +7155,7 @@ function RollClicked(num) {
             setTimeout(() => {
                 document.getElementById("april-pyroxene-count").classList.remove("nopyros");
             }, 1000);
+            AprilPyroScreen();
             return;
         }
         let pull = RandomPull();
@@ -7171,6 +7174,7 @@ function RollClicked(num) {
             setTimeout(() => {
                 document.getElementById("april-pyroxene-count").classList.remove("nopyros");
             }, 1000);
+            AprilPyroScreen();
             return;
         }
         for (let i = 0; i < 10; i++) {
@@ -7261,4 +7265,31 @@ function RefreshPyro() {
 function AprilClosePopup() {
 
     document.getElementById("april-pyroxene-popup").style.display = "none";
+}
+
+function HELP() {
+
+    Swal.fire({
+        title: "Get rid of April fools joke?",
+        showDenyButton: true,
+        confirmButtonText: "Yes please",
+        denyButtonText: "No thanks",
+        denyButtonColor: '#dc9641'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            localStorage.setItem("april-ids-unlocked", JSON.stringify(["btn-group-filter-mode", "button-resetfilters", "button-enableall", "button-filters",
+                "button-addcharacters", "control-move", "control-edit", "button-resources", "button-gear", "switch-resource-owned", "switch-resource-remaining",
+                "switch-resource-total", "switch-resource-leftover", "switch-gear-owned", "switch-gear-remaining", "button-transfer", "button-teamstoggle", "button-disableall",
+                "control-disable", "control-addstudent", "control-filter", "control-bulk", "switch-gear-total", "switch-gear-leftover"]))
+
+            let allIds = [];
+
+            let charKeys = Object.keys(charlist);
+            for (let i = 0; i < charKeys.length; i++) { 
+                allIds.push(charKeys[i]);
+            }
+            localStorage.setItem("april-ids-chars", JSON.stringify(allIds));
+            location.reload();
+        }
+    })
 }
