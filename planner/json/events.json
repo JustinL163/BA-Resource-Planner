@@ -1,7 +1,6 @@
 {
     "event_order": [
-        "get-set-go-rerun",
-        "|trip-trap-train",
+        "trip-trap-train",
         "|certain-scientific-archive"
     ],
     "events": {
@@ -5403,8 +5402,212 @@
             }
         },
         "trip-trap-train": {
+            "active": true,
             "icon": "Event_830_Jp.png",
-            "display_name": "Trip Trap Train"
+            "display_name": "Trip Trap Train",
+            "reset_time": 1711998000,
+            "start_time": 1712023200,
+            "end_time": 1713236400,
+            "maint_hours": 4,
+            "available_targets": ["Shop", "Materials", "Manual"],
+            "event_point_target": 15000,
+            "reward_preview": [],
+            "currencies": {
+                "Ticket": {
+                    "icon": "Ticket.png",
+                    "shortname": "Ticket",
+                    "source": "StageDrop",
+                    "clear": 10625,
+                    "bonus_units": [
+                        {"id": "10077", "bonus": 0.2},
+                        {"id": "10023", "bonus": 0.2},
+
+                        {"id": "13003", "bonus": 0.15},
+                        {"id": "16005", "bonus": 0.15},
+                        {"id": "10022", "bonus": 0.15},
+                        {"id": "10030", "bonus": 0.15},
+                        {"id": "20024", "bonus": 0.15},
+                        {"id": "20003", "bonus": 0.15},
+                        {"id": "20008", "bonus": 0.15}
+                    ]
+                },
+                "Attache_Case": {
+                    "icon": "Attache_Case.png",
+                    "shortname": "Attache Case",
+                    "source": "StageDrop",
+                    "clear": 11275,
+                    "bonus_units": [
+                        {"id": "10078", "bonus": 0.2},
+                        {"id": "10023", "bonus": 0.2},
+
+                        {"id": "10060", "bonus": 0.15},
+                        {"id": "10004", "bonus": 0.15},
+                        {"id": "16011", "bonus": 0.15},
+                        {"id": "10022", "bonus": 0.15},
+                        {"id": "26000", "bonus": 0.15},
+                        {"id": "20008", "bonus": 0.15}
+                    ]
+                },
+                "Crew_Whistle": {
+                    "icon": "Crew_Whistle.png",
+                    "shortname": "Crew Whistle",
+                    "source": "StageDrop",
+                    "clear": 10250,
+                    "bonus_units": [
+                        {"id": "10006", "bonus": 0.25},
+
+                        {"id": "10060", "bonus": 0.15},
+                        {"id": "10013", "bonus": 0.15},
+                        {"id": "10004", "bonus": 0.15},
+                        {"id": "16011", "bonus": 0.15},
+                        {"id": "16005", "bonus": 0.15},
+                        {"id": "10059", "bonus": 0.15},
+                        {"id": "20024", "bonus": 0.15},
+                        {"id": "20004", "bonus": 0.15}
+                    ]
+                },
+                "Event_Point": {
+                    "icon": "Event_Point.png",
+                    "shortname": "Event Point",
+                    "clear": 15000,
+                    "bonus_units": [
+                        {"id": "10077", "bonus": 0.25},
+                        {"id": "10078", "bonus": 0.25},
+
+                        {"id": "10006", "bonus": 0.15},
+                        {"id": "13003", "bonus": 0.15},
+                        {"id": "10013", "bonus": 0.15},
+                        {"id": "10030", "bonus": 0.15},
+                        {"id": "10059", "bonus": 0.15},
+                        {"id": "20003", "bonus": 0.15},
+                        {"id": "26000", "bonus": 0.15},
+                        {"id": "20004", "bonus": 0.15}
+
+                    ]
+                }
+            },
+            "shops": {
+                "Ticket": [
+                    {"type": "XpReport", "id": "XP_1", "count": 150, "cost": 1},
+                    {"type": "XpReport", "id": "XP_2", "count": 75, "cost": 5},
+                    {"type": "XpReport", "id": "XP_3", "count": 35, "cost": 20},
+                    {"type": "XpReport", "id": "XP_4", "count": 15, "cost": 100},
+                    {"type": "Material", "id": "3030", "count": 25, "cost": 10},
+                    {"type": "Material", "id": "3031", "count": 15, "cost": 30},
+                    {"type": "Material", "id": "3032", "count": 10, "cost": 100},
+                    {"type": "Material", "id": "3033", "count": 3, "cost": 300},
+                    {"type": "Gift", "id": "Cherry-Rose_Lip_Gloss", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Glassy_Glow_BB_Cream", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Samuela_The_Beyond", "count": 1, "cost": 300},
+                    {"type": "Furniture", "id": "Sports_Day_Referee_Seat", "count": 1, "cost": 1000, "limited": false}
+                ],
+                "Attache_Case": [
+                    {"type": "XpOrb", "id": "GXP_1", "count": 150, "cost": 1},
+                    {"type": "XpOrb", "id": "GXP_2", "count": 75, "cost": 4},
+                    {"type": "XpOrb", "id": "GXP_3", "count": 25, "cost": 15},
+                    {"type": "XpOrb", "id": "GXP_4", "count": 10, "cost": 60},
+                    {"type": "Material", "id": "4030", "count": 40, "cost": 5},
+                    {"type": "Material", "id": "4031", "count": 30, "cost": 15},
+                    {"type": "Material", "id": "4032", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "4033", "count": 12, "cost": 200},
+                    {"type": "Gift", "id": "Buried_Treasure_Map", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "World's_Most_Useless_Gadget", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "I-Book_Rare", "count": 1, "cost": 300},
+                    {"type": "Furniture", "id": "Wood_Terrace_Table", "count": 1, "cost": 2000, "limited": false}
+                ],
+                "Crew_Whistle": [
+                    {"type": "SecretTech", "id": "SecretTech", "count": 1, "cost": 1000},
+                    {"type": "XpWeapon", "id": "Needle_1", "count": 100, "cost": 5},
+                    {"type": "XpWeapon", "id": "Needle_2", "count": 40, "cost": 25},
+                    {"type": "Material", "id": "230", "count": 70, "cost": 5},
+                    {"type": "Material", "id": "231", "count": 35, "cost": 15},
+                    {"type": "Material", "id": "232", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "233", "count": 10, "cost": 200},
+                    {"type": "Material", "id": "260", "count": 70, "cost": 5},
+                    {"type": "Material", "id": "261", "count": 35, "cost": 15},
+                    {"type": "Material", "id": "262", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "263", "count": 10, "cost": 200}
+                ]
+            },
+            "stage_groups": ["1-4", "5-8", "9-12"],
+            "stages": [
+                {"type": "Story", "number": 1, "cost": 10, "initial": {"Event_Point": 10, "Ticket": 20}},
+                {"type": "Story", "number": 2, "cost": 10, "initial": {"Event_Point": 10, "Attache_Case": 20}},
+                {"type": "Story", "number": 3, "cost": 10, "initial": {"Event_Point": 10, "Ticket": 20}},
+                {"type": "Story", "number": 4, "cost": 10, "initial": {"Event_Point": 10, "Attache_Case": 20}},
+                {"type": "Story", "number": 5, "cost": 10, "initial": {"Event_Point": 10, "Ticket": 20}},
+                {"type": "Story", "number": 6, "cost": 10, "initial": {"Event_Point": 10, "Attache_Case": 20}},
+                {"type": "Story", "number": 7, "cost": 10, "initial": {"Event_Point": 10, "Ticket": 20}},
+                {"type": "Story", "number": 8, "cost": 10, "initial": {"Event_Point": 10, "Attache_Case": 20}},
+
+                {"type": "Quest", "number": 1, "cost": 10, "group": 1, "initial": {"Event_Point": 50, "Ticket": 150, "Attache_Case": 50, "Crew_Whistle": 50}, "drops": {"Event_Point": 3, "Ticket": 9, "Attache_Case": 3, "Crew_Whistle": 3, "T2_Hat": 0.66666, "T2_Gloves": 0.66666, "T2_Shoes": 0.66666, "T3_Hat": 0.33333, "T3_Gloves": 0.33333, "T3_Shoes": 0.33333}},
+                {"type": "Quest", "number": 2, "cost": 10, "group": 1, "initial": {"Event_Point": 50, "Ticket": 50, "Attache_Case": 150, "Crew_Whistle": 50}, "drops": {"Event_Point": 3, "Ticket": 3, "Attache_Case": 9, "Crew_Whistle": 3, "T2_Bag": 0.66666, "T2_Badge": 0.66666, "T2_Hairpin": 0.66666, "T3_Bag": 0.33333, "T3_Badge": 0.33333, "T3_Hairpin": 0.33333}},
+                {"type": "Quest", "number": 3, "cost": 10, "group": 1, "initial": {"Event_Point": 50, "Ticket": 50, "Attache_Case": 50, "Crew_Whistle": 150}, "drops": {"Event_Point": 3, "Ticket": 3, "Attache_Case": 3, "Crew_Whistle": 9, "T2_Charm": 0.66666, "T2_Watch": 0.66666, "T2_Necklace": 0.66666, "T3_Charm": 0.33333, "T3_Watch": 0.33333, "T3_Necklace": 0.33333}},
+                {"type": "Quest", "number": 4, "cost": 10, "group": 1, "initial": {"Event_Point": 300}, "drops": {"Event_Point": 18, "T2_Hat": 0.22222, "T2_Gloves": 0.22222, "T2_Shoes": 0.22222, "T2_Bag": 0.22222, "T2_Badge": 0.22222, "T2_Hairpin": 0.22222, "T2_Charm": 0.22222, "T2_Watch": 0.22222, "T2_Necklace": 0.22222, "T3_Hat": 0.11111, "T3_Gloves": 0.11111, "T3_Shoes": 0.11111, "T3_Bag": 0.11111, "T3_Badge": 0.11111, "T3_Hairpin": 0.11111, "T3_Charm": 0.11111, "T3_Watch": 0.11111, "T3_Necklace": 0.11111}},
+
+                {"type": "Quest", "number": 5, "cost": 15, "group": 2, "initial": {"Event_Point": 50, "Ticket": 250, "Attache_Case": 100}, "drops": {"Event_Point": 4, "Ticket": 18, "Attache_Case": 5, "T3_Hat": 1, "T3_Gloves": 1, "T3_Shoes": 1, "T4_Hat": 0.5, "T4_Gloves": 0.5, "T4_Shoes": 0.5}},
+                {"type": "Quest", "number": 6, "cost": 15, "group": 2, "initial": {"Event_Point": 50, "Attache_Case": 250, "Crew_Whistle": 100}, "drops": {"Event_Point": 4, "Attache_Case": 18, "Crew_Whistle": 5, "T3_Bag": 1, "T3_Badge": 1, "T3_Hairpin": 1, "T4_Bag": 0.5, "T4_Badge": 0.5, "T4_Hairpin": 0.5}},
+                {"type": "Quest", "number": 7, "cost": 15, "group": 2, "initial": {"Event_Point": 50, "Ticket": 100, "Crew_Whistle": 250}, "drops": {"Event_Point": 4, "Ticket": 5, "Crew_Whistle": 18, "T3_Charm": 1, "T3_Watch": 1, "T3_Necklace": 1, "T4_Charm": 0.5, "T4_Watch": 0.5, "T4_Necklace": 0.5}},
+                {"type": "Quest", "number": 8, "cost": 15, "group": 2, "initial": {"Event_Point": 400}, "drops": {"Event_Point": 27, "T3_Hat": 0.33333, "T3_Gloves": 0.33333, "T3_Shoes": 0.33333, "T3_Bag": 0.33333, "T3_Badge": 0.33333, "T3_Hairpin": 0.33333, "T3_Charm": 0.33333, "T3_Watch": 0.33333, "T3_Necklace": 0.33333, "T4_Hat": 0.16666, "T4_Gloves": 0.16666, "T4_Shoes": 0.16666, "T4_Bag": 0.16666, "T4_Badge": 0.16666, "T4_Hairpin": 0.16666, "T4_Charm": 0.16666, "T4_Watch": 0.16666, "T4_Necklace": 0.16666}},
+
+                {"type": "Quest", "number": 9, "cost": 20, "group":3 , "initial": {"Event_Point": 50, "Ticket": 450}, "drops": {"Event_Point": 6, "Ticket": 30, "T4_Hat": 1.33333, "T4_Gloves": 1.33333, "T4_Shoes": 1.33333, "T5_Hat": 0.66666, "T5_Gloves": 0.66666, "T5_Shoes": 0.66666}},
+                {"type": "Quest", "number": 10, "cost": 20, "group":3 , "initial": {"Event_Point": 50, "Attache_Case": 450}, "drops": {"Event_Point": 6, "Attache_Case": 30, "T4_Bag": 1.33333, "T4_Badge": 1.33333, "T4_Hairpin": 1.33333, "T5_Bag": 0.66666, "T5_Badge": 0.66666, "T5_Hairpin": 0.66666}},
+                {"type": "Quest", "number": 11, "cost": 20, "group":3 , "initial": {"Event_Point": 50, "Crew_Whistle": 450}, "drops": {"Event_Point": 6, "Crew_Whistle": 30, "T4_Charm": 1.33333, "T4_Watch": 1.33333, "T4_Necklace": 1.33333, "T5_Charm": 0.66666, "T5_Watch": 0.66666, "T5_Necklace": 0.66666}},
+                {"type": "Quest", "number": 12, "cost": 20, "group":3 , "initial": {"Event_Point": 500}, "drops": {"Event_Point": 36, "T4_Hat": 0.44444, "T4_Gloves": 0.44444, "T4_Shoes": 0.44444, "T4_Bag": 0.44444, "T4_Badge": 0.44444, "T4_Hairpin": 0.44444, "T4_Charm": 0.44444, "T4_Watch": 0.44444, "T4_Necklace": 0.44444, "T5_Hat": 0.22222, "T5_Gloves": 0.22222, "T5_Shoes": 0.22222, "T5_Bag": 0.22222, "T5_Badge": 0.22222, "T5_Hairpin": 0.22222, "T5_Charm": 0.22222, "T5_Watch": 0.22222, "T5_Necklace": 0.22222}},
+
+
+                {"type": "Challenge", "number": 1, "cost": 5},
+                {"type": "Challenge", "number": 2, "cost": 5},
+                {"type": "Challenge", "number": 3, "cost": 5},
+                {"type": "Challenge", "number": 4, "cost": 5}
+            ],
+            "point_rewards": [
+                {"points": 10, "type": "XpReport", "id": "XP_1", "count": 10},
+                {"points": 50, "type": "XpOrb", "id": "GXP_1", "count": 10},
+                {"points": 100, "type": "XpReport", "id": "XP_2", "count": 5},
+                {"points": 200, "type": "XpOrb", "id": "GXP_2", "count": 5},
+                {"points": 300, "type": "Eligma", "count": 10},
+                {"points": 400, "type": "XpReport", "id": "XP_1", "count": 10},
+                {"points": 500, "type": "XpOrb", "id": "GXP_1", "count": 10},
+                {"points": 600, "type": "XpReport", "id": "XP_2", "count": 5},
+                {"points": 700, "type": "XpOrb", "id": "GXP_2", "count": 5},
+                {"points": 800, "type": "XpReport", "id": "XP_3", "count": 2},
+                {"points": 900, "type": "XpOrb", "id": "GXP_3", "count": 2},
+                {"points": 1000, "type": "Eligma", "count": 10},
+                {"points": 1200, "type": "XpReport", "id": "XP_1", "count": 20},
+                {"points": 1400, "type": "XpOrb", "id": "GXP_1", "count": 20},
+                {"points": 1600, "type": "XpReport", "id": "XP_2", "count": 10},
+                {"points": 1800, "type": "XpOrb", "id": "GXP_2", "count": 10},
+                {"points": 2000, "type": "XpReport", "id": "XP_3", "count": 2},
+                {"points": 2200, "type": "XpOrb", "id": "GXP_3", "count": 2},
+                {"points": 2400, "type": "Credit", "count": 1000000},
+                {"points": 2600, "type": "XpReport", "id": "XP_4", "count": 1},
+                {"points": 2800, "type": "XpOrb", "id": "GXP_4", "count": 1},
+                {"points": 3000, "type": "Credit", "count": 1000000},
+                {"points": 3200, "type": "XpReport", "id": "XP_3", "count": 3},
+                {"points": 3400, "type": "XpOrb", "id": "GXP_3", "count": 3},
+                {"points": 3600, "type": "XpReport", "id": "XP_4", "count": 2},
+                {"points": 3800, "type": "XpOrb", "id": "GXP_4", "count": 2},
+                {"points": 4000, "type": "Eligma", "count": 15},
+                {"points": 4200, "type": "Credit", "count": 1500000},
+                {"points": 4400, "type": "XpReport", "id": "XP_3", "count": 3},
+                {"points": 4600, "type": "XpOrb", "id": "GXP_3", "count": 3},
+                {"points": 4800, "type": "Credit", "count": 1500000},
+                {"points": 5000, "type": "XpReport", "id": "XP_4", "count": 2},
+                {"points": 5500, "type": "XpOrb", "id": "GXP_4", "count": 2},
+                {"points": 6000, "type": "Eligma", "count": 15},
+                {"points": 6500, "type": "Credit", "count": 1500000},
+                {"points": 7000, "type": "XpReport", "id": "XP_3", "count": 10},
+                {"points": 7500, "type": "XpOrb", "id": "GXP_4", "count": 2},
+                {"points": 8000, "type": "Credit", "count": 1500000},
+                {"points": 9000, "type": "XpReport", "id": "XP_3", "count": 10},
+                {"points": 10000, "type": "SecretTech", "count": 1},
+                {"points": 11000, "type": "XpReport", "id": "XP_3", "count": 10},
+                {"points": 12000, "type": "Credit", "count": 1500000},
+                {"points": 13000, "type": "XpReport", "id": "XP_3", "count": 20},
+                {"points": 14000, "type": "Credit", "count": 2000000},
+                {"points": 15000, "type": "XpReport", "id": "XP_4", "count": 10}
+            ]
         },
         "certain-scientific-archive": {
             "icon": "Event_831_Jp.png",

@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?45').done(function (json) {
+    $.getJSON('json/events.json?46').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -1977,6 +1977,9 @@ function CreateDropsDiv(drops) {
             if (parseInt(matId) < 1000) {
                 dropImg.src = "icons/Artifact/" + drop + ".webp";
             }
+            else if (["T1_", "T2_", "T3_", "T4_", "T5_", "T6_", "T7_", "T8_", "T9_"].includes(drop.substring(0, 3))) {
+                dropImg.src = "icons/Gear/" + drop + ".webp";
+            }
             else {
                 dropImg.src = "icons/SchoolMat/" + drop + ".webp";
             }
@@ -2002,6 +2005,18 @@ function CreateDropsDiv(drops) {
             dropImg.src = "icons/LevelPart/" + drop + ".png";
 
             dropP.innerText = drops[drop];
+        }
+        else if (["T1_", "T2_", "T3_", "T4_", "T5_", "T6_", "T7_", "T8_", "T9_"].includes(drop.substring(0, 3))) {
+            dropImg.src = "icons/Gear/" + drop + "_small.webp";
+
+            if (Number.isInteger(drops[drop])) {
+                dropP.innerText = (drops[drop]);
+            }
+            else {
+                dropP.innerText = parseFloat((drops[drop] * 100).toFixed(2)) + "%";
+            }
+
+            dropP.classList.add("drop-smaller-text");
         }
         else if (dropInt) {
             if (dropInt >= 10000 && dropInt < 30000) {
@@ -2274,6 +2289,10 @@ function GenerateMaterialSelections() {
             dropSliced = drop.slice(0, -2);
             dropRarity = drop.slice(-1);
         }
+        else if (["T1_", "T2_", "T3_", "T4_", "T5_", "T6_", "T7_", "T8_", "T9_"].includes(drop.substring(0, 3))) {
+            matImg.src = "icons/Gear/" + drop + "_small.webp";
+            dropSliced = drop.slice(0, 2);
+        }
         else {
             matImg.src = "icons/SchoolMat/" + drop + ".webp";
             dropSliced = drop.slice(5);
@@ -2436,6 +2455,7 @@ function CalculateStageDrops(result, ignoreRequirement) {
     let totalSchoolMats = {};
     let totalEleph = {};
     let totalXps = {};
+    let totalGear = {};
     let totalEligma = 0;
     let totalCredit = 0;
     let totalSecretTech = 0;
@@ -2492,6 +2512,13 @@ function CalculateStageDrops(result, ignoreRequirement) {
                 }
 
                 totalSchoolMats[drop] += runs * drops[drop];
+            }
+            else if (["T1_", "T2_", "T3_", "T4_", "T5_", "T6_", "T7_", "T8_", "T9_"].includes(drop.substring(0, 3))) {
+                if (!totalGear[drop]) {
+                    totalGear[drop] = 0;
+                }
+
+                totalGear[drop] += runs * drops[drop];
             }
 
         })
@@ -3011,10 +3038,169 @@ function CalculateStageDrops(result, ignoreRequirement) {
             totalEleph["26008"] += 87;
         }
     }
+    else if (current_event == "trip-trap-train") {
+        if (!totalXps["XP_1"]) {
+            totalXps["XP_1"] = 0;
+        }
+
+        totalXps["XP_1"] += 100;
+
+        if (!totalXps["XP_2"]) {
+            totalXps["XP_2"] = 0;
+        }
+
+        totalXps["XP_2"] += 100;
+
+        if (!totalXps["XP_3"]) {
+            totalXps["XP_3"] = 0;
+        }
+
+        totalXps["XP_3"] += 50;
+
+        if (!totalXps["XP_4"]) {
+            totalXps["XP_4"] = 0;
+        }
+
+        totalXps["XP_4"] += 30;
+
+        totalCredit += 46000000;
+
+        if (totalCurrencies["Ticket"] >= 2000) {
+            totalEleph["13003"] = 20;
+            if (totalCurrencies["Ticket"] >= 3000) {
+                totalEleph["13003"] += 5;
+                if (totalCurrencies["Ticket"] >= 4500) {
+                    totalEleph["13003"] += 5;
+                    if (totalCurrencies["Ticket"] >= 6000) {
+                        totalEleph["13003"] += 10;
+                        if (totalCurrencies["Ticket"] > 7500) {
+                            totalEleph["13003"] += 10;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (totalCurrencies["Attache_Case"] >= 2000) {
+            totalEleph["10006"] = 20;
+            if (totalCurrencies["Attache_Case"] >= 3000) {
+                totalEleph["10006"] += 5;
+                if (totalCurrencies["Attache_Case"] >= 4500) {
+                    totalEleph["10006"] += 5;
+                    if (totalCurrencies["Attache_Case"] >= 6000) {
+                        totalEleph["10006"] += 10;
+                        if (totalCurrencies["Attache_Case"] > 7500) {
+                            totalEleph["10006"] += 10;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (totalCurrencies["Crew_Whistle"] >= 2000) {
+            totalEleph["10013"] = 20;
+            if (totalCurrencies["Crew_Whistle"] >= 3000) {
+                totalEleph["10013"] += 5;
+                if (totalCurrencies["Crew_Whistle"] >= 4500) {
+                    totalEleph["10013"] += 5;
+                    if (totalCurrencies["Crew_Whistle"] >= 6000) {
+                        totalEleph["10013"] += 10;
+                        if (totalCurrencies["Crew_Whistle"] > 7500) {
+                            totalEleph["10013"] += 10;
+                        }
+                    }
+                }
+            }
+        }
+
+        let totalTokens = totalCurrencies["Ticket"] + totalCurrencies["Attache_Case"] + totalCurrencies["Crew_Whistle"];
+
+        if (totalTokens >= 3000) {
+            totalEligma += 20;
+            if (totalTokens >= 6000) {
+                totalEligma += 20;
+                if (totalTokens >= 10000) {
+                    totalEligma += 20;
+                    if (totalTokens >= 15000) {
+                        totalEligma += 20;
+                        if (totalTokens > 20000) {
+                            totalEligma += 20;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!totalXps["GXP_1"]) {
+            totalXps["GXP_1"] = 0;
+        }
+        if (!totalXps["GXP_2"]) {
+            totalXps["GXP_2"] = 0;
+        }
+        if (!totalXps["GXP_3"]) {
+            totalXps["GXP_3"] = 0;
+        }
+        if (!totalXps["GXP_4"]) {
+            totalXps["GXP_4"] = 0;
+        }
+
+        if (totalCurrencies["Event_Point"] >= 3000) {
+            totalXps["GXP_1"] += 100;
+            totalXps["GXP_2"] += 50;
+            if (totalCurrencies["Event_Point"] >= 5000) {
+                totalXps["GXP_2"] += 50;
+                if (totalCurrencies["Event_Point"] >= 7000) {
+                    totalXps["GXP_3"] += 20;
+                    if (totalCurrencies["Event_Point"] >= 9000) {
+                        totalXps["GXP_3"] += 30;
+                        if (totalCurrencies["Event_Point"] > 11000) {
+                            totalXps["GXP_4"] += 30;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!totalArtifacts["Antikythera_1"]) {
+            totalArtifacts["Antikythera_1"] = 0;
+        }
+        if (!totalArtifacts["Antikythera_2"]) {
+            totalArtifacts["Antikythera_2"] = 0;
+        }
+        if (!totalArtifacts["Antikythera_3"]) {
+            totalArtifacts["Antikythera_3"] = 0;
+        }
+        if (!totalArtifacts["Antikythera_4"]) {
+            totalArtifacts["Antikythera_4"] = 0;
+        }
+
+        if (!totalArtifacts["Rohonc_1"]) {
+            totalArtifacts["Rohonc_1"] = 0;
+        }
+        if (!totalArtifacts["Rohonc_2"]) {
+            totalArtifacts["Rohonc_2"] = 0;
+        }
+        if (!totalArtifacts["Rohonc_3"]) {
+            totalArtifacts["Rohonc_3"] = 0;
+        }
+        if (!totalArtifacts["Rohonc_4"]) {
+            totalArtifacts["Rohonc_4"] = 0;
+        }
+
+        totalArtifacts["Antikythera_1"] += 60;
+        totalArtifacts["Antikythera_2"] += 40;
+        totalArtifacts["Antikythera_3"] += 30;
+        totalArtifacts["Antikythera_4"] += 12;
+
+        totalArtifacts["Rohonc_1"] += 60;
+        totalArtifacts["Rohonc_2"] += 40;
+        totalArtifacts["Rohonc_3"] += 30;
+        totalArtifacts["Rohonc_4"] += 12;
+    }
 
     if (feasible) {
         UpdateRewardsObtained(totalCurrencies, energyCost, totalArtifacts, totalSchoolMats, totalEleph, totalXps,
-            totalCredit, totalEligma, totalSecretTech, totalGearBoxes);
+            totalCredit, totalEligma, totalSecretTech, totalGearBoxes, totalGear);
         stage_runs = stageRuns;
     }
     else {
@@ -3779,7 +3965,8 @@ function ClearRewards() {
     }
 }
 
-function UpdateRewardsObtained(totalCurrencies, energyCost, totalArtifacts, totalSchoolMats, totalEleph, totalXps, totalCredit, totalEligma, totalSecretTech, totalGearBoxes) {
+function UpdateRewardsObtained(totalCurrencies, energyCost, totalArtifacts, totalSchoolMats, totalEleph, totalXps, totalCredit, totalEligma, totalSecretTech, totalGearBoxes,
+    totalGear) {
 
     ClearRewards();
 
@@ -3797,6 +3984,8 @@ function UpdateRewardsObtained(totalCurrencies, energyCost, totalArtifacts, tota
     miscContainer.className = "reward-group";
     let elephContainer = document.createElement('div');
     elephContainer.className = "reward-group";
+    let gearContainer = document.createElement('div');
+    gearContainer.className = "reward-group";
 
     currenciesContainer.appendChild(CreateRewardItem("icons/EventIcon/EnergyIcon/EnergyPadded.png", energyCost, ""));
 
@@ -3878,12 +4067,34 @@ function UpdateRewardsObtained(totalCurrencies, energyCost, totalArtifacts, tota
         elephContainer.appendChild(CreateRewardItem("icons/Eleph/Eleph_" + id + ".png", totalEleph[id].toFixed(1), ""))
     })
 
+    let gearNames = Object.keys(totalGear).sort().reverse();
+
+    gearNames.forEach((name) => {
+
+        // dropSliced = name.slice(0, -2);
+        // dropRarity = name.slice(-1);
+
+        // if (currentMatType != dropSliced) {
+        //     currentSubDiv = document.createElement('div');
+        //     currentSubDiv.className = "reward-group";
+        //     artifactsContainer.appendChild(currentSubDiv);
+
+        //     currentMatType = dropSliced;
+        // }
+
+        // currentSubDiv.appendChild(CreateRewardItem("icons/Artifact/" + name + ".webp", totalArtifacts[name].toFixed(1),
+        //     'drop-resource-rarity-' + dropRarity + ' drop-resource'));
+
+        gearContainer.appendChild(CreateRewardItem("icons/Gear/" + name + ".webp", totalGear[name].toFixed(0), ""));
+    })
+
     rewardsContainer.appendChild(currenciesContainer);
     rewardsContainer.appendChild(elephContainer);
     rewardsContainer.appendChild(miscContainer);
     rewardsContainer.appendChild(xpMatsContainer);
     rewardsContainer.appendChild(schoolMatsContainer);
     rewardsContainer.appendChild(artifactsContainer);
+    rewardsContainer.appendChild(gearContainer);
 }
 
 function CreateRewardItem(imgSrc, itemCount, divClass) {
