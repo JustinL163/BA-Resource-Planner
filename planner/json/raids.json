@@ -10,6 +10,9 @@
         "Hod": {
             "Terrains": ["Street", "Indoor"]
         },
+        "Wakamo": {
+            "Terrains": ["Outdoor"]
+        },
         "Hieronymous": {
             "Terrains": ["Street", "Indoor"]
         },
@@ -27,6 +30,9 @@
         },
         "Goz": {
             "Terrains": ["Outdoor", "Indoor"]
+        },
+        "Kurokage": {
+            "Terrains": ["Street"]
         }
     },
     "raid_difficulties": ["Torment", "Insane", "Extreme", "Hardcore", "Very Hard", "Hard", "Normal"],
@@ -904,6 +910,126 @@
             "Boss_Count": 3,
             "Boss_Terrain_Count": 1,
             "uid": 57
+        },
+        {
+            "Boss": "Wakamo",
+            "Terrain": "Outdoor",
+            "Max_Difficulty": "TMT",
+            "Armour": "Heavy",
+            "Start_Date": {
+                "Year": 2023,
+                "Month": 8,
+                "Day": 30
+            },
+            "Season": 57,
+            "Boss_Count": 1,
+            "Boss_Terrain_Count": 1,
+            "uid": 58
+        },
+        {
+            "Boss": "Binah",
+            "Terrain": "Street",
+            "Max_Difficulty": "TMT",
+            "Armour": "Heavy",
+            "Start_Date": {
+                "Year": 2023,
+                "Month": 10,
+                "Day": 4
+            },
+            "Season": 58,
+            "Boss_Count": 9,
+            "Boss_Terrain_Count": 4,
+            "uid": 59
+        },
+        {
+            "Boss": "Chesed",
+            "Terrain": "Outdoor",
+            "Max_Difficulty": "TMT",
+            "Armour": "Heavy",
+            "Start_Date": {
+                "Year": 2023,
+                "Month": 11,
+                "Day": 1
+            },
+            "Season": 59,
+            "Boss_Count": 10,
+            "Boss_Terrain_Count": 5,
+            "uid": 60
+        },
+        {
+            "Boss": "Kurokage",
+            "Terrain": "Street",
+            "Max_Difficulty": "TMT",
+            "Armour": "Elastic",
+            "Start_Date": {
+                "Year": 2023,
+                "Month": 11,
+                "Day": 29
+            },
+            "Season": 60,
+            "Boss_Count": 1,
+            "Boss_Terrain_Count": 1,
+            "uid": 61
+        },
+        {
+            "Boss": "Wakamo",
+            "Terrain": "Outdoor",
+            "Max_Difficulty": "TMT",
+            "Armour": "Heavy",
+            "Start_Date": {
+                "Year": 2024,
+                "Month": 1,
+                "Day": 3
+            },
+            "Season": 61,
+            "Boss_Count": 2,
+            "Boss_Terrain_Count": 2,
+            "uid": 62
+        },
+        {
+            "Boss": "Hieronymous",
+            "Terrain": "Indoor",
+            "Max_Difficulty": "TMT",
+            "Armour": "Light",
+            "Start_Date": {
+                "Year": 2024,
+                "Month": 1,
+                "Day": 31
+            },
+            "Season": 62,
+            "Boss_Count": 10,
+            "Boss_Terrain_Count": 6,
+            "uid": 63
+        },
+        {
+            "Boss": "Chesed",
+            "Terrain": "Indoor",
+            "Max_Difficulty": "TMT",
+            "Armour": "Heavy",
+            "Start_Date": {
+                "Year": 2024,
+                "Month": 2,
+                "Day": 28
+            },
+            "Season": 63,
+            "Boss_Count": 11,
+            "Boss_Terrain_Count": 6,
+            "uid": 64
+        },
+        {
+            "Boss": "Perorodzilla",
+            "Terrain": "Indoor",
+            "Max_Difficulty": "TMT",
+            "Armour": "Special",
+            "Start_Date": {
+                "Year": 2024,
+                "Month": 4,
+                "Day": 3
+            },
+            "Season": 64,
+            "Boss_Count": 8,
+            "Boss_Terrain_Count": 5,
+            "uid": 65
         }
     ],
     "Global": [
@@ -1611,6 +1737,156 @@
             "Boss_Count": 8,
             "Boss_Terrain_Count": 5,
             "uid": 45
+        },
+        {
+            "Boss": "Goz",
+            "Terrain": "Indoor",
+            "Max_Difficulty": "TMT",
+            "Armour": "Special",
+            "Start_Date": {
+                "Year": 2023,
+                "Month": 10,
+                "Day": 3
+            },
+            "Season": 46,
+            "Boss_Count": 2,
+            "Boss_Terrain_Count": 2,
+            "uid": 46
+        },
+        {
+            "Boss": "Chesed",
+            "Terrain": "Indoor",
+            "Max_Difficulty": "TMT",
+            "Armour": "Heavy",
+            "Start_Date": {
+                "Year": 2023,
+                "Month": 10,
+                "Day": 17
+            },
+            "Season": 47,
+            "Boss_Count": 8,
+            "Boss_Terrain_Count": 4,
+            "uid": 47
+        },
+        {
+            "Boss": "ShiroKuro",
+            "Terrain": "Street",
+            "Max_Difficulty": "TMT",
+            "Armour": "Special",
+            "Start_Date": {
+                "Year": 2023,
+                "Month": 10,
+                "Day": 31
+            },
+            "Season": 48,
+            "Boss_Count": 9,
+            "Boss_Terrain_Count": 5,
+            "uid": 48
+        },
+        {
+            "Boss": "Kaiten",
+            "Terrain": "Outdoor",
+            "Max_Difficulty": "TMT",
+            "Armour": "Light",
+            "Start_Date": {
+                "Year": 2023,
+                "Month": 11,
+                "Day": 14
+            },
+            "Season": 49,
+            "Boss_Count": 7,
+            "Boss_Terrain_Count": 5,
+            "uid": 49
+        },
+        {
+            "Boss": "Perorodzilla",
+            "Terrain": "Outdoor",
+            "Max_Difficulty": "TMT",
+            "Armour": "Special",
+            "Start_Date": {
+                "Year": 2023,
+                "Month": 11,
+                "Day": 28
+            },
+            "Season": 50,
+            "Boss_Count": 7,
+            "Boss_Terrain_Count": 3,
+            "uid": 50
+        },
+        {
+            "Boss": "Hod",
+            "Terrain": "Indoor",
+            "Max_Difficulty": "TMT",
+            "Armour": "Heavy",
+            "Start_Date": {
+                "Year": 2023,
+                "Month": 12,
+                "Day": 12
+            },
+            "Season": 51,
+            "Boss_Count": 4,
+            "Boss_Terrain_Count": 1,
+            "uid": 51
+        },
+        {
+            "Boss": "Gregorius",
+            "Terrain": "Indoor",
+            "Max_Difficulty": "TMT",
+            "Armour": "Light",
+            "Start_Date": {
+                "Year": 2024,
+                "Month": 1,
+                "Day": 2
+            },
+            "Season": 52,
+            "Boss_Count": 1,
+            "Boss_Terrain_Count": 1,
+            "uid": 52
+        },
+        {
+            "Boss": "Goz",
+            "Terrain": "Outdoor",
+            "Max_Difficulty": "TMT",
+            "Armour": "Special",
+            "Start_Date": {
+                "Year": 2024,
+                "Month": 2,
+                "Day": 6
+            },
+            "Season": 53,
+            "Boss_Count": 3,
+            "Boss_Terrain_Count": 1,
+            "uid": 53
+        },
+        {
+            "Boss": "Wakamo",
+            "Terrain": "Outdoor",
+            "Max_Difficulty": "TMT",
+            "Armour": "Heavy",
+            "Start_Date": {
+                "Year": 2024,
+                "Month": 3,
+                "Day": 5
+            },
+            "Season": 54,
+            "Boss_Count": 1,
+            "Boss_Terrain_Count": 1,
+            "uid": 54
+        },
+        {
+            "Boss": "Binah",
+            "Terrain": "Street",
+            "Max_Difficulty": "TMT",
+            "Armour": "Heavy",
+            "Start_Date": {
+                "Year": 2024,
+                "Month": 4,
+                "Day": 9
+            },
+            "Season": 55,
+            "Boss_Count": 9,
+            "Boss_Terrain_Count": 4,
+            "uid": 55
         }
     ],
     "China": [

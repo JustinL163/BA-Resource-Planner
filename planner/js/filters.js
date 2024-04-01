@@ -35,9 +35,9 @@ let toggleCount = 0;
 function toggleViewFilters() {
 
     // APRIL FOOLS
-    if (document.getElementById("button-filters").classList.contains("april-fools-button")) {
-        return;
-    }
+    // if (document.getElementById("button-filters").classList.contains("april-fools-button")) {
+    //     return;
+    // }
 
     buildFilterList();
     $("div#viewFilters").toggle();

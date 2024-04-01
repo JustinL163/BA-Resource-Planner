@@ -41,7 +41,7 @@ global.selectedRaid.maxDifficulty = "";
 
 function loadResources() {
 
-    $.getJSON('json/skillinfo/en.json?2').done(function (json) {
+    $.getJSON('json/skillinfo/en.json?3').done(function (json) {
         charlist = json;
         checkResources();
     });
@@ -51,12 +51,12 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/raids.json?3').done(function (json) {
+    $.getJSON('json/raids.json?4').done(function (json) {
         raid_history = json;
         checkResources();
     });
 
-    $.getJSON('json/student_info.json?2').done(function (json) {
+    $.getJSON('json/student_info.json?3').done(function (json) {
         student_info = json;
         LoadStudentInfo();
     })

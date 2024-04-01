@@ -403,14 +403,14 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.4.5".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.4.6".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         Swal.fire({
-            title: GetLanguageString("text-updatedversionprefix") + "1.4.5",
+            title: GetLanguageString("text-updatedversionprefix") + "1.4.6",
             color: alertColour,
             html: GetLanguageString("text-updatemessage")
         })
 
-        data.site_version = "1.4.5";
+        data.site_version = "1.4.6";
         // saveToLocalStorage(false);
     }
 
@@ -659,7 +659,7 @@ function init() {
         controlPanel.style.fontSize = controlPanelSize;
     }
 
-    InitAprilFools();
+    //InitAprilFools();
 }
 
 function validateData() {
@@ -1266,9 +1266,9 @@ function openModal(e) {
     }
 
     // APRIL FOOLS
-    if (!allCharsPulled.includes(this.id.substring(5))) {
-        return;
-    }
+    // if (!allCharsPulled.includes(this.id.substring(5))) {
+    //     return;
+    // }
 
     if (bulkMode) { // include alt key shortcut
         let charId = this.id.substring(5);
@@ -1623,9 +1623,9 @@ function multiCharBorrow() {
 function showMultiSelect(source) {
 
     // APRIL FOOLS
-    if (document.getElementById("button-addcharacters").classList.contains("april-fools-button")) {
-        return;
-    }
+    // if (document.getElementById("button-addcharacters").classList.contains("april-fools-button")) {
+    //     return;
+    // }
 
     multiCharsClear();
 
@@ -1881,9 +1881,9 @@ function multiCharAdd() {
 
 function teamsToggle() {
     // APRIL FOOLS
-    if (document.getElementById("button-teamstoggle").classList.contains("april-fools-button")) {
-        return;
-    }
+    // if (document.getElementById("button-teamstoggle").classList.contains("april-fools-button")) {
+    //     return;
+    // }
 
     if (document.getElementById("characterMultiSelectContainer").style.display != "none") {
         return;
@@ -2950,9 +2950,9 @@ function rebuildFilters() {
 function ToggleGroupFilterMode() {
 
     // APRIL FOOLS
-    if (document.getElementById("btn-group-filter-mode").classList.contains("april-fools-button")) {
-        return;
-    }
+    // if (document.getElementById("btn-group-filter-mode").classList.contains("april-fools-button")) {
+    //     return;
+    // }
 
     if (GroupFilterMode == "OnlyGroup") {
         GroupFilterMode = "UpToGroup";
@@ -3032,9 +3032,9 @@ function applyFilters(filtered) {
 function resetFilters() {
 
     // APRIL FOOLS
-    if (document.getElementById("button-resetfilters").classList.contains("april-fools-button")) {
-        return;
-    }
+    // if (document.getElementById("button-resetfilters").classList.contains("april-fools-button")) {
+    //     return;
+    // }
 
     let selectElement = document.getElementById('filter-groups');
     selectElement.value = "All";
@@ -3072,12 +3072,12 @@ function charsFromGroup(group) {
 function charactersToggle(value) {
 
     // APRIL FOOLS
-    if (value == "enable" && document.getElementById("button-enableall").classList.contains("april-fools-button")) {
-        return;
-    }
-    else if (value == "disable" && document.getElementById("button-disableall").classList.contains("april-fools-button")) {
-        return;
-    }
+    // if (value == "enable" && document.getElementById("button-enableall").classList.contains("april-fools-button")) {
+    //     return;
+    // }
+    // else if (value == "disable" && document.getElementById("button-disableall").classList.contains("april-fools-button")) {
+    //     return;
+    // }
 
     disabledChars = [];
 
@@ -4316,9 +4316,9 @@ function ReloadStudentImgs() {
 function openResourceModal() {
 
     // APRIL FOOLS
-    if (document.getElementById("button-resources").classList.contains("april-fools-button")) {
-        return;
-    }
+    // if (document.getElementById("button-resources").classList.contains("april-fools-button")) {
+    //     return;
+    // }
 
     if (!loaded) {
         return;
@@ -4437,9 +4437,9 @@ function hideResourceDisplays() {
 
 function openGearModal() {
     // APRIL FOOLS
-    if (document.getElementById("button-gear").classList.contains("april-fools-button")) {
-        return;
-    }
+    // if (document.getElementById("button-gear").classList.contains("april-fools-button")) {
+    //     return;
+    // }
 
     if (!loaded) {
         return;
@@ -4512,9 +4512,9 @@ function openGearModal() {
 
 function openTransferModal() {
     // APRIL FOOLS
-    if (document.getElementById("button-transfer").classList.contains("april-fools-button")) {
-        return;
-    }
+    // if (document.getElementById("button-transfer").classList.contains("april-fools-button")) {
+    //     return;
+    // }
 
     if (document.getElementById("characterMultiSelectContainer").style.display != "none") {
         return;
@@ -5925,26 +5925,26 @@ function calculateRaidCoins() {
 function switchResourceDisplay(displayType) {
 
     // APRIL FOOLS
-    if (displayType == "Owned") {
-        if (document.getElementById("switch-resource-owned").classList.contains("april-fools-button")) {
-            return;
-        }
-    }
-    else if (displayType == "Total") {
-        if (document.getElementById("switch-resource-total").classList.contains("april-fools-button")) {
-            return;
-        }
-    }
-    else if (displayType == "Remaining") {
-        if (document.getElementById("switch-resource-remaining").classList.contains("april-fools-button")) {
-            return;
-        }
-    }
-    else if (displayType == "Leftover") {
-        if (document.getElementById("switch-resource-leftover").classList.contains("april-fools-button")) {
-            return;
-        }
-    }
+    // if (displayType == "Owned") {
+    //     if (document.getElementById("switch-resource-owned").classList.contains("april-fools-button")) {
+    //         return;
+    //     }
+    // }
+    // else if (displayType == "Total") {
+    //     if (document.getElementById("switch-resource-total").classList.contains("april-fools-button")) {
+    //         return;
+    //     }
+    // }
+    // else if (displayType == "Remaining") {
+    //     if (document.getElementById("switch-resource-remaining").classList.contains("april-fools-button")) {
+    //         return;
+    //     }
+    // }
+    // else if (displayType == "Leftover") {
+    //     if (document.getElementById("switch-resource-leftover").classList.contains("april-fools-button")) {
+    //         return;
+    //     }
+    // }
 
 
     let btnOwned = document.getElementById("switch-resource-owned");
@@ -6050,26 +6050,26 @@ function CalculateLeftoverGearXp() {
 function switchGearDisplay(displayType) {
 
     // APRIL FOOLS
-    if (displayType == "Owned") {
-        if (document.getElementById("switch-gear-owned").classList.contains("april-fools-button")) {
-            return;
-        }
-    }
-    else if (displayType == "Total") {
-        if (document.getElementById("switch-gear-total").classList.contains("april-fools-button")) {
-            return;
-        }
-    }
-    else if (displayType == "Remaining") {
-        if (document.getElementById("switch-gear-remaining").classList.contains("april-fools-button")) {
-            return;
-        }
-    }
-    else if (displayType == "Leftover") {
-        if (document.getElementById("switch-gear-leftover").classList.contains("april-fools-button")) {
-            return;
-        }
-    }
+    // if (displayType == "Owned") {
+    //     if (document.getElementById("switch-gear-owned").classList.contains("april-fools-button")) {
+    //         return;
+    //     }
+    // }
+    // else if (displayType == "Total") {
+    //     if (document.getElementById("switch-gear-total").classList.contains("april-fools-button")) {
+    //         return;
+    //     }
+    // }
+    // else if (displayType == "Remaining") {
+    //     if (document.getElementById("switch-gear-remaining").classList.contains("april-fools-button")) {
+    //         return;
+    //     }
+    // }
+    // else if (displayType == "Leftover") {
+    //     if (document.getElementById("switch-gear-leftover").classList.contains("april-fools-button")) {
+    //         return;
+    //     }
+    // }
 
     let btnOwned = document.getElementById("switch-gear-owned");
     let btnTotal = document.getElementById("switch-gear-total");
@@ -6468,9 +6468,9 @@ function ControlPanelClicked(button) {
 
     if (button == "Edit") {
         // APRIL FOOLS
-        if (document.getElementById("control-edit").classList.contains("april-fools-button")) {
-            return;
-        }
+        // if (document.getElementById("control-edit").classList.contains("april-fools-button")) {
+        //     return;
+        // }
 
         if (bulkMode && bulkChars.length > 0) {
             OpenBulkModal();
@@ -6485,9 +6485,9 @@ function ControlPanelClicked(button) {
     }
     else if (button == "Move") {
         // APRIL FOOLS
-        if (document.getElementById("control-move").classList.contains("april-fools-button")) {
-            return;
-        }
+        // if (document.getElementById("control-move").classList.contains("april-fools-button")) {
+        //     return;
+        // }
 
         document.getElementById("control-button-edit").classList.remove("selected");
         document.getElementById("control-button-move").classList.add("selected");
@@ -6497,9 +6497,9 @@ function ControlPanelClicked(button) {
     }
     else if (button == "Disable") {
         // APRIL FOOLS
-        if (document.getElementById("control-disable").classList.contains("april-fools-button")) {
-            return;
-        }
+        // if (document.getElementById("control-disable").classList.contains("april-fools-button")) {
+        //     return;
+        // }
 
         document.getElementById("control-button-edit").classList.remove("selected");
         document.getElementById("control-button-move").classList.remove("selected");
@@ -6509,27 +6509,27 @@ function ControlPanelClicked(button) {
     }
     else if (button == "AddStudent") {
         // APRIL FOOLS
-        if (document.getElementById("control-addstudent").classList.contains("april-fools-button")) {
-            return;
-        }
+        // if (document.getElementById("control-addstudent").classList.contains("april-fools-button")) {
+        //     return;
+        // }
 
         showMultiSelect('AddNewChars');
         ResetBulkMode();
     }
     else if (button == "Filter") {
         // APRIL FOOLS
-        if (document.getElementById("control-filter").classList.contains("april-fools-button")) {
-            return;
-        }
+        // if (document.getElementById("control-filter").classList.contains("april-fools-button")) {
+        //     return;
+        // }
 
         toggleViewFilters();
         ResetBulkMode();
     }
     else if (button == "Bulk") {
         // APRIL FOOLS
-        if (document.getElementById("control-bulk").classList.contains("april-fools-button")) {
-            return;
-        }
+        // if (document.getElementById("control-bulk").classList.contains("april-fools-button")) {
+        //     return;
+        // }
 
         if (!bulkMode) {
             document.getElementById("control-button-bulk").classList.add("selected");
