@@ -517,28 +517,7 @@ const inputValidation = {
         max: "100",
         default: "1",
         name: "Bond",
-        requisite: {
-            "modalStars.star_target": {
-                type: "object",
-                name: "Target Stars",
-                compare: "equal_greater",
-                mode: "threshold",
-                sanitise: true,
-                levels: [
-                    {
-                        required: "5",
-                        max: "100"
-                    },
-                    {
-                        required: "3",
-                        max: "20"
-                    },
-                    {
-                        max: "10"
-                    }
-                ]
-            }
-        },
+        requisite: {},
         "navigation": "direct",
         "Up": "input_level_target",
         "Left": "input_level_target",
@@ -553,26 +532,6 @@ const inputValidation = {
         default: "1",
         name: "Bond Target",
         requisite: {
-            "modalStars.star_target": {
-                type: "object",
-                name: "Target Stars",
-                compare: "equal_greater",
-                mode: "threshold",
-                sanitise: true,
-                levels: [
-                    {
-                        required: "5",
-                        max: "100"
-                    },
-                    {
-                        required: "3",
-                        max: "20"
-                    },
-                    {
-                        max: "10"
-                    }
-                ]
-            },
             "bond": {
                 type: "input",
                 compare: "equal_greater",

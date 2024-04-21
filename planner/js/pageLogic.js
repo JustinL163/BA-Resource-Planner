@@ -78,6 +78,14 @@ let bugsNotified = {};
 
 let controlPanelDocked = true;
 
+let sortingOperations = {};
+
+let currentSort = "custom";
+
+let cancelHidingOverlay = false;
+
+let bodyFrozen = false;
+
 const strNullImage = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";
 
 const platform = navigator.userAgentData?.platform || navigator.platform;
@@ -351,12 +359,22 @@ function init() {
 
     sortable.on("sortable:start", (e) => {
         if (charMode != "Move" && keyPressed.Shift != true) {
-            e.cancel()
+            e.cancel();
+        }
+        else if (currentSort != "custom") {
+            e.cancel();
+            basicAlert("Can only move students when using custom sort") //TRANSLATE
         }
     })
 
     sortable.on("sortable:stop", (e) => {
         keyPressed.Shift = false;
+
+        setTimeout(() => {
+            if (currentSort == "custom") {
+                data.character_order = getOrder();
+            }
+        }, 100);
 
         saveTime = Date.now() + 5 * 1000;
     })
@@ -403,14 +421,14 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.4.6".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.4.7".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         Swal.fire({
-            title: GetLanguageString("text-updatedversionprefix") + "1.4.6",
+            title: GetLanguageString("text-updatedversionprefix") + "1.4.7",
             color: alertColour,
             html: GetLanguageString("text-updatemessage")
         })
 
-        data.site_version = "1.4.6";
+        data.site_version = "1.4.7";
         // saveToLocalStorage(false);
     }
 
@@ -660,6 +678,8 @@ function init() {
     }
 
     //InitAprilFools();
+
+    InitSortingOrder();
 }
 
 function validateData() {
@@ -734,6 +754,15 @@ function handleKeydown(e, keyPressed) {
         }
     }
 
+    if (keycount == 2 && keyPressed.Control == true) {
+        if (keyPressed.Enter == true && modalOpen == "characterModal") {
+            SwitchCharacter("right");
+        }
+        else if (keyPressed.Backspace == true && modalOpen == "characterModal") {
+            SwitchCharacter("left");
+        }
+    }
+
     if (keycount == 3 && keyPressed.Control == true && keyPressed.Shift == true && keyPressed.S == true) {
         saveTime = Date.now() + 300;
         keyPressed = {};
@@ -764,6 +793,9 @@ function handleKeydown(e, keyPressed) {
         }
         else if (e.code == "Digit6") {
             ControlPanelClicked('Bulk');
+        }
+        else if (e.code == "Digit7") {
+            ControlPanelClicked('Sort');
         }
     }
 }
@@ -1203,8 +1235,11 @@ function deleteChar(charId) {
     if (charId) {
 
         var charObject = data.characters.find(obj => { return obj.id == charId });
-        var index = data.characters.indexOf(charObject);
+        let index = data.characters.indexOf(charObject);
         data.characters.splice(index, 1);
+
+        index = data.character_order.indexOf(charId);
+        data.character_order.splice(index, 1);
 
         delete charMatDicts[charId];
 
@@ -1243,6 +1278,8 @@ function colourTableRows(tableId) {
 
 function freezeBody(mode) {
 
+    bodyFrozen = mode;
+
     if (mode) {
         let top = docScrollTop = window.pageYOffset;
         $("body").css('position', 'fixed').css('overflow', 'hidden').css('top', -top).css('width', '100%');
@@ -1259,6 +1296,8 @@ function openModal(e) {
     if (!loaded) {
         return;
     }
+
+    cancelHidingOverlay = true;
 
     var fromChar = false;
     if (this.id.substring(0, 5) == "char_") {
@@ -1325,7 +1364,9 @@ function openModal(e) {
     modalCharID = this.id.substring(5);
 
     if (fromChar) {
-        freezeBody(true);
+        if (!bodyFrozen) {
+            freezeBody(true);
+        }
         modalOpen = "characterModal";
         this.style = "visibility:hidden";
 
@@ -1460,40 +1501,38 @@ function openModal(e) {
 
         var displayChar = document.getElementById("displayChar");
         displayChar.style = "display:inline-flex; visibility: visible";
-        var initLeft = this.getBoundingClientRect().left - displayChar.getBoundingClientRect().left;
-        var initTop = this.getBoundingClientRect().top - displayChar.getBoundingClientRect().top;
-        modalCharLeft = initLeft;
-        modalCharTop = initTop;
-        displayChar.style = "display:inline-flex; visibility: visible; transform: translate(" + Math.round(initLeft) + "px, " + Math.round(initTop) + "px);";
+        // var initLeft = this.getBoundingClientRect().left - displayChar.getBoundingClientRect().left;
+        // var initTop = this.getBoundingClientRect().top - displayChar.getBoundingClientRect().top;
+        // modalCharLeft = initLeft;
+        // modalCharTop = initTop;
+        // displayChar.style = "display:inline-flex; visibility: visible; transform: translate(" + Math.round(initLeft) + "px, " + Math.round(initTop) + "px);";
 
-        setTimeout(() => {
-            displayChar.style = "display:inline-flex; visibility: visible; transform: translate(0px, 0px); transition: all 0.3s;"
+        // setTimeout(() => {
+        // displayChar.style = "display:inline-flex; visibility: visible; transform: translate(0px, 0px); transition: all 0.3s;"
 
-            setTimeout(() => {
-                modal.style.visibility = "visible";
-                document.getElementById('character-modal-wrapper').style.visibility = "visible";
+        // setTimeout(() => {
+        modal.style.visibility = "visible";
+        document.getElementById('character-modal-wrapper').style.visibility = "visible";
 
-                var modalSections = document.getElementsByClassName("modal-content-section");
+        var modalSections = document.getElementsByClassName("modal-content-section");
 
-                for (i = 0; i < modalSections.length; i++) {
-                    modalSections[i].classList.add("animate-pop");
-                }
+        // for (i = 0; i < modalSections.length; i++) {
+        //     modalSections[i].classList.add("animate-pop");
+        // }
 
-                modal.onclick = function (event) {
-                    if (event.target == modal) {
-                        closeModal(fromChar);
-                    }
-                };
+        modal.onclick = function (event) {
+            if (event.target == modal) {
+                closeModal(fromChar);
+            }
+        };
 
-            }, 300);
-        }, 10);
+        // }, 300);
+        // }, 10);
 
     }
 }
 
 function closeModal(animated, forced) {
-
-    freezeBody(false);
 
     if (!forced && isCharModalDirty()) {
         Swal.fire({
@@ -1522,6 +1561,8 @@ function closeModal(animated, forced) {
 
 
     if (!animated) {
+        freezeBody(false);
+
         var displayChar = document.getElementById("displayChar");
         displayChar.style = "display:inline-flex;";
 
@@ -1539,30 +1580,36 @@ function closeModal(animated, forced) {
     var displayChar = document.getElementById("displayChar");
 
     var selectedChar = document.getElementById("char_" + modalCharID);
-    var charLeft = selectedChar.getBoundingClientRect().left - displayChar.getBoundingClientRect().left;
-    var charTop = selectedChar.getBoundingClientRect().top - displayChar.getBoundingClientRect().top;
+    // var charLeft = selectedChar.getBoundingClientRect().left - displayChar.getBoundingClientRect().left;
+    // var charTop = selectedChar.getBoundingClientRect().top - displayChar.getBoundingClientRect().top;
 
     //setTimeout(() => {
     //var modalWrapper = document.getElementsByClassName("modal-content-wrapper")[0]
 
     document.getElementById('character-modal-wrapper').style.visibility = "hidden";
 
-    var modalSections = document.getElementsByClassName("modal-content-section");
+    // var modalSections = document.getElementsByClassName("modal-content-section");
 
-    for (i = 0; i < modalSections.length; i++) {
-        modalSections[i].classList.remove("animate-pop");
-    }
+    // for (i = 0; i < modalSections.length; i++) {
+    //     modalSections[i].classList.remove("animate-pop");
+    // }
 
-    displayChar.style = "display:inline-flex; visibility: visible; transform: translate(" + charLeft + "px, " + charTop + "px); transition: all 0.3s;";
+    // displayChar.style = "display:inline-flex; visibility: visible; transform: translate(" + charLeft + "px, " + charTop + "px); transition: all 0.3s;";
 
+    // setTimeout(() => {
+    selectedChar.style.visibility = "visible";
+    displayChar.style.transition = "none";
+    displayChar.style.visibility = "hidden";
+    cancelHidingOverlay = false;
     setTimeout(() => {
-        selectedChar.style.visibility = "visible";
-        displayChar.style.transition = "none";
-        displayChar.style.visibility = "hidden";
-        modal.style.visibility = "hidden";
-        //backgroundFill.remove();
-        //modalWrapper.style.backgroundColor = "white";
-    }, 300);
+        if (!cancelHidingOverlay) {
+            freezeBody(false);
+            modal.style.visibility = "hidden";
+        }
+    }, 100);
+    //backgroundFill.remove();
+    //modalWrapper.style.backgroundColor = "white";
+    // }, 300);
 
     modalCharID = "";
 
@@ -3235,7 +3282,6 @@ function getTextFormattedGroup(monospaced) {
 
 async function saveToLocalStorage(notify) {
     saveTime = 0;
-    data.character_order = getOrder();
 
     localStorage.setItem("save-data", JSON.stringify(data));
 
@@ -3336,7 +3382,9 @@ function saveCharChanges() {
     updateStarDisplay(charId + "-star-container", charId, "star-display", true, charData);
     updateStarDisplay(charId + "-ue-container", charId, "ue-display", true, charData);
 
-    closeModal(true);
+    if (keyPressed.Control == true) {
+        closeModal(true);
+    }
 }
 
 function updateTextBackground(id, property) {
@@ -6549,6 +6597,9 @@ function ControlPanelClicked(button) {
             document.getElementById("control-button-edit").classList.add("selected");
         }
     }
+    else if (button == "Sort") {
+        OpenSortDialog();
+    }
     else if (button == "Dock") {
         let controlPanel = document.getElementById("control-panel");
         let charsContainer = document.getElementById("charsContainer");
@@ -7285,11 +7336,308 @@ function HELP() {
             let allIds = [];
 
             let charKeys = Object.keys(charlist);
-            for (let i = 0; i < charKeys.length; i++) { 
+            for (let i = 0; i < charKeys.length; i++) {
                 allIds.push(charKeys[i]);
             }
             localStorage.setItem("april-ids-chars", JSON.stringify(allIds));
             location.reload();
         }
     })
+}
+
+function SortStudents(students, sortType) {
+
+    let academyOrder = {
+        "Hyakkiyako": 11, "RedWinter": 10, "Trinity": 9, "Gehenna": 8, "Abydos": 7,
+        "Millennium": 6, "Arius": 5, "Shanhaijing": 4, "Valkyrie": 3, "SRT": 2, "ETC": 1, "Tokiwadai": 0
+    }
+    let bulletOrder = {
+        "Sonic": 4, "Mystic": 3, "Explosion": 2, "Pierce": 1
+    }
+    let armourOrder = {
+        "ElasticArmor": 4, "Unarmed": 3, "HeavyArmor": 2, "LightArmor": 1
+    }
+    let roleOrder = {
+        "Tanker": 5, "DamageDealer": 4, "Healer": 3, "Supporter": 2, "Vehicle": 1
+    }
+    let weaponOrder = {
+        "SG": 11, "SMG": 10, "AR": 9, "GL": 8, "HG": 7, "RL": 6, "SR": 5, "RG": 4, "MG": 3, "MT": 2, "FT": 1
+    }
+
+    let sorted = [];
+
+    let sorting = {};
+
+    for (let i = 0; i < students.length; i++) {
+        let sortparam;
+
+        if (sortType == "academy") {
+            sortparam = academyOrder[charlist[students[i].id].School];
+        }
+        else if (sortType == "name") {
+            // sortparam = charlist[students[i].id].Name;
+            sortparam = charNames.get(students[i].id);
+        }
+        else if (sortType == "street") {
+            sortparam = charlist[students[i].id].StreetBattleAdaptation;
+            if (students[i].current.ue >= 3 && charlist[students[i].id].Weapon.AdaptationType == "Street") {
+                sortparam += charlist[students[i].id].Weapon.AdaptationValue;
+            }
+        }
+        else if (sortType == "outdoor") {
+            sortparam = charlist[students[i].id].OutdoorBattleAdaptation;
+            if (students[i].current.ue >= 3 && charlist[students[i].id].Weapon.AdaptationType == "Outdoor") {
+                sortparam += charlist[students[i].id].Weapon.AdaptationValue;
+            }
+        }
+        else if (sortType == "indoor") {
+            sortparam = charlist[students[i].id].IndoorBattleAdaptation;
+            if (students[i].current.ue >= 3 && charlist[students[i].id].Weapon.AdaptationType == "Indoor") {
+                sortparam += charlist[students[i].id].Weapon.AdaptationValue;
+            }
+        }
+        else if (sortType == "bullet") {
+            sortparam = bulletOrder[charlist[students[i].id].BulletType];
+        }
+        else if (sortType == "armour") {
+            sortparam = armourOrder[charlist[students[i].id].ArmorType];
+        }
+        else if (sortType == "role") {
+            sortparam = roleOrder[charlist[students[i].id].TacticRole];
+        }
+        else if (sortType == "weapon") {
+            sortparam = weaponOrder[charlist[students[i].id].WeaponType];
+        }
+        else {
+            sortparam = students[i].current[sortType];
+        }
+
+        if (!sorting[sortparam]) {
+            sorting[sortparam] = [students[i]];
+        }
+        else {
+            sorting[sortparam].push(students[i]);
+        }
+    }
+
+    let sortingKeys;
+    if (sortType == "name") {
+        if (language == "Jp") {
+            sortingKeys = Object.keys(sorting).sort(function (a, b) {
+                return a.localeCompare(b, 'ja');
+            })
+        }
+        else {
+            sortingKeys = Object.keys(sorting).sort();
+        }
+    }
+    else {
+        sortingKeys = Object.keys(sorting).sort((a, b) => b - a);
+    }
+    for (let i = 0; i < sortingKeys.length; i++) {
+        sorted.push(sorting[sortingKeys[i]]);
+    }
+
+    return sorted;
+}
+
+function FullSort(order) {
+
+    let operations = sortingOperations[order];
+
+
+    let sorted = SortStudents(data.characters, operations[0]);
+
+    for (let i = 1; i < operations.length; i++) {
+        let tempSorted = [];
+        for (let ii = 0; ii < sorted.length; ii++) {
+            tempSorted = tempSorted.concat(SortStudents(sorted[ii], operations[i]));
+        }
+        sorted = tempSorted;
+    }
+
+    let fullSorted = [];
+
+    for (let i = 0; i < sorted.length; i++) {
+        for (let ii = 0; ii < sorted[i].length; ii++) {
+            fullSorted.push(sorted[i][ii]);
+        }
+    }
+
+    MoveAllStudents(fullSorted);
+}
+
+function MoveAllStudents(order) {
+
+    let charsContainer = document.getElementById("charsContainer");
+
+    for (let i = order.length - 1; i >= 0; i--) {
+
+        let sortId = order[i];
+        if (sortId.id) {
+            sortId = sortId.id;
+        }
+        charsContainer.prepend(document.getElementById("char_" + sortId));
+    }
+}
+
+function AddOrderDisplay(order) {
+
+    let orderDisplay = document.getElementById(order + "-order-display");
+
+    for (let i = 0; i < sortingOperations[order].length; i++) {
+        if (i != 0) {
+            let separatorDiv = document.createElement("div");
+            separatorDiv.innerText = ">";
+            orderDisplay.appendChild(separatorDiv);
+        }
+
+        if (["name", "ex"].includes(sortingOperations[order][i])) {
+            let orderDiv = document.createElement("div");
+
+            if (sortingOperations[order][i] == "name") {
+                orderDiv.innerText = "Abc";
+            }
+            else if (sortingOperations[order][i] == "ex") {
+                orderDiv.innerText = GetLanguageString("label-skillex");
+            }
+
+            orderDisplay.appendChild(orderDiv);
+        }
+        else {
+
+            let orderImg = document.createElement("img");
+            orderImg.draggable = false;
+
+            if (sortingOperations[order][i] == "level") {
+                orderImg.src = "icons/Misc/exp.png";
+            }
+            else if (sortingOperations[order][i] == "star") {
+                orderImg.src = "icons/Misc/mysticstar.png";
+            }
+            else if (sortingOperations[order][i] == "bond") {
+                orderImg.src = "icons/Misc/bondheart.png";
+            }
+            else if (sortingOperations[order][i] == "star") {
+                orderImg.src = "icons/Misc/mysticstar.png";
+            }
+            else if (sortingOperations[order][i] == "academy") {
+                orderImg.src = "icons/Misc/School_Icon_MILLENNIUM_W.png";
+            }
+            else if (sortingOperations[order][i] == "street") {
+                orderImg.src = "icons/Mood/Terrain_Street.png";
+            }
+            else if (sortingOperations[order][i] == "outdoor") {
+                orderImg.src = "icons/Mood/Terrain_Outdoor.png";
+            }
+            else if (sortingOperations[order][i] == "indoor") {
+                orderImg.src = "icons/Mood/Terrain_Indoor.png";
+            }
+            else if (sortingOperations[order][i] == "bullet") {
+                orderImg.src = "icons/Misc/Type_Attack.png";
+            }
+            else if (sortingOperations[order][i] == "armour") {
+                orderImg.src = "icons/Misc/Type_Defense.png";
+            }
+            else if (sortingOperations[order][i] == "role") {
+                orderImg.src = "icons/Misc/Role_DamageDealer.png";
+            }
+            else if (sortingOperations[order][i] == "weapon") {
+                orderImg.src = "icons/Misc/Gun.webp";
+            }
+
+            orderDisplay.appendChild(orderImg);
+        }
+    }
+}
+
+function InitSortingOrder() {
+
+    sortingOperations["level"] = ["level", "star", "bond", "academy", "name"]; // level
+    sortingOperations["star"] = ["star", "level", "bond", "academy", "name"]; // star quantity
+    sortingOperations["bond"] = ["bond", "star", "level", "academy", "name"]; // relationship
+    sortingOperations["academy"] = ["academy", "star", "level", "bond", "name"]; // academy
+    sortingOperations["name"] = ["name"]; // name
+    sortingOperations["ex"] = ["ex", "star", "level", "bond", "academy", "name"]; // ex skill
+    sortingOperations["street"] = ["street", "star", "level", "bond", "academy", "name"]; // urban warfare
+    sortingOperations["outdoor"] = ["outdoor", "star", "level", "bond", "academy", "name"]; // field warfare
+    sortingOperations["indoor"] = ["indoor", "star", "level", "bond", "academy", "name"]; // indoor warfare
+    sortingOperations["bullet"] = ["bullet", "star", "level", "bond", "academy", "name"]; // bullet type
+    sortingOperations["armour"] = ["armour", "star", "level", "bond", "academy", "name"]; // armour type
+    sortingOperations["role"] = ["role", "star", "level", "bond", "academy", "name"]; // role
+    sortingOperations["weapon"] = ["weapon", "star", "level", "bond", "academy", "name"]; // weapon
+
+    let orderKeys = Object.keys(sortingOperations);
+
+    for (let i = 0; i < orderKeys.length; i++) {
+        AddOrderDisplay(orderKeys[i]);
+    }
+
+    let sortPopup = document.getElementById("sort-popup");
+
+    sortPopup.onclick = function (event) {
+        if (event.target == sortPopup) {
+            CloseSortDialog();
+        }
+    };
+}
+
+function OpenSortDialog() {
+    document.getElementById("sort-popup").style.display = "";
+}
+
+function CloseSortDialog() {
+    document.getElementById("sort-popup").style.display = "none";
+}
+
+function SortType(type) {
+
+    CloseSortDialog();
+
+    currentSort = type;
+
+    if (type == "custom") {
+        if (data.character_order) {
+            MoveAllStudents(data.character_order);
+        }
+    }
+    else {
+        FullSort(type);
+    }
+}
+
+function SwitchCharacter(direction) {
+
+    let curChar = document.getElementById("char_" + modalCharID);
+
+    let nextCharId;
+
+    if (direction == "right") {
+        let nextChar = curChar.nextSibling;
+        if (!nextChar || nextChar.id == "addCharButton") {
+            nextCharId = document.getElementById("charsContainer").firstElementChild.id;
+        }
+        else {
+            nextCharId = nextChar.id;
+        }
+    }
+    else if (direction == "left") {
+        let nextChar = curChar.previousElementSibling;
+        if (!nextChar) {
+            nextCharId = document.getElementById("charsContainer").lastElementChild.previousElementSibling.previousElementSibling.id;
+        }
+        else {
+            nextCharId = nextChar.id;
+        }
+    }
+
+    if (nextCharId) {
+        nextCharId = nextCharId.substring(5);
+    }
+
+    closeModal(true);
+
+    setTimeout(() => {
+        document.getElementById("char_" + nextCharId).click();
+    }, 10);
 }

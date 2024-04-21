@@ -3,6 +3,12 @@
     margin: 0;
 
     padding: 0;
+
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 
 .navbar {
@@ -329,6 +335,10 @@ label {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
+}
+
+#character-modal-wrapper {
+    position: relative;
 }
 
 .modal-content-border {
@@ -1850,6 +1860,69 @@ input.filter-option {
     width: 4em;
 }
 
+#sort-popup {
+    position: fixed;
+    z-index: 5;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-color: rgba(39, 39, 39, 0.705);
+    color: white;
+}
+
+#sort-popup-wrapper {
+    background-color: rgb(65 65 65);
+    padding: 1em;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.order-display {
+    display: flex;
+    align-items: center;
+}
+
+.order-display img {
+    height: 1.5em;
+}
+
+.order-display div {
+    margin-inline: 0.3em;
+    color: white;
+}
+
+.order-display-container {
+    border-radius: 10px;
+    padding: 0.3em;
+}
+
+.order-display-container:hover {
+    background-color: #ffffff59;
+}
+
+#character-left-button, #character-right-button {
+    width: 2em;
+    position: absolute;
+    filter: invert(1);
+    bottom: 1em;
+}
+
+#character-left-button:hover, #character-right-button:hover {
+    filter: invert(0.7);
+}
+
+#character-left-button {
+    left: 1em;
+}
+
+#character-right-button {
+    right: 1em;
+}
+
 @media (max-width: 1280px) {
 
     .charBoxwrap img {
@@ -2483,6 +2556,20 @@ input.filter-option {
     #april-pyroxene-popup {
         scale: 0.45;
         left: -3%;
+    }
+
+    #character-left-button, #character-right-button {
+        bottom: 0;
+    }
+
+    #save-button-resource {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    #cancel-button-resource {
+        margin-right: 10px;
+        margin-left: 10px;
     }
 }
 

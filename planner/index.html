@@ -24,7 +24,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="manifest.json" />
-    <link rel="stylesheet" href="css/styles.css?43">
+    <link rel="stylesheet" href="css/styles.css?44">
     <title>Blue Archive Resource Planner</title>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://justin163.com/planner">
@@ -38,7 +38,7 @@
     <meta name="theme-color" content="#ff00bb">
     <style id="toggleViewStyle" class="modifyable"></style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="js/plannerFast.js?12"></script>
+    <script src="js/plannerFast.js?13"></script>
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-minimal@4/minimal.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js" defer></script>
@@ -48,9 +48,9 @@
     <script src="packages/javascript-lp-solver/solver.js" defer></script>
     <script src="packages/html2canvas/html2canvas.js" defer></script>
     <link rel="stylesheet" href="packages/tippyjs/light.css" />
-    <script src="js/config.js?22" defer></script>
+    <script src="js/config.js?23" defer></script>
     <script src="js/common.js?18" defer></script>
-    <script src="js/pageLogic.js?141" defer></script>
+    <script src="js/pageLogic.js?142" defer></script>
     <script src="js/filters.js?7" defer></script>
     <script src="js/lzma_worker.js?1" defer></script>
     <script src="js/cloudAPI.js?6" defer></script>
@@ -103,9 +103,12 @@
                     onclick="toggleViewFilters()"></button>
                 <button id="button-addcharacters" class="charEditorButton display-string" data-id="button-addcharacters"
                     onclick="showMultiSelect('AddNewChars')"></button>
+                <button id="button-sort" class="charEditorButton display-string" data-id="button-sort"
+                    onclick="OpenSortDialog()"></button>
                 <label id="character-size-label" for="character-size" class="display-string"
                     data-id="label-charactersize"></label>
-                <input id="character-size" type="range" min="1" max="5" value="5" oninput="ChangeCharSizes(this, false)" onchange="ChangeCharSizes(this, true)">
+                <input id="character-size" type="range" min="1" max="5" value="5" oninput="ChangeCharSizes(this, false)"
+                    onchange="ChangeCharSizes(this, true)">
             </div>
             <div id="charsContainer" class="docked">
             </div>
@@ -223,7 +226,7 @@
                     </div>
                 </div>
             </div>
-            <div style="overflow-y: auto; overflow-x: clip; max-height: 45vh;" class="scrollbar-styling">
+            <div style="overflow-y: auto; overflow-x: clip; max-height: 45vh; height: 45vh;" class="scrollbar-styling">
                 <div style="display: flex; flex-wrap: wrap;">
                     <div class="modal-content-section" id="content-5"
                         style="width: 15%; min-width: 185px; display: flex;">
@@ -548,11 +551,17 @@
             <div class="modal-content-section"
                 style="width: 100%; display: flex; justify-content: center; margin-top: 15px;">
                 <button id="cancel-button-resource" class="resource-modal-button display-string"
-                    onclick="cancelCharModal()" data-id="label-cancel"></button>
+                    onclick="cancelCharModal()" data-id="label-close"></button>
                 <button id="save-button-resource" class="resource-modal-button display-string"
-                    onclick="saveCharChanges()" data-id="label-saveandclose"></button>
+                    onclick="saveCharChanges()" data-id="label-save"></button>
             </div>
             <div style="height: 10px;"></div>
+            <div id="character-left-button" onclick="SwitchCharacter('left')">
+                <img src="icons/UI/chevron-left-solid.svg">
+            </div>
+            <div id="character-right-button" onclick="SwitchCharacter('right')">
+                <img src="icons/UI/chevron-right-solid.svg">
+            </div>
         </div>
     </div>
     <div class="modal" id="bulkEditModal">
@@ -1225,12 +1234,12 @@
                 <div class="control-panel-button-label">2</div>
             </div>
             <div id="control-disable" class="control-panel-button-wrapper">
-                <img  class="control-panel-button" id="control-button-disable" onclick="ControlPanelClicked('Disable')"
+                <img class="control-panel-button" id="control-button-disable" onclick="ControlPanelClicked('Disable')"
                     src="icons/UI/eye-slash-solid.svg">
                 <div class="control-panel-button-label">3</div>
             </div>
             <div id="control-addstudent" class="control-panel-button-wrapper">
-                <img  class="control-panel-button" id="control-button-add-student"
+                <img class="control-panel-button" id="control-button-add-student"
                     onclick="ControlPanelClicked('AddStudent')" src="icons/UI/plus-solid.svg">
                 <div class="control-panel-button-label">4</div>
             </div>
@@ -1244,8 +1253,13 @@
                     src="icons/UI/users-viewfinder-solid.svg">
                 <div class="control-panel-button-label">6</div>
             </div>
-            <img id="control-dock" class="control-panel-button" id="control-button-dock" onclick="ControlPanelClicked('Dock')"
-                src="icons/UI/window-dock-undock.svg">
+            <div id="control-sort" class="control-panel-button-wrapper">
+                <img class="control-panel-button" id="control-button-sort" onclick="ControlPanelClicked('Sort')"
+                    src="icons/UI/arrow-down-short-wide-solid.svg">
+                <div class="control-panel-button-label">7</div>
+            </div>
+            <img id="control-dock" class="control-panel-button" id="control-button-dock"
+                onclick="ControlPanelClicked('Dock')" src="icons/UI/window-dock-undock.svg">
         </div>
         <div id="control-panel-shortcut-info">SHIFT + n</div>
     </div>
@@ -1293,6 +1307,65 @@
         <button id="button-save-image" class="display-string" data-id="saving-savebutton"
             onclick="SaveScreenshot()"></button>
     </div>
+    <div id="sort-popup" style="display: none;">
+        <div id="sort-popup-wrapper">
+            <div class="order-display-container" onclick="SortType('custom')">
+                <label style="margin-bottom: 1em;" class="display-string" data-id="label-custom">Custom</label>
+            </div>
+            <div class="order-display-container" onclick="SortType('level')">
+                <label class="display-string" data-id="label-level"></label>
+                <div id="level-order-display" class="order-display"></div>
+            </div>
+            <div class="order-display-container" onclick="SortType('star')">
+                <label class="display-string" data-id="label-stars"></label>
+                <div id="star-order-display" class="order-display"></div>
+            </div>
+            <div class="order-display-container" onclick="SortType('bond')">
+                <label class="display-string" data-id="label-bond"></label>
+                <div id="bond-order-display" class="order-display"></div>
+            </div>
+            <div class="order-display-container" onclick="SortType('academy')">
+                <label class="display-string" data-id="label-school"></label>
+                <div id="academy-order-display" class="order-display"></div>
+            </div>
+            <div class="order-display-container" onclick="SortType('name')">
+                <label>Name</label>
+                <div id="name-order-display" class="order-display"></div>
+            </div>
+            <div class="order-display-container" onclick="SortType('ex')">
+                <label>EX</label>
+                <div id="ex-order-display" class="order-display"></div>
+            </div>
+            <div class="order-display-container" onclick="SortType('street')">
+                <label class="display-string" data-id="terrain-urban"></label>
+                <div id="street-order-display" class="order-display"></div>
+            </div>
+            <div class="order-display-container" onclick="SortType('outdoor')">
+                <label class="display-string" data-id="terrain-outdoors"></label>
+                <div id="outdoor-order-display" class="order-display"></div>
+            </div>
+            <div class="order-display-container" onclick="SortType('indoor')">
+                <label class="display-string" data-id="terrain-indoors"></label>
+                <div id="indoor-order-display" class="order-display"></div>
+            </div>
+            <div class="order-display-container" onclick="SortType('bullet')">
+                <label class="display-string" data-id="label-attacktype"></label>
+                <div id="bullet-order-display" class="order-display"></div>
+            </div>
+            <div class="order-display-container" onclick="SortType('armour')">
+                <label class="display-string" data-id="label-defensetype"></label>
+                <div id="armour-order-display" class="order-display"></div>
+            </div>
+            <div class="order-display-container" onclick="SortType('role')">
+                <label class="display-string" data-id="label-role"></label>
+                <div id="role-order-display" class="order-display"></div>
+            </div>
+            <div class="order-display-container" onclick="SortType('weapon')">
+                <label class="display-string" data-id="label-weapontype"></label>
+                <div id="weapon-order-display" class="order-display"></div>
+            </div>
+        </div>
+    </div>
     <div id="april-pyroxene-popup" style="display: none;">
         <div id="april-close-button" onclick="AprilClosePopup()">X</div>
         <div id="april-pyroxene-bar">
@@ -1339,11 +1412,13 @@
     <div class="footer-wrapper">
         <div class="footer-resource">
             <div class="footer-buttons-wrapper">
-                <div id="button-resources" class="footer-button" onclick="openResourceModal()" style="display: flex; align-items: center;">
+                <div id="button-resources" class="footer-button" onclick="openResourceModal()"
+                    style="display: flex; align-items: center;">
                     <img draggable="false" src="icons/UI/resourceBtn.png">
                     <p class="display-string" data-id="footer-resources"></p>
                 </div>
-                <div id="button-gear" class="footer-button" onclick="openGearModal()" style="display: flex; align-items: center;">
+                <div id="button-gear" class="footer-button" onclick="openGearModal()"
+                    style="display: flex; align-items: center;">
                     <img draggable="false" src="icons/Gear/T9_Badge_small.webp">
                     <p class="display-string" data-id="footer-gear"></p>
                 </div>
