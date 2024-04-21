@@ -718,6 +718,16 @@ function handleKeydown(e, keyPressed) {
             e.preventDefault()
         }
     }
+    else {
+        if (keycount == 1) {
+            if (keyPressed.ArrowLeft) {
+                SwitchCharacter("left");
+            }
+            else if (keyPressed.ArrowRight) {
+                SwitchCharacter("right");
+            }
+        }
+    }
 
     if (keycount == 2 && ((keyPressed.Control == true && keyPressed.ArrowLeft == true) || (keyPressed.Shift == true && keyPressed.Tab == true))) {
         inputNavigate('Left')
