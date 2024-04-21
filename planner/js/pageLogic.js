@@ -719,7 +719,7 @@ function handleKeydown(e, keyPressed) {
         }
     }
     else {
-        if (keycount == 1) {
+        if (keycount == 1 && modalOpen == "characterModal") {
             if (keyPressed.ArrowLeft) {
                 SwitchCharacter("left");
             }
