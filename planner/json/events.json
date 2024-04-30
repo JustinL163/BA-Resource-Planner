@@ -1,7 +1,6 @@
 {
     "event_order": [
-        "trip-trap-train",
-        "|certain-scientific-archive"
+        "certain-scientific-archive"
     ],
     "events": {
         "after-school-sweets": {
@@ -5402,7 +5401,6 @@
             }
         },
         "trip-trap-train": {
-            "active": true,
             "icon": "Event_830_Jp.png",
             "display_name": "Trip Trap Train",
             "reset_time": 1711998000,
@@ -5610,8 +5608,240 @@
             ]
         },
         "certain-scientific-archive": {
+            "active": true,
             "icon": "Event_831_Jp.png",
-            "display_name": "A Certain Scientific Youth Record"
+            "display_name": "A Certain Scientific Youth Record",
+            "reset_time": 1714417200,
+            "start_time": 1714442400,
+            "end_time": 1715652000,
+            "maint_hours": 12,
+            "available_targets": ["Shop", "Materials", "Currency", "Manual"],
+            "currency_targets": ["Equipment_Parts"],
+            "reward_preview": [
+                {"type": "Eleph", "id": "26011", "preview": 1}
+            ],
+            "currencies": {
+                "Strange_Shaped_Screws": {
+                    "icon": "Strange_Shaped_Screws.png",
+                    "shortname": "Strange Shaped Screws",
+                    "source": "StageDrop",
+                    "clear": 11575,
+                    "bonus_units": [
+                        {"id": "10080", "bonus": 0.25},
+
+                        {"id": "10079", "bonus": 0.15},
+                        {"id": "10001", "bonus": 0.15},
+                        {"id": "10051", "bonus": 0.15},
+                        {"id": "16002", "bonus": 0.15},
+                        {"id": "13010", "bonus": 0.15},
+                        {"id": "10052", "bonus": 0.15},
+                        {"id": "23004", "bonus": 0.15},
+                        {"id": "26001", "bonus": 0.15},
+
+                        {"id": "10076", "bonus": 0.1},
+                        {"id": "10053", "bonus": 0.1},
+                        {"id": "10063", "bonus": 0.1},
+                        {"id": "20013", "bonus": 0.1}
+                    ]
+                },
+                "Unusual_Cable": {
+                    "icon": "Unusual_Cable.png",
+                    "shortname": "Unusual Cable",
+                    "source": "StageDrop",
+                    "clear": 13070,
+                    "bonus_units": [
+                        {"id": "26011", "bonus": 0.25},
+
+                        {"id": "10080", "bonus": 0.15},
+                        {"id": "10076", "bonus": 0.15},
+                        {"id": "10053", "bonus": 0.15},
+                        {"id": "10063", "bonus": 0.15},
+                        {"id": "20000", "bonus": 0.15},
+                        {"id": "20020", "bonus": 0.15},
+                        {"id": "23003", "bonus": 0.15},
+
+                        {"id": "10051", "bonus": 0.1},
+                        {"id": "16010", "bonus": 0.1},
+                        {"id": "10007", "bonus": 0.1},
+                        {"id": "26001", "bonus": 0.1}
+                    ]
+                },
+                "Equipment_Parts": {
+                    "icon": "Equipment_Parts.png",
+                    "shortname": "Equipment Parts",
+                    "source": "StageDrop",
+                    "clear": 21600,
+                    "bonus_units": [
+                        {"id": "10079", "bonus": 0.25},
+                        {"id": "10001", "bonus": 0.25},
+
+                        {"id": "16010", "bonus": 0.15},
+                        {"id": "10007", "bonus": 0.15},
+                        {"id": "26011", "bonus": 0.15},
+                        {"id": "20013", "bonus": 0.15},
+
+                        {"id": "16002", "bonus": 0.1},
+                        {"id": "13010", "bonus": 0.1},
+                        {"id": "10052", "bonus": 0.1},
+                        {"id": "23004", "bonus": 0.1},
+                        {"id": "20000", "bonus": 0.1},
+                        {"id": "20020", "bonus": 0.1},
+                        {"id": "23003", "bonus": 0.1}
+                    ]
+                },
+                "Unidentified_Data_Chip": {
+                    "icon": "Unidentified_Data_Chip.png",
+                    "shortname": "Unidentified Data Chip",
+                    "source": "BoxPull",
+                    "pull_currency": "Equipment_Parts",
+                    "clear": 192,
+                    "bonus_units": []
+                }
+            },
+            "shops": {
+                "Strange_Shaped_Screws": [
+                    {"type": "XpReport", "id": "XP_1", "count": 150, "cost": 1},
+                    {"type": "XpReport", "id": "XP_2", "count": 75, "cost": 5},
+                    {"type": "XpReport", "id": "XP_3", "count": 35, "cost": 20},
+                    {"type": "XpReport", "id": "XP_4", "count": 15, "cost": 100},
+                    {"type": "Material", "id": "3020", "count": 10, "cost": 10},
+                    {"type": "Material", "id": "3021", "count": 5, "cost": 30},
+                    {"type": "Material", "id": "3022", "count": 3, "cost": 100},
+                    {"type": "Material", "id": "3023", "count": 1, "cost": 300},
+                    {"type": "Material", "id": "3030", "count": 10, "cost": 10},
+                    {"type": "Material", "id": "3031", "count": 5, "cost": 30},
+                    {"type": "Material", "id": "3032", "count": 3, "cost": 100},
+                    {"type": "Material", "id": "3033", "count": 1, "cost": 300},
+                    {"type": "Material", "id": "3050", "count": 10, "cost": 10},
+                    {"type": "Material", "id": "3051", "count": 5, "cost": 30},
+                    {"type": "Material", "id": "3052", "count": 3, "cost": 100},
+                    {"type": "Material", "id": "3053", "count": 1, "cost": 300},
+                    {"type": "Gift", "id": "Matcha_Ramune", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "MX-Ration_C-Type_Dessert_Flavor", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Fine_Maple_Bonsai", "count": 1, "cost": 300},
+                    {"type": "Furniture", "id": "Fresh_Shop_Table", "count": 1, "cost": 2000, "limited": true}
+                ],
+                "Unusual_Cable": [
+                    {"type": "XpReport", "id": "GXP_1", "count": 180, "cost": 1},
+                    {"type": "XpReport", "id": "GXP_2", "count": 95, "cost": 4},
+                    {"type": "XpReport", "id": "GXP_3", "count": 30, "cost": 15},
+                    {"type": "XpReport", "id": "GXP_4", "count": 12, "cost": 60},
+                    {"type": "Material", "id": "4020", "count": 20, "cost": 5},
+                    {"type": "Material", "id": "4021", "count": 12, "cost": 15},
+                    {"type": "Material", "id": "4022", "count": 8, "cost": 50},
+                    {"type": "Material", "id": "4023", "count": 5, "cost": 200},
+                    {"type": "Material", "id": "4030", "count": 20, "cost": 5},
+                    {"type": "Material", "id": "4031", "count": 12, "cost": 15},
+                    {"type": "Material", "id": "4032", "count": 8, "cost": 50},
+                    {"type": "Material", "id": "4033", "count": 5, "cost": 200},
+                    {"type": "Material", "id": "4050", "count": 20, "cost": 5},
+                    {"type": "Material", "id": "4051", "count": 12, "cost": 15},
+                    {"type": "Material", "id": "4052", "count": 8, "cost": 50},
+                    {"type": "Material", "id": "4053", "count": 5, "cost": 200},
+                    {"type": "Gift", "id": "Wavecat_Pillow", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Movie_Ticket", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Lace_Pillow", "count": 1, "cost": 300},
+                    {"type": "Furniture", "id": "Tarot_Table", "count": 1, "cost": 1000, "limited": true}
+                ],
+                "Unidentified_Data_Chip": [
+                    {"type": "Pyroxene", "id": "Pyroxene-1200", "count": 1, "cost": 40, "amount": 1200},
+                    {"type": "Eligma", "id": "Eligma-5", "count": 20, "cost": 2, "amount": 5},
+                    {"type": "SecretTech", "id": "SecretTech", "count": 1, "cost": 20},
+                    {"type": "Gift", "id": "Luxury_Buffet_Ticket", "count": 1, "cost": 5, "amount": 10},
+                    {"type": "Gift", "id": "Ring_Bit", "count": 1, "cost": 5, "amount": 10},
+                    {"type": "Gift", "id": "Music_Concert_Ticket", "count": 1, "cost": 2, "amount": 1},
+                    {"type": "Credit", "id": "Credit-1000000", "count": 5, "cost": 5, "amount": 1000000},
+                    {"type": "Credit", "id": "Credit-450000", "count": 10, "cost": 3, "amount": 450000},
+                    {"type": "Credit", "id": "Credit-150000", "count": 25, "cost": 1, "amount": 150000}
+                ]
+            },
+            "stage_groups": ["1-4", "5-8", "9-12"],
+            "stages": [
+                {"type": "Story", "number": 1, "cost": 10, "initial": {"Equipment_Parts": 10, "Strange_Shaped_Screws": 10}},
+                {"type": "Story", "number": 2, "cost": 10, "initial": {"Equipment_Parts": 10, "Unusual_Cable": 10}},
+                {"type": "Story", "number": 3, "cost": 10, "initial": {"Equipment_Parts": 10, "Strange_Shaped_Screws": 10}},
+                {"type": "Story", "number": 4, "cost": 10, "initial": {"Equipment_Parts": 10, "Unusual_Cable": 10}},
+                {"type": "Story", "number": 5, "cost": 10, "initial": {"Equipment_Parts": 10, "Strange_Shaped_Screws": 10}},
+                {"type": "Story", "number": 6, "cost": 10, "initial": {"Equipment_Parts": 10, "Unusual_Cable": 10}},
+                {"type": "Story", "number": 7, "cost": 10, "initial": {"Equipment_Parts": 10, "Strange_Shaped_Screws": 10}},
+                {"type": "Story", "number": 8, "cost": 10, "initial": {"Equipment_Parts": 10, "Unusual_Cable": 10}},
+
+                {"type": "Quest", "number": 1, "cost": 10, "group": 1, "initial": {"Equipment_Parts": 200, "Strange_Shaped_Screws": 50, "Unusual_Cable": 50}, "drops": {"Equipment_Parts": 8, "Strange_Shaped_Screws": 5, "Unusual_Cable": 5, "TN_1_Hyakkiyako": 0.052, "TN_1_Arius": 0.0138, "TN_1_Valkyrie": 0.0345, "BD_1_Hyakkiyako": 0.0414, "BD_1_Arius": 0.011, "BD_1_Valkyrie": 0.0276, "TN_2_Hyakkiyako": 0.0233, "TN_2_Arius": 0.0062, "TN_2_Valkyrie": 0.0155, "BD_2_Hyakkiyako": 0.0194, "BD_2_Arius": 0.0052, "BD_2_Valkyrie": 0.0129}},
+                {"type": "Quest", "number": 2, "cost": 10, "group": 1, "initial": {"Strange_Shaped_Screws": 200, "Unusual_Cable": 100}, "drops": {"Equipment_Parts": 5, "Strange_Shaped_Screws": 8, "Unusual_Cable": 5, "TN_1_Millennium": 0.082, "TN_1_Shanhaijing": 0.0179, "BD_1_Millennium": 0.066, "BD_1_Shanhaijing": 0.0144, "TN_2_Millennium": 0.0369, "TN_2_Shanhaijing": 0.0081, "BD_2_Millennium": 0.0308, "BD_2_Shanhaijing": 0.0067}},
+                {"type": "Quest", "number": 3, "cost": 10, "group": 1, "initial": {"Strange_Shaped_Screws": 100, "Unusual_Cable": 200}, "drops": {"Equipment_Parts": 5, "Strange_Shaped_Screws": 5, "Unusual_Cable": 8, "TN_1_Trinity": 0.074, "TN_1_Abydos": 0.0262, "BD_1_Trinity": 0.059, "BD_1_Abydos": 0.021, "TN_2_Trinity": 0.0332, "TN_2_Abydos": 0.0118, "BD_2_Trinity": 0.0292, "BD_2_Abydos": 0.0083}},
+                {"type": "Quest", "number": 4, "cost": 10, "group": 1, "initial": {"Equipment_Parts": 300}, "drops": {"Equipment_Parts": 18, "TN_1_Gehenna": 0.078, "TN_1_RedWinter": 0.0222, "BD_1_Gehenna": 0.062, "BD_1_RedWinter": 0.0178, "TN_2_Gehenna": 0.035, "TN_2_RedWinter": 0.01, "BD_2_Gehenna": 0.0292, "BD_2_RedWinter": 0.0083}},
+                {"type": "Quest", "number": 5, "cost": 15, "group": 2, "initial": {"Equipment_Parts": 200, "Strange_Shaped_Screws": 100, "Unusual_Cable": 100}, "drops": {"Equipment_Parts": 15, "Strange_Shaped_Screws": 6, "Unusual_Cable": 6, "TN_3_Hyakkiyako": 0.031, "TN_3_Arius": 0.0083, "TN_3_Valkyrie": 0.0207, "BD_3_Hyakkiyako": 0.0155, "BD_3_Arius": 0.0041, "BD_3_Valkyrie": 0.0104}},
+                {"type": "Quest", "number": 6, "cost": 15, "group": 2, "initial": {"Strange_Shaped_Screws": 250, "Unusual_Cable": 150}, "drops": {"Equipment_Parts": 6, "Strange_Shaped_Screws": 15, "Unusual_Cable": 6, "TN_3_Millennium": 0.0492, "TN_3_Shanhaijing": 0.0108, "BD_3_Millennium": 0.0246, "BD_3_Shanhaijing": 0.0054}},
+                {"type": "Quest", "number": 7, "cost": 15, "group": 2, "initial": {"Strange_Shaped_Screws": 150, "Unusual_Cable": 250}, "drops": {"Equipment_Parts": 6, "Strange_Shaped_Screws": 6, "Unusual_Cable": 15, "TN_3_Trinity": 0.0443, "TN_3_Abydos": 0.0157, "BD_3_Trinity": 0.0221, "BD_3_Abydos": 0.0079}},
+                {"type": "Quest", "number": 8, "cost": 15, "group": 2, "initial": {"Equipment_Parts": 400}, "drops": {"Equipment_Parts": 27, "TN_3_Gehenna": 0.0467, "TN_3_RedWinter": 0.0133, "BD_3_Gehenna": 0.0233, "BD_3_RedWinter": 0.0067}},
+                {"type": "Quest", "number": 9, "cost": 20, "group": 3, "initial": {"Equipment_Parts": 300, "Strange_Shaped_Screws": 100, "Unusual_Cable": 100}, "drops": {"Equipment_Parts": 28, "Strange_Shaped_Screws": 4, "Unusual_Cable": 4, "TN_4_Hyakkiyako": 0.0259, "TN_4_Arius": 0.0069, "TN_4_Valkyrie": 0.0172, "BD_4_Hyakkiyako": 0.0062, "BD_4_Arius": 0.0017, "BD_4_Valkyrie": 0.0041}},
+                {"type": "Quest", "number": 10, "cost": 20, "group": 3, "initial": {"Equipment_Parts": 50, "Strange_Shaped_Screws": 450}, "drops": {"Equipment_Parts": 4, "Strange_Shaped_Screws": 32, "TN_4_Millennium": 0.041, "TN_4_Shanhaijing": 0.009, "BD_4_Millennium": 0.0098, "BD_4_Shanhaijing": 0.0022}},
+                {"type": "Quest", "number": 11, "cost": 20, "group": 3, "initial": {"Equipment_Parts": 50, "Unusual_Cable": 450}, "drops": {"Equipment_Parts": 4, "Unusual_Cable": 32, "TN_4_Trinity": 0.0369, "TN_4_Abydos": 0.0131, "BD_4_Trinity": 0.0089, "BD_4_Abydos": 0.0031}},
+                {"type": "Quest", "number": 12, "cost": 20, "group": 3, "initial": {"Equipment_Parts": 500}, "drops": {"Equipment_Parts": 36, "TN_4_Gehenna": 0.0389, "TN_4_RedWinter": 0.0111, "BD_4_Gehenna": 0.0093, "BD_4_RedWinter": 0.0027}},
+
+                {"type": "Challenge", "number": 1, "cost": 5},
+                {"type": "Challenge", "number": 2, "cost": 5},
+                {"type": "Challenge", "number": 3, "cost": 5},
+                {"type": "Challenge", "number": 4, "cost": 5}
+            ],
+            "box_clear_cost": 1800,
+            "boxes": [
+                {
+                    "cycle": [1, 3, 5, 7],
+                    "rewards": [
+                        {"type": "Eleph", "id": 26011, "amount":  20, "count": 1},
+                        {"type": "EventCurrency", "id": "Unidentified_Data_Chip", "amount":  10, "count": 2},
+                        {"type": "XpReport", "id": "XP_1", "amount":  1, "count": 35},
+                        {"type": "XpReport", "id": "XP_2", "amount":  1, "count": 25},
+                        {"type": "XpReport", "id": "XP_3", "amount":  1, "count": 15},
+                        {"type": "XpReport", "id": "XP_4", "amount":  1, "count": 10},
+                        {"type": "Credit", "amount":  10000, "count": 30},
+                        {"type": "Credit", "amount":  30000, "count": 20},
+                        {"type": "Credit", "amount":  75000, "count": 8},
+                        {"type": "Credit", "amount":  150000, "count": 5},
+                        {"type": "Choice", "id": "BD_1", "amount": 1, "count": 10},
+                        {"type": "Choice", "id": "BD_2", "amount": 1, "count": 5},
+                        {"type": "Choice", "id": "BD_3", "amount": 1, "count": 3},
+                        {"type": "Choice", "id": "BD_4", "amount": 1, "count": 1},
+                        {"type": "Misc", "id": "Random_Equipment_Box_0", "amount":  1, "count": 130}
+                    ]
+                },
+                {
+                    "cycle": [2, 4, 6, 8],
+                    "rewards": [
+                        {"type": "Eleph", "id": 26011, "amount":  20, "count": 1},
+                        {"type": "EventCurrency", "id": "Unidentified_Data_Chip", "amount":  10, "count": 2},
+                        {"type": "XpReport", "id": "GXP_1", "amount":  1, "count": 40},
+                        {"type": "XpReport", "id": "GXP_2", "amount":  1, "count": 30},
+                        {"type": "XpReport", "id": "GXP_3", "amount":  1, "count": 15},
+                        {"type": "XpReport", "id": "GXP_4", "amount":  1, "count": 10},
+                        {"type": "Credit", "amount":  10000, "count": 30},
+                        {"type": "Credit", "amount":  30000, "count": 20},
+                        {"type": "Credit", "amount":  75000, "count": 8},
+                        {"type": "Credit", "amount":  150000, "count": 5},
+                        {"type": "Choice", "id": "TN_1", "amount": 1, "count": 20},
+                        {"type": "Choice", "id": "TN_2", "amount": 1, "count": 12},
+                        {"type": "Choice", "id": "TN_3", "amount": 1, "count": 8},
+                        {"type": "Choice", "id": "TN_4", "amount": 1, "count": 5},
+                        {"type": "Misc", "id": "Random_Equipment_Box_0", "amount":  1, "count": 94}
+                    ]
+                },
+                {
+                    "cycle": [9],
+                    "rewards": [
+                        {"type": "Eleph", "id": 26011, "amount":  1, "count": 3},
+                        {"type": "EventCurrency", "id": "Unidentified_Data_Chip", "amount":  10, "count": 1},
+                        {"type": "XpReport", "id": "XP_1", "amount":  1, "count": 100},
+                        {"type": "XpReport", "id": "XP_2", "amount":  1, "count": 75},
+                        {"type": "XpReport", "id": "XP_3", "amount":  1, "count": 20},
+                        {"type": "XpReport", "id": "XP_4", "amount":  1, "count": 1},
+                        {"type": "Choice", "id": "RTN_1", "amount":  1, "count": 5},
+                        {"type": "Choice", "id": "RTN_2", "amount":  1, "count": 2},
+                        {"type": "Choice", "id": "RTN_3", "amount":  1, "count": 1},
+                        {"type": "Misc", "id": "Random_Equipment_Box_0", "amount":  1, "count": 92}
+                    ]
+                }
+            ]
         }
     }
 }
