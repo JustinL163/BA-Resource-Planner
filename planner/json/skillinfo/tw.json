@@ -1506,9 +1506,9 @@
                     [
                         "",
                         "",
-                        "；\n每段攻击对该范围内的目标施加<c:Stunned>状态(持续1秒)",
-                        "；\n每段攻击对该范围内的目标施加<c:Stunned>状态(持续1秒)",
-                        "；\n每段攻击对该范围内的目标施加<c:Stunned>状态(持续1.4秒)"
+                        "；\n每段攻擊對該範圍內的目標施加<c:Stunned>狀態(持續1秒)",
+                        "；\n每段攻擊對該範圍內的目標施加<c:Stunned>狀態(持續1秒)",
+                        "；\n每段攻擊對該範圍內的目標施加<c:Stunned>狀態(持續1.4秒)"
                     ]
                 ],
                 "Cost": [
@@ -2749,9 +2749,9 @@
                     [
                         "",
                         "",
-                        "；\n令自身<b:AttackSpeed>增加38.4%(持续21秒)",
-                        "；\n令自身<b:AttackSpeed>增加38.4%(持续21秒)",
-                        "；\n令自身<b:AttackSpeed>增加38.4%(持续21秒)"
+                        "；\n令自身<b:AttackSpeed>增加38.4%(持續21秒)",
+                        "；\n令自身<b:AttackSpeed>增加38.4%(持續21秒)",
+                        "；\n令自身<b:AttackSpeed>增加38.4%(持續21秒)"
                     ]
                 ],
                 "Cost": [
@@ -3485,7 +3485,7 @@
             {
                 "SkillType": "normal",
                 "Name": "大家，請集中精神！",
-                "Desc": "戰鬥開始時(需接敵)，獲得<?1>技能COST(每場戰鬥僅1次).",
+                "Desc": "戰鬥開始時，獲得<?1>技能COST(每場戰鬥僅1次).",
                 "Parameters": [
                     [
                         "2",
@@ -3757,7 +3757,7 @@
             },
             {
                 "SkillType": "gearnormal",
-                "Name": "ウォーミングアップ+",
+                "Name": "Warming Up+",
                 "Desc": "每40秒，令自身<b:ATK>增加<?1>，<b:DEF>增加<?2>(持續20秒)",
                 "Parameters": [
                     [
@@ -7809,9 +7809,9 @@
                     [
                         "",
                         "",
-                        "；对该范围内的目标施加<c:Provoke>状态(持续3秒)",
-                        "；对该范围内的目标施加<c:Provoke>状态(持续3秒)",
-                        "；对该范围内的目标施加<c:Provoke>状态(持续3秒)"
+                        "；對該範圍內的目標施加<c:Provoke>狀態(持續3秒)",
+                        "；對該範圍內的目標施加<c:Provoke>狀態(持續3秒)",
+                        "；對該範圍內的目標施加<c:Provoke>狀態(持續3秒)"
                     ]
                 ],
                 "Cost": [
@@ -9388,19 +9388,19 @@
             {
                 "SkillType": "sub",
                 "Name": "完美社長的作風",
-                "Desc": "我方單位每擊敗6名敵方單位，令自身獲得1個味方<s:Misdeed>(<s:Misdeed>最多持有<?1>)(持有效果可疊加)；\n自身每持有1個<s:Misdeed>，令自身防禦力減少<?2>.",
+                "Desc": "我方單位每擊敗6名敵方單位，令自身獲得1個<s:Misdeed>(<s:Misdeed>最多持有<?1>)(持有效果可疊加)；\n自身每持有1個<s:Misdeed>，令自身防禦力減少<?2>.",
                 "Parameters": [
                     [
-                        "3个",
-                        "3个",
-                        "3个",
-                        "4个",
-                        "4个",
-                        "4个",
-                        "5个",
-                        "5个",
-                        "5个",
-                        "6个"
+                        "3個",
+                        "3個",
+                        "3個",
+                        "4個",
+                        "4個",
+                        "4個",
+                        "5個",
+                        "5個",
+                        "5個",
+                        "6個"
                     ],
                     [
                         "26.8%",
@@ -11416,7 +11416,7 @@
             },
             {
                 "SkillType": "gearnormal",
-                "Name": "クレイモア＋",
+                "Name": "Claymore+",
                 "Desc": "每40秒，起爆小型闊刀地雷，向扇形範圍內飛射5枚破片，各造成攻擊力<?1>的傷害；\n令該目標<d:OppressionResist>減少<?2>(持續30秒).",
                 "Parameters": [
                     [
@@ -11723,6 +11723,72 @@
                             24579,
                             25320,
                             28301
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "gearnormal",
+                "Name": "來自預期之外角度的一擊＋",
+                "Desc": "自身每進行5次普通攻擊，對1名敵方單位造成攻擊力<?1>的傷害；\n對該目標施加<d:DamageByHit_Damaged>狀態(持續5秒)\n擁有該狀態的目標被攻擊時，受到美優攻擊力<?2?的追加傷害\n(該傷害無法暴擊)\n(最多觸發50次).",
+                "Parameters": [
+                    [
+                        "223%",
+                        "234%",
+                        "245%",
+                        "290%",
+                        "301%",
+                        "312%",
+                        "357%",
+                        "368%",
+                        "379%",
+                        "424%"
+                    ],
+                    [
+                        "15.5%",
+                        "16.3%",
+                        "17.1%",
+                        "20.2%",
+                        "20.9%",
+                        "21.7%",
+                        "24.8%",
+                        "25.6%",
+                        "26.4%",
+                        "29.5%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_TARGET",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            22344,
+                            23462,
+                            24579,
+                            29048,
+                            30165,
+                            31282,
+                            35745,
+                            36862,
+                            37979,
+                            42448
+                        ]
+                    },
+                    {
+                        "Type": "DMGByHit",
+                        "Icon": "DamageByHit_Damaged",
+                        "Scale": [
+                            1555,
+                            1633,
+                            1711,
+                            2021,
+                            2099,
+                            2177,
+                            2488,
+                            2566,
+                            2643,
+                            2954
                         ]
                     }
                 ]
@@ -20667,6 +20733,83 @@
                 ]
             },
             {
+                "SkillType": "gearnormal",
+                "Name": "精神統一＋",
+                "Desc": "戰術入場時，立即賦予自身<s:Dado>狀態，令自身<b:ATK>增加<?1>(持續<?2>).\n\n每50秒，賦予自身<s:Dado>狀態，令自身<b:ATK>增加<?3>(持續<?4>).",
+                "Parameters": [
+                    [
+                        "31.4%",
+                        "32.7%",
+                        "34.1%",
+                        "36.7%",
+                        "38.1%",
+                        "39.5%",
+                        "41.5%",
+                        "43%",
+                        "44.5%",
+                        "45.5%"
+                    ],
+                    [
+                        "25秒",
+                        "25秒",
+                        "25秒",
+                        "30秒",
+                        "30秒",
+                        "30秒",
+                        "35秒",
+                        "35秒",
+                        "35秒",
+                        "40秒"
+                    ],
+                    [
+                        "31.4%",
+                        "32.7%",
+                        "34.1%",
+                        "36.7%",
+                        "38.1%",
+                        "39.5%",
+                        "41.5%",
+                        "43%",
+                        "44.5%",
+                        "45.5%"
+                    ],
+                    [
+                        "25秒",
+                        "25秒",
+                        "25秒",
+                        "30秒",
+                        "30秒",
+                        "30秒",
+                        "35秒",
+                        "35秒",
+                        "35秒",
+                        "40秒"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                3144,
+                                3278,
+                                3412,
+                                3673,
+                                3816,
+                                3959,
+                                4154,
+                                4303,
+                                4450,
+                                4550
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2
+                    }
+                ]
+            },
+            {
                 "SkillType": "passive",
                 "Name": "始終不變的熱情",
                 "Desc": "<b:CriticalDamage>增加<?1>.",
@@ -21747,7 +21890,7 @@
                         "",
                         "",
                         "",
-                        "，移除拥有的1个减益状态"
+                        "，移除擁有的1個減益狀態"
                     ],
                     [
                         "82.2%",
@@ -22044,10 +22187,10 @@
                     ],
                     [
                         "",
-                        "与<d:Dodge>",
-                        "与<d:Dodge>",
-                        "、<d:Dodge>与<d:HIT>",
-                        "、<d:Dodge>与<d:HIT>"
+                        "與<d:Dodge>",
+                        "與<d:Dodge>",
+                        "、<d:Dodge>與<d:HIT>",
+                        "、<d:Dodge>與<d:HIT>"
                     ],
                     [
                         "15.9%",
@@ -24289,7 +24432,7 @@
             },
             {
                 "SkillType": "ex",
-                "Name": "打擾一下",
+                "Name": "稍微失禮一下的說",
                 "Desc": "對扇形範圍內的敵方單位造成攻擊力<?1>的傷害.",
                 "Parameters": [
                     [
@@ -24344,7 +24487,7 @@
             },
             {
                 "SkillType": "normal",
-                "Name": "正義實現委員會的聯絡網",
+                "Name": "實現正義部的聯絡網",
                 "Desc": "每30秒，令自身<b:EnhanceSonicRate>加算<?1>(持續<?2>).",
                 "Parameters": [
                     [
@@ -24398,7 +24541,7 @@
             },
             {
                 "SkillType": "passive",
-                "Name": "敏銳本能",
+                "Name": "敏銳的本能",
                 "Desc": "<b:HIT>增加<?1>.",
                 "Parameters": [
                     [
@@ -24436,7 +24579,7 @@
             },
             {
                 "SkillType": "weaponpassive",
-                "Name": "敏銳本能＋",
+                "Name": "敏銳的本能+",
                 "Desc": "<b:ATK>增加<?1>；\n<b:HIT>增加<?2>.",
                 "Parameters": [
                     [
@@ -24486,7 +24629,7 @@
             },
             {
                 "SkillType": "sub",
-                "Name": "也是會有那種情況的",
+                "Name": "偶爾就是會這樣呢",
                 "Desc": "自身攻擊時，對未處於掩體掩護狀態下的目標造成攻擊力<?1>的追加傷害.",
                 "Parameters": [
                     [
@@ -24553,7 +24696,7 @@
             },
             {
                 "SkillType": "ex",
-                "Name": "大惡人鑽碎",
+                "Name": "Giant Heel Crash",
                 "Desc": "令圓形範圍內的敵方單位<d:DEF>減少<?1>(持續25秒)；\n對該範圍內的目標造成攻擊力<?2>的傷害.",
                 "Parameters": [
                     [
@@ -24627,7 +24770,7 @@
             },
             {
                 "SkillType": "normal",
-                "Name": "這是重要的訊息",
+                "Name": "訊息才是最重要的",
                 "Desc": "每35秒，對圓形範圍內的敵方單位造成攻擊力<?1>的傷害.",
                 "Parameters": [
                     [
@@ -24673,7 +24816,7 @@
             },
             {
                 "SkillType": "passive",
-                "Name": "狂人戰略",
+                "Name": "狂人的戰略",
                 "Desc": "<b:CriticalChance>增加<?1>.",
                 "Parameters": [
                     [
@@ -24711,7 +24854,7 @@
             },
             {
                 "SkillType": "weaponpassive",
-                "Name": "狂人戰略＋",
+                "Name": "狂人的戰略+",
                 "Desc": "<b:CriticalDamage>增加<?1>；\n<b:CriticalChance>增加<?2>.",
                 "Parameters": [
                     [
@@ -24761,7 +24904,7 @@
             },
             {
                 "SkillType": "sub",
-                "Name": "鑽頭怎麼沒響了？",
+                "Name": "鑽頭的聲音停下來了嗎？",
                 "Desc": "自身使用EX技能時，令自身獲得1個<s:CH0089_ExtraPassive>；\n自身持有3個<s:CH0089_ExtraPassive>時，令該次EX技能造成攻擊力<?1>的追加傷害，隨後移除自身持有的所有<s:CH0089_ExtraPassive>.",
                 "Parameters": [
                     [
@@ -24829,7 +24972,7 @@
             },
             {
                 "SkillType": "ex",
-                "Name": "常盤台的超電磁炮",
+                "Name": "常盤台的超電磁砲",
                 "Desc": "對直線範圍內的敵方單位造成攻擊力<?1>的傷害.",
                 "Parameters": [
                     [
@@ -24873,7 +25016,7 @@
             },
             {
                 "SkillType": "normal",
-                "Name": "有點發麻！",
+                "Name": "會有點麻喔！",
                 "Desc": "每50秒，對圓形範圍內的敵方單位造成攻擊力<?1>的傷害；\n對該範圍內的目標施加攻擊力<?2>的<d:ElectricShock>狀態(持續<?3>).",
                 "Parameters": [
                     [
@@ -24999,7 +25142,7 @@
             },
             {
                 "SkillType": "weaponpassive",
-                "Name": "電擊操作能力＋",
+                "Name": "電擊操作能力+",
                 "Desc": "<b:ATK>增加<?1>；\n<b:HIT>增加<?2>；\n免疫食蜂操祈施加的<c:Confusion>狀態.",
                 "Parameters": [
                     [
@@ -25049,7 +25192,7 @@
             },
             {
                 "SkillType": "sub",
-                "Name": "不要讓我重複好幾遍",
+                "Name": "別讓我說這麼多次",
                 "Desc": "自身使用普通技能時，令自身<b:ATK>增加<?1>(持續<?2>).",
                 "Parameters": [
                     [
@@ -25130,7 +25273,7 @@
             },
             {
                 "SkillType": "ex",
-                "Name": "心理掌控",
+                "Name": "心理掌握",
                 "Desc": "對1名敵方單位及以該目標為中心的圓形範圍內距離該目標最近的2名其他敵方單位造成攻擊力<?1>的傷害；\n並對上述目標施加<c:Confusion>狀態(持續<?2>).",
                 "Parameters": [
                     [
@@ -25192,7 +25335,7 @@
             },
             {
                 "SkillType": "normal",
-                "Name": "能來稍微幫下忙嗎？",
+                "Name": "可以幫我一下嗎？",
                 "Desc": "每30秒，對圓形範圍內的敵方單位造成攻擊力<?1>的傷害.",
                 "Parameters": [
                     [
@@ -25289,7 +25432,7 @@
             },
             {
                 "SkillType": "weaponpassive",
-                "Name": "常盤台的女王＋",
+                "Name": "常盤台的女王+",
                 "Desc": "<b:ATK>增加<?1>；\n<b:OppressionPower>增加<?2>.",
                 "Parameters": [
                     [
@@ -25339,7 +25482,7 @@
             },
             {
                 "SkillType": "sub",
-                "Name": "我可是頭腦派",
+                "Name": "畢竟我是頭腦派",
                 "Desc": "自身使用EX技能成功對目標施加<c:Confusion>狀態時，令自身<b:DEF>與<b:Dodge>增加<?1>(持續20秒)",
                 "Parameters": [
                     [
@@ -25400,7 +25543,7 @@
         ]
     },
     "10081": {
-        "Name": "紫草",
+        "Name": "紫",
         "Skills": [
             {
                 "SkillType": "autoattack",
@@ -25427,7 +25570,7 @@
             },
             {
                 "SkillType": "ex",
-                "Name": "徑直萌發的決意",
+                "Name": "剛直的決心",
                 "Desc": "對圓形範圍內的敵方單位造成攻擊力<?1>的傷害；\n以10個為單位消耗自身持有的<s:Pray>，每消耗10個<s:Pray>，額外造成攻擊力<?2>的傷害(必定暴擊)",
                 "Parameters": [
                     [
@@ -25547,20 +25690,20 @@
             },
             {
                 "SkillType": "normal",
-                "Name": "殷切渴盼的重逢",
+                "Name": "熱切期盼的重逢",
                 "Desc": "每40秒，令自身獲得<?1><s:Pray>(<s:Pray>最多持有50個)；\n令自身<b:ATK>增加<?2>(持續30秒).",
                 "Parameters": [
                     [
-                        "10个",
-                        "10个",
-                        "10个",
-                        "10个",
-                        "10个",
-                        "10个",
-                        "20个",
-                        "20个",
-                        "20个",
-                        "20个"
+                        "10個",
+                        "10個",
+                        "10個",
+                        "10個",
+                        "10個",
+                        "10個",
+                        "20個",
+                        "20個",
+                        "20個",
+                        "20個"
                     ],
                     [
                         "5.4%",
@@ -25601,7 +25744,7 @@
             },
             {
                 "SkillType": "passive",
-                "Name": "百花繚亂的菁～英",
+                "Name": "身為百花繚亂的菁英",
                 "Desc": "<b:CriticalDamage>增加<?1>.",
                 "Parameters": [
                     [
@@ -25639,7 +25782,7 @@
             },
             {
                 "SkillType": "weaponpassive",
-                "Name": "百花繚亂的菁～英＋",
+                "Name": "身為百花繚亂的菁英+",
                 "Desc": "<b:ATK>增加<?1>；\n<b:CriticalDamage>增加<?2>.",
                 "Parameters": [
                     [
@@ -25689,7 +25832,7 @@
             },
             {
                 "SkillType": "sub",
-                "Name": "昂首直面的職責",
+                "Name": "抬頭面對的責任",
                 "Desc": "除自身外的我方單位每消耗COST，令自身獲得相當於COST消耗數值個數的<s:Pray>(<s:Pray>最多持有50個)\n自身每獲得10個<s:Pray>，令自身<b:CriticalDamage>增加<?1>(持續15秒).",
                 "Parameters": [
                     [
@@ -26355,7 +26498,7 @@
         ]
     },
     "10084": {
-        "Name": "小玉（露營）",
+        "Name": "小玉(露營)",
         "Skills": [
             {
                 "SkillType": "autoattack",
@@ -26460,7 +26603,7 @@
                 "Icon": "COMMON_SKILLICON_WEAPONBUFF",
                 "Effects": [
                     {
-                        "Type": "BuffAlly",
+                        "Type": "BuffSelf",
                         "Value": [
                             [
                                 598,
@@ -26477,6 +26620,32 @@
                         ],
                         "Stat": "AttackPower_Coefficient",
                         "Channel": 2
+                    },
+                    {
+                        "Type": "BuffAlly",
+                        "Restrictions": [
+                            {
+                                "Property": "Id",
+                                "Operand": "NotEqual",
+                                "Value": 10084
+                            }
+                        ],
+                        "Value": [
+                            [
+                                598,
+                                627,
+                                657,
+                                776,
+                                806,
+                                836,
+                                955,
+                                985,
+                                1015,
+                                1134
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 102
                     }
                 ]
             },
@@ -26609,7 +26778,7 @@
         ]
     },
     "10085": {
-        "Name": "晴（露營）",
+        "Name": "晴(露營)",
         "Skills": [
             {
                 "SkillType": "autoattack",
@@ -27064,7 +27233,7 @@
             {
                 "SkillType": "normal",
                 "Name": "滴水不漏的準備",
-                "Desc": "戰鬥開始時(需接敵)，令自身<b:EnhanceExplosionRate>加算<?1>、<b:HIT>增加<?2>(每場戰鬥僅1次).",
+                "Desc": "戰鬥開始時，令自身<b:EnhanceExplosionRate>加算<?1>、<b:HIT>增加<?2>(每場戰鬥僅1次).",
                 "Parameters": [
                     [
                         "34.17%",
@@ -27979,7 +28148,7 @@
             {
                 "SkillType": "sub",
                 "Name": "潛入行動",
-                "Desc": "戰鬥開始時，立即賦予自身<s:CH0239_ExtraPassive>狀態；\n自身受到傷害後，立即移除自身擁有的<s:CH0239_ExtraPassive>.\n自身未擁有<s:CH0239_ExtraPassive>狀態時，10秒內未受到傷害，立即賦予自身<s:CH0239_ExtraPassive>狀態.\n<s:CH0239_ExtraPassive>狀態的效果：<b:CriticalDamage>增加<?1>.",
+                "Desc": "戰術入場時，立即賦予自身<s:CH0239_ExtraPassive>狀態；\n自身受到傷害後，立即移除自身擁有的<s:CH0239_ExtraPassive>.\n自身未擁有<s:CH0239_ExtraPassive>狀態時，10秒內未受到傷害，立即賦予自身<s:CH0239_ExtraPassive>狀態.\n<s:CH0239_ExtraPassive>狀態的效果：<b:CriticalDamage>增加<?1>.",
                 "Parameters": [
                     [
                         "33.6%",
@@ -28512,6 +28681,901 @@
                         ],
                         "Stat": "AttackPower_Coefficient",
                         "Channel": 2
+                    }
+                ]
+            }
+        ]
+    },
+    "10091": {
+        "Name": "千紗（樂隊）",
+        "Skills": [
+            {
+                "SkillType": "autoattack",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "Hits": [
+                            10000
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Frames": {
+                            "AttackEnterDuration": 0,
+                            "AttackStartDuration": 0,
+                            "AttackEndDuration": 0,
+                            "AttackBurstRoundOverDelay": 0,
+                            "AttackIngDuration": 0,
+                            "AttackReloadDuration": 0
+                        },
+                        "CriticalCheck": "Check"
+                    }
+                ]
+            },
+            {
+                "SkillType": "ex",
+                "Name": "歷史性的一小節",
+                "Desc": "令以自身為中心的圓形範圍內的我方單位<b:AttackSpeed>增加<?1>(持續40秒).\n賦予自身<?2><s:CH0220_Public>(持續40秒)(最多持有2個)",
+                "Parameters": [
+                    [
+                        "18.9%",
+                        "21.7%",
+                        "27.4%",
+                        "30.2%",
+                        "35.9%"
+                    ],
+                    [
+                        "1個",
+                        "1個",
+                        "1個",
+                        "1個",
+                        "2個"
+                    ]
+                ],
+                "Cost": [
+                    3,
+                    3,
+                    3,
+                    3,
+                    3
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffAlly",
+                        "Value": [
+                            [
+                                1891,
+                                2175,
+                                2742,
+                                3026,
+                                3593
+                            ]
+                        ],
+                        "Stat": "AttackSpeed_Coefficient",
+                        "Channel": 124
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "貝斯調音",
+                "Desc": "每35秒，令自身<b:ATK>增加<?1>(持續26秒)",
+                "Parameters": [
+                    [
+                        "19.6%",
+                        "20.6%",
+                        "21.5%",
+                        "25.5%",
+                        "26.5%",
+                        "27.4%",
+                        "31.4%",
+                        "32.3%",
+                        "33.3%",
+                        "37.2%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                1963,
+                                2061,
+                                2159,
+                                2552,
+                                2650,
+                                2748,
+                                3140,
+                                3239,
+                                3337,
+                                3729
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2
+                    }
+                ]
+            },
+            {
+                "SkillType": "passive",
+                "Name": "熟悉的舞臺",
+                "Desc": "<b:AttackSpeed>增加<?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "AttackSpeed_Coefficient",
+                        "Scale": [
+                            1400,
+                            1470,
+                            1540,
+                            1820,
+                            1890,
+                            1960,
+                            2240,
+                            2310,
+                            2380,
+                            2660
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "熟悉的舞臺＋",
+                "Desc": "<b:EnhanceExplosionRate>加算<?1>；\n<b:AttackSpeed>增加<?2>.",
+                "Parameters": [
+                    [
+                        "26%",
+                        "27.3%",
+                        "28.6%",
+                        "33.8%",
+                        "35.1%",
+                        "36.4%",
+                        "41.6%",
+                        "42.9%",
+                        "44.2%",
+                        "49.4%"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "EnhanceExplosionRate_Base",
+                        "Scale": [
+                            2600,
+                            2730,
+                            2860,
+                            3380,
+                            3510,
+                            3640,
+                            4160,
+                            4290,
+                            4420,
+                            4940
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "甜香人聲",
+                "Desc": "自身攻擊時，對目標造成自身攻擊力<?1>×自身<s:CH0220_Public>持有數的追加傷害(持有數最多計數2個)",
+                "Parameters": [
+                    [
+                        "5.6%",
+                        "5.9%",
+                        "6.2%",
+                        "7.3%",
+                        "7.5%",
+                        "7.8%",
+                        "8.9%",
+                        "9.2%",
+                        "9.5%",
+                        "10.6%"
+                    ]
+                ],
+                "Icon": "SKILLICON_CH0250_EXTRAPASSIVESKILL",
+                "Effects": [
+                    {
+                        "Type": "DMGEcho",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            560,
+                            595,
+                            620,
+                            732,
+                            758,
+                            784,
+                            896,
+                            922,
+                            956,
+                            1068
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "10092": {
+        "Name": "喜美（樂隊）",
+        "Skills": [
+            {
+                "SkillType": "autoattack",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "Hits": [
+                            10000
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Frames": {
+                            "AttackEnterDuration": 0,
+                            "AttackStartDuration": 0,
+                            "AttackEndDuration": 0,
+                            "AttackBurstRoundOverDelay": 0,
+                            "AttackIngDuration": 0,
+                            "AttackReloadDuration": 0
+                        },
+                        "CriticalCheck": "Check"
+                    }
+                ]
+            },
+            {
+                "SkillType": "ex",
+                "Name": "爆發高潮",
+                "Desc": "令自身<b:ATK>與<b:AttackSpeed>增加<?1>(持續50秒)；\n賦予自身5個<s:CH0220_Public>(最多持有5個).\n※ 自身持有<s:CH0220_Public>時，每10秒移除1個自身持有的<s:CH0220_Public>.",
+                "Parameters": [
+                    [
+                        "59.1%",
+                        "68%",
+                        "85.8%",
+                        "94.6%",
+                        "112%"
+                    ]
+                ],
+                "Cost": [
+                    10,
+                    10,
+                    10,
+                    10,
+                    10
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                5918,
+                                6804,
+                                8580,
+                                9467,
+                                11242
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2
+                    },
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                5918,
+                                6804,
+                                8580,
+                                9467,
+                                11242
+                            ]
+                        ],
+                        "Stat": "AttackSpeed_Coefficient",
+                        "Channel": 24
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "視覺創客",
+                "Desc": "自身每進行10次普通攻擊，對1名敵方單位造成自身攻擊力<?1>×(1+全體我方單位<s:CH0220_Public>持有數×5%)的傷害(持有數最多計數8個).",
+                "Parameters": [
+                    [
+                        "508%",
+                        "534%",
+                        "559%",
+                        "661%",
+                        "686%",
+                        "711%",
+                        "813%",
+                        "839%",
+                        "864%",
+                        "966%"
+                    ]
+                ],
+                "Icon": "SKILLICON_CH0220_PUBLICSKILL",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            50859,
+                            53400,
+                            55942,
+                            66115,
+                            68656,
+                            71198,
+                            81371,
+                            83913,
+                            86454,
+                            96627
+                        ]
+                    },
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            53400,
+                            56069,
+                            58738,
+                            69421,
+                            72090,
+                            74759,
+                            85441,
+                            88110,
+                            90779,
+                            101455
+                        ]
+                    },
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            55942,
+                            58738,
+                            61535,
+                            72727,
+                            75523,
+                            78320,
+                            89505,
+                            92302,
+                            95098,
+                            106290
+                        ]
+                    },
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            58483,
+                            61407,
+                            64331,
+                            76033,
+                            78957,
+                            81880,
+                            93576,
+                            96500,
+                            99423,
+                            111119
+                        ]
+                    },
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            61031,
+                            64083,
+                            67134,
+                            79339,
+                            82390,
+                            85441,
+                            97646,
+                            100697,
+                            103749,
+                            115954
+                        ]
+                    },
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            63573,
+                            66752,
+                            69930,
+                            82639,
+                            85817,
+                            88996,
+                            101710,
+                            104889,
+                            108068,
+                            120782
+                        ]
+                    },
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            66115,
+                            69421,
+                            72727,
+                            85945,
+                            89251,
+                            92557,
+                            105781,
+                            109087,
+                            112393,
+                            125611
+                        ]
+                    },
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            68656,
+                            72090,
+                            75523,
+                            89251,
+                            92684,
+                            96117,
+                            109851,
+                            113278,
+                            116712,
+                            130445
+                        ]
+                    },
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            71198,
+                            74759,
+                            78320,
+                            92557,
+                            96117,
+                            99678,
+                            113915,
+                            117476,
+                            121037,
+                            135274
+                        ]
+                    }
+                ],
+                "EffectCombine": [
+                    "DMGSingle"
+                ],
+                "EffectCombineLabel": {
+                    "Icon": [
+                        "buff/Special_CH0220_Public.webp"
+                    ],
+                    "StackLabel": [
+                        "&times;0",
+                        "&times;1",
+                        "&times;2",
+                        "&times;3",
+                        "&times;4",
+                        "&times;5",
+                        "&times;6",
+                        "&times;7",
+                        "&times;8"
+                    ],
+                    "DisableFirst": true
+                }
+            },
+            {
+                "SkillType": "passive",
+                "Name": "搖滾",
+                "Desc": "<b:ATK>增加<?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "AttackPower_Coefficient",
+                        "Scale": [
+                            1400,
+                            1470,
+                            1540,
+                            1820,
+                            1890,
+                            1960,
+                            2240,
+                            2310,
+                            2380,
+                            2660
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "搖滾＋",
+                "Desc": "<b:CriticalDamage>增加<?1>；\n<b:ATK>增加<?2>.",
+                "Parameters": [
+                    [
+                        "2000",
+                        "2100",
+                        "2200",
+                        "2600",
+                        "2700",
+                        "2800",
+                        "3200",
+                        "3300",
+                        "3400",
+                        "3800"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "CriticalDamageRate_Base",
+                        "Scale": [
+                            2000,
+                            2100,
+                            2200,
+                            2600,
+                            2700,
+                            2800,
+                            3200,
+                            3300,
+                            3400,
+                            3800
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "甜品泛音",
+                "Desc": "自身每第3次使用普通技能攻擊時，造成自身攻擊力<?1>的追加傷害.",
+                "Parameters": [
+                    [
+                        "63%",
+                        "66.2%",
+                        "69.3%",
+                        "81.9%",
+                        "85.1%",
+                        "88.2%",
+                        "100%",
+                        "104%",
+                        "107%",
+                        "119%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_EXTRADAMAGE",
+                "Effects": [
+                    {
+                        "Type": "DMGEcho",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            6307,
+                            6625,
+                            6937,
+                            8199,
+                            8517,
+                            8829,
+                            10091,
+                            10409,
+                            10721,
+                            11982
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "10093": {
+        "Name": "綺羅羅",
+        "Skills": [
+            {
+                "SkillType": "autoattack",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "Hits": [
+                            10000
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Frames": {
+                            "AttackEnterDuration": 0,
+                            "AttackStartDuration": 0,
+                            "AttackEndDuration": 0,
+                            "AttackBurstRoundOverDelay": 0,
+                            "AttackIngDuration": 0,
+                            "AttackReloadDuration": 0
+                        },
+                        "CriticalCheck": "Check"
+                    }
+                ]
+            },
+            {
+                "SkillType": "ex",
+                "Name": "格黑娜的名人！",
+                "Desc": "令自身<s:FormChange>強化，普通攻擊時造成自身攻擊力<?1>的追加傷害，令自身<b:ATK>增加<?2>(持續40秒).\n立即換彈.",
+                "Parameters": [
+                    [
+                        "15.2%",
+                        "17.5%",
+                        "22%",
+                        "24.3%",
+                        "28.9%"
+                    ],
+                    [
+                        "39.6%",
+                        "39.6%",
+                        "45.5%",
+                        "45.5%",
+                        "51.4%"
+                    ]
+                ],
+                "Cost": [
+                    4,
+                    4,
+                    4,
+                    4,
+                    4
+                ],
+                "Icon": "COMMON_SKILLICON_FORMCHANGE",
+                "Effects": [
+                    {
+                        "Type": "DMGEcho",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            1522,
+                            1755,
+                            2206,
+                            2432,
+                            2890
+                        ]
+                    },
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                3960,
+                                3960,
+                                4554,
+                                4554,
+                                5148
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "總是閃閃亮亮！",
+                "Desc": "每30秒，對1名敵方單位造成自身攻擊力<?1>的傷害.",
+                "Parameters": [
+                    [
+                        "391%",
+                        "411%",
+                        "430%",
+                        "509%",
+                        "528%",
+                        "548%",
+                        "626%",
+                        "646%",
+                        "665%",
+                        "744%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_TARGET",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            39172,
+                            41136,
+                            43092,
+                            50925,
+                            52881,
+                            54845,
+                            62678,
+                            64634,
+                            66590,
+                            74423
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "passive",
+                "Name": "可麗餅的甜蜜",
+                "Desc": "<b:CriticalDamage>增加<?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "CriticalDamageRate_Coefficient",
+                        "Scale": [
+                            1400,
+                            1470,
+                            1540,
+                            1820,
+                            1890,
+                            1960,
+                            2240,
+                            2310,
+                            2380,
+                            2660
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "可麗餅的甜蜜＋",
+                "Desc": "<b:CriticalDamage>增加<?1>；\n<b:CriticalDamage>增加<?2>.",
+                "Parameters": [
+                    [
+                        "2000",
+                        "2100",
+                        "2200",
+                        "2600",
+                        "2700",
+                        "2800",
+                        "3200",
+                        "3300",
+                        "3400",
+                        "3800"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "CriticalDamageRate_Base",
+                        "Scale": [
+                            2000,
+                            2100,
+                            2200,
+                            2600,
+                            2700,
+                            2800,
+                            3200,
+                            3300,
+                            3400,
+                            3800
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "心動☆的感覺？",
+                "Desc": "自身在擁有<s:FormChange>強化狀態時，<b:HIT>增加<?1>，無視每<?2>普通攻擊間的開火間隔",
+                "Parameters": [
+                    [
+                        "16.1%",
+                        "16.9%",
+                        "17.7%",
+                        "20.9%",
+                        "21.7%",
+                        "22.5%",
+                        "25.8%",
+                        "26.6%",
+                        "27.4%",
+                        "30.6%"
+                    ],
+                    [
+                        "2次",
+                        "2次",
+                        "2次",
+                        "2次",
+                        "2次",
+                        "2次",
+                        "2次",
+                        "2次",
+                        "2次",
+                        "4次"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_IGNOREDELAY",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                1613,
+                                1694,
+                                1775,
+                                2098,
+                                2178,
+                                2259,
+                                2581,
+                                2662,
+                                2742,
+                                3065
+                            ]
+                        ],
+                        "Stat": "AccuracyPoint_Coefficient",
+                        "Channel": 5
                     }
                 ]
             }
@@ -32325,7 +33389,7 @@
             {
                 "SkillType": "sub",
                 "Name": "旅程的起點",
-                "Desc": "戰鬥開始時，令自身<b:ATK>增加<?1><?2>.",
+                "Desc": "戰術入場時，令自身<b:ATK>增加<?1><?2>.",
                 "Parameters": [
                     [
                         "9.4%",
@@ -32346,10 +33410,10 @@
                         "",
                         "",
                         "",
-                        "；\n自身普通攻击的伤害半径扩大至1.5倍",
-                        "；\n自身普通攻击的伤害半径扩大至1.5倍",
-                        "；\n自身普通攻击的伤害半径扩大至1.5倍",
-                        "；\n自身普通攻击的伤害半径扩大至1.5倍"
+                        "；\n自身普通攻擊的傷害半徑擴大至1.5倍",
+                        "；\n自身普通攻擊的傷害半徑擴大至1.5倍",
+                        "；\n自身普通攻擊的傷害半徑擴大至1.5倍",
+                        "；\n自身普通攻擊的傷害半徑擴大至1.5倍"
                     ]
                 ],
                 "Icon": "COMMON_SKILLICON_WEAPONBUFF",
@@ -33224,9 +34288,9 @@
                     [
                         "",
                         "",
-                        "；\n对该范围内的目标施加<c:Stunned>状态(持续3.6秒)",
-                        "；\n对该范围内的目标施加<c:Stunned>状态(持续3.6秒)",
-                        "；\n对该范围内的目标施加<c:Stunned>状态(持续4.1秒)"
+                        "；\n對該範圍內的目標施加<c:Stunned>狀態(持續3.6秒)",
+                        "；\n對該範圍內的目標施加<c:Stunned>狀態(持續3.6秒)",
+                        "；\n對該範圍內的目標施加<c:Stunned>狀態(持續4.1秒)"
                     ]
                 ],
                 "Cost": [
@@ -34208,7 +35272,7 @@
             },
             {
                 "SkillType": "gearnormal",
-                "Name": "甘酸っぱくて美味しい！+",
+                "Name": "酸甜可口！+",
                 "Desc": "每35秒，令自身<b:ATK>增加<?1>(持續30秒).",
                 "Parameters": [
                     [
@@ -35400,6 +36464,13 @@
                 "Effects": [
                     {
                         "Type": "BuffAlly",
+                        "Restrictions": [
+                            {
+                                "Property": "Id",
+                                "Operand": "NotEqual",
+                                "Value": 16010
+                            }
+                        ],
                         "Value": [
                             [
                                 1552,
@@ -35416,6 +36487,25 @@
                         ],
                         "Stat": "AttackPower_Coefficient",
                         "Channel": 102
+                    },
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                1552,
+                                1591,
+                                1629,
+                                1784,
+                                1823,
+                                1862,
+                                2017,
+                                2056,
+                                2095,
+                                2250
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2
                     }
                 ]
             },
@@ -36641,6 +37731,255 @@
                             15300,
                             17100
                         ]
+                    }
+                ]
+            }
+        ]
+    },
+    "16015": {
+        "Name": "愛莉（樂隊）",
+        "Skills": [
+            {
+                "SkillType": "autoattack",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "Hits": [
+                            10000
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Frames": {
+                            "AttackEnterDuration": 0,
+                            "AttackStartDuration": 0,
+                            "AttackEndDuration": 0,
+                            "AttackBurstRoundOverDelay": 0,
+                            "AttackIngDuration": 0,
+                            "AttackReloadDuration": 0
+                        },
+                        "CriticalCheck": "Check"
+                    }
+                ]
+            },
+            {
+                "SkillType": "ex",
+                "Name": "幸福的旋律",
+                "Desc": "令自身<b:EnhanceExplosionRate>加算<?1>，\n賦予自身1個<s:CH0220_Public>(持續30秒).",
+                "Parameters": [
+                    [
+                        "95.8%",
+                        "110%",
+                        "138%",
+                        "153%",
+                        "182%"
+                    ]
+                ],
+                "Cost": [
+                    2,
+                    2,
+                    2,
+                    2,
+                    2
+                ],
+                "Icon": "SKILLICON_CH0251_EXSKILL",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                9582,
+                                11018,
+                                13893,
+                                15329,
+                                18204
+                            ]
+                        ],
+                        "Stat": "EnhanceExplosionRate_Base",
+                        "Channel": 32
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "薄荷巧克力音階",
+                "Desc": "自身每進行12次普通攻擊，對1名敵方單位造成自身攻擊力<?1>的傷害.",
+                "Parameters": [
+                    [
+                        "710%",
+                        "745%",
+                        "781%",
+                        "923%",
+                        "958%",
+                        "994%",
+                        "1136%",
+                        "1171%",
+                        "1207%",
+                        "1349%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_TARGET",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            71012,
+                            74566,
+                            78114,
+                            92317,
+                            95865,
+                            99419,
+                            113616,
+                            117170,
+                            120718,
+                            134921
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "passive",
+                "Name": "更加洪亮，更加遙遠",
+                "Desc": "<b:Range>增加100，<b:AttackSpeed>增加<?1>.",
+                "Parameters": [
+                    [
+                        "11.2%",
+                        "11.7%",
+                        "12.3%",
+                        "14.5%",
+                        "15.1%",
+                        "15.6%",
+                        "17.9%",
+                        "18.4%",
+                        "19%",
+                        "21.2%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "AttackSpeed_Coefficient",
+                        "Scale": [
+                            1120,
+                            1176,
+                            1232,
+                            1456,
+                            1512,
+                            1568,
+                            1792,
+                            1848,
+                            1904,
+                            2128
+                        ]
+                    },
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "Range_Base",
+                        "Scale": [
+                            100,
+                            100,
+                            100,
+                            100,
+                            100,
+                            100,
+                            100,
+                            100,
+                            100,
+                            100
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "更加洪亮，更加遙遠＋",
+                "Desc": "<b:ATK>增加<?1>；\n<b:Range>增加100，<b:AttackSpeed>增加<?2>.",
+                "Parameters": [
+                    [
+                        "356",
+                        "373",
+                        "391",
+                        "462",
+                        "480",
+                        "498",
+                        "569",
+                        "587",
+                        "604",
+                        "675"
+                    ],
+                    [
+                        "11.2%",
+                        "11.7%",
+                        "12.3%",
+                        "14.5%",
+                        "15.1%",
+                        "15.6%",
+                        "17.9%",
+                        "18.4%",
+                        "19%",
+                        "21.2%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "AttackPower_Base",
+                        "Scale": [
+                            356,
+                            373,
+                            391,
+                            462,
+                            480,
+                            498,
+                            569,
+                            587,
+                            604,
+                            675
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "銘心的感情",
+                "Desc": "自身持有<s:CH0220_Public>攻擊時，10%機率令目標<d:CriticalDamageRateResist>減少<?1>(持續16秒)(冷卻5秒).",
+                "Parameters": [
+                    [
+                        "12.8%",
+                        "13.5%",
+                        "14.1%",
+                        "16.7%",
+                        "17.3%",
+                        "18%",
+                        "20.5%",
+                        "21.2%",
+                        "21.8%",
+                        "24.4%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_STATDEBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffTarget",
+                        "Value": [
+                            [
+                                -1287,
+                                -1351,
+                                -1416,
+                                -1673,
+                                -1737,
+                                -1802,
+                                -2058,
+                                -2123,
+                                -2187,
+                                -2445
+                            ]
+                        ],
+                        "Stat": "CriticalDamageResistRate_Coefficient",
+                        "Channel": 623
                     }
                 ]
             }
@@ -40549,6 +41888,47 @@
                 ]
             },
             {
+                "SkillType": "gearnormal",
+                "Name": "甲蟲之盾！＋",
+                "Desc": "每40秒，令1名防禦力最高的我方單位<b:DEF>增加<?1>(持續33秒)；\n根據自身該技能的使用次數，對自身造成以下效果中的1種(EX技能使用1次後失效)：\n- 第1次：<b:CostChange>減少1；\n- 第2次：<b:CostChange>減少2；\n- 第3次：<b:CostChange>減少3；\n- 第4次及以後：無效果.",
+                "Parameters": [
+                    [
+                        "21.5%",
+                        "22.6%",
+                        "23.7%",
+                        "28%",
+                        "29.1%",
+                        "30.1%",
+                        "34.4%",
+                        "35.5%",
+                        "36.6%",
+                        "40.9%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_STATBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffAlly",
+                        "Value": [
+                            [
+                                2156,
+                                2264,
+                                2372,
+                                2803,
+                                2910,
+                                3018,
+                                3449,
+                                3557,
+                                3665,
+                                4096
+                            ]
+                        ],
+                        "Stat": "DefensePower_Coefficient",
+                        "Channel": 103
+                    }
+                ]
+            },
+            {
                 "SkillType": "passive",
                 "Name": "治癒的波動，接招！",
                 "Desc": "<b:HealPower>增加<?1>.",
@@ -43779,7 +45159,7 @@
             {
                 "SkillType": "normal",
                 "Name": "「就是這裡」",
-                "Desc": "戰鬥開始時(需接敵)，令除自身外的我方單位<b:CriticalChance>增加<?1>(持續60秒)，<b:CostChange>減少1(EX技能使用1次後失效)\n(每場戰鬥僅1次).",
+                "Desc": "戰鬥開始時，令除自身外的我方單位<b:CriticalChance>增加<?1>(持續60秒)，<b:CostChange>減少1(EX技能使用1次後失效)\n(每場戰鬥僅1次).",
                 "Parameters": [
                     [
                         "11.5%",
@@ -44707,7 +46087,7 @@
         "Skills": [
             {
                 "SkillType": "ex",
-                "Name": "時雨特製果味奶",
+                "Name": "時雨特製水果牛奶",
                 "Desc": "令圓形範圍內的我方單位每4秒回復治癒力<?1>的生命值(持續30秒).",
                 "Parameters": [
                     [
@@ -44749,7 +46129,7 @@
             },
             {
                 "SkillType": "normal",
-                "Name": "來一口，如何？",
+                "Name": "要吃一口嗎？",
                 "Desc": "每50秒，令最多4名生命值百分比最低的我方單位回復治癒力<?1>的生命值.",
                 "Parameters": [
                     [
@@ -44788,7 +46168,7 @@
             },
             {
                 "SkillType": "passive",
-                "Name": "四張半室的溫暖",
+                "Name": "四疊半的溫暖",
                 "Desc": "<b:HealPower>增加<?1>.",
                 "Parameters": [
                     [
@@ -44826,7 +46206,7 @@
             },
             {
                 "SkillType": "weaponpassive",
-                "Name": "四張半室的溫暖＋",
+                "Name": "四疊半的溫暖+",
                 "Desc": "<b:HealPower>增加<?1>；\n<b:HealPower>增加<?2>.",
                 "Parameters": [
                     [
@@ -44876,7 +46256,7 @@
             },
             {
                 "SkillType": "sub",
-                "Name": "酥麻風味",
+                "Name": "火辣的餘韻",
                 "Desc": "令編隊內的學生<b:CriticalDamage>增加<?1>.",
                 "Parameters": [
                     [
@@ -44918,7 +46298,7 @@
         ]
     },
     "20032": {
-        "Name": "英美（泳裝）",
+        "Name": "英美(泳裝)",
         "Skills": [
             {
                 "SkillType": "ex",
@@ -45988,9 +47368,9 @@
                     [
                         "",
                         "",
-                        "、<d:AttackSpeed>减少26.2%",
-                        "、<d:AttackSpeed>减少26.2%",
-                        "、<d:AttackSpeed>减少26.2%"
+                        "、<d:AttackSpeed>減少26.2%",
+                        "、<d:AttackSpeed>減少26.2%",
+                        "、<d:AttackSpeed>減少26.2%"
                     ]
                 ],
                 "Cost": [
@@ -47724,7 +49104,7 @@
             },
             {
                 "SkillType": "gearnormal",
-                "Name": "固くなあれ♪+",
+                "Name": "變硬吧♪+",
                 "Desc": "每20秒，令1名生命值百分比最低的我方單位<b:DEF>增加<?1>(持續13秒)；\n令該目標回復治癒力<?2>的生命值.",
                 "Parameters": [
                     [
@@ -48157,9 +49537,9 @@
                     [
                         "",
                         "",
-                        "\n；移除该目标拥有的1个减益状态",
-                        "\n；移除该目标拥有的1个减益状态",
-                        "\n；移除该目标拥有的1个减益状态"
+                        "\n；移除該目標擁有的1個減益狀態",
+                        "\n；移除該目標擁有的1個減益狀態",
+                        "\n；移除該目標擁有的1個減益狀態"
                     ]
                 ],
                 "Cost": [
@@ -49053,9 +50433,9 @@
                     [
                         "",
                         "",
-                        "\n，掩体额外拥有志美子生命值20.1%的生命值",
-                        "\n，掩体额外拥有志美子生命值20.1%的生命值",
-                        "\n，掩体额外拥有志美子生命值38%的生命值"
+                        "\n，掩體額外擁有志美子生命值20.1%的生命值",
+                        "\n，掩體額外擁有志美子生命值20.1%的生命值",
+                        "\n，掩體額外擁有志美子生命值38%的生命值"
                     ]
                 ],
                 "Cost": [
@@ -49379,6 +50759,75 @@
                             32599,
                             36435
                         ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "gearnormal",
+                "Name": "想吃點苦頭嗎？！＋",
+                "Desc": "每25秒，對圓形範圍內的敵方單位造成攻擊力<?1>的傷害；\n令該目標<d:OppressionResist>減少<?2>(持續20秒).",
+                "Parameters": [
+                    [
+                        "261%",
+                        "274%",
+                        "287%",
+                        "339%",
+                        "353%",
+                        "366%",
+                        "418%",
+                        "431%",
+                        "444%",
+                        "496%"
+                    ],
+                    [
+                        "10.2%",
+                        "10.8%",
+                        "11.3%",
+                        "13.3%",
+                        "13.8%",
+                        "14.4%",
+                        "16.4%",
+                        "16.9%",
+                        "17.4%",
+                        "19.5%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_CIRCLE",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            26145,
+                            27454,
+                            28763,
+                            33992,
+                            35301,
+                            36603,
+                            41832,
+                            43141,
+                            44450,
+                            49679
+                        ]
+                    },
+                    {
+                        "Type": "BuffTarget",
+                        "Value": [
+                            [
+                                -1029,
+                                -1081,
+                                -1132,
+                                -1337,
+                                -1389,
+                                -1440,
+                                -1646,
+                                -1697,
+                                -1748,
+                                -1954
+                            ]
+                        ],
+                        "Stat": "OppressionResist_Coefficient",
+                        "Channel": 629
                     }
                 ]
             },
@@ -50696,11 +52145,11 @@
         ]
     },
     "26011": {
-        "Name": "佐天淚子",
+        "Name": "佐天涙子",
         "Skills": [
             {
                 "SkillType": "ex",
-                "Name": "強力揮棒",
+                "Name": "Bat Full Swing",
                 "Desc": "對圓形範圍內的敵方單位造成攻擊力<?1>的傷害.",
                 "Parameters": [
                     [
@@ -50743,7 +52192,7 @@
             },
             {
                 "SkillType": "normal",
-                "Name": "秘製鯖魚咖哩",
+                "Name": "秘傳鯖魚咖哩",
                 "Desc": "每45秒，令N名我方單位<b:ATK>增加<?1>(持續20秒)(最多3人)；\nN的值為單場戰鬥中使用該技能的次數.",
                 "Parameters": [
                     [
@@ -50786,7 +52235,7 @@
             },
             {
                 "SkillType": "passive",
-                "Name": "竭盡全力！",
+                "Name": "拿出全力！",
                 "Desc": "<b:ATK>增加<?1>.",
                 "Parameters": [
                     [
@@ -50824,7 +52273,7 @@
             },
             {
                 "SkillType": "weaponpassive",
-                "Name": "竭盡全力！＋",
+                "Name": "拿出全力！+",
                 "Desc": "<b:ATK>增加<?1>；\n<b:ATK>增加<?2>.",
                 "Parameters": [
                     [
@@ -50874,7 +52323,7 @@
             },
             {
                 "SkillType": "sub",
-                "Name": "即便是我！",
+                "Name": "我也可以……！",
                 "Desc": "令編隊內的學生<b:ATK>增加<?1>.",
                 "Parameters": [
                     [

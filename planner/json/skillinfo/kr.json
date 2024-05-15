@@ -3986,7 +3986,7 @@
             {
                 "SkillType": "ex",
                 "Name": "기괴멸렬",
-                "Desc": "즉시 재장전/\n<s:FormChange>을 공격력 138% 대미지를 입히는 부채꼴 범위로 변경, <b:ATK> <?1> 증가(재장전 <?2>)",
+                "Desc": "즉시 재장전/\n일반 공격을 공격력 138% 대미지를 입히는 부채꼴 범위로 변경, <b:ATK> <?1> 증가(재장전 <?2>)",
                 "Parameters": [
                     [
                         "25.8%",
@@ -5644,7 +5644,7 @@
             {
                 "SkillType": "sub",
                 "Name": "부끄럼쟁이의 용기",
-                "Desc": "EX 스킬 및 기본스킬 발동과 동시에 <b:CriticalDamage> <?1> 증가(6초간)",
+                "Desc": "EX 스킬 및 기본 스킬 발동과 동시에 <b:CriticalDamage> <?1> 증가(6초간)",
                 "Parameters": [
                     [
                         "22.3%",
@@ -11704,6 +11704,72 @@
                 ]
             },
             {
+                "SkillType": "gearnormal",
+                "Name": "예상치 못한 일격+",
+                "Desc": "일반 공격 5회 마다 적 1인에게 공격력 <?1> 대미지/\n추가로 <d:DamageByHit_Damaged> 효과를 적용 (5초간)\n대상은 효과가 걸려있는 상태에서 피격 당할 때 마다 미유 공격력의 <?2> 추가 대미지를 입습니다.\n(이 대미지는 치명 공격이 발동하지 않습니다.)\n(최대 50회까지 적용됩니다.)",
+                "Parameters": [
+                    [
+                        "223%",
+                        "234%",
+                        "245%",
+                        "290%",
+                        "301%",
+                        "312%",
+                        "357%",
+                        "368%",
+                        "379%",
+                        "424%"
+                    ],
+                    [
+                        "15.5%",
+                        "16.3%",
+                        "17.1%",
+                        "20.2%",
+                        "20.9%",
+                        "21.7%",
+                        "24.8%",
+                        "25.6%",
+                        "26.4%",
+                        "29.5%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_TARGET",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            22344,
+                            23462,
+                            24579,
+                            29048,
+                            30165,
+                            31282,
+                            35745,
+                            36862,
+                            37979,
+                            42448
+                        ]
+                    },
+                    {
+                        "Type": "DMGByHit",
+                        "Icon": "DamageByHit_Damaged",
+                        "Scale": [
+                            1555,
+                            1633,
+                            1711,
+                            2021,
+                            2099,
+                            2177,
+                            2488,
+                            2566,
+                            2643,
+                            2954
+                        ]
+                    }
+                ]
+            },
+            {
                 "SkillType": "passive",
                 "Name": "침착한 호흡",
                 "Desc": "<b:CriticalDamage> <?1> 증가",
@@ -13167,7 +13233,7 @@
             {
                 "SkillType": "ex",
                 "Name": "시원해질 시간이에요~♣",
-                "Desc": "적 1인에게 공격력 <?1> 대미지\n장탄 수 100 소모 시까지 일반공격 딜레이를 <?2> 무시하는 <s:FormChange>으로 변경/\n즉시 재장전",
+                "Desc": "적 1인에게 공격력 <?1> 대미지\n장탄 수 100 소모 시까지 일반 공격 딜레이를 <?2> 무시하는 일반 공격으로 변경/\n즉시 재장전",
                 "Parameters": [
                     [
                         "695%",
@@ -13424,7 +13490,7 @@
             {
                 "SkillType": "sub",
                 "Name": "차가울 거에요~!",
-                "Desc": "EX 스킬로 <s:FormChange>이 변경된 상태에서 <s:FormChange>으로 적 공격 시 공격력의 <?1> 추가 대미지",
+                "Desc": "EX 스킬로 일반 공격이 변경된 상태에서 일반 공격으로 적 공격 시 공격력의 <?1> 추가 대미지",
                 "Parameters": [
                     [
                         "10.9%",
@@ -15405,7 +15471,7 @@
             {
                 "SkillType": "ex",
                 "Name": "천둥이 MK-III 강화",
-                "Desc": "포탑을 강화합니다(90초간). 포탑은 강화 상태가 유지되는 동안 <s:FormChange>이 공격력 <?1> 대미지를 주도록 변경되며, 기본스킬의 발동 조건이 변경됩니다.",
+                "Desc": "포탑을 강화합니다(90초간). 포탑은 강화 상태가 유지되는 동안 일반 공격이 공격력 <?1> 대미지를 주도록 변경되며, 기본 스킬의 발동 조건이 변경됩니다.",
                 "Parameters": [
                     [
                         "115%",
@@ -15506,7 +15572,7 @@
                         "Id": "CH0182Public02",
                         "SkillType": "normal",
                         "Name": "열정의 포화",
-                        "Desc": "포탑 강화 상태일 경우 <s:FormChange> 6회 마다 적 1인에게 공격력 <?1> 대미지",
+                        "Desc": "포탑 강화 상태일 경우 일반 공격 6회 마다 적 1인에게 공격력 <?1> 대미지",
                         "Parameters": [
                             [
                                 "284%",
@@ -16440,7 +16506,7 @@
             {
                 "SkillType": "sub",
                 "Name": "헌신적인 격려",
-                "Desc": "EX 스킬 및 기본스킬 사용 시 대상의 현재 체력이 30% 이하일 경우 치유력 <?1> 회복",
+                "Desc": "EX 스킬 및 기본 스킬 사용 시 대상의 현재 체력이 30% 이하일 경우 치유력 <?1> 회복",
                 "Parameters": [
                     [
                         "90%",
@@ -18434,7 +18500,7 @@
             {
                 "SkillType": "ex",
                 "Name": "화끈한 거, 좋아하지?",
-                "Desc": "부채꼴범위 내의 적에게 공격력 <?1> 대미지/\n자신에게 <b:ATK> <?2> 증가, 일반공격 딜레이 무시 (30초간)",
+                "Desc": "부채꼴범위 내의 적에게 공격력 <?1> 대미지/\n자신에게 <b:ATK> <?2> 증가, 일반 공격 딜레이 무시 (30초간)",
                 "Parameters": [
                     [
                         "354%",
@@ -20571,6 +20637,83 @@
                 ]
             },
             {
+                "SkillType": "gearnormal",
+                "Name": "시작 전의 마음가짐+",
+                "Desc": "전술 입장 시 <s:Dado> 상태 부여,  <b:ATK> <?1> 증가(<?2>간)/\n이후 50초마다 <s:Dado> 상태 부여, <b:ATK> <?3> 증가(<?4>간)",
+                "Parameters": [
+                    [
+                        "31.4%",
+                        "32.7%",
+                        "34.1%",
+                        "36.7%",
+                        "38.1%",
+                        "39.5%",
+                        "41.5%",
+                        "43%",
+                        "44.5%",
+                        "45.5%"
+                    ],
+                    [
+                        "25초",
+                        "25초",
+                        "25초",
+                        "30초",
+                        "30초",
+                        "30초",
+                        "35초",
+                        "35초",
+                        "35초",
+                        "40초"
+                    ],
+                    [
+                        "31.4%",
+                        "32.7%",
+                        "34.1%",
+                        "36.7%",
+                        "38.1%",
+                        "39.5%",
+                        "41.5%",
+                        "43%",
+                        "44.5%",
+                        "45.5%"
+                    ],
+                    [
+                        "25초",
+                        "25초",
+                        "25초",
+                        "30초",
+                        "30초",
+                        "30초",
+                        "35초",
+                        "35초",
+                        "35초",
+                        "40초"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                3144,
+                                3278,
+                                3412,
+                                3673,
+                                3816,
+                                3959,
+                                4154,
+                                4303,
+                                4450,
+                                4550
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2
+                    }
+                ]
+            },
+            {
                 "SkillType": "passive",
                 "Name": "한결같은 열정",
                 "Desc": "<b:CriticalDamage> <?1> 증가",
@@ -21763,7 +21906,7 @@
             {
                 "SkillType": "passive",
                 "Name": "상인회장의 자부심",
-                "Desc": "일반공격 사거리 100, <b:HealPower> <?1> 증가",
+                "Desc": "일반 공격 사거리 100, <b:HealPower> <?1> 증가",
                 "Parameters": [
                     [
                         "11.2%",
@@ -21817,7 +21960,7 @@
             {
                 "SkillType": "weaponpassive",
                 "Name": "상인회장의 자부심+",
-                "Desc": "<b:HealPower> <?1> 증가/\n추가로 일반공격 사거리 100, <b:HealPower> <?2> 증가",
+                "Desc": "<b:HealPower> <?1> 증가/\n추가로 일반 공격 사거리 100, <b:HealPower> <?2> 증가",
                 "Parameters": [
                     [
                         "889",
@@ -24954,7 +25097,7 @@
             {
                 "SkillType": "sub",
                 "Name": "여러 번 말하게 하지 마",
-                "Desc": "기본스킬 발동과 동시에 <b:ATK> <?1> 증가(<?2>간)",
+                "Desc": "기본 스킬 발동과 동시에 <b:ATK> <?1> 증가(<?2>간)",
                 "Parameters": [
                     [
                         "10%",
@@ -26364,7 +26507,7 @@
                 "Icon": "COMMON_SKILLICON_WEAPONBUFF",
                 "Effects": [
                     {
-                        "Type": "BuffAlly",
+                        "Type": "BuffSelf",
                         "Value": [
                             [
                                 598,
@@ -26381,6 +26524,32 @@
                         ],
                         "Stat": "AttackPower_Coefficient",
                         "Channel": 2
+                    },
+                    {
+                        "Type": "BuffAlly",
+                        "Restrictions": [
+                            {
+                                "Property": "Id",
+                                "Operand": "NotEqual",
+                                "Value": 10084
+                            }
+                        ],
+                        "Value": [
+                            [
+                                598,
+                                627,
+                                657,
+                                776,
+                                806,
+                                836,
+                                955,
+                                985,
+                                1015,
+                                1134
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 102
                     }
                 ]
             },
@@ -27883,7 +28052,7 @@
             {
                 "SkillType": "sub",
                 "Name": "잠입행동",
-                "Desc": "전투 시작 시 즉시 <s:CH0239_ExtraPassive> 상태가 되며 공격을 받으면 <s:CH0239_ExtraPassive> 상태 해제/\n<s:CH0239_ExtraPassive>이 해제된 뒤 10초동안 공격을 받지 않으면 다시 <s:CH0239_ExtraPassive> 상태로 변경/\n<s:CH0239_ExtraPassive> 상태일 경우 자신의 <b:CriticalDamage> <?1> 증가",
+                "Desc": "전술 입장 시 <s:CH0239_ExtraPassive> 상태가 되며 공격을 받으면 <s:CH0239_ExtraPassive> 상태 해제/\n<s:CH0239_ExtraPassive>이 해제된 뒤 10초동안 공격을 받지 않으면 다시 <s:CH0239_ExtraPassive> 상태로 변경/\n<s:CH0239_ExtraPassive> 상태일 경우 자신의 <b:CriticalDamage> <?1> 증가",
                 "Parameters": [
                     [
                         "33.6%",
@@ -28416,6 +28585,901 @@
                         ],
                         "Stat": "AttackPower_Coefficient",
                         "Channel": 2
+                    }
+                ]
+            }
+        ]
+    },
+    "10091": {
+        "Name": "카즈사(밴드)",
+        "Skills": [
+            {
+                "SkillType": "autoattack",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "Hits": [
+                            10000
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Frames": {
+                            "AttackEnterDuration": 0,
+                            "AttackStartDuration": 0,
+                            "AttackEndDuration": 0,
+                            "AttackBurstRoundOverDelay": 0,
+                            "AttackIngDuration": 0,
+                            "AttackReloadDuration": 0
+                        },
+                        "CriticalCheck": "Check"
+                    }
+                ]
+            },
+            {
+                "SkillType": "ex",
+                "Name": "역사적인 첫 소절",
+                "Desc": "자신을 중심으로 원형 범위 내의 아군에게 <b:AttackSpeed> <?1> 증가/\n추가로 자신에게 <s:CH0220_Public> <?2> 부여(40초간)(최대 2개까지)",
+                "Parameters": [
+                    [
+                        "18.9%",
+                        "21.7%",
+                        "27.4%",
+                        "30.2%",
+                        "35.9%"
+                    ],
+                    [
+                        "1개",
+                        "1개",
+                        "1개",
+                        "1개",
+                        "2개"
+                    ]
+                ],
+                "Cost": [
+                    3,
+                    3,
+                    3,
+                    3,
+                    3
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffAlly",
+                        "Value": [
+                            [
+                                1891,
+                                2175,
+                                2742,
+                                3026,
+                                3593
+                            ]
+                        ],
+                        "Stat": "AttackSpeed_Coefficient",
+                        "Channel": 124
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "베이스 튜닝",
+                "Desc": "35초마다 자신의 <b:ATK> <?1> 증가(26초간)",
+                "Parameters": [
+                    [
+                        "19.6%",
+                        "20.6%",
+                        "21.5%",
+                        "25.5%",
+                        "26.5%",
+                        "27.4%",
+                        "31.4%",
+                        "32.3%",
+                        "33.3%",
+                        "37.2%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                1963,
+                                2061,
+                                2159,
+                                2552,
+                                2650,
+                                2748,
+                                3140,
+                                3239,
+                                3337,
+                                3729
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2
+                    }
+                ]
+            },
+            {
+                "SkillType": "passive",
+                "Name": "무대 체질",
+                "Desc": "<b:AttackSpeed> <?1> 증가",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "AttackSpeed_Coefficient",
+                        "Scale": [
+                            1400,
+                            1470,
+                            1540,
+                            1820,
+                            1890,
+                            1960,
+                            2240,
+                            2310,
+                            2380,
+                            2660
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "무대 체질+",
+                "Desc": "<b:EnhanceExplosionRate> <?1> 가산/\n추가로 <b:AttackSpeed> <?2> 증가",
+                "Parameters": [
+                    [
+                        "26%",
+                        "27.3%",
+                        "28.6%",
+                        "33.8%",
+                        "35.1%",
+                        "36.4%",
+                        "41.6%",
+                        "42.9%",
+                        "44.2%",
+                        "49.4%"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "EnhanceExplosionRate_Base",
+                        "Scale": [
+                            2600,
+                            2730,
+                            2860,
+                            3380,
+                            3510,
+                            3640,
+                            4160,
+                            4290,
+                            4420,
+                            4940
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "달콤한 목소리",
+                "Desc": "자신의 <s:CH0220_Public> 1개마다 공격 시 공격력 <?1> 추가 대미지(최대 2개까지)",
+                "Parameters": [
+                    [
+                        "5.6%",
+                        "5.9%",
+                        "6.2%",
+                        "7.3%",
+                        "7.5%",
+                        "7.8%",
+                        "8.9%",
+                        "9.2%",
+                        "9.5%",
+                        "10.6%"
+                    ]
+                ],
+                "Icon": "SKILLICON_CH0250_EXTRAPASSIVESKILL",
+                "Effects": [
+                    {
+                        "Type": "DMGEcho",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            560,
+                            595,
+                            620,
+                            732,
+                            758,
+                            784,
+                            896,
+                            922,
+                            956,
+                            1068
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "10092": {
+        "Name": "요시미(밴드)",
+        "Skills": [
+            {
+                "SkillType": "autoattack",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "Hits": [
+                            10000
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Frames": {
+                            "AttackEnterDuration": 0,
+                            "AttackStartDuration": 0,
+                            "AttackEndDuration": 0,
+                            "AttackBurstRoundOverDelay": 0,
+                            "AttackIngDuration": 0,
+                            "AttackReloadDuration": 0
+                        },
+                        "CriticalCheck": "Check"
+                    }
+                ]
+            },
+            {
+                "SkillType": "ex",
+                "Name": "폭발적인 클라이막스",
+                "Desc": "공격력과 <b:AttackSpeed> <?1> 증가(50초간)/\n추가로 <s:CH0220_Public> 5개 부여(최대 5개까지)/\n<s:CH0220_Public>는 10초마다 1개씩 해제",
+                "Parameters": [
+                    [
+                        "59.1%",
+                        "68%",
+                        "85.8%",
+                        "94.6%",
+                        "112%"
+                    ]
+                ],
+                "Cost": [
+                    10,
+                    10,
+                    10,
+                    10,
+                    10
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                5918,
+                                6804,
+                                8580,
+                                9467,
+                                11242
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2
+                    },
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                5918,
+                                6804,
+                                8580,
+                                9467,
+                                11242
+                            ]
+                        ],
+                        "Stat": "AttackSpeed_Coefficient",
+                        "Channel": 24
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "비주얼 메이커",
+                "Desc": "일반 공격 10회마다 적 1인에게 공격력 <?1> 대미지/\n추가로 아군 전체의 <s:CH0220_Public> 1개마다 대미지가 5%만큼 증가(최대 8개까지)",
+                "Parameters": [
+                    [
+                        "508%",
+                        "534%",
+                        "559%",
+                        "661%",
+                        "686%",
+                        "711%",
+                        "813%",
+                        "839%",
+                        "864%",
+                        "966%"
+                    ]
+                ],
+                "Icon": "SKILLICON_CH0220_PUBLICSKILL",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            50859,
+                            53400,
+                            55942,
+                            66115,
+                            68656,
+                            71198,
+                            81371,
+                            83913,
+                            86454,
+                            96627
+                        ]
+                    },
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            53400,
+                            56069,
+                            58738,
+                            69421,
+                            72090,
+                            74759,
+                            85441,
+                            88110,
+                            90779,
+                            101455
+                        ]
+                    },
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            55942,
+                            58738,
+                            61535,
+                            72727,
+                            75523,
+                            78320,
+                            89505,
+                            92302,
+                            95098,
+                            106290
+                        ]
+                    },
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            58483,
+                            61407,
+                            64331,
+                            76033,
+                            78957,
+                            81880,
+                            93576,
+                            96500,
+                            99423,
+                            111119
+                        ]
+                    },
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            61031,
+                            64083,
+                            67134,
+                            79339,
+                            82390,
+                            85441,
+                            97646,
+                            100697,
+                            103749,
+                            115954
+                        ]
+                    },
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            63573,
+                            66752,
+                            69930,
+                            82639,
+                            85817,
+                            88996,
+                            101710,
+                            104889,
+                            108068,
+                            120782
+                        ]
+                    },
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            66115,
+                            69421,
+                            72727,
+                            85945,
+                            89251,
+                            92557,
+                            105781,
+                            109087,
+                            112393,
+                            125611
+                        ]
+                    },
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            68656,
+                            72090,
+                            75523,
+                            89251,
+                            92684,
+                            96117,
+                            109851,
+                            113278,
+                            116712,
+                            130445
+                        ]
+                    },
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            71198,
+                            74759,
+                            78320,
+                            92557,
+                            96117,
+                            99678,
+                            113915,
+                            117476,
+                            121037,
+                            135274
+                        ]
+                    }
+                ],
+                "EffectCombine": [
+                    "DMGSingle"
+                ],
+                "EffectCombineLabel": {
+                    "Icon": [
+                        "buff/Special_CH0220_Public.webp"
+                    ],
+                    "StackLabel": [
+                        "&times;0",
+                        "&times;1",
+                        "&times;2",
+                        "&times;3",
+                        "&times;4",
+                        "&times;5",
+                        "&times;6",
+                        "&times;7",
+                        "&times;8"
+                    ],
+                    "DisableFirst": true
+                }
+            },
+            {
+                "SkillType": "passive",
+                "Name": "로큰롤",
+                "Desc": "<b:ATK> <?1> 증가",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "AttackPower_Coefficient",
+                        "Scale": [
+                            1400,
+                            1470,
+                            1540,
+                            1820,
+                            1890,
+                            1960,
+                            2240,
+                            2310,
+                            2380,
+                            2660
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "로큰롤+",
+                "Desc": "<b:CriticalDamage> <?1> 증가/\n추가로 <b:ATK> <?2> 증가",
+                "Parameters": [
+                    [
+                        "2000",
+                        "2100",
+                        "2200",
+                        "2600",
+                        "2700",
+                        "2800",
+                        "3200",
+                        "3300",
+                        "3400",
+                        "3800"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "CriticalDamageRate_Base",
+                        "Scale": [
+                            2000,
+                            2100,
+                            2200,
+                            2600,
+                            2700,
+                            2800,
+                            3200,
+                            3300,
+                            3400,
+                            3800
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "스위트 하모닉스",
+                "Desc": "기본 스킬 발동 3회마다 기본 스킬로 공격 시 공격력 <?1> 추가 대미지",
+                "Parameters": [
+                    [
+                        "63%",
+                        "66.2%",
+                        "69.3%",
+                        "81.9%",
+                        "85.1%",
+                        "88.2%",
+                        "100%",
+                        "104%",
+                        "107%",
+                        "119%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_EXTRADAMAGE",
+                "Effects": [
+                    {
+                        "Type": "DMGEcho",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            6307,
+                            6625,
+                            6937,
+                            8199,
+                            8517,
+                            8829,
+                            10091,
+                            10409,
+                            10721,
+                            11982
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "10093": {
+        "Name": "키라라",
+        "Skills": [
+            {
+                "SkillType": "autoattack",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "Hits": [
+                            10000
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Frames": {
+                            "AttackEnterDuration": 0,
+                            "AttackStartDuration": 0,
+                            "AttackEndDuration": 0,
+                            "AttackBurstRoundOverDelay": 0,
+                            "AttackIngDuration": 0,
+                            "AttackReloadDuration": 0
+                        },
+                        "CriticalCheck": "Check"
+                    }
+                ]
+            },
+            {
+                "SkillType": "ex",
+                "Name": "게헨나의 셀러브리티!",
+                "Desc": "일반 공격을 공격력 <?1> 추가 대미지를 입히는 공격으로 변경, <b:ATK> <?2> 증가(40초간)/\n즉시 재장전",
+                "Parameters": [
+                    [
+                        "15.2%",
+                        "17.5%",
+                        "22%",
+                        "24.3%",
+                        "28.9%"
+                    ],
+                    [
+                        "39.6%",
+                        "39.6%",
+                        "45.5%",
+                        "45.5%",
+                        "51.4%"
+                    ]
+                ],
+                "Cost": [
+                    4,
+                    4,
+                    4,
+                    4,
+                    4
+                ],
+                "Icon": "COMMON_SKILLICON_FORMCHANGE",
+                "Effects": [
+                    {
+                        "Type": "DMGEcho",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            1522,
+                            1755,
+                            2206,
+                            2432,
+                            2890
+                        ]
+                    },
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                3960,
+                                3960,
+                                4554,
+                                4554,
+                                5148
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "언제나 반짝반짝하게!",
+                "Desc": "30초마다 적 1인에게 공격력 <?1> 대미지",
+                "Parameters": [
+                    [
+                        "391%",
+                        "411%",
+                        "430%",
+                        "509%",
+                        "528%",
+                        "548%",
+                        "626%",
+                        "646%",
+                        "665%",
+                        "744%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_TARGET",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            39172,
+                            41136,
+                            43092,
+                            50925,
+                            52881,
+                            54845,
+                            62678,
+                            64634,
+                            66590,
+                            74423
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "passive",
+                "Name": "크레이프의 달콤함",
+                "Desc": "<b:CriticalDamage> <?1> 증가",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "CriticalDamageRate_Coefficient",
+                        "Scale": [
+                            1400,
+                            1470,
+                            1540,
+                            1820,
+                            1890,
+                            1960,
+                            2240,
+                            2310,
+                            2380,
+                            2660
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "크레이프의 달콤함+",
+                "Desc": "<b:CriticalDamage> <?1> 증가/\n추가로 <b:CriticalDamage> <?2> 증가",
+                "Parameters": [
+                    [
+                        "2000",
+                        "2100",
+                        "2200",
+                        "2600",
+                        "2700",
+                        "2800",
+                        "3200",
+                        "3300",
+                        "3400",
+                        "3800"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "CriticalDamageRate_Base",
+                        "Scale": [
+                            2000,
+                            2100,
+                            2200,
+                            2600,
+                            2700,
+                            2800,
+                            3200,
+                            3300,
+                            3400,
+                            3800
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "두근두근☆이란 느낌?",
+                "Desc": "일반 공격이 변경된 상태일 경우 <b:HIT> <?1> 증가, 일반 공격 딜레이를 <?2> 무시",
+                "Parameters": [
+                    [
+                        "16.1%",
+                        "16.9%",
+                        "17.7%",
+                        "20.9%",
+                        "21.7%",
+                        "22.5%",
+                        "25.8%",
+                        "26.6%",
+                        "27.4%",
+                        "30.6%"
+                    ],
+                    [
+                        "2회",
+                        "2회",
+                        "2회",
+                        "2회",
+                        "2회",
+                        "2회",
+                        "2회",
+                        "2회",
+                        "2회",
+                        "4회"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_IGNOREDELAY",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                1613,
+                                1694,
+                                1775,
+                                2098,
+                                2178,
+                                2259,
+                                2581,
+                                2662,
+                                2742,
+                                3065
+                            ]
+                        ],
+                        "Stat": "AccuracyPoint_Coefficient",
+                        "Channel": 5
                     }
                 ]
             }
@@ -32229,7 +33293,7 @@
             {
                 "SkillType": "sub",
                 "Name": "여정의 시작",
-                "Desc": "전투 시작 시 <b:ATK> <?1> 증가<?2>",
+                "Desc": "전술 입장 시 <b:ATK> <?1> 증가<?2>",
                 "Parameters": [
                     [
                         "9.4%",
@@ -33461,7 +34525,7 @@
             {
                 "SkillType": "ex",
                 "Name": "연사 모드!",
-                "Desc": "<b:ATK> <?1> 증가 ,일반공격 딜레이 <?2> 무시 (30초간)/\n즉시 재장전",
+                "Desc": "<b:ATK> <?1> 증가 ,일반 공격 딜레이 <?2> 무시 (30초간)/\n즉시 재장전",
                 "Parameters": [
                     [
                         "29.1%",
@@ -33742,7 +34806,7 @@
             {
                 "SkillType": "ex",
                 "Name": "격류",
-                "Desc": "<s:FormChange>을 공격력 <?1> 추가 대미지를 입히는 공격으로 전환 (<?2>간)",
+                "Desc": "일반 공격을 공격력 <?1> 추가 대미지를 입히는 공격으로 전환 (<?2>간)",
                 "Parameters": [
                     [
                         "67%",
@@ -35280,6 +36344,13 @@
                 "Effects": [
                     {
                         "Type": "BuffAlly",
+                        "Restrictions": [
+                            {
+                                "Property": "Id",
+                                "Operand": "NotEqual",
+                                "Value": 16010
+                            }
+                        ],
                         "Value": [
                             [
                                 1552,
@@ -35296,6 +36367,25 @@
                         ],
                         "Stat": "AttackPower_Coefficient",
                         "Channel": 102
+                    },
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                1552,
+                                1591,
+                                1629,
+                                1784,
+                                1823,
+                                1862,
+                                2017,
+                                2056,
+                                2095,
+                                2250
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2
                     }
                 ]
             },
@@ -35922,7 +37012,7 @@
             {
                 "SkillType": "sub",
                 "Name": "한 벌 뿐이라고!",
-                "Desc": "EX 스킬 및 기본스킬 발동과 동시에 <b:CriticalChance> <?1> 증가(20초간)",
+                "Desc": "EX 스킬 및 기본 스킬 발동과 동시에 <b:CriticalChance> <?1> 증가(20초간)",
                 "Parameters": [
                     [
                         "10.4%",
@@ -36521,6 +37611,255 @@
                             15300,
                             17100
                         ]
+                    }
+                ]
+            }
+        ]
+    },
+    "16015": {
+        "Name": "아이리(밴드)",
+        "Skills": [
+            {
+                "SkillType": "autoattack",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "Hits": [
+                            10000
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Frames": {
+                            "AttackEnterDuration": 0,
+                            "AttackStartDuration": 0,
+                            "AttackEndDuration": 0,
+                            "AttackBurstRoundOverDelay": 0,
+                            "AttackIngDuration": 0,
+                            "AttackReloadDuration": 0
+                        },
+                        "CriticalCheck": "Check"
+                    }
+                ]
+            },
+            {
+                "SkillType": "ex",
+                "Name": "행복한 멜로디",
+                "Desc": "<b:EnhanceExplosionRate> <?1> 가산, <s:CH0220_Public> 부여(30초간)",
+                "Parameters": [
+                    [
+                        "95.8%",
+                        "110%",
+                        "138%",
+                        "153%",
+                        "182%"
+                    ]
+                ],
+                "Cost": [
+                    2,
+                    2,
+                    2,
+                    2,
+                    2
+                ],
+                "Icon": "SKILLICON_CH0251_EXSKILL",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                9582,
+                                11018,
+                                13893,
+                                15329,
+                                18204
+                            ]
+                        ],
+                        "Stat": "EnhanceExplosionRate_Base",
+                        "Channel": 32
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "초코민트 스케일",
+                "Desc": "일반 공격 12회마다 적 1인에게 공격력 <?1> 대미지",
+                "Parameters": [
+                    [
+                        "710%",
+                        "745%",
+                        "781%",
+                        "923%",
+                        "958%",
+                        "994%",
+                        "1136%",
+                        "1171%",
+                        "1207%",
+                        "1349%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_TARGET",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            71012,
+                            74566,
+                            78114,
+                            92317,
+                            95865,
+                            99419,
+                            113616,
+                            117170,
+                            120718,
+                            134921
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "passive",
+                "Name": "더 크게 더 멀리",
+                "Desc": "일반 공격 사거리 100, <b:AttackSpeed> <?1> 증가",
+                "Parameters": [
+                    [
+                        "11.2%",
+                        "11.7%",
+                        "12.3%",
+                        "14.5%",
+                        "15.1%",
+                        "15.6%",
+                        "17.9%",
+                        "18.4%",
+                        "19%",
+                        "21.2%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "AttackSpeed_Coefficient",
+                        "Scale": [
+                            1120,
+                            1176,
+                            1232,
+                            1456,
+                            1512,
+                            1568,
+                            1792,
+                            1848,
+                            1904,
+                            2128
+                        ]
+                    },
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "Range_Base",
+                        "Scale": [
+                            100,
+                            100,
+                            100,
+                            100,
+                            100,
+                            100,
+                            100,
+                            100,
+                            100,
+                            100
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "더 크게 더 멀리+",
+                "Desc": "<b:ATK> <?1> 증가/\n추가로 일반 공격 사거리 100, <b:AttackSpeed> <?2> 증가",
+                "Parameters": [
+                    [
+                        "356",
+                        "373",
+                        "391",
+                        "462",
+                        "480",
+                        "498",
+                        "569",
+                        "587",
+                        "604",
+                        "675"
+                    ],
+                    [
+                        "11.2%",
+                        "11.7%",
+                        "12.3%",
+                        "14.5%",
+                        "15.1%",
+                        "15.6%",
+                        "17.9%",
+                        "18.4%",
+                        "19%",
+                        "21.2%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "AttackPower_Base",
+                        "Scale": [
+                            356,
+                            373,
+                            391,
+                            462,
+                            480,
+                            498,
+                            569,
+                            587,
+                            604,
+                            675
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "스며드는 감정",
+                "Desc": "<s:CH0220_Public>를 보유한 상태에서 공격 시 10% 확률로 <d:CriticalDamageRateResist> <?1> 감소(16초간)(쿨타임 5초)",
+                "Parameters": [
+                    [
+                        "12.8%",
+                        "13.5%",
+                        "14.1%",
+                        "16.7%",
+                        "17.3%",
+                        "18%",
+                        "20.5%",
+                        "21.2%",
+                        "21.8%",
+                        "24.4%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_STATDEBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffTarget",
+                        "Value": [
+                            [
+                                -1287,
+                                -1351,
+                                -1416,
+                                -1673,
+                                -1737,
+                                -1802,
+                                -2058,
+                                -2123,
+                                -2187,
+                                -2445
+                            ]
+                        ],
+                        "Stat": "CriticalDamageResistRate_Coefficient",
+                        "Channel": 623
                     }
                 ]
             }
@@ -40407,6 +41746,47 @@
                                 2609,
                                 2688,
                                 3004
+                            ]
+                        ],
+                        "Stat": "DefensePower_Coefficient",
+                        "Channel": 103
+                    }
+                ]
+            },
+            {
+                "SkillType": "gearnormal",
+                "Name": "장수풍뎅이 실드!+",
+                "Desc": "40초마다 방어력이 가장 높은 아군 1인에게 <b:DEF> <?1> 증가(33초간)/\n추가로 자신의 <b:CostChange>를 감소(EX 스킬 사용 1회까지)/\n감소량은 기본 스킬 사용 횟수에 따라 변경\n1회 : <b:CostChange> 1 감소\n2회 : <b:CostChange> 2 감소\n3회 : <b:CostChange> 3 감소\n4회 이후 : <b:CostChange> 감소 효과 없음",
+                "Parameters": [
+                    [
+                        "21.5%",
+                        "22.6%",
+                        "23.7%",
+                        "28%",
+                        "29.1%",
+                        "30.1%",
+                        "34.4%",
+                        "35.5%",
+                        "36.6%",
+                        "40.9%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_STATBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffAlly",
+                        "Value": [
+                            [
+                                2156,
+                                2264,
+                                2372,
+                                2803,
+                                2910,
+                                3018,
+                                3449,
+                                3557,
+                                3665,
+                                4096
                             ]
                         ],
                         "Stat": "DefensePower_Coefficient",
@@ -49245,6 +50625,75 @@
                             32599,
                             36435
                         ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "gearnormal",
+                "Name": "뜨거운 맛 좀 볼래?!+",
+                "Desc": "25초마다 원형범위 내의 적에게 공격력 <?1> 대미지/\n<d:OppressionResist> <?2> 감소(20초간)",
+                "Parameters": [
+                    [
+                        "261%",
+                        "274%",
+                        "287%",
+                        "339%",
+                        "353%",
+                        "366%",
+                        "418%",
+                        "431%",
+                        "444%",
+                        "496%"
+                    ],
+                    [
+                        "10.2%",
+                        "10.8%",
+                        "11.3%",
+                        "13.3%",
+                        "13.8%",
+                        "14.4%",
+                        "16.4%",
+                        "16.9%",
+                        "17.4%",
+                        "19.5%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_CIRCLE",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            26145,
+                            27454,
+                            28763,
+                            33992,
+                            35301,
+                            36603,
+                            41832,
+                            43141,
+                            44450,
+                            49679
+                        ]
+                    },
+                    {
+                        "Type": "BuffTarget",
+                        "Value": [
+                            [
+                                -1029,
+                                -1081,
+                                -1132,
+                                -1337,
+                                -1389,
+                                -1440,
+                                -1646,
+                                -1697,
+                                -1748,
+                                -1954
+                            ]
+                        ],
+                        "Stat": "OppressionResist_Coefficient",
+                        "Channel": 629
                     }
                 ]
             },
