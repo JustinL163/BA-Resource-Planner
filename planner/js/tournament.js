@@ -16,7 +16,7 @@ let selectedContainer = "";
 let localData = [];
 let lastLoadDisplay;
 
-let dTournaments = { "tournament-1": "S2 ShiroKuro", "tournament-2": "S3 Kaiten", "tournament-3": "S4 Hod" };
+let dTournaments = { "tournament-1": "S2 ShiroKuro", "tournament-2": "S3 Kaiten", "tournament-3": "S4 Hod", "tournament-4": "S5 Goz" };
 let dStages = { "qualifiers": "Qualifiers", "groups": "Groups", "elimination": "Elimination" };
 let dGames = { "game-1": "1", "game-2": "2", "game-3": "3", "game-4": "4" };
 let dArmour = { "light": "Light", "heavy": "Heavy", "special": "Special", "elastic": "Elastic" };
@@ -434,13 +434,32 @@ function SearchSelection(id) {
     }
     else if (charSearchMode == "filter-slot") {
 
+        let nextSlotId = GetNextBlankFilterSlot();
+
         UpdateSlot(studentId, selectedFilterSlot);
 
         UpdateUsedFilterStudents();
 
-        charSearchActive = false;
-        $("#student-searcher").hide();
+        if (nextSlotId) {
+            LoadStudentSearch(nextSlotId, "filter-slot");
+        }
+        else {
+            charSearchActive = false;
+            $("#student-searcher").hide();
+        }
     }
+}
+
+function GetNextBlankFilterSlot() {
+    let filterSlots = document.getElementsByClassName("student-slot");
+
+    for (let i = 0; i < filterSlots.length; i++) {
+        if (!filterSlots[i].getAttribute("character-id")) {
+            return filterSlots[i].id;
+        }
+    }
+
+    return null;
 }
 
 function UpdateSlot(studentId, slotId) {
