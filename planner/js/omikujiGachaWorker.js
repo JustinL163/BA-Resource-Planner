@@ -1,9 +1,9 @@
 onmessage = (e) => {
 
-    SimulateAttempts(e.data[0], e.data[1], e.data[2], e.data[3], e.data[4], e.data[5]);
+    SimulateAttempts(e.data[0], e.data[1], e.data[2], e.data[3], e.data[4], e.data[5], e.data[6]);
 }
 
-function SimulateAttempts(omikujiRewards, omikujiChances, timeout, attemptsNum, currencyOwned, pullCost) {
+function SimulateAttempts(omikujiRewards, omikujiChances, timeout, attemptsNum, currencyOwned, pullCost, targetGrade) {
 
     let startTime = new Date();
 
@@ -14,7 +14,7 @@ function SimulateAttempts(omikujiRewards, omikujiChances, timeout, attemptsNum, 
     let rewardArrays = {};
 
     for (let i = 0; i < omikujiRewards.length; i++) {
-        if (omikujiRewards[i][0] == 5 && targetIndex == -1) {
+        if (omikujiRewards[i][0] == targetGrade && targetIndex == -1) {
             targetIndex = i;
         }
 

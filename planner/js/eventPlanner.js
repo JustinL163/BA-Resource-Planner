@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?48').done(function (json) {
+    $.getJSON('json/events.json?49').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -86,7 +86,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?24').done(function (json) {
+    $.getJSON('json/strings.json?26').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -1392,7 +1392,7 @@ function CreateShopItem(item, currency) {
     inputElement.id = "input-" + item.id;
     inputElement.type = "number";
     inputElement.max = item.count;
-    if (item.count < 0) {
+    if (item.count == 0) {
         inputElement.max = item.overflow_cap;
     }
     inputElement.min = 0;
@@ -1434,7 +1434,7 @@ function CreateShopItem(item, currency) {
     });
 
     let inputP = document.createElement('p');
-    if (item.count >= 0) {
+    if (item.count > 0) {
         inputP.innerText = "/ " + item.count;
     }
     else {
@@ -1662,6 +1662,9 @@ function CalculateItemPurchases() {
         }
         else if (current_event == "dragon-and-tortoise" && shopNames[s] == "Genryumon_Badge") {
             event_data.currency_needed["Genryumon_Badge"] = totalPurchaseCost
+        }
+        else if (current_event == "new-year-march" && shopNames[s] == "Event_Point") {
+            event_data.currency_needed["Event_Point"] = totalPurchaseCost;
         }
 
         // currencyNeededPre[shopNames[s]] = totalPurchaseCost;
@@ -2156,7 +2159,7 @@ function GetStagesLinearModel(optimise, opType, energyConstrained) {
     }
 
     if (event_point_target && optimise != "Event_Point") {
-        model.constraints["Event_Point"] = { "min": event_point_target };
+        model.constraints["Event_Point"] = { "min": Math.max(event_point_target, currencyNeeded["Event_Point"] ?? 0) };
     }
 
     return model;
@@ -2643,6 +2646,62 @@ function CalculateStageDrops(result, ignoreRequirement) {
         document.getElementById('box-info-text').innerText = '';
     }
 
+    // Add Event Currencies buyable from shop
+    if (optimisationType == "Currency") {
+
+        currencyNames = Object.keys(totalCurrencies);
+        for (let i = 0; i < currencyNames.length; i++) {
+
+            let leftoverCurrency = totalCurrencies[currencyNames[i]] - currencyNeededPre[currencyNames[i]];
+
+            if (!event_config.events[current_event].shops) {
+                continue;
+            }
+
+            let shop = event_config.events[current_event].shops[currencyNames[i]];
+
+            if (!shop) {
+                continue;
+            }
+
+            for (let ii = 0; ii < shop.length; ii++) {
+                if (shop[ii].overflow && shop[ii].type == "EventCurrency") {
+                    let overflowAmount = Math.max(Math.min(Math.floor(leftoverCurrency / shop[ii].cost), shop[ii].overflow_cap), 0);
+                    event_data.shop_purchases["overflow_" + currencyNames[i]] = {};
+                    event_data.shop_purchases["overflow_" + currencyNames[i]][shop[ii].id] = overflowAmount;
+                    if (!event_data.shop_purchases[currencyNames[i]]) {
+                        event_data.shop_purchases[currencyNames[i]] = {};
+                    }
+                    event_data.shop_purchases[currencyNames[i]][shop[ii].id] = 0;
+                    
+                    totalCurrencies[shop[ii].id] = overflowAmount;
+                }
+            }
+        }
+    }
+    else {
+
+        currencyNames = Object.keys(totalCurrencies);
+        for (let i = 0; i < currencyNames.length; i++) {
+
+            if (!event_config.events[current_event].shops) {
+                continue;
+            }
+
+            let shop = event_config.events[current_event].shops[currencyNames[i]];
+
+            if (!shop) {
+                continue;
+            }
+
+            for (let ii = 0; ii < shop.length; ii++) {
+                if (shop[ii].overflow && shop[ii].type == "EventCurrency") {                    
+                    totalCurrencies[shop[ii].id] = event_data.shop_purchases[currencyNames[i]][shop[ii].id];
+                }
+            }
+        }
+    }
+
     if (!midEvent) {
         if (initialClearRewards["Event_Point"]) {
             if (!totalCurrencies["Event_Point"]) {
@@ -2708,7 +2767,10 @@ function CalculateStageDrops(result, ignoreRequirement) {
             changed = true;
         }
 
-        let boxPullCurrencyForOmikuji = GetBoxPullCurrencyForOmikuji(totalCurrencies);
+        let boxPullCurrencyForOmikuji = 0;
+        if (event_config.events[current_event].boxes) {
+            boxPullCurrencyForOmikuji = GetBoxPullCurrencyForOmikuji(totalCurrencies);
+        }
 
         if (event_config.events[current_event].boxes && omikujiPullCurrencyOwned == boxPullCurrencyForOmikuji) {
             changed = false;
@@ -2727,7 +2789,7 @@ function CalculateStageDrops(result, ignoreRequirement) {
 
         if (displayIncluded['OmikujiRewards']) {
 
-            let intResults = AddOmikujiRewards(totalEleph);
+            let intResults = AddOmikujiRewards(totalEleph, totalArtifacts);
             if (intResults) {
                 totalCredit += intResults[0];
                 totalEligma += intResults[1];
@@ -3239,6 +3301,18 @@ function GetBoxPullCurrencyForOmikuji(totalCurrencies) {
 function AddShopPurchases(totalArtifacts, totalSchoolMats, totalEleph, totalXps, totalCredit, totalEligma, totalSecretTech) {
 
     let shops = Object.keys(event_data.shop_purchases);
+    
+    let shopPurchaseables = {};
+
+    let configShops = Object.keys(event_config.events[current_event].shops);
+    for (let i = 0; i < configShops.length; i++) {
+        
+        let configShop = event_config.events[current_event].shops[configShops[i]];
+
+        for (let ii = 0; ii < configShop.length; ii++) {
+            shopPurchaseables[configShop[ii].id] = configShop[ii];
+        }
+    }
 
     for (let i = 0; i < shops.length; i++) {
 
@@ -3300,7 +3374,7 @@ function AddShopPurchases(totalArtifacts, totalSchoolMats, totalEleph, totalXps,
                     totalXps[items[ii]] = 0;
                 }
 
-                totalXps[items[ii]] += parseInt(shop[items[ii]]);
+                totalXps[items[ii]] += parseInt(shop[items[ii]]) * (shopPurchaseables[items[ii]].amount ?? 1);
             }
             else if (items[ii].substring(0, 7) == "Needle_") {
 
@@ -3709,7 +3783,7 @@ function AddCardRewards(pullCurrency, totalCurrencies, totalArtifacts, totalElep
     return [totalCredit, totalEligma];
 }
 
-function AddOmikujiRewards(totalEleph) {
+function AddOmikujiRewards(totalEleph, totalArtifacts) {
 
     if (!event_config.events[current_event].omikuji) {
         return;
@@ -3723,7 +3797,7 @@ function AddOmikujiRewards(totalEleph) {
 
         let rewardName = rewardNames[i];
         let nameInt = parseInt(rewardName);
-        // let matId = matLookup.reverseMap[rewardName];
+        let matName = matLookup.map[rewardName];
 
         let rewardAmount = math.round(omikujiGachaAvgSD[rewardName].mean + (setSD * omikujiGachaAvgSD[rewardName].std));
 
@@ -3755,7 +3829,15 @@ function AddOmikujiRewards(totalEleph) {
         }
         else if (nameInt) {
 
-            if (nameInt >= 10000 && nameInt < 30000) {
+            if (nameInt < 1000) {
+
+                if (!totalArtifacts[matName]) {
+                    totalArtifacts[matName] = 0;
+                }
+
+                totalArtifacts[matName] += rewardAmount;
+            }
+            else if (nameInt >= 10000 && nameInt < 30000) {
 
                 if (!totalEleph[rewardName]) {
                     totalEleph[rewardName] = 0;
@@ -3764,17 +3846,6 @@ function AddOmikujiRewards(totalEleph) {
                 totalEleph[rewardName] += rewardAmount;
             }
         }
-        // else if (matId) {
-
-        //     if (matId < 1000) {
-
-        //         if (!totalArtifacts[rewardName]) {
-        //             totalArtifacts[rewardName] = 0;
-        //         }
-
-        //         totalArtifacts[rewardName] += rewardAmount;
-        //     }
-        // }
     }
 
     return [totalCredit, totalEligma];
@@ -4378,6 +4449,9 @@ function CreatePointRewardDiv(rewardType, rewardId, rewardCount) {
     }
     else if (rewardType == "Eleph") {
         dropImg.src = "icons/Eleph/Eleph_" + rewardId + ".png";
+    }
+    else if (rewardType == "Pyroxene") {
+        dropImg.src = "icons/Misc/Pyroxene.png";
     }
 
     dropP.innerText = commafy(rewardCount);
@@ -5131,10 +5205,10 @@ function SimulateOmikujiGacha() {
     let omikuji_drop_event = current_event + "";
 
     // startsTime = new Date();
-    const worker1 = new Worker("js/omikujiGachaWorker.js");
-    const worker2 = new Worker("js/omikujiGachaWorker.js");
-    const worker3 = new Worker("js/omikujiGachaWorker.js");
-    const worker4 = new Worker("js/omikujiGachaWorker.js");
+    const worker1 = new Worker("js/omikujiGachaWorker.js?1");
+    const worker2 = new Worker("js/omikujiGachaWorker.js?1");
+    const worker3 = new Worker("js/omikujiGachaWorker.js?1");
+    const worker4 = new Worker("js/omikujiGachaWorker.js?1");
 
     worker1.onmessage = (e) => {
         completedWorkers.push(1);
@@ -5159,11 +5233,12 @@ function SimulateOmikujiGacha() {
 
     omikujiPullCurrencyOwned = event_data.omikuji_pull_currency_owned;
     let pullCost = event_config.events[current_event].omikuji.pull_cost;
+    let targetGrade = event_config.events[current_event].omikuji.TargetGrade;
 
-    worker1.postMessage([omikujiRewards, omikujiChances, 3000, 100000, omikujiPullCurrencyOwned, pullCost]);
-    worker2.postMessage([omikujiRewards, omikujiChances, 3000, 100000, omikujiPullCurrencyOwned, pullCost]);
-    worker3.postMessage([omikujiRewards, omikujiChances, 3000, 100000, omikujiPullCurrencyOwned, pullCost]);
-    worker4.postMessage([omikujiRewards, omikujiChances, 3000, 100000, omikujiPullCurrencyOwned, pullCost]);
+    worker1.postMessage([omikujiRewards, omikujiChances, 3000, 100000, omikujiPullCurrencyOwned, pullCost, targetGrade]);
+    worker2.postMessage([omikujiRewards, omikujiChances, 3000, 100000, omikujiPullCurrencyOwned, pullCost, targetGrade]);
+    worker3.postMessage([omikujiRewards, omikujiChances, 3000, 100000, omikujiPullCurrencyOwned, pullCost, targetGrade]);
+    worker4.postMessage([omikujiRewards, omikujiChances, 3000, 100000, omikujiPullCurrencyOwned, pullCost, targetGrade]);
 }
 
 function ProcessOmikujiResults(eventName) {
