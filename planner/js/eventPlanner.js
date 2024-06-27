@@ -1652,7 +1652,7 @@ function CalculateItemPurchases() {
         for (let i = 0; i < purchaseNames.length; i++) {
 
             let loadedShopPurchases = shopPurchases[shopNames[s]];
-            if (loadedShopPurchases) {
+            if (loadedShopPurchases && loadedShopPurchases[shop[i].id]) {
                 totalPurchaseCost += loadedShopPurchases[shop[i].id] * shop[i].cost;
             }
         }
