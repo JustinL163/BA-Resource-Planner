@@ -4,7 +4,7 @@ var curID = 0;
 var modalCharID = 0;
 var modalStars = { "star": 0, "star_target": 0, "ue": 0, "ue_target": 0 };
 const ueStarCap = 3;
-const globalMaxWorld = 23;
+const globalMaxWorld = 25;
 const cnMaxWorld = 17;
 
 var requiredMatDict = {};
@@ -94,7 +94,7 @@ const isIOS = /iPad|iPhone|iPod/.test(platform)
 
 function loadResources() {
 
-    $.getJSON('json/misc_data.json?19').done(function (json) {
+    $.getJSON('json/misc_data.json?20').done(function (json) {
         misc_data = json;
     });
 
@@ -394,7 +394,7 @@ function init() {
 
     let gearNavigation = [];
     createTable("gear-table", ["T9", "T8", "T7", "T6", "T5", "T4", "T3", "T2"], 0, ["Hat", "Gloves", "Shoes", "Bag", "Badge", "Hairpin", "Charm", "Watch", "Necklace"],
-        0, gearNavigation, document.getElementById('table-parent-4'), false, "gear", "icons/Gear/", ["T9_Watch", "T9_Necklace", "T9_Charm"], "gear-");
+        0, gearNavigation, document.getElementById('table-parent-4'), false, "gear", "icons/Gear/", [], "gear-");
 
     let navObj = {};
     for (let x in tableNavigation) {
@@ -421,14 +421,14 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.4.8".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.4.9".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         Swal.fire({
-            title: GetLanguageString("text-updatedversionprefix") + "1.4.8",
+            title: GetLanguageString("text-updatedversionprefix") + "1.4.9",
             color: alertColour,
             html: GetLanguageString("text-updatemessage")
         })
 
-        data.site_version = "1.4.8";
+        data.site_version = "1.4.9";
         // saveToLocalStorage(false);
     }
 
@@ -1143,11 +1143,11 @@ function CharInputsMax() {
         cancelButtonText: GetLanguageString("label-cancel")
     }).then((result) => {
         if (result.isConfirmed) {
-            let values = [87, 87, 5, 5, 10, 10, 10, 10, 10, 10, 8, 8, 8, 8, 8, 8];
+            let values = [90, 90, 5, 5, 10, 10, 10, 10, 10, 10, 9, 9, 9, 9, 8, 8];
             SetCharInputValues(values);
         }
         else if (result.isDenied) {
-            let values = [90, 90, 5, 5, 10, 10, 10, 10, 10, 10, 9, 9, 9, 9, 8, 8];
+            let values = [90, 90, 5, 5, 10, 10, 10, 10, 10, 10, 9, 9, 9, 9, 9, 9];
             SetCharInputValues(values);
         }
     })
@@ -1167,11 +1167,11 @@ function CharInputsGoalMax() {
         cancelButtonText: GetLanguageString("label-cancel")
     }).then((result) => {
         if (result.isConfirmed) {
-            let values = [87, 5, 10, 10, 10, 8, 8, 8];
+            let values = [90, 5, 10, 10, 10, 9, 9, 8];
             SetCharInputGoalValues(values);
         }
         else if (result.isDenied) {
-            let values = [90, 5, 10, 10, 10, 9, 9, 8];
+            let values = [90, 5, 10, 10, 10, 9, 9, 9];
             SetCharInputGoalValues(values);
         }
     })

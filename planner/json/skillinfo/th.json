@@ -1329,6 +1329,48 @@
                 ]
             },
             {
+                "SkillType": "gearnormal",
+                "Name": "โหลดกระสุนและทำลาย!+",
+                "Desc": "รีโหลดกระสุนทันทีเมื่อใช้กระสุนหมด\nเพิ่ม<b:ATK> <?1> (เป็นเวลา 16 วินาที)",
+                "Parameters": [
+                    [
+                        "22.9%",
+                        "24.1%",
+                        "25.2%",
+                        "29.8%",
+                        "30.9%",
+                        "32.1%",
+                        "36.7%",
+                        "37.8%",
+                        "39%",
+                        "43.6%"
+                    ]
+                ],
+                "Duration": 85,
+                "Icon": "COMMON_SKILLICON_RELOAD",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                2296,
+                                2411,
+                                2525,
+                                2985,
+                                3099,
+                                3213,
+                                3673,
+                                3787,
+                                3902,
+                                4361
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2
+                    }
+                ]
+            },
+            {
                 "SkillType": "passive",
                 "Name": "ความเยือกเย็นของกรรมการวินัย",
                 "Desc": "เพิ่ม<b:AttackSpeed> <?1>",
@@ -1568,7 +1610,7 @@
             {
                 "SkillType": "normal",
                 "Name": "รักษาฉุกเฉิน",
-                "Desc": "เมื่อ HP ต่ำกว่า 30% จะฟื้นฟู HP <?1> ของค่ารักษาต่อเนื่อง (เป็นเวลา 20 วินาที)\n(การต่อสู้ละ 1 ครั้ง)",
+                "Desc": "เมื่อ HP ต่ำกว่า 30% จะฟื้นฟู<b:DotHeal> <?1> ของค่ารักษาทุก 4 วินาที (เป็นเวลา 20 วินาที)\n(การต่อสู้ละ <b>1</b> ครั้ง)",
                 "Parameters": [
                     [
                         "100%",
@@ -1602,6 +1644,77 @@
                             17101,
                             19113
                         ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "gearnormal",
+                "Name": "รักษาฉุกเฉิน+",
+                "Desc": "เมื่อ HP ต่ำกว่า 30% จะฟื้นฟู<b:DotHeal> <?1> ของค่ารักษาทุก 4 วินาที (เป็นเวลา 20 วินาที)\nเพิ่ม<b:CriticalDamageRateResist> <?2> (เป็นเวลา 20 วินาที)\n(การต่อสู้ละ <b>2</b> ครั้ง)",
+                "Parameters": [
+                    [
+                        "137%",
+                        "144%",
+                        "150%",
+                        "178%",
+                        "185%",
+                        "192%",
+                        "219%",
+                        "226%",
+                        "233%",
+                        "260%"
+                    ],
+                    [
+                        "15.79%",
+                        "16.58%",
+                        "17.37%",
+                        "20.53%",
+                        "21.32%",
+                        "22.11%",
+                        "25.26%",
+                        "26.05%",
+                        "26.84%",
+                        "30%"
+                    ]
+                ],
+                "Duration": 85,
+                "Icon": "COMMON_SKILLICON_DOTHEAL",
+                "Effects": [
+                    {
+                        "Type": "HealDot",
+                        "Duration": 20000,
+                        "Period": 4000,
+                        "Scale": [
+                            13718,
+                            14403,
+                            15090,
+                            17832,
+                            18519,
+                            19204,
+                            21948,
+                            22634,
+                            23319,
+                            26063
+                        ]
+                    },
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                1579,
+                                1658,
+                                1737,
+                                2053,
+                                2132,
+                                2211,
+                                2526,
+                                2605,
+                                2684,
+                                3000
+                            ]
+                        ],
+                        "Stat": "CriticalDamageResistRate_Base",
+                        "Channel": 23
                     }
                 ]
             },
@@ -3751,7 +3864,7 @@
             {
                 "SkillType": "gearnormal",
                 "Name": "วอร์มอัป!+",
-                "Desc": "เพิ่ม<b:ATK> <?1> และเพิ่ม<b:DEF> <?2> ทุก 40 วินาที (เป็นเวลา 20 วินาที)",
+                "Desc": "เพิ่ม<b:ATK> <?1> และ<b:DEF> <?2> ทุก 40 วินาที (เป็นเวลา 20 วินาที)",
                 "Parameters": [
                     [
                         "27.5%",
@@ -3986,7 +4099,7 @@
             {
                 "SkillType": "ex",
                 "Name": "ทำลายให้สิ้นซาก",
-                "Desc": "รีโหลดกระสุนทันที /\nเปลี่ยนการ<s:FormChange> เป็นการโจมตีในพื้นที่รูปทรงกรวย สร้างความเสียหาย 138% ของค่าโจมตี และเพิ่ม<b:ATK> <?1> (รีโหลด <?2>)",
+                "Desc": "รีโหลดกระสุนทันที /\nเปลี่ยนการ<s:FormChange>เป็นการโจมตีในพื้นที่รูปทรงกรวย สร้างความเสียหาย 138% ของค่าโจมตี และเพิ่ม<b:ATK> <?1> (รีโหลด <?2>)",
                 "Parameters": [
                     [
                         "25.8%",
@@ -5344,7 +5457,7 @@
             {
                 "SkillType": "sub",
                 "Name": "นี่แหละอำนาจของหนวด!",
-                "Desc": "เพิ่ม<b:CostRegen> <?1> /\nและเพิ่มอีก <?2> ต่อนักเรียนเรดวินเทอร์ในทีม 1 เป้าหมาย (ยกเว้นตัวเอง) (สูงสุด 3 เป้าหมาย)",
+                "Desc": "เพิ่มการฟื้นฟูค่าใช้สกิล <?1> /\nและเพิ่มอีก <?2> ต่อนักเรียนเรดวินเทอร์ในทีม 1 เป้าหมาย (ยกเว้นตัวเอง) (สูงสุด 3 เป้าหมาย)",
                 "Parameters": [
                     [
                         "269",
@@ -11745,6 +11858,8 @@
                         "29.5%"
                     ]
                 ],
+                "Duration": 83,
+                "Range": 950,
                 "Icon": "COMMON_SKILLICON_TARGET",
                 "Effects": [
                     {
@@ -18963,11 +19078,11 @@
                         "Type": "DMGEcho",
                         "CriticalCheck": "Check",
                         "Scale": [
-                            939,
-                            1080,
-                            1362,
-                            1502,
-                            1784
+                            941,
+                            1081,
+                            1363,
+                            1505,
+                            1793
                         ]
                     }
                 ]
@@ -20678,6 +20793,7 @@
                         "40 วินาที"
                     ]
                 ],
+                "Duration": 94,
                 "Icon": "COMMON_SKILLICON_WEAPONBUFF",
                 "Effects": [
                     {
@@ -20974,6 +21090,122 @@
                         ],
                         "Stat": "AttackPower_Coefficient",
                         "Channel": 2
+                    }
+                ]
+            },
+            {
+                "SkillType": "gearnormal",
+                "Name": "ดูแลให้แบบครบเซ็ตเลยค่ะ+",
+                "Desc": "เพิ่ม<b:EnhanceMysticRate> <?1>, <b:ATK> <?2> และ<b:CriticalChance> <?3> (เป็นเวลา <?4>) ทุกการโจมตีทั่วไป 15 ครั้ง",
+                "Parameters": [
+                    [
+                        "23.3%",
+                        "24.4%",
+                        "25.6%",
+                        "28.9%",
+                        "30%",
+                        "31.2%",
+                        "37.3%",
+                        "38.4%",
+                        "39.6%",
+                        "40.9%"
+                    ],
+                    [
+                        "20.6%",
+                        "21.6%",
+                        "22.7%",
+                        "28%",
+                        "29.1%",
+                        "30.1%",
+                        "33%",
+                        "34%",
+                        "35%",
+                        "35.9%"
+                    ],
+                    [
+                        "12.5%",
+                        "13.1%",
+                        "13.7%",
+                        "17%",
+                        "17.6%",
+                        "18.2%",
+                        "20%",
+                        "20.6%",
+                        "21.2%",
+                        "22.5%"
+                    ],
+                    [
+                        "30 วินาที",
+                        "30 วินาที",
+                        "30 วินาที",
+                        "30 วินาที",
+                        "30 วินาที",
+                        "30 วินาที",
+                        "30 วินาที",
+                        "30 วินาที",
+                        "30 วินาที",
+                        "40 วินาที"
+                    ]
+                ],
+                "Duration": 100,
+                "Icon": "COMMON_SKILLICON_BULLETTYPEBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                2331,
+                                2448,
+                                2565,
+                                2891,
+                                3008,
+                                3125,
+                                3730,
+                                3847,
+                                3964,
+                                4095
+                            ]
+                        ],
+                        "Stat": "EnhanceMysticRate_Base",
+                        "Channel": 34
+                    },
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                2064,
+                                2167,
+                                2270,
+                                2806,
+                                2910,
+                                3013,
+                                3302,
+                                3405,
+                                3507,
+                                3598
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2
+                    },
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                1251,
+                                1314,
+                                1376,
+                                1701,
+                                1764,
+                                1826,
+                                2001,
+                                2064,
+                                2126,
+                                2255
+                            ]
+                        ],
+                        "Stat": "CriticalPoint_Coefficient",
+                        "Channel": 9
                     }
                 ]
             },
@@ -25793,7 +26025,7 @@
             },
             {
                 "SkillType": "ex",
-                "Name": "ศาสตร์การยิงของเฮียกกะเรียวรัน",
+                "Name": "ศาสตร์ยิงปืนของเฮียกกะเรียวรัน",
                 "Desc": "สร้างความเสียหาย<d:Burn>ต่อเนื่อง <?1> ของค่าโจมตีให้กับศัตรูในพื้นที่รูปทรงกรวยทุก 4 วินาที (เป็นเวลา 20 วินาที)\nสร้างความเสียหาย <?2> ของค่าโจมตีให้กับศัตรูในพื้นที่รูปทรงกรวย",
                 "Parameters": [
                     [
@@ -25911,7 +26143,7 @@
             },
             {
                 "SkillType": "passive",
-                "Name": "ผู้ฝึกสอนปีศาจแห่งเฮียกกะเรียวรัน",
+                "Name": "ผู้ฝึกอสูรแห่งเฮียกกะเรียวรัน",
                 "Desc": "เพิ่ม<b:ATK> <?1>",
                 "Parameters": [
                     [
@@ -25949,7 +26181,7 @@
             },
             {
                 "SkillType": "weaponpassive",
-                "Name": "ผู้ฝึกสอนปีศาจแห่งเฮียกกะเรียวรัน+",
+                "Name": "ผู้ฝึกอสูรแห่งเฮียกกะเรียวรัน+",
                 "Desc": "เพิ่ม<b:CriticalDamage> <?1>\nเพิ่ม<b:ATK>เพิ่มเติม <?2>",
                 "Parameters": [
                     [
@@ -26065,7 +26297,7 @@
             },
             {
                 "SkillType": "ex",
-                "Name": "การเดินหมากตามกลยุทธ์เทพคำนวน",
+                "Name": "เดินหมากตามกลยุทธ์ขั้นเทพ",
                 "Desc": "ลด<d:DEF>ของศัตรูในพื้นที่รูปทรงกากบาท <?1> (เป็นเวลา 30 วินาที)\nสร้างความเสียหาย <?2> ของค่าโจมตีให้กับศัตรูในพื้นที่รูปทรงกากบาท",
                 "Parameters": [
                     [
@@ -26163,7 +26395,7 @@
             },
             {
                 "SkillType": "normal",
-                "Name": "หากรู้รอบ ก็มิต้องรบถึงร้อยครั้ง",
+                "Name": "รบร้อยไร้พ่ายเพียงล่วงรู้",
                 "Desc": "เพิ่ม<b:EnhanceSonicRate>ของฝ่ายเราทั้งหมด ยกเว้นตัวเองในรัศมีรอบตัว ทุก 35 วินาที (เป็นเวลา 25 วินาที) โดยผลของเอฟเฟกต์ที่เพิ่มจะขึ้นอยู่กับจำนวนของฝ่ายเราที่ได้รับผลจากสกิลนี้:\n<b>1 เป้าหมาย:</b> <?1>\n<b>2 เป้าหมาย:</b> <?2>\n<b>3 เป้าหมายหรือมากกว่า :</b> <?3>",
                 "Parameters": [
                     [
@@ -26260,7 +26492,7 @@
             },
             {
                 "SkillType": "passive",
-                "Name": "คุณสมบัติของเจ้าหน้าที่แผนกกลยุทธ์",
+                "Name": "คุณสมบัติของที่ปรึกษายุทธศาสตร์",
                 "Desc": "เพิ่ม<b:ATK> <?1>",
                 "Parameters": [
                     [
@@ -26298,7 +26530,7 @@
             },
             {
                 "SkillType": "weaponpassive",
-                "Name": "คุณสมบัติของเจ้าหน้าที่แผนกกลยุทธ์+",
+                "Name": "คุณสมบัติของที่ปรึกษายุทธศาสตร์+",
                 "Desc": "เพิ่ม<b:ExtendDebuffDuration> <?1>\nเพิ่ม<b:ATK>เพิ่มเติม <?2>",
                 "Parameters": [
                     [
@@ -26348,7 +26580,7 @@
             },
             {
                 "SkillType": "sub",
-                "Name": "ยุทธวิธีแห่งฟูรินคาซัน",
+                "Name": "กลศึกฟุรินคะซัน",
                 "Desc": "เพิ่ม<b:ATK>ของตัวเอง <?1> (เป็นเวลา 20 วินาที) และได้รับเอฟเฟกต์<s:CH0225_ExtraPassive> 1 ชั้น (มีได้สูงสุด 3 ชั้น) ทุก 30 วินาที\nเมื่อมี<s:CH0225_ExtraPassive>ครบ 3 ชั้น, การใช้งานสกิล EX ครั้งต่อไปของคิเคียวจะใช้งาน<s:CH0225_ExtraPassive>ทั้งหมดและทำการลด<b:CostChange>ของฝ่ายเราทั้งหมด ยกเว้นตัวเองลง <b>1</b> (มีผลจนกว่าจะใช้สกิล EX ครบ <b>1</b> ครั้ง)",
                 "Parameters": [
                     [
@@ -26474,7 +26706,7 @@
             },
             {
                 "SkillType": "normal",
-                "Name": "ผลของการสั่นพ้อง",
+                "Name": "ผลสะท้อน",
                 "Desc": "เพิ่ม<b:ATK>ให้กับฝ่ายเรา 1 เป้าหมายและตนเอง <?1> ทุก 45 วินาที (เป็นเวลา 35 วินาที)",
                 "Parameters": [
                     [
@@ -26631,7 +26863,7 @@
             },
             {
                 "SkillType": "sub",
-                "Name": "แทรกแซงคลื่นไฟฟ้า",
+                "Name": "แทรกคลื่นวิทยุ",
                 "Desc": "สร้างความเสียหายเพิ่มเติม <?1> ของค่าโจมตีเมื่อทำการโจมตีศัตรู",
                 "Parameters": [
                     [
@@ -26697,7 +26929,7 @@
             },
             {
                 "SkillType": "ex",
-                "Name": "รสหวานจากกองไฟ",
+                "Name": "รสละมุนจากกองไฟ",
                 "Desc": "เพิ่ม<b:ATK> <?1> ให้กับฝ่ายเราที่ไม่ใช่ตัวเอง 1 เป้าหมาย (เป็นเวลา 26 วินาที)\nฮาเระจะได้รับ<s:CH0233_ExtraPassive> 5 ชั้น (มีได้สูงสุด 15 ชั้น)",
                 "Parameters": [
                     [
@@ -26785,7 +27017,7 @@
             },
             {
                 "SkillType": "passive",
-                "Name": "ผลของการดีท็อกซ์",
+                "Name": "ผลจากดีแคฟ",
                 "Desc": "เพิ่ม<b:ATK> <?1>",
                 "Parameters": [
                     [
@@ -26823,7 +27055,7 @@
             },
             {
                 "SkillType": "weaponpassive",
-                "Name": "ผลของการดีท็อกซ์+",
+                "Name": "ผลจากดีแคฟ+",
                 "Desc": "เพิ่ม<b:ExtendBuffDuration> <?1>\nเพิ่ม<b:ATK>เพิ่มเติม <?2>",
                 "Parameters": [
                     [
@@ -26873,7 +27105,7 @@
             },
             {
                 "SkillType": "sub",
-                "Name": "ความตื่นเต้นที่แท้จริงของการเข้าแคมป์",
+                "Name": "ความสนุกจากการตั้งแคมป์",
                 "Desc": "หากฮาเระมี<s:CH0233_ExtraPassive>อยู่, การโจมตีทั่วไปของฮาเระจะสร้างความเสียหายเพิ่มเติม <?1> ของค่าโจมตีให้กับศัตรูและลดจำนวน<s:CH0233_ExtraPassive>ที่มีลง 1",
                 "Parameters": [
                     [
@@ -26912,7 +27144,7 @@
         ]
     },
     "10086": {
-        "Name": "ฮินะ (ชุดเดรส)",
+        "Name": "ฮินะ (เดรส)",
         "Skills": [
             {
                 "SkillType": "autoattack",
@@ -26963,7 +27195,7 @@
                     {
                         "Id": "CH0230Ex02",
                         "SkillType": "ex",
-                        "Name": "บทบรรเลงเปิดฉาก",
+                        "Name": "ท่วงทำนองแรก",
                         "Desc": "สร้างความเสียหาย <?1> ของค่าโจมตีให้กับศัตรูทั้งหมดในแนวเส้นตรง\nลดความเสียหายลง 45% ทุกครั้งที่ทะลุศัตรู 1 เป้าหมาย (ลดลงต่ำสุดที่ 10% ของความเสียหายที่ทำได้)\nการโจมตีนี้จะเพิกเฉยต่อค่าความเสถียรและใช้ความเสียหายสูงสุดที่ทำได้แน่นอน\nเพิ่มระยะเวลาของสถานะเล็งยิงที่เหลืออยู่เป็น 10 วินาที",
                         "Parameters": [
                             [
@@ -27015,7 +27247,7 @@
                     {
                         "Id": "CH0230Ex03",
                         "SkillType": "ex",
-                        "Name": "บทบรรเลงที่สอง",
+                        "Name": "ท่วงทำนองที่สอง",
                         "Desc": "สร้างความเสียหาย <?1> ของค่าโจมตีให้กับศัตรูทั้งหมดในแนวเส้นตรง\nลดความเสียหายลง 45% ทุกครั้งที่ทะลุศัตรู 1 เป้าหมาย (ลดลงต่ำสุดที่ 10% ของความเสียหายที่ทำได้)\nการโจมตีนี้จะเพิกเฉยต่อค่าความเสถียรและใช้ความเสียหายสูงสุดที่ทำได้แน่นอน\nเพิ่มระยะเวลาของสถานะเล็งยิงที่เหลืออยู่เป็น 10 วินาที",
                         "Parameters": [
                             [
@@ -27067,7 +27299,7 @@
                     {
                         "Id": "CH0230Ex04",
                         "SkillType": "ex",
-                        "Name": "บทบรรเลงปิดฉาก",
+                        "Name": "ท่วงทำนองปิดม่าน",
                         "Desc": "สร้างความเสียหาย <?1> ของค่าโจมตีให้กับศัตรูทั้งหมดในแนวเส้นตรง\nลดความเสียหายลง 45% ทุกครั้งที่ทะลุศัตรู 1 เป้าหมาย (ลดลงต่ำสุดที่ 10% ของความเสียหายที่ทำได้)\nการโจมตีนี้จะเพิกเฉยต่อค่าความเสถียรและใช้ความเสียหายสูงสุดที่ทำได้แน่นอน\nสถานะเล็งยิงจะสิ้นสุดลงหลังจากการใช้งานสกิลนี้",
                         "Parameters": [
                             [
@@ -27124,7 +27356,7 @@
             },
             {
                 "SkillType": "normal",
-                "Name": "การเตรียมการที่ไร้ข้อบกพร่อง",
+                "Name": "เตรียมพร้อมอย่างไร้ที่ติ",
                 "Desc": "เมื่อเริ่มต่อสู้ เพิ่ม<b:EnhanceExplosionRate> <?1> และ<b:HIT> <?2>\n(การต่อสู้ละ 1 ครั้ง)",
                 "Parameters": [
                     [
@@ -27353,7 +27585,7 @@
             },
             {
                 "SkillType": "sub",
-                "Name": "ความรู้สึกทั้งหมดอยู่ตรงนี้แล้ว",
+                "Name": "ความรู้สึกทั้งหมดอยู่ตรงที่แห่งนี้",
                 "Desc": "เมื่ออยู่ในสถานะเล็งยิง, เพิ่ม<b:EnhanceExplosionRate> <?1> และจะต้านทานการ<c:Provoke>",
                 "Parameters": [
                     [
@@ -27395,7 +27627,7 @@
         ]
     },
     "10087": {
-        "Name": "อาโกะ (ชุดเดรส)",
+        "Name": "อาโกะ (เดรส)",
         "Skills": [
             {
                 "SkillType": "autoattack",
@@ -27423,7 +27655,7 @@
             },
             {
                 "SkillType": "ex",
-                "Name": "สายลับผู้สมบูรณ์แบบ",
+                "Name": "เจ้าหน้าที่ผู้สมบูรณ์แบบ",
                 "Desc": "เพิ่ม<b:CriticalChance> <?1> และ<b:CriticalDamage> <?2> ให้กับฝ่ายเราทั้งหมดในรัศมีรอบตัว (เป็นเวลา 30 วินาที)\nมอบเอฟเฟกต์<s:CH0231_ExtraPassive>ให้กับตัวเอง 1 ชั้นต่อฝ่ายเรา 1 เป้าหมายที่ได้รับผลจากสกิลนี้ (มีได้สูงสุด 15 ชั้น)",
                 "Parameters": [
                     [
@@ -27490,7 +27722,7 @@
             },
             {
                 "SkillType": "normal",
-                "Name": "ไม่ปล่อยให้เป้าหมายหนีไปได้หรอกค่ะ!",
+                "Name": "ไม่ปล่อยให้เป้าหมายหลุดไปได้หรอกค่ะ!",
                 "Desc": "ลด<d:DEF> <?1> ให้กับศัตรู 1 เป้าหมาย ทุก 35 วินาที (เป็นเวลา 22 วินาที)\nสร้างความเสียหายให้กับเป้าหมายดังกล่าว โดยความเสียหายที่ทำได้จะขึ้นอยู่กับจำนวนเอฟเฟกต์<s:CH0231_ExtraPassive>ที่มีอยู่:\n<b>3 ชั้นหรือน้อยกว่า:</b> <?2> ของค่าโจมตี\n<b>4 ~ 7 ชั้น:</b> <?3> ของค่าโจมตี\n<b>8 ~ 11 ชั้น:</b> <?4> ของค่าโจมตี\n<b>12 ชั้นขึ้นไป:</b> <?5> ของค่าโจมตี",
                 "Parameters": [
                     [
@@ -27659,7 +27891,7 @@
             },
             {
                 "SkillType": "passive",
-                "Name": "ความมั่นใจของสายลับ",
+                "Name": "ความมั่นใจของเจ้าหน้าที่",
                 "Desc": "เพิ่ม<b:MAXHP> <?1>",
                 "Parameters": [
                     [
@@ -27697,7 +27929,7 @@
             },
             {
                 "SkillType": "weaponpassive",
-                "Name": "ความมั่นใจของสายลับ+",
+                "Name": "ความมั่นใจของเจ้าหน้าที่+",
                 "Desc": "เพิ่ม<b:ATK> <?1>\nเพิ่ม<b:MAXHP>เพิ่มเติม <?2>",
                 "Parameters": [
                     [
@@ -27747,7 +27979,7 @@
             },
             {
                 "SkillType": "sub",
-                "Name": "ผลลัพธ์ของกลยุทธ์",
+                "Name": "ผลจากกลยุทธ์",
                 "Desc": "เพิ่ม<b:ATK>ของอาโกะ <?1> ต่อจำนวนเอฟเฟกต์<s:CH0231_ExtraPassive>ที่มีอยู่ 1 ชั้น",
                 "Parameters": [
                     [
@@ -27791,7 +28023,7 @@
         ]
     },
     "10088": {
-        "Name": "คาโยโกะ (ชุดเดรส)",
+        "Name": "คาโยโกะ (เดรส)",
         "Skills": [
             {
                 "SkillType": "autoattack",
@@ -27805,12 +28037,12 @@
                             10000
                         ],
                         "Frames": {
-                            "AttackEnterDuration": 0,
-                            "AttackStartDuration": 0,
-                            "AttackEndDuration": 0,
-                            "AttackBurstRoundOverDelay": 0,
-                            "AttackIngDuration": 0,
-                            "AttackReloadDuration": 0
+                            "AttackEnterDuration": 45,
+                            "AttackStartDuration": 30,
+                            "AttackIngDuration": 25,
+                            "AttackEndDuration": 20,
+                            "AttackBurstRoundOverDelay": 50,
+                            "AttackReloadDuration": 38
                         },
                         "CriticalCheck": "Check"
                     }
@@ -27843,6 +28075,8 @@
                     5,
                     5
                 ],
+                "Duration": 130,
+                "Range": 750,
                 "Icon": "COMMON_SKILLICON_TARGET",
                 "Effects": [
                     {
@@ -27926,6 +28160,7 @@
                         "25.8%"
                     ]
                 ],
+                "Duration": 100,
                 "Icon": "COMMON_SKILLICON_WEAPONBUFF",
                 "Effects": [
                     {
@@ -28081,7 +28316,7 @@
         ]
     },
     "10089": {
-        "Name": "อารุ (ชุดเดรส)",
+        "Name": "อารุ (เดรส)",
         "Skills": [
             {
                 "SkillType": "autoattack",
@@ -28095,12 +28330,12 @@
                             10000
                         ],
                         "Frames": {
-                            "AttackEnterDuration": 0,
-                            "AttackStartDuration": 0,
-                            "AttackEndDuration": 0,
-                            "AttackBurstRoundOverDelay": 0,
-                            "AttackIngDuration": 0,
-                            "AttackReloadDuration": 0
+                            "AttackEnterDuration": 35,
+                            "AttackStartDuration": 33,
+                            "AttackEndDuration": 25,
+                            "AttackBurstRoundOverDelay": 50,
+                            "AttackIngDuration": 29,
+                            "AttackReloadDuration": 70
                         },
                         "CriticalCheck": "Check"
                     }
@@ -28126,6 +28361,8 @@
                     3,
                     3
                 ],
+                "Duration": 160,
+                "Range": 950,
                 "Icon": "COMMON_SKILLICON_WEAPONBUFF",
                 "Effects": [
                     {
@@ -28162,6 +28399,8 @@
                         "151%"
                     ]
                 ],
+                "Duration": 111,
+                "Range": 950,
                 "Icon": "COMMON_SKILLICON_HEAL",
                 "Effects": [
                     {
@@ -28319,20 +28558,22 @@
                 "SkillType": "autoattack",
                 "Effects": [
                     {
-                        "Type": "DMGSingle",
+                        "Type": "DMGMulti",
                         "Hits": [
-                            10000
+                            3333,
+                            3333,
+                            3334
                         ],
                         "Scale": [
                             10000
                         ],
                         "Frames": {
-                            "AttackEnterDuration": 0,
-                            "AttackStartDuration": 0,
-                            "AttackEndDuration": 0,
-                            "AttackBurstRoundOverDelay": 0,
-                            "AttackIngDuration": 0,
-                            "AttackReloadDuration": 0
+                            "AttackEnterDuration": 40,
+                            "AttackStartDuration": 16,
+                            "AttackEndDuration": 22,
+                            "AttackBurstRoundOverDelay": 50,
+                            "AttackIngDuration": 20,
+                            "AttackReloadDuration": 60
                         },
                         "CriticalCheck": "Check"
                     }
@@ -28358,6 +28599,8 @@
                     3,
                     3
                 ],
+                "Duration": 120,
+                "Range": 850,
                 "Icon": "SKILLICON_CH0110_EXSKILL",
                 "Effects": []
             },
@@ -28391,6 +28634,7 @@
                         "122%"
                     ]
                 ],
+                "Duration": 73,
                 "Icon": "SKILLICON_CH0110_EXSKILL",
                 "Effects": [
                     {
@@ -28585,20 +28829,24 @@
                 "SkillType": "autoattack",
                 "Effects": [
                     {
-                        "Type": "DMGSingle",
+                        "Type": "DMGMulti",
                         "Hits": [
-                            10000
+                            2000,
+                            2000,
+                            2000,
+                            2000,
+                            2000
                         ],
                         "Scale": [
                             10000
                         ],
                         "Frames": {
-                            "AttackEnterDuration": 0,
-                            "AttackStartDuration": 0,
-                            "AttackEndDuration": 0,
-                            "AttackBurstRoundOverDelay": 0,
-                            "AttackIngDuration": 0,
-                            "AttackReloadDuration": 0
+                            "AttackEnterDuration": 36,
+                            "AttackStartDuration": 20,
+                            "AttackEndDuration": 28,
+                            "AttackBurstRoundOverDelay": 40,
+                            "AttackIngDuration": 26,
+                            "AttackReloadDuration": 66
                         },
                         "CriticalCheck": "Check"
                     }
@@ -28630,6 +28878,14 @@
                     3,
                     3,
                     3
+                ],
+                "Duration": 210,
+                "Range": 300,
+                "Radius": [
+                    {
+                        "Type": "Circle",
+                        "Radius": 300
+                    }
                 ],
                 "Icon": "COMMON_SKILLICON_WEAPONBUFF",
                 "Effects": [
@@ -28667,6 +28923,7 @@
                         "37.2%"
                     ]
                 ],
+                "Duration": 154,
                 "Icon": "COMMON_SKILLICON_WEAPONBUFF",
                 "Effects": [
                     {
@@ -28825,20 +29082,22 @@
                 "SkillType": "autoattack",
                 "Effects": [
                     {
-                        "Type": "DMGSingle",
+                        "Type": "DMGMulti",
                         "Hits": [
-                            10000
+                            3333,
+                            3333,
+                            3334
                         ],
                         "Scale": [
                             10000
                         ],
                         "Frames": {
-                            "AttackEnterDuration": 0,
-                            "AttackStartDuration": 0,
-                            "AttackEndDuration": 0,
-                            "AttackBurstRoundOverDelay": 0,
-                            "AttackIngDuration": 0,
-                            "AttackReloadDuration": 0
+                            "AttackEnterDuration": 40,
+                            "AttackStartDuration": 20,
+                            "AttackIngDuration": 32,
+                            "AttackEndDuration": 16,
+                            "AttackBurstRoundOverDelay": 30,
+                            "AttackReloadDuration": 65
                         },
                         "CriticalCheck": "Check"
                     }
@@ -28864,6 +29123,7 @@
                     10,
                     10
                 ],
+                "Duration": 195,
                 "Icon": "COMMON_SKILLICON_WEAPONBUFF",
                 "Effects": [
                     {
@@ -28914,11 +29174,28 @@
                         "966%"
                     ]
                 ],
+                "Duration": 136,
+                "Range": 850,
                 "Icon": "SKILLICON_CH0220_PUBLICSKILL",
                 "Effects": [
                     {
-                        "Type": "DMGSingle",
+                        "Type": "DMGMulti",
                         "CriticalCheck": "Check",
+                        "Hits": [
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            837
+                        ],
+                        "HitsParameter": 1,
                         "Scale": [
                             50859,
                             53400,
@@ -28933,8 +29210,23 @@
                         ]
                     },
                     {
-                        "Type": "DMGSingle",
+                        "Type": "DMGMulti",
                         "CriticalCheck": "Check",
+                        "Hits": [
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            837
+                        ],
+                        "HitsParameter": -1,
                         "Scale": [
                             53400,
                             56069,
@@ -28949,8 +29241,23 @@
                         ]
                     },
                     {
-                        "Type": "DMGSingle",
+                        "Type": "DMGMulti",
                         "CriticalCheck": "Check",
+                        "Hits": [
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            837
+                        ],
+                        "HitsParameter": -1,
                         "Scale": [
                             55942,
                             58738,
@@ -28965,8 +29272,23 @@
                         ]
                     },
                     {
-                        "Type": "DMGSingle",
+                        "Type": "DMGMulti",
                         "CriticalCheck": "Check",
+                        "Hits": [
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            837
+                        ],
+                        "HitsParameter": -1,
                         "Scale": [
                             58483,
                             61407,
@@ -28981,8 +29303,23 @@
                         ]
                     },
                     {
-                        "Type": "DMGSingle",
+                        "Type": "DMGMulti",
                         "CriticalCheck": "Check",
+                        "Hits": [
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            837
+                        ],
+                        "HitsParameter": -1,
                         "Scale": [
                             61031,
                             64083,
@@ -28997,8 +29334,23 @@
                         ]
                     },
                     {
-                        "Type": "DMGSingle",
+                        "Type": "DMGMulti",
                         "CriticalCheck": "Check",
+                        "Hits": [
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            837
+                        ],
+                        "HitsParameter": -1,
                         "Scale": [
                             63573,
                             66752,
@@ -29013,8 +29365,23 @@
                         ]
                     },
                     {
-                        "Type": "DMGSingle",
+                        "Type": "DMGMulti",
                         "CriticalCheck": "Check",
+                        "Hits": [
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            837
+                        ],
+                        "HitsParameter": -1,
                         "Scale": [
                             66115,
                             69421,
@@ -29029,8 +29396,23 @@
                         ]
                     },
                     {
-                        "Type": "DMGSingle",
+                        "Type": "DMGMulti",
                         "CriticalCheck": "Check",
+                        "Hits": [
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            837
+                        ],
+                        "HitsParameter": -1,
                         "Scale": [
                             68656,
                             72090,
@@ -29045,8 +29427,23 @@
                         ]
                     },
                     {
-                        "Type": "DMGSingle",
+                        "Type": "DMGMulti",
                         "CriticalCheck": "Check",
+                        "Hits": [
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            833,
+                            837
+                        ],
+                        "HitsParameter": -1,
                         "Scale": [
                             71198,
                             74759,
@@ -29062,7 +29459,7 @@
                     }
                 ],
                 "EffectCombine": [
-                    "DMGSingle"
+                    "DMGMulti"
                 ],
                 "EffectCombineLabel": {
                     "Icon": [
@@ -29217,20 +29614,22 @@
                 "SkillType": "autoattack",
                 "Effects": [
                     {
-                        "Type": "DMGSingle",
+                        "Type": "DMGMulti",
                         "Hits": [
-                            10000
+                            3333,
+                            3333,
+                            3334
                         ],
                         "Scale": [
                             10000
                         ],
                         "Frames": {
-                            "AttackEnterDuration": 0,
-                            "AttackStartDuration": 0,
-                            "AttackEndDuration": 0,
-                            "AttackBurstRoundOverDelay": 0,
-                            "AttackIngDuration": 0,
-                            "AttackReloadDuration": 0
+                            "AttackEnterDuration": 37,
+                            "AttackStartDuration": 15,
+                            "AttackEndDuration": 11,
+                            "AttackBurstRoundOverDelay": 30,
+                            "AttackIngDuration": 30,
+                            "AttackReloadDuration": 60
                         },
                         "CriticalCheck": "Check"
                     }
@@ -29263,6 +29662,7 @@
                     4,
                     4
                 ],
+                "Duration": 151,
                 "Icon": "COMMON_SKILLICON_FORMCHANGE",
                 "Effects": [
                     {
@@ -29310,6 +29710,8 @@
                         "744%"
                     ]
                 ],
+                "Duration": 124,
+                "Range": 850,
                 "Icon": "COMMON_SKILLICON_TARGET",
                 "Effects": [
                     {
@@ -29468,6 +29870,2811 @@
                         ],
                         "Stat": "AccuracyPoint_Coefficient",
                         "Channel": 5
+                    }
+                ]
+            }
+        ]
+    },
+    "10094": {
+        "Name": "โมโมอิ (ชุดเมด)",
+        "Skills": [
+            {
+                "SkillType": "autoattack",
+                "Effects": [
+                    {
+                        "Type": "DMGMulti",
+                        "Hits": [
+                            3333,
+                            3333,
+                            3334
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Frames": {
+                            "AttackEnterDuration": 30,
+                            "AttackStartDuration": 15,
+                            "AttackEndDuration": 15,
+                            "AttackBurstRoundOverDelay": 30,
+                            "AttackIngDuration": 20,
+                            "AttackReloadDuration": 58
+                        },
+                        "CriticalCheck": "Check"
+                    }
+                ]
+            },
+            {
+                "SkillType": "ex",
+                "Name": "เวอร์ช่วล เมดเวพอน!",
+                "Desc": "รีโหลดกระสุนทันที\nทำให้การ<s:FormChange>ของโมโมอิสร้างความเสียหายเพิ่มเติม <?1> ของค่าโจมตี\nเพิ่ม<b:AttackSpeed> <?2> และไม่สนดีเลย์ของโจมตีทั่วไป 100 ครั้ง\n(มีผลจนกว่าจะรีโหลดครั้งถัดไป)",
+                "Parameters": [
+                    [
+                        "29.5%",
+                        "33.9%",
+                        "42.8%",
+                        "47.2%",
+                        "56%"
+                    ],
+                    [
+                        "53.2%",
+                        "61.2%",
+                        "69.2%",
+                        "77.1%",
+                        "85.1%"
+                    ]
+                ],
+                "Cost": [
+                    4,
+                    4,
+                    4,
+                    4,
+                    4
+                ],
+                "Duration": 70,
+                "Icon": "COMMON_SKILLICON_FORMCHANGE",
+                "Effects": [
+                    {
+                        "Type": "FormChange",
+                        "Frames": {
+                            "AttackEnterDuration": 30,
+                            "AttackStartDuration": 15,
+                            "AttackEndDuration": 15,
+                            "AttackBurstRoundOverDelay": 30,
+                            "AttackIngDuration": 20,
+                            "AttackReloadDuration": 58
+                        },
+                        "Hits": [
+                            3333,
+                            3333,
+                            3334
+                        ],
+                        "IgnoreDelay": [
+                            100,
+                            100,
+                            100,
+                            100,
+                            100
+                        ],
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            10000,
+                            10000,
+                            10000,
+                            10000,
+                            10000
+                        ]
+                    },
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                5323,
+                                6121,
+                                6920,
+                                7718,
+                                8517
+                            ]
+                        ],
+                        "Stat": "AttackSpeed_Coefficient",
+                        "Channel": 24
+                    },
+                    {
+                        "Type": "DMGEcho",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            2952,
+                            3399,
+                            4283,
+                            4721,
+                            5605
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "ถ้ามันออกมาดีก็ว่าดี!",
+                "Desc": "สร้างความเสียหาย <?1> ของค่าโจมตีให้กับศัตรูหนึ่งเป้าหมายทุก 50 วินาที",
+                "Parameters": [
+                    [
+                        "414%",
+                        "435%",
+                        "456%",
+                        "539%",
+                        "560%",
+                        "580%",
+                        "663%",
+                        "684%",
+                        "705%",
+                        "788%"
+                    ]
+                ],
+                "Duration": 93,
+                "Range": 850,
+                "Icon": "COMMON_SKILLICON_TARGET",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            41477,
+                            43553,
+                            45629,
+                            53924,
+                            56000,
+                            58067,
+                            66362,
+                            68438,
+                            70514,
+                            78810
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "passive",
+                "Name": "ยังไงก็ต้องสีแดงอยู่แล้ว!",
+                "Desc": "เพิ่ม<b:CriticalDamage> <?1>",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "CriticalDamageRate_Coefficient",
+                        "Scale": [
+                            1400,
+                            1470,
+                            1540,
+                            1820,
+                            1890,
+                            1960,
+                            2240,
+                            2310,
+                            2380,
+                            2660
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "ยังไงก็ต้องสีแดงอยู่แล้ว!+",
+                "Desc": "เพิ่ม<b:CriticalChance> <?1>\nเพิ่ม<b:CriticalDamage>เพิ่มเติม <?2>",
+                "Parameters": [
+                    [
+                        "100",
+                        "105",
+                        "110",
+                        "130",
+                        "135",
+                        "140",
+                        "160",
+                        "165",
+                        "170",
+                        "190"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "CriticalPoint_Base",
+                        "Scale": [
+                            100,
+                            105,
+                            110,
+                            130,
+                            135,
+                            140,
+                            160,
+                            165,
+                            170,
+                            190
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "เดี๋ยวโดนลูกหลงนะ!",
+                "Desc": "ทำให้จำนวนกระสุนในการ<s:FormChange>ของโมโมอิมีไม่จำกัดเป็นระยะเวลา <?1> หลังจากการใช้งานสกิล EX",
+                "Parameters": [
+                    [
+                        "2.5 วินาที",
+                        "2.75 วินาที",
+                        "3 วินาที",
+                        "3.5 วินาที",
+                        "3.75 วินาที",
+                        "4 วินาที",
+                        "4.5 วินาที",
+                        "4.75 วินาที",
+                        "5 วินาที",
+                        "5.5 วินาที"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_RELOAD",
+                "Effects": []
+            }
+        ]
+    },
+    "10095": {
+        "Name": "มิโดริ (ชุดเมด)",
+        "Skills": [
+            {
+                "SkillType": "autoattack",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "Hits": [
+                            10000
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Frames": {
+                            "AttackEnterDuration": 30,
+                            "AttackStartDuration": 15,
+                            "AttackEndDuration": 15,
+                            "AttackBurstRoundOverDelay": 30,
+                            "AttackIngDuration": 20,
+                            "AttackReloadDuration": 58
+                        },
+                        "CriticalCheck": "Check"
+                    }
+                ]
+            },
+            {
+                "SkillType": "ex",
+                "Name": "เวอร์ชวล เมดช็อต",
+                "Desc": "สร้างความเสียหาย <?1> ของค่าโจมตีให้กับศัตรูหนึ่งเป้าหมาย",
+                "Parameters": [
+                    [
+                        "914%",
+                        "1052%",
+                        "1326%",
+                        "1464%",
+                        "1738%"
+                    ]
+                ],
+                "Cost": [
+                    5,
+                    5,
+                    5,
+                    5,
+                    5
+                ],
+                "Duration": 110,
+                "Range": 950,
+                "Icon": "COMMON_SKILLICON_TARGET",
+                "Effects": [
+                    {
+                        "Type": "DMGMulti",
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            1666,
+                            1666,
+                            1666,
+                            1666,
+                            1666,
+                            1670
+                        ],
+                        "HitsParameter": 1,
+                        "Scale": [
+                            91499,
+                            105231,
+                            132677,
+                            146400,
+                            173855
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "ทำความสะอาดอย่างสมบูรณ์แบบ",
+                "Desc": "เพิ่ม<b:ATK>ของตัวเอง <?1> ทุก 30 วินาที (เป็นระยะเวลา 23 วินาที)",
+                "Parameters": [
+                    [
+                        "24.8%",
+                        "25.8%",
+                        "26.9%",
+                        "31.8%",
+                        "33.1%",
+                        "34.3%",
+                        "40%",
+                        "41.4%",
+                        "42.9%",
+                        "49.3%"
+                    ]
+                ],
+                "Duration": 145,
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                2481,
+                                2586,
+                                2691,
+                                3187,
+                                3311,
+                                3435,
+                                4005,
+                                4148,
+                                4291,
+                                4935
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2
+                    }
+                ]
+            },
+            {
+                "SkillType": "passive",
+                "Name": "ถ้าแบบนั้นก็สีเขียวละกัน",
+                "Desc": "เพิ่ม<b:ATK> <?1>",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "AttackPower_Coefficient",
+                        "Scale": [
+                            1400,
+                            1470,
+                            1540,
+                            1820,
+                            1890,
+                            1960,
+                            2240,
+                            2310,
+                            2380,
+                            2660
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "ถ้าแบบนั้นก็สีเขียวละกัน+",
+                "Desc": "เพิ่ม<b:EnhanceSonicRate> <?1>\nเพิ่ม<b:ATK>เพิ่มเติม <?2>",
+                "Parameters": [
+                    [
+                        "26%",
+                        "27.3%",
+                        "28.6%",
+                        "33.8%",
+                        "35.1%",
+                        "36.4%",
+                        "41.6%",
+                        "42.9%",
+                        "44.2%",
+                        "49.4%"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "EnhanceSonicRate_Base",
+                        "Scale": [
+                            2600,
+                            2730,
+                            2860,
+                            3380,
+                            3510,
+                            3640,
+                            4160,
+                            4290,
+                            4420,
+                            4940
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "สกอร์ ชาเลนจ์",
+                "Desc": "เมื่อใช้สกิล EX, เพิ่ม<b:CriticalChance>ของตัวเอง <?1> (เป็นเวลา 10 วินาที)",
+                "Parameters": [
+                    [
+                        "30.2%",
+                        "31.7%",
+                        "33.2%",
+                        "39.3%",
+                        "40.8%",
+                        "42.3%",
+                        "48.3%",
+                        "49.9%",
+                        "51.4%",
+                        "57.4%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                3024,
+                                3176,
+                                3327,
+                                3932,
+                                4083,
+                                4234,
+                                4839,
+                                4990,
+                                5141,
+                                5746
+                            ]
+                        ],
+                        "Stat": "CriticalPoint_Coefficient",
+                        "Channel": 9
+                    }
+                ]
+            }
+        ]
+    },
+    "10096": {
+        "Name": "คันนะ (ชุดว่ายน้ำ)",
+        "Skills": [
+            {
+                "SkillType": "autoattack",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "Hits": [
+                            10000
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Frames": {
+                            "AttackEnterDuration": 37,
+                            "AttackStartDuration": 18,
+                            "AttackEndDuration": 21,
+                            "AttackBurstRoundOverDelay": 40,
+                            "AttackIngDuration": 25,
+                            "AttackReloadDuration": 60
+                        },
+                        "CriticalCheck": "Check"
+                    }
+                ]
+            },
+            {
+                "SkillType": "ex",
+                "Name": "รักษาความปลอดภัยทางน้ำ",
+                "Desc": "สร้างความเสียหาย <?1> ของค่าโจมตีให้กับศัตรู 1 เป้าหมาย\nลด<d:DEF>ของเป้าหมาย <?2> (เป็นเวลา 20 วินาที)",
+                "Parameters": [
+                    [
+                        "488%",
+                        "561%",
+                        "707%",
+                        "781%",
+                        "927%"
+                    ],
+                    [
+                        "25.1%",
+                        "28.9%",
+                        "36.4%",
+                        "40.2%",
+                        "47.8%"
+                    ]
+                ],
+                "Cost": [
+                    2,
+                    2,
+                    2,
+                    2,
+                    2
+                ],
+                "Duration": 105,
+                "Range": 750,
+                "Icon": "COMMON_SKILLICON_STATDEBUFF",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            48824,
+                            56141,
+                            70792,
+                            78108,
+                            92759
+                        ]
+                    },
+                    {
+                        "Type": "BuffTarget",
+                        "Value": [
+                            [
+                                -2517,
+                                -2894,
+                                -3649,
+                                -4026,
+                                -4781
+                            ]
+                        ],
+                        "Stat": "DefensePower_Coefficient",
+                        "Channel": 603
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "วอร์มอัปอย่างรอบคอบ",
+                "Desc": "ลด<b:DamagedRatio>ของตัวเอง <?1> ทุก 40 วินาที (เป็นเวลา 30 วินาที)",
+                "Parameters": [
+                    [
+                        "10.3%",
+                        "10.8%",
+                        "11.3%",
+                        "13.4%",
+                        "13.9%",
+                        "14.4%",
+                        "16.5%",
+                        "17%",
+                        "17.5%",
+                        "19.6%"
+                    ]
+                ],
+                "Duration": 120,
+                "Icon": "COMMON_SKILLICON_STATBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                1033,
+                                1085,
+                                1137,
+                                1343,
+                                1395,
+                                1446,
+                                1653,
+                                1705,
+                                1756,
+                                1963
+                            ]
+                        ],
+                        "Stat": "DamagedRatio_Coefficient",
+                        "Channel": 42
+                    }
+                ]
+            },
+            {
+                "SkillType": "passive",
+                "Name": "ทัศนคติของไลฟ์การ์ด",
+                "Desc": "เพิ่ม<b:MAXHP> <?1>",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_STATBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "MaxHP_Coefficient",
+                        "Scale": [
+                            1400,
+                            1470,
+                            1540,
+                            1820,
+                            1890,
+                            1960,
+                            2240,
+                            2310,
+                            2380,
+                            2660
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "ทัศนคติของไลฟ์การ์ด＋",
+                "Desc": "เพิ่ม<b:ExtendDebuffDuration> <?1>\nเพิ่ม<b:MAXHP>เพิ่มเติม <?2>",
+                "Parameters": [
+                    [
+                        "1000",
+                        "1050",
+                        "1100",
+                        "1300",
+                        "1350",
+                        "1400",
+                        "1600",
+                        "1650",
+                        "1700",
+                        "1900"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_STATBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "ExtendDebuffDuration_Base",
+                        "Scale": [
+                            1000,
+                            1050,
+                            1100,
+                            1300,
+                            1350,
+                            1400,
+                            1600,
+                            1650,
+                            1700,
+                            1900
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "รอยยิ้มที่ประหม่า",
+                "Desc": "เพิ่ม<b:ATK>ของตัวเองและนักเรียน Special <?1>",
+                "Parameters": [
+                    [
+                        "16.1%",
+                        "16.9%",
+                        "17.7%",
+                        "20.9%",
+                        "21.7%",
+                        "22.5%",
+                        "25.7%",
+                        "26.5%",
+                        "27.3%",
+                        "30.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffAlly",
+                        "Value": [
+                            [
+                                1611,
+                                1692,
+                                1773,
+                                2095,
+                                2175,
+                                2256,
+                                2578,
+                                2658,
+                                2739,
+                                3061
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2
+                    }
+                ]
+            }
+        ]
+    },
+    "10097": {
+        "Name": "โมเอะ (ชุดว่ายน้ำ)",
+        "Skills": [
+            {
+                "SkillType": "autoattack",
+                "Effects": [
+                    {
+                        "Type": "DMGMulti",
+                        "Hits": [
+                            1250,
+                            1250,
+                            1250,
+                            1250,
+                            1250,
+                            1250,
+                            1250,
+                            1250
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Frames": {
+                            "AttackEnterDuration": 26,
+                            "AttackStartDuration": 16,
+                            "AttackIngDuration": 40,
+                            "AttackEndDuration": 17,
+                            "AttackBurstRoundOverDelay": 5,
+                            "AttackReloadDuration": 45
+                        },
+                        "CriticalCheck": "Check"
+                    }
+                ]
+            },
+            {
+                "SkillType": "ex",
+                "Name": "ยิงถล่มด้วยมิสไซล์",
+                "Desc": "สร้างความเสียหาย <?1> ของค่าโจมตีให้กับศัตรูที่เลือก\nสร้างความเสียหายเพิ่มเติม <?2> ของค่าโจมตีให้กับศัตรูทั้งหมดในรัศมีรอบข้างศัตรูที่เลือกไว้",
+                "Parameters": [
+                    [
+                        "995%",
+                        "1145%",
+                        "1443%",
+                        "1593%",
+                        "1892%"
+                    ],
+                    [
+                        "199%",
+                        "229%",
+                        "288%",
+                        "318%",
+                        "378%"
+                    ]
+                ],
+                "Cost": [
+                    6,
+                    6,
+                    6,
+                    6,
+                    6
+                ],
+                "Duration": 195,
+                "Range": 750,
+                "Radius": [
+                    {
+                        "Type": "Circle",
+                        "Radius": 200
+                    }
+                ],
+                "Icon": "COMMON_SKILLICON_CIRCLE",
+                "Effects": [
+                    {
+                        "Type": "DMGMulti",
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            500,
+                            500,
+                            500,
+                            500,
+                            500,
+                            500,
+                            500,
+                            500,
+                            500,
+                            1000,
+                            1000,
+                            3500
+                        ],
+                        "HitsParameter": 1,
+                        "Scale": [
+                            99584,
+                            114520,
+                            144399,
+                            159334,
+                            189206
+                        ]
+                    },
+                    {
+                        "Type": "DMGMulti",
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            500,
+                            500,
+                            500,
+                            500,
+                            500,
+                            500,
+                            500,
+                            500,
+                            500,
+                            1000,
+                            1000,
+                            3500
+                        ],
+                        "HitsParameter": 2,
+                        "Scale": [
+                            19917,
+                            22910,
+                            28881,
+                            31867,
+                            37846
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "ไฮโดร สไตรค์",
+                "Desc": "สร้างความเสียหาย <?1> ของค่าโจมตีให้กับศัตรู 1 เป้าหมาย ทุก 35 วินาที",
+                "Parameters": [
+                    [
+                        "312%",
+                        "327%",
+                        "343%",
+                        "405%",
+                        "421%",
+                        "437%",
+                        "499%",
+                        "515%",
+                        "530%",
+                        "593%"
+                    ]
+                ],
+                "Duration": 70,
+                "Range": 750,
+                "Radius": [
+                    {
+                        "Type": "Circle",
+                        "Radius": 150
+                    }
+                ],
+                "Icon": "COMMON_SKILLICON_TARGET",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            31222,
+                            32785,
+                            34348,
+                            40592,
+                            42155,
+                            43711,
+                            49955,
+                            51518,
+                            53081,
+                            59325
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "passive",
+                "Name": "สุนทรียศาสตร์แห่งการทำลายล้าง",
+                "Desc": "เพิ่ม<b:ATK> <?1>",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "AttackPower_Coefficient",
+                        "Scale": [
+                            1400,
+                            1470,
+                            1540,
+                            1820,
+                            1890,
+                            1960,
+                            2240,
+                            2310,
+                            2380,
+                            2660
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "สุนทรียศาสตร์แห่งการทำลายล้าง＋",
+                "Desc": "เพิ่ม<b:ATK> <?1>\nเพิ่ม<b:ATK>เพิ่มเติม <?2>",
+                "Parameters": [
+                    [
+                        "281",
+                        "295",
+                        "309",
+                        "366",
+                        "380",
+                        "394",
+                        "450",
+                        "464",
+                        "478",
+                        "534"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "AttackPower_Base",
+                        "Scale": [
+                            281,
+                            295,
+                            309,
+                            366,
+                            380,
+                            394,
+                            450,
+                            464,
+                            478,
+                            534
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "ผู้เชี่ยวชาญด้านการทำลายล้าง",
+                "Desc": "สร้างความเสียหายเพิ่มเติม <?1> ของค่าโจมตี เมื่อโจมตีเป้าหมายขนาด<b>ใหญ่</b>หรือ<b>มหึมา</b>",
+                "Parameters": [
+                    [
+                        "9.3%",
+                        "9.8%",
+                        "10.3%",
+                        "12.1%",
+                        "12.6%",
+                        "13.1%",
+                        "14.9%",
+                        "15.4%",
+                        "15.9%",
+                        "17.7%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_EXTRADAMAGE",
+                "Effects": [
+                    {
+                        "Type": "DMGEcho",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            938,
+                            985,
+                            1031,
+                            1217,
+                            1264,
+                            1311,
+                            1497,
+                            1543,
+                            1590,
+                            1776
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "10098": {
+        "Name": "โฮชิโนะ (พร้อมรบ)",
+        "Skills": [
+            {
+                "SkillType": "autoattack",
+                "Effects": [
+                    {
+                        "Type": "DMGMulti",
+                        "Hits": [
+                            3333,
+                            3333,
+                            3334
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Frames": {
+                            "AttackEnterDuration": 27,
+                            "AttackStartDuration": 8,
+                            "AttackEndDuration": 12,
+                            "AttackBurstRoundOverDelay": 20,
+                            "AttackIngDuration": 18,
+                            "AttackReloadDuration": 55
+                        },
+                        "CriticalCheck": "Check"
+                    }
+                ]
+            },
+            {
+                "SkillType": "ex",
+                "Name": "เสริมการป้องกัน",
+                "Desc": "หลังย้ายไปยังจุดที่กำหนด, โฮชิโนะจะทำการยกโล่ขึ้นมาซึ่งจะทำหน้าที่เป็นกำบังให้กับตัวเองและเพิ่ม<b:ATK>ของตัวเอง <?1> (เป็นเวลา 40 วินาที)\nโล่จะมี HP เท่ากับ <?2> ของ HP สูงสุดของโฮชิโนะ (พร้อมรบ) และจะมีประเภทการป้องกันชนิดเดียวกันกับประเภทการป้องกันของโฮชิโนะ (พร้อมรบ)",
+                "Parameters": [
+                    [
+                        "82.5%",
+                        "94.9%",
+                        "119%",
+                        "132%",
+                        "156%"
+                    ],
+                    [
+                        "39.5%",
+                        "42.4%",
+                        "54.3%",
+                        "57.2%",
+                        "69.1%"
+                    ]
+                ],
+                "Cost": [
+                    4,
+                    4,
+                    4,
+                    4,
+                    4
+                ],
+                "Duration": 78,
+                "Range": 650,
+                "Icon": "COMMON_SKILLICON_BARRIEROBSTACLE",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                8258,
+                                9497,
+                                11974,
+                                13213,
+                                15690
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "สวมเกราะ",
+                "Desc": "ทำการสวมใส่<s:CH0258_Public>ซึ่งจะลด<b:DamagedRatio>ของตัวเอง <?1> ทุก 40 วินาที (มีผลจนกว่าจะได้รับความเสียหายจากการโจมตีครบ 25 ครั้ง)",
+                "Parameters": [
+                    [
+                        "12.7%",
+                        "13.3%",
+                        "13.9%",
+                        "16.5%",
+                        "17.1%",
+                        "17.8%",
+                        "20.3%",
+                        "20.9%",
+                        "21.6%",
+                        "24.1%"
+                    ]
+                ],
+                "Duration": 110,
+                "Icon": "SKILLICON_CH0258_PUBLICSKILL",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                1271,
+                                1335,
+                                1398,
+                                1652,
+                                1716,
+                                1780,
+                                2034,
+                                2097,
+                                2161,
+                                2415
+                            ]
+                        ],
+                        "Stat": "DamagedRatio_Coefficient",
+                        "Channel": 42
+                    }
+                ]
+            },
+            {
+                "SkillType": "passive",
+                "Name": "ระบบต่อสู้ระยะประชิด",
+                "Desc": "เพิ่ม<b:ATK> <?1> และ<b:MAXHP> <?2>",
+                "Parameters": [
+                    [
+                        "11.2%",
+                        "11.4%",
+                        "11.7%",
+                        "12.8%",
+                        "13.1%",
+                        "13.4%",
+                        "14.5%",
+                        "14.8%",
+                        "15.1%",
+                        "16.2%"
+                    ],
+                    [
+                        "11.2%",
+                        "11.4%",
+                        "11.7%",
+                        "12.8%",
+                        "13.1%",
+                        "13.4%",
+                        "14.5%",
+                        "14.8%",
+                        "15.1%",
+                        "16.2%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_DUALBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "AttackPower_Coefficient",
+                        "Scale": [
+                            1120,
+                            1148,
+                            1176,
+                            1288,
+                            1316,
+                            1344,
+                            1456,
+                            1484,
+                            1512,
+                            1624
+                        ]
+                    },
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "MaxHP_Coefficient",
+                        "Scale": [
+                            1120,
+                            1148,
+                            1176,
+                            1288,
+                            1316,
+                            1344,
+                            1456,
+                            1484,
+                            1512,
+                            1624
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "ระบบต่อสู้ระยะประชิด+",
+                "Desc": "เพิ่ม<b:ATK> <?1> และ<b:MAXHP> <?2>\nเพิ่ม<b:ATK>เพิ่มเติม <?3> และ<b:MAXHP>เพิ่มเติม <?4>",
+                "Parameters": [
+                    [
+                        "117",
+                        "120",
+                        "122",
+                        "134",
+                        "137",
+                        "140",
+                        "152",
+                        "154",
+                        "157",
+                        "169"
+                    ],
+                    [
+                        "3830",
+                        "3926",
+                        "4022",
+                        "4405",
+                        "4500",
+                        "4596",
+                        "4979",
+                        "5075",
+                        "5171",
+                        "5554"
+                    ],
+                    [
+                        "11.2%",
+                        "11.4%",
+                        "11.7%",
+                        "12.8%",
+                        "13.1%",
+                        "13.4%",
+                        "14.5%",
+                        "14.8%",
+                        "15.1%",
+                        "16.2%"
+                    ],
+                    [
+                        "11.2%",
+                        "11.4%",
+                        "11.7%",
+                        "12.8%",
+                        "13.1%",
+                        "13.4%",
+                        "14.5%",
+                        "14.8%",
+                        "15.1%",
+                        "16.2%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_DUALBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "AttackPower_Base",
+                        "Scale": [
+                            117,
+                            120,
+                            122,
+                            134,
+                            137,
+                            140,
+                            152,
+                            154,
+                            157,
+                            169
+                        ]
+                    },
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "MaxHP_Base",
+                        "Scale": [
+                            3830,
+                            3926,
+                            4022,
+                            4405,
+                            4500,
+                            4596,
+                            4979,
+                            5075,
+                            5171,
+                            5554
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "กลยุทธ์ที่มีประสิทธิภาพ",
+                "Desc": "การโจมตีทั่วไปของโฮชิโนะจะมีโอกาส 20% ที่จะลด<d:DEF>ของเป้าหมาย <?1> (เป็นเวลา 20 วินาที) (คูลดาวน์ 5 วินาที)",
+                "Parameters": [
+                    [
+                        "10.1%",
+                        "10.6%",
+                        "11.1%",
+                        "13.2%",
+                        "13.7%",
+                        "14.2%",
+                        "16.2%",
+                        "16.7%",
+                        "17.2%",
+                        "19.3%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_STATDEBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffTarget",
+                        "Value": [
+                            [
+                                -1017,
+                                -1068,
+                                -1118,
+                                -1321,
+                                -1372,
+                                -1424,
+                                -1627,
+                                -1678,
+                                -1728,
+                                -1931
+                            ]
+                        ],
+                        "Stat": "DefensePower_Coefficient",
+                        "Channel": 603
+                    }
+                ]
+            }
+        ]
+    },
+    "10099": {
+        "Name": "โฮชิโนะ (พร้อมรบ)",
+        "Skills": [
+            {
+                "SkillType": "autoattack",
+                "Effects": [
+                    {
+                        "Type": "DMGMulti",
+                        "Hits": [
+                            1666,
+                            1666,
+                            1666,
+                            1666,
+                            1666,
+                            1670
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Frames": {
+                            "AttackEnterDuration": 27,
+                            "AttackStartDuration": 8,
+                            "AttackEndDuration": 8,
+                            "AttackBurstRoundOverDelay": 46,
+                            "AttackIngDuration": 40,
+                            "AttackReloadDuration": 46
+                        },
+                        "CriticalCheck": "Check"
+                    }
+                ]
+            },
+            {
+                "SkillType": "ex",
+                "Name": "บุกทะลวงดุเดือด",
+                "Desc": "สร้างความเสียหาย <?1> ของค่าโจมตีให้กับศัตรูที่เลือก 1 เป้าหมาย\nสร้างความเสียหายเพิ่มเติม <?2> ของค่าโจมตีให้กับศัตรูทั้งหมดที่อยู่ในรัศมีรอบข้างเป้าหมายหลัก",
+                "Parameters": [
+                    [
+                        "78.5%",
+                        "90.3%",
+                        "113%",
+                        "125%",
+                        "149%"
+                    ],
+                    [
+                        "264%",
+                        "304%",
+                        "383%",
+                        "423%",
+                        "503%"
+                    ]
+                ],
+                "Cost": [
+                    6,
+                    6,
+                    6,
+                    6,
+                    6
+                ],
+                "Duration": 190,
+                "Range": 850,
+                "Radius": [
+                    {
+                        "Type": "Circle",
+                        "Radius": 300
+                    }
+                ],
+                "Icon": "COMMON_SKILLICON_CIRCLE",
+                "Effects": [
+                    {
+                        "Type": "DMGMulti",
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            3333,
+                            3333,
+                            3334
+                        ],
+                        "HitsParameter": 1,
+                        "Scale": [
+                            7854,
+                            9031,
+                            11392,
+                            12569,
+                            14923
+                        ],
+                        "IgnoreDef": [
+                            4000,
+                            4000,
+                            4000,
+                            4000,
+                            4000
+                        ]
+                    },
+                    {
+                        "Type": "DMGMulti",
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            1500,
+                            1500,
+                            1500,
+                            5500
+                        ],
+                        "HitsParameter": 2,
+                        "Scale": [
+                            26474,
+                            30451,
+                            38391,
+                            42361,
+                            50301
+                        ],
+                        "IgnoreDef": [
+                            4000,
+                            4000,
+                            4000,
+                            4000,
+                            4000
+                        ]
+                    },
+                    {
+                        "Type": "DMGMulti",
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            3333,
+                            3333,
+                            3334
+                        ],
+                        "HitsParameter": -1,
+                        "Scale": [
+                            7854,
+                            9031,
+                            11392,
+                            12569,
+                            14923
+                        ],
+                        "IgnoreDef": [
+                            1500,
+                            1500,
+                            1500,
+                            1500,
+                            1500
+                        ]
+                    },
+                    {
+                        "Type": "DMGMulti",
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            1500,
+                            1500,
+                            1500,
+                            5500
+                        ],
+                        "HitsParameter": -1,
+                        "Scale": [
+                            26474,
+                            30451,
+                            38391,
+                            42361,
+                            50301
+                        ],
+                        "IgnoreDef": [
+                            1500,
+                            1500,
+                            1500,
+                            1500,
+                            1500
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "รัวยิงปืนพก",
+                "Desc": "เมื่อกระสุนในแม็คกาซีนเหลือ 0 นัด, สร้างความเสียหาย <?1> ของค่าโจมตีให้กับศัตรู 1 เป้าหมาย",
+                "Parameters": [
+                    [
+                        "211%",
+                        "221%",
+                        "232%",
+                        "274%",
+                        "284%",
+                        "295%",
+                        "337%",
+                        "348%",
+                        "358%",
+                        "400%"
+                    ]
+                ],
+                "Duration": 100,
+                "Range": 850,
+                "Icon": "COMMON_SKILLICON_TARGET",
+                "Effects": [
+                    {
+                        "Type": "DMGMulti",
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            1250,
+                            1250,
+                            1250,
+                            1250,
+                            1250,
+                            1250,
+                            1250,
+                            1250
+                        ],
+                        "HitsParameter": 1,
+                        "Scale": [
+                            21101,
+                            22158,
+                            23209,
+                            27432,
+                            28482,
+                            29540,
+                            33756,
+                            34813,
+                            35871,
+                            40087
+                        ],
+                        "IgnoreDef": [
+                            4000,
+                            4000,
+                            4000,
+                            4000,
+                            4000,
+                            4000,
+                            4000,
+                            4000,
+                            4000,
+                            4000
+                        ]
+                    },
+                    {
+                        "Type": "DMGMulti",
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            1250,
+                            1250,
+                            1250,
+                            1250,
+                            1250,
+                            1250,
+                            1250,
+                            1250
+                        ],
+                        "HitsParameter": 1,
+                        "Scale": [
+                            21101,
+                            22158,
+                            23209,
+                            27432,
+                            28482,
+                            29540,
+                            33756,
+                            34813,
+                            35871,
+                            40087
+                        ],
+                        "IgnoreDef": [
+                            1500,
+                            1500,
+                            1500,
+                            1500,
+                            1500,
+                            1500,
+                            1500,
+                            1500,
+                            1500,
+                            1500
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "passive",
+                "Name": "ขยายมุมมองเชิงกลยุทธ์",
+                "Desc": "เพิ่ม<b:Range> <b>300</b> และ<b:CriticalDamage> <?1>",
+                "Parameters": [
+                    [
+                        "11.2%",
+                        "11.7%",
+                        "12.3%",
+                        "14.5%",
+                        "15.1%",
+                        "15.6%",
+                        "17.9%",
+                        "18.4%",
+                        "19%",
+                        "21.2%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "Range_Base",
+                        "Scale": [
+                            300,
+                            300,
+                            300,
+                            300,
+                            300,
+                            300,
+                            300,
+                            300,
+                            300,
+                            300
+                        ]
+                    },
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "CriticalDamageRate_Coefficient",
+                        "Scale": [
+                            1120,
+                            1176,
+                            1232,
+                            1456,
+                            1512,
+                            1568,
+                            1792,
+                            1848,
+                            1904,
+                            2128
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "ขยายมุมมองเชิงกลยุทธ์+",
+                "Desc": "เพิ่ม<b:ATK> <?1>, <b:Range> <b>300</b>\nเพิ่ม<b:CriticalDamage>เพิ่มเติม <?2>",
+                "Parameters": [
+                    [
+                        "390",
+                        "410",
+                        "429",
+                        "507",
+                        "527",
+                        "546",
+                        "624",
+                        "644",
+                        "663",
+                        "741"
+                    ],
+                    [
+                        "11.2%",
+                        "11.7%",
+                        "12.3%",
+                        "14.5%",
+                        "15.1%",
+                        "15.6%",
+                        "17.9%",
+                        "18.4%",
+                        "19%",
+                        "21.2%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "AttackPower_Base",
+                        "Scale": [
+                            390,
+                            410,
+                            429,
+                            507,
+                            527,
+                            546,
+                            624,
+                            644,
+                            663,
+                            741
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "โจมตีพิชิต",
+                "Desc": "การโจมตีทั้งหมดของโฮชิโนะ (พร้อมรบ) จะไม่สนค่าป้องกันของศัตรู <?1>\nเพิ่ม<b:ATK>ของตัวเอง <?2>\nหลังการใช้สกิล EX หรือสกิลพื้นฐานของตัวเอง, โฮชิโนะจะทำการรีโหลดทันที\nการโจมตีครั้งแรกหลังการรีโหลดกระสุนด้วยวิธีนี้จะสร้างความเสียหาย <?3> ของค่าโจมตีให้กับศัตรูในพื้นที่รูปทรงกรวย",
+                "Parameters": [
+                    [
+                        "60%",
+                        "60%",
+                        "60%",
+                        "60%",
+                        "60%",
+                        "60%",
+                        "60%",
+                        "60%",
+                        "60%",
+                        "85%"
+                    ],
+                    [
+                        "7.4%",
+                        "7.7%",
+                        "8.1%",
+                        "9.6%",
+                        "9.9%",
+                        "10.3%",
+                        "11.8%",
+                        "12.2%",
+                        "12.5%",
+                        "14%"
+                    ],
+                    [
+                        "79%",
+                        "83%",
+                        "86.9%",
+                        "102%",
+                        "106%",
+                        "110%",
+                        "126%",
+                        "130%",
+                        "134%",
+                        "150%"
+                    ]
+                ],
+                "Radius": [
+                    {
+                        "Type": "Fan",
+                        "Radius": 850,
+                        "Degree": 30
+                    }
+                ],
+                "Icon": "SKILLICON_CH0258_01_EXTRAPASSIVESKILL",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                740,
+                                777,
+                                814,
+                                962,
+                                999,
+                                1036,
+                                1183,
+                                1221,
+                                1258,
+                                1405
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2
+                    },
+                    {
+                        "Type": "DMGMulti",
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            3333,
+                            3333,
+                            3334
+                        ],
+                        "HitsParameter": 3,
+                        "Scale": [
+                            7901,
+                            8300,
+                            8692,
+                            10275,
+                            10667,
+                            11066,
+                            12642,
+                            13041,
+                            13433,
+                            15016
+                        ],
+                        "IgnoreDef": [
+                            4000,
+                            4000,
+                            4000,
+                            4000,
+                            4000,
+                            4000,
+                            4000,
+                            4000,
+                            4000,
+                            1500
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "10100": {
+        "Name": "ชิโรโกะ (เทอเรอร์)",
+        "Skills": [
+            {
+                "SkillType": "autoattack",
+                "Effects": [
+                    {
+                        "Type": "DMGMulti",
+                        "Hits": [
+                            3333,
+                            3333,
+                            3334
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Frames": {
+                            "AttackEnterDuration": 30,
+                            "AttackStartDuration": 30,
+                            "AttackEndDuration": 25,
+                            "AttackBurstRoundOverDelay": 20,
+                            "AttackIngDuration": 30,
+                            "AttackReloadDuration": 60
+                        },
+                        "CriticalCheck": "Check"
+                    }
+                ]
+            },
+            {
+                "SkillType": "ex",
+                "Name": "เสริมการโจมตี",
+                "Desc": "ทำการเรียกโดรนออกมา\nเปลี่ยนการ<s:FormChange>เป็นการโจมตีที่จะสร้างความเสียหาย 120% ของค่าโจมตี\nเพิ่ม<b:CriticalChance> <?1> และ<b:CriticalDamage> <?2> (เป็นเวลา 40 วินาที)\nลด HP ของตัวเอง 20% ของค่า HP สูงสุดของตัวเอง (ความเสียหายนี้จะไม่ทำให้ชิโรโกะล่าถอยจากการต่อสู้)",
+                "Parameters": [
+                    [
+                        "42%",
+                        "48.4%",
+                        "54.7%",
+                        "61%",
+                        "67.3%"
+                    ],
+                    [
+                        "71%",
+                        "81.6%",
+                        "102%",
+                        "113%",
+                        "134%"
+                    ]
+                ],
+                "Cost": [
+                    3,
+                    3,
+                    3,
+                    3,
+                    3
+                ],
+                "Duration": 100,
+                "Icon": "COMMON_SKILLICON_FORMCHANGE",
+                "Effects": [
+                    {
+                        "Type": "FormChange",
+                        "Frames": {
+                            "AttackEnterDuration": 30,
+                            "AttackStartDuration": 23,
+                            "AttackEndDuration": 17,
+                            "AttackBurstRoundOverDelay": 10,
+                            "AttackIngDuration": 35,
+                            "AttackReloadDuration": 60
+                        },
+                        "Hits": [
+                            333,
+                            333,
+                            1000,
+                            333,
+                            333,
+                            1000,
+                            1000,
+                            333,
+                            333,
+                            1000,
+                            333,
+                            333,
+                            333,
+                            1000,
+                            333,
+                            1000,
+                            333,
+                            333,
+                            1002,
+                            333,
+                            339
+                        ],
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            12000,
+                            12000,
+                            12000,
+                            12000,
+                            12000
+                        ]
+                    },
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                4209,
+                                4840,
+                                5471,
+                                6102,
+                                6734
+                            ]
+                        ],
+                        "Stat": "CriticalPoint_Coefficient",
+                        "Channel": 9
+                    },
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                7102,
+                                8167,
+                                10297,
+                                11363,
+                                13493
+                            ]
+                        ],
+                        "Stat": "CriticalDamageRate_Coefficient",
+                        "Channel": 11
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "ขว้างระเบิดฉบับปรับปรุง",
+                "Desc": "สร้างความเสียหาย <?1> ของค่าโจมตีให้กับศัตรู 1 เป้าหมาย ทุก 40 วินาที\nสกิลนี้จะเปลี่ยนเป็นสกิล\"เรียกโดรน : จู่โจมประสาน\"หากมีโดรนจากผลของสกิล EX อยู่",
+                "Parameters": [
+                    [
+                        "370%",
+                        "389%",
+                        "407%",
+                        "481%",
+                        "500%",
+                        "518%",
+                        "593%",
+                        "611%",
+                        "630%",
+                        "704%"
+                    ]
+                ],
+                "Duration": 100,
+                "Range": 850,
+                "Icon": "COMMON_SKILLICON_TARGET",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            37065,
+                            38921,
+                            40778,
+                            48185,
+                            50041,
+                            51898,
+                            59305,
+                            61162,
+                            63009,
+                            70425
+                        ]
+                    }
+                ],
+                "ExtraSkills": [
+                    {
+                        "Id": "CH0263Public02",
+                        "SkillType": "normal",
+                        "Name": "เรียกโดรน : จู่โจมประสาน",
+                        "Desc": "หลังจากใช้งานสกิล EX, สร้างความเสียหาย <?1> ของค่าโจมตีให้กับศัตรู 1 เป้าหมาย\nสกิลนี้จะเปลี่ยนเป็นสกิล\"ขว้างระเบิดฉบับปรับปรุง\" เมื่อเอฟเฟกต์โดรนจากผลของสกิล EX สิ้นสุดลง",
+                        "Parameters": [
+                            [
+                                "474%",
+                                "498%",
+                                "522%",
+                                "617%",
+                                "641%",
+                                "664%",
+                                "759%",
+                                "783%",
+                                "807%",
+                                "902%"
+                            ]
+                        ],
+                        "Duration": 100,
+                        "Range": 850,
+                        "Icon": "COMMON_SKILLICON_TARGET",
+                        "Effects": [
+                            {
+                                "Type": "DMGMulti",
+                                "CriticalCheck": "Check",
+                                "Hits": [
+                                    208,
+                                    208,
+                                    208,
+                                    208,
+                                    5000,
+                                    208,
+                                    208,
+                                    208,
+                                    208,
+                                    208,
+                                    208,
+                                    208,
+                                    208,
+                                    208,
+                                    208,
+                                    208,
+                                    208,
+                                    208,
+                                    208,
+                                    208,
+                                    208,
+                                    208,
+                                    208,
+                                    216,
+                                    208
+                                ],
+                                "HitsParameter": 1,
+                                "Scale": [
+                                    47484,
+                                    49859,
+                                    52234,
+                                    61726,
+                                    64101,
+                                    66476,
+                                    75967,
+                                    78342,
+                                    80717,
+                                    90209
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "passive",
+                "Name": "เล็งยิงอย่างแม่นยำ",
+                "Desc": "เพิ่ม<b:ATK> <?1>",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "AttackPower_Coefficient",
+                        "Scale": [
+                            1400,
+                            1470,
+                            1540,
+                            1820,
+                            1890,
+                            1960,
+                            2240,
+                            2310,
+                            2380,
+                            2660
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "เล็งยิงอย่างแม่นยำ+",
+                "Desc": "เพิ่ม<b:CriticalDamage> <?1>\nเพิ่ม<b:ATK>เพิ่มเติม <?2>",
+                "Parameters": [
+                    [
+                        "2000",
+                        "2100",
+                        "2200",
+                        "2600",
+                        "2700",
+                        "2800",
+                        "3200",
+                        "3300",
+                        "3400",
+                        "3800"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "CriticalDamageRate_Base",
+                        "Scale": [
+                            2000,
+                            2100,
+                            2200,
+                            2600,
+                            2700,
+                            2800,
+                            3200,
+                            3300,
+                            3400,
+                            3800
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "ช่วงเวลาพักหายใจ",
+                "Desc": "เพิ่ม<b:EnhanceMysticRate>ของตัวเอง <?1>\nเมื่อ HP ของชิโรโกะ (เทอเรอร์) ลดลงต่ำกว่า 1%, จะได้รับเอฟเฟกต์<s:CH0263_ExtraPassive_02> (เป็นเวลา 15 วินาที) ซึ่งจะทำให้ชิโรโกะ (เทอเรอร์) ไม่สามารถล่าถอยได้จากการโจมตีส่วนใหญ่ภายในระยะเวลาดังกล่าว\nหาก HP ของชิโรโกะ (เทอเรอร์) ไม่ได้รับการฟื้นฟูจนเต็มภายในระยะเวลาของเอฟเฟกต์ดังกล่าว, ชิโรโกะ (เทอเรอร์) จะทำการล่าถอยทันที\nสกิลนี้มีคูลดาวน์ระหว่างการใช้งานแต่ละครั้ง 90 วินาที",
+                "Parameters": [
+                    [
+                        "25.92%",
+                        "27.22%",
+                        "28.52%",
+                        "33.7%",
+                        "35%",
+                        "36.29%",
+                        "41.48%",
+                        "42.77%",
+                        "44.07%",
+                        "49.25%"
+                    ]
+                ],
+                "Icon": "SKILLICON_CH0263_EXTRAPASSIVESKILL",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                2592,
+                                2722,
+                                2852,
+                                3370,
+                                3500,
+                                3629,
+                                4148,
+                                4277,
+                                4407,
+                                4925
+                            ]
+                        ],
+                        "Stat": "EnhanceMysticRate_Base",
+                        "Channel": 34
+                    }
+                ]
+            }
+        ]
+    },
+    "10101": {
+        "Name": "ซาโอริ (ชุดว่ายน้ำ)",
+        "Skills": [
+            {
+                "SkillType": "autoattack",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "Hits": [
+                            10000
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Frames": {
+                            "AttackEnterDuration": 32,
+                            "AttackStartDuration": 15,
+                            "AttackIngDuration": 30,
+                            "AttackEndDuration": 19,
+                            "AttackBurstRoundOverDelay": 40,
+                            "AttackReloadDuration": 54
+                        },
+                        "CriticalCheck": "Check"
+                    }
+                ]
+            },
+            {
+                "SkillType": "ex",
+                "Name": "มิวสิค สตาร์ท!",
+                "Desc": "สร้างความเสียหาย <?1> ของค่าโจมตีให้กับศัตรู 1 เป้าหมายที่เลือก\nสร้างความเสียหาย<d:Chill>ต่อเนื่อง <?2> ของค่าโจมตีให้กับศัตรูที่เลือกไว้ (เป็นเวลา 40 วินาที)\nสร้างความเสียหาย <?3> ของค่าโจมตีให้กับศัตรูตัวอื่นในพื้นที่รูปทรงกรวยรอบข้างศัตรูที่เลือกไว้",
+                "Parameters": [
+                    [
+                        "833%",
+                        "833%",
+                        "958%",
+                        "958%",
+                        "1083%"
+                    ],
+                    [
+                        "360%",
+                        "414%",
+                        "469%",
+                        "523%",
+                        "577%"
+                    ],
+                    [
+                        "123%",
+                        "123%",
+                        "141%",
+                        "141%",
+                        "159%"
+                    ]
+                ],
+                "Cost": [
+                    7,
+                    7,
+                    7,
+                    7,
+                    7
+                ],
+                "Duration": 170,
+                "Range": 850,
+                "Radius": [
+                    {
+                        "Type": "Fan",
+                        "Radius": 850,
+                        "Degree": 60
+                    }
+                ],
+                "Icon": "COMMON_SKILLICON_CHILL",
+                "Effects": [
+                    {
+                        "Type": "DMGMulti",
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            625,
+                            625,
+                            625,
+                            625,
+                            625,
+                            625,
+                            625,
+                            625,
+                            625,
+                            625,
+                            625,
+                            625,
+                            625,
+                            625,
+                            625,
+                            625
+                        ],
+                        "HitsParameter": 1,
+                        "Scale": [
+                            83334,
+                            83334,
+                            95837,
+                            95837,
+                            108332
+                        ]
+                    },
+                    {
+                        "Type": "DMGMulti",
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            625,
+                            625,
+                            625,
+                            625,
+                            625,
+                            625,
+                            625,
+                            625,
+                            625,
+                            625,
+                            625,
+                            625,
+                            625,
+                            625,
+                            625,
+                            625
+                        ],
+                        "HitsParameter": 3,
+                        "Scale": [
+                            12304,
+                            12304,
+                            14145,
+                            14145,
+                            15986
+                        ]
+                    },
+                    {
+                        "Type": "DMGDot",
+                        "Duration": 40000,
+                        "Period": 4000,
+                        "Icon": "Chill",
+                        "Scale": [
+                            36082,
+                            41494,
+                            46907,
+                            52318,
+                            57731
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "พักผ่อนชั่วครู่",
+                "Desc": "เพิ่ม<b:ATK>ของตัวเอง <?1> ทุก 30 วินาที (เป็นเวลา 20 วินาที)",
+                "Parameters": [
+                    [
+                        "19.7%",
+                        "20.7%",
+                        "21.7%",
+                        "25.6%",
+                        "26.6%",
+                        "27.6%",
+                        "31.5%",
+                        "32.5%",
+                        "33.5%",
+                        "37.5%"
+                    ]
+                ],
+                "Duration": 134,
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                1974,
+                                2072,
+                                2171,
+                                2566,
+                                2665,
+                                2763,
+                                3158,
+                                3257,
+                                3356,
+                                3750
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2
+                    }
+                ]
+            },
+            {
+                "SkillType": "passive",
+                "Name": "สำเร็จอย่างสมบูรณ์แบบ",
+                "Desc": "เพิ่ม<b:ATK> <?1>",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "AttackPower_Coefficient",
+                        "Scale": [
+                            1400,
+                            1470,
+                            1540,
+                            1820,
+                            1890,
+                            1960,
+                            2240,
+                            2310,
+                            2380,
+                            2660
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "สำเร็จอย่างสมบูรณ์แบบ+",
+                "Desc": "เพิ่ม<b:EnhanceMysticRate> <?1>\nเพิ่ม<b:ATK>เพิ่มเติม <?2>",
+                "Parameters": [
+                    [
+                        "26%",
+                        "27.3%",
+                        "28.6%",
+                        "33.8%",
+                        "35.1%",
+                        "36.4%",
+                        "41.6%",
+                        "42.9%",
+                        "44.2%",
+                        "49.4%"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "EnhanceMysticRate_Base",
+                        "Scale": [
+                            2600,
+                            2730,
+                            2860,
+                            3380,
+                            3510,
+                            3640,
+                            4160,
+                            4290,
+                            4420,
+                            4940
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "งานเสริมที่จริงใจของนักเรียน",
+                "Desc": "การโจมตีทั่วไปของซาโอริ (ชุดว่ายน้ำ) มีโอกาส 30% ที่จะเพิ่ม<d:ChillDamagedIncrease>ที่เป้าหมายได้รับ <?1> (เป็นเวลา 20 วินาที) (คูลดาวน์ 5 วินาที)",
+                "Parameters": [
+                    [
+                        "10.08%",
+                        "10.59%",
+                        "11.09%",
+                        "13.11%",
+                        "13.61%",
+                        "14.12%",
+                        "16.13%",
+                        "16.64%",
+                        "17.14%",
+                        "19.16%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_DAMAGEOVERTIMEINCREASEDEBUFF",
+                "Effects": []
+            }
+        ]
+    },
+    "10102": {
+        "Name": "ฮิโยริ (ชุดว่ายน้ำ)",
+        "Skills": [
+            {
+                "SkillType": "autoattack",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "Hits": [
+                            10000
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Frames": {
+                            "AttackEnterDuration": 34,
+                            "AttackStartDuration": 22,
+                            "AttackEndDuration": 27,
+                            "AttackBurstRoundOverDelay": 40,
+                            "AttackIngDuration": 51,
+                            "AttackReloadDuration": 79
+                        },
+                        "CriticalCheck": "Check"
+                    }
+                ]
+            },
+            {
+                "SkillType": "ex",
+                "Name": "มุ่งสู่อันดับที่ 1!",
+                "Desc": "ยิงกระสุน 5 นัดไปสร้างความเสียหาย <?1> ของค่าโจมตีให้กับศัตรูเป้าหมายแรกที่โดนกระสุนในแนวเส้นตรง (ตัวคูณความเสียหายดังกล่าวนับรวมทั้ง 5 นัด)\nหากกระสุนทั้ง 5 นัดโดนใส่เป้าหมายเดียวกันทั้งหมด จะสร้างความเสียหายเพิ่มเติม <?2> ของค่าโจมตีให้กับเป้าหมายดังกล่าว\nหากมีเกจชาร์จ EX อยู่ 1 เกจขึ้นไป, จะทำการใช้เกจดังกล่าว 1 เกจเพื่อนำสกิล EX นี้กลับขึ้นมาอีกครั้ง",
+                "Parameters": [
+                    [
+                        "587%",
+                        "675%",
+                        "851%",
+                        "939%",
+                        "1115%"
+                    ],
+                    [
+                        "176%",
+                        "189%",
+                        "242%",
+                        "255%",
+                        "308%"
+                    ]
+                ],
+                "Cost": [
+                    4,
+                    4,
+                    4,
+                    4,
+                    4
+                ],
+                "Duration": 190,
+                "Range": 950,
+                "Radius": [
+                    {
+                        "Type": "Obb",
+                        "Width": 50,
+                        "Height": 1000
+                    }
+                ],
+                "Icon": "COMMON_SKILLICON_LINE",
+                "Effects": [
+                    {
+                        "Type": "DMGMulti",
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            10000,
+                            10000,
+                            10000,
+                            10000,
+                            10000
+                        ],
+                        "HitsParameter": 1,
+                        "Scale": [
+                            11745,
+                            13503,
+                            17030,
+                            18788,
+                            22310
+                        ]
+                    },
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            17614,
+                            18936,
+                            24221,
+                            25542,
+                            30822
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "พัดพกพาแบบพิเศษ",
+                "Desc": "เมื่อโจมตีทั่วไปครบ 12 ครั้ง, เพิ่ม<b:CriticalDamage>ของตัวเอง <?1> (เป็นเวลา 30 วินาที)",
+                "Parameters": [
+                    [
+                        "29.1%",
+                        "30.6%",
+                        "32%",
+                        "37.9%",
+                        "39.3%",
+                        "40.8%",
+                        "46.6%",
+                        "48%",
+                        "49.5%",
+                        "55.3%"
+                    ]
+                ],
+                "Duration": 155,
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                2915,
+                                3061,
+                                3206,
+                                3790,
+                                3935,
+                                4081,
+                                4664,
+                                4809,
+                                4955,
+                                5538
+                            ]
+                        ],
+                        "Stat": "CriticalDamageRate_Coefficient",
+                        "Channel": 11
+                    }
+                ]
+            },
+            {
+                "SkillType": "passive",
+                "Name": "สนุกกับหน้าร้อนให้เต็มที่!",
+                "Desc": "เพิ่ม<b:CriticalDamage> <?1>",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "CriticalDamageRate_Coefficient",
+                        "Scale": [
+                            1400,
+                            1470,
+                            1540,
+                            1820,
+                            1890,
+                            1960,
+                            2240,
+                            2310,
+                            2380,
+                            2660
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "สนุกกับหน้าร้อนให้เต็มที่!+",
+                "Desc": "เพิ่ม<b:EnhancePierceRate> <?1>\nเพิ่ม<b:CriticalDamage>เพิ่มเติม <?2>",
+                "Parameters": [
+                    [
+                        "26%",
+                        "27.3%",
+                        "28.6%",
+                        "33.8%",
+                        "35.1%",
+                        "36.4%",
+                        "41.6%",
+                        "42.9%",
+                        "44.2%",
+                        "49.4%"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "EnhancePierceRate_Base",
+                        "Scale": [
+                            2600,
+                            2730,
+                            2860,
+                            3380,
+                            3510,
+                            3640,
+                            4160,
+                            4290,
+                            4420,
+                            4940
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "แผนการพักร้อน",
+                "Desc": "ทุก 4.5 วินาที, จะทำการชาร์จเกจ EX 10%\nเมื่อเกจ EX เต็ม 100%, เพิ่ม<b:CriticalChance>ของตัวเอง <?1> (เป็นเวลา 30 วินาที)\n(เกจ EX นี้ชาร์จได้สูงสุด 1 เกจ)",
+                "Parameters": [
+                    [
+                        "7.5%",
+                        "7.9%",
+                        "8.2%",
+                        "9.7%",
+                        "10.1%",
+                        "10.5%",
+                        "12%",
+                        "12.4%",
+                        "12.8%",
+                        "14.3%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_EXSKILLCARDREDRAWGAUGE",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                754,
+                                791,
+                                829,
+                                979,
+                                1017,
+                                1055,
+                                1205,
+                                1243,
+                                1280,
+                                1431
+                            ]
+                        ],
+                        "Stat": "CriticalPoint_Coefficient",
+                        "Channel": 9
                     }
                 ]
             }
@@ -29862,6 +33069,52 @@
                             36170,
                             37265,
                             41655
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "gearnormal",
+                "Name": "จะยิงแล้วนะ~+",
+                "Desc": "สร้างความเสียหาย <?1> ของค่าโจมตีให้กับศัตรูในรัศมีทุก 25 วินาที",
+                "Parameters": [
+                    [
+                        "298%",
+                        "313%",
+                        "328%",
+                        "388%",
+                        "403%",
+                        "418%",
+                        "478%",
+                        "493%",
+                        "508%",
+                        "567%"
+                    ]
+                ],
+                "Duration": 125,
+                "Range": 850,
+                "Radius": [
+                    {
+                        "Type": "Circle",
+                        "Radius": 100
+                    }
+                ],
+                "Icon": "COMMON_SKILLICON_CIRCLE",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            29899,
+                            31391,
+                            32883,
+                            38866,
+                            40358,
+                            41850,
+                            47833,
+                            49324,
+                            50816,
+                            56799
                         ]
                     }
                 ]
@@ -32150,7 +35403,27 @@
                     ]
                 ],
                 "Icon": "COMMON_SKILLICON_STATBUFF",
-                "Effects": []
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Value": [
+                            [
+                                2400,
+                                2520,
+                                2640,
+                                3120,
+                                3240,
+                                3360,
+                                3840,
+                                3960,
+                                4080,
+                                4560
+                            ]
+                        ],
+                        "Stat": "DamagedRatio_Coefficient",
+                        "Channel": 42
+                    }
+                ]
             }
         ]
     },
@@ -32810,7 +36083,7 @@
             {
                 "SkillType": "ex",
                 "Name": "ไม่มีการเจรจาต่อรองค่ะ!",
-                "Desc": "สร้างความเสียหาย <?1> ของค่าโจมตีให้กับศัตรูในรัศมี /\nปล่อยม่านควันที่จะลด<d:HIT> <?2> ของศัตรูที่อยู่ในขอบเขต (เป็นเวลา 20 วินาที)",
+                "Desc": "สร้างความเสียหาย <?1> ของค่าโจมตีให้กับศัตรูในรัศมี /\nปล่อยม่านควันที่จะลด<d:HIT> <?2> ของศัตรูที่อยู่ในขอบเขต (เป็นเวลา 20 วินาที) (เอฟเฟกต์มีผลในขอบเขตเท่านั้น)",
                 "Parameters": [
                     [
                         "337%",
@@ -34794,7 +38067,7 @@
             {
                 "SkillType": "ex",
                 "Name": "กระแสน้ำเชี่ยว",
-                "Desc": "เปลี่ยนการ<s:FormChange>เป็นการโจมตีที่จะสร้าง\nความเสียหายเพิ่มเติม <?1> ของค่าโจมตี (เป็นเวลา <?2>)",
+                "Desc": "เปลี่ยนการ<s:FormChange>เป็นการโจมตีที่จะสร้าง\n ความเสียหายเพิ่มเติม <?1> ของค่าโจมตี (เป็นเวลา <?2>)",
                 "Parameters": [
                     [
                         "67%",
@@ -37315,7 +40588,7 @@
             },
             {
                 "SkillType": "ex",
-                "Name": "เวลาวาดรูปของอิบูกิ！",
+                "Name": "ชั่วโมงศิลปะของอิบูกิ!",
                 "Desc": "เพิ่ม<b:ATK>ของฝ่ายเราทั้งหมดในรัศมีรอบตัว ยกเว้นตัวเอง <?1> (เป็นเวลา 35 วินาที)",
                 "Parameters": [
                     [
@@ -37362,7 +40635,7 @@
                     {
                         "Id": "CH0077RidingEx01",
                         "SkillType": "ex",
-                        "Name": "ออกลาดตระเวนกับรุ่นพี่อิโรฮะ！",
+                        "Name": "ตรวจตราแสนสนุกกับรุ่นพี่อิโรฮะ!",
                         "Desc": "เมื่ออยู่บนโทระมารุของอิโรฮะ, สร้างความเสียหาย <?1> ของค่าโจมตีให้กับศัตรูในพื้นที่รัศมีวงกลม",
                         "Parameters": [
                             [
@@ -37408,7 +40681,7 @@
             },
             {
                 "SkillType": "normal",
-                "Name": "เด็กดื้อจะโดนลงโทษนะ!",
+                "Name": "ห้ามทำเรื่องไม่ดีเด็ดขาด!",
                 "Desc": "สร้างความเสียหาย <?1> ของค่าโจมตีให้กับศัตรู 1 เป้าหมาย ทุก 30 วินาที\nลด<d:ATK>ของเป้าหมาย <?2> (เป็นเวลา 20 วินาที)",
                 "Parameters": [
                     [
@@ -37479,7 +40752,7 @@
             },
             {
                 "SkillType": "passive",
-                "Name": "เด็กว่านอนสอนง่าย",
+                "Name": "เด็กที่เติบโตมาอย่างดี",
                 "Desc": "เพิ่ม<b:MAXHP> <?1>",
                 "Parameters": [
                     [
@@ -37517,7 +40790,7 @@
             },
             {
                 "SkillType": "weaponpassive",
-                "Name": "เด็กว่านอนสอนง่าย+",
+                "Name": "เด็กที่เติบโตมาอย่างดี+",
                 "Desc": "เพิ่ม<b:MAXHP> <?1>\nเพิ่ม<b:MAXHP>เพิ่มเติม <?2>",
                 "Parameters": [
                     [
@@ -37567,7 +40840,7 @@
             },
             {
                 "SkillType": "sub",
-                "Name": "มาสคอทของแพนเดโมเนี่ยมฯ",
+                "Name": "มาสคอตสุดน่ารักของแพนเดโมเนียม โซไซตี้",
                 "Desc": "เมื่อใช้สกิล EX จะฟื้นฟู HP ของตัวเอง <?1> ของค่ารักษา",
                 "Parameters": [
                     [
@@ -37611,20 +40884,22 @@
                 "SkillType": "autoattack",
                 "Effects": [
                     {
-                        "Type": "DMGSingle",
+                        "Type": "DMGMulti",
                         "Hits": [
-                            10000
+                            3333,
+                            3333,
+                            3334
                         ],
                         "Scale": [
                             10000
                         ],
                         "Frames": {
-                            "AttackEnterDuration": 0,
-                            "AttackStartDuration": 0,
-                            "AttackEndDuration": 0,
-                            "AttackBurstRoundOverDelay": 0,
-                            "AttackIngDuration": 0,
-                            "AttackReloadDuration": 0
+                            "AttackEnterDuration": 36,
+                            "AttackStartDuration": 24,
+                            "AttackEndDuration": 26,
+                            "AttackBurstRoundOverDelay": 38,
+                            "AttackIngDuration": 25,
+                            "AttackReloadDuration": 76
                         },
                         "CriticalCheck": "Check"
                     }
@@ -37650,6 +40925,7 @@
                     2,
                     2
                 ],
+                "Duration": 220,
                 "Icon": "SKILLICON_CH0251_EXSKILL",
                 "Effects": [
                     {
@@ -37686,11 +40962,28 @@
                         "1349%"
                     ]
                 ],
+                "Duration": 125,
+                "Range": 750,
                 "Icon": "COMMON_SKILLICON_TARGET",
                 "Effects": [
                     {
-                        "Type": "DMGSingle",
+                        "Type": "DMGMulti",
                         "CriticalCheck": "Check",
+                        "Hits": [
+                            800,
+                            800,
+                            800,
+                            800,
+                            800,
+                            800,
+                            800,
+                            800,
+                            900,
+                            900,
+                            900,
+                            900
+                        ],
+                        "HitsParameter": 1,
                         "Scale": [
                             71012,
                             74566,
@@ -40948,6 +44241,7 @@
                     4
                 ],
                 "Duration": 60,
+                "Range": 400,
                 "Icon": "COMMON_SKILLICON_TRUCK",
                 "Effects": [
                     {
@@ -41759,6 +45053,8 @@
                         "40.9%"
                     ]
                 ],
+                "Duration": 60,
+                "Range": 1000,
                 "Icon": "COMMON_SKILLICON_STATBUFF",
                 "Effects": [
                     {
@@ -45029,7 +48325,7 @@
                     ]
                 ],
                 "Duration": 90,
-                "Range": 1000,
+                "Range": 2000,
                 "Icon": "COMMON_SKILLICON_COSTDECREASE",
                 "Effects": [
                     {
@@ -45469,7 +48765,7 @@
             {
                 "SkillType": "ex",
                 "Name": "ฤดูร้อนเริ่มแล้วค่ะ!",
-                "Desc": "เรียกวัตถุกำบัง\nเพิ่ม<b:AttackSpeed> <?1> ให้กับฝ่ายเราในรัศมี (เป็นเวลา 20 วินาที)\nวัตถุกำบังมี HP เพิ่มเติม <?2> ของ HP สูงสุดของมิโมริ",
+                "Desc": "เรียกวัตถุกำบัง\nเพิ่ม<b:AttackSpeed> <?1> ให้กับฝ่ายเราที่อยู่ในพื้นที่รัศมีรอบกำบัง\nโดยเอฟเฟกต์นี้มีผลตลอดตราบใดฝ่ายเรายังคงอยู่ในพื้นที่ (พื้นที่มีระยะเวลา 20 วินาที)\nวัตถุกำบังมี HP เพิ่มเติม <?2> ของ HP สูงสุดของมิโมริ",
                 "Parameters": [
                     [
                         "16.6%",
@@ -46156,7 +49452,7 @@
         "Skills": [
             {
                 "SkillType": "ex",
-                "Name": "การสนับสนุนที่พึ่งพาได้",
+                "Name": "กำลังเสริมที่พึ่งพาได้",
                 "Desc": "สร้าง<b:Shield> <?1> ของค่ารักษาให้ฝ่ายเรา 6 เป้าหมายในรัศมีหลังย้ายไปยังจุดที่กำหนด (เป็นเวลา 30 วินาที)<?2>",
                 "Parameters": [
                     [
@@ -46219,7 +49515,7 @@
             },
             {
                 "SkillType": "normal",
-                "Name": "ผลงานที่น่าภูมิใจของเอมิ",
+                "Name": "ผลงานที่ภูมิใจของเอมิ",
                 "Desc": "เพิ่ม<b:AttackSpeed> <?1> ให้กับฝ่ายเรา 4 เป้าหมายทุก 45 วินาที (เป็นเวลา 25 วินาที)",
                 "Parameters": [
                     [
@@ -46262,7 +49558,7 @@
             },
             {
                 "SkillType": "passive",
-                "Name": "ผิดที่ผิดทาง",
+                "Name": "ถูกที่ถูกทาง",
                 "Desc": "เพิ่ม<b:HealPower> <?1>",
                 "Parameters": [
                     [
@@ -46300,7 +49596,7 @@
             },
             {
                 "SkillType": "weaponpassive",
-                "Name": "ผิดที่ผิดทาง+",
+                "Name": "ถูกที่ถูกทาง+",
                 "Desc": "เพิ่ม<b:ExtendBuffDuration> <?1>\nเพิ่ม<b:HealPower>เพิ่มเติม <?2>",
                 "Parameters": [
                     [
@@ -46350,7 +49646,7 @@
             },
             {
                 "SkillType": "sub",
-                "Name": "ความรู้สึกลื่นไหล",
+                "Name": "เคลื่อนตัวลื่นไหล",
                 "Desc": "เพิ่ม<b:AttackSpeed>ของฝ่ายเรา <?1>",
                 "Parameters": [
                     [
@@ -46396,7 +49692,7 @@
         "Skills": [
             {
                 "SkillType": "ex",
-                "Name": "พ... พลาดแล้วสิ!",
+                "Name": "พะ... พลาดซะได้!",
                 "Desc": "สร้างความเสียหายให้กับศัตรูในพื้นที่รัศมีวงกลม โดยความเสียหายที่ทำได้จะขึ้นอยู่กับจำนวนของเป้าหมายที่อยู่ในรัศมี:\n<b>4 เป้าหมายหรือน้อยกว่า</b>: <?1> ของค่าโจมตี\n<b>5 ~ 9 เป้าหมาย</b>: <?2> ของค่าโจมตี\n<b>10 เป้าหมายหรือมากกว่า</b>: <?3> ของค่าโจมตี",
                 "Parameters": [
                     [
@@ -46557,7 +49853,7 @@
             },
             {
                 "SkillType": "normal",
-                "Name": "จงฟังให้ดี!",
+                "Name": "ตั้งใจฟังที่เราพูดทุกคำด้วย!",
                 "Desc": "ลด<d:DEF> <?1> ให้กับศัตรูทั้งหมดในพื้นที่รัศมีวงกลม ทุก 55 วินาที (เป็นเวลา 35 วินาที)",
                 "Parameters": [
                     [
@@ -46606,7 +49902,7 @@
             },
             {
                 "SkillType": "passive",
-                "Name": "ผู้นำสูงสุดของแพนเดโมเนี่ยมฯ",
+                "Name": "ท่านประธานผู้ยิ่งใหญ่แห่งแพนเดโมเนียม โซไซตี้",
                 "Desc": "เพิ่ม<b:ATK> <?1>",
                 "Parameters": [
                     [
@@ -46644,7 +49940,7 @@
             },
             {
                 "SkillType": "weaponpassive",
-                "Name": "ผู้นำสูงสุดของแพนเดโมเนี่ยมฯ+",
+                "Name": "ท่านประธานผู้ยิ่งใหญ่แห่งแพนเดโมเนียม โซไซตี้+",
                 "Desc": "เพิ่ม<b:ATK> <?1>\nเพิ่ม<b:ATK>เพิ่มเติม <?2>",
                 "Parameters": [
                     [
@@ -46694,7 +49990,7 @@
             },
             {
                 "SkillType": "sub",
-                "Name": "ใต้ฟ้าไร้เทียมทาน! ผู้นำที่แท้จริงของเกเฮนน่า!",
+                "Name": "ผู้นำที่แท้จริงของเกเฮนน่า! ผู้ไร้เทียมทาน!",
                 "Desc": "เพิ่ม<b:EnhancePierceRate>ของฝ่ายเรา <?1>",
                 "Parameters": [
                     [
@@ -46758,6 +50054,8 @@
                     5,
                     5
                 ],
+                "Duration": 60,
+                "Range": 400,
                 "Icon": "COMMON_SKILLICON_TRUCK",
                 "Effects": [
                     {
@@ -46809,6 +50107,14 @@
                         "21.8%",
                         "24.4%"
                     ]
+                ],
+                "Duration": 90,
+                "Range": 1000,
+                "Radius": [
+                    {
+                        "Type": "Circle",
+                        "Radius": 200
+                    }
                 ],
                 "Icon": "COMMON_SKILLICON_STATBUFF",
                 "Effects": [
@@ -46965,7 +50271,7 @@
         ]
     },
     "20035": {
-        "Name": "สึบากิ (ชุดไกด์)",
+        "Name": "สึบากิ (ไกด์)",
         "Skills": [
             {
                 "SkillType": "ex",
@@ -46986,6 +50292,14 @@
                     6,
                     6,
                     6
+                ],
+                "Duration": 60,
+                "Range": 1000,
+                "Radius": [
+                    {
+                        "Type": "Circle",
+                        "Radius": 300
+                    }
                 ],
                 "Icon": "COMMON_SKILLICON_WEAPONBUFF",
                 "Effects": [
@@ -47035,6 +50349,8 @@
                         "56.1%"
                     ]
                 ],
+                "Duration": 60,
+                "Range": 1000,
                 "Icon": "COMMON_SKILLICON_HEAL",
                 "Effects": [
                     {
@@ -47199,6 +50515,530 @@
                         ],
                         "Stat": "AttackPower_Coefficient",
                         "Channel": 302
+                    }
+                ]
+            }
+        ]
+    },
+    "20036": {
+        "Name": "เซริกะ (ชุดว่ายน้ำ)",
+        "Skills": [
+            {
+                "SkillType": "ex",
+                "Name": "คลื่นแห่งความเดือดดาล",
+                "Desc": "สร้างความเสียหาย <?1> ของค่าโจมตีให้กับศัตรูทั้งหมดในพื้นที่วงกลม",
+                "Parameters": [
+                    [
+                        "636%",
+                        "732%",
+                        "923%",
+                        "1018%",
+                        "1210%"
+                    ]
+                ],
+                "Cost": [
+                    6,
+                    6,
+                    6,
+                    6,
+                    6
+                ],
+                "Duration": 181,
+                "Range": 1000,
+                "Radius": [
+                    {
+                        "Type": "Circle",
+                        "Radius": 300
+                    }
+                ],
+                "Icon": "COMMON_SKILLICON_CIRCLE",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            63686,
+                            73241,
+                            92344,
+                            101899,
+                            121002
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "จ๋อมจ๋อม!",
+                "Desc": "สร้างความเสียหาย <?1> ของค่าโจมตีให้กับศัตรูทั้งหมดในพื้นที่วงกลม ทุก 35 วินาที",
+                "Parameters": [
+                    [
+                        "101%",
+                        "106%",
+                        "109%",
+                        "129%",
+                        "131%",
+                        "136%",
+                        "157%",
+                        "162%",
+                        "167%",
+                        "187%"
+                    ]
+                ],
+                "Duration": 60,
+                "Range": 1000,
+                "Radius": [
+                    {
+                        "Type": "Circle",
+                        "Radius": 300
+                    }
+                ],
+                "Icon": "COMMON_SKILLICON_CIRCLE",
+                "Effects": [
+                    {
+                        "Type": "DMGMulti",
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            3000,
+                            3000,
+                            4000
+                        ],
+                        "HitsParameter": 1,
+                        "Scale": [
+                            10143,
+                            10654,
+                            10906,
+                            12936,
+                            13188,
+                            13692,
+                            15722,
+                            16226,
+                            16737,
+                            18767
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "passive",
+                "Name": "ฮึกเหิมเต็มกำลัง",
+                "Desc": "เพิ่ม<b:ATK> <?1>",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "AttackPower_Coefficient",
+                        "Scale": [
+                            1400,
+                            1470,
+                            1540,
+                            1820,
+                            1890,
+                            1960,
+                            2240,
+                            2310,
+                            2380,
+                            2660
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "ฮึกเหิมเต็มกำลัง+",
+                "Desc": "เพิ่ม<b:ATK> <?1>\nเพิ่ม<b:ATK>เพิ่มเติม <?2>",
+                "Parameters": [
+                    [
+                        "380",
+                        "399",
+                        "418",
+                        "493",
+                        "512",
+                        "531",
+                        "607",
+                        "626",
+                        "645",
+                        "721"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "AttackPower_Base",
+                        "Scale": [
+                            380,
+                            399,
+                            418,
+                            493,
+                            512,
+                            531,
+                            607,
+                            626,
+                            645,
+                            721
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "อ๊ะ เย็นจัง!",
+                "Desc": "เพิ่ม<b:CriticalDamage>ของฝ่ายเรา <?1>",
+                "Parameters": [
+                    [
+                        "9.1%",
+                        "9.5%",
+                        "10%",
+                        "11.8%",
+                        "12.3%",
+                        "12.7%",
+                        "14.5%",
+                        "15%",
+                        "15.5%",
+                        "17.3%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffAlly",
+                        "Value": [
+                            [
+                                912,
+                                957,
+                                1003,
+                                1186,
+                                1231,
+                                1277,
+                                1459,
+                                1504,
+                                1550,
+                                1732
+                            ]
+                        ],
+                        "Stat": "CriticalDamageRate_Coefficient",
+                        "Channel": 311
+                    }
+                ]
+            }
+        ]
+    },
+    "20037": {
+        "Name": "ฟุบุกิ (ชุดว่ายน้ำ)",
+        "Skills": [
+            {
+                "SkillType": "ex",
+                "Name": "ทำหัวให้เย็นลงหน่อยนะ",
+                "Desc": "สร้างความเสียหายให้แก่ศัตรูในพื้นที่รัศมีวงกลม 3 วง โดยที่ความเสียหายจะขึ้นอยู่ขนาดของพื้นที่:\n<b>วงเล็ก:</b> <?1> ของค่าโจมตี\n<b>วงกลาง:</b> <?2> ของค่าโจมตี\n<b>วงใหญ่:</b> <?3> ของค่าโจมตี\nการโจมตีนี้จะไม่สนใจผลของ<b:Shield>",
+                "Parameters": [
+                    [
+                        "580%",
+                        "667%",
+                        "841%",
+                        "928%",
+                        "1102%"
+                    ],
+                    [
+                        "122%",
+                        "140%",
+                        "176%",
+                        "195%",
+                        "231%"
+                    ],
+                    [
+                        "99.7%",
+                        "114%",
+                        "144%",
+                        "159%",
+                        "189%"
+                    ]
+                ],
+                "Cost": [
+                    4,
+                    4,
+                    4,
+                    4,
+                    4
+                ],
+                "Duration": 163,
+                "Range": 1000,
+                "Radius": [
+                    {
+                        "Type": "Circle",
+                        "Radius": 84
+                    },
+                    {
+                        "Type": "Circle",
+                        "Radius": 167
+                    },
+                    {
+                        "Type": "Circle",
+                        "Radius": 250
+                    }
+                ],
+                "Icon": "COMMON_SKILLICON_CIRCLE",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            58009,
+                            66710,
+                            84112,
+                            92813,
+                            110215
+                        ]
+                    },
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            12208,
+                            14035,
+                            17696,
+                            19523,
+                            23184
+                        ]
+                    },
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            9975,
+                            11473,
+                            14462,
+                            15960,
+                            18956
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "ไม่ทำไม่ได้เหรอ?",
+                "Desc": "สร้างความเสียหาย <?1> ของค่าโจมตีให้กับศัตรู 1 เป้าหมายทุก 45 วินาที\nสร้างความเสียหาย <?2> ให้กับศัตรูในพื้นทีรัศมีรอบข้างเป้าหมายหลัก",
+                "Parameters": [
+                    [
+                        "476%",
+                        "500%",
+                        "524%",
+                        "619%",
+                        "643%",
+                        "667%",
+                        "763%",
+                        "786%",
+                        "810%",
+                        "906%"
+                    ],
+                    [
+                        "48.6%",
+                        "51.1%",
+                        "53.4%",
+                        "63.2%",
+                        "65.6%",
+                        "68.1%",
+                        "77.8%",
+                        "80.2%",
+                        "82.6%",
+                        "92.4%"
+                    ]
+                ],
+                "Duration": 90,
+                "Range": 1000,
+                "Radius": [
+                    {
+                        "Type": "Circle",
+                        "Radius": 250
+                    }
+                ],
+                "Icon": "COMMON_SKILLICON_CIRCLE",
+                "Effects": [
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            47691,
+                            50078,
+                            52458,
+                            61999,
+                            64379,
+                            66766,
+                            76300,
+                            78687,
+                            81074,
+                            90608
+                        ]
+                    },
+                    {
+                        "Type": "DMGSingle",
+                        "CriticalCheck": "Check",
+                        "Scale": [
+                            4865,
+                            5110,
+                            5348,
+                            6321,
+                            6566,
+                            6811,
+                            7784,
+                            8022,
+                            8267,
+                            9240
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "passive",
+                "Name": "กฏของการอู้งาน",
+                "Desc": "เพิ่ม<b:ATK> <?1>",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "AttackPower_Coefficient",
+                        "Scale": [
+                            1400,
+                            1470,
+                            1540,
+                            1820,
+                            1890,
+                            1960,
+                            2240,
+                            2310,
+                            2380,
+                            2660
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "กฏของการอู้งาน＋",
+                "Desc": "เพิ่ม<b:ATK> <?1>\nเพิ่ม<b:ATK>เพิ่มเติม <?2>",
+                "Parameters": [
+                    [
+                        "364",
+                        "382",
+                        "400",
+                        "473",
+                        "491",
+                        "510",
+                        "582",
+                        "600",
+                        "619",
+                        "691"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "AttackPower_Base",
+                        "Scale": [
+                            364,
+                            382,
+                            400,
+                            473,
+                            491,
+                            510,
+                            582,
+                            600,
+                            619,
+                            691
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "งั้นฝากด้วยละกันน้า~",
+                "Desc": "เพิ่ม<b:EnhanceExplosionRate>ของฝ่ายเรา <?1>",
+                "Parameters": [
+                    [
+                        "15.9%",
+                        "16.7%",
+                        "17.5%",
+                        "20.7%",
+                        "21.5%",
+                        "22.3%",
+                        "25.5%",
+                        "26.3%",
+                        "27%",
+                        "30.2%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_BULLETTYPEBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffAlly",
+                        "Value": [
+                            [
+                                1594,
+                                1674,
+                                1753,
+                                2073,
+                                2152,
+                                2232,
+                                2550,
+                                2630,
+                                2709,
+                                3029
+                            ]
+                        ],
+                        "Stat": "EnhanceExplosionRate_Base",
+                        "Channel": 332
                     }
                 ]
             }
@@ -50646,6 +54486,14 @@
                         "19.5%"
                     ]
                 ],
+                "Duration": 90,
+                "Range": 1000,
+                "Radius": [
+                    {
+                        "Type": "Circle",
+                        "Radius": 100
+                    }
+                ],
                 "Icon": "COMMON_SKILLICON_CIRCLE",
                 "Effects": [
                     {
@@ -52213,6 +56061,449 @@
                         ],
                         "Stat": "AttackPower_Coefficient",
                         "Channel": 302
+                    }
+                ]
+            }
+        ]
+    },
+    "26012": {
+        "Name": "คิริโนะ (ชุดว่ายน้ำ)",
+        "Skills": [
+            {
+                "SkillType": "ex",
+                "Name": "เจ้าหน้าที่กำลังมองดูอยู่นะ!",
+                "Desc": "เรียกวัตถุกำบัง\nเพิ่ม<b:ATK> <?1> ให้กับฝ่ายเราที่อยู่ในพื้นที่รัศมีรอบกำบัง\nโดยเอฟเฟกต์นี้มีผลตลอดตราบใดฝ่ายเรายังคงอยู่ในพื้นที่ (พื้นที่มีระยะเวลา 45 วินาที)\nวัตถุกำบังมี HP เพิ่มเติม <?2> ของ HP สูงสุดของคิริโนะ",
+                "Parameters": [
+                    [
+                        "14%",
+                        "16.2%",
+                        "20.4%",
+                        "22.5%",
+                        "26.7%"
+                    ],
+                    [
+                        "29.6%",
+                        "34.1%",
+                        "43%",
+                        "47.4%",
+                        "56.4%"
+                    ]
+                ],
+                "Cost": [
+                    5,
+                    5,
+                    5,
+                    5,
+                    5
+                ],
+                "Duration": 90,
+                "Range": 1000,
+                "Radius": [
+                    {
+                        "Type": "Circle",
+                        "Radius": 300
+                    }
+                ],
+                "Icon": "COMMON_SKILLICON_OBSTACLE",
+                "Effects": [
+                    {
+                        "Type": "BuffAlly",
+                        "Value": [
+                            [
+                                1409,
+                                1620,
+                                2043,
+                                2254,
+                                2677
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 11002
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "สถานการณ์ฉุกเฉินค่ะ!",
+                "Desc": "เพิ่ม<b:ATK> <?1> ให้กับฝ่ายเรา 6 เป้าหมาย (ไม่นับนักเรียน Special) ทุก 50 วินาที (เป็นเวลา 40 วินาที)",
+                "Parameters": [
+                    [
+                        "6.5%",
+                        "6.8%",
+                        "7.1%",
+                        "8.4%",
+                        "8.7%",
+                        "9.1%",
+                        "10.4%",
+                        "10.7%",
+                        "11%",
+                        "12.3%"
+                    ]
+                ],
+                "Duration": 31,
+                "Range": 1000,
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffAlly",
+                        "Value": [
+                            [
+                                650,
+                                683,
+                                715,
+                                845,
+                                878,
+                                910,
+                                1040,
+                                1072,
+                                1105,
+                                1235
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 102
+                    }
+                ]
+            },
+            {
+                "SkillType": "passive",
+                "Name": "ฝึกซ้อมเสมือนจริง",
+                "Desc": "เพิ่ม<b:MAXHP> <?1>",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_STATBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "MaxHP_Coefficient",
+                        "Scale": [
+                            1400,
+                            1470,
+                            1540,
+                            1820,
+                            1890,
+                            1960,
+                            2240,
+                            2310,
+                            2380,
+                            2660
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "ฝึกซ้อมเสมือนจริง＋",
+                "Desc": "เพิ่ม<b:MAXHP> <?1>\nเพิ่ม<b:MAXHP>เพิ่มเติม <?2>",
+                "Parameters": [
+                    [
+                        "4594",
+                        "4824",
+                        "5053",
+                        "5972",
+                        "6202",
+                        "6432",
+                        "7350",
+                        "7580",
+                        "7810",
+                        "8728"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_STATBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "MaxHP_Base",
+                        "Scale": [
+                            4594,
+                            4824,
+                            5053,
+                            5972,
+                            6202,
+                            6432,
+                            7350,
+                            7580,
+                            7810,
+                            8728
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "เจ้าหน้าที่จะส่งแรงใจให้นะคะ!",
+                "Desc": "เพิ่ม<b:ATK>ของฝ่ายเรา <?1>",
+                "Parameters": [
+                    [
+                        "9.1%",
+                        "9.5%",
+                        "10%",
+                        "11.8%",
+                        "12.3%",
+                        "12.7%",
+                        "14.5%",
+                        "15%",
+                        "15.5%",
+                        "17.3%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffAlly",
+                        "Value": [
+                            [
+                                912,
+                                957,
+                                1003,
+                                1186,
+                                1231,
+                                1277,
+                                1459,
+                                1504,
+                                1550,
+                                1732
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 302
+                    }
+                ]
+            }
+        ]
+    },
+    "26013": {
+        "Name": "อาสึโกะ (ชุดว่ายน้ำ)",
+        "Skills": [
+            {
+                "SkillType": "ex",
+                "Name": "ความทรงจำของฤดูร้อน",
+                "Desc": "ฟื้นฟู HP <?1> ของค่ารักษาให้กับฝ่ายเรา 1 เป้าหมาย",
+                "Parameters": [
+                    [
+                        "153%",
+                        "175%",
+                        "221%",
+                        "244%",
+                        "290%"
+                    ]
+                ],
+                "Cost": [
+                    2,
+                    2,
+                    2,
+                    2,
+                    2
+                ],
+                "Duration": 140,
+                "Range": 1000,
+                "Icon": "COMMON_SKILLICON_HEAL",
+                "Effects": [
+                    {
+                        "Type": "Heal",
+                        "Scale": [
+                            15300,
+                            17595,
+                            22185,
+                            24480,
+                            29070
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "normal",
+                "Name": "ดอกไม้นี้เพื่อคุณ",
+                "Desc": "เพิ่ม<b:HealEffectiveness> <?1> ให้กับฝ่ายเราที่มี HP ต่ำสุด 1 เป้าหมาย ทุก 30 วินาที (เป็นเวลา 20 วินาที)",
+                "Parameters": [
+                    [
+                        "18.9%",
+                        "19.9%",
+                        "20.8%",
+                        "24.6%",
+                        "25.6%",
+                        "26.5%",
+                        "30.3%",
+                        "31.3%",
+                        "32.2%",
+                        "36%"
+                    ]
+                ],
+                "Duration": 60,
+                "Range": 1000,
+                "Icon": "COMMON_SKILLICON_STATBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffAlly",
+                        "Value": [
+                            [
+                                1899,
+                                1994,
+                                2089,
+                                2469,
+                                2563,
+                                2658,
+                                3038,
+                                3133,
+                                3228,
+                                3608
+                            ]
+                        ],
+                        "Stat": "HealEffectivenessRate_Coefficient",
+                        "Channel": 121
+                    }
+                ]
+            },
+            {
+                "SkillType": "passive",
+                "Name": "ลมเย็นๆ ริมทะเล",
+                "Desc": "เพิ่ม<b:HealPower> <?1>",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_STATBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "HealPower_Coefficient",
+                        "Scale": [
+                            1400,
+                            1470,
+                            1540,
+                            1820,
+                            1890,
+                            1960,
+                            2240,
+                            2310,
+                            2380,
+                            2660
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "weaponpassive",
+                "Name": "ลมเย็นๆ ริมทะเล+",
+                "Desc": "เพิ่ม<b:HealPower><?1>\nเพิ่ม<b:HealPower>เพิ่มเติม <?2>",
+                "Parameters": [
+                    [
+                        "1044",
+                        "1096",
+                        "1148",
+                        "1357",
+                        "1409",
+                        "1462",
+                        "1670",
+                        "1722",
+                        "1775",
+                        "1983"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_STATBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffSelf",
+                        "Stat": "HealPower_Base",
+                        "Scale": [
+                            1044,
+                            1096,
+                            1148,
+                            1357,
+                            1409,
+                            1462,
+                            1670,
+                            1722,
+                            1775,
+                            1983
+                        ]
+                    }
+                ]
+            },
+            {
+                "SkillType": "sub",
+                "Name": "เจ้าหญิงริมทะเล",
+                "Desc": "เพิ่ม<b:AttackSpeed>ของฝ่ายเรา <?1>",
+                "Parameters": [
+                    [
+                        "9.1%",
+                        "9.5%",
+                        "10%",
+                        "11.8%",
+                        "12.3%",
+                        "12.7%",
+                        "14.5%",
+                        "15%",
+                        "15.5%",
+                        "17.3%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "BuffAlly",
+                        "Value": [
+                            [
+                                912,
+                                957,
+                                1003,
+                                1186,
+                                1231,
+                                1277,
+                                1459,
+                                1504,
+                                1550,
+                                1732
+                            ]
+                        ],
+                        "Stat": "AttackSpeed_Coefficient",
+                        "Channel": 324
                     }
                 ]
             }
