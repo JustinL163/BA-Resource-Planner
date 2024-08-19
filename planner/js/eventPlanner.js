@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?52').done(function (json) {
+    $.getJSON('json/events.json?53').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -86,7 +86,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?27').done(function (json) {
+    $.getJSON('json/strings.json?35').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -164,6 +164,9 @@ function init() {
                 }
                 data.events_data = events_data;
                 saveToLocalStorage(true);
+                if (current_event == "0068-opera-with-love") {
+                    GenerateShopContent(current_currency);
+                }
             }
         }
     }, 300);
@@ -2673,7 +2676,7 @@ function CalculateStageDrops(result, ignoreRequirement) {
                         event_data.shop_purchases[currencyNames[i]] = {};
                     }
                     event_data.shop_purchases[currencyNames[i]][shop[ii].id] = 0;
-                    
+
                     totalCurrencies[shop[ii].id] = overflowAmount;
                 }
             }
@@ -2695,7 +2698,7 @@ function CalculateStageDrops(result, ignoreRequirement) {
             }
 
             for (let ii = 0; ii < shop.length; ii++) {
-                if (shop[ii].overflow && shop[ii].type == "EventCurrency") {                    
+                if (shop[ii].overflow && shop[ii].type == "EventCurrency") {
                     totalCurrencies[shop[ii].id] = event_data.shop_purchases[currencyNames[i]][shop[ii].id];
                 }
             }
@@ -3301,12 +3304,12 @@ function GetBoxPullCurrencyForOmikuji(totalCurrencies) {
 function AddShopPurchases(totalArtifacts, totalSchoolMats, totalEleph, totalXps, totalCredit, totalEligma, totalSecretTech) {
 
     let shops = Object.keys(event_data.shop_purchases);
-    
+
     let shopPurchaseables = {};
 
     let configShops = Object.keys(event_config.events[current_event].shops);
     for (let i = 0; i < configShops.length; i++) {
-        
+
         let configShop = event_config.events[current_event].shops[configShops[i]];
 
         for (let ii = 0; ii < configShop.length; ii++) {
