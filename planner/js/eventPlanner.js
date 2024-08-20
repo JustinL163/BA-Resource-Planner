@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?53').done(function (json) {
+    $.getJSON('json/events.json?54').done(function (json) {
         event_config = json;
         checkResources();
     });
