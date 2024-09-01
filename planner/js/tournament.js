@@ -16,6 +16,8 @@ let selectedContainer = "";
 let localData = [];
 let lastLoadDisplay;
 
+let maxBans = 5;
+
 let dTournaments = { "tournament-1": "S2 ShiroKuro", "tournament-2": "S3 Kaiten", "tournament-3": "S4 Hod", "tournament-4": "S5 Goz" };
 let dStages = { "qualifiers": "Qualifiers", "groups": "Groups", "elimination": "Elimination" };
 let dGames = { "game-1": "1", "game-2": "2", "game-3": "3", "game-4": "4" };
@@ -433,14 +435,15 @@ function SearchSelection(id) {
         }
     }
     else if (charSearchMode == "filter-slot") {
+        
+        UpdateSlot(studentId, selectedFilterSlot);
 
         let nextSlotId = GetNextBlankFilterSlot();
-
-        UpdateSlot(studentId, selectedFilterSlot);
 
         UpdateUsedFilterStudents();
 
         if (nextSlotId) {
+            selectedFilterSlot = nextSlotId;
             LoadStudentSearch(nextSlotId, "filter-slot");
         }
         else {
@@ -1061,11 +1064,11 @@ function FillData(gameData) {
         UpdateSlot(gameData.ForcePick, "student-force-pick");
     }
 
-    for (let i = 0; i < gameData.Player1Bans.length; i++) {
+    for (let i = 0; i < Math.min(gameData.Player1Bans.length, maxBans); i++) {
         UpdateSlot(gameData.Player1Bans[i], "student-ban-1-slot-" + (i + 1));
     }
 
-    for (let i = 0; i < gameData.Player2Bans.length; i++) {
+    for (let i = 0; i < Math.min(gameData.Player2Bans.length, maxBans); i++) {
         UpdateSlot(gameData.Player2Bans[i], "student-ban-2-slot-" + (i + 1));
     }
 }
