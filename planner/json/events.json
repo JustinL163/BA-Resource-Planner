@@ -1,6 +1,6 @@
 {
     "event_order": [
-        "0068-opera-with-love"
+        "game-before-the-new-year-rerun"
     ],
     "events": {
         "new-year-march": {
@@ -4888,6 +4888,246 @@
                     ]
                 }
             ]
+        },
+        "game-before-the-new-year-rerun": {
+            "active": true,
+            "icon": "Event_820_Jp.png",
+            "display_name": "A Game Before the New Year's Feast",
+            "reset_time": 1725303600,
+            "start_time": 1725328800,
+            "end_time": 1726538400,
+            "maint_hours": 7,
+            "available_targets": ["Shop", "Materials", "Currency", "Manual"],
+            "currency_targets": ["Event_Point"],
+            "event_point_target": 15000,
+            "reward_preview": [
+                {"type": "Eleph", "id": "16012", "preview": 1},
+                {"type": "Credit", "preview": 2},
+                {"type": "Material", "id": "213", "preview": 3},
+                {"type": "Material", "id": "3033", "preview": 5},
+                {"type": "Material", "id": "103", "preview": 6}, 
+                {"type": "Material", "id": "133", "preview": 7}
+            ],
+            "currencies": {
+                "Kamaboko": {
+                    "icon": "Kamaboko.png",
+                    "shortname": "Kamaboko",
+                    "source": "StageDrop",
+                    "clear": 9430,
+                    "bonus_units": [
+                        {"id": "10057", "bonus": 0.25},
+                        {"id": "13007", "bonus": 0.25},
+                        {"id": "23001", "bonus": 0.25},
+                        {"id": "20034", "bonus": 0.25},
+
+                        {"id": "10032", "bonus": 0.1},
+                        {"id": "13008", "bonus": 0.1},
+                        {"id": "13002", "bonus": 0.1},
+                        {"id": "10009", "bonus": 0.1},
+                        {"id": "10000", "bonus": 0.1},
+                        {"id": "20011", "bonus": 0.1}
+                    ]
+                },
+                "Sea_Bream": {
+                    "icon": "Sea_Bream.png",
+                    "shortname": "Sea Bream",
+                    "source": "StageDrop",
+                    "clear": 10975,
+                    "bonus_units": [
+                        {"id": "10002", "bonus": 0.25},
+                        {"id": "16012", "bonus": 0.25},
+                        {"id": "20022", "bonus": 0.25},
+
+                        {"id": "10031", "bonus": 0.1},
+                        {"id": "13005", "bonus": 0.1},
+                        {"id": "16000", "bonus": 0.1},
+                        {"id": "13006", "bonus": 0.1},
+                        {"id": "26002", "bonus": 0.1}
+                    ]
+                },
+                "Event_Point": {
+                    "icon": "Event_Point.png",
+                    "shortname": "Event Point",
+                    "bonus_units": [
+                        {"id": "10057", "bonus": 0.25},
+                        {"id": "16012", "bonus": 0.25},
+                        {"id": "20022", "bonus": 0.25},
+                        {"id": "20034", "bonus": 0.25},
+
+                        {"id": "10002", "bonus": 0.15},
+                        {"id": "13007", "bonus": 0.15},
+                        {"id": "10031", "bonus": 0.15},
+                        {"id": "10032", "bonus": 0.15},
+                        {"id": "13008", "bonus": 0.15},
+                        {"id": "13002", "bonus": 0.15},
+                        {"id": "10009", "bonus": 0.15},
+                        {"id": "10000", "bonus": 0.15},
+                        {"id": "13005", "bonus": 0.15},
+                        {"id": "16000", "bonus": 0.15},
+                        {"id": "13006", "bonus": 0.15},
+                        {"id": "23001", "bonus": 0.15},
+                        {"id": "20011", "bonus": 0.15},
+                        {"id": "26002", "bonus": 0.15}
+                    ]
+                }
+            },
+            "shops": {
+                "Kamaboko": [
+                    {"type": "XpReport", "id": "XP_1", "count": 90, "cost": 1, "amount": 3},
+                    {"type": "XpReport", "id": "XP_2", "count": 95, "cost": 3},
+                    {"type": "XpReport", "id": "XP_3", "count": 30, "cost": 12},
+                    {"type": "XpReport", "id": "XP_4", "count": 12, "cost": 60},
+                    {"type": "Material", "id": "3030", "count": 40, "cost": 10},
+                    {"type": "Material", "id": "3031", "count": 25, "cost": 30},
+                    {"type": "Material", "id": "3032", "count": 15, "cost": 80},
+                    {"type": "Material", "id": "3033", "count": 5, "cost": 150},
+                    {"type": "Material", "id": "100", "count": 70, "cost": 5},
+                    {"type": "Material", "id": "101", "count": 35, "cost": 15},
+                    {"type": "Material", "id": "102", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "103", "count": 10, "cost": 200},
+                    {"type": "Furniture", "id": "New_Year_Dishes_Table", "count": 1, "cost": 1000, "limited": false}
+                ],
+                "Sea_Bream": [
+                    {"type": "XpOrb", "id": "GXP_1", "count": 500, "cost": 1},
+                    {"type": "XpOrb", "id": "GXP_2", "count": 200, "cost": 4},
+                    {"type": "XpOrb", "id": "GXP_3", "count": 50, "cost": 15},
+                    {"type": "XpOrb", "id": "GXP_4", "count": 20, "cost": 60},
+                    {"type": "Material", "id": "4030", "count": 40, "cost": 5},
+                    {"type": "Material", "id": "4031", "count": 30, "cost": 15},
+                    {"type": "Material", "id": "4032", "count": 20, "cost": 30},
+                    {"type": "Material", "id": "4033", "count": 10, "cost": 60},
+                    {"type": "Material", "id": "130", "count": 70, "cost": 5},
+                    {"type": "Material", "id": "131", "count": 35, "cost": 15},
+                    {"type": "Material", "id": "132", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "133", "count": 10, "cost": 200},
+                    {"type": "Furniture", "id": "New_Year_Clothing_Hanger", "count": 1, "cost": 1000, "limited": false},
+                    {"type": "Furniture", "id": "Mortar_and_Pestle", "count": 1, "cost": 1000, "limited": true}
+                ]
+            },
+            "stage_groups": ["1-4", "5-8", "9-12"],
+            "stages": [
+                {"type": "Story", "number": 1, "cost": 10, "initial": {"Event_Point": 10, "Kamaboko": 10}},
+                {"type": "Story", "number": 2, "cost": 10, "initial": {"Event_Point": 10, "Sea_Bream": 10}},
+                {"type": "Story", "number": 3, "cost": 10, "initial": {"Event_Point": 10, "Kamaboko": 10}},
+                {"type": "Story", "number": 4, "cost": 10, "initial": {"Event_Point": 10, "Sea_Bream": 10}},
+                {"type": "Story", "number": 5, "cost": 10, "initial": {"Event_Point": 10, "Kamaboko": 10}},
+                {"type": "Story", "number": 6, "cost": 10, "initial": {"Event_Point": 10, "Sea_Bream": 10}},
+                {"type": "Story", "number": 7, "cost": 10, "initial": {"Event_Point": 10, "Kamaboko": 10}},
+                {"type": "Story", "number": 8, "cost": 10, "initial": {"Event_Point": 10, "Sea_Bream": 10}},
+                {"type": "Story", "number": 9, "cost": 10, "initial": {"Event_Point": 10, "Kamaboko": 20}},
+                {"type": "Story", "number": 10, "cost": 10, "initial": {"Event_Point": 10, "Sea_Bream": 20}},
+    
+                {"type": "Quest", "number": 1, "cost": 10, "group": 1, "initial": {"Event_Point": 150, "Kamaboko": 100, "Sea_Bream": 100}, "drops": {"Event_Point": 2, "Kamaboko": 4, "Sea_Bream": 4, "Nebra_1": 0.25, "Nebra_2": 0.15}},
+                {"type": "Quest", "number": 2, "cost": 10, "group": 1, "initial": {"Event_Point": 150, "Kamaboko": 400, "Sea_Bream": 200}, "drops": {"Event_Point": 2, "Kamaboko": 8, "Nimrud_1": 0.25, "Nimrud_2": 0.15}},
+                {"type": "Quest", "number": 3, "cost": 10, "group": 1, "initial": {"Event_Point": 150, "Kamaboko": 200, "Sea_Bream": 400}, "drops": {"Event_Point": 2, "Sea_Bream": 8, "Voynich_1": 0.25, "Voynich_2": 0.15}},
+                {"type": "Quest", "number": 4, "cost": 10, "group": 1, "initial": {"Event_Point": 300}, "drops": {"Event_Point": 8, "Baghdad_1": 0.25, "Baghdad_2": 0.15}},
+
+                {"type": "Quest", "number": 5, "cost": 15, "group": 2, "initial": {"Event_Point": 150, "Kamaboko": 200, "Sea_Bream": 200}, "drops": {"Event_Point": 4, "Kamaboko": 10, "Sea_Bream": 10, "Nebra_2": 0.25, "Nebra_3": 0.08}},
+                {"type": "Quest", "number": 6, "cost": 15, "group": 2, "initial": {"Event_Point": 150, "Kamaboko": 500, "Sea_Bream": 300}, "drops": {"Event_Point": 4, "Kamaboko": 15, "Nimrud_2": 0.25, "Nimrud_3": 0.08}},
+                {"type": "Quest", "number": 7, "cost": 15, "group": 2, "initial": {"Event_Point": 150, "Kamaboko": 300, "Sea_Bream": 500}, "drops": {"Event_Point": 4, "Sea_Bream": 15, "Voynich_2": 0.25, "Voynich_3": 0.08}},
+                {"type": "Quest", "number": 8, "cost": 15, "group": 2, "initial": {"Event_Point": 400}, "drops": {"Event_Point": 15, "Baghdad_2": 0.25, "Baghdad_3": 0.08}},
+
+                {"type": "Quest", "number": 9, "cost": 20, "group": 3, "initial": {"Event_Point": 150, "Kamaboko": 200, "Sea_Bream": 200}, "drops": {"Event_Point": 6, "Kamaboko": 18, "Sea_Bream": 18, "Nebra_2": 0.25, "Nebra_3": 0.12, "Nebra_4": 0.021}},
+                {"type": "Quest", "number": 10, "cost": 20, "group": 3,  "initial": {"Event_Point": 150, "Kamaboko": 500, "Sea_Bream": 300}, "drops": {"Event_Point": 6, "Kamaboko": 30, "Nimrud_2": 0.25, "Nimrud_3": 0.12, "Nimrud_4": 0.021}},
+                {"type": "Quest", "number": 11, "cost": 20, "group": 3,  "initial": {"Event_Point": 150, "Kamaboko": 300, "Sea_Bream": 500}, "drops": {"Event_Point": 6, "Sea_Bream": 30, "Voynich_2": 0.25, "Voynich_3": 0.12, "Voynich_4": 0.021}},
+                {"type": "Quest", "number": 12, "cost": 20, "group": 3,  "initial": {"Event_Point": 500}, "drops": {"Event_Point": 30, "Baghdad_2": 0.25, "Baghdad_3": 0.12, "Baghdad_4": 0.021}},
+    
+                {"type": "Challenge", "number": 1, "cost": 5},
+                {"type": "Challenge", "number": 2, "cost": 5},
+                {"type": "Challenge", "number": 3, "cost": 5},
+                {"type": "Challenge", "number": 4, "cost": 5},
+                {"type": "Challenge", "number": 5, "cost": 5}
+            ],
+            "point_rewards": [
+                {"points": 10, "type": "XpReport", "id": "XP_1", "count": 10},
+                {"points": 50, "type": "XpOrb", "id": "GXP_1", "count": 10},
+                {"points": 100, "type": "XpReport", "id": "XP_2", "count": 5},
+                {"points": 200, "type": "XpOrb", "id": "GXP_2", "count": 5},
+                {"points": 300, "type": "Eleph", "id": "16012", "count": 5},
+                {"points": 400, "type": "XpReport", "id": "XP_1", "count": 10},
+                {"points": 500, "type": "XpOrb", "id": "GXP_1", "count": 10},
+                {"points": 600, "type": "XpReport", "id": "XP_2", "count": 5},
+                {"points": 700, "type": "XpOrb", "id": "GXP_2", "count": 5},
+                {"points": 800, "type": "XpReport", "id": "XP_3", "count": 2},
+                {"points": 900, "type": "XpOrb", "id": "GXP_3", "count": 2},
+                {"points": 1000, "type": "Eleph", "id": "16012", "count": 5},
+                {"points": 1200, "type": "XpReport", "id": "XP_1", "count": 20},
+                {"points": 1400, "type": "XpOrb", "id": "GXP_1", "count": 20},
+                {"points": 1600, "type": "XpReport", "id": "XP_2", "count": 10},
+                {"points": 1800, "type": "XpOrb", "id": "GXP_2", "count": 10},
+                {"points": 2000, "type": "Eligma", "count": 10},
+                {"points": 2200, "type": "XpReport", "id": "XP_3", "count": 2},
+                {"points": 2400, "type": "XpOrb", "id": "GXP_3", "count": 2},
+                {"points": 2600, "type": "Credit", "count": 1000000},
+                {"points": 2800, "type": "XpReport", "id": "XP_4", "count": 1},
+                {"points": 3000, "type": "Eleph", "id": "16012", "count": 5},
+                {"points": 3200, "type": "XpOrb", "id": "GXP_4", "count": 1},
+                {"points": 3400, "type": "Credit", "count": 1000000},
+                {"points": 3600, "type": "XpReport", "id": "XP_3", "count": 3},
+                {"points": 3800, "type": "XpOrb", "id": "GXP_3", "count": 3},
+                {"points": 4000, "type": "Eligma", "count": 10},
+                {"points": 4200, "type": "XpReport", "id": "XP_4", "count": 2},
+                {"points": 4400, "type": "XpOrb", "id": "GXP_4", "count": 2},
+                {"points": 4600, "type": "Credit", "count": 1500000},
+                {"points": 4800, "type": "XpReport", "id": "XP_3", "count": 3},
+                {"points": 5000, "type": "Eleph", "id": "16012", "count": 5},
+                {"points": 5500, "type": "XpOrb", "id": "GXP_3", "count": 3},
+                {"points": 6000, "type": "Eleph", "id": "16012", "count": 5},
+                {"points": 6500, "type": "Credit", "count": 1500000},
+                {"points": 7000, "type": "XpReport", "id": "XP_4", "count": 2},
+                {"points": 7500, "type": "XpOrb", "id": "GXP_4", "count": 2},
+                {"points": 8000, "type": "Eligma", "count": 15},
+                {"points": 9000, "type": "Credit", "count": 2000000},
+                {"points": 10000, "type": "SecretTech", "count": 1},
+                {"points": 11000, "type": "XpReport", "id": "XP_3", "count": 20},
+                {"points": 12000, "type": "Credit", "count": 2000000},
+                {"points": 13000, "type": "XpReport", "id": "XP_3", "count": 20},
+                {"points": 14000, "type": "Credit", "count": 2000000},
+                {"points": 15000, "type": "XpReport", "id": "XP_4", "count": 10}
+            ],
+            "omikuji": {
+                "pull_currency": "Event_Point",
+                "pull_cost": 300,
+                "TargetGrade": 5,
+                "ProbModifyStartCount": 5,
+                "MaxPullCount": 16,
+                "slips": [
+                    {"Grade":0,"Prob":50,"ProbModifyValue":-5,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[1000000,3]},
+                    {"Grade":0,"Prob":50,"ProbModifyValue":-5,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[1000000,3]},
+                    {"Grade":0,"Prob":50,"ProbModifyValue":-5,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[1000000,3]},
+                    {"Grade":0,"Prob":50,"ProbModifyValue":-5,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[1000000,3]},
+                    {"Grade":1,"Prob":333,"ProbModifyValue":-33,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[100000,1]},
+                    {"Grade":1,"Prob":333,"ProbModifyValue":-33,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[100000,1]},
+                    {"Grade":1,"Prob":333,"ProbModifyValue":-33,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[100000,1]},
+                    {"Grade":1,"Prob":333,"ProbModifyValue":-33,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[100000,1]},
+                    {"Grade":1,"Prob":334,"ProbModifyValue":-34,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[100000,1]},
+                    {"Grade":1,"Prob":334,"ProbModifyValue":-34,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[100000,1]},
+                    {"Grade":2,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[200000,1]},
+                    {"Grade":2,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[200000,1]},
+                    {"Grade":2,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[200000,1]},
+                    {"Grade":2,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[200000,1]},
+                    {"Grade":2,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[200000,1]},
+                    {"Grade":2,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[200000,1]},
+                    {"Grade":3,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,16012,23],"RewardAmount":[400000,1,1]},
+                    {"Grade":3,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[400000,1]},
+                    {"Grade":3,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,16012,23],"RewardAmount":[400000,1,1]},
+                    {"Grade":3,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[400000,1]},
+                    {"Grade":3,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,16012,23],"RewardAmount":[400000,1,1]},
+                    {"Grade":3,"Prob":500,"ProbModifyValue":-50,"ProbModifyLimit":0,"RewardId":[1,16012],"RewardAmount":[400000,1]},
+                    {"Grade":4,"Prob":250,"ProbModifyValue":-25,"ProbModifyLimit":0,"RewardId":[1,16012,23],"RewardAmount":[600000,1,1]},
+                    {"Grade":4,"Prob":250,"ProbModifyValue":-25,"ProbModifyLimit":0,"RewardId":[1,16012,23],"RewardAmount":[600000,1,1]},
+                    {"Grade":4,"Prob":250,"ProbModifyValue":-25,"ProbModifyLimit":0,"RewardId":[1,16012,23],"RewardAmount":[600000,1,1]},
+                    {"Grade":4,"Prob":250,"ProbModifyValue":-25,"ProbModifyLimit":0,"RewardId":[1,16012,23],"RewardAmount":[600000,1,1]},
+                    {"Grade":4,"Prob":250,"ProbModifyValue":-25,"ProbModifyLimit":0,"RewardId":[1,16012,23],"RewardAmount":[600000,1,1]},
+                    {"Grade":4,"Prob":250,"ProbModifyValue":-25,"ProbModifyLimit":0,"RewardId":[1,16012,23],"RewardAmount":[600000,1,1]},
+                    {"Grade":5,"Prob":50,"ProbModifyValue":161,"ProbModifyLimit":1666,"RewardId":[1,16012,23],"RewardAmount":[800000,2,2]},
+                    {"Grade":5,"Prob":50,"ProbModifyValue":161,"ProbModifyLimit":1666,"RewardId":[1,16012,23],"RewardAmount":[800000,2,2]},
+                    {"Grade":5,"Prob":50,"ProbModifyValue":162,"ProbModifyLimit":1667,"RewardId":[1,16012,23],"RewardAmount":[800000,2,2]},
+                    {"Grade":5,"Prob":50,"ProbModifyValue":162,"ProbModifyLimit":1667,"RewardId":[1,16012,23],"RewardAmount":[800000,2,2]},
+                    {"Grade":5,"Prob":50,"ProbModifyValue":162,"ProbModifyLimit":1667,"RewardId":[1,16012,23],"RewardAmount":[800000,2,2]},
+                    {"Grade":5,"Prob":50,"ProbModifyValue":162,"ProbModifyLimit":1667,"RewardId":[1,16012,23],"RewardAmount":[800000,2,2]}
+                ]
+            }
         }
     }
 }
