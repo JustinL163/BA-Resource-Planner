@@ -866,14 +866,14 @@ function PrepareData() {
     let tArmour = document.getElementById("armour").value;
     let forcePick = document.getElementById("student-force-pick").getAttribute("character-id");
     let tPlayer1Bans = [];
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 5; i++) {
         let charId = document.getElementById("student-ban-1-slot-" + i).getAttribute("character-id");
         if (charId) {
             tPlayer1Bans.push(charId);
         }
     }
     let tPlayer2Bans = [];
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 5; i++) {
         let charId = document.getElementById("student-ban-2-slot-" + i).getAttribute("character-id");
         if (charId) {
             tPlayer2Bans.push(charId);
