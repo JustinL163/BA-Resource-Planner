@@ -1218,18 +1218,19 @@ function GetNamedTeams(teams) {
 
     for (let i = 0; i < teams.length; i++) {
         let team = [];
+        if (teams[i] != null) {
+            for (let ii = 0; ii < teams[i].length; ii++) {
+                if (teams[i][ii] != null) {
+                    team.push(student_info[teams[i][ii]].EN[0]);
+                    allNull = false;
+                }
+                else {
+                    team.push(null);
+                }
+            }
 
-        for (let ii = 0; ii < teams[i].length; ii++) {
-            if (teams[i][ii] != null) {
-                team.push(student_info[teams[i][ii]].EN[0]);
-                allNull = false;
-            }
-            else {
-                team.push(null);
-            }
+            namedTeams.push(team);
         }
-
-        namedTeams.push(team);
     }
 
     if (allNull) {
