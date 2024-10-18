@@ -421,14 +421,14 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.4.9".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.4.10".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         Swal.fire({
-            title: GetLanguageString("text-updatedversionprefix") + "1.4.9",
+            title: GetLanguageString("text-updatedversionprefix") + "1.4.10",
             color: alertColour,
             html: GetLanguageString("text-updatemessage")
         })
 
-        data.site_version = "1.4.9";
+        data.site_version = "1.4.10";
         // saveToLocalStorage(false);
     }
 
@@ -3433,11 +3433,15 @@ function GetSkillObject(charId, skill) {
         charSkills = charlist[charId].Skills;
     }
 
-    for (let i = 0; i < charSkills.length; i++) {
-        if (charSkills[i].SkillType == skill) {
-            return charSkills[i];
-        }
+    if (charSkills[skill]) {
+        return charSkills[skill];
     }
+
+    // for (let i = 0; i < charSkills.length; i++) {
+    //     if (charSkills[i].SkillType == skill) {
+    //         return charSkills[i];
+    //     }
+    // }
 
     return null;
 }
@@ -3519,10 +3523,10 @@ function populateCharModal(charId) {
             document.getElementById("gear3-img").src = "icons/Gear/T1_" + charInfo.Equipment[2] + "_small.webp";
         }
 
-        document.getElementById("ex-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "ex").Icon + ".png";
-        document.getElementById("basic-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "normal").Icon + ".png";
-        document.getElementById("enhanced-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "passive").Icon + ".png";
-        document.getElementById("sub-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "sub").Icon + ".png";
+        document.getElementById("ex-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "Ex").Icon + ".png";
+        document.getElementById("basic-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "Public").Icon + ".png";
+        document.getElementById("enhanced-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "Passive").Icon + ".png";
+        document.getElementById("sub-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "ExtraPassive").Icon + ".png";
 
 
         modalStars.star = charData.current?.star;
@@ -3772,19 +3776,19 @@ function getSkillFormatted(charId, skill, level, targetLevel, targetUe) {
 
     let newSkill = "";
     if (skill == "Ex") {
-        newSkill = "ex";
+        newSkill = "Ex";
     }
     else if (skill == "Skill1") {
-        newSkill = "normal";
+        newSkill = "Public";
     }
     else if (skill == "Skill2") {
-        newSkill = "passive"
+        newSkill = "Passive"
     }
     else if (skill == "Skill3") {
-        newSkill = "weaponpassive";
+        newSkill = "WeaponPassive";
     }
     else if (skill == "Skill4") {
-        newSkill = "sub";
+        newSkill = "ExtraPassive";
     }
     let skillObj = GetSkillObject(charId, newSkill);
 
