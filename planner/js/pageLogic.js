@@ -285,13 +285,14 @@ function init() {
             data.language = "EN";
         }
 
-        if (!data.level_cap) {
-            data.level_cap = 90;
-        }
+        // if (!data.level_cap) {
+        //     data.level_cap = 90;
+        // }
 
-        lvlCalcsCap = data.level_cap;
-        document.getElementById('set-level-cap').innerText = GetLanguageString("button-levelcapprefix") + lvlCalcsCap;
+        // lvlCalcsCap = data.level_cap;
     }
+
+    document.getElementById('set-level-cap').innerText = GetLanguageString("button-levelcapprefix") + lvlCalcsCap;
 
     // remove later
     for (key in data.groups) {
@@ -2509,7 +2510,7 @@ async function PickLevelCalcsCap() {
             if (lvlCalcsCap != result.value) {
 
                 lvlCalcsCap = result.value;
-                data.level_cap = result.value;
+                // data.level_cap = result.value;
                 document.getElementById('set-level-cap').innerText = GetLanguageString("button-levelcapprefix") + lvlCalcsCap;
 
                 updateAggregateCount();
