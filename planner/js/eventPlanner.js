@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?56').done(function (json) {
+    $.getJSON('json/events.json?57').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -419,6 +419,16 @@ function LoadEvent(eventId) {
     }
     else {
         document.getElementById("summer-hyakki-temp").style.display = "none";
+    }
+
+    if (current_event == "ive-alive") {
+        Swal.fire({
+            toast: true,
+            position: 'top-start',
+            title: "CAUTION: Some parts are a bit broken at the moment, due to event points coming from the minigame instead of stages it broke some code, will fix tomorrow",
+            showConfirmButton: false,
+            timer: 8000
+        })
     }
 
     let enabledStageGroups;
@@ -2703,6 +2713,12 @@ function CalculateStageDrops(result, ignoreRequirement) {
                 }
             }
         }
+    }
+
+    if (current_event == "ive-alive") {
+        totalCurrencies["Event_Point"] = Math.floor(totalCurrencies["Countdown_Calendar"] / 720) * 400;
+        // event_point_target = 20000;
+        maxEventPoints = totalCurrencies["Event_Point"];
     }
 
     if (!midEvent) {
