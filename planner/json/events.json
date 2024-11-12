@@ -1,6 +1,6 @@
 {
     "event_order": [
-        "ive-alive"
+        "dragon-and-tortoise-rerun"
     ],
     "events": {
         "new-year-march": {
@@ -6572,6 +6572,195 @@
                     "type": "Pyroxene",
                     "count": 100
                 }
+            ]
+        },
+        "dragon-and-tortoise-rerun": {
+            "icon": "Event_826_Jp.png",
+            "display_name": "Dragon and Tortoise: A Future Together",
+            "reset_time": 1731351600,
+            "start_time": 1731376800,
+            "end_time": 1731981600,
+            "maint_hours": 6,
+            "available_targets": ["Shop", "Currency", "Manual"],
+            "currency_targets": ["Card_Set"],
+            "reward_preview": [
+                {"type": "Eleph", "id": "20002", "preview": 1},
+                {"type": "Material", "id": "3073", "preview": 2},
+                {"type": "Material", "id": "203", "preview": 5},
+                {"type": "Material", "id": "233", "preview": 6}
+            ],
+            "currencies": {
+                "Card_Set": {
+                    "icon": "Card_Set.png",
+                    "shortname": "Card Set",
+                    "source": "StageDrop",
+                    "clear": 21800,
+                    "bonus_units": [
+                        {"id": "10069", "bonus": 0.25},
+                        {"id": "10070", "bonus": 0.25},
+
+                        {"id": "10050", "bonus": 0.15},
+                        {"id": "10011", "bonus": 0.15},
+                        {"id": "10025", "bonus": 0.15},
+                        {"id": "10000", "bonus": 0.15},
+                        {"id": "16000", "bonus": 0.15},
+                        {"id": "13006", "bonus": 0.15},
+                        {"id": "13005", "bonus": 0.15},
+                        {"id": "10064", "bonus": 0.15},
+                        {"id": "10049", "bonus": 0.15},
+                        {"id": "10029", "bonus": 0.15},
+                        {"id": "20002", "bonus": 0.15},
+                        {"id": "20006", "bonus": 0.15},
+                        {"id": "20025", "bonus": 0.15},
+                        {"id": "23000", "bonus": 0.15},
+                        {"id": "26005", "bonus": 0.15},
+                        {"id": "23001", "bonus": 0.15},
+                        {"id": "26002", "bonus": 0.15}
+                    ]
+                },
+                "Black_Tortoise_Meal_Ticket": {
+                    "icon": "Black_Tortoise_Meal_Ticket.png",
+                    "shortname": "Black Tortoise Meal Ticket",
+                    "source": "StageDrop",
+                    "clear": 13230,
+                    "bonus_units": [
+                        {"id": "10050", "bonus": 0.2},
+                        {"id": "10025", "bonus": 0.2},
+                        {"id": "20006", "bonus": 0.2},
+
+                        {"id": "10069", "bonus": 0.15},
+                        {"id": "13005", "bonus": 0.15},
+                        {"id": "10064", "bonus": 0.15},
+                        {"id": "10029", "bonus": 0.15},
+                        {"id": "26005", "bonus": 0.15},
+                        {"id": "26002", "bonus": 0.15}
+                    ]
+                },
+                "Genryumon_Badge": {
+                    "icon": "Genryumon_Badge.png",
+                    "shortname": "Genryumon Badge",
+                    "source": "StageDrop",
+                    "clear": 14955,
+                    "bonus_units": [
+                        {"id": "10011", "bonus": 0.2},
+                        {"id": "20002", "bonus": 0.2},
+
+                        {"id": "10070", "bonus": 0.15},
+                        {"id": "10000", "bonus": 0.15},
+                        {"id": "16000", "bonus": 0.15},
+                        {"id": "13006", "bonus": 0.15},
+                        {"id": "10049", "bonus": 0.15},
+                        {"id": "20025", "bonus": 0.15},
+                        {"id": "23000", "bonus": 0.15},
+                        {"id": "23001", "bonus": 0.15}
+                    ]
+                },
+                "Solvent_Extraction_Set": {
+                    "icon": "Solvent_Extraction_Set.png",
+                    "shortname": "Solvent Extraction Set",
+                    "source": "CardPull",
+                    "pull_currency": "Card_Set",
+                    "clear": 200,
+                    "bonus_units": []
+                }
+            },
+            "shops": {
+                "Black_Tortoise_Meal_Ticket": [
+                    {"type": "XpReport", "id": "XP_1", "count": 90, "cost": 1, "amount": 3},
+                    {"type": "XpReport", "id": "XP_2", "count": 95, "cost": 3},
+                    {"type": "XpReport", "id": "XP_3", "count": 30, "cost": 12},
+                    {"type": "XpReport", "id": "XP_4", "count": 12, "cost": 60},
+                    {"type": "Material", "id": "3070", "count": 25, "cost": 10},
+                    {"type": "Material", "id": "3071", "count": 15, "cost": 30},
+                    {"type": "Material", "id": "3072", "count": 10, "cost": 100},
+                    {"type": "Material", "id": "3073", "count": 3, "cost": 300},
+                    {"type": "Material", "id": "200", "count": 70, "cost": 5},
+                    {"type": "Material", "id": "201", "count": 35, "cost": 15},
+                    {"type": "Material", "id": "202", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "203", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Embroidered_Handkerchief", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Extravagant_Gilded_Jar_of_Greed", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Stylish_Comb", "count": 1, "cost": 300},
+                    {"type": "Furniture", "id": "Chinese-style_Hot_Showcase", "count": 1, "cost": 1000, "limited": false}
+                ],
+                "Genryumon_Badge": [
+                    {"type": "XpOrb", "id": "GXP_1", "count": 180, "cost": 1},
+                    {"type": "XpOrb", "id": "GXP_2", "count": 95, "cost": 4},
+                    {"type": "XpOrb", "id": "GXP_3", "count": 30, "cost": 15},
+                    {"type": "XpOrb", "id": "GXP_4", "count": 12, "cost": 60},
+                    {"type": "Material", "id": "4070", "count": 40, "cost": 5},
+                    {"type": "Material", "id": "4071", "count": 30, "cost": 15},
+                    {"type": "Material", "id": "4072", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "4073", "count": 12, "cost": 200},
+                    {"type": "Material", "id": "230", "count": 70, "cost": 5},
+                    {"type": "Material", "id": "231", "count": 35, "cost": 15},
+                    {"type": "Material", "id": "232", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "233", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Cute_Dishware_Set", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Wind-Up_Music_Box", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Retro_Jewelled_Egg", "count": 1, "cost": 300},
+                    {"type": "Furniture", "id": "Chinese-style_Chair", "count": 1, "cost": 1000, "limited": false}
+                ],
+                "Solvent_Extraction_Set": [
+                    {"type": "Eleph", "id": "20002", "count": 40, "cost": 1},
+                    {"type": "Pyroxene", "id": "Pyroxene-120", "count": 5, "cost": 4, "amount": 120},
+                    {"type": "Eligma", "id": "Eligma-5", "count": 20, "cost": 2, "amount": 5},
+                    {"type": "SecretTech", "id": "SecretTech", "count": 1, "cost": 20},
+                    {"type": "Credit", "id": "Credit-500000", "count": 5, "cost": 5, "amount": 500000},
+                    {"type": "Credit", "id": "Credit-200000", "count": 10, "cost": 3, "amount": 200000},
+                    {"type": "Credit", "id": "Credit-50000", "count": 25, "cost": 1, "amount": 50000}
+                ]
+            },
+            "stage_groups": ["1-4", "5-8", "9-12"],
+            "stages": [
+                {"type": "Story", "number": 1, "cost": 10, "initial": {"Card_Set": 10, "Black_Tortoise_Meal_Ticket": 20}},
+                {"type": "Story", "number": 2, "cost": 10, "initial": {"Card_Set": 10, "Genryumon_Badge": 20}},
+                {"type": "Story", "number": 3, "cost": 10, "initial": {"Card_Set": 10, "Black_Tortoise_Meal_Ticket": 20}},
+                {"type": "Story", "number": 4, "cost": 10, "initial": {"Card_Set": 10, "Genryumon_Badge": 20}},
+                {"type": "Story", "number": 5, "cost": 10, "initial": {"Card_Set": 10, "Black_Tortoise_Meal_Ticket": 20}},
+                {"type": "Story", "number": 6, "cost": 10, "initial": {"Card_Set": 10, "Genryumon_Badge": 20}},
+                {"type": "Story", "number": 7, "cost": 10, "initial": {"Card_Set": 10, "Black_Tortoise_Meal_Ticket": 20}},
+                {"type": "Story", "number": 8, "cost": 10, "initial": {"Card_Set": 10, "Genryumon_Badge": 20}},
+                {"type": "Story", "number": 9, "cost": 10, "initial": {"Card_Set": 10, "Black_Tortoise_Meal_Ticket": 20}},
+                {"type": "Story", "number": 10, "cost": 10, "initial": {"Card_Set": 10, "Genryumon_Badge": 20}},
+                
+                {"type": "Quest", "number": 1, "cost": 10, "group": 1, "initial": {"Card_Set": 200, "Black_Tortoise_Meal_Ticket": 50, "Genryumon_Badge": 50}, "drops": {"Card_Set": 12, "Black_Tortoise_Meal_Ticket": 3, "Genryumon_Badge": 3, "Totem_1": 0.25, "Totem_2": 0.15}},
+                {"type": "Quest", "number": 2, "cost": 10, "group": 1, "initial": {"Black_Tortoise_Meal_Ticket": 200, "Genryumon_Badge": 100}, "drops": {"Black_Tortoise_Meal_Ticket": 14, "Genryumon_Badge": 4, "Okiku_1": 0.25, "Okiku_2": 0.15}},
+                {"type": "Quest", "number": 3, "cost": 10, "group": 1, "initial": {"Black_Tortoise_Meal_Ticket": 100, "Genryumon_Badge": 200}, "drops": {"Black_Tortoise_Meal_Ticket": 4, "Genryumon_Badge": 14, "Voynich_1": 0.25, "Voynich_2": 0.15}},
+                {"type": "Quest", "number": 4, "cost": 10, "group": 1, "initial": {"Card_Set": 300}, "drops": {"Card_Set": 18, "Mandragora_1": 0.25, "Mandragora_2": 0.15}},
+
+                {"type": "Quest", "number": 5, "cost": 15, "group": 2, "initial": {"Card_Set": 200, "Black_Tortoise_Meal_Ticket": 100, "Genryumon_Badge": 100}, "drops": {"Card_Set": 19, "Black_Tortoise_Meal_Ticket": 4, "Genryumon_Badge": 4, "Totem_2": 0.25, "Totem_3": 0.08}},
+                {"type": "Quest", "number": 6, "cost": 15, "group": 2, "initial": {"Black_Tortoise_Meal_Ticket": 250, "Genryumon_Badge": 150}, "drops": {"Black_Tortoise_Meal_Ticket": 23, "Genryumon_Badge": 4, "Okiku_2": 0.25, "Okiku_3": 0.08}},
+                {"type": "Quest", "number": 7, "cost": 15, "group": 2, "initial": {"Black_Tortoise_Meal_Ticket": 150, "Genryumon_Badge": 250}, "drops": {"Black_Tortoise_Meal_Ticket": 4, "Genryumon_Badge": 23, "Voynich_2": 0.25, "Voynich_3": 0.08}},
+                {"type": "Quest", "number": 8, "cost": 15, "group": 2, "initial": {"Card_Set": 400}, "drops": {"Card_Set": 27, "Mandragora_2": 0.25, "Mandragora_3": 0.08}},
+
+                {"type": "Quest", "number": 9, "cost": 20, "group": 3, "initial": {"Card_Set": 300, "Black_Tortoise_Meal_Ticket": 100, "Genryumon_Badge": 100}, "drops": {"Card_Set": 28, "Black_Tortoise_Meal_Ticket": 4, "Genryumon_Badge": 4, "Totem_2": 0.25, "Totem_3": 0.12, "Totem_4": 0.021}},
+                {"type": "Quest", "number": 10, "cost": 20, "group": 3, "initial": {"Card_Set": 50, "Black_Tortoise_Meal_Ticket": 450}, "drops": {"Card_Set": 4, "Black_Tortoise_Meal_Ticket": 32, "Okiku_2": 0.25, "Okiku_3": 0.12, "Okiku_4": 0.021}},
+                {"type": "Quest", "number": 11, "cost": 20, "group": 3, "initial": {"Card_Set": 50, "Genryumon_Badge": 450}, "drops": {"Card_Set": 4, "Genryumon_Badge": 32, "Voynich_2": 0.25, "Voynich_3": 0.12, "Voynich_4": 0.021}},
+                {"type": "Quest", "number": 12, "cost": 20, "group": 3, "initial": {"Card_Set": 500}, "drops": {"Card_Set": 36, "Mandragora_2": 0.25, "Mandragora_3": 0.12, "Mandragora_4": 0.021}},
+
+
+                {"type": "Challenge", "number": 1, "cost": 5},
+                {"type": "Challenge", "number": 2, "cost": 5},
+                {"type": "Challenge", "number": 3, "cost": 5},
+                {"type": "Challenge", "number": 4, "cost": 5},
+                {"type": "Challenge", "number": 5, "cost": 5}
+            ],
+            "card_drops": [
+                {"icon": "UR_Mina", "chance": 0.0267, "chance4": 0.03, "drops": {"Credit": 1500000, "Solvent_Extraction_Set": 4, "Voynich_3": 1, "Mandragora_3": 2, "Mandragora_4": 1, "GXP_4": 1}},
+                {"icon": "UR_Rumi", "chance": 0.0267, "chance4": 0.03, "drops": {"Credit": 1600000, "Solvent_Extraction_Set": 4, "Voynich_3": 2, "Voynich_4": 1, "Mandragora_3": 1, "GXP_4": 1}},
+                {"icon": "UR_Kisaki", "chance": 0.0266, "chance4": 0.03, "drops": {"Credit": 1700000, "Solvent_Extraction_Set": 3, "Voynich_3": 1, "Voynich_4": 1, "Mandragora_4": 1, "GXP_4": 1}},
+
+                {"icon": "SR_Reijo", "chance": 0.05, "chance4": 0.2275, "drops": {"Credit": 100000, "Solvent_Extraction_Set": 2, "XP_4": 1, "Voynich_2": 1, "Voynich_3": 1}},
+                {"icon": "SR_Shun", "chance": 0.05, "chance4": 0.2275, "drops": {"Credit": 100000, "Solvent_Extraction_Set": 2, "XP_3": 3, "GXP_3": 1, "GXP_4": 1, "Mandragora_2": 1}},
+                {"icon": "SR_Shunny", "chance": 0.05, "chance4": 0.2275, "drops": {"Credit": 100000, "Solvent_Extraction_Set": 2, "XP_4": 1, "Voynich_2": 1, "Voynich_3": 1}},
+                {"icon": "SR_Kokona", "chance": 0.05, "chance4": 0.2275, "drops": {"Credit": 100000, "Solvent_Extraction_Set": 2, "XP_3": 3, "GXP_3": 1, "GXP_4": 1, "Mandragora_2": 1}},
+
+                {"icon": "R_Saya", "chance": 0.16, "drops": {"Credit": 50000, "Solvent_Extraction_Set": 2, "XP_2": 5, "XP_3": 3, "Voynich_1": 3, "Voynich_2": 2}},
+                {"icon": "R_CSaya", "chance": 0.16, "drops": {"Credit": 50000, "Solvent_Extraction_Set": 2, "XP_2": 9, "XP_3": 2, "Mandragora_1": 3, "Mandragora_2": 2}},
+
+                {"icon": "N_Shan_Mob1", "chance": 0.2, "drops": {"Credit": 20000, "Solvent_Extraction_Set": 1, "GXP_2": 7, "GXP_3": 1, "Voynich_1": 3, "Voynich_2": 1}},
+                {"icon": "N_Shan_Mob2", "chance": 0.2, "drops": {"Credit": 20000, "Solvent_Extraction_Set": 1, "GXP_2": 4, "GXP_3": 3, "Mandragora_1": 4, "Mandragora_2": 1}}
             ]
         }
     }
