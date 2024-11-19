@@ -1,6 +1,6 @@
 {
     "event_order": [
-        "dragon-and-tortoise-rerun"
+        "hakua-calling-card-rerun"
     ],
     "events": {
         "new-year-march": {
@@ -6762,6 +6762,154 @@
 
                 {"icon": "N_Shan_Mob1", "chance": 0.2, "drops": {"Credit": 20000, "Solvent_Extraction_Set": 1, "GXP_2": 7, "GXP_3": 1, "Voynich_1": 3, "Voynich_2": 1}},
                 {"icon": "N_Shan_Mob2", "chance": 0.2, "drops": {"Credit": 20000, "Solvent_Extraction_Set": 1, "GXP_2": 4, "GXP_3": 3, "Mandragora_1": 4, "Mandragora_2": 1}}
+            ]
+        },
+        "hakua-calling-card-rerun": {
+            "active": true,
+            "icon": "Event_825_Jp.png",
+            "display_name": "Chalk White Calling Card",
+            "reset_time": 1731956400,
+            "start_time": 1731981600,
+            "end_time": 1733191200,
+            "maint_hours": 8,
+            "available_targets": ["Shop", "Materials", "Currency", "Manual"],
+            "currency_targets": ["Mansion_Invitation"],
+            "reward_preview": [
+                {"type": "Eleph", "id": "26009", "preview": 1}
+            ],
+            "currencies": {
+                "Beautiful_Headband": {
+                    "icon": "Beautiful_Headband.png",
+                    "shortname": "Beautiful Headband",
+                    "source": "StageDrop",
+                    "clear": 18230,
+                    "bonus_units": [
+                        {"id": "10094", "bonus": 0.3},
+
+                        {"id": "10066", "bonus": 0.2},
+                        {"id": "10018", "bonus": 0.2},
+                        {"id": "10016", "bonus": 0.2},
+                        {"id": "13000", "bonus": 0.2},
+                        {"id": "10027", "bonus": 0.2},
+                        {"id": "13010", "bonus": 0.2},
+                        {"id": "10063", "bonus": 0.2},
+                        {"id": "26009", "bonus": 0.2}
+                    ]
+                },
+                "Makeup_Set": {
+                    "icon": "Makeup_Set.png",
+                    "shortname": "Makeup_Set",
+                    "source": "StageDrop",
+                    "clear": 19955,
+                    "bonus_units": [
+                        {"id": "10095", "bonus": 0.3},
+
+                        {"id": "10067", "bonus": 0.2},
+                        {"id": "10062", "bonus": 0.2},
+                        {"id": "10008", "bonus": 0.2},
+                        {"id": "10028", "bonus": 0.2},
+                        {"id": "10053", "bonus": 0.2},
+                        {"id": "20001", "bonus": 0.2}
+                    ]
+                },
+                "Mansion_Invitation": {
+                    "icon": "Mansion_Invitation.png",
+                    "shortname": "Mansion Invitation",
+                    "source": "StageDrop",
+                    "clear": 20000,
+                    "bonus_units": [
+                        {"id": "10094", "bonus": 0.25},
+                        {"id": "10095", "bonus": 0.25},
+
+                        {"id": "10066", "bonus": 0.15},
+                        {"id": "10067", "bonus": 0.15},
+                        {"id": "10015", "bonus": 0.15},
+                        {"id": "13011", "bonus": 0.15},
+                        {"id": "16001", "bonus": 0.15},
+                        {"id": "10026", "bonus": 0.15},
+                        {"id": "10052", "bonus": 0.15},
+                        {"id": "26009", "bonus": 0.15},
+                        {"id": "20019", "bonus": 0.15}
+                    ]
+                }
+            },
+            "shops": {
+                "Beautiful_Headband": [
+                    {"type": "XpReport", "id": "XP_1", "count": 90, "cost": 1, "amount": 3},
+                    {"type": "XpReport", "id": "XP_2", "count": 95, "cost": 3},
+                    {"type": "XpReport", "id": "XP_3", "count": 30, "cost": 12},
+                    {"type": "XpReport", "id": "XP_4", "count": 12, "cost": 60},
+                    {"type": "Material", "id": "3050", "count": 25, "cost": 10},
+                    {"type": "Material", "id": "3051", "count": 15, "cost": 30},
+                    {"type": "Material", "id": "3052", "count": 10, "cost": 100},
+                    {"type": "Material", "id": "3053", "count": 3, "cost": 300},
+                    {"type": "Material", "id": "280", "count": 70, "cost": 5},
+                    {"type": "Material", "id": "281", "count": 35, "cost": 15},
+                    {"type": "Material", "id": "282", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "283", "count": 10, "cost": 200},
+                    {"type": "Furniture", "id": "Counter_Chair_Deep_Blue", "count": 1, "cost": 2000, "limited": false},
+                    {"type": "Furniture", "id": "Blue_Single_Sofa", "count": 1, "cost": 2000, "limited": false},
+                    {"type": "Furniture", "id": "Cafe_Bed", "count": 1, "cost": 2000, "limited": true},
+                    {"type": "Gift", "id": "Gamegirl_Color_Replica", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Hitgirls_Gaming_Magazine", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "The_Life_Board_Game", "count": 1, "cost": 300}
+                ],
+                "Makeup_Set": [
+                    {"type": "XpOrb", "id": "GXP_1", "count": 180, "cost": 1},
+                    {"type": "XpOrb", "id": "GXP_2", "count": 95, "cost": 4},
+                    {"type": "XpOrb", "id": "GXP_3", "count": 30, "cost": 15},
+                    {"type": "XpOrb", "id": "GXP_4", "count": 12, "cost": 60},
+                    {"type": "Material", "id": "4050", "count": 40, "cost": 5},
+                    {"type": "Material", "id": "4051", "count": 30, "cost": 15},
+                    {"type": "Material", "id": "4052", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "4053", "count": 12, "cost": 200},
+                    {"type": "Material", "id": "260", "count": 70, "cost": 5},
+                    {"type": "Material", "id": "261", "count": 35, "cost": 15},
+                    {"type": "Material", "id": "262", "count": 20, "cost": 50},
+                    {"type": "Material", "id": "263", "count": 10, "cost": 200},
+                    {"type": "Furniture", "id": "Game_Development_Club_Sofa", "count": 1, "cost": 2000, "limited": false},
+                    {"type": "Furniture", "id": "Game_Development_Locker", "count": 1, "cost": 2000, "limited": false},
+                    {"type": "Furniture", "id": "Game_Console_Wood_Monitor", "count": 1, "cost": 2000, "limited": false},
+                    {"type": "Gift", "id": "Cute_Dishware_Set", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Ring_Bit", "count": 10, "cost": 200},
+                    {"type": "Gift", "id": "Sewing_Kit", "count": 1, "cost": 300}
+                ]
+            },
+            "stage_groups": ["1-4", "5-8", "9-12"],
+            "stages": [
+                {"type": "Story", "number": 1, "cost": 10, "initial": {"Beautiful_Headband": 20, "Mansion_Invitation": 10}},
+                {"type": "Story", "number": 2, "cost": 10, "initial": {"Makeup_Set": 20, "Mansion_Invitation": 10}},
+                {"type": "Story", "number": 3, "cost": 10, "initial": {"Beautiful_Headband": 20, "Mansion_Invitation": 10}},
+                {"type": "Story", "number": 4, "cost": 10, "initial": {"Makeup_Set": 20, "Mansion_Invitation": 10}},
+                {"type": "Story", "number": 5, "cost": 10, "initial": {"Beautiful_Headband": 20, "Mansion_Invitation": 10}},
+                {"type": "Story", "number": 6, "cost": 10, "initial": {"Makeup_Set": 20, "Mansion_Invitation": 10}},
+                {"type": "Story", "number": 7, "cost": 10, "initial": {"Beautiful_Headband": 20, "Mansion_Invitation": 10}},
+                {"type": "Story", "number": 8, "cost": 10, "initial": {"Makeup_Set": 20, "Mansion_Invitation": 10}},
+                {"type": "Story", "number": 9, "cost": 10, "initial": {"Beautiful_Headband": 20, "Mansion_Invitation": 10}},
+                {"type": "Story", "number": 10, "cost": 10, "initial": {"Makeup_Set": 20, "Mansion_Invitation": 10}},
+                {"type": "Story", "number": 11, "cost": 10, "initial": {"Beautiful_Headband": 20, "Mansion_Invitation": 10}},
+
+                {"type": "Quest", "number": 1, "cost": 10, "group": 1, "initial": {"Beautiful_Headband": 50, "Makeup_Set": 50, "Mansion_Invitation": 100}, "drops": {"Beautiful_Headband": 2, "Makeup_Set": 2, "Mansion_Invitation": 14, "Baghdad_1": 0.25, "Baghdad_2": 0.15}},
+                {"type": "Quest", "number": 2, "cost": 10, "group": 1, "initial": {"Beautiful_Headband": 100, "Makeup_Set": 100}, "drops": {"Beautiful_Headband": 14, "Makeup_Set": 4, "Antikythera_1": 0.25, "Antikythera_2": 0.15}},
+                {"type": "Quest", "number": 3, "cost": 10, "group": 1, "initial": {"Beautiful_Headband": 100, "Makeup_Set": 100}, "drops": {"Beautiful_Headband": 4, "Makeup_Set": 14, "Phaistos_1": 0.25, "Phaistos_2": 0.15}},
+                {"type": "Quest", "number": 4, "cost": 10, "group": 1, "initial": {"Mansion_Invitation": 200}, "drops": {"Mansion_Invitation": 18, "Colgante_1": 0.25, "Colgante_2": 0.15}},
+
+                {"type": "Quest", "number": 5, "cost": 15, "group": 2, "initial": {"Beautiful_Headband": 50, "Makeup_Set": 50, "Mansion_Invitation": 200}, "drops": {"Beautiful_Headband": 4, "Makeup_Set": 3, "Mansion_Invitation": 20, "Baghdad_2": 0.25, "Baghdad_3": 0.08}},
+                {"type": "Quest", "number": 6, "cost": 15, "group": 2, "initial": {"Beautiful_Headband": 200, "Makeup_Set": 100}, "drops": {"Beautiful_Headband": 20, "Makeup_Set": 7, "Antikythera_2": 0.25, "Antikythera_3": 0.08}},
+                {"type": "Quest", "number": 7, "cost": 15, "group": 2, "initial": {"Beautiful_Headband": 100, "Makeup_Set": 200}, "drops": {"Beautiful_Headband": 7, "Makeup_Set": 20, "Phaistos_2": 0.25, "Phaistos_3": 0.08}},
+                {"type": "Quest", "number": 8, "cost": 15, "group": 2, "initial": {"Mansion_Invitation": 300}, "drops": {"Mansion_Invitation": 27, "Colgante_2": 0.25, "Colgante_3": 0.08}},
+
+                {"type": "Quest", "number": 9, "cost": 20, "group":3 , "initial": {"Beautiful_Headband": 50, "Makeup_Set": 50, "Mansion_Invitation": 300}, "drops": {"Beautiful_Headband": 6, "Makeup_Set": 6, "Mansion_Invitation": 24, "Baghdad_2": 0.25, "Baghdad_3": 0.12, "Baghdad_4": 0.021}},
+                {"type": "Quest", "number": 10, "cost": 20, "group":3 , "initial": {"Beautiful_Headband": 350, "Mansion_Invitation": 50}, "drops": {"Beautiful_Headband": 36, "Antikythera_2": 0.25, "Antikythera_3": 0.12, "Antikythera_4": 0.021}},
+                {"type": "Quest", "number": 11, "cost": 20, "group":3 , "initial": {"Makeup_Set": 350, "Mansion_Invitation": 50}, "drops": {"Makeup_Set": 36, "Phaistos_2": 0.25, "Phaistos_3": 0.12, "Phaistos_4": 0.021}},
+                {"type": "Quest", "number": 12, "cost": 20, "group":3 , "initial": {"Mansion_Invitation": 400}, "drops": {"Mansion_Invitation": 36, "Colgante_2": 0.25, "Colgante_3": 0.12, "Colgante_4": 0.021}},
+
+
+                {"type": "Challenge", "number": 1, "cost": 5},
+                {"type": "Challenge", "number": 2, "cost": 5},
+                {"type": "Challenge", "number": 3, "cost": 5},
+                {"type": "Challenge", "number": 4, "cost": 5},
+                {"type": "Challenge", "number": 5, "cost": 5}
             ]
         }
     }
