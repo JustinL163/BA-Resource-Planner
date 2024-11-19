@@ -2906,7 +2906,7 @@ function CalculateStageDrops(result, ignoreRequirement) {
     }
 
     //TEMP
-    if (current_event == "hakua-calling-card") {
+    if (current_event == "hakua-calling-card-rerun") {
         let minigameRuns = math.max(math.floor(totalCurrencies["Mansion_Invitation"] / 400), 0);
         if (minigameRuns > 0) {
             if (!totalEleph["26009"]) {
