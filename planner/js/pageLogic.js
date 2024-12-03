@@ -4,7 +4,7 @@ var curID = 0;
 var modalCharID = 0;
 var modalStars = { "star": 0, "star_target": 0, "ue": 0, "ue_target": 0 };
 const ueStarCap = 3;
-const globalMaxWorld = 25;
+const globalMaxWorld = 26;
 const cnMaxWorld = 17;
 
 var requiredMatDict = {};
