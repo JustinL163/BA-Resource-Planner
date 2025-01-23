@@ -1,6 +1,6 @@
 {
     "event_order": [
-        "summer-rabbit-squad-rerun"
+        "sheside-outside"
     ],
     "events": {
         "new-year-march": {
@@ -11464,6 +11464,948 @@
                     ]
                 ]
             }
+        },
+        "sheside-outside": {
+            "active": true,
+            "icon": "Event_838_Jp.png",
+            "display_name": "Sheside Outside",
+            "reset_time": 1737572400,
+            "start_time": 1737597600,
+            "end_time": 1738980000,
+            "maint_hours": 6,
+            "available_targets": [
+                "Shop",
+                "Materials",
+                "Currency",
+                "Manual"
+            ],
+            "currency_targets": ["Game_Corner_Ticket"],
+            "event_point_target": 0,
+            "currencies": {
+                "Game_Corner_Ticket": {
+                    "icon": "Game_Corner_Ticket.png",
+                    "shortname": "Game Corner Ticket",
+                    "source": "StageDrop",
+                    "clear": 0,
+                    "bonus_units": [
+                        {
+                            "id": "10098",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "10100",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "10101",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10102",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10048",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20017",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10041",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10019",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10021",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10074",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10020",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10003",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20005",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20024",
+                            "bonus": 0.15
+                        }
+                    ]
+                },
+                "Helmet_Association_Commemorative_Coin": {
+                    "icon": "Helmet_Association_Commemorative_Coin.png",
+                    "shortname": "Helmet Association Commemorative Coin",
+                    "source": "StageDrop",
+                    "clear": 19130,
+                    "bonus_units": [
+                        {
+                            "id": "10098",
+                            "bonus": 0.3
+                        },
+                        {
+                            "id": "26013",
+                            "bonus": 0.2
+                        },
+                        {
+                            "id": "10101",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10102",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20017",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10042",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10019",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "23007",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10074",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16013",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10003",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10059",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20024",
+                            "bonus": 0.15
+                        }
+                    ]
+                },
+                "Food_Stall_Menu": {
+                    "icon": "Food_Stall_Menu.png",
+                    "shortname": "Food Stall Menu",
+                    "source": "StageDrop",
+                    "clear": 22305,
+                    "bonus_units": [
+                        {
+                            "id": "10100",
+                            "bonus": 0.3
+                        },
+                        {
+                            "id": "26013",
+                            "bonus": 0.2
+                        },
+                        {
+                            "id": "10101",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10102",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10048",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10042",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10041",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10021",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "23007",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10020",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16013",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20005",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10059",
+                            "bonus": 0.15
+                        }
+                    ]
+                },
+                "Tournament_Water_Gun": {
+                    "icon": "Tournament_Water_Gun.png",
+                    "shortname": "Tournament Water Gun",
+                    "source": "MinigameDrop",
+                    "clear": 130,
+                    "bonus_units": []
+                }
+            },
+            "shops": {
+                "Helmet_Association_Commemorative_Coin": [
+                    {
+                        "type": "XpReport",
+                        "id": "XP_1",
+                        "count": 90,
+                        "cost": 1,
+                        "amount": 3
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_2",
+                        "count": 95,
+                        "cost": 3
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_3",
+                        "count": 30,
+                        "cost": 12
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_4",
+                        "count": 12,
+                        "cost": 60
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3040",
+                        "count": 25,
+                        "cost": 10
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3041",
+                        "count": 15,
+                        "cost": 30
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3042",
+                        "count": 10,
+                        "cost": 100
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3043",
+                        "count": 3,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3060",
+                        "count": 25,
+                        "cost": 10
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3061",
+                        "count": 15,
+                        "cost": 30
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3062",
+                        "count": 10,
+                        "cost": 100
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3063",
+                        "count": 3,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Material",
+                        "id": "100",
+                        "count": 70,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "101",
+                        "count": 35,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "102",
+                        "count": 20,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "103",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "My_Event070_Djtable",
+                        "count": 1,
+                        "cost": 2000,
+                        "limited": true
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Military_Camo_Foundation_Trio",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Glassy_Glow_BB_Cream",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "MX-Ration_C-Type_Dessert_Flavor",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Lace_Pillow",
+                        "count": 1,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Stylish_Comb",
+                        "count": 1,
+                        "cost": 300
+                    }
+                ],
+                "Food_Stall_Menu": [
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_1",
+                        "count": 180,
+                        "cost": 1
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_2",
+                        "count": 95,
+                        "cost": 4
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_3",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_4",
+                        "count": 12,
+                        "cost": 60
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4040",
+                        "count": 40,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4041",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4042",
+                        "count": 20,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4043",
+                        "count": 12,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4060",
+                        "count": 40,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4061",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4062",
+                        "count": 20,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4063",
+                        "count": 12,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "260",
+                        "count": 70,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "261",
+                        "count": 35,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "262",
+                        "count": 20,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "263",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "My_Event070_Chair_01",
+                        "count": 1,
+                        "cost": 2000,
+                        "limited": true
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Forbidden_Love",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Large_Whole_Cake",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Peroro_Wheel",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Thrice-a-day_Dumbbell_Set",
+                        "count": 1,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Mille-Feuille_Traditional_Parfait",
+                        "count": 1,
+                        "cost": 300
+                    }
+                ],
+                "Tournament_Water_Gun": [
+                    {
+                        "type": "Pyroxene",
+                        "id": "Pyroxene-600",
+                        "count": 1,
+                        "cost": 20,
+                        "amount": 600
+                    },
+                    {
+                        "type": "Eligma",
+                        "id": "Eligma-5",
+                        "count": 20,
+                        "cost": 2,
+                        "amount": 5
+                    },
+                    {
+                        "type": "SecretTech",
+                        "id": "SecretTech",
+                        "count": 1,
+                        "cost": 20
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Classical_Poetry_Anthology",
+                        "count": 1,
+                        "cost": 5,
+                        "amount": 10
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Encyclopedia",
+                        "count": 1,
+                        "cost": 5,
+                        "amount": 10
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "The_Life_Board_Game",
+                        "count": 1,
+                        "cost": 2
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "My_Sunshineresort_01_Fountain_01",
+                        "count": 1,
+                        "cost": 10,
+                        "limited": false
+                    },
+                    {
+                        "type": "Material",
+                        "id": "250",
+                        "count": 2,
+                        "cost": 1,
+                        "amount": 20
+                    },
+                    {
+                        "type": "Material",
+                        "id": "251",
+                        "count": 3,
+                        "cost": 1,
+                        "amount": 10
+                    },
+                    {
+                        "type": "Material",
+                        "id": "252",
+                        "count": 4,
+                        "cost": 1,
+                        "amount": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "253",
+                        "count": 5,
+                        "cost": 1,
+                        "amount": 2
+                    },
+                    {
+                        "type": "Material",
+                        "id": "190",
+                        "count": 2,
+                        "cost": 1,
+                        "amount": 20
+                    },
+                    {
+                        "type": "Material",
+                        "id": "191",
+                        "count": 3,
+                        "cost": 1,
+                        "amount": 10
+                    },
+                    {
+                        "type": "Material",
+                        "id": "192",
+                        "count": 4,
+                        "cost": 1,
+                        "amount": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "193",
+                        "count": 5,
+                        "cost": 1,
+                        "amount": 2
+                    }
+                ]
+            },
+            "stage_groups": [
+                "1-4",
+                "5-8",
+                "9-12"
+            ],
+            "stages": [
+                {
+                    "type": "Story",
+                    "level": 10,
+                    "number": 1,
+                    "cost": 10,
+                    "initial": {
+                        "Game_Corner_Ticket": 10,
+                        "Helmet_Association_Commemorative_Coin": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 11,
+                    "number": 2,
+                    "cost": 10,
+                    "initial": {
+                        "Game_Corner_Ticket": 10,
+                        "Food_Stall_Menu": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 12,
+                    "number": 3,
+                    "cost": 10,
+                    "initial": {
+                        "Game_Corner_Ticket": 10,
+                        "Helmet_Association_Commemorative_Coin": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 13,
+                    "number": 4,
+                    "cost": 10,
+                    "initial": {
+                        "Game_Corner_Ticket": 10,
+                        "Food_Stall_Menu": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 14,
+                    "number": 5,
+                    "cost": 10,
+                    "initial": {
+                        "Game_Corner_Ticket": 10,
+                        "Helmet_Association_Commemorative_Coin": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 15,
+                    "number": 6,
+                    "cost": 10,
+                    "initial": {
+                        "Game_Corner_Ticket": 10,
+                        "Food_Stall_Menu": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 16,
+                    "number": 7,
+                    "cost": 10,
+                    "initial": {
+                        "Game_Corner_Ticket": 10,
+                        "Helmet_Association_Commemorative_Coin": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 17,
+                    "number": 8,
+                    "cost": 10,
+                    "initial": {
+                        "Game_Corner_Ticket": 10,
+                        "Food_Stall_Menu": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 18,
+                    "number": 9,
+                    "cost": 10,
+                    "initial": {
+                        "Game_Corner_Ticket": 10,
+                        "Helmet_Association_Commemorative_Coin": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 19,
+                    "number": 10,
+                    "cost": 10,
+                    "initial": {
+                        "Game_Corner_Ticket": 10,
+                        "Food_Stall_Menu": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 20,
+                    "number": 11,
+                    "cost": 10,
+                    "initial": {
+                        "Game_Corner_Ticket": 10,
+                        "Helmet_Association_Commemorative_Coin": 20
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 1,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Game_Corner_Ticket": 50,
+                        "Helmet_Association_Commemorative_Coin": 75,
+                        "Food_Stall_Menu": 75
+                    },
+                    "drops": {
+                        "Game_Corner_Ticket": 4,
+                        "Helmet_Association_Commemorative_Coin": 7,
+                        "Food_Stall_Menu": 7,
+                        "Mandragora_1": 0.25,
+                        "Mandragora_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 2,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Helmet_Association_Commemorative_Coin": 100,
+                        "Food_Stall_Menu": 100
+                    },
+                    "drops": {
+                        "Helmet_Association_Commemorative_Coin": 12,
+                        "Food_Stall_Menu": 6,
+                        "Rohonc_1": 0.25,
+                        "Rohonc_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 3,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Helmet_Association_Commemorative_Coin": 100,
+                        "Food_Stall_Menu": 100
+                    },
+                    "drops": {
+                        "Helmet_Association_Commemorative_Coin": 6,
+                        "Food_Stall_Menu": 12,
+                        "Totem_1": 0.25,
+                        "Totem_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 4,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Game_Corner_Ticket": 200
+                    },
+                    "drops": {
+                        "Game_Corner_Ticket": 12,
+                        "Helmet_Association_Commemorative_Coin": 3,
+                        "Food_Stall_Menu": 3,
+                        "Baghdad_1": 0.25,
+                        "Baghdad_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 5,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Game_Corner_Ticket": 50,
+                        "Helmet_Association_Commemorative_Coin": 125,
+                        "Food_Stall_Menu": 125
+                    },
+                    "drops": {
+                        "Game_Corner_Ticket": 3,
+                        "Helmet_Association_Commemorative_Coin": 12,
+                        "Food_Stall_Menu": 12,
+                        "Mandragora_2": 0.25,
+                        "Mandragora_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 6,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Helmet_Association_Commemorative_Coin": 200,
+                        "Food_Stall_Menu": 100
+                    },
+                    "drops": {
+                        "Helmet_Association_Commemorative_Coin": 21,
+                        "Food_Stall_Menu": 6,
+                        "Rohonc_2": 0.25,
+                        "Rohonc_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 7,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Helmet_Association_Commemorative_Coin": 100,
+                        "Food_Stall_Menu": 200
+                    },
+                    "drops": {
+                        "Helmet_Association_Commemorative_Coin": 6,
+                        "Food_Stall_Menu": 21,
+                        "Totem_2": 0.25,
+                        "Totem_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 8,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Game_Corner_Ticket": 200,
+                        "Helmet_Association_Commemorative_Coin": 50,
+                        "Food_Stall_Menu": 50
+                    },
+                    "drops": {
+                        "Game_Corner_Ticket": 21,
+                        "Helmet_Association_Commemorative_Coin": 3,
+                        "Food_Stall_Menu": 3,
+                        "Baghdad_2": 0.25,
+                        "Baghdad_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 9,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Game_Corner_Ticket": 50,
+                        "Helmet_Association_Commemorative_Coin": 175,
+                        "Food_Stall_Menu": 175
+                    },
+                    "drops": {
+                        "Helmet_Association_Commemorative_Coin": 18,
+                        "Food_Stall_Menu": 18,
+                        "Mandragora_2": 0.25,
+                        "Mandragora_3": 0.12,
+                        "Mandragora_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 10,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Game_Corner_Ticket": 50,
+                        "Helmet_Association_Commemorative_Coin": 350
+                    },
+                    "drops": {
+                        "Helmet_Association_Commemorative_Coin": 36,
+                        "Rohonc_2": 0.25,
+                        "Rohonc_3": 0.12,
+                        "Rohonc_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 11,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Game_Corner_Ticket": 50,
+                        "Food_Stall_Menu": 350
+                    },
+                    "drops": {
+                        "Food_Stall_Menu": 36,
+                        "Totem_2": 0.25,
+                        "Totem_3": 0.12,
+                        "Totem_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 12,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Game_Corner_Ticket": 400
+                    },
+                    "drops": {
+                        "Game_Corner_Ticket": 32,
+                        "Helmet_Association_Commemorative_Coin": 2,
+                        "Food_Stall_Menu": 2,
+                        "Baghdad_2": 0.25,
+                        "Baghdad_3": 0.12,
+                        "Baghdad_4": 0.021
+                    }
+                },
+                {
+                    "type": "Challenge",
+                    "level": 50,
+                    "number": 1,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "level": 85,
+                    "number": 2,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "level": 90,
+                    "number": 3,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "level": 90,
+                    "number": 4,
+                    "cost": 5
+                }
+            ]
         }
     }
 }
