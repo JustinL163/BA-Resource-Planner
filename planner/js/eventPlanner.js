@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?63').done(function (json) {
+    $.getJSON('json/events.json?64').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -86,7 +86,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?330').done(function (json) {
+    $.getJSON('json/strings.json?331').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -2887,7 +2887,9 @@ function CalculateStageDrops(result, ignoreRequirement) {
     if (displayIncluded['ShopPurchases']) {
         let intResults = AddShopPurchases(totalArtifacts, totalSchoolMats, totalEleph, totalXps, 0, 0, 0);
         if (intResults) {
-            totalCredit += intResults[0];
+            if (!isNaN(intResults)) {
+                totalCredit += intResults[0];
+            }
             totalEligma += intResults[1];
             totalSecretTech += intResults[2];
         }
