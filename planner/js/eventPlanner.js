@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?64').done(function (json) {
+    $.getJSON('json/events.json?65').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -86,7 +86,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?331').done(function (json) {
+    $.getJSON('json/strings.json?332').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -2926,7 +2926,7 @@ function CalculateStageDrops(result, ignoreRequirement) {
             totalXps["GXP_3"] += minigameRuns;
         }
     }
-    else if (current_event == "hidden-heritage") {
+    else if (current_event == "hidden-heritage-rerun") {
         let tempPoints = totalCurrencies["Event_Point"] - 8000;
         if (midEvent) {
             tempPoints = totalCurrencies["Event_Point"];
