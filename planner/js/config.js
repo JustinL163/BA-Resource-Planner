@@ -291,8 +291,8 @@ class StudentInvestment {
 
             1,
             1,
-            0,
-            0,
+            characterInfo?.StarGrade >= 2 ? 1 : 0,
+            characterInfo?.StarGrade >= 3 ? 1 : 0,
 
             0,
             0,
@@ -306,8 +306,8 @@ class StudentInvestment {
         var defaultTarget = StudentInvestment.Default(characterInfo);
         defaultTarget.ex = inputValidation.ex_target.default;
         defaultTarget.basic = inputValidation.basic_target.default;
-        defaultTarget.passive = inputValidation.passive_target.default;
-        defaultTarget.sub = inputValidation.sub_target.default;
+        defaultTarget.passive = characterInfo?.StarGrade >= 2 ? 1 : inputValidation.passive_target.default;
+        defaultTarget.sub = characterInfo?.StarGrade >= 3 ? 1 : inputValidation.sub_target.default;
 
         defaultTarget.bond = inputValidation.bond_target.default;
         defaultTarget.level = inputValidation.level_target.default;
