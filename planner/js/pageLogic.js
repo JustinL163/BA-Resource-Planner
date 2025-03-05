@@ -3829,7 +3829,8 @@ function getSkillFormatted(charId, skill, level, targetLevel, targetUe) {
             let closeIndex = desc.substring(effectIndex).indexOf(">");
 
             let effectKey = desc.substring(effectIndex + 3, effectIndex + closeIndex);
-            let effectShort = GetBuffName("Buff_" + effectKey);
+            let effectOverwriteQuery = effectKey.match(/='(.+?)'/);
+            let effectShort = effectOverwriteQuery ? effectOverwriteQuery[1] : GetBuffName("Buff_" + effectKey);
 
             let paramRegex = new RegExp("<b:" + effectKey + ">", "g");
             desc = desc.replace(paramRegex, effectShort);
@@ -3839,7 +3840,8 @@ function getSkillFormatted(charId, skill, level, targetLevel, targetUe) {
             let closeIndex = desc.substring(effectIndex).indexOf(">");
 
             let effectKey = desc.substring(effectIndex + 3, effectIndex + closeIndex);
-            let effectShort = GetBuffName("Debuff_" + effectKey);
+            let effectOverwriteQuery = effectKey.match(/='(.+?)'/);
+            let effectShort = effectOverwriteQuery ? effectOverwriteQuery[1] : GetBuffName("Debuff_" + effectKey);
 
             let paramRegex = new RegExp("<d:" + effectKey + ">", "g");
             desc = desc.replace(paramRegex, effectShort);
@@ -3849,7 +3851,8 @@ function getSkillFormatted(charId, skill, level, targetLevel, targetUe) {
             let closeIndex = desc.substring(effectIndex).indexOf(">");
 
             let effectKey = desc.substring(effectIndex + 3, effectIndex + closeIndex);
-            let effectShort = GetBuffName("CC_" + effectKey);
+            let effectOverwriteQuery = effectKey.match(/='(.+?)'/);
+            let effectShort = effectOverwriteQuery ? effectOverwriteQuery[1] : GetBuffName("CC_" + effectKey);
 
             let paramRegex = new RegExp("<c:" + effectKey + ">", "g");
             desc = desc.replace(paramRegex, effectShort);
@@ -3859,7 +3862,8 @@ function getSkillFormatted(charId, skill, level, targetLevel, targetUe) {
             let closeIndex = desc.substring(effectIndex).indexOf(">");
 
             let effectKey = desc.substring(effectIndex + 3, effectIndex + closeIndex);
-            let effectShort = GetBuffName("Special_" + effectKey);
+            let effectOverwriteQuery = effectKey.match(/='(.+?)'/);
+            let effectShort = effectOverwriteQuery ? effectOverwriteQuery[1] : GetBuffName("Special_" + effectKey);
 
             let paramRegex = new RegExp("<s:" + effectKey + ">", "g");
             desc = desc.replace(paramRegex, effectShort);
