@@ -19,7 +19,7 @@ try {
 }
 
 if (data == null) {
-    data = { exportVersion: 2, characters: [], disabled_characters: [], owned_materials: {}, groups: fastDefaultGroups, language: "EN", level_cap: 87 };
+    data = { exportVersion: 2, characters: [], character_order: [], disabled_characters: [], owned_materials: {}, groups: fastDefaultGroups, language: "EN", level_cap: 87 };
     localStorage.setItem("save-data", JSON.stringify(data));
 }
 
@@ -131,6 +131,8 @@ $(document).ready(function () {
                 createCharBox(data.character_order[i], charsContainer, "main", lazy);
                 // }
             }
+        } else {
+            data.character_order = [];
         }
 
         for (var i = 0; i < data.characters.length; i++) {
