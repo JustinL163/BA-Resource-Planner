@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?65').done(function (json) {
+    $.getJSON('json/events.json?66').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -86,7 +86,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?332').done(function (json) {
+    $.getJSON('json/strings.json?333').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -1678,6 +1678,10 @@ function CalculateItemPurchases() {
         }
         else if (current_event == "new-year-march" && shopNames[s] == "Event_Point") {
             event_data.currency_needed["Event_Point"] = totalPurchaseCost;
+        }
+
+        if (current_event == "descent-of-five-senses") {
+            event_data.currency_needed["Moonlight_Festival_Voucher"] = event_data.currency_needed["Moonlight_Festival_Firecrackers"] * 270;
         }
 
         // currencyNeededPre[shopNames[s]] = totalPurchaseCost;

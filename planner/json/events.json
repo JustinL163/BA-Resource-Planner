@@ -1,6 +1,6 @@
 {
     "event_order": [
-        "hidden-heritage-rerun"
+        "descent-of-five-senses"
     ],
     "events": {
         "moonlight-dream": {
@@ -2250,6 +2250,799 @@
                     "type": "XpReport",
                     "id": "XP_4",
                     "count": 10
+                }
+            ]
+        },
+        "descent-of-five-senses": {
+            "active": true,
+            "icon": "Event_840_Jp.png",
+            "display_name": "Descent of the Five Senses",
+            "reset_time": 1742238000,
+            "start_time": 1742263200,
+            "end_time": 1743472800,
+            "maint_hours": 6,
+            "available_targets": [
+                "Shop",
+                "Materials",
+                "Currency",
+                "Manual"
+            ],
+            "currency_targets": ["Moonlight_Festival_Voucher"],
+            "event_point_target": 0,
+            "currencies": {
+                "Moonlight_Festival_Voucher": {
+                    "icon": "Moonlight_Festival_Voucher.png",
+                    "shortname": "Moonlight Festival Voucher",
+                    "source": "StageDrop",
+                    "clear": 18000,
+                    "bonus_units": [
+                        {
+                            "id": "20039",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "10104",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "10025",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10011",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10069",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10070",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20006",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "10002",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "10015",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "10049",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "20023",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "13012",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "23006",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "10090",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "16004",
+                            "bonus": 0.1
+                        }
+                    ]
+                },
+                "Moonlight_Festival_Mooncake": {
+                    "icon": "Moonlight_Festival_Mooncake.png",
+                    "shortname": "Moonlight Festival Mooncake",
+                    "source": "StageDrop",
+                    "clear": 12945,
+                    "bonus_units": [
+                        {
+                            "id": "20039",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "10025",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20002",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10069",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10050",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20006",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10015",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20023",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10090",
+                            "bonus": 0.15
+                        }
+                    ]
+                },
+                "Special_Nutritional_Supplement": {
+                    "icon": "Special_Nutritional_Supplement.png",
+                    "shortname": "Special Nutritional Supplement",
+                    "source": "StageDrop",
+                    "clear": 15650,
+                    "bonus_units": [
+                        {
+                            "id": "10104",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "10011",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20002",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10070",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10050",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10002",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10049",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "13012",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "23006",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16004",
+                            "bonus": 0.15
+                        }
+                    ]
+                },
+                "Moonlight_Festival_Firecrackers": {
+                    "icon": "Moonlight_Festival_Firecrackers.png",
+                    "shortname": "Moonlight Festival Firecrackers",
+                    "source": "MinigameDrop",
+                    "clear": 200,
+                    "bonus_units": []
+                }
+            },
+            "shops": {
+                "Moonlight_Festival_Mooncake": [
+                    {
+                        "type": "XpReport",
+                        "id": "XP_1",
+                        "count": 90,
+                        "cost": 1,
+                        "amount": 3
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_2",
+                        "count": 95,
+                        "cost": 3
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_3",
+                        "count": 30,
+                        "cost": 12
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_4",
+                        "count": 12,
+                        "cost": 60
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3070",
+                        "count": 30,
+                        "cost": 10
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3071",
+                        "count": 18,
+                        "cost": 30
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3072",
+                        "count": 12,
+                        "cost": 100
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3073",
+                        "count": 2,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Material",
+                        "id": "230",
+                        "count": 60,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "231",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "232",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "233",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Classical_Poetry_Anthology",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Cute_Dishware_Set",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Fine_Maple_Bonsai",
+                        "count": 1,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "My_Event072_Throne",
+                        "count": 1,
+                        "cost": 2000,
+                        "limited": true
+                    }
+                ],
+                "Special_Nutritional_Supplement": [
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_1",
+                        "count": 180,
+                        "cost": 1
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_2",
+                        "count": 95,
+                        "cost": 4
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_3",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_4",
+                        "count": 12,
+                        "cost": 60
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4070",
+                        "count": 50,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4071",
+                        "count": 38,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4072",
+                        "count": 25,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4073",
+                        "count": 15,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "290",
+                        "count": 60,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "291",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "292",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "293",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Buried_Treasure_Map",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Health_Food_Supplement",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Thrice-a-day_Dumbbell_Set",
+                        "count": 1,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "My_Event071_Woodendummy",
+                        "count": 1,
+                        "cost": 2000,
+                        "limited": false
+                    }
+                ],
+                "Moonlight_Festival_Firecrackers": [
+                    {
+                        "type": "Pyroxene",
+                        "id": "Pyroxene-1200",
+                        "count": 1,
+                        "cost": 40,
+                        "amount": 1200
+                    },
+                    {
+                        "type": "Eligma",
+                        "id": "Eligma-5",
+                        "count": 20,
+                        "cost": 2,
+                        "amount": 5
+                    },
+                    {
+                        "type": "SecretTech",
+                        "id": "SecretTech",
+                        "count": 1,
+                        "cost": 20
+                    },
+                    {
+                        "type": "Eleph",
+                        "id": 10015,
+                        "count": 40,
+                        "cost": 1
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-500000",
+                        "count": 3,
+                        "cost": 5,
+                        "amount": 500000
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-200000",
+                        "count": 10,
+                        "cost": 3,
+                        "amount": 200000
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-50000",
+                        "count": 15,
+                        "cost": 1,
+                        "amount": 50000
+                    }
+                ]
+            },
+            "stage_groups": [
+                "1-4",
+                "5-8",
+                "9-12"
+            ],
+            "stages": [
+                {
+                    "type": "Story",
+                    "level": 10,
+                    "number": 1,
+                    "cost": 10,
+                    "initial": {
+                        "Moonlight_Festival_Voucher": 200,
+                        "Moonlight_Festival_Mooncake": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 11,
+                    "number": 2,
+                    "cost": 10,
+                    "initial": {
+                        "Moonlight_Festival_Voucher": 200,
+                        "Special_Nutritional_Supplement": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 12,
+                    "number": 3,
+                    "cost": 10,
+                    "initial": {
+                        "Moonlight_Festival_Voucher": 200,
+                        "Moonlight_Festival_Mooncake": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 13,
+                    "number": 4,
+                    "cost": 10,
+                    "initial": {
+                        "Moonlight_Festival_Voucher": 200,
+                        "Special_Nutritional_Supplement": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 14,
+                    "number": 5,
+                    "cost": 10,
+                    "initial": {
+                        "Moonlight_Festival_Voucher": 200,
+                        "Moonlight_Festival_Mooncake": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 15,
+                    "number": 6,
+                    "cost": 10,
+                    "initial": {
+                        "Moonlight_Festival_Voucher": 200,
+                        "Special_Nutritional_Supplement": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 16,
+                    "number": 7,
+                    "cost": 10,
+                    "initial": {
+                        "Moonlight_Festival_Voucher": 200,
+                        "Moonlight_Festival_Mooncake": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 17,
+                    "number": 8,
+                    "cost": 10,
+                    "initial": {
+                        "Moonlight_Festival_Voucher": 200,
+                        "Special_Nutritional_Supplement": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 18,
+                    "number": 9,
+                    "cost": 10,
+                    "initial": {
+                        "Moonlight_Festival_Voucher": 200,
+                        "Moonlight_Festival_Mooncake": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 19,
+                    "number": 10,
+                    "cost": 10,
+                    "initial": {
+                        "Moonlight_Festival_Voucher": 200,
+                        "Special_Nutritional_Supplement": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 20,
+                    "number": 11,
+                    "cost": 10,
+                    "initial": {
+                        "Moonlight_Festival_Voucher": 200,
+                        "Moonlight_Festival_Mooncake": 10
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 1,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Moonlight_Festival_Voucher": 800,
+                        "Moonlight_Festival_Mooncake": 50,
+                        "Special_Nutritional_Supplement": 50
+                    },
+                    "drops": {
+                        "Moonlight_Festival_Voucher": 8,
+                        "Moonlight_Festival_Mooncake": 5,
+                        "Special_Nutritional_Supplement": 5,
+                        "Totem_1": 0.25,
+                        "Totem_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 2,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Moonlight_Festival_Mooncake": 200,
+                        "Special_Nutritional_Supplement": 100
+                    },
+                    "drops": {
+                        "Moonlight_Festival_Voucher": 5,
+                        "Moonlight_Festival_Mooncake": 8,
+                        "Special_Nutritional_Supplement": 5,
+                        "Nebra_1": 0.25,
+                        "Nebra_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 3,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Moonlight_Festival_Mooncake": 100,
+                        "Special_Nutritional_Supplement": 200
+                    },
+                    "drops": {
+                        "Moonlight_Festival_Voucher": 5,
+                        "Moonlight_Festival_Mooncake": 5,
+                        "Special_Nutritional_Supplement": 8,
+                        "Rohonc_1": 0.25,
+                        "Rohonc_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 4,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Moonlight_Festival_Voucher": 1200
+                    },
+                    "drops": {
+                        "Moonlight_Festival_Voucher": 12,
+                        "Moonlight_Festival_Mooncake": 3,
+                        "Special_Nutritional_Supplement": 3,
+                        "Aether_1": 0.25,
+                        "Aether_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 5,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Moonlight_Festival_Voucher": 800,
+                        "Moonlight_Festival_Mooncake": 100,
+                        "Special_Nutritional_Supplement": 100
+                    },
+                    "drops": {
+                        "Moonlight_Festival_Voucher": 15,
+                        "Moonlight_Festival_Mooncake": 6,
+                        "Special_Nutritional_Supplement": 6,
+                        "Totem_2": 0.25,
+                        "Totem_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 6,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Moonlight_Festival_Mooncake": 250,
+                        "Special_Nutritional_Supplement": 150
+                    },
+                    "drops": {
+                        "Moonlight_Festival_Voucher": 6,
+                        "Moonlight_Festival_Mooncake": 15,
+                        "Special_Nutritional_Supplement": 6,
+                        "Nebra_2": 0.25,
+                        "Nebra_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 7,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Moonlight_Festival_Mooncake": 150,
+                        "Special_Nutritional_Supplement": 250
+                    },
+                    "drops": {
+                        "Moonlight_Festival_Voucher": 6,
+                        "Moonlight_Festival_Mooncake": 6,
+                        "Special_Nutritional_Supplement": 15,
+                        "Rohonc_2": 0.25,
+                        "Rohonc_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 8,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Moonlight_Festival_Voucher": 1600
+                    },
+                    "drops": {
+                        "Moonlight_Festival_Voucher": 23,
+                        "Moonlight_Festival_Mooncake": 2,
+                        "Special_Nutritional_Supplement": 2,
+                        "Aether_2": 0.25,
+                        "Aether_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 9,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Moonlight_Festival_Voucher": 1200,
+                        "Moonlight_Festival_Mooncake": 100,
+                        "Special_Nutritional_Supplement": 100
+                    },
+                    "drops": {
+                        "Moonlight_Festival_Voucher": 28,
+                        "Moonlight_Festival_Mooncake": 4,
+                        "Special_Nutritional_Supplement": 4,
+                        "Totem_2": 0.25,
+                        "Totem_3": 0.12,
+                        "Totem_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 10,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Moonlight_Festival_Voucher": 200,
+                        "Moonlight_Festival_Mooncake": 450
+                    },
+                    "drops": {
+                        "Moonlight_Festival_Voucher": 4,
+                        "Moonlight_Festival_Mooncake": 32,
+                        "Nebra_2": 0.25,
+                        "Nebra_3": 0.12,
+                        "Nebra_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 11,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Moonlight_Festival_Voucher": 200,
+                        "Special_Nutritional_Supplement": 450
+                    },
+                    "drops": {
+                        "Moonlight_Festival_Voucher": 4,
+                        "Special_Nutritional_Supplement": 32,
+                        "Rohonc_2": 0.25,
+                        "Rohonc_3": 0.12,
+                        "Rohonc_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 12,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Moonlight_Festival_Voucher": 2000
+                    },
+                    "drops": {
+                        "Moonlight_Festival_Voucher": 36,
+                        "Aether_2": 0.25,
+                        "Aether_3": 0.12,
+                        "Aether_4": 0.021
+                    }
+                },
+                {
+                    "type": "Challenge",
+                    "level": 50,
+                    "number": 1,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "level": 85,
+                    "number": 2,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "level": 90,
+                    "number": 3,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "level": 90,
+                    "number": null,
+                    "cost": 5
                 }
             ]
         }
