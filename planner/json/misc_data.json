@@ -330,6 +330,12 @@
         "10025": [
             "26-3"
         ],
+        "10030": [
+            "27-3"
+        ],
+        "10041": [
+            "28-3"
+        ],
         "13001": [
             "14-2",
             "17-2"
@@ -418,18 +424,21 @@
             "26-2"
         ],
         "23003": [
-            "20-2"
+            "20-2",
+            "27-2"
         ],
         "23005": [
             "18-2",
             "25-2"
         ],
         "23008": [
-            "24-2"
+            "24-2",
+            "28-2"
         ],
         "26002": [
             "19-1",
-            "23-1"
+            "23-1",
+            "28-1"
         ],
         "26003": [
             "20-1",
@@ -437,7 +446,8 @@
         ],
         "26004": [
             "18-1",
-            "22-1"
+            "22-1",
+            "27-1"
         ],
         "26005": [
             "17-1",
@@ -458,6 +468,13 @@
         "10019": "RareRaidToken",
         "10020": "RareRaidToken",
         "20013": "RareRaidToken",
+        "10018": "EliminationRaidToken",
+        "10029": "EliminationRaidToken",
+        "10034": "EliminationRaidToken",
+        "20011": "EliminationRaidToken",
+        "10028": "RareEliminationRaidToken",
+        "20012": "RareEliminationRaidToken",
+        "20015": "RareEliminationRaidToken",
         "20002": "ArenaCoin",
         "20003": "ArenaCoin",
         "23001": "ArenaCoin",
@@ -619,6 +636,16 @@
             "times": 20
         },
         "RareRaidToken": {
+            "amount": 5,
+            "cost": 50,
+            "times": 10
+        },
+        "EliminationRaidToken": {
+            "amount": 5,
+            "cost": 50,
+            "times": 20
+        },
+        "RareEliminationRaidToken": {
             "amount": 5,
             "cost": 50,
             "times": 10
