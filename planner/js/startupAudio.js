@@ -217,7 +217,7 @@ let voiceList = [
     "ch0282_title.mp3"
 ]
 
-let startupAudioPlayed = false;
+let startupAudioPlayed = true;
 
 document.addEventListener('click', (event) => {
     if (!startupAudioPlayed) {
