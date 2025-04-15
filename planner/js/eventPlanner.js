@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?66').done(function (json) {
+    $.getJSON('json/events.json?67').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -86,7 +86,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?333').done(function (json) {
+    $.getJSON('json/strings.json?334').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -2897,6 +2897,13 @@ function CalculateStageDrops(result, ignoreRequirement) {
             totalEligma += intResults[1];
             totalSecretTech += intResults[2];
         }
+        if (current_event == "serenade-promenade") {
+            if (totalEleph["10058"]) {
+                totalEleph["16016"] ??= 0;
+                totalEleph["16016"] += totalEleph["10058"];
+                totalEleph["10058"] = 0;
+            }
+        }
     }
 
     if (event_config.events[current_event].lessons) {
@@ -3377,7 +3384,7 @@ function AddShopPurchases(totalArtifacts, totalSchoolMats, totalEleph, totalXps,
                         totalEleph[items[ii]] = 0;
                     }
 
-                    totalEleph[items[ii]] += (parseInt(shop[items[ii]]));
+                    totalEleph[items[ii]] += (parseInt(shop[items[ii]]) * (shopPurchaseables[items[ii]].amount ?? 1));
 
                 }
             }
