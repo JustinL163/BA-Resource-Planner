@@ -3132,7 +3132,7 @@ function CalculateStageDrops(result, ignoreRequirement) {
             totalEleph["26008"] += 87;
         }
     }
-    else if (current_event == "trip-trap-train") {
+    else if (current_event == "trip-trap-train-rerun") {
         if (!totalXps["XP_1"]) {
             totalXps["XP_1"] = 0;
         }
