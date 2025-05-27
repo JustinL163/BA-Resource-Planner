@@ -433,7 +433,7 @@ function LoadEvent(eventId) {
 
     let enabledStageGroups;
     //TEMP
-    if (current_event == "get-set-go-rerun") {
+    if (current_event == "trip-trap-train-rerun") {
         enabledStageGroups = event_data?.enabled_stage_groups ?? [false, false, true];
     }
     else {
