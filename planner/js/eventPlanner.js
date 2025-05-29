@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?69').done(function (json) {
+    $.getJSON('json/events.json?70').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -435,6 +435,17 @@ function LoadEvent(eventId) {
     //TEMP
     if (current_event == "trip-trap-train-rerun") {
         enabledStageGroups = event_data?.enabled_stage_groups ?? [false, false, true];
+        if (event_data?.currency_needed?.["Event_Point"]) {
+            if (!localStorage.getItem('data-backup2')) {
+                localStorage.setItem('data-backup2', localStorage.getItem('save-data'));
+            }
+            if (event_data?.point_target == undefined) {
+                event_data.point_target = event_data.currency_needed["Event_Point"];
+            }
+            event_data.currency_needed["Event_Point"] = 0;
+            saveToLocalStorage();
+            location.reload();
+        }
     }
     else {
         enabledStageGroups = event_data?.enabled_stage_groups ?? [true, true, true];
