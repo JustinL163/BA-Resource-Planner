@@ -2850,8 +2850,8 @@ const inputValidation = {
         "min": "0",
         "max": "99999",
         "navigation": "direct",
-        "Right": "input-GXP_3",
-        "Down": "input-GXP_3"
+        "Left": "input-GXP_3",
+        "Up": "input-GXP_3"
     },
     "GXP_3": {
         "id": "input-GXP_3",
@@ -2859,10 +2859,10 @@ const inputValidation = {
         "min": "0",
         "max": "99999",
         "navigation": "direct",
-        "Right": "input-GXP_2",
-        "Left": "input-GXP_4",
-        "Down": "input-GXP_2",
-        "Up": "input-GXP_4"
+        "Right": "input-GXP_4",
+        "Left": "input-GXP_2",
+        "Down": "input-GXP_4",
+        "Up": "input-GXP_2"
     },
     "GXP_2": {
         "id": "input-GXP_2",
@@ -2870,10 +2870,10 @@ const inputValidation = {
         "min": "0",
         "max": "99999",
         "navigation": "direct",
-        "Right": "input-GXP_1",
-        "Left": "input-GXP_3",
-        "Down": "input-GXP_1",
-        "Up": "input-GXP_3"
+        "Right": "input-GXP_3",
+        "Left": "input-GXP_1",
+        "Down": "input-GXP_3",
+        "Up": "input-GXP_1"
     },
     "GXP_1": {
         "id": "input-GXP_1",
@@ -2881,8 +2881,8 @@ const inputValidation = {
         "min": "0",
         "max": "99999",
         "navigation": "direct",
-        "Left": "input-GXP_2",
-        "Up": "input-GXP_2"
+        "Right": "input-GXP_2",
+        "Down": "input-GXP_2"
     },
     "T4_Spring": {
         "id": "input-T4_Spring",
