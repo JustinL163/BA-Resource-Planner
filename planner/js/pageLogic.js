@@ -386,10 +386,10 @@ function init() {
     createTable("school-mat-table", ["BD_1", "BD_2", "BD_3", "BD_4", "TN_1", "TN_2", "TN_3", "TN_4"], 0,
         ["Hyakkiyako", "Red Winter", "Trinity", "Gehenna", "Abydos", "Millennium", "Arius", "Shanhaijing", "Valkyrie"], 0,
         tableNavigation, document.getElementById("table-parent-1"), false, "resource", "icons/SchoolMat/", [], "school-");
-    createTable("artifact-table-1", ["4", "3", "2", "1"], 0,
+    createTable("artifact-table-1", ["1", "2", "3", "4"], 0,
         ["Nebra", "Phaistos", "Wolfsegg", "Nimrud", "Mandragora", "Rohonc", "Aether", "Antikythera", "Voynich", "Haniwa"], 9,
         tableNavigation, document.getElementById("table-parent-2"), true, "resource", "icons/Artifact/", [], "artifact-");
-    createTable("artifact-table-2", ["4", "3", "2", "1"], 4,
+    createTable("artifact-table-2", ["1", "2", "3", "4"], 4,
         ["Totem", "Baghdad", "Fleece", "Okiku", "Colgante", "Atlantis", "RomanDice", "Quimbaya", "Rocket", "Mystery"], 9,
         tableNavigation, document.getElementById("table-parent-3"), true, "resource", "icons/Artifact/", [], "artifact-");
 
