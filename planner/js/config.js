@@ -2284,8 +2284,8 @@ const inputValidation = {
         "min": "0",
         "max": "10000000000",
         "navigation": "direct",
-        "Right": "input-XP_4",
-        "Down": "input-XP_4"
+        "Right": "input-XP_1",
+        "Down": "input-XP_1"
     },
     "Secret": {
         "id": "input-Secret",
@@ -2293,8 +2293,8 @@ const inputValidation = {
         "min": "0",
         "max": "99",
         "navigation": "direct",
-        "Left": "input-XP_4",
-        "Up": "input-XP_4"
+        "Left": "input-XP_1",
+        "Up": "input-XP_1"
     },
     "XP_4": {
         "id": "input-XP_4",
@@ -2302,10 +2302,10 @@ const inputValidation = {
         "min": "0",
         "max": "99999",
         "navigation": "direct",
-        "Right": "input-XP_3",
-        "Left": "input-Credit",
+        "Right": "input-Secret",
+        "Left": "input-XP_3",
         "Up": "input-Credit",
-        "Down": "input-XP_3"
+        "Down": "input-Secret"
     },
     "XP_3": {
         "id": "input-XP_3",
@@ -2313,10 +2313,10 @@ const inputValidation = {
         "min": "0",
         "max": "99999",
         "navigation": "direct",
-        "Right": "input-XP_2",
-        "Left": "input-XP_4",
+        "Right": "input-XP_4",
+        "Left": "input-XP_2",
         "Up": "input-Credit",
-        "Down": "input-XP_2"
+        "Down": "input-XP_4"
     },
     "XP_2": {
         "id": "input-XP_2",
@@ -2324,10 +2324,10 @@ const inputValidation = {
         "min": "0",
         "max": "99999",
         "navigation": "direct",
-        "Right": "input-XP_1",
-        "Left": "input-XP_3",
+        "Right": "input-XP_3",
+        "Left": "input-XP_1",
         "Up": "input-Credit",
-        "Down": "input-XP_1"
+        "Down": "input-XP_3"
     },
     "XP_1": {
         "id": "input-XP_1",
@@ -2335,10 +2335,10 @@ const inputValidation = {
         "min": "0",
         "max": "99999",
         "navigation": "direct",
-        "Right": "input-Secret",
-        "Left": "input-XP_2",
+        "Right": "input-XP_2",
+        "Left": "input-Credit",
         "Up": "input-Credit",
-        "Down": "input-Secret"
+        "Down": "input-XP_2"
     },
     "T2_Hat": {
         "id": "input-T2_Hat",
