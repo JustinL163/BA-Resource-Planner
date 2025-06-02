@@ -1117,7 +1117,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Right": "input-BD_4_Millennium"
+        "Left": "input-BD_4_Gehenna"
     },
     "BD_1_Gehenna": {
         "id": "input-BD_1_Gehenna",
@@ -1125,7 +1125,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Right": "input-BD_4_Abydos"
+        "Left": "input-BD_4_Trinity"
     },
     "BD_1_Millennium": {
         "id": "input-BD_1_Millennium",
@@ -1133,7 +1133,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Right": "input-BD_4_Arius"
+        "Left": "input-BD_4_Abydos"
     },
     "BD_1_Trinity": {
         "id": "input-BD_1_Trinity",
@@ -1141,16 +1141,14 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Right": "input-BD_4_Gehenna"
+        "Left": "input-BD_4_RedWinter"
     },
     "BD_1_Hyakkiyako": {
         "id": "input-BD_1_Hyakkiyako",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable",
-        "Right": "input-BD_4_RedWinter",
-        "Up": "input-BD_2_Valkyrie"
+        "navigation": "resourceTable"
     },
     "BD_1_Shanhaijing": {
         "id": "input-BD_1_Shanhaijing",
@@ -1158,7 +1156,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Right": "input-BD_4_Valkyrie"
+        "Left": "input-BD_4_Arius"
     },
     "BD_1_Arius": {
         "id": "input-BD_1_Arius",
@@ -1166,7 +1164,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Right": "input-BD_4_Shanhaijing"
+        "Left": "input-BD_4_Millennium"
     },
     "BD_1_RedWinter": {
         "id": "input-BD_1_RedWinter",
@@ -1174,7 +1172,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Right": "input-BD_4_Trinity"
+        "Left": "input-BD_4_Hyakkiyako"
     },
     "BD_1_Valkyrie": {
         "id": "input-BD_1_Valkyrie",
@@ -1182,8 +1180,8 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Right": "input-TN_4_Hyakkiyako",
-        "Down": "input-TN_4_Hyakkiyako"
+        "Left": "input-BD_4_Shanhaijing",
+        "Down": "input-BD_2_Hyakkiyako"
     },
     "BD_2_Abydos": {
         "id": "input-BD_2_Abydos",
@@ -1219,7 +1217,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Up": "input-BD_3_Valkyrie"
+        "Up": "input-BD_1_Valkyrie"
     },
     "BD_2_Shanhaijing": {
         "id": "input-BD_2_Shanhaijing",
@@ -1248,7 +1246,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Down": "input-BD_1_Hyakkiyako"
+        "Down": "input-BD_3_Hyakkiyako"
     },
     "BD_3_Abydos": {
         "id": "input-BD_3_Abydos",
@@ -1284,7 +1282,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Up": "input-BD_4_Valkyrie"
+        "Up": "input-BD_2_Valkyrie"
     },
     "BD_3_Shanhaijing": {
         "id": "input-BD_3_Shanhaijing",
@@ -1313,7 +1311,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Down": "input-BD_2_Hyakkiyako"
+        "Down": "input-BD_4_Hyakkiyako"
     },
     "BD_4_Abydos": {
         "id": "input-BD_4_Abydos",
@@ -1321,7 +1319,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Left": "input-BD_1_Gehenna"
+        "Right": "input-BD_1_Millennium"
     },
     "BD_4_Gehenna": {
         "id": "input-BD_4_Gehenna",
@@ -1329,7 +1327,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Left": "input-BD_1_Trinity"
+        "Right": "input-BD_1_Abydos"
     },
     "BD_4_Millennium": {
         "id": "input-BD_4_Millennium",
@@ -1337,7 +1335,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Left": "input-BD_1_Abydos"
+        "Right": "input-BD_1_Arius"
     },
     "BD_4_Trinity": {
         "id": "input-BD_4_Trinity",
@@ -1345,14 +1343,16 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Left": "input-BD_1_RedWinter"
+        "Right": "input-BD_1_Gehenna"
     },
     "BD_4_Hyakkiyako": {
         "id": "input-BD_4_Hyakkiyako",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Right": "input-BD_1_RedWinter",
+        "Up": "input-BD_3_Valkyrie"
     },
     "BD_4_Shanhaijing": {
         "id": "input-BD_4_Shanhaijing",
@@ -1360,7 +1360,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Left": "input-BD_1_Arius"
+        "Right": "input-BD_1_Valkyrie"
     },
     "BD_4_Arius": {
         "id": "input-BD_4_Arius",
@@ -1368,7 +1368,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Left": "input-BD_1_Millennium"
+        "Right": "input-BD_1_Shanhaijing"
     },
     "BD_4_RedWinter": {
         "id": "input-BD_4_RedWinter",
@@ -1376,7 +1376,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Left": "input-BD_1_Hyakkiyako"
+        "Right": "input-BD_1_Trinity"
     },
     "BD_4_Valkyrie": {
         "id": "input-BD_4_Valkyrie",
@@ -1384,8 +1384,8 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Left": "input-BD_1_Shanhaijing",
-        "Down": "input-BD_3_Hyakkiyako"
+        "Right": "input-TN_1_Hyakkiyako",
+        "Down": "input-TN_1_Hyakkiyako"
     },
     "TN_1_Abydos": {
         "id": "input-TN_1_Abydos",
@@ -1393,7 +1393,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-TN_4_Millennium"
+        "Left": "input-TN_4_Gehenna"
     },
     "TN_1_Gehenna": {
         "id": "input-TN_1_Gehenna",
@@ -1401,7 +1401,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-TN_4_Abydos"
+        "Left": "input-TN_4_Trinity"
     },
     "TN_1_Millennium": {
         "id": "input-TN_1_Millennium",
@@ -1409,7 +1409,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-TN_4_Arius"
+        "Left": "input-TN_4_Abydos"
     },
     "TN_1_Trinity": {
         "id": "input-TN_1_Trinity",
@@ -1417,7 +1417,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-TN_4_Gehenna"
+        "Left": "input-TN_4_RedWinter"
     },
     "TN_1_Hyakkiyako": {
         "id": "input-TN_1_Hyakkiyako",
@@ -1425,8 +1425,8 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-TN_4_RedWinter",
-        "Up": "input-TN_2_Valkyrie"
+        "Left": "input-BD_4_Valkyrie",
+        "Up": "input-BD_4_Valkyrie"
     },
     "TN_1_Shanhaijing": {
         "id": "input-TN_1_Shanhaijing",
@@ -1434,7 +1434,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-TN_4_Valkyrie"
+        "Left": "input-TN_4_Arius"
     },
     "TN_1_Arius": {
         "id": "input-TN_1_Arius",
@@ -1442,7 +1442,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-TN_4_Shanhaijing"
+        "Left": "input-TN_4_Millennium"
     },
     "TN_1_RedWinter": {
         "id": "input-TN_1_RedWinter",
@@ -1450,7 +1450,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-TN_4_Trinity"
+        "Left": "input-TN_4_Hyakkiyako"
     },
     "TN_1_Valkyrie": {
         "id": "input-TN_1_Valkyrie",
@@ -1458,8 +1458,8 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-Nebra_4",
-        "Down": "input-Nebra_4"
+        "Left": "input-TN_4_Shanhaijing",
+        "Down": "input-TN_2_Hyakkiyako"
     },
     "TN_2_Abydos": {
         "id": "input-TN_2_Abydos",
@@ -1495,7 +1495,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Up": "input-TN_3_Valkyrie"
+        "Up": "input-TN_1_Valkyrie"
     },
     "TN_2_Shanhaijing": {
         "id": "input-TN_2_Shanhaijing",
@@ -1524,7 +1524,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Down": "input-TN_1_Hyakkiyako"
+        "Down": "input-TN_3_Hyakkiyako"
     },
     "TN_3_Abydos": {
         "id": "input-TN_3_Abydos",
@@ -1560,7 +1560,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Up": "input-TN_4_Valkyrie"
+        "Up": "input-TN_2_Valkyrie"
     },
     "TN_3_Shanhaijing": {
         "id": "input-TN_3_Shanhaijing",
@@ -1589,7 +1589,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Down": "input-TN_2_Hyakkiyako"
+        "Down": "input-TN_4_Hyakkiyako"
     },
     "TN_4_Abydos": {
         "id": "input-TN_4_Abydos",
@@ -1597,7 +1597,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Left": "input-TN_1_Gehenna"
+        "Right": "input-TN_1_Millennium"
     },
     "TN_4_Gehenna": {
         "id": "input-TN_4_Gehenna",
@@ -1605,7 +1605,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Left": "input-TN_1_Trinity"
+        "Right": "input-TN_1_Abydos"
     },
     "TN_4_Millennium": {
         "id": "input-TN_4_Millennium",
@@ -1613,7 +1613,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Left": "input-TN_1_Abydos"
+        "Right": "input-TN_1_Arius"
     },
     "TN_4_Trinity": {
         "id": "input-TN_4_Trinity",
@@ -1621,7 +1621,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Left": "input-TN_1_RedWinter"
+        "Right": "input-TN_1_Gehenna"
     },
     "TN_4_Hyakkiyako": {
         "id": "input-TN_4_Hyakkiyako",
@@ -1629,8 +1629,8 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Left": "input-BD_1_Valkyrie",
-        "Up": "input-BD_1_Valkyrie"
+        "Right": "input-TN_1_RedWinter",
+        "Up": "input-TN_3_Valkyrie"
     },
     "TN_4_Shanhaijing": {
         "id": "input-TN_4_Shanhaijing",
@@ -1638,7 +1638,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Left": "input-TN_1_Arius"
+        "Right": "input-TN_1_Valkyrie"
     },
     "TN_4_Arius": {
         "id": "input-TN_4_Arius",
@@ -1646,7 +1646,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Left": "input-TN_1_Millennium"
+        "Right": "input-TN_1_Shanhaijing"
     },
     "TN_4_RedWinter": {
         "id": "input-TN_4_RedWinter",
@@ -1654,7 +1654,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Left": "input-TN_1_Hyakkiyako"
+        "Right": "input-TN_1_Trinity"
     },
     "TN_4_Valkyrie": {
         "id": "input-TN_4_Valkyrie",
@@ -1662,8 +1662,8 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Left": "input-TN_1_Shanhaijing",
-        "Down": "input-TN_3_Hyakkiyako"
+        "Right": "input-Nebra_1",
+        "Down": "input-Nebra_1"
     },
     "Nebra_1": {
         "id": "input-Nebra_1",
@@ -1671,8 +1671,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-Phaistos_4",
-        "Up": "input-Haniwa_2"
+        "Up": "input-TN_4_Valkyrie"
     },
     "Nebra_2": {
         "id": "input-Nebra_2",
@@ -1680,7 +1679,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Up": "input-Haniwa_3"
+        "Up": "input-Haniwa_1"
     },
     "Nebra_3": {
         "id": "input-Nebra_3",
@@ -1688,7 +1687,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Up": "input-Haniwa_4"
+        "Up": "input-Haniwa_2"
     },
     "Nebra_4": {
         "id": "input-Nebra_4",
@@ -1696,7 +1695,8 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Up": "input-TN_1_Valkyrie"
+        "Up": "input-Haniwa_3",
+        "Right": "input-Phaistos_1"
     },
     "Phaistos_1": {
         "id": "input-Phaistos_1",
@@ -1704,7 +1704,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-Wolfsegg_4"
+        "Left": "input-Nebra_4"
     },
     "Phaistos_2": {
         "id": "input-Phaistos_2",
@@ -1726,7 +1726,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Left": "input-Nebra_1"
+        "Right": "input-Wolfsegg_1"
     },
     "Wolfsegg_1": {
         "id": "input-Wolfsegg_1",
@@ -1734,7 +1734,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-Nimrud_4"
+        "Left": "input-Phaistos_4"
     },
     "Wolfsegg_2": {
         "id": "input-Wolfsegg_2",
@@ -1756,7 +1756,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Left": "input-Phaistos_1"
+        "Right": "input-Nimrud_1"
     },
     "Nimrud_1": {
         "id": "input-Nimrud_1",
@@ -1764,7 +1764,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-Mandragora_4"
+        "Left": "input-Wolfsegg_4"
     },
     "Nimrud_2": {
         "id": "input-Nimrud_2",
@@ -1786,7 +1786,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Left": "input-Wolfsegg_1"
+        "Right": "input-Mandragora_1"
     },
     "Mandragora_1": {
         "id": "input-Mandragora_1",
@@ -1794,7 +1794,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-Rohonc_4"
+        "Left": "input-Nimrud_4"
     },
     "Mandragora_2": {
         "id": "input-Mandragora_2",
@@ -1816,7 +1816,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Left": "input-Nimrud_1"
+        "Right": "input-Rohonc_1"
     },
     "Rohonc_1": {
         "id": "input-Rohonc_1",
@@ -1824,7 +1824,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-Aether_4"
+        "Left": "input-Mandragora_4"
     },
     "Rohonc_2": {
         "id": "input-Rohonc_2",
@@ -1846,7 +1846,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Left": "input-Mandragora_1"
+        "Right": "input-Aether_1"
     },
     "Aether_1": {
         "id": "input-Aether_1",
@@ -1854,7 +1854,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-Antikythera_4"
+        "Left": "input-Rohonc_4"
     },
     "Aether_2": {
         "id": "input-Aether_2",
@@ -1876,7 +1876,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Left": "input-Rohonc_1"
+        "Right": "input-Antikythera_1"
     },
     "Antikythera_1": {
         "id": "input-Antikythera_1",
@@ -1884,21 +1884,21 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-Voynich_4"
+        "Left": "input-Aether_4"
     },
     "Antikythera_2": {
         "id": "input-Antikythera_2",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable",
+        "navigation": "resourceTable"
     },
     "Antikythera_3": {
         "id": "input-Antikythera_3",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable",
+        "navigation": "resourceTable"
     },
     "Antikythera_4": {
         "id": "input-Antikythera_4",
@@ -1906,7 +1906,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Left": "input-Aether_1",
+        "Right": "input-Voynich_1"
     },
     "Voynich_1": {
         "id": "input-Voynich_1",
@@ -1914,7 +1914,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-Haniwa_4"
+        "Left": "input-Antikythera_4"
     },
     "Voynich_2": {
         "id": "input-Voynich_2",
@@ -1936,7 +1936,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Left": "input-Antikythera_1"
+        "Right": "input-Haniwa_1"
     },
     "Haniwa_1": {
         "id": "input-Haniwa_1",
@@ -1944,8 +1944,8 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-Totem_4",
-        "Down": "input-Totem_4"
+        "Left": "input-Voynich_4",
+        "Down": "input-Nebra_2"
     },
     "Haniwa_2": {
         "id": "input-Haniwa_2",
@@ -1953,7 +1953,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Down": "input-Nebra_1"
+        "Down": "input-Nebra_3"
     },
     "Haniwa_3": {
         "id": "input-Haniwa_3",
@@ -1961,7 +1961,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Down": "input-Nebra_2"
+        "Down": "input-Nebra_4"
     },
     "Haniwa_4": {
         "id": "input-Haniwa_4",
@@ -1969,8 +1969,8 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Down": "input-Nebra_3",
-        "Left": "input-Voynich_1"
+        "Down": "input-Totem_1",
+        "Right": "input-Totem_1"
     },
     "Baghdad_1": {
         "id": "input-Baghdad_1",
@@ -1978,7 +1978,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-Colgante_4"
+        "Left": "input-Totem_4"
     },
     "Baghdad_2": {
         "id": "input-Baghdad_2",
@@ -2000,7 +2000,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Left": "input-Totem_1"
+        "Right": "input-Fleece_1"
     },
     "Fleece_1": {
         "id": "input-Fleece_1",
@@ -2008,7 +2008,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-Rocket_4"
+        "Left": "input-Baghdad_4"
     },
     "Fleece_2": {
         "id": "input-Fleece_2",
@@ -2030,7 +2030,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Left": "input-RomanDice_1"
+        "Right": "input-Okiku_1"
     },
     "Rocket_1": {
         "id": "input-Rocket_1",
@@ -2038,7 +2038,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-Quimbaya_4"
+        "Left": "input-Quimbaya_4"
     },
     "Rocket_2": {
         "id": "input-Rocket_2",
@@ -2060,30 +2060,29 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Left": "input-Fleece_1"
+        "Right": "input-Mystery_1"
     },
     "Quimbaya_1": {
         "id": "input-Quimbaya_1",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Left": "input-RomanDice_4"
     },
     "Quimbaya_2": {
         "id": "input-Quimbaya_2",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable",
-        "Down": "input-Totem_1"
+        "navigation": "resourceTable"
     },
     "Quimbaya_3": {
         "id": "input-Quimbaya_3",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable",
-        "Down": "input-Totem_2"
+        "navigation": "resourceTable"
     },
     "Quimbaya_4": {
         "id": "input-Quimbaya_4",
@@ -2091,8 +2090,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Down": "input-Totem_3",
-        "Left": "input-Rocket_1"
+        "Right": "input-Rocket_1"
     },
     "Totem_1": {
         "id": "input-Totem_1",
@@ -2100,8 +2098,8 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-Baghdad_4",
-        "Up": "input-Quimbaya_2"
+        "Left": "input-Haniwa_4",
+        "Up": "input-Haniwa_4"
     },
     "Totem_2": {
         "id": "input-Totem_2",
@@ -2109,7 +2107,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Up": "input-Quimbaya_3"
+        "Up": "input-Mystery_1"
     },
     "Totem_3": {
         "id": "input-Totem_3",
@@ -2117,7 +2115,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Up": "input-Quimbaya_4"
+        "Up": "input-Mystery_2"
     },
     "Totem_4": {
         "id": "input-Totem_4",
@@ -2125,8 +2123,8 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Left": "input-Haniwa_1",
-        "Up": "input-Haniwa_1"
+        "Right": "input-Baghdad_1",
+        "Up": "input-Mystery_3"
     },
     "Okiku_1": {
         "id": "input-Okiku_1",
@@ -2134,7 +2132,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-Atlantis_4"
+        "Left": "input-Fleece_4"
     },
     "Okiku_2": {
         "id": "input-Okiku_2",
@@ -2156,7 +2154,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Left": "input-Mystery_1"
+        "Right": "input-Colgante_1"
     },
     "Atlantis_1": {
         "id": "input-Atlantis_1",
@@ -2164,7 +2162,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-RomanDice_4"
+        "Left": "input-Colgante_4"
     },
     "Atlantis_2": {
         "id": "input-Atlantis_2",
@@ -2186,7 +2184,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Left": "input-Okiku_1"
+        "Right": "input-RomanDice_1"
     },
     "Colgante_1": {
         "id": "input-Colgante_1",
@@ -2194,7 +2192,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-Mystery_4"
+        "Left": "input-Okiku_4"
     },
     "Colgante_2": {
         "id": "input-Colgante_2",
@@ -2216,7 +2214,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Left": "input-Baghdad_1"
+        "Right": "input-Atlantis_1"
     },
     "RomanDice_1": {
         "id": "input-RomanDice_1",
@@ -2224,7 +2222,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-Fleece_4"
+        "Left": "input-Atlantis_4"
     },
     "RomanDice_2": {
         "id": "input-RomanDice_2",
@@ -2246,7 +2244,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Left": "input-Atlantis_1"
+        "Right": "input-Quimbaya_1"
     },
     "Mystery_1": {
         "id": "input-Mystery_1",
@@ -2254,29 +2252,31 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Right": "input-Okiku_4"
+        "Left": "input-Rocket_4",
+        "Down": "input-Totem_2"
     },
     "Mystery_2": {
         "id": "input-Mystery_2",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Down": "input-Totem_3"
     },
     "Mystery_3": {
         "id": "input-Mystery_3",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable"
+        "navigation": "resourceTable",
+        "Down": "input-Totem_4"
     },
     "Mystery_4": {
         "id": "input-Mystery_4",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
-        "navigation": "resourceTable",
-        "Left": "input-Colgante_1"
+        "navigation": "resourceTable"
     },
     "Credit": {
         "id": "input-Credit",
@@ -2284,8 +2284,8 @@ const inputValidation = {
         "min": "0",
         "max": "10000000000",
         "navigation": "direct",
-        "Right": "input-XP_4",
-        "Down": "input-XP_4"
+        "Right": "input-XP_1",
+        "Down": "input-XP_1"
     },
     "Secret": {
         "id": "input-Secret",
@@ -2293,8 +2293,8 @@ const inputValidation = {
         "min": "0",
         "max": "99",
         "navigation": "direct",
-        "Left": "input-XP_4",
-        "Up": "input-XP_4"
+        "Left": "input-XP_1",
+        "Up": "input-XP_1"
     },
     "XP_4": {
         "id": "input-XP_4",
@@ -2302,10 +2302,10 @@ const inputValidation = {
         "min": "0",
         "max": "99999",
         "navigation": "direct",
-        "Right": "input-XP_3",
-        "Left": "input-Credit",
+        "Right": "input-Secret",
+        "Left": "input-XP_3",
         "Up": "input-Credit",
-        "Down": "input-XP_3"
+        "Down": "input-Secret"
     },
     "XP_3": {
         "id": "input-XP_3",
@@ -2313,10 +2313,10 @@ const inputValidation = {
         "min": "0",
         "max": "99999",
         "navigation": "direct",
-        "Right": "input-XP_2",
-        "Left": "input-XP_4",
+        "Right": "input-XP_4",
+        "Left": "input-XP_2",
         "Up": "input-Credit",
-        "Down": "input-XP_2"
+        "Down": "input-XP_4"
     },
     "XP_2": {
         "id": "input-XP_2",
@@ -2324,10 +2324,10 @@ const inputValidation = {
         "min": "0",
         "max": "99999",
         "navigation": "direct",
-        "Right": "input-XP_1",
-        "Left": "input-XP_3",
+        "Right": "input-XP_3",
+        "Left": "input-XP_1",
         "Up": "input-Credit",
-        "Down": "input-XP_1"
+        "Down": "input-XP_3"
     },
     "XP_1": {
         "id": "input-XP_1",
@@ -2335,10 +2335,10 @@ const inputValidation = {
         "min": "0",
         "max": "99999",
         "navigation": "direct",
-        "Right": "input-Secret",
-        "Left": "input-XP_2",
+        "Right": "input-XP_2",
+        "Left": "input-Credit",
         "Up": "input-Credit",
-        "Down": "input-Secret"
+        "Down": "input-XP_2"
     },
     "T2_Hat": {
         "id": "input-T2_Hat",
@@ -2850,8 +2850,8 @@ const inputValidation = {
         "min": "0",
         "max": "99999",
         "navigation": "direct",
-        "Right": "input-GXP_3",
-        "Down": "input-GXP_3"
+        "Left": "input-GXP_3",
+        "Up": "input-GXP_3"
     },
     "GXP_3": {
         "id": "input-GXP_3",
@@ -2859,10 +2859,10 @@ const inputValidation = {
         "min": "0",
         "max": "99999",
         "navigation": "direct",
-        "Right": "input-GXP_2",
-        "Left": "input-GXP_4",
-        "Down": "input-GXP_2",
-        "Up": "input-GXP_4"
+        "Right": "input-GXP_4",
+        "Left": "input-GXP_2",
+        "Down": "input-GXP_4",
+        "Up": "input-GXP_2"
     },
     "GXP_2": {
         "id": "input-GXP_2",
@@ -2870,10 +2870,10 @@ const inputValidation = {
         "min": "0",
         "max": "99999",
         "navigation": "direct",
-        "Right": "input-GXP_1",
-        "Left": "input-GXP_3",
-        "Down": "input-GXP_1",
-        "Up": "input-GXP_3"
+        "Right": "input-GXP_3",
+        "Left": "input-GXP_1",
+        "Down": "input-GXP_3",
+        "Up": "input-GXP_1"
     },
     "GXP_1": {
         "id": "input-GXP_1",
@@ -2881,8 +2881,8 @@ const inputValidation = {
         "min": "0",
         "max": "99999",
         "navigation": "direct",
-        "Left": "input-GXP_2",
-        "Up": "input-GXP_2"
+        "Right": "input-GXP_2",
+        "Down": "input-GXP_2"
     },
     "T4_Spring": {
         "id": "input-T4_Spring",
@@ -2890,8 +2890,10 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "direct",
-        "Right": "input-T3_Spring",
-        "Down": "input-T4_Hammer"
+        "Left": "input-T3_Spring",
+        "Right": "input-T1_Hammer",
+        "Down": "input-T4_Hammer",
+        "Up": "input-T3_Needle"
     },
     "T3_Spring": {
         "id": "input-T3_Spring",
@@ -2899,10 +2901,10 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "direct",
-        "Left": "input-T4_Spring",
-        "Right": "input-T2_Spring",
+        "Left": "input-T2_Spring",
+        "Right": "input-T4_Spring",
         "Down": "input-T3_Hammer",
-        "Up": "input-T4_Needle"
+        "Up": "input-T2_Needle"
     },
     "T2_Spring": {
         "id": "input-T2_Spring",
@@ -2910,10 +2912,10 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "direct",
-        "Left": "input-T3_Spring",
-        "Right": "input-T1_Spring",
+        "Left": "input-T1_Spring",
+        "Right": "input-T3_Spring",
         "Down": "input-T2_Hammer",
-        "Up": "input-T3_Needle"
+        "Up": "input-T1_Needle"
     },
     "T1_Spring": {
         "id": "input-T1_Spring",
@@ -2921,10 +2923,8 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "direct",
-        "Left": "input-T2_Spring",
-        "Right": "input-T4_Hammer",
-        "Down": "input-T1_Hammer",
-        "Up": "input-T2_Needle"
+        "Right": "input-T2_Spring",
+        "Down": "input-T1_Hammer"
     },
     "T4_Hammer": {
         "id": "input-T4_Hammer",
@@ -2932,8 +2932,8 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "direct",
-        "Left": "input-T1_Spring",
-        "Right": "input-T3_Hammer",
+        "Left": "input-T3_Hammer",
+        "Right": "input-T1_Barrel",
         "Down": "input-T4_Barrel",
         "Up": "input-T4_Spring"
     },
@@ -2943,8 +2943,8 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "direct",
-        "Left": "input-T4_Hammer",
-        "Right": "input-T2_Hammer",
+        "Left": "input-T2_Hammer",
+        "Right": "input-T4_Hammer",
         "Down": "input-T3_Barrel",
         "Up": "input-T3_Spring"
     },
@@ -2954,8 +2954,8 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "direct",
-        "Left": "input-T3_Hammer",
-        "Right": "input-T1_Hammer",
+        "Left": "input-T1_Hammer",
+        "Right": "input-T3_Hammer",
         "Down": "input-T2_Barrel",
         "Up": "input-T2_Spring"
     },
@@ -2965,8 +2965,8 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "direct",
-        "Left": "input-T2_Hammer",
-        "Right": "input-T4_Barrel",
+        "Left": "input-T4_Spring",
+        "Right": "input-T2_Hammer",
         "Down": "input-T1_Barrel",
         "Up": "input-T1_Spring"
     },
@@ -2976,8 +2976,8 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "direct",
-        "Left": "input-T1_Hammer",
-        "Right": "input-T3_Barrel",
+        "Left": "input-T3_Barrel",
+        "Right": "input-T1_Needle",
         "Down": "input-T4_Needle",
         "Up": "input-T4_Hammer"
     },
@@ -2987,8 +2987,8 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "direct",
-        "Left": "input-T4_Barrel",
-        "Right": "input-T2_Barrel",
+        "Left": "input-T2_Barrel",
+        "Right": "input-T4_Barrel",
         "Down": "input-T3_Needle",
         "Up": "input-T3_Hammer"
     },
@@ -2998,8 +2998,8 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "direct",
-        "Left": "input-T3_Barrel",
-        "Right": "input-T1_Barrel",
+        "Left": "input-T1_Barrel",
+        "Right": "input-T3_Barrel",
         "Down": "input-T2_Needle",
         "Up": "input-T2_Hammer"
     },
@@ -3009,8 +3009,8 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "direct",
-        "Left": "input-T2_Barrel",
-        "Right": "input-T4_Needle",
+        "Left": "input-T4_Hammer",
+        "Right": "input-T2_Barrel",
         "Down": "input-T1_Needle",
         "Up": "input-T1_Hammer"
     },
@@ -3020,9 +3020,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "direct",
-        "Left": "input-T1_Barrel",
-        "Right": "input-T3_Needle",
-        "Down": "input-T3_Spring",
+        "Left": "input-T3_Needle",
         "Up": "input-T4_Barrel"
     },
     "T3_Needle": {
@@ -3031,9 +3029,9 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "direct",
-        "Left": "input-T4_Needle",
-        "Right": "input-T2_Needle",
-        "Down": "input-T2_Spring",
+        "Left": "input-T2_Needle",
+        "Right": "input-T4_Needle",
+        "Down": "input-T4_Spring",
         "Up": "input-T3_Barrel"
     },
     "T2_Needle": {
@@ -3042,9 +3040,9 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "direct",
-        "Left": "input-T3_Needle",
-        "Right": "input-T1_Needle",
-        "Down": "input-T1_Spring",
+        "Left": "input-T1_Needle",
+        "Right": "input-T3_Needle",
+        "Down": "input-T3_Spring",
         "Up": "input-T2_Barrel"
     },
     "T1_Needle": {
@@ -3053,7 +3051,9 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "direct",
-        "Left": "input-T2_Needle",
+        "Left": "input-T4_Barrel",
+        "Right": "input-T2_Needle",
+        "Down": "input-T2_Spring",
         "Up": "input-T1_Barrel"
     },
     "Eleph_Owned": {

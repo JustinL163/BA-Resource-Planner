@@ -383,18 +383,18 @@ function init() {
     let tableNavigation = [];
 
     // generate resource modal tables
-    createTable("school-mat-table", ["BD_4", "BD_3", "BD_2", "BD_1", "TN_4", "TN_3", "TN_2", "TN_1"], 0,
+    createTable("school-mat-table", ["BD_1", "BD_2", "BD_3", "BD_4", "TN_1", "TN_2", "TN_3", "TN_4"], 0,
         ["Hyakkiyako", "Red Winter", "Trinity", "Gehenna", "Abydos", "Millennium", "Arius", "Shanhaijing", "Valkyrie"], 0,
         tableNavigation, document.getElementById("table-parent-1"), false, "resource", "icons/SchoolMat/", [], "school-");
-    createTable("artifact-table-1", ["4", "3", "2", "1"], 0,
+    createTable("artifact-table-1", ["1", "2", "3", "4"], 0,
         ["Nebra", "Phaistos", "Wolfsegg", "Nimrud", "Mandragora", "Rohonc", "Aether", "Antikythera", "Voynich", "Haniwa"], 9,
         tableNavigation, document.getElementById("table-parent-2"), true, "resource", "icons/Artifact/", [], "artifact-");
-    createTable("artifact-table-2", ["4", "3", "2", "1"], 4,
-        ["Totem", "Baghdad", "Colgante", "Mystery", "Okiku", "Atlantis", "RomanDice", "Fleece", "Rocket", "Quimbaya"], 9,
+    createTable("artifact-table-2", ["1", "2", "3", "4"], 4,
+        ["Totem", "Baghdad", "Fleece", "Okiku", "Colgante", "Atlantis", "RomanDice", "Quimbaya", "Rocket", "Mystery"], 9,
         tableNavigation, document.getElementById("table-parent-3"), true, "resource", "icons/Artifact/", [], "artifact-");
 
     let gearNavigation = [];
-    createTable("gear-table", ["T9", "T8", "T7", "T6", "T5", "T4", "T3", "T2"], 0, ["Hat", "Gloves", "Shoes", "Bag", "Badge", "Hairpin", "Charm", "Watch", "Necklace"],
+    createTable("gear-table", ["T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9"], 0, ["Hat", "Gloves", "Shoes", "Bag", "Badge", "Hairpin", "Charm", "Watch", "Necklace"],
         0, gearNavigation, document.getElementById('table-parent-4'), false, "gear", "icons/Gear/", [], "gear-");
 
     let navObj = {};
