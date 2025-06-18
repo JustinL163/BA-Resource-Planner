@@ -131,6 +131,10 @@ const matLookup = new TwoWayMap({
     3081: "BD_2_Valkyrie",
     3082: "BD_3_Valkyrie",
     3083: "BD_4_Valkyrie",
+    3090: "BD_1_Highlander",
+    3091: "BD_2_Highlander",
+    3092: "BD_3_Highlander",
+    3093: "BD_4_Highlander",
 
     4000: "TN_1_Hyakkiyako",
     4001: "TN_2_Hyakkiyako",
@@ -168,6 +172,10 @@ const matLookup = new TwoWayMap({
     4081: "TN_2_Valkyrie",
     4082: "TN_3_Valkyrie",
     4083: "TN_4_Valkyrie",
+    4090: "TN_1_Highlander",
+    4091: "TN_2_Highlander",
+    4092: "TN_3_Highlander",
+    4093: "TN_4_Highlander",
 
     9999: "Secret"
 });
@@ -179,11 +187,12 @@ const gearLookup = ["T2_Hat", "T2_Gloves", "T2_Shoes", "T2_Bag", "T2_Badge", "T2
     "T6_Hat", "T6_Gloves", "T6_Shoes", "T6_Bag", "T6_Badge", "T6_Hairpin", "T6_Charm", "T6_Watch", "T6_Necklace",
     "T7_Hat", "T7_Gloves", "T7_Shoes", "T7_Bag", "T7_Badge", "T7_Hairpin", "T7_Charm", "T7_Watch", "T7_Necklace",
     "T8_Hat", "T8_Gloves", "T8_Shoes", "T8_Bag", "T8_Badge", "T8_Hairpin", "T8_Charm", "T8_Watch", "T8_Necklace",
-    "T9_Hat", "T9_Gloves", "T9_Shoes", "T9_Bag", "T9_Badge", "T9_Hairpin", "T9_Charm", "T9_Watch", "T9_Necklace"]
+    "T9_Hat", "T9_Gloves", "T9_Shoes", "T9_Bag", "T9_Badge", "T9_Hairpin", "T9_Charm", "T9_Watch", "T9_Necklace",
+    "T10_Hat", "T10_Gloves", "T10_Shoes", "T10_Bag", "T10_Badge", "T10_Hairpin"]
 
 var rowColours = {
     "Abydos": "#9ce4fc66", "Gehenna": "#ec7d7966", "Millennium": "#9ebdfa66", "Trinity": "#fcd19c66", "Hyakkiyako": "#f0a8c466", "Arius": "#dbdad85e",
-    "Shanhaijing": "#b4feca66", "Red Winter": "#d98c9e66", "Valkyrie": "#a1a9e166", "Nebra": "#99919466", "Phaistos": "#fdf7e766", "Wolfsegg": "#93a5f266",
+    "Shanhaijing": "#b4feca66", "Red Winter": "#d98c9e66", "Highlander": "#9fff8561", "Valkyrie": "#a1a9e166", "Nebra": "#99919466", "Phaistos": "#fdf7e766", "Wolfsegg": "#93a5f266",
     "Nimrud": "#67e4ef66", "Mandragora": "#a1ede566", "Rohonc": "#c9ab9366", "Aether": "#ca96e066", "Antikythera": "#f7e28866",
     "Voynich": "#84b28066", "Haniwa": "#e7bef466", "Baghdad": "#d179a066", "Totem": "#b77e6166", "Fleece": "#fdf76966", "Okiku": "#ff88294a", "Atlantis": "#ecff2933",
     "Colgante": "#c2cdfe70", "Mystery": "#305c894a", "RomanDice": "#71bec566", "Quimbaya": "#e3df7466", "Rocket": "#c0f2f366",
@@ -195,7 +204,7 @@ const propertyColours = {
     "LightArmor": "#ec242487", "HeavyArmor": "#fff10099", "Unarmed": "#1070a5c2", "ElasticArmor": "#c246d79e",
     "Striker": "#cc1a2587", "Special": "#006aff87",
     "Abydos": "#9ce4fc66", "Gehenna": "#ec7d7966", "Millennium": "#9ebdfa66", "Trinity": "#fcd19c66", "Hyakkiyako": "#f0a8c466",
-    "Arius": "#dbdad85e", "Shanhaijing": "#b4feca66", "RedWinter": "#d98c9e66", "Valkyrie": "#a1a9e166"
+    "Arius": "#dbdad85e", "Shanhaijing": "#b4feca66", "RedWinter": "#d98c9e66", "Valkyrie": "#a1a9e166", "Highlander": "#9fff8561"
 }
 
 const exportDataVersion = 2;
@@ -870,7 +879,7 @@ const inputValidation = {
         id: "input_gear1_current",
         location: "characterModal",
         min: "0",
-        max: "9",
+        max: "10",
         default: "0",
         name: "Gear 1",
         "navigation": "direct",
@@ -883,7 +892,7 @@ const inputValidation = {
         id: "input_gear1_target",
         location: "characterModal",
         min: "0",
-        max: "9",
+        max: "10",
         default: "0",
         name: "Gear 1 Target",
         requisite: {
@@ -904,7 +913,7 @@ const inputValidation = {
         id: "bulk-input_gear1_current",
         location: "bulkEditModal",
         min: "0",
-        max: "9",
+        max: "10",
         default: "0",
         blankable: true,
         name: "Gear 1",
@@ -918,7 +927,7 @@ const inputValidation = {
         id: "bulk-input_gear1_target",
         location: "bulkEditModal",
         min: "0",
-        max: "9",
+        max: "10",
         default: "0",
         blankable: true,
         name: "Gear 1 Target",
@@ -940,7 +949,7 @@ const inputValidation = {
         id: "input_gear2_current",
         location: "characterModal",
         min: "0",
-        max: "9",
+        max: "10",
         default: "0",
         name: "Gear 2",
         requisite: {},
@@ -954,7 +963,7 @@ const inputValidation = {
         id: "input_gear2_target",
         location: "characterModal",
         min: "0",
-        max: "9",
+        max: "10",
         default: "0",
         name: "Gear 2 Target",
         requisite: {
@@ -975,7 +984,7 @@ const inputValidation = {
         id: "bulk-input_gear2_current",
         location: "bulkEditModal",
         min: "0",
-        max: "9",
+        max: "10",
         default: "0",
         blankable: true,
         name: "Gear 2",
@@ -990,7 +999,7 @@ const inputValidation = {
         id: "bulk-input_gear2_target",
         location: "bulkEditModal",
         min: "0",
-        max: "9",
+        max: "10",
         default: "0",
         blankable: true,
         name: "Gear 2 Target",
@@ -1180,7 +1189,15 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Left": "input-BD_4_Shanhaijing",
+        "Left": "input-BD_4_Shanhaijing"
+    },
+    "BD_1_Highlander": {
+        "id": "input-BD_1_Highlander",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "999",
+        "navigation": "resourceTable",
+        "Left": "input-BD_4_Valkyrie",
         "Down": "input-BD_2_Hyakkiyako"
     },
     "BD_2_Abydos": {
@@ -1217,7 +1234,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Up": "input-BD_1_Valkyrie"
+        "Up": "input-BD_1_Highlander"
     },
     "BD_2_Shanhaijing": {
         "id": "input-BD_2_Shanhaijing",
@@ -1242,6 +1259,13 @@ const inputValidation = {
     },
     "BD_2_Valkyrie": {
         "id": "input-BD_2_Valkyrie",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "999",
+        "navigation": "resourceTable",
+    },
+    "BD_2_Highlander": {
+        "id": "input-BD_2_Highlander",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
@@ -1282,7 +1306,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Up": "input-BD_2_Valkyrie"
+        "Up": "input-BD_2_Highlander"
     },
     "BD_3_Shanhaijing": {
         "id": "input-BD_3_Shanhaijing",
@@ -1307,6 +1331,13 @@ const inputValidation = {
     },
     "BD_3_Valkyrie": {
         "id": "input-BD_3_Valkyrie",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "999",
+        "navigation": "resourceTable",
+    },
+    "BD_3_Highlander": {
+        "id": "input-BD_3_Highlander",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
@@ -1352,7 +1383,7 @@ const inputValidation = {
         "max": "999",
         "navigation": "resourceTable",
         "Right": "input-BD_1_RedWinter",
-        "Up": "input-BD_3_Valkyrie"
+        "Up": "input-BD_3_Highlander"
     },
     "BD_4_Shanhaijing": {
         "id": "input-BD_4_Shanhaijing",
@@ -1380,6 +1411,14 @@ const inputValidation = {
     },
     "BD_4_Valkyrie": {
         "id": "input-BD_4_Valkyrie",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "999",
+        "navigation": "resourceTable",
+        "Right": "input-BD_1_Highlander"
+    },
+    "BD_4_Highlander": {
+        "id": "input-BD_4_Highlander",
         "location": "resourceModal",
         "min": "0",
         "max": "999",
@@ -1425,8 +1464,8 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Left": "input-BD_4_Valkyrie",
-        "Up": "input-BD_4_Valkyrie"
+        "Left": "input-BD_4_Highlander",
+        "Up": "input-BD_4_Highlander"
     },
     "TN_1_Shanhaijing": {
         "id": "input-TN_1_Shanhaijing",
@@ -1458,7 +1497,15 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Left": "input-TN_4_Shanhaijing",
+        "Left": "input-TN_4_Shanhaijing"
+    },
+    "TN_1_Highlander": {
+        "id": "input-TN_1_Highlander",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "resourceTable",
+        "Left": "input-TN_4_Valkyrie",
         "Down": "input-TN_2_Hyakkiyako"
     },
     "TN_2_Abydos": {
@@ -1495,7 +1542,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Up": "input-TN_1_Valkyrie"
+        "Up": "input-TN_1_Highlander"
     },
     "TN_2_Shanhaijing": {
         "id": "input-TN_2_Shanhaijing",
@@ -1520,6 +1567,13 @@ const inputValidation = {
     },
     "TN_2_Valkyrie": {
         "id": "input-TN_2_Valkyrie",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "resourceTable"
+    },
+    "TN_2_Highlander": {
+        "id": "input-TN_2_Highlander",
         "location": "resourceModal",
         "min": "0",
         "max": "9999",
@@ -1560,7 +1614,7 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
-        "Up": "input-TN_2_Valkyrie"
+        "Up": "input-TN_2_Highlander"
     },
     "TN_3_Shanhaijing": {
         "id": "input-TN_3_Shanhaijing",
@@ -1588,6 +1642,13 @@ const inputValidation = {
         "location": "resourceModal",
         "min": "0",
         "max": "999",
+        "navigation": "resourceTable"
+    },
+    "TN_3_Highlander": {
+        "id": "input-TN_3_Highlander",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
         "navigation": "resourceTable",
         "Down": "input-TN_4_Hyakkiyako"
     },
@@ -1630,7 +1691,7 @@ const inputValidation = {
         "max": "999",
         "navigation": "resourceTable",
         "Right": "input-TN_1_RedWinter",
-        "Up": "input-TN_3_Valkyrie"
+        "Up": "input-TN_3_Highlander"
     },
     "TN_4_Shanhaijing": {
         "id": "input-TN_4_Shanhaijing",
@@ -1662,6 +1723,14 @@ const inputValidation = {
         "min": "0",
         "max": "999",
         "navigation": "resourceTable",
+        "Right": "input-TN_1_Highlander"
+    },
+    "TN_4_Highlander": {
+        "id": "input-TN_4_Highlander",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "resourceTable",
         "Right": "input-Nebra_1",
         "Down": "input-Nebra_1"
     },
@@ -1671,7 +1740,7 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable",
-        "Up": "input-TN_4_Valkyrie"
+        "Up": "input-TN_4_Highlander"
     },
     "Nebra_2": {
         "id": "input-Nebra_2",
@@ -2839,6 +2908,48 @@ const inputValidation = {
     },
     "T9_Necklace": {
         "id": "input-T9_Necklace",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T10_Hat": {
+        "id": "input-T10_Hat",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T10_Gloves": {
+        "id": "input-T10_Gloves",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T10_Shoes": {
+        "id": "input-T10_Shoes",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T10_Bag": {
+        "id": "input-T10_Bag",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T10_Badge": {
+        "id": "input-T10_Badge",
+        "location": "gearModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "gearTable"
+    },
+    "T10_Hairpin": {
+        "id": "input-T10_Hairpin",
         "location": "gearModal",
         "min": "0",
         "max": "9999",
