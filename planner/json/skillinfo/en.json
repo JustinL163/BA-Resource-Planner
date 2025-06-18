@@ -55182,7 +55182,7 @@
                 }
             },
             "Ex": {
-                "Name": "ペロロ様危機一髪！",
+                "Name": "Peroro in a Pinch",
                 "Desc": "Deals <?1> damage to one enemy and decreases their <d:DEF> by <?2> for 25s.\nIf the target's defense type is <b class='ba-col-explosion'>Light Armor</b>, decreases their <d:DEF> by <?3> for 25s instead.",
                 "Parameters": [
                     [
@@ -55289,7 +55289,7 @@
                 ]
             },
             "Public": {
-                "Name": "ナイトケア",
+                "Name": "Bedtime Routine",
                 "Desc": "Every 30s, restores own HP by <?1> of Healing.",
                 "Parameters": [
                     [
@@ -55328,7 +55328,7 @@
                 ]
             },
             "Passive": {
-                "Name": "甘やかな夢",
+                "Name": "Sweet Slumber",
                 "Desc": "Increases <b:MAXHP> by <?1>.",
                 "Parameters": [
                     [
@@ -55371,7 +55371,7 @@
                 ]
             },
             "WeaponPassive": {
-                "Name": "甘やかな夢+",
+                "Name": "Sweet Slumber+",
                 "Desc": "Increases <b:ExtendDebuffDuration> by <?1> and <b:MAXHP> by <?2>.",
                 "Parameters": [
                     [
@@ -55426,7 +55426,7 @@
                 ]
             },
             "ExtraPassive": {
-                "Name": "気だるい目覚め",
+                "Name": "Still Groggy",
                 "Desc": "Each time HP is restored, increases <b:DEF> by <?1> for 30s (stacks up to 7 times).",
                 "Parameters": [
                     [
@@ -55472,8 +55472,8 @@
             }
         },
         "Weapon": {
-            "Name": "ロジック＆リーズン",
-            "Desc": "ユウカが使用する2丁のサブマシンガン。\n\n彼女の合理と理性を代弁してきた2丁も、不眠症ばかりは治せないようだ。",
+            "Name": "Logic & Reason",
+            "Desc": "Two submachine guns belonging to Yuuka. Even these two firearms, representing her logic and reason, are not able to chase away her chronic insomnia.",
             "AdaptationType": "Outdoor",
             "AdaptationValue": 1,
             "AttackPower1": 75,
@@ -55656,7 +55656,7 @@
                 }
             },
             "Ex": {
-                "Name": "消灯後はお静かに",
+                "Name": "Noise Curfew",
                 "Desc": "Deals <?1> damage to one enemy and inflicts them with <d:DamageByHit_Damaged> for 20s.\nEach time an ally attacks the enemy inflicted with this debuff, deals additional damage equal to <?2> of Noa (Pajamas)'s ATK. (This additional damage cannot critically hit and can trigger up to a maximum of <b>240</b> times)",
                 "Parameters": [
                     [
@@ -55717,7 +55717,7 @@
                 "ExtraSkills": [
                     {
                         "Id": "CH0285Ex02",
-                        "Name": "しっ、消灯します",
+                        "Name": "Shh, Lights Out",
                         "Desc": "Deals <?1> damage to one enemy and inflicts them with <d:DamageByHit_Damaged> for 20s.\nEach time an ally attacks the enemy inflicted with this debuff, deals additional damage equal to <?2> of Noa (Pajamas)'s ATK. (This additional damage cannot critically hit and can trigger up to a maximum of <b>240</b> times)",
                         "Parameters": [
                             [
@@ -55780,7 +55780,7 @@
                 ]
             },
             "Public": {
-                "Name": "お気に入りの枕",
+                "Name": "Favorite Pillow",
                 "Desc": "After activating the EX Skill \"消灯後はお静かに\" twice, increases <b:CostRegen> by <?1> for 30s and changes the next <b>one</b> use of the EX Skill to \"しっ、消灯します\".",
                 "Parameters": [
                     [
@@ -55826,7 +55826,7 @@
                 ]
             },
             "Passive": {
-                "Name": "冷徹なる書記",
+                "Name": "Secretary's Mind",
                 "Desc": "Increases <b:ATK> by <?1>.",
                 "Parameters": [
                     [
@@ -55869,7 +55869,7 @@
                 ]
             },
             "WeaponPassive": {
-                "Name": "冷徹なる書記+",
+                "Name": "Secretary's Mind+",
                 "Desc": "Increases <b:ATK> by <?1> plus a further <?2>.",
                 "Parameters": [
                     [
@@ -55924,7 +55924,7 @@
                 ]
             },
             "ExtraPassive": {
-                "Name": "書記の勘",
+                "Name": "Secretary's Edge",
                 "Desc": "Every 10 normal attacks, increases <b:EnhancePierceRate> by <?1> for 10s.",
                 "Parameters": [
                     [
@@ -55969,8 +55969,8 @@
             }
         },
         "Weapon": {
-            "Name": "書記の採決",
-            "Desc": "ノアが使用するコンバージョンキット付き拳銃。\n\nストックを縮めると、ペーパーウェイトにちょうどいいサイズの拳銃。寝る前の読書のお供として愛用している。",
+            "Name": "Secretary on Record",
+            "Desc": "A pistol equipped with Noa's conversion kit. This multi-use pistol is perfect for both weighing down papers and late-night reading, Noa's favorite pastime.",
             "AdaptationType": "Outdoor",
             "AdaptationValue": 1,
             "AttackPower1": 70,
@@ -61761,6 +61761,563 @@
                 12,
                 8,
                 15
+            ]
+        ]
+    },
+    "10120": {
+        "Name": "Natsu (Band)",
+        "Id": 10120,
+        "School": "Trinity",
+        "StarGrade": 3,
+        "SquadType": "Main",
+        "TacticRole": "Healer",
+        "Position": "Front",
+        "BulletType": "Explosion",
+        "ArmorType": "Unarmed",
+        "StreetBattleAdaptation": 2,
+        "OutdoorBattleAdaptation": 4,
+        "IndoorBattleAdaptation": 0,
+        "WeaponType": "SMG",
+        "Equipment": [
+            "Gloves",
+            "Hairpin",
+            "Necklace"
+        ],
+        "Skills": {
+            "Normal": {
+                "Effects": [
+                    {
+                        "Type": "Damage",
+                        "Hits": [
+                            3333,
+                            3333,
+                            3334
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Block": 1
+                    }
+                ],
+                "Frames": {
+                    "AttackEnterDuration": 45,
+                    "AttackStartDuration": 15,
+                    "AttackEndDuration": 15,
+                    "AttackBurstRoundOverDelay": 20,
+                    "AttackIngDuration": 20,
+                    "AttackReloadDuration": 70
+                }
+            },
+            "Ex": {
+                "Name": "偉大なる響き",
+                "Desc": "Restores the HP of allies in a circular area around self by <?1> of Healing every 2s for 24s.\nGain 2 stacks of <s:CH0220_Public> for 25s (max. 2 stacks).",
+                "Parameters": [
+                    [
+                        "13.2%",
+                        "15.2%",
+                        "19.2%",
+                        "21.2%",
+                        "25.2%"
+                    ]
+                ],
+                "Cost": [
+                    4,
+                    4,
+                    4,
+                    4,
+                    4
+                ],
+                "Duration": 185,
+                "Radius": [
+                    {
+                        "Type": "Circle",
+                        "Radius": 400
+                    }
+                ],
+                "Icon": "COMMON_SKILLICON_HEAL",
+                "Effects": [
+                    {
+                        "Type": "Heal",
+                        "Target": "Ally",
+                        "ApplyFrame": 5,
+                        "Scale": [
+                            1328,
+                            1528,
+                            1925,
+                            2125,
+                            2523
+                        ]
+                    }
+                ]
+            },
+            "Public": {
+                "Name": "プランニング＆マネジメント",
+                "Desc": "Every 15 normal attacks, increases <b:HealPower> by <?1> for 30s.",
+                "Parameters": [
+                    [
+                        "18.5%",
+                        "19.5%",
+                        "20.4%",
+                        "24.1%",
+                        "25%",
+                        "26%",
+                        "29.7%",
+                        "30.6%",
+                        "31.5%",
+                        "35.3%"
+                    ]
+                ],
+                "Duration": 160,
+                "Icon": "COMMON_SKILLICON_STATBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Value": [
+                            [
+                                1858,
+                                1951,
+                                2044,
+                                2415,
+                                2508,
+                                2601,
+                                2973,
+                                3065,
+                                3158,
+                                3530
+                            ]
+                        ],
+                        "Stat": "HealPower_Coefficient",
+                        "Channel": 4,
+                        "Duration": 30000,
+                        "ApplyFrame": 101
+                    }
+                ]
+            },
+            "Passive": {
+                "Name": "スイート・ストローク",
+                "Desc": "Increases <b:Range> by 100 and <b:AttackSpeed> by <?1>.",
+                "Parameters": [
+                    [
+                        "11.2%",
+                        "11.7%",
+                        "12.3%",
+                        "14.5%",
+                        "15.1%",
+                        "15.6%",
+                        "17.9%",
+                        "18.4%",
+                        "19%",
+                        "21.2%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "AttackSpeed_Coefficient",
+                        "Channel": 24,
+                        "Value": [
+                            [
+                                1120,
+                                1176,
+                                1232,
+                                1456,
+                                1512,
+                                1568,
+                                1792,
+                                1848,
+                                1904,
+                                2128
+                            ]
+                        ]
+                    },
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "Range_Base",
+                        "Channel": 18,
+                        "Value": [
+                            [
+                                100,
+                                100,
+                                100,
+                                100,
+                                100,
+                                100,
+                                100,
+                                100,
+                                100,
+                                100
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "WeaponPassive": {
+                "Name": "スイート・ストローク+",
+                "Desc": "Increases <b:HealPower> by <?1>, <b:Range> by 100 and <b:AttackSpeed> by <?2>.",
+                "Parameters": [
+                    [
+                        "856",
+                        "899",
+                        "942",
+                        "1113",
+                        "1156",
+                        "1199",
+                        "1370",
+                        "1413",
+                        "1456",
+                        "1627"
+                    ],
+                    [
+                        "11.2%",
+                        "11.7%",
+                        "12.3%",
+                        "14.5%",
+                        "15.1%",
+                        "15.6%",
+                        "17.9%",
+                        "18.4%",
+                        "19%",
+                        "21.2%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "HealPower_Base",
+                        "Channel": 1704,
+                        "Value": [
+                            [
+                                856,
+                                899,
+                                942,
+                                1113,
+                                1156,
+                                1199,
+                                1370,
+                                1413,
+                                1456,
+                                1627
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "ExtraPassive": {
+                "Name": "ロックの導き",
+                "Desc": "For every 6 stacks of <s:CH0220_Public> gained by allies, gain 1 stack of <s:CH0221_ExtraPassive> (max. 4 stacks).\nWhen attacking, 20% chance to decrease the <d:ATK> of the target for 20s (5s cooldown between activations).\nEffect varies depending on the number of <s:CH0221_ExtraPassive> stacks held.\n<b>0 stacks:</b> Decreases <d:ATK> by <?1>\n<b>1 stacks:</b> Decreases <d:ATK> by <?2>\n<b>2 stacks:</b> Decreases <d:ATK> by <?3>\n<b>3 stacks:</b> Decreases <d:ATK> by <?4>\n<b>4 stacks:</b> Decreases <d:ATK> by <?5>",
+                "Parameters": [
+                    [
+                        "2.6%",
+                        "2.7%",
+                        "2.9%",
+                        "3.4%",
+                        "3.5%",
+                        "3.6%",
+                        "4.2%",
+                        "4.3%",
+                        "4.4%",
+                        "5%"
+                    ],
+                    [
+                        "3.9%",
+                        "4.1%",
+                        "4.3%",
+                        "5.1%",
+                        "5.3%",
+                        "5.5%",
+                        "6.3%",
+                        "6.5%",
+                        "6.7%",
+                        "7.5%"
+                    ],
+                    [
+                        "5.2%",
+                        "5.5%",
+                        "5.7%",
+                        "6.8%",
+                        "7.1%",
+                        "7.3%",
+                        "8.4%",
+                        "8.6%",
+                        "8.9%",
+                        "10%"
+                    ],
+                    [
+                        "6.5%",
+                        "6.9%",
+                        "7.2%",
+                        "8.5%",
+                        "8.8%",
+                        "9.2%",
+                        "10.5%",
+                        "10.8%",
+                        "11.2%",
+                        "12.5%"
+                    ],
+                    [
+                        "7.9%",
+                        "8.3%",
+                        "8.7%",
+                        "10.2%",
+                        "10.6%",
+                        "11%",
+                        "12.6%",
+                        "13%",
+                        "13.4%",
+                        "15%"
+                    ]
+                ],
+                "Icon": "SKILLICON_CH0221_EXTRAPASSIVESKILL",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Enemy"
+                        ],
+                        "Value": [
+                            [
+                                -264,
+                                -277,
+                                -290,
+                                -343,
+                                -355,
+                                -369,
+                                -421,
+                                -434,
+                                -448,
+                                -500
+                            ],
+                            [
+                                -395,
+                                -415,
+                                -434,
+                                -514,
+                                -533,
+                                -553,
+                                -632,
+                                -651,
+                                -672,
+                                -750
+                            ],
+                            [
+                                -527,
+                                -553,
+                                -579,
+                                -684,
+                                -710,
+                                -737,
+                                -842,
+                                -868,
+                                -894,
+                                -1000
+                            ],
+                            [
+                                -659,
+                                -692,
+                                -725,
+                                -857,
+                                -889,
+                                -922,
+                                -1054,
+                                -1087,
+                                -1120,
+                                -1251
+                            ],
+                            [
+                                -791,
+                                -831,
+                                -870,
+                                -1028,
+                                -1068,
+                                -1107,
+                                -1265,
+                                -1305,
+                                -1344,
+                                -1503
+                            ]
+                        ],
+                        "StackLabel": [
+                            {
+                                "Icon": "buff/Special_CH0221_ExtraPassive.webp",
+                                "Label": "0"
+                            },
+                            {
+                                "Icon": "buff/Special_CH0221_ExtraPassive.webp",
+                                "Label": "1"
+                            },
+                            {
+                                "Icon": "buff/Special_CH0221_ExtraPassive.webp",
+                                "Label": "2"
+                            },
+                            {
+                                "Icon": "buff/Special_CH0221_ExtraPassive.webp",
+                                "Label": "3"
+                            },
+                            {
+                                "Icon": "buff/Special_CH0221_ExtraPassive.webp",
+                                "Label": "4"
+                            }
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 602,
+                        "Duration": 20000
+                    }
+                ]
+            }
+        },
+        "Weapon": {
+            "Name": "ビヨンド・ザ・ルミネーション",
+            "Desc": "ナツのサブマシンガン。\n\n思索だけでは解決しない問題に対する「最終手段」。複雑な現代社会においては、これをも越える解決策が必要な時も……。",
+            "AdaptationType": "Outdoor",
+            "AdaptationValue": 1,
+            "AttackPower1": 73,
+            "AttackPower100": 733,
+            "MaxHP1": 968,
+            "MaxHP100": 9675,
+            "HealPower1": 252,
+            "HealPower100": 2515,
+            "StatLevelUpType": "Standard"
+        },
+        "SkillExMaterial": [
+            [
+                3020,
+                180
+            ],
+            [
+                3021,
+                3020,
+                181,
+                140
+            ],
+            [
+                3022,
+                3021,
+                182,
+                141
+            ],
+            [
+                3023,
+                3022,
+                183,
+                142
+            ]
+        ],
+        "SkillExMaterialAmount": [
+            [
+                12,
+                18
+            ],
+            [
+                12,
+                18,
+                16,
+                34
+            ],
+            [
+                12,
+                18,
+                8,
+                24
+            ],
+            [
+                8,
+                18,
+                7,
+                22
+            ]
+        ],
+        "SkillMaterial": [
+            [
+                4020
+            ],
+            [
+                4020
+            ],
+            [
+                4021,
+                4020,
+                180
+            ],
+            [
+                4021,
+                181,
+                140
+            ],
+            [
+                4022,
+                4021,
+                181,
+                140
+            ],
+            [
+                4022,
+                182,
+                141
+            ],
+            [
+                4023,
+                4022,
+                183,
+                142
+            ],
+            [
+                4023,
+                183,
+                142
+            ]
+        ],
+        "SkillMaterialAmount": [
+            [
+                5
+            ],
+            [
+                8
+            ],
+            [
+                5,
+                12,
+                5
+            ],
+            [
+                8,
+                5,
+                14
+            ],
+            [
+                5,
+                12,
+                8,
+                18
+            ],
+            [
+                8,
+                4,
+                17
+            ],
+            [
+                8,
+                12,
+                5,
+                10
+            ],
+            [
+                12,
+                8,
+                13
             ]
         ]
     },

@@ -41777,7 +41777,7 @@
             },
             "Public": {
                 "Name": "렛츠- 도킹-",
-                "Desc": "발차 신호 3개 획득 시 발차 신호를 모두 소모하고 스트라이커 아군에게 <b:EnhanceSonicRate> <?1> 가산(<?2>간)(쿨타임 20초)",
+                "Desc": "<s:CH0242_ExtraPassive_01> 3개 획득 시 <s:CH0242_ExtraPassive_01>를 모두 소모하고 스트라이커 아군에게 <b:EnhanceSonicRate> <?1> 가산(<?2>간)(쿨타임 20초)",
                 "Parameters": [
                     [
                         "13.9%",
@@ -41958,7 +41958,7 @@
             },
             "ExtraPassive": {
                 "Name": "대활약 예정-",
-                "Desc": "자신을 제외한 아군이 EX 스킬 <?1> 사용 시 해당 스킬 발동과 동시에 <b:AttackSpeed> <?2> 증가(20초간)/\n발차 신호 1개 획득(발차 신호는 최대 3개까지 중첩)",
+                "Desc": "자신을 제외한 아군이 EX 스킬 <?1> 사용 시 해당 스킬 발동과 동시에 <b:AttackSpeed> <?2> 증가(20초간)/\n<s:CH0242_ExtraPassive_01> 1개 획득(<s:CH0242_ExtraPassive_01>는 최대 3개까지 중첩)",
                 "Parameters": [
                     [
                         "4회",
@@ -42698,6 +42698,405 @@
                         ],
                         "Stat": "CriticalPoint_Coefficient",
                         "Channel": 9
+                    }
+                ]
+            }
+        }
+    },
+    "10120": {
+        "Name": "나츠(밴드)",
+        "Skills": {
+            "Normal": {
+                "Effects": [
+                    {
+                        "Type": "Damage",
+                        "Hits": [
+                            3333,
+                            3333,
+                            3334
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Block": 1
+                    }
+                ],
+                "Frames": {
+                    "AttackEnterDuration": 45,
+                    "AttackStartDuration": 15,
+                    "AttackEndDuration": 15,
+                    "AttackBurstRoundOverDelay": 20,
+                    "AttackIngDuration": 20,
+                    "AttackReloadDuration": 70
+                }
+            },
+            "Ex": {
+                "Name": "위대한 울림",
+                "Desc": "자신을 중심으로 원형범위 내에 있는 아군에게 2초마다 치유력 <?1> 회복 (24초간)/\n추가로 자신에게 <s:CH0220_Public> 2개 부여(25초간)(최대 2개까지)",
+                "Parameters": [
+                    [
+                        "13.2%",
+                        "15.2%",
+                        "19.2%",
+                        "21.2%",
+                        "25.2%"
+                    ]
+                ],
+                "Cost": [
+                    4,
+                    4,
+                    4,
+                    4,
+                    4
+                ],
+                "Duration": 185,
+                "Radius": [
+                    {
+                        "Type": "Circle",
+                        "Radius": 400
+                    }
+                ],
+                "Icon": "COMMON_SKILLICON_HEAL",
+                "Effects": [
+                    {
+                        "Type": "Heal",
+                        "Target": "Ally",
+                        "ApplyFrame": 5,
+                        "Scale": [
+                            1328,
+                            1528,
+                            1925,
+                            2125,
+                            2523
+                        ]
+                    }
+                ]
+            },
+            "Public": {
+                "Name": "매니징&플래닝",
+                "Desc": "일반 공격 15회마다 <b:HealPower> <?1> 증가(30초간)",
+                "Parameters": [
+                    [
+                        "18.5%",
+                        "19.5%",
+                        "20.4%",
+                        "24.1%",
+                        "25%",
+                        "26%",
+                        "29.7%",
+                        "30.6%",
+                        "31.5%",
+                        "35.3%"
+                    ]
+                ],
+                "Duration": 160,
+                "Icon": "COMMON_SKILLICON_STATBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Value": [
+                            [
+                                1858,
+                                1951,
+                                2044,
+                                2415,
+                                2508,
+                                2601,
+                                2973,
+                                3065,
+                                3158,
+                                3530
+                            ]
+                        ],
+                        "Stat": "HealPower_Coefficient",
+                        "Channel": 4,
+                        "Duration": 30000,
+                        "ApplyFrame": 101
+                    }
+                ]
+            },
+            "Passive": {
+                "Name": "스위트 스트로크",
+                "Desc": "일반 공격 <b:Range> 100, <b:AttackSpeed> <?1> 증가",
+                "Parameters": [
+                    [
+                        "11.2%",
+                        "11.7%",
+                        "12.3%",
+                        "14.5%",
+                        "15.1%",
+                        "15.6%",
+                        "17.9%",
+                        "18.4%",
+                        "19%",
+                        "21.2%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "AttackSpeed_Coefficient",
+                        "Channel": 24,
+                        "Value": [
+                            [
+                                1120,
+                                1176,
+                                1232,
+                                1456,
+                                1512,
+                                1568,
+                                1792,
+                                1848,
+                                1904,
+                                2128
+                            ]
+                        ]
+                    },
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "Range_Base",
+                        "Channel": 18,
+                        "Value": [
+                            [
+                                100,
+                                100,
+                                100,
+                                100,
+                                100,
+                                100,
+                                100,
+                                100,
+                                100,
+                                100
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "WeaponPassive": {
+                "Name": "스위트 스트로크+",
+                "Desc": "<b:HealPower> <?1> 증가/\n추가로 일반 공격 <b:Range> 100, <b:AttackSpeed> <?2> 증가",
+                "Parameters": [
+                    [
+                        "856",
+                        "899",
+                        "942",
+                        "1113",
+                        "1156",
+                        "1199",
+                        "1370",
+                        "1413",
+                        "1456",
+                        "1627"
+                    ],
+                    [
+                        "11.2%",
+                        "11.7%",
+                        "12.3%",
+                        "14.5%",
+                        "15.1%",
+                        "15.6%",
+                        "17.9%",
+                        "18.4%",
+                        "19%",
+                        "21.2%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "HealPower_Base",
+                        "Channel": 1704,
+                        "Value": [
+                            [
+                                856,
+                                899,
+                                942,
+                                1113,
+                                1156,
+                                1199,
+                                1370,
+                                1413,
+                                1456,
+                                1627
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "ExtraPassive": {
+                "Name": "록의 인도",
+                "Desc": "아군이 <s:CH0220_Public> 6개 획득 시 <s:CH0221_ExtraPassive> 1개 획득 (최대 4개까지)/\n공격 시 20% 확률로 피격된 대상의 <d:ATK> 감소(20초간)(쿨타임 5초)\n자신의 <s:CH0221_ExtraPassive> 수에 따라 <d:ATK> 감소량이 변경됩니다\n0개: <d:ATK> <?1> 감소\n1개: <d:ATK> <?2> 감소\n2개: <d:ATK> <?3> 감소\n3개: <d:ATK> <?4> 감소\n4개: <d:ATK> <?5> 감소",
+                "Parameters": [
+                    [
+                        "2.6%",
+                        "2.7%",
+                        "2.9%",
+                        "3.4%",
+                        "3.5%",
+                        "3.6%",
+                        "4.2%",
+                        "4.3%",
+                        "4.4%",
+                        "5%"
+                    ],
+                    [
+                        "3.9%",
+                        "4.1%",
+                        "4.3%",
+                        "5.1%",
+                        "5.3%",
+                        "5.5%",
+                        "6.3%",
+                        "6.5%",
+                        "6.7%",
+                        "7.5%"
+                    ],
+                    [
+                        "5.2%",
+                        "5.5%",
+                        "5.7%",
+                        "6.8%",
+                        "7.1%",
+                        "7.3%",
+                        "8.4%",
+                        "8.6%",
+                        "8.9%",
+                        "10%"
+                    ],
+                    [
+                        "6.5%",
+                        "6.9%",
+                        "7.2%",
+                        "8.5%",
+                        "8.8%",
+                        "9.2%",
+                        "10.5%",
+                        "10.8%",
+                        "11.2%",
+                        "12.5%"
+                    ],
+                    [
+                        "7.9%",
+                        "8.3%",
+                        "8.7%",
+                        "10.2%",
+                        "10.6%",
+                        "11%",
+                        "12.6%",
+                        "13%",
+                        "13.4%",
+                        "15%"
+                    ]
+                ],
+                "Icon": "SKILLICON_CH0221_EXTRAPASSIVESKILL",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Enemy"
+                        ],
+                        "Value": [
+                            [
+                                -264,
+                                -277,
+                                -290,
+                                -343,
+                                -355,
+                                -369,
+                                -421,
+                                -434,
+                                -448,
+                                -500
+                            ],
+                            [
+                                -395,
+                                -415,
+                                -434,
+                                -514,
+                                -533,
+                                -553,
+                                -632,
+                                -651,
+                                -672,
+                                -750
+                            ],
+                            [
+                                -527,
+                                -553,
+                                -579,
+                                -684,
+                                -710,
+                                -737,
+                                -842,
+                                -868,
+                                -894,
+                                -1000
+                            ],
+                            [
+                                -659,
+                                -692,
+                                -725,
+                                -857,
+                                -889,
+                                -922,
+                                -1054,
+                                -1087,
+                                -1120,
+                                -1251
+                            ],
+                            [
+                                -791,
+                                -831,
+                                -870,
+                                -1028,
+                                -1068,
+                                -1107,
+                                -1265,
+                                -1305,
+                                -1344,
+                                -1503
+                            ]
+                        ],
+                        "StackLabel": [
+                            {
+                                "Icon": "buff/Special_CH0221_ExtraPassive.webp",
+                                "Label": "0"
+                            },
+                            {
+                                "Icon": "buff/Special_CH0221_ExtraPassive.webp",
+                                "Label": "1"
+                            },
+                            {
+                                "Icon": "buff/Special_CH0221_ExtraPassive.webp",
+                                "Label": "2"
+                            },
+                            {
+                                "Icon": "buff/Special_CH0221_ExtraPassive.webp",
+                                "Label": "3"
+                            },
+                            {
+                                "Icon": "buff/Special_CH0221_ExtraPassive.webp",
+                                "Label": "4"
+                            }
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 602,
+                        "Duration": 20000
                     }
                 ]
             }
@@ -66263,7 +66662,7 @@
         "Skills": {
             "Ex": {
                 "Name": "업무 모드입니다!",
-                "Desc": "적 1인에게 공격력 <?1> 대미지/\n인솔 완료 보유 시 대미지 0.15배 가산/\n(대상의 현재 체력에 비례하여 대미지가 1~1.5배로 변경)(대상의 체력이 낮을수록 대미지 증가)",
+                "Desc": "적 1인에게 공격력 <?1> 대미지/\n<s:CH0257_Public> 보유 시 대미지 0.15배 가산/\n(대상의 현재 체력에 비례하여 대미지가 1~1.5배로 변경)(대상의 체력이 낮을수록 대미지 증가)",
                 "Parameters": [
                     [
                         "1200%",
@@ -66358,7 +66757,7 @@
             },
             "Public": {
                 "Name": "인솔하겠습니다!",
-                "Desc": "자신을 제외한 아군이 EX 스킬을 7회 사용 할 때마다 인솔 완료 부여(40초간)/\n가장 체력이 낮은 아군 1인에게 <b:HealEffectiveness> <?1> 증가(40초간)",
+                "Desc": "자신을 제외한 아군이 EX 스킬을 7회 사용 할 때마다 <s:CH0257_Public> 부여(40초간)/\n가장 체력이 낮은 아군 1인에게 <b:HealEffectiveness> <?1> 증가(40초간)",
                 "Parameters": [
                     [
                         "12.4%",

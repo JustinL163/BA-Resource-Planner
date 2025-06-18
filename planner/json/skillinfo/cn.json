@@ -27350,7 +27350,7 @@
                 }
             },
             "Ex": {
-                "Name": "打扰一下",
+                "Name": "请留步",
                 "Desc": "对扇形范围内的敌方单位造成以下效果：\n- 造成自身攻击力<?1>的伤害.",
                 "Parameters": [
                     [
@@ -27405,7 +27405,7 @@
                 ]
             },
             "Public": {
-                "Name": "正义实现委员会的联络网",
+                "Name": "正义实现部的联络网",
                 "Desc": "<b>每30秒：</b>\n对自身造成以下效果(持续<?2>)：\n- <b:EnhanceSonicRate>加算<?1>.",
                 "Parameters": [
                     [
@@ -27506,7 +27506,7 @@
                 ]
             },
             "WeaponPassive": {
-                "Name": "敏锐本能＋",
+                "Name": "敏锐本能+",
                 "Desc": "<b>战术入场时：</b>\n立即对自身造成以下效果(持续至退场)：\n- <b:ATK>增加<?1>.\n- <b:HIT>增加<?2>.",
                 "Parameters": [
                     [
@@ -27561,7 +27561,7 @@
                 ]
             },
             "ExtraPassive": {
-                "Name": "也是会有那种情况的",
+                "Name": "偶尔也会这样子的",
                 "Desc": "<b>自身攻击时：</b>\n对未处于掩体掩护下的目标造成以下效果：\n- 造成自身攻击力<?1>的追加伤害.",
                 "Parameters": [
                     [
@@ -27631,7 +27631,7 @@
                 }
             },
             "Ex": {
-                "Name": "大恶人钻碎",
+                "Name": "巨踵冲击",
                 "Desc": "对圆形范围内的敌方单位造成以下效果：\n- <d:DEF>减少<?1>(持续25秒).\n- 造成自身攻击力<?2>的伤害.",
                 "Parameters": [
                     [
@@ -27710,7 +27710,7 @@
                 ]
             },
             "Public": {
-                "Name": "这是重要的消息",
+                "Name": "信息才是最重要的",
                 "Desc": "<b>每35秒：</b>\n对圆形范围内的敌方单位造成以下效果：\n- 造成自身攻击力<?1>的伤害.",
                 "Parameters": [
                     [
@@ -27760,7 +27760,7 @@
                 ]
             },
             "Passive": {
-                "Name": "狂人战略",
+                "Name": "狂人的战略",
                 "Desc": "<b>战术入场时：</b>\n立即对自身造成以下效果(持续至退场)：\n- <b:CriticalChance>增加<?1>.",
                 "Parameters": [
                     [
@@ -27803,7 +27803,7 @@
                 ]
             },
             "WeaponPassive": {
-                "Name": "狂人战略＋",
+                "Name": "狂人的战略+",
                 "Desc": "<b>战术入场时：</b>\n立即对自身造成以下效果(持续至退场)：\n- <b:CriticalDamage>增加<?1>.\n- <b:CriticalChance>增加<?2>.",
                 "Parameters": [
                     [
@@ -27858,7 +27858,7 @@
                 ]
             },
             "ExtraPassive": {
-                "Name": "钻头怎么没响了？",
+                "Name": "钻头的声音停下来了？",
                 "Desc": "<b>自身使用EX技能时：</b>\n立即对自身造成以下效果：\n- 获得1个<s:CH0089_ExtraPassive>.\n\n<b>自身获得第3个</b><s:CH0089_ExtraPassive><b>时：</b>\n立即对自身造成以下效果：\n- 该次EX技能额外造成自身攻击力<?1>的伤害.\n- 移除持有的所有<s:CH0089_ExtraPassive>.",
                 "Parameters": [
                     [
@@ -42813,6 +42813,405 @@
                         ],
                         "Stat": "CriticalPoint_Coefficient",
                         "Channel": 9
+                    }
+                ]
+            }
+        }
+    },
+    "10120": {
+        "Name": "ナツ（バンド）",
+        "Skills": {
+            "Normal": {
+                "Effects": [
+                    {
+                        "Type": "Damage",
+                        "Hits": [
+                            3333,
+                            3333,
+                            3334
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Block": 1
+                    }
+                ],
+                "Frames": {
+                    "AttackEnterDuration": 45,
+                    "AttackStartDuration": 15,
+                    "AttackEndDuration": 15,
+                    "AttackBurstRoundOverDelay": 20,
+                    "AttackIngDuration": 20,
+                    "AttackReloadDuration": 70
+                }
+            },
+            "Ex": {
+                "Name": "偉大なる響き",
+                "Desc": "自身を中心とした円形範囲内の味方に対して2秒毎に、治癒力の<?1>分の回復（24秒間）/\nさらに自身に<s:CH0220_Public>を2個付与（25秒間）（最大2個まで）",
+                "Parameters": [
+                    [
+                        "13.2%",
+                        "15.2%",
+                        "19.2%",
+                        "21.2%",
+                        "25.2%"
+                    ]
+                ],
+                "Cost": [
+                    4,
+                    4,
+                    4,
+                    4,
+                    4
+                ],
+                "Duration": 185,
+                "Radius": [
+                    {
+                        "Type": "Circle",
+                        "Radius": 400
+                    }
+                ],
+                "Icon": "COMMON_SKILLICON_HEAL",
+                "Effects": [
+                    {
+                        "Type": "Heal",
+                        "Target": "Ally",
+                        "ApplyFrame": 5,
+                        "Scale": [
+                            1328,
+                            1528,
+                            1925,
+                            2125,
+                            2523
+                        ]
+                    }
+                ]
+            },
+            "Public": {
+                "Name": "プランニング＆マネジメント",
+                "Desc": "通常攻撃15回毎に、<b:HealPower>を<?1>増加（30秒間）",
+                "Parameters": [
+                    [
+                        "18.5%",
+                        "19.5%",
+                        "20.4%",
+                        "24.1%",
+                        "25%",
+                        "26%",
+                        "29.7%",
+                        "30.6%",
+                        "31.5%",
+                        "35.3%"
+                    ]
+                ],
+                "Duration": 160,
+                "Icon": "COMMON_SKILLICON_STATBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Value": [
+                            [
+                                1858,
+                                1951,
+                                2044,
+                                2415,
+                                2508,
+                                2601,
+                                2973,
+                                3065,
+                                3158,
+                                3530
+                            ]
+                        ],
+                        "Stat": "HealPower_Coefficient",
+                        "Channel": 4,
+                        "Duration": 30000,
+                        "ApplyFrame": 101
+                    }
+                ]
+            },
+            "Passive": {
+                "Name": "スイート・ストローク",
+                "Desc": "<b:Range>を100、<b:AttackSpeed>を<?1>増加",
+                "Parameters": [
+                    [
+                        "11.2%",
+                        "11.7%",
+                        "12.3%",
+                        "14.5%",
+                        "15.1%",
+                        "15.6%",
+                        "17.9%",
+                        "18.4%",
+                        "19%",
+                        "21.2%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "AttackSpeed_Coefficient",
+                        "Channel": 24,
+                        "Value": [
+                            [
+                                1120,
+                                1176,
+                                1232,
+                                1456,
+                                1512,
+                                1568,
+                                1792,
+                                1848,
+                                1904,
+                                2128
+                            ]
+                        ]
+                    },
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "Range_Base",
+                        "Channel": 18,
+                        "Value": [
+                            [
+                                100,
+                                100,
+                                100,
+                                100,
+                                100,
+                                100,
+                                100,
+                                100,
+                                100,
+                                100
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "WeaponPassive": {
+                "Name": "スイート・ストローク+",
+                "Desc": "<b:HealPower>を<?1>増加/\nさらに<b:Range>を100、<b:AttackSpeed>を<?2>増加",
+                "Parameters": [
+                    [
+                        "856",
+                        "899",
+                        "942",
+                        "1113",
+                        "1156",
+                        "1199",
+                        "1370",
+                        "1413",
+                        "1456",
+                        "1627"
+                    ],
+                    [
+                        "11.2%",
+                        "11.7%",
+                        "12.3%",
+                        "14.5%",
+                        "15.1%",
+                        "15.6%",
+                        "17.9%",
+                        "18.4%",
+                        "19%",
+                        "21.2%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "HealPower_Base",
+                        "Channel": 1704,
+                        "Value": [
+                            [
+                                856,
+                                899,
+                                942,
+                                1113,
+                                1156,
+                                1199,
+                                1370,
+                                1413,
+                                1456,
+                                1627
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "ExtraPassive": {
+                "Name": "ロックの導き",
+                "Desc": "味方が<s:CH0220_Public>を6個獲得時、<s:CH0221_ExtraPassive>を1個獲得（最大4個まで）/\n自身の攻撃時、20%の確率で攻撃を受けた対象の<d:ATK>を減少（20秒間）（クールタイム5秒）\n自身の<s:CH0221_ExtraPassive>の数によって、<d:ATK>減少量が変更されます\n0個：<d:ATK>を<?1>減少\n1個：<d:ATK>を<?2>減少\n2個：<d:ATK>を<?3>減少\n3個：<d:ATK>を<?4>減少\n4個：<d:ATK>を<?5>減少",
+                "Parameters": [
+                    [
+                        "2.6%",
+                        "2.7%",
+                        "2.9%",
+                        "3.4%",
+                        "3.5%",
+                        "3.6%",
+                        "4.2%",
+                        "4.3%",
+                        "4.4%",
+                        "5%"
+                    ],
+                    [
+                        "3.9%",
+                        "4.1%",
+                        "4.3%",
+                        "5.1%",
+                        "5.3%",
+                        "5.5%",
+                        "6.3%",
+                        "6.5%",
+                        "6.7%",
+                        "7.5%"
+                    ],
+                    [
+                        "5.2%",
+                        "5.5%",
+                        "5.7%",
+                        "6.8%",
+                        "7.1%",
+                        "7.3%",
+                        "8.4%",
+                        "8.6%",
+                        "8.9%",
+                        "10%"
+                    ],
+                    [
+                        "6.5%",
+                        "6.9%",
+                        "7.2%",
+                        "8.5%",
+                        "8.8%",
+                        "9.2%",
+                        "10.5%",
+                        "10.8%",
+                        "11.2%",
+                        "12.5%"
+                    ],
+                    [
+                        "7.9%",
+                        "8.3%",
+                        "8.7%",
+                        "10.2%",
+                        "10.6%",
+                        "11%",
+                        "12.6%",
+                        "13%",
+                        "13.4%",
+                        "15%"
+                    ]
+                ],
+                "Icon": "SKILLICON_CH0221_EXTRAPASSIVESKILL",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Enemy"
+                        ],
+                        "Value": [
+                            [
+                                -264,
+                                -277,
+                                -290,
+                                -343,
+                                -355,
+                                -369,
+                                -421,
+                                -434,
+                                -448,
+                                -500
+                            ],
+                            [
+                                -395,
+                                -415,
+                                -434,
+                                -514,
+                                -533,
+                                -553,
+                                -632,
+                                -651,
+                                -672,
+                                -750
+                            ],
+                            [
+                                -527,
+                                -553,
+                                -579,
+                                -684,
+                                -710,
+                                -737,
+                                -842,
+                                -868,
+                                -894,
+                                -1000
+                            ],
+                            [
+                                -659,
+                                -692,
+                                -725,
+                                -857,
+                                -889,
+                                -922,
+                                -1054,
+                                -1087,
+                                -1120,
+                                -1251
+                            ],
+                            [
+                                -791,
+                                -831,
+                                -870,
+                                -1028,
+                                -1068,
+                                -1107,
+                                -1265,
+                                -1305,
+                                -1344,
+                                -1503
+                            ]
+                        ],
+                        "StackLabel": [
+                            {
+                                "Icon": "buff/Special_CH0221_ExtraPassive.webp",
+                                "Label": "0"
+                            },
+                            {
+                                "Icon": "buff/Special_CH0221_ExtraPassive.webp",
+                                "Label": "1"
+                            },
+                            {
+                                "Icon": "buff/Special_CH0221_ExtraPassive.webp",
+                                "Label": "2"
+                            },
+                            {
+                                "Icon": "buff/Special_CH0221_ExtraPassive.webp",
+                                "Label": "3"
+                            },
+                            {
+                                "Icon": "buff/Special_CH0221_ExtraPassive.webp",
+                                "Label": "4"
+                            }
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 602,
+                        "Duration": 20000
                     }
                 ]
             }
