@@ -3307,7 +3307,7 @@ function CalculateStageDrops(result, ignoreRequirement) {
         totalArtifacts["Rohonc_4"] += 12;
     }
     else if (current_event == "box-shadow-looming") {
-        totalEleph["26014"] = Math.floor((totalCurrencies["Event_Point"] ?? 0) / 300) + 119;
+        totalEleph["26014"] = (Math.floor((totalCurrencies["Event_Point"] ?? 0) / 300) * 2) + 119 + 8;
     }
 
     if (feasible) {
