@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?71').done(function (json) {
+    $.getJSON('json/events.json?72').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -86,7 +86,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?337').done(function (json) {
+    $.getJSON('json/strings.json?338').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -3305,6 +3305,9 @@ function CalculateStageDrops(result, ignoreRequirement) {
         totalArtifacts["Rohonc_2"] += 40;
         totalArtifacts["Rohonc_3"] += 30;
         totalArtifacts["Rohonc_4"] += 12;
+    }
+    else if (current_event == "box-shadow-looming") {
+        totalEleph["26014"] = Math.floor((totalCurrencies["Event_Point"] ?? 0) / 300) + 119;
     }
 
     if (feasible) {
