@@ -1,6 +1,6 @@
 {
     "event_order": [
-        "box-shadow-looming"
+        "new-year-march-rerun"
     ],
     "events": {
         "moonlight-dream": {
@@ -3370,6 +3370,1338 @@
                     "count": 200
                 }
             ]
+        },
+        "new-year-march-rerun": {
+            "active": true,
+            "icon": "Event_832_Jp.png",
+            "display_name": "(Cyber) New Year March",
+            "reset_time": 1753124400,
+            "start_time": 1753149600,
+            "end_time": 1754359200,
+            "maint_hours": 6,
+            "available_targets": [
+                "Shop",
+                "Materials",
+                "Currency",
+                "Manual"
+            ],
+            "currency_targets": [
+                "Event_Point"
+            ],
+            "event_point_target": 15000,
+            "currencies": {
+                "Event_Point": {
+                    "icon": "Event_Point.png",
+                    "shortname": "Event Point",
+                    "source": "StageDrop",
+                    "clear": 0,
+                    "bonus_units": [
+                        {
+                            "id": "20042",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "10085",
+                            "bonus": 0.2
+                        },
+                        {
+                            "id": "10084",
+                            "bonus": 0.2
+                        },
+                        {
+                            "id": "23003",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "26001",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10012",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10053",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20013",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "20020",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "16011",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "10076",
+                            "bonus": 0.1
+                        }
+                    ]
+                },
+                "Super_Alloy_Peg": {
+                    "icon": "Super_Alloy_Peg.png",
+                    "shortname": "Super Alloy Peg",
+                    "source": "StageDrop",
+                    "clear": 18005,
+                    "bonus_units": [
+                        {
+                            "id": "10085",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "20042",
+                            "bonus": 0.20
+                        },
+                        {
+                            "id": "23003",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20013",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "13010",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "13003",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16011",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10007",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "10053",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "16002",
+                            "bonus": 0.1
+                        }
+                    ]
+                },
+                "Multipurpose_Rope": {
+                    "icon": "Multipurpose_Rope.png",
+                    "shortname": "Multipurpose Rope",
+                    "source": "StageDrop",
+                    "clear": 21810,
+                    "bonus_units": [
+                        {
+                            "id": "10084",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "20042",
+                            "bonus": 0.20
+                        },
+                        {
+                            "id": "26001",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10007",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20020",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16002",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10076",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10012",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "13010",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "13003",
+                            "bonus": 0.1
+                        }
+                    ]
+                },
+                "S&D_Curry_Powder": {
+                    "icon": "S&D_Curry_Powder.png",
+                    "shortname": "S&D Curry Powder",
+                    "source": "ShopPurchase",
+                    "pull_currency": "Event_Point",
+                    "bonus_units": []
+                }
+            },
+            "shops": {
+                "Super_Alloy_Peg": [
+                    {
+                        "type": "XpReport",
+                        "id": "XP_1",
+                        "count": 90,
+                        "cost": 1,
+                        "amount": 3
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_2",
+                        "count": 95,
+                        "cost": 3
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_3",
+                        "count": 30,
+                        "cost": 12
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_4",
+                        "count": 12,
+                        "cost": 60
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3050",
+                        "count": 30,
+                        "cost": 10
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3051",
+                        "count": 18,
+                        "cost": 30
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3052",
+                        "count": 12,
+                        "cost": 100
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3053",
+                        "count": 4,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Material",
+                        "id": "170",
+                        "count": 45,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "171",
+                        "count": 22,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "172",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "173",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "260",
+                        "count": 45,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "261",
+                        "count": 22,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "262",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "263",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Teddy_Bear_with_Bow",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Astronomical_Telescope",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "I-Book_Rare",
+                        "count": 1,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "My_Event063_Campingcoffeetable",
+                        "count": 1,
+                        "cost": 2000,
+                        "limited": false
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Stylish_Comb",
+                        "count": 1,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "My_Event076_Board",
+                        "count": 1,
+                        "cost": 2000,
+                        "limited": true
+                    }
+                ],
+                "Multipurpose_Rope": [
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_1",
+                        "count": 180,
+                        "cost": 1
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_2",
+                        "count": 95,
+                        "cost": 4
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_3",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_4",
+                        "count": 12,
+                        "cost": 60
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4050",
+                        "count": 50,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4051",
+                        "count": 38,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4052",
+                        "count": 25,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4053",
+                        "count": 15,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "150",
+                        "count": 45,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "151",
+                        "count": 22,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "152",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "153",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "250",
+                        "count": 45,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "251",
+                        "count": 22,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "252",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "253",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Hitgirls_Gaming_Magazine",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Gamegirl_Color_Replica",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "The_Life_Board_Game",
+                        "count": 1,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "My_Event063_Partition",
+                        "count": 1,
+                        "cost": 2000,
+                        "limited": true
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Thirty-Color_Paint_Set",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "A-Pods_Pro",
+                        "count": 10,
+                        "cost": 200
+                    }
+                ],
+                "Event_Point": [
+                    {
+                        "type": "EventCurrency",
+                        "id": "S&D_Curry_Powder",
+                        "count": 0,
+                        "overflow": true,
+                        "cost": 300,
+                        "overflow_cap": 999
+                    }
+                ]
+            },
+            "stage_groups": [
+                "1-4",
+                "5-8",
+                "9-12"
+            ],
+            "stages": [
+                {
+                    "type": "Story",
+                    "level": 10,
+                    "number": 1,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 10,
+                        "Super_Alloy_Peg": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 11,
+                    "number": 2,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 10,
+                        "Multipurpose_Rope": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 12,
+                    "number": 3,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 10,
+                        "Super_Alloy_Peg": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 13,
+                    "number": 4,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 10,
+                        "Multipurpose_Rope": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 14,
+                    "number": 5,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 10,
+                        "Super_Alloy_Peg": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 15,
+                    "number": 6,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 10,
+                        "Multipurpose_Rope": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 16,
+                    "number": 7,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 10,
+                        "Super_Alloy_Peg": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 17,
+                    "number": 8,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 10,
+                        "Multipurpose_Rope": 10
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 1,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Event_Point": 150,
+                        "Super_Alloy_Peg": 100,
+                        "Multipurpose_Rope": 100
+                    },
+                    "drops": {
+                        "Event_Point": 6,
+                        "Super_Alloy_Peg": 6,
+                        "Multipurpose_Rope": 6,
+                        "Phaistos_1": 0.25,
+                        "Phaistos_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 2,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Event_Point": 150,
+                        "Super_Alloy_Peg": 400,
+                        "Multipurpose_Rope": 200
+                    },
+                    "drops": {
+                        "Event_Point": 6,
+                        "Super_Alloy_Peg": 9,
+                        "Multipurpose_Rope": 3,
+                        "Mandragora_1": 0.25,
+                        "Mandragora_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 3,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Event_Point": 150,
+                        "Super_Alloy_Peg": 200,
+                        "Multipurpose_Rope": 400
+                    },
+                    "drops": {
+                        "Event_Point": 6,
+                        "Super_Alloy_Peg": 3,
+                        "Multipurpose_Rope": 9,
+                        "Nimrud_1": 0.25,
+                        "Nimrud_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 4,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Event_Point": 300
+                    },
+                    "drops": {
+                        "Event_Point": 8,
+                        "Super_Alloy_Peg": 4,
+                        "Multipurpose_Rope": 4,
+                        "Voynich_1": 0.25,
+                        "Voynich_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 5,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Event_Point": 150,
+                        "Super_Alloy_Peg": 200,
+                        "Multipurpose_Rope": 200
+                    },
+                    "drops": {
+                        "Event_Point": 5,
+                        "Super_Alloy_Peg": 11,
+                        "Multipurpose_Rope": 11,
+                        "Phaistos_2": 0.25,
+                        "Phaistos_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 6,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Event_Point": 150,
+                        "Super_Alloy_Peg": 500,
+                        "Multipurpose_Rope": 300
+                    },
+                    "drops": {
+                        "Event_Point": 5,
+                        "Super_Alloy_Peg": 17,
+                        "Multipurpose_Rope": 5,
+                        "Mandragora_2": 0.25,
+                        "Mandragora_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 7,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Event_Point": 150,
+                        "Super_Alloy_Peg": 300,
+                        "Multipurpose_Rope": 500
+                    },
+                    "drops": {
+                        "Event_Point": 5,
+                        "Super_Alloy_Peg": 5,
+                        "Multipurpose_Rope": 17,
+                        "Nimrud_2": 0.25,
+                        "Nimrud_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 8,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Event_Point": 400
+                    },
+                    "drops": {
+                        "Event_Point": 16,
+                        "Super_Alloy_Peg": 4,
+                        "Multipurpose_Rope": 4,
+                        "Voynich_2": 0.25,
+                        "Voynich_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 9,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Event_Point": 150,
+                        "Super_Alloy_Peg": 200,
+                        "Multipurpose_Rope": 200
+                    },
+                    "drops": {
+                        "Event_Point": 4,
+                        "Super_Alloy_Peg": 16,
+                        "Multipurpose_Rope": 16,
+                        "Phaistos_2": 0.25,
+                        "Phaistos_3": 0.12,
+                        "Phaistos_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 10,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Event_Point": 150,
+                        "Super_Alloy_Peg": 500,
+                        "Multipurpose_Rope": 300
+                    },
+                    "drops": {
+                        "Event_Point": 4,
+                        "Super_Alloy_Peg": 32,
+                        "Mandragora_2": 0.25,
+                        "Mandragora_3": 0.12,
+                        "Mandragora_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 11,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Event_Point": 150,
+                        "Super_Alloy_Peg": 300,
+                        "Multipurpose_Rope": 500
+                    },
+                    "drops": {
+                        "Event_Point": 4,
+                        "Multipurpose_Rope": 32,
+                        "Nimrud_2": 0.25,
+                        "Nimrud_3": 0.12,
+                        "Nimrud_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 12,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Event_Point": 500
+                    },
+                    "drops": {
+                        "Event_Point": 32,
+                        "Voynich_2": 0.25,
+                        "Voynich_3": 0.12,
+                        "Voynich_4": 0.021
+                    }
+                },
+                {
+                    "type": "Challenge",
+                    "level": 50,
+                    "number": 1,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "level": 85,
+                    "number": 2,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "level": 87,
+                    "number": 3,
+                    "cost": 5
+                }
+            ],
+            "point_rewards": [
+                {
+                    "points": 10,
+                    "type": "XpReport",
+                    "id": "XP_1",
+                    "count": 10
+                },
+                {
+                    "points": 50,
+                    "type": "XpOrb",
+                    "id": "GXP_1",
+                    "count": 10
+                },
+                {
+                    "points": 100,
+                    "type": "XpReport",
+                    "id": "XP_2",
+                    "count": 5
+                },
+                {
+                    "points": 200,
+                    "type": "XpOrb",
+                    "id": "GXP_2",
+                    "count": 5
+                },
+                {
+                    "points": 300,
+                    "type": "Pyroxene",
+                    "count": 100
+                },
+                {
+                    "points": 400,
+                    "type": "XpReport",
+                    "id": "XP_1",
+                    "count": 10
+                },
+                {
+                    "points": 500,
+                    "type": "XpOrb",
+                    "id": "GXP_1",
+                    "count": 10
+                },
+                {
+                    "points": 600,
+                    "type": "XpReport",
+                    "id": "XP_2",
+                    "count": 5
+                },
+                {
+                    "points": 700,
+                    "type": "XpOrb",
+                    "id": "GXP_2",
+                    "count": 5
+                },
+                {
+                    "points": 800,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 2
+                },
+                {
+                    "points": 900,
+                    "type": "XpOrb",
+                    "id": "GXP_3",
+                    "count": 2
+                },
+                {
+                    "points": 1000,
+                    "type": "Pyroxene",
+                    "count": 100
+                },
+                {
+                    "points": 1200,
+                    "type": "XpReport",
+                    "id": "XP_1",
+                    "count": 20
+                },
+                {
+                    "points": 1400,
+                    "type": "XpOrb",
+                    "id": "GXP_1",
+                    "count": 20
+                },
+                {
+                    "points": 1600,
+                    "type": "XpReport",
+                    "id": "XP_2",
+                    "count": 10
+                },
+                {
+                    "points": 1800,
+                    "type": "XpOrb",
+                    "id": "GXP_2",
+                    "count": 10
+                },
+                {
+                    "points": 2000,
+                    "type": "Eligma",
+                    "count": 10
+                },
+                {
+                    "points": 2200,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 2
+                },
+                {
+                    "points": 2400,
+                    "type": "XpOrb",
+                    "id": "GXP_3",
+                    "count": 2
+                },
+                {
+                    "points": 2600,
+                    "type": "Credit",
+                    "count": 1000000
+                },
+                {
+                    "points": 2800,
+                    "type": "XpReport",
+                    "id": "XP_4",
+                    "count": 1
+                },
+                {
+                    "points": 3000,
+                    "type": "Pyroxene",
+                    "count": 100
+                },
+                {
+                    "points": 3200,
+                    "type": "XpOrb",
+                    "id": "GXP_4",
+                    "count": 1
+                },
+                {
+                    "points": 3400,
+                    "type": "Credit",
+                    "count": 1000000
+                },
+                {
+                    "points": 3600,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 3
+                },
+                {
+                    "points": 3800,
+                    "type": "XpOrb",
+                    "id": "GXP_3",
+                    "count": 3
+                },
+                {
+                    "points": 4000,
+                    "type": "Eligma",
+                    "count": 10
+                },
+                {
+                    "points": 4200,
+                    "type": "XpReport",
+                    "id": "XP_4",
+                    "count": 2
+                },
+                {
+                    "points": 4400,
+                    "type": "XpOrb",
+                    "id": "GXP_4",
+                    "count": 2
+                },
+                {
+                    "points": 4600,
+                    "type": "Credit",
+                    "count": 1500000
+                },
+                {
+                    "points": 4800,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 3
+                },
+                {
+                    "points": 5000,
+                    "type": "Pyroxene",
+                    "count": 100
+                },
+                {
+                    "points": 5500,
+                    "type": "XpOrb",
+                    "id": "GXP_3",
+                    "count": 3
+                },
+                {
+                    "points": 6000,
+                    "type": "Pyroxene",
+                    "count": 100
+                },
+                {
+                    "points": 6500,
+                    "type": "Credit",
+                    "count": 1500000
+                },
+                {
+                    "points": 7000,
+                    "type": "XpReport",
+                    "id": "XP_4",
+                    "count": 2
+                },
+                {
+                    "points": 7500,
+                    "type": "XpOrb",
+                    "id": "GXP_4",
+                    "count": 2
+                },
+                {
+                    "points": 8000,
+                    "type": "Eligma",
+                    "count": 15
+                },
+                {
+                    "points": 9000,
+                    "type": "Credit",
+                    "count": 2000000
+                },
+                {
+                    "points": 10000,
+                    "type": "SecretTech",
+                    "count": 1
+                },
+                {
+                    "points": 11000,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 20
+                },
+                {
+                    "points": 12000,
+                    "type": "Credit",
+                    "count": 2000000
+                },
+                {
+                    "points": 13000,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 20
+                },
+                {
+                    "points": 14000,
+                    "type": "Credit",
+                    "count": 2000000
+                },
+                {
+                    "points": 15000,
+                    "type": "XpReport",
+                    "id": "XP_4",
+                    "count": 10
+                }
+            ],
+            "omikuji": {
+                "pull_currency": "S&D_Curry_Powder",
+                "pull_cost": 1,
+                "TargetGrade": 4,
+                "ProbModifyStartCount": 5,
+                "MaxPullCount": 15,
+                "slips": [
+                    {
+                        "Grade": 0,
+                        "Prob": 1200,
+                        "ProbModifyValue": -120,
+                        "ProbModifyLimit": 0,
+                        "RewardId": [
+                            150,
+                            170,
+                            250,
+                            260,
+                            1
+                        ],
+                        "RewardAmount": [
+                            2.5,
+                            2.5,
+                            2.5,
+                            2.5,
+                            600000
+                        ]
+                    },
+                    {
+                        "Grade": 1,
+                        "Prob": 1400,
+                        "ProbModifyValue": -140,
+                        "ProbModifyLimit": 0,
+                        "RewardId": [
+                            23,
+                            151,
+                            171,
+                            251,
+                            261,
+                            150,
+                            170,
+                            250,
+                            260,
+                            1
+                        ],
+                        "RewardAmount": [
+                            1,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.25,
+                            1.25,
+                            1.25,
+                            1.25,
+                            1.25,
+                            400000
+                        ]
+                    },
+                    {
+                        "Grade": 1,
+                        "Prob": 1400,
+                        "ProbModifyValue": -140,
+                        "ProbModifyLimit": 0,
+                        "RewardId": [
+                            23,
+                            151,
+                            171,
+                            251,
+                            261,
+                            150,
+                            170,
+                            250,
+                            260,
+                            1
+                        ],
+                        "RewardAmount": [
+                            1,
+                            0.5,
+                            0.5,
+                            0.5,
+                            0.5,
+                            1.25,
+                            1.25,
+                            1.25,
+                            1.25,
+                            400000
+                        ]
+                    },
+                    {
+                        "Grade": 2,
+                        "Prob": 1750,
+                        "ProbModifyValue": -175,
+                        "ProbModifyLimit": 0,
+                        "RewardId": [
+                            23,
+                            152,
+                            172,
+                            252,
+                            262,
+                            151,
+                            171,
+                            251,
+                            261,
+                            1
+                        ],
+                        "RewardAmount": [
+                            1,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.75,
+                            0.75,
+                            0.75,
+                            0.75,
+                            400000
+                        ]
+                    },
+                    {
+                        "Grade": 2,
+                        "Prob": 1750,
+                        "ProbModifyValue": -175,
+                        "ProbModifyLimit": 0,
+                        "RewardId": [
+                            23,
+                            152,
+                            172,
+                            252,
+                            262,
+                            151,
+                            171,
+                            251,
+                            261,
+                            1
+                        ],
+                        "RewardAmount": [
+                            2,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.75,
+                            0.75,
+                            0.75,
+                            0.75,
+                            400000
+                        ]
+                    },
+                    {
+                        "Grade": 3,
+                        "Prob": 1000,
+                        "ProbModifyValue": -100,
+                        "ProbModifyLimit": 0,
+                        "RewardId": [
+                            23,
+                            153,
+                            173,
+                            253,
+                            263,
+                            152,
+                            172,
+                            252,
+                            262,
+                            1
+                        ],
+                        "RewardAmount": [
+                            2,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.25,
+                            200000
+                        ]
+                    },
+                    {
+                        "Grade": 3,
+                        "Prob": 1000,
+                        "ProbModifyValue": -100,
+                        "ProbModifyLimit": 0,
+                        "RewardId": [
+                            23,
+                            152,
+                            172,
+                            252,
+                            262,
+                            1
+                        ],
+                        "RewardAmount": [
+                            3,
+                            0.5,
+                            0.5,
+                            0.5,
+                            0.5,
+                            200000
+                        ]
+                    },
+                    {
+                        "Grade": 4,
+                        "Prob": 125,
+                        "ProbModifyValue": 237,
+                        "ProbModifyLimit": 2500,
+                        "RewardId": [
+                            23,
+                            153,
+                            173,
+                            253,
+                            263,
+                            1
+                        ],
+                        "RewardAmount": [
+                            4,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.25,
+                            200000
+                        ]
+                    },
+                    {
+                        "Grade": 4,
+                        "Prob": 125,
+                        "ProbModifyValue": 237,
+                        "ProbModifyLimit": 2500,
+                        "RewardId": [
+                            23,
+                            153,
+                            173,
+                            253,
+                            263,
+                            1
+                        ],
+                        "RewardAmount": [
+                            4,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.25,
+                            200000
+                        ]
+                    },
+                    {
+                        "Grade": 4,
+                        "Prob": 125,
+                        "ProbModifyValue": 238,
+                        "ProbModifyLimit": 2500,
+                        "RewardId": [
+                            23,
+                            153,
+                            173,
+                            253,
+                            263,
+                            1
+                        ],
+                        "RewardAmount": [
+                            4,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.25,
+                            200000
+                        ]
+                    },
+                    {
+                        "Grade": 4,
+                        "Prob": 125,
+                        "ProbModifyValue": 238,
+                        "ProbModifyLimit": 2500,
+                        "RewardId": [
+                            23,
+                            153,
+                            173,
+                            253,
+                            263,
+                            1
+                        ],
+                        "RewardAmount": [
+                            4,
+                            0.5,
+                            0.5,
+                            0.5,
+                            0.5,
+                            200000
+                        ]
+                    }
+                ]
+            }
         }
     }
 }

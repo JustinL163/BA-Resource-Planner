@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?72').done(function (json) {
+    $.getJSON('json/events.json?73').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -86,7 +86,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?338').done(function (json) {
+    $.getJSON('json/strings.json?339').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -1688,6 +1688,9 @@ function CalculateItemPurchases() {
             event_data.currency_needed["Genryumon_Badge"] = totalPurchaseCost
         }
         else if (current_event == "new-year-march" && shopNames[s] == "Event_Point") {
+            event_data.currency_needed["Event_Point"] = totalPurchaseCost;
+        }
+        else if (current_event == "new-year-march-rerun" && shopNames[s] == "Event_Point") {
             event_data.currency_needed["Event_Point"] = totalPurchaseCost;
         }
 
