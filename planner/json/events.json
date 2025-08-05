@@ -1,6 +1,6 @@
 {
     "event_order": [
-        "new-year-march-rerun"
+        "pandemic-hazard"
     ],
     "events": {
         "moonlight-dream": {
@@ -2023,7 +2023,9 @@
                 "Currency",
                 "Manual"
             ],
-            "currency_targets": ["Event_Point"],
+            "currency_targets": [
+                "Event_Point"
+            ],
             "event_point_target": 15000,
             "currencies": {
                 "Event_Point": {
@@ -4702,6 +4704,1079 @@
                     }
                 ]
             }
+        },
+        "pandemic-hazard": {
+            "active": true,
+            "icon": "Event_844_Jp.png",
+            "display_name": "Pandemic Hazard ~ Miracle Pancake ~",
+            "reset_time": 1754334000,
+            "start_time": 1754359200,
+            "end_time": 1755568800,
+            "maint_hours": 6,
+            "available_targets": [
+                "Shop",
+                "Materials",
+                "Currency",
+                "Manual"
+            ],
+            "currency_targets": ["Parfait_Coupon"],
+            "event_point_target": 0,
+            "currencies": {
+                "Parfait_Coupon": {
+                    "icon": "Parfait_Coupon.png",
+                    "shortname": "Parfait Coupon",
+                    "source": "StageDrop",
+                    "clear": 0,
+                    "bonus_units": [
+                        {
+                            "id": "10114",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "10113",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "26002",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20012",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "26000",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10004",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10030",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10022",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20022",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10057",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "13007",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "10009",
+                            "bonus": 0.1
+                        }
+                    ]
+                },
+                "Sample_Pancake": {
+                    "icon": "Sample_Pancake.png",
+                    "shortname": "Sample Pancake",
+                    "source": "StageDrop",
+                    "clear": 16095,
+                    "bonus_units": [
+                        {
+                            "id": "10114",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "26002",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "23001",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10006",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20008",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10004",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10002",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10087",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10023",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10022",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20022",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "13007",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "13002",
+                            "bonus": 0.1
+                        }
+                    ]
+                },
+                "Special_Pharmaceuticals": {
+                    "icon": "Special_Pharmaceuticals.png",
+                    "shortname": "Special Pharmaceuticals",
+                    "source": "StageDrop",
+                    "clear": 18200,
+                    "bonus_units": [
+                        {
+                            "id": "10113",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "20012",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "23001",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10006",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20008",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "26000",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10002",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10087",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10030",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10023",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10057",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10009",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "13002",
+                            "bonus": 0.1
+                        }
+                    ]
+                },
+                "Detergent_Sachet": {
+                    "icon": "Detergent_Sachet.png",
+                    "shortname": "Detergent Sachet",
+                    "source": "BoxPull",
+                    "clear": 160,
+                    "bonus_units": [],
+                    "pull_currency": "Parfait_Coupon"
+                }
+            },
+            "shops": {
+                "Sample_Pancake": [
+                    {
+                        "type": "XpReport",
+                        "id": "XP_1",
+                        "count": 90,
+                        "cost": 1,
+                        "amount": 3
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_2",
+                        "count": 95,
+                        "cost": 3
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_3",
+                        "count": 30,
+                        "cost": 12
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_4",
+                        "count": 12,
+                        "cost": 60
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3030",
+                        "count": 30,
+                        "cost": 10
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3031",
+                        "count": 18,
+                        "cost": 30
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3032",
+                        "count": 12,
+                        "cost": 100
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3033",
+                        "count": 4,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Material",
+                        "id": "210",
+                        "count": 60,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "211",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "212",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "213",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "180",
+                        "count": 60,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "181",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "182",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "183",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Embroidered_Handkerchief",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Cute_Dishware_Set",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Mille-Feuille_Traditional_Parfait",
+                        "count": 1,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "My_Event077_Table_02",
+                        "count": 1,
+                        "cost": 2000,
+                        "limited": true
+                    }
+                ],
+                "Special_Pharmaceuticals": [
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_1",
+                        "count": 180,
+                        "cost": 1
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_2",
+                        "count": 95,
+                        "cost": 4
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_3",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_4",
+                        "count": 12,
+                        "cost": 60
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4030",
+                        "count": 50,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4031",
+                        "count": 38,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4032",
+                        "count": 25,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4033",
+                        "count": 15,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "220",
+                        "count": 60,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "221",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "222",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "223",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "160",
+                        "count": 60,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "161",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "162",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "163",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Health_Food_Supplement",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Encyclopedia",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Nutrient-rich_Multivitamin_Jellies",
+                        "count": 1,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "My_Event077_Table_03",
+                        "count": 1,
+                        "cost": 2000,
+                        "limited": true
+                    }
+                ],
+                "Detergent_Sachet": [
+                    {
+                        "type": "Eligma",
+                        "id": "Eligma-5",
+                        "count": 20,
+                        "cost": 2,
+                        "amount": 5
+                    },
+                    {
+                        "type": "SecretTech",
+                        "id": "SecretTech",
+                        "count": 1,
+                        "cost": 20
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-1000000",
+                        "count": 3,
+                        "cost": 8,
+                        "amount": 1000000
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-500000",
+                        "count": 8,
+                        "cost": 5,
+                        "amount": 500000
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-250000",
+                        "count": 12,
+                        "cost": 3,
+                        "amount": 250000
+                    }
+                ]
+            },
+            "stage_groups": [
+                "1-4",
+                "5-8",
+                "9-12"
+            ],
+            "stages": [
+                {
+                    "type": "Story",
+                    "level": 10,
+                    "number": 1,
+                    "cost": 10,
+                    "initial": {
+                        "Parfait_Coupon": 10,
+                        "Sample_Pancake": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 11,
+                    "number": 2,
+                    "cost": 10,
+                    "initial": {
+                        "Parfait_Coupon": 10,
+                        "Special_Pharmaceuticals": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 12,
+                    "number": 3,
+                    "cost": 10,
+                    "initial": {
+                        "Parfait_Coupon": 10,
+                        "Sample_Pancake": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 13,
+                    "number": 4,
+                    "cost": 10,
+                    "initial": {
+                        "Parfait_Coupon": 10,
+                        "Special_Pharmaceuticals": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 14,
+                    "number": 5,
+                    "cost": 10,
+                    "initial": {
+                        "Parfait_Coupon": 10,
+                        "Sample_Pancake": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 15,
+                    "number": 6,
+                    "cost": 10,
+                    "initial": {
+                        "Parfait_Coupon": 10,
+                        "Special_Pharmaceuticals": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 16,
+                    "number": 7,
+                    "cost": 10,
+                    "initial": {
+                        "Parfait_Coupon": 10,
+                        "Sample_Pancake": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 17,
+                    "number": 8,
+                    "cost": 10,
+                    "initial": {
+                        "Parfait_Coupon": 10,
+                        "Special_Pharmaceuticals": 10
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 1,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Parfait_Coupon": 200,
+                        "Sample_Pancake": 50,
+                        "Special_Pharmaceuticals": 50
+                    },
+                    "drops": {
+                        "Parfait_Coupon": 8,
+                        "Sample_Pancake": 5,
+                        "Special_Pharmaceuticals": 5,
+                        "Rocket_1": 0.25,
+                        "Rocket_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 2,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Sample_Pancake": 200,
+                        "Special_Pharmaceuticals": 100
+                    },
+                    "drops": {
+                        "Parfait_Coupon": 5,
+                        "Sample_Pancake": 8,
+                        "Special_Pharmaceuticals": 5,
+                        "Wolfsegg_1": 0.25,
+                        "Wolfsegg_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 3,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Sample_Pancake": 100,
+                        "Special_Pharmaceuticals": 200
+                    },
+                    "drops": {
+                        "Parfait_Coupon": 5,
+                        "Sample_Pancake": 5,
+                        "Special_Pharmaceuticals": 8,
+                        "Haniwa_1": 0.25,
+                        "Haniwa_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 4,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Parfait_Coupon": 300
+                    },
+                    "drops": {
+                        "Parfait_Coupon": 12,
+                        "Sample_Pancake": 3,
+                        "Special_Pharmaceuticals": 3,
+                        "Totem_1": 0.25,
+                        "Totem_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 5,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Parfait_Coupon": 200,
+                        "Sample_Pancake": 100,
+                        "Special_Pharmaceuticals": 100
+                    },
+                    "drops": {
+                        "Parfait_Coupon": 15,
+                        "Sample_Pancake": 6,
+                        "Special_Pharmaceuticals": 6,
+                        "Rocket_2": 0.25,
+                        "Rocket_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 6,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Sample_Pancake": 250,
+                        "Special_Pharmaceuticals": 150
+                    },
+                    "drops": {
+                        "Parfait_Coupon": 6,
+                        "Sample_Pancake": 15,
+                        "Special_Pharmaceuticals": 6,
+                        "Wolfsegg_2": 0.25,
+                        "Wolfsegg_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 7,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Sample_Pancake": 150,
+                        "Special_Pharmaceuticals": 250
+                    },
+                    "drops": {
+                        "Parfait_Coupon": 6,
+                        "Sample_Pancake": 6,
+                        "Special_Pharmaceuticals": 15,
+                        "Haniwa_2": 0.25,
+                        "Haniwa_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 8,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Parfait_Coupon": 400
+                    },
+                    "drops": {
+                        "Parfait_Coupon": 23,
+                        "Sample_Pancake": 2,
+                        "Special_Pharmaceuticals": 2,
+                        "Totem_2": 0.25,
+                        "Totem_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 9,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Parfait_Coupon": 300,
+                        "Sample_Pancake": 100,
+                        "Special_Pharmaceuticals": 100
+                    },
+                    "drops": {
+                        "Parfait_Coupon": 28,
+                        "Sample_Pancake": 4,
+                        "Special_Pharmaceuticals": 4,
+                        "Rocket_2": 0.25,
+                        "Rocket_3": 0.12,
+                        "Rocket_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 10,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Parfait_Coupon": 50,
+                        "Sample_Pancake": 450
+                    },
+                    "drops": {
+                        "Parfait_Coupon": 4,
+                        "Sample_Pancake": 32,
+                        "Wolfsegg_2": 0.25,
+                        "Wolfsegg_3": 0.12,
+                        "Wolfsegg_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 11,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Parfait_Coupon": 50,
+                        "Special_Pharmaceuticals": 450
+                    },
+                    "drops": {
+                        "Parfait_Coupon": 4,
+                        "Special_Pharmaceuticals": 32,
+                        "Haniwa_2": 0.25,
+                        "Haniwa_3": 0.12,
+                        "Haniwa_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 12,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Parfait_Coupon": 500
+                    },
+                    "drops": {
+                        "Parfait_Coupon": 36,
+                        "Totem_2": 0.25,
+                        "Totem_3": 0.12,
+                        "Totem_4": 0.021
+                    }
+                },
+                {
+                    "type": "Challenge",
+                    "level": 50,
+                    "number": 1,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "level": 85,
+                    "number": 2,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "level": 90,
+                    "number": 3,
+                    "cost": 5
+                }
+            ],
+            "box_clear_cost": 1800,
+            "boxes": [
+                {
+                    "cycle": [
+                        "1",
+                        "3",
+                        "5",
+                        "7"
+                    ],
+                    "rewards": [
+                        {
+                            "type": "Pyroxene",
+                            "id": "Pyroxene",
+                            "amount": 150,
+                            "count": 1
+                        },
+                        {
+                            "type": "EventCurrency",
+                            "id": "Detergent_Sachet",
+                            "amount": 10,
+                            "count": 2
+                        },
+                        {
+                            "type": "Credit",
+                            "id": "Credit",
+                            "amount": 100000,
+                            "count": 3
+                        },
+                        {
+                            "type": "Credit",
+                            "id": "Credit",
+                            "amount": 50000,
+                            "count": 5
+                        },
+                        {
+                            "type": "Credit",
+                            "id": "Credit",
+                            "amount": 25000,
+                            "count": 10
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "XP_1",
+                            "amount": 1,
+                            "count": 75
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "XP_2",
+                            "amount": 1,
+                            "count": 50
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "XP_3",
+                            "amount": 1,
+                            "count": 40
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "XP_4",
+                            "amount": 1,
+                            "count": 12
+                        },
+                        {
+                            "type": "Material",
+                            "id": "220",
+                            "amount": 1,
+                            "count": 30
+                        },
+                        {
+                            "type": "Material",
+                            "id": "221",
+                            "amount": 1,
+                            "count": 15
+                        },
+                        {
+                            "type": "Material",
+                            "id": "222",
+                            "amount": 1,
+                            "count": 8
+                        },
+                        {
+                            "type": "Material",
+                            "id": "223",
+                            "amount": 1,
+                            "count": 3
+                        },
+                        {
+                            "type": "Misc",
+                            "id": "Random_Equipment_Box_0",
+                            "amount": 1,
+                            "count": 46
+                        }
+                    ]
+                },
+                {
+                    "cycle": [
+                        "2",
+                        "4",
+                        "6",
+                        "8"
+                    ],
+                    "rewards": [
+                        {
+                            "type": "Pyroxene",
+                            "id": "Pyroxene",
+                            "amount": 150,
+                            "count": 1
+                        },
+                        {
+                            "type": "EventCurrency",
+                            "id": "Detergent_Sachet",
+                            "amount": 10,
+                            "count": 2
+                        },
+                        {
+                            "type": "Credit",
+                            "id": "Credit",
+                            "amount": 100000,
+                            "count": 3
+                        },
+                        {
+                            "type": "Credit",
+                            "id": "Credit",
+                            "amount": 50000,
+                            "count": 5
+                        },
+                        {
+                            "type": "Credit",
+                            "id": "Credit",
+                            "amount": 25000,
+                            "count": 10
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "GXP_1",
+                            "amount": 1,
+                            "count": 75
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "GXP_2",
+                            "amount": 1,
+                            "count": 50
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "GXP_3",
+                            "amount": 1,
+                            "count": 40
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "GXP_4",
+                            "amount": 1,
+                            "count": 12
+                        },
+                        {
+                            "type": "Material",
+                            "id": "210",
+                            "amount": 1,
+                            "count": 30
+                        },
+                        {
+                            "type": "Material",
+                            "id": "211",
+                            "amount": 1,
+                            "count": 15
+                        },
+                        {
+                            "type": "Material",
+                            "id": "212",
+                            "amount": 1,
+                            "count": 8
+                        },
+                        {
+                            "type": "Material",
+                            "id": "213",
+                            "amount": 1,
+                            "count": 3
+                        },
+                        {
+                            "type": "Misc",
+                            "id": "Random_Equipment_Box_0",
+                            "amount": 1,
+                            "count": 46
+                        }
+                    ]
+                },
+                {
+                    "cycle": [
+                        "9"
+                    ],
+                    "rewards": [
+                        {
+                            "type": "EventCurrency",
+                            "id": "Detergent_Sachet",
+                            "amount": 10,
+                            "count": 2
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "XP_1",
+                            "amount": 1,
+                            "count": 80
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "XP_2",
+                            "amount": 1,
+                            "count": 35
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "XP_3",
+                            "amount": 1,
+                            "count": 15
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "GXP_1",
+                            "amount": 1,
+                            "count": 45
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "GXP_2",
+                            "amount": 1,
+                            "count": 15
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "GXP_3",
+                            "amount": 1,
+                            "count": 5
+                        },
+                        {
+                            "type": "Material",
+                            "id": "220",
+                            "amount": 1,
+                            "count": 15
+                        },
+                        {
+                            "type": "Material",
+                            "id": "221",
+                            "amount": 1,
+                            "count": 7
+                        },
+                        {
+                            "type": "Material",
+                            "id": "222",
+                            "amount": 1,
+                            "count": 2
+                        },
+                        {
+                            "type": "Misc",
+                            "id": "Random_Equipment_Box_0",
+                            "amount": 1,
+                            "count": 79
+                        }
+                    ]
+                }
+            ]
         }
     }
 }
