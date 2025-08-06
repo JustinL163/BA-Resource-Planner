@@ -30,7 +30,7 @@ let displayIncluded = {};
 let initialClearRewards = {};
 let initialClearCost = 0;
 
-let cafeDefault = 9;
+let cafeDefault = 10;
 
 let shopItemTippies = [];
 
@@ -76,7 +76,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/event_misc.json?2').done(function (json) {
+    $.getJSON('json/event_misc.json?3').done(function (json) {
         event_misc = json;
         checkResources();
     });
@@ -841,7 +841,7 @@ async function EnergySourceClicked(source) {
         inputType = "Options";
     }
     else if (source == "Cafe") {
-        for (let i = 1; i <= 9; i++) {
+        for (let i = 1; i <= 10; i++) {
             options[i] = "Lvl " + i;
         }
 
