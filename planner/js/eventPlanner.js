@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?74').done(function (json) {
+    $.getJSON('json/events.json?75').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -86,7 +86,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?340').done(function (json) {
+    $.getJSON('json/strings.json?341').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -645,7 +645,9 @@ function GenerateBonusTab() {
 
     for (let i = 0; i < currencyNames.length; i++) {
 
-        if (currencies[currencyNames[i]].source == "BoxPull" || currencies[currencyNames[i]].source == "CardPull" || currencies[currencyNames[i]].source == "MinigameDrop") {
+        if (currencies[currencyNames[i]].source == "BoxPull" || currencies[currencyNames[i]].source == "CardPull" || currencies[currencyNames[i]].source == "MinigameDrop" ||
+            currencies[currencyNames[i]].source == "ShopBuy"
+        ) {
             continue;
         }
 
