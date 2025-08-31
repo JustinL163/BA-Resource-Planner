@@ -566,8 +566,6 @@ function inputNavigate(direction) {
 
                     let cell = navObj.object.revGet(focusedInput);
 
-                    // let targetPos = findPosString(cell, direction, navValue);
-                    // console.log(findNextCell(cell, direction, navValue));
                     let targetPos = findNextCell(cell, direction, navValue);
                     targetCell = navObj.object.get(targetPos);
                 }
@@ -616,8 +614,6 @@ function GetNavSubtractTable(navValue) {
             navAddTables[navValue].push(rowAddArr);
         }
     }
-    console.log(navSubtractTables[navValue]);
-    console.log(navAddTables[navValue]);
 
     return navSubtractTables[navValue];
 }
