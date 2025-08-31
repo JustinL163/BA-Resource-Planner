@@ -155,9 +155,9 @@ function ToggleImageStyle() {
                 aprilFools = true;
                 document.getElementById('image-style-button').src = "icons/UI/ShirokoIcon.png"
             }
-        
+
             localStorage.setItem('image-style', aprilFools);
-        
+
             location.reload();
         }
     })
@@ -557,6 +557,8 @@ function inputNavigate(direction) {
 
             targetCell = inputValidation[property][direction];
 
+            // targetCell = null; // temporary disable direct navigation
+
             if (!targetCell) {
                 let navObj = navigationObjects[navValue];
 
@@ -564,7 +566,9 @@ function inputNavigate(direction) {
 
                     let cell = navObj.object.revGet(focusedInput);
 
-                    let targetPos = findPosString(cell, direction, navValue);
+                    // let targetPos = findPosString(cell, direction, navValue);
+                    // console.log(findNextCell(cell, direction, navValue));
+                    let targetPos = findNextCell(cell, direction, navValue);
                     targetCell = navObj.object.get(targetPos);
                 }
             }
@@ -581,6 +585,127 @@ function inputNavigate(direction) {
         }
     }
 
+}
+
+let navSubtractTables = {}, navAddTables = {};
+function GetNavSubtractTable(navValue) {
+    if (navSubtractTables[navValue]) return navSubtractTables[navValue];
+
+    const navTable = navMap[navValue];
+
+    navSubtractTables[navValue] = [];
+    navAddTables[navValue] = [];
+    for (let row = 0; row < navTable.length; row++) {
+        let rowArr = [];
+        let rowAddArr = [];
+        let pipeCount = 0;
+        for (let col = 0; col < navTable[row].length; col++) {
+            if (navTable[row][col] === "|") pipeCount++;
+            // Count "=" in this column up to this row
+            let eqCount = 0;
+            for (let r = 0; r <= row; r++) {
+                if (navTable[r][col] === "=") eqCount++;
+            }
+            rowArr.push({ x: pipeCount, y: eqCount });
+            if (navTable[row][col] === "-") {
+                rowAddArr.push({ x: pipeCount, y: eqCount });
+            }
+        }
+        navSubtractTables[navValue].push(rowArr);
+        if (rowAddArr.length > 0) {
+            navAddTables[navValue].push(rowAddArr);
+        }
+    }
+    console.log(navSubtractTables[navValue]);
+    console.log(navAddTables[navValue]);
+
+    return navSubtractTables[navValue];
+}
+
+function findNextCell(currentCell, direction, navValue) {
+    const navTable = navMap[navValue];
+    if (!navTable || !Array.isArray(navTable)) return null;
+
+    let subtractTable = GetNavSubtractTable(navValue);
+
+    // Split currentCell into y and x (format: "y|x")
+    let [yStr, xStr] = currentCell.split('|');
+    let y = parseInt(yStr);
+    let x = parseInt(xStr);
+
+    y += navAddTables[navValue][yStr]?.[x - 1]?.y ?? 0;
+    x += navAddTables[navValue][yStr]?.[x - 1]?.x ?? 0;
+
+    const maxY = navTable.length - 1;
+    const maxX = navTable[parseInt(yStr)].length; // x starts from 1
+
+    if (direction === "Left") {
+        if (x > 1 && navTable[y][x - 2] !== "|") {
+            // Move left if possible
+            return `${y - subtractTable[y][x - 1].y}|${x - 1 - subtractTable[y][x - 1].x}`;
+        } else if (y > 0) {
+            // Go up one row, find the rightmost valid cell
+            let lastValidX = x;
+            for (let xx = x; xx <= navTable[y - 1 - subtractTable[y - 1][lastValidX - 1].y].length; xx++) {
+                const val = navTable[y][xx - 1];
+                if (val === "|") break;
+                if (val !== "|" && val !== "=") lastValidX = xx;
+            }
+            if (lastValidX !== null) {
+                return `${y - 1 - subtractTable[y - 1][lastValidX - 1].y}|${lastValidX - subtractTable[y - 1][lastValidX - 1].x}`;
+            }
+        }
+    } else if (direction === "Right") {
+        if (x < maxX && navTable[y][x] !== "|") {
+            // Move right if possible
+            return `${y - subtractTable[y][x].y}|${x + 1 - subtractTable[y][x].x}`;
+        } else if (y < maxY) {
+            // Go down one row, find the leftmost valid cell
+            let lastValidX = x;
+            for (let xx = x; xx >= 1; xx--) {
+                const val = navTable[y][xx - 1];
+                if (val === "|") break;
+                if (val !== "|" && val !== "=") lastValidX = xx;
+            }
+            if (lastValidX !== null) {
+                return `${y + 1 - subtractTable[y + 1][lastValidX - 1].y}|${lastValidX - subtractTable[y + 1][lastValidX - 1].x}`;
+            }
+        }
+    } else if (direction === "Up") {
+        if (y > 0 && navTable[y - 1][x - 1] !== "=") {
+            // Move up if possible
+            return `${y - 1 - subtractTable[y][x - 1].y}|${x - subtractTable[y][x - 1].x}`;
+        } else if (x > 0) {
+            // Go left one column, find the bottommost valid cell
+            let lastValidY = y;
+            for (let yy = y; yy <= maxY; yy++) {
+                const val = navTable[yy][x - 1];
+                if (val === "=") break;
+                if (val !== "|" && val !== "=") lastValidY = yy;
+            }
+            if (lastValidY !== null) {
+                return `${lastValidY - (subtractTable[lastValidY][x - 1]?.y ?? 0)}|${x - 1 - (subtractTable[lastValidY][x - 1]?.x ?? 0)}`;
+            }
+        }
+    } else if (direction === "Down") {
+        if (y < maxY && navTable[y + 1][x - 1] !== "=") {
+            // Move down if possible
+            return `${y + 1 - subtractTable[y][x - 1].y}|${x - subtractTable[y][x - 1].x}`;
+        } else if (x < navTable[0].length) {
+            // Go right one column, find the topmost valid cell
+            let lastValidY = y;
+            for (let yy = y; yy >= 0; yy--) {
+                const val = navTable[yy][x - 1];
+                if (val === "=") break;
+                if (val !== "|" && val !== "=") lastValidY = yy;
+            }
+            if (lastValidY !== null) {
+                return `${lastValidY - subtractTable[lastValidY][x - 1].y}|${x + 1 - subtractTable[lastValidY][x - 1].x}`;
+            }
+        }
+    }
+
+    return null;
 }
 
 function commafy(num) {

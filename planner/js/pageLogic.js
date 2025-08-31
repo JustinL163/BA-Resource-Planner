@@ -94,11 +94,11 @@ const isIOS = /iPad|iPhone|iPod/.test(platform)
 
 function loadResources() {
 
-    $.getJSON('json/misc_data.json?21').done(function (json) {
+    $.getJSON('json/misc_data.json?22').done(function (json) {
         misc_data = json;
     });
 
-    $.getJSON('json/manualLocalisations.json?4').done(function (json) {
+    $.getJSON('json/manualLocalisations.json?5').done(function (json) {
         mLocalisations = json;
     });
 
@@ -389,18 +389,18 @@ function init() {
 
     // generate resource modal tables
     createTable("school-mat-table", ["BD_1", "BD_2", "BD_3", "BD_4", "TN_1", "TN_2", "TN_3", "TN_4"], 0,
-        ["Hyakkiyako", "Red Winter", "Trinity", "Gehenna", "Abydos", "Millennium", "Arius", "Shanhaijing", "Valkyrie", "Highlander"], 0,
+        ["Hyakkiyako", "Red Winter", "Trinity", "Gehenna", "Abydos", "Millennium", "Arius", "Shanhaijing", "Valkyrie", "Highlander", "Wildhunt"], 0,
         tableNavigation, document.getElementById("table-parent-1"), false, "resource", "icons/SchoolMat/", [], "school-");
     createTable("artifact-table-1", ["1", "2", "3", "4"], 0,
-        ["Nebra", "Phaistos", "Wolfsegg", "Nimrud", "Mandragora", "Rohonc", "Aether", "Antikythera", "Voynich", "Haniwa"], 10,
+        ["Nebra", "Phaistos", "Wolfsegg", "Nimrud", "Mandragora", "Rohonc", "Aether", "Antikythera", "Voynich", "Haniwa"], 11,
         tableNavigation, document.getElementById("table-parent-2"), true, "resource", "icons/Artifact/", [], "artifact-");
     createTable("artifact-table-2", ["1", "2", "3", "4"], 4,
-        ["Totem", "Baghdad", "Fleece", "Okiku", "Colgante", "Atlantis", "RomanDice", "Quimbaya", "Rocket", "Mystery"], 10,
+        ["Totem", "Baghdad", "Fleece", "Okiku", "Colgante", "Atlantis", "RomanDice", "Quimbaya", "Rocket", "Mystery"], 11,
         tableNavigation, document.getElementById("table-parent-3"), true, "resource", "icons/Artifact/", [], "artifact-");
 
     let gearNavigation = [];
     createTable("gear-table", ["T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10"], 0, ["Hat", "Gloves", "Shoes", "Bag", "Badge", "Hairpin", "Charm", "Watch", "Necklace"],
-        0, gearNavigation, document.getElementById('table-parent-4'), false, "gear", "icons/Gear/", ["T10_Charm", "T10_Watch", "T10_Necklace"], "gear-");
+        0, gearNavigation, document.getElementById('table-parent-4'), false, "gear", "icons/Gear/", [], "gear-");
 
     let navObj = {};
     for (let x in tableNavigation) {
@@ -427,14 +427,14 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.4.14".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.4.15".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         Swal.fire({
-            title: GetLanguageString("text-updatedversionprefix") + "1.4.14",
+            title: GetLanguageString("text-updatedversionprefix") + "1.4.15",
             color: alertColour,
             html: GetLanguageString("text-updatemessage")
         })
 
-        data.site_version = "1.4.14";
+        data.site_version = "1.4.15";
         // saveToLocalStorage(false);
     }
 
@@ -1149,11 +1149,11 @@ function CharInputsMax() {
         cancelButtonText: GetLanguageString("label-cancel")
     }).then((result) => {
         if (result.isConfirmed) {
-            let values = [90, 90, 5, 5, 10, 10, 10, 10, 10, 10, 9, 9, 9, 9, 9, 9];
+            let values = [90, 90, 5, 5, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 9, 9];
             SetCharInputValues(values);
         }
         else if (result.isDenied) {
-            let values = [90, 90, 5, 5, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 9, 9];
+            let values = [90, 90, 5, 5, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10];
             SetCharInputValues(values);
         }
     })
@@ -1173,11 +1173,11 @@ function CharInputsGoalMax() {
         cancelButtonText: GetLanguageString("label-cancel")
     }).then((result) => {
         if (result.isConfirmed) {
-            let values = [90, 5, 10, 10, 10, 9, 9, 9];
+            let values = [90, 5, 10, 10, 10, 10, 10, 9];
             SetCharInputGoalValues(values);
         }
         else if (result.isDenied) {
-            let values = [90, 5, 10, 10, 10, 10, 10, 9];
+            let values = [90, 5, 10, 10, 10, 10, 10, 10];
             SetCharInputGoalValues(values);
         }
     })
