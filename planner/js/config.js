@@ -450,7 +450,7 @@ const inputValidation = {
         id: "input_ue_level_current",
         location: "characterModal",
         min: "0",
-        max: "50",
+        max: "60",
         default: "0",
         name: "UE Level",
         requisite: {
@@ -461,6 +461,10 @@ const inputValidation = {
                 mode: "threshold",
                 sanitise: true,
                 levels: [
+                    {
+                        required: "4",
+                        max: "60"
+                    },
                     {
                         required: "3",
                         max: "50"
@@ -489,7 +493,7 @@ const inputValidation = {
         id: "input_ue_level_target",
         location: "characterModal",
         min: "0",
-        max: "50",
+        max: "60",
         default: "0",
         name: "UE Level Target",
         requisite: {
@@ -500,6 +504,10 @@ const inputValidation = {
                 mode: "threshold",
                 sanitise: true,
                 levels: [
+                    {
+                        required: "4",
+                        max: "60"
+                    },
                     {
                         required: "3",
                         max: "50"
@@ -534,7 +542,7 @@ const inputValidation = {
         id: "bulk-input_ue_level_current",
         location: "bulkEditModal",
         min: "0",
-        max: "50",
+        max: "60",
         default: "0",
         blankable: true,
         name: "UE Level",
@@ -549,7 +557,7 @@ const inputValidation = {
         id: "bulk-input_ue_level_target",
         location: "bulkEditModal",
         min: "0",
-        max: "50",
+        max: "60",
         default: "0",
         blankable: true,
         name: "UE Level Target",
