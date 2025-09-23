@@ -1,6 +1,6 @@
 {
     "event_order": [
-        "0068-opera-with-love-rerun"
+        "railroad-runaway"
     ],
     "events": {
         "moonlight-dream": {
@@ -7514,7 +7514,9 @@
                 "Currency",
                 "Manual"
             ],
-            "currency_targets": ["Target_Clue"],
+            "currency_targets": [
+                "Target_Clue"
+            ],
             "event_point_target": 0,
             "currencies": {
                 "Target_Clue": {
@@ -9154,6 +9156,872 @@
                             "count": 75
                         }
                     ]
+                }
+            ]
+        },
+        "railroad-runaway": {
+            "active": true,
+            "icon": "Event_846_Jp.png",
+            "display_name": "Highlander Railroad Runaway",
+            "reset_time": 1758567600,
+            "start_time": 1758592800,
+            "end_time": 1759798800,
+            "maint_hours": 8,
+            "available_targets": [
+                "Shop",
+                "Materials",
+                "Currency",
+                "Manual"
+            ],
+            "currency_targets": ["Highlander_Commemorative_Sticker"],
+            "event_point_target": 0,
+            "currencies": {
+                "Highlander_Commemorative_Sticker": {
+                    "icon": "Highlander_Commemorative_Sticker.png",
+                    "shortname": "Highlander Commemorative Sticker",
+                    "source": "StageDrop",
+                    "clear": 22000,
+                    "bonus_units": [
+                        {
+                            "id": "10117",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "10118",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "16017",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10006",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10077",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10004",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20008",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20033",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20016",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20040",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16014",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10005",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "10010",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "13004",
+                            "bonus": 0.1
+                        }
+                    ]
+                },
+                "Freight_Train_Route_Map": {
+                    "icon": "Freight_Train_Route_Map.png",
+                    "shortname": "Freight Train Route Map",
+                    "source": "StageDrop",
+                    "clear": 16095,
+                    "bonus_units": [
+                        {
+                            "id": "10117",
+                            "bonus": 0.3
+                        },
+                        {
+                            "id": "16017",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10006",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10023",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10078",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10004",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "26000",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20008",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20012",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20040",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10107",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10010",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "13008",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "13004",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "23005",
+                            "bonus": 0.1
+                        }
+                    ]
+                },
+                "Mysterious_Cargo": {
+                    "icon": "Mysterious_Cargo.png",
+                    "shortname": "Mysterious Cargo",
+                    "source": "StageDrop",
+                    "clear": 18200,
+                    "bonus_units": [
+                        {
+                            "id": "10118",
+                            "bonus": 0.3
+                        },
+                        {
+                            "id": "16017",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10023",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10077",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10078",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "26000",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20012",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20033",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20016",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10107",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16014",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10005",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "13008",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "23005",
+                            "bonus": 0.1
+                        }
+                    ]
+                },
+                "Iron_Pipe": {
+                    "icon": "Iron_Pipe.png",
+                    "shortname": "Iron Pipe",
+                    "source": "MinigameDrop",
+                    "clear": 215,
+                    "bonus_units": []
+                }
+            },
+            "shops": {
+                "Freight_Train_Route_Map": [
+                    {
+                        "type": "XpReport",
+                        "id": "XP_1",
+                        "count": 90,
+                        "cost": 1,
+                        "amount": 3
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_2",
+                        "count": 95,
+                        "cost": 3
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_3",
+                        "count": 30,
+                        "cost": 12
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_4",
+                        "count": 12,
+                        "cost": 60
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3090",
+                        "count": 30,
+                        "cost": 10
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3091",
+                        "count": 18,
+                        "cost": 30
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3092",
+                        "count": 12,
+                        "cost": 100
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3093",
+                        "count": 4,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Material",
+                        "id": "260",
+                        "count": 60,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "261",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "262",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "263",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "290",
+                        "count": 60,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "291",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "292",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "293",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Hitgirls_Gaming_Magazine",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Luxury_Cookie_Set",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Mille-Feuille_Traditional_Parfait",
+                        "count": 1,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "My_Highlander_01_Toytrain",
+                        "count": 1,
+                        "cost": 2000,
+                        "limited": true
+                    }
+                ],
+                "Mysterious_Cargo": [
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_1",
+                        "count": 180,
+                        "cost": 1
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_2",
+                        "count": 95,
+                        "cost": 4
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_3",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_4",
+                        "count": 12,
+                        "cost": 60
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4090",
+                        "count": 50,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4091",
+                        "count": 38,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4092",
+                        "count": 25,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4093",
+                        "count": 15,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "270",
+                        "count": 60,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "271",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "272",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "273",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "240",
+                        "count": 60,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "241",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "242",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "243",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Astronomical_Telescope",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Cosplayer_Coke-Bottle_Glasses",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "The_Life_Board_Game",
+                        "count": 1,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "My_Event079_Ticketbarrier",
+                        "count": 1,
+                        "cost": 2000,
+                        "limited": true
+                    }
+                ],
+                "Iron_Pipe": [
+                    {
+                        "type": "Eligma",
+                        "id": "Eligma-5",
+                        "count": 20,
+                        "cost": 2,
+                        "amount": 5
+                    },
+                    {
+                        "type": "SecretTech",
+                        "id": "SecretTech",
+                        "count": 1,
+                        "cost": 20
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Cute_Dishware_Set",
+                        "count": 10,
+                        "cost": 3
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Luxury_Buffet_Ticket",
+                        "count": 10,
+                        "cost": 3
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Sewing_Kit",
+                        "count": 1,
+                        "cost": 6
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-1000000",
+                        "count": 3,
+                        "cost": 9,
+                        "amount": 1000000
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-500000",
+                        "count": 5,
+                        "cost": 6,
+                        "amount": 500000
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-250000",
+                        "count": 8,
+                        "cost": 4,
+                        "amount": 250000
+                    }
+                ]
+            },
+            "stage_groups": [
+                "1-4",
+                "5-8",
+                "9-12"
+            ],
+            "stages": [
+                {
+                    "type": "Story",
+                    "level": 10,
+                    "number": 1,
+                    "cost": 10,
+                    "initial": {
+                        "Highlander_Commemorative_Sticker": 10,
+                        "Freight_Train_Route_Map": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 11,
+                    "number": 2,
+                    "cost": 10,
+                    "initial": {
+                        "Highlander_Commemorative_Sticker": 10,
+                        "Mysterious_Cargo": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 12,
+                    "number": 3,
+                    "cost": 10,
+                    "initial": {
+                        "Highlander_Commemorative_Sticker": 10,
+                        "Freight_Train_Route_Map": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 13,
+                    "number": 4,
+                    "cost": 10,
+                    "initial": {
+                        "Highlander_Commemorative_Sticker": 10,
+                        "Mysterious_Cargo": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 14,
+                    "number": 5,
+                    "cost": 10,
+                    "initial": {
+                        "Highlander_Commemorative_Sticker": 10,
+                        "Freight_Train_Route_Map": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 15,
+                    "number": 6,
+                    "cost": 10,
+                    "initial": {
+                        "Highlander_Commemorative_Sticker": 10,
+                        "Mysterious_Cargo": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 16,
+                    "number": 7,
+                    "cost": 10,
+                    "initial": {
+                        "Highlander_Commemorative_Sticker": 10,
+                        "Freight_Train_Route_Map": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 17,
+                    "number": 8,
+                    "cost": 10,
+                    "initial": {
+                        "Highlander_Commemorative_Sticker": 10,
+                        "Mysterious_Cargo": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 18,
+                    "number": 9,
+                    "cost": 10,
+                    "initial": {
+                        "Highlander_Commemorative_Sticker": 10,
+                        "Freight_Train_Route_Map": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 19,
+                    "number": 10,
+                    "cost": 10,
+                    "initial": {
+                        "Highlander_Commemorative_Sticker": 10,
+                        "Mysterious_Cargo": 10
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 1,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Highlander_Commemorative_Sticker": 200,
+                        "Freight_Train_Route_Map": 50,
+                        "Mysterious_Cargo": 50
+                    },
+                    "drops": {
+                        "Highlander_Commemorative_Sticker": 8,
+                        "Freight_Train_Route_Map": 5,
+                        "Mysterious_Cargo": 5,
+                        "Wolfsegg_1": 0.25,
+                        "Wolfsegg_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 2,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Freight_Train_Route_Map": 200,
+                        "Mysterious_Cargo": 100
+                    },
+                    "drops": {
+                        "Highlander_Commemorative_Sticker": 5,
+                        "Freight_Train_Route_Map": 8,
+                        "Mysterious_Cargo": 5,
+                        "Haniwa_1": 0.25,
+                        "Haniwa_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 3,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Freight_Train_Route_Map": 100,
+                        "Mysterious_Cargo": 200
+                    },
+                    "drops": {
+                        "Highlander_Commemorative_Sticker": 5,
+                        "Freight_Train_Route_Map": 5,
+                        "Mysterious_Cargo": 8,
+                        "Rohonc_1": 0.25,
+                        "Rohonc_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 4,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Highlander_Commemorative_Sticker": 300
+                    },
+                    "drops": {
+                        "Highlander_Commemorative_Sticker": 12,
+                        "Freight_Train_Route_Map": 3,
+                        "Mysterious_Cargo": 3,
+                        "Baghdad_1": 0.25,
+                        "Baghdad_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 5,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Highlander_Commemorative_Sticker": 200,
+                        "Freight_Train_Route_Map": 100,
+                        "Mysterious_Cargo": 100
+                    },
+                    "drops": {
+                        "Highlander_Commemorative_Sticker": 15,
+                        "Freight_Train_Route_Map": 6,
+                        "Mysterious_Cargo": 6,
+                        "Wolfsegg_2": 0.25,
+                        "Wolfsegg_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 6,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Freight_Train_Route_Map": 250,
+                        "Mysterious_Cargo": 150
+                    },
+                    "drops": {
+                        "Highlander_Commemorative_Sticker": 6,
+                        "Freight_Train_Route_Map": 15,
+                        "Mysterious_Cargo": 6,
+                        "Haniwa_2": 0.25,
+                        "Haniwa_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 7,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Freight_Train_Route_Map": 150,
+                        "Mysterious_Cargo": 250
+                    },
+                    "drops": {
+                        "Highlander_Commemorative_Sticker": 6,
+                        "Freight_Train_Route_Map": 6,
+                        "Mysterious_Cargo": 15,
+                        "Rohonc_2": 0.25,
+                        "Rohonc_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 8,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Highlander_Commemorative_Sticker": 400
+                    },
+                    "drops": {
+                        "Highlander_Commemorative_Sticker": 23,
+                        "Freight_Train_Route_Map": 2,
+                        "Mysterious_Cargo": 2,
+                        "Baghdad_2": 0.25,
+                        "Baghdad_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 9,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Highlander_Commemorative_Sticker": 300,
+                        "Freight_Train_Route_Map": 100,
+                        "Mysterious_Cargo": 100
+                    },
+                    "drops": {
+                        "Highlander_Commemorative_Sticker": 28,
+                        "Freight_Train_Route_Map": 4,
+                        "Mysterious_Cargo": 4,
+                        "Wolfsegg_2": 0.25,
+                        "Wolfsegg_3": 0.12,
+                        "Wolfsegg_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 10,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Highlander_Commemorative_Sticker": 50,
+                        "Freight_Train_Route_Map": 450
+                    },
+                    "drops": {
+                        "Highlander_Commemorative_Sticker": 4,
+                        "Freight_Train_Route_Map": 32,
+                        "Haniwa_2": 0.25,
+                        "Haniwa_3": 0.12,
+                        "Haniwa_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 11,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Highlander_Commemorative_Sticker": 50,
+                        "Mysterious_Cargo": 450
+                    },
+                    "drops": {
+                        "Highlander_Commemorative_Sticker": 4,
+                        "Mysterious_Cargo": 32,
+                        "Rohonc_2": 0.25,
+                        "Rohonc_3": 0.12,
+                        "Rohonc_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 12,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Highlander_Commemorative_Sticker": 500
+                    },
+                    "drops": {
+                        "Highlander_Commemorative_Sticker": 36,
+                        "Baghdad_2": 0.25,
+                        "Baghdad_3": 0.12,
+                        "Baghdad_4": 0.021
+                    }
+                },
+                {
+                    "type": "Challenge",
+                    "level": 50,
+                    "number": 1,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "level": 85,
+                    "number": 2,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "level": 90,
+                    "number": 3,
+                    "cost": 5
                 }
             ]
         }

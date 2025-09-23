@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?76').done(function (json) {
+    $.getJSON('json/events.json?77').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -86,7 +86,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?342').done(function (json) {
+    $.getJSON('json/strings.json?343').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -3313,6 +3313,35 @@ function CalculateStageDrops(result, ignoreRequirement) {
     }
     else if (current_event == "box-shadow-looming") {
         totalEleph["26014"] = (Math.floor((totalCurrencies["Event_Point"] ?? 0) / 300) * 2) + 119 + 8;
+    }
+    else if (current_event == "railroad-runaway") {
+        if (totalCurrencies["Highlander_Commemorative_Sticker"] >= (15 * 150)) {
+            totalEleph["16017"] = 40;
+            totalCurrencies["Iron_Pipe"] = 15;
+        }
+        if (totalCurrencies["Highlander_Commemorative_Sticker"] >= (48 * 150)) {
+            totalEleph["16017"] += 40;
+            totalCurrencies["Iron_Pipe"] += 40;
+        }
+        if (totalCurrencies["Highlander_Commemorative_Sticker"] >= (79 * 150)) {
+            totalEleph["16017"] += 40;
+            totalCurrencies["Iron_Pipe"] += 40;
+        }
+        if (totalCurrencies["Highlander_Commemorative_Sticker"] >= (107 * 150)) {
+            totalEleph["16017"] += 40;
+            totalCurrencies["Iron_Pipe"] += 40;
+        }
+        if (totalCurrencies["Highlander_Commemorative_Sticker"] >= (129 * 150)) {
+            totalEleph["16017"] += 40;
+            totalCurrencies["Iron_Pipe"] += 40;
+        }
+        if (totalCurrencies["Highlander_Commemorative_Sticker"] >= (146 * 150)) {
+            totalEleph["16017"] += 40;
+            totalCurrencies["Iron_Pipe"] += 40;
+            let leftoverStickers = totalCurrencies["Highlander_Commemorative_Sticker"] - (146 * 150);
+            totalEleph["16017"] += 6 * Math.floor(leftoverStickers / (22 * 150));
+            totalCurrencies["Iron_Pipe"] += 10 * Math.floor(leftoverStickers / (22 * 150));
+        }
     }
 
     if (feasible) {
