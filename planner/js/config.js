@@ -1180,154 +1180,154 @@ const inputValidation = {
         "id": "input-BD_1_Abydos",
         "location": "resourceModal",
         "min": "0",
-        "max": "999",
+        "max": "9999",
         "navigation": "resourceTable"
     },
     "BD_1_Gehenna": {
         "id": "input-BD_1_Gehenna",
         "location": "resourceModal",
         "min": "0",
-        "max": "999",
+        "max": "9999",
         "navigation": "resourceTable"
     },
     "BD_1_Millennium": {
         "id": "input-BD_1_Millennium",
         "location": "resourceModal",
         "min": "0",
-        "max": "999",
+        "max": "9999",
         "navigation": "resourceTable"
     },
     "BD_1_Trinity": {
         "id": "input-BD_1_Trinity",
         "location": "resourceModal",
         "min": "0",
-        "max": "999",
+        "max": "9999",
         "navigation": "resourceTable"
     },
     "BD_1_Hyakkiyako": {
         "id": "input-BD_1_Hyakkiyako",
         "location": "resourceModal",
         "min": "0",
-        "max": "999",
+        "max": "9999",
         "navigation": "resourceTable"
     },
     "BD_1_Shanhaijing": {
         "id": "input-BD_1_Shanhaijing",
         "location": "resourceModal",
         "min": "0",
-        "max": "999",
+        "max": "9999",
         "navigation": "resourceTable"
     },
     "BD_1_Arius": {
         "id": "input-BD_1_Arius",
         "location": "resourceModal",
         "min": "0",
-        "max": "999",
+        "max": "9999",
         "navigation": "resourceTable"
     },
     "BD_1_RedWinter": {
         "id": "input-BD_1_RedWinter",
         "location": "resourceModal",
         "min": "0",
-        "max": "999",
+        "max": "9999",
         "navigation": "resourceTable"
     },
     "BD_1_Valkyrie": {
         "id": "input-BD_1_Valkyrie",
         "location": "resourceModal",
         "min": "0",
-        "max": "999",
+        "max": "9999",
         "navigation": "resourceTable"
     },
     "BD_1_Highlander": {
         "id": "input-BD_1_Highlander",
         "location": "resourceModal",
         "min": "0",
-        "max": "999",
+        "max": "9999",
         "navigation": "resourceTable"
     },
     "BD_1_Wildhunt": {
         "id": "input-BD_1_Wildhunt",
         "location": "resourceModal",
         "min": "0",
-        "max": "999",
+        "max": "9999",
         "navigation": "resourceTable"
     },
     "BD_2_Abydos": {
         "id": "input-BD_2_Abydos",
         "location": "resourceModal",
         "min": "0",
-        "max": "999",
+        "max": "9999",
         "navigation": "resourceTable"
     },
     "BD_2_Gehenna": {
         "id": "input-BD_2_Gehenna",
         "location": "resourceModal",
         "min": "0",
-        "max": "999",
+        "max": "9999",
         "navigation": "resourceTable"
     },
     "BD_2_Millennium": {
         "id": "input-BD_2_Millennium",
         "location": "resourceModal",
         "min": "0",
-        "max": "999",
+        "max": "9999",
         "navigation": "resourceTable"
     },
     "BD_2_Trinity": {
         "id": "input-BD_2_Trinity",
         "location": "resourceModal",
         "min": "0",
-        "max": "999",
+        "max": "9999",
         "navigation": "resourceTable"
     },
     "BD_2_Hyakkiyako": {
         "id": "input-BD_2_Hyakkiyako",
         "location": "resourceModal",
         "min": "0",
-        "max": "999",
+        "max": "9999",
         "navigation": "resourceTable"
     },
     "BD_2_Shanhaijing": {
         "id": "input-BD_2_Shanhaijing",
         "location": "resourceModal",
         "min": "0",
-        "max": "999",
+        "max": "9999",
         "navigation": "resourceTable"
     },
     "BD_2_Arius": {
         "id": "input-BD_2_Arius",
         "location": "resourceModal",
         "min": "0",
-        "max": "999",
+        "max": "9999",
         "navigation": "resourceTable"
     },
     "BD_2_RedWinter": {
         "id": "input-BD_2_RedWinter",
         "location": "resourceModal",
         "min": "0",
-        "max": "999",
+        "max": "9999",
         "navigation": "resourceTable"
     },
     "BD_2_Valkyrie": {
         "id": "input-BD_2_Valkyrie",
         "location": "resourceModal",
         "min": "0",
-        "max": "999",
+        "max": "9999",
         "navigation": "resourceTable",
     },
     "BD_2_Highlander": {
         "id": "input-BD_2_Highlander",
         "location": "resourceModal",
         "min": "0",
-        "max": "999",
+        "max": "9999",
         "navigation": "resourceTable"
     },
     "BD_2_Wildhunt": {
         "id": "input-BD_2_Wildhunt",
         "location": "resourceModal",
         "min": "0",
-        "max": "999",
+        "max": "9999",
         "navigation": "resourceTable"
     },
     "BD_3_Abydos": {

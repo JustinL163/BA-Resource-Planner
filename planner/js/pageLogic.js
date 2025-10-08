@@ -3814,7 +3814,7 @@ function getSkillFormatted(charId, skill, level, targetLevel, targetUe) {
     let infiBreak = 0;
     while (true) {
 
-        let paramString = "<?" + paramCount + ">";
+        let paramString = "<\\?" + paramCount + ">";
 
         if (desc && desc.includes(paramString)) {
 
