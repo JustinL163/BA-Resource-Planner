@@ -1,6 +1,6 @@
 {
     "event_order": [
-        "railroad-runaway"
+        "get-hyped-and-march-on-rerun"
     ],
     "events": {
         "moonlight-dream": {
@@ -9173,7 +9173,9 @@
                 "Currency",
                 "Manual"
             ],
-            "currency_targets": ["Highlander_Commemorative_Sticker"],
+            "currency_targets": [
+                "Highlander_Commemorative_Sticker"
+            ],
             "event_point_target": 0,
             "currencies": {
                 "Highlander_Commemorative_Sticker": {
@@ -10022,6 +10024,926 @@
                     "level": 90,
                     "number": 3,
                     "cost": 5
+                }
+            ]
+        },
+        "get-hyped-and-march-on-rerun": {
+            "active": true,
+            "icon": "Event_835_Jp.png",
+            "display_name": "Get Hyped and March On!",
+            "reset_time": 1760382000,
+            "start_time": 1760407200,
+            "end_time": 1761012000,
+            "maint_hours": 6,
+            "available_targets": [
+                "Shop",
+                "Currency",
+                "Manual"
+            ],
+            "currency_targets": [
+                "Hyakkiyako_Card"
+            ],
+            "reward_preview": [],
+            "currencies": {
+                "Hyakkiyako_Card": {
+                    "icon": "Hyakkiyako_Card.png",
+                    "shortname": "Hyakkiyako Commemorative Card",
+                    "source": "StageDrop",
+                    "clear": 0,
+                    "bonus_units": [
+                        {
+                            "id": "20045",
+                            "bonus": 0.3
+                        },
+                        {
+                            "id": "10090",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "20035",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "16004",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "13001",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16014",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10065",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10006",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10081",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10082",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10083",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10004",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20015",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20033",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20016",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "26000",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20008",
+                            "bonus": 0.15
+                        }
+                    ]
+                },
+                "Field_Trip_Itinerary": {
+                    "icon": "Field_Trip_Itinerary.png",
+                    "shortname": "Field Trip Itinerary",
+                    "source": "StageDrop",
+                    "clear": 17650,
+                    "bonus_units": [
+                        {
+                            "id": "20035",
+                            "bonus": 0.3
+                        },
+                        {
+                            "id": "20045",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "13001",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10065",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10082",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10004",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20015",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20016",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "26000",
+                            "bonus": 0.15
+                        }
+                    ]
+                },
+                "Tour_Guide_Flag": {
+                    "icon": "Tour_Guide_Flag.png",
+                    "shortname": "Tour Guide Flag",
+                    "source": "StageDrop",
+                    "clear": 17455,
+                    "bonus_units": [
+                        {
+                            "id": "10090",
+                            "bonus": 0.3
+                        },
+                        {
+                            "id": "10093",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16004",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16014",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10006",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10081",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10083",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20033",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20008",
+                            "bonus": 0.15
+                        }
+                    ]
+                },
+                "Special_Coupon_Book": {
+                    "icon": "Special_Coupon_Book.png",
+                    "shortname": "Special Coupon Book",
+                    "source": "CardPull",
+                    "pull_currency": "Hyakkiyako_Card",
+                    "clear": 200,
+                    "bonus_units": []
+                }
+            },
+            "shops": {
+                "Field_Trip_Itinerary": [
+                    {
+                        "type": "XpReport",
+                        "id": "XP_1",
+                        "count": 90,
+                        "cost": 1,
+                        "amount": 3
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_2",
+                        "count": 95,
+                        "cost": 3
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_3",
+                        "count": 30,
+                        "cost": 12
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_4",
+                        "count": 12,
+                        "cost": 60
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3000",
+                        "count": 30,
+                        "cost": 10
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3001",
+                        "count": 18,
+                        "cost": 30
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3002",
+                        "count": 12,
+                        "cost": 100
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3003",
+                        "count": 4,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Material",
+                        "id": "120",
+                        "count": 45,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "121",
+                        "count": 22,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "122",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "123",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Wavecat_Pillow",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Forbidden_Love",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Movie_Ticket",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Guns_Charm_and_Zeal",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Lace_Pillow",
+                        "count": 1,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Streets_of_Thugs_Volume_1",
+                        "count": 1,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "Department_Store_Designer_Sofa",
+                        "count": 1,
+                        "cost": 2000,
+                        "limited": false
+                    }
+                ],
+                "Tour_Guide_Flag": [
+                    {
+                        "type": "XpOrb",
+                        "id": "GXP_1",
+                        "count": 180,
+                        "cost": 1
+                    },
+                    {
+                        "type": "XpOrb",
+                        "id": "GXP_2",
+                        "count": 95,
+                        "cost": 4
+                    },
+                    {
+                        "type": "XpOrb",
+                        "id": "GXP_3",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "XpOrb",
+                        "id": "GXP_4",
+                        "count": 12,
+                        "cost": 60
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4000",
+                        "count": 50,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4001",
+                        "count": 38,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4002",
+                        "count": 25,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4003",
+                        "count": 15,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "190",
+                        "count": 45,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "191",
+                        "count": 22,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "192",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "193",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Cosplayer_Coke-Bottle_Glasses",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Astronomical_Telescope",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "The_Life_Board_Game",
+                        "count": 1,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "Festival_Mask_Stall",
+                        "count": 1,
+                        "cost": 2000,
+                        "limited": false
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "My_Event078_Videotelevision",
+                        "count": 1,
+                        "cost": 2000,
+                        "limited": true
+                    }
+                ],
+                "Special_Coupon_Book": [
+                    {
+                        "type": "Eleph",
+                        "id": "20015",
+                        "count": 40,
+                        "cost": 1
+                    },
+                    {
+                        "type": "Pyroxene",
+                        "id": "Pyroxene-120",
+                        "count": 5,
+                        "cost": 4,
+                        "amount": 120
+                    },
+                    {
+                        "type": "Eligma",
+                        "id": "Eligma-5",
+                        "count": 20,
+                        "cost": 2,
+                        "amount": 5
+                    },
+                    {
+                        "type": "SecretTech",
+                        "id": "SecretTech",
+                        "count": 1,
+                        "cost": 20
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-500000",
+                        "count": 5,
+                        "cost": 5,
+                        "amount": 500000
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-200000",
+                        "count": 10,
+                        "cost": 3,
+                        "amount": 200000
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-50000",
+                        "count": 25,
+                        "cost": 1,
+                        "amount": 50000
+                    }
+                ]
+            },
+            "stage_groups": [
+                "1-4",
+                "5-8",
+                "9-12"
+            ],
+            "stages": [
+                {
+                    "type": "Story",
+                    "number": 1,
+                    "cost": 10,
+                    "initial": {
+                        "Hyakkiyako_Card": 10,
+                        "Field_Trip_Itinerary": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "number": 2,
+                    "cost": 10,
+                    "initial": {
+                        "Hyakkiyako_Card": 10,
+                        "Tour_Guide_Flag": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "number": 3,
+                    "cost": 10,
+                    "initial": {
+                        "Hyakkiyako_Card": 10,
+                        "Field_Trip_Itinerary": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "number": 4,
+                    "cost": 10,
+                    "initial": {
+                        "Hyakkiyako_Card": 10,
+                        "Tour_Guide_Flag": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "number": 5,
+                    "cost": 10,
+                    "initial": {
+                        "Hyakkiyako_Card": 10,
+                        "Field_Trip_Itinerary": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "number": 6,
+                    "cost": 10,
+                    "initial": {
+                        "Hyakkiyako_Card": 10,
+                        "Tour_Guide_Flag": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "number": 7,
+                    "cost": 10,
+                    "initial": {
+                        "Hyakkiyako_Card": 10,
+                        "Field_Trip_Itinerary": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "number": 8,
+                    "cost": 10,
+                    "initial": {
+                        "Hyakkiyako_Card": 10,
+                        "Tour_Guide_Flag": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "number": 9,
+                    "cost": 10,
+                    "initial": {
+                        "Hyakkiyako_Card": 10,
+                        "Field_Trip_Itinerary": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "number": 10,
+                    "cost": 10,
+                    "initial": {
+                        "Hyakkiyako_Card": 10,
+                        "Tour_Guide_Flag": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "number": 11,
+                    "cost": 10,
+                    "initial": {
+                        "Hyakkiyako_Card": 10,
+                        "Field_Trip_Itinerary": 20
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "number": 1,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Hyakkiyako_Card": 200,
+                        "Field_Trip_Itinerary": 50,
+                        "Tour_Guide_Flag": 50
+                    },
+                    "drops": {
+                        "Hyakkiyako_Card": 10,
+                        "Field_Trip_Itinerary": 3,
+                        "Tour_Guide_Flag": 3,
+                        "Aether_1": 0.25,
+                        "Aether_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "number": 2,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Field_Trip_Itinerary": 200,
+                        "Tour_Guide_Flag": 100
+                    },
+                    "drops": {
+                        "Field_Trip_Itinerary": 13,
+                        "Tour_Guide_Flag": 3,
+                        "Antikythera_1": 0.25,
+                        "Antikythera_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "number": 3,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Field_Trip_Itinerary": 100,
+                        "Tour_Guide_Flag": 200
+                    },
+                    "drops": {
+                        "Field_Trip_Itinerary": 3,
+                        "Tour_Guide_Flag": 13,
+                        "Mandragora_1": 0.25,
+                        "Mandragora_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "number": 4,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Hyakkiyako_Card": 300
+                    },
+                    "drops": {
+                        "Hyakkiyako_Card": 16,
+                        "Phaistos_1": 0.25,
+                        "Phaistos_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "number": 5,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Hyakkiyako_Card": 200,
+                        "Field_Trip_Itinerary": 100,
+                        "Tour_Guide_Flag": 100
+                    },
+                    "drops": {
+                        "Hyakkiyako_Card": 16,
+                        "Field_Trip_Itinerary": 4,
+                        "Tour_Guide_Flag": 4,
+                        "Aether_2": 0.25,
+                        "Aether_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "number": 6,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Field_Trip_Itinerary": 250,
+                        "Tour_Guide_Flag": 150
+                    },
+                    "drops": {
+                        "Field_Trip_Itinerary": 20,
+                        "Tour_Guide_Flag": 4,
+                        "Antikythera_2": 0.25,
+                        "Antikythera_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "number": 7,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Field_Trip_Itinerary": 150,
+                        "Tour_Guide_Flag": 250
+                    },
+                    "drops": {
+                        "Field_Trip_Itinerary": 4,
+                        "Tour_Guide_Flag": 20,
+                        "Mandragora_2": 0.25,
+                        "Mandragora_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "number": 8,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Hyakkiyako_Card": 400
+                    },
+                    "drops": {
+                        "Hyakkiyako_Card": 24,
+                        "Phaistos_2": 0.25,
+                        "Phaistos_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "number": 9,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Hyakkiyako_Card": 300,
+                        "Field_Trip_Itinerary": 100,
+                        "Tour_Guide_Flag": 100
+                    },
+                    "drops": {
+                        "Hyakkiyako_Card": 24,
+                        "Field_Trip_Itinerary": 4,
+                        "Tour_Guide_Flag": 4,
+                        "Aether_2": 0.25,
+                        "Aether_3": 0.12,
+                        "Aether_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "number": 10,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Hyakkiyako_Card": 50,
+                        "Field_Trip_Itinerary": 450
+                    },
+                    "drops": {
+                        "Hyakkiyako_Card": 4,
+                        "Field_Trip_Itinerary": 28,
+                        "Antikythera_2": 0.25,
+                        "Antikythera_3": 0.12,
+                        "Antikythera_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "number": 11,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Hyakkiyako_Card": 50,
+                        "Tour_Guide_Flag": 450
+                    },
+                    "drops": {
+                        "Hyakkiyako_Card": 4,
+                        "Tour_Guide_Flag": 28,
+                        "Mandragora_2": 0.25,
+                        "Mandragora_3": 0.12,
+                        "Mandragora_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "number": 12,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Hyakkiyako_Card": 500
+                    },
+                    "drops": {
+                        "Hyakkiyako_Card": 32,
+                        "Phaistos_2": 0.25,
+                        "Phaistos_3": 0.12,
+                        "Phaistos_4": 0.021
+                    }
+                },
+                {
+                    "type": "Challenge",
+                    "number": 1,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "number": 2,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "number": 3,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "number": 4,
+                    "cost": 5
+                }
+            ],
+            "card_drops": [
+                {
+                    "icon": "UR_Kirara",
+                    "chance": 0.0265,
+                    "chance4": 0.033,
+                    "drops": {
+                        "Credit": 1000000,
+                        "Special_Coupon_Book": 4,
+                        "RomanDice_4": 2,
+                        "XP_4": 6
+                    }
+                },
+                {
+                    "icon": "UR_Umika",
+                    "chance": 0.0265,
+                    "chance4": 0.033,
+                    "drops": {
+                        "Credit": 1000000,
+                        "Special_Coupon_Book": 4,
+                        "Okiku_4": 2,
+                        "GXP_4": 6
+                    }
+                },
+                {
+                    "icon": "UR_Tsubaki",
+                    "chance": 0.0265,
+                    "chance4": 0.033,
+                    "drops": {
+                        "Credit": 1000000,
+                        "Special_Coupon_Book": 4,
+                        "Okiku_4": 1,
+                        "RomanDice_4": 1,
+                        "GXP_4": 3,
+                        "XP_4": 3
+                    }
+                },
+                {
+                    "icon": "SR_Pina",
+                    "chance": 0.0485,
+                    "chance4": 0.2255,
+                    "drops": {
+                        "Credit": 100000,
+                        "Special_Coupon_Book": 2,
+                        "RomanDice_3": 2,
+                        "XP_3": 12
+                    }
+                },
+                {
+                    "icon": "SR_Kaede",
+                    "chance": 0.0485,
+                    "chance4": 0.2255,
+                    "drops": {
+                        "Credit": 100000,
+                        "Special_Coupon_Book": 2,
+                        "Okiku_3": 2,
+                        "GXP_3": 12
+                    }
+                },
+                {
+                    "icon": "SR_Erika",
+                    "chance": 0.0485,
+                    "chance4": 0.225,
+                    "drops": {
+                        "Credit": 100000,
+                        "Special_Coupon_Book": 2,
+                        "Okiku_3": 1,
+                        "RomanDice_3": 1,
+                        "GXP_3": 6,
+                        "XP_3": 6
+                    }
+                },
+                {
+                    "icon": "SR_Chise",
+                    "chance": 0.0485,
+                    "chance4": 0.225,
+                    "drops": {
+                        "Credit": 100000,
+                        "Special_Coupon_Book": 2,
+                        "Okiku_2": 1,
+                        "Okiku_3": 2,
+                        "RomanDice_2": 1,
+                        "RomanDice_3": 2,
+                        "GXP_2": 4,
+                        "GXP_3": 3,
+                        "XP_2": 4,
+                        "XP_3": 3
+                    }
+                },
+                {
+                    "icon": "R_Arata",
+                    "chance": 0.16,
+                    "drops": {
+                        "Credit": 50000,
+                        "Special_Coupon_Book": 2,
+                        "RomanDice_1": 2,
+                        "RomanDice_2": 5,
+                        "XP_2": 25
+                    }
+                },
+                {
+                    "icon": "R_Rickshaw",
+                    "chance": 0.16,
+                    "drops": {
+                        "Credit": 50000,
+                        "Special_Coupon_Book": 2,
+                        "Okiku_1": 2,
+                        "Okiku_2": 5,
+                        "GXP_2": 25
+                    }
+                },
+                {
+                    "icon": "N_Mouryo1",
+                    "chance": 0.2033,
+                    "drops": {
+                        "Credit": 20000,
+                        "Special_Coupon_Book": 1,
+                        "RomanDice_1": 8,
+                        "XP_2": 15
+                    }
+                },
+                {
+                    "icon": "N_Mouryo2",
+                    "chance": 0.2032,
+                    "drops": {
+                        "Credit": 20000,
+                        "Special_Coupon_Book": 1,
+                        "Okiku_1": 8,
+                        "GXP_2": 15
+                    }
                 }
             ]
         }
