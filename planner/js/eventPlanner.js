@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?78').done(function (json) {
+    $.getJSON('json/events.json?79').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -86,7 +86,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?344').done(function (json) {
+    $.getJSON('json/strings.json?345').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -2739,7 +2739,7 @@ function CalculateStageDrops(result, ignoreRequirement) {
         }
     }
 
-    if (current_event == "ive-alive") {
+    if (current_event == "ive-alive"  || current_event == "ive-alive-rerun") {
         totalCurrencies["Event_Point"] = Math.floor(totalCurrencies["Countdown_Calendar"] / 720) * 400;
         // event_point_target = 20000;
         maxEventPoints = totalCurrencies["Event_Point"];
