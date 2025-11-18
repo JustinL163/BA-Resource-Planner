@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?79').done(function (json) {
+    $.getJSON('json/events.json?80').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -86,7 +86,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?345').done(function (json) {
+    $.getJSON('json/strings.json?346').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -1702,6 +1702,10 @@ function CalculateItemPurchases() {
 
         if (current_event == "secret-midnight-party") {
             event_data.currency_needed["Youkai_MAX_Umeboshi_Flavor"] = event_data.currency_needed["BOOM_Classic_Collection"] * 270;
+        }
+
+        if (current_event == "honorable-sea-showdown") {
+            event_data.currency_needed["Wooden_Doll_(Yukari)"] = event_data.currency_needed["Wooden_Doll_(Renge)"] * 270;
         }
 
         // currencyNeededPre[shopNames[s]] = totalPurchaseCost;
