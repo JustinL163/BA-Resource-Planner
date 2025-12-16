@@ -1,6 +1,6 @@
 {
     "event_order": [
-        "honorable-sea-showdown"
+        "summer-sky's-promise"
     ],
     "events": {
         "moonlight-dream": {
@@ -12277,7 +12277,9 @@
                 "Currency",
                 "Manual"
             ],
-            "currency_targets": ["Wooden_Doll_(Yukari)"],
+            "currency_targets": [
+                "Wooden_Doll_(Yukari)"
+            ],
             "event_point_target": 0,
             "currencies": {
                 "Wooden_Doll_(Yukari)": {
@@ -13144,6 +13146,986 @@
                     "level": 90,
                     "number": 3,
                     "cost": 5
+                }
+            ]
+        },
+        "summer-sky's-promise": {
+            "icon": "Event_848_Jp.png",
+            "display_name": "Summer Sky's Promise",
+            "reset_time": 1765825200,
+            "start_time": 1765850400,
+            "end_time": 1767060000,
+            "maint_hours": 6,
+            "available_targets": [
+                "Shop",
+                "Materials",
+                "Currency",
+                "Manual"
+            ],
+            "currency_targets": ["Justice_Task_Force_Armband"],
+            "event_point_target": 0,
+            "currencies": {
+                "Justice_Task_Force_Armband": {
+                    "icon": "Justice_Task_Force_Armband.png",
+                    "shortname": "Justice Task Force Armband",
+                    "source": "StageDrop",
+                    "clear": 20000,
+                    "bonus_units": [
+                        {
+                            "id": "10123",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "10124",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "10122",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20048",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10059",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20024",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10110",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10077",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "13003",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16011",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10078",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10060",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10002",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "13007",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10009",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "13002",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16005",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20004",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10022",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10023",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20005",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10021",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16013",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10074",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "26008",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10046",
+                            "bonus": 0.15
+                        }
+                    ]
+                },
+                "Premium_Sugar_Cubes": {
+                    "icon": "Premium_Sugar_Cubes.png",
+                    "shortname": "Premium Sugar Cubes",
+                    "source": "StageDrop",
+                    "clear": 18005,
+                    "bonus_units": [
+                        {
+                            "id": "10123",
+                            "bonus": 0.3
+                        },
+                        {
+                            "id": "26015",
+                            "bonus": 0.2
+                        },
+                        {
+                            "id": "10122",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20048",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20024",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10077",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16011",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10060",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "13007",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "13002",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20004",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10023",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20005",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10074",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10046",
+                            "bonus": 0.15
+                        }
+                    ]
+                },
+                "Trinity_Special_Cake": {
+                    "icon": "Trinity_Special_Cake.png",
+                    "shortname": "Trinity Special Cake",
+                    "source": "StageDrop",
+                    "clear": 20110,
+                    "bonus_units": [
+                        {
+                            "id": "10124",
+                            "bonus": 0.3
+                        },
+                        {
+                            "id": "26015",
+                            "bonus": 0.2
+                        },
+                        {
+                            "id": "10122",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20048",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10059",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10110",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "13003",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10078",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10002",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10009",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16005",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10022",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10021",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16013",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "26008",
+                            "bonus": 0.15
+                        }
+                    ]
+                },
+                "Shanhaijing_Tea_Garden's_Fine_Tea": {
+                    "icon": "Shanhaijing_Tea_Garden's_Fine_Tea.png",
+                    "shortname": "Shanhaijing Tea Garden's Fine Tea",
+                    "source": "",
+                    "clear": 181,
+                    "bonus_units": []
+                }
+            },
+            "shops": {
+                "Premium_Sugar_Cubes": [
+                    {
+                        "type": "XpReport",
+                        "id": "XP_1",
+                        "count": 90,
+                        "cost": 1,
+                        "amount": 3
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_2",
+                        "count": 95,
+                        "cost": 3
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_3",
+                        "count": 30,
+                        "cost": 12
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_4",
+                        "count": 12,
+                        "cost": 60
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3020",
+                        "count": 30,
+                        "cost": 10
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3021",
+                        "count": 18,
+                        "cost": 30
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3022",
+                        "count": 12,
+                        "cost": 100
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3023",
+                        "count": 4,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Material",
+                        "id": "130",
+                        "count": 45,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "131",
+                        "count": 22,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "132",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "133",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "120",
+                        "count": 45,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "121",
+                        "count": 22,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "122",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "123",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Cherry-Rose_Lip_Gloss",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Luxury_Cookie_Set",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Gamegirl_Color_Replica",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Stylish_Comb",
+                        "count": 1,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Lace_Pillow",
+                        "count": 1,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "My_Event082_Beachswing",
+                        "count": 1,
+                        "cost": 2000,
+                        "limited": true
+                    }
+                ],
+                "Trinity_Special_Cake": [
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_1",
+                        "count": 180,
+                        "cost": 1
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_2",
+                        "count": 95,
+                        "cost": 4
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_3",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_4",
+                        "count": 12,
+                        "cost": 60
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4020",
+                        "count": 50,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4021",
+                        "count": 38,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4022",
+                        "count": 25,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4023",
+                        "count": 15,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "240",
+                        "count": 45,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "241",
+                        "count": 22,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "242",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "243",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "290",
+                        "count": 45,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "291",
+                        "count": 22,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "292",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "293",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Glassy_Glow_BB_Cream",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Buried_Treasure_Map",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Cosplayer_Coke-Bottle_Glasses",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "The_Life_Board_Game",
+                        "count": 1,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Samuela_The_Beyond",
+                        "count": 1,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "My_Event082_Swingchair",
+                        "count": 1,
+                        "cost": 2000,
+                        "limited": true
+                    }
+                ],
+                "Shanhaijing_Tea_Garden's_Fine_Tea": [
+                    {
+                        "type": "Pyroxene",
+                        "id": "Pyroxene-1200",
+                        "count": 1,
+                        "cost": 40,
+                        "amount": 1200
+                    },
+                    {
+                        "type": "Eleph",
+                        "id": 26015,
+                        "count": 15,
+                        "cost": 3,
+                        "amount": 10
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Large_Whole_Cake",
+                        "count": 1,
+                        "cost": 5,
+                        "amount": 10
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Matcha_Ramune",
+                        "count": 1,
+                        "cost": 5,
+                        "amount": 10
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Mille-Feuille_Traditional_Parfait",
+                        "count": 1,
+                        "cost": 3
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "My_Event082_Opencar",
+                        "count": 1,
+                        "cost": 5,
+                        "limited": true
+                    },
+                    {
+                        "type": "Material",
+                        "id": "280",
+                        "count": 2,
+                        "cost": 1,
+                        "amount": 20
+                    },
+                    {
+                        "type": "Material",
+                        "id": "281",
+                        "count": 3,
+                        "cost": 1,
+                        "amount": 10
+                    },
+                    {
+                        "type": "Material",
+                        "id": "282",
+                        "count": 4,
+                        "cost": 1,
+                        "amount": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "283",
+                        "count": 5,
+                        "cost": 1,
+                        "amount": 2
+                    },
+                    {
+                        "type": "Material",
+                        "id": "220",
+                        "count": 2,
+                        "cost": 1,
+                        "amount": 20
+                    },
+                    {
+                        "type": "Material",
+                        "id": "221",
+                        "count": 3,
+                        "cost": 1,
+                        "amount": 10
+                    },
+                    {
+                        "type": "Material",
+                        "id": "222",
+                        "count": 4,
+                        "cost": 1,
+                        "amount": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "223",
+                        "count": 5,
+                        "cost": 1,
+                        "amount": 2
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-1000000",
+                        "count": 3,
+                        "cost": 5,
+                        "amount": 1000000
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-500000",
+                        "count": 5,
+                        "cost": 3,
+                        "amount": 500000
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-250000",
+                        "count": 10,
+                        "cost": 2,
+                        "amount": 250000
+                    }
+                ]
+            },
+            "stage_groups": [
+                "1-4",
+                "5-8",
+                "9-12"
+            ],
+            "stages": [
+                {
+                    "type": "Story",
+                    "level": 10,
+                    "number": 1,
+                    "cost": 10,
+                    "initial": {
+                        "Justice_Task_Force_Armband": 200,
+                        "Premium_Sugar_Cubes": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 11,
+                    "number": 2,
+                    "cost": 10,
+                    "initial": {
+                        "Justice_Task_Force_Armband": 200,
+                        "Trinity_Special_Cake": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 12,
+                    "number": 3,
+                    "cost": 10,
+                    "initial": {
+                        "Justice_Task_Force_Armband": 200,
+                        "Premium_Sugar_Cubes": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 10,
+                    "number": 4,
+                    "cost": 10,
+                    "initial": {
+                        "Justice_Task_Force_Armband": 200,
+                        "Trinity_Special_Cake": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 12,
+                    "number": 5,
+                    "cost": 10,
+                    "initial": {
+                        "Justice_Task_Force_Armband": 200,
+                        "Premium_Sugar_Cubes": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 14,
+                    "number": 6,
+                    "cost": 10,
+                    "initial": {
+                        "Justice_Task_Force_Armband": 200,
+                        "Trinity_Special_Cake": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 16,
+                    "number": 7,
+                    "cost": 10,
+                    "initial": {
+                        "Justice_Task_Force_Armband": 200,
+                        "Premium_Sugar_Cubes": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 17,
+                    "number": 8,
+                    "cost": 10,
+                    "initial": {
+                        "Justice_Task_Force_Armband": 300,
+                        "Trinity_Special_Cake": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 16,
+                    "number": 9,
+                    "cost": 10,
+                    "initial": {
+                        "Justice_Task_Force_Armband": 300,
+                        "Premium_Sugar_Cubes": 10,
+                        "Trinity_Special_Cake": 10
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 1,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Justice_Task_Force_Armband": 200,
+                        "Premium_Sugar_Cubes": 50,
+                        "Trinity_Special_Cake": 50
+                    },
+                    "drops": {
+                        "Justice_Task_Force_Armband": 8,
+                        "Premium_Sugar_Cubes": 5,
+                        "Trinity_Special_Cake": 5,
+                        "Atlantis_1": 0.25,
+                        "Atlantis_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 2,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Premium_Sugar_Cubes": 200,
+                        "Trinity_Special_Cake": 100
+                    },
+                    "drops": {
+                        "Justice_Task_Force_Armband": 5,
+                        "Premium_Sugar_Cubes": 8,
+                        "Trinity_Special_Cake": 5,
+                        "Rohonc_1": 0.25,
+                        "Rohonc_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 3,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Premium_Sugar_Cubes": 100,
+                        "Trinity_Special_Cake": 200
+                    },
+                    "drops": {
+                        "Justice_Task_Force_Armband": 5,
+                        "Premium_Sugar_Cubes": 5,
+                        "Trinity_Special_Cake": 8,
+                        "Nebra_1": 0.25,
+                        "Nebra_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 4,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Justice_Task_Force_Armband": 300
+                    },
+                    "drops": {
+                        "Justice_Task_Force_Armband": 12,
+                        "Premium_Sugar_Cubes": 3,
+                        "Trinity_Special_Cake": 3,
+                        "Aether_1": 0.25,
+                        "Aether_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 5,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Justice_Task_Force_Armband": 200,
+                        "Premium_Sugar_Cubes": 100,
+                        "Trinity_Special_Cake": 100
+                    },
+                    "drops": {
+                        "Justice_Task_Force_Armband": 15,
+                        "Premium_Sugar_Cubes": 6,
+                        "Trinity_Special_Cake": 6,
+                        "Atlantis_2": 0.25,
+                        "Atlantis_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 6,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Premium_Sugar_Cubes": 250,
+                        "Trinity_Special_Cake": 150
+                    },
+                    "drops": {
+                        "Justice_Task_Force_Armband": 6,
+                        "Premium_Sugar_Cubes": 15,
+                        "Trinity_Special_Cake": 6,
+                        "Rohonc_2": 0.25,
+                        "Rohonc_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 7,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Premium_Sugar_Cubes": 150,
+                        "Trinity_Special_Cake": 250
+                    },
+                    "drops": {
+                        "Justice_Task_Force_Armband": 6,
+                        "Premium_Sugar_Cubes": 6,
+                        "Trinity_Special_Cake": 15,
+                        "Nebra_2": 0.25,
+                        "Nebra_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 8,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Justice_Task_Force_Armband": 400
+                    },
+                    "drops": {
+                        "Justice_Task_Force_Armband": 23,
+                        "Premium_Sugar_Cubes": 2,
+                        "Trinity_Special_Cake": 2,
+                        "Aether_2": 0.25,
+                        "Aether_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 9,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Justice_Task_Force_Armband": 300,
+                        "Premium_Sugar_Cubes": 100,
+                        "Trinity_Special_Cake": 100
+                    },
+                    "drops": {
+                        "Justice_Task_Force_Armband": 28,
+                        "Premium_Sugar_Cubes": 4,
+                        "Trinity_Special_Cake": 4,
+                        "Atlantis_2": 0.25,
+                        "Atlantis_3": 0.12,
+                        "Atlantis_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 10,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Justice_Task_Force_Armband": 50,
+                        "Premium_Sugar_Cubes": 450
+                    },
+                    "drops": {
+                        "Justice_Task_Force_Armband": 4,
+                        "Premium_Sugar_Cubes": 32,
+                        "Rohonc_2": 0.25,
+                        "Rohonc_3": 0.12,
+                        "Rohonc_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 11,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Justice_Task_Force_Armband": 50,
+                        "Trinity_Special_Cake": 450
+                    },
+                    "drops": {
+                        "Justice_Task_Force_Armband": 4,
+                        "Trinity_Special_Cake": 32,
+                        "Nebra_2": 0.25,
+                        "Nebra_3": 0.12,
+                        "Nebra_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 12,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Justice_Task_Force_Armband": 500
+                    },
+                    "drops": {
+                        "Justice_Task_Force_Armband": 36,
+                        "Aether_2": 0.25,
+                        "Aether_3": 0.12,
+                        "Aether_4": 0.021
+                    }
                 }
             ]
         }

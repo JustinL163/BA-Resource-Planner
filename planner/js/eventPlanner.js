@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?80').done(function (json) {
+    $.getJSON('json/events.json?81').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -86,7 +86,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?346').done(function (json) {
+    $.getJSON('json/strings.json?347').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -3346,6 +3346,11 @@ function CalculateStageDrops(result, ignoreRequirement) {
             totalEleph["16017"] += 6 * Math.floor(leftoverStickers / (22 * 150));
             totalCurrencies["Iron_Pipe"] += 10 * Math.floor(leftoverStickers / (22 * 150));
         }
+    }
+    else if (current_event == "summer-sky's-promise") {
+        totalEleph["26015"] ??= 0;
+        totalEleph["26015"] += (Math.floor((totalCurrencies["Justice_Task_Force_Armband"] ?? 0) / 2000) * 5);
+        totalCurrencies["Shanhaijing_Tea_Garden's_Fine_Tea"] = (Math.floor((totalCurrencies["Justice_Task_Force_Armband"] ?? 0) / 2000) * 10);
     }
 
     if (feasible) {
