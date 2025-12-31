@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?82').done(function (json) {
+    $.getJSON('json/events.json?83').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -86,7 +86,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?347').done(function (json) {
+    $.getJSON('json/strings.json?348').done(function (json) {
         language_strings = json;
         checkResources();
     });

@@ -1,6 +1,6 @@
 {
     "event_order": [
-        "summer-sky's-promise"
+        "say-bing-rerun"
     ],
     "events": {
         "moonlight-dream": {
@@ -14127,6 +14127,1059 @@
                         "Aether_3": 0.12,
                         "Aether_4": 0.021
                     }
+                }
+            ]
+        },
+        "say-bing-rerun": {
+            "active": true,
+            "icon": "Event_837_Jp.png",
+            "display_name": "Say Bing!",
+            "reset_time": 1767034800,
+            "start_time": 1767060000,
+            "end_time": 1767664800,
+            "maint_hours": 5,
+            "available_targets": [
+                "Shop",
+                "Materials",
+                "Currency",
+                "Manual"
+            ],
+            "currency_targets": [
+                "Water_Park_Wristband"
+            ],
+            "event_point_target": 0,
+            "currencies": {
+                "Water_Park_Wristband": {
+                    "icon": "Water_Park_Wristband.png",
+                    "shortname": "Water Park Wristband",
+                    "source": "StageDrop",
+                    "clear": 0,
+                    "bonus_units": [
+                        {
+                            "id": "10096",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "20037",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "16008",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20023",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16002",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "10051",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "10076",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "16010",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "23004",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "20000",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "20013",
+                            "bonus": 0.1
+                        }
+                    ]
+                },
+                "Safety_Whistle": {
+                    "icon": "Safety_Whistle.png",
+                    "shortname": "Safety Whistle",
+                    "source": "StageDrop",
+                    "clear": 16095,
+                    "bonus_units": [
+                        {
+                            "id": "10096",
+                            "bonus": 0.2
+                        },
+                        {
+                            "id": "26012",
+                            "bonus": 0.2
+                        },
+                        {
+                            "id": "13012",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10051",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16010",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20023",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "23004",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20000",
+                            "bonus": 0.15
+                        }
+                    ]
+                },
+                "Rescue_Float": {
+                    "icon": "Rescue_Float.png",
+                    "shortname": "Rescue Float",
+                    "source": "StageDrop",
+                    "clear": 18200,
+                    "bonus_units": [
+                        {
+                            "id": "20037",
+                            "bonus": 0.2
+                        },
+                        {
+                            "id": "26012",
+                            "bonus": 0.2
+                        },
+                        {
+                            "id": "16008",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "13012",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16002",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10076",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20013",
+                            "bonus": 0.15
+                        }
+                    ]
+                },
+                "Life_Jacket": {
+                    "icon": "Life_Jacket.png",
+                    "shortname": "Life Jacket",
+                    "source": "BoxPull",
+                    "clear": 162,
+                    "bonus_units": [],
+                    "pull_currency": "Water_Park_Wristband"
+                }
+            },
+            "shops": {
+                "Safety_Whistle": [
+                    {
+                        "type": "XpReport",
+                        "id": "XP_1",
+                        "count": 90,
+                        "cost": 1,
+                        "amount": 3
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_2",
+                        "count": 95,
+                        "cost": 3
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_3",
+                        "count": 30,
+                        "cost": 12
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_4",
+                        "count": 12,
+                        "cost": 60
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3080",
+                        "count": 30,
+                        "cost": 10
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3081",
+                        "count": 18,
+                        "cost": 30
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3082",
+                        "count": 12,
+                        "cost": 100
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3083",
+                        "count": 4,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Material",
+                        "id": "220",
+                        "count": 60,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "221",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "222",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "223",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "130",
+                        "count": 60,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "131",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "132",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "133",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Jumping_Detective_Rabbit",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Forbidden_Love",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Streets_of_Thugs_Volume_1",
+                        "count": 1,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "My_Event069_Lifesavingbox",
+                        "count": 1,
+                        "cost": 2000,
+                        "limited": false
+                    }
+                ],
+                "Rescue_Float": [
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_1",
+                        "count": 180,
+                        "cost": 1
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_2",
+                        "count": 95,
+                        "cost": 4
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_3",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_4",
+                        "count": 12,
+                        "cost": 60
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4080",
+                        "count": 50,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4081",
+                        "count": 38,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4082",
+                        "count": 25,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4083",
+                        "count": 15,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "150",
+                        "count": 60,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "151",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "152",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "153",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "270",
+                        "count": 60,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "271",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "272",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "273",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Matcha_Ramune",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "MX-Ration_C-Type_Dessert_Flavor",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Mille-Feuille_Traditional_Parfait",
+                        "count": 1,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "My_Event069_Tubepump",
+                        "count": 1,
+                        "cost": 2000,
+                        "limited": false
+                    }
+                ],
+                "Life_Jacket": [
+                    {
+                        "type": "Pyroxene",
+                        "id": "Pyroxene-1200",
+                        "count": 1,
+                        "cost": 40,
+                        "amount": 1200
+                    },
+                    {
+                        "type": "Eligma",
+                        "id": "Eligma-5",
+                        "count": 20,
+                        "cost": 2,
+                        "amount": 5
+                    },
+                    {
+                        "type": "SecretTech",
+                        "id": "SecretTech",
+                        "count": 1,
+                        "cost": 20
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Ring_Bit",
+                        "count": 1,
+                        "cost": 5,
+                        "amount": 10
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Peroro_Wheel",
+                        "count": 1,
+                        "cost": 5,
+                        "amount": 10
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Thrice-a-day_Dumbbell_Set",
+                        "count": 1,
+                        "cost": 2
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "Lifeguard_Chair",
+                        "count": 1,
+                        "cost": 10,
+                        "limited": false
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-750000",
+                        "count": 3,
+                        "cost": 5,
+                        "amount": 750000
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-350000",
+                        "count": 5,
+                        "cost": 3,
+                        "amount": 350000
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-100000",
+                        "count": 10,
+                        "cost": 1,
+                        "amount": 100000
+                    }
+                ]
+            },
+            "stage_groups": [
+                "1-4",
+                "5-8",
+                "9-12"
+            ],
+            "stages": [
+                {
+                    "type": "Story",
+                    "level": 10,
+                    "number": 1,
+                    "cost": 10,
+                    "initial": {
+                        "Water_Park_Wristband": 10,
+                        "Safety_Whistle": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 10,
+                    "number": 2,
+                    "cost": 10,
+                    "initial": {
+                        "Water_Park_Wristband": 10,
+                        "Rescue_Float": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 10,
+                    "number": 3,
+                    "cost": 10,
+                    "initial": {
+                        "Water_Park_Wristband": 10,
+                        "Safety_Whistle": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 10,
+                    "number": 4,
+                    "cost": 10,
+                    "initial": {
+                        "Water_Park_Wristband": 10,
+                        "Rescue_Float": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 13,
+                    "number": 5,
+                    "cost": 10,
+                    "initial": {
+                        "Water_Park_Wristband": 10,
+                        "Safety_Whistle": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 16,
+                    "number": 6,
+                    "cost": 10,
+                    "initial": {
+                        "Water_Park_Wristband": 10,
+                        "Rescue_Float": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 18,
+                    "number": 7,
+                    "cost": 10,
+                    "initial": {
+                        "Water_Park_Wristband": 10,
+                        "Safety_Whistle": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 20,
+                    "number": 8,
+                    "cost": 10,
+                    "initial": {
+                        "Water_Park_Wristband": 10,
+                        "Rescue_Float": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 20,
+                    "number": 9,
+                    "cost": 10,
+                    "initial": {
+                        "Water_Park_Wristband": 10,
+                        "Safety_Whistle": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 20,
+                    "number": 10,
+                    "cost": 10,
+                    "initial": {
+                        "Water_Park_Wristband": 10,
+                        "Rescue_Float": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 20,
+                    "number": 11,
+                    "cost": 10,
+                    "initial": {
+                        "Water_Park_Wristband": 10,
+                        "Safety_Whistle": 10
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 1,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Water_Park_Wristband": 200,
+                        "Safety_Whistle": 50,
+                        "Rescue_Float": 50
+                    },
+                    "drops": {
+                        "Totem_1": 0.25,
+                        "Totem_2": 0.15,
+                        "Water_Park_Wristband": 8,
+                        "Safety_Whistle": 5,
+                        "Rescue_Float": 5
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 2,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Safety_Whistle": 200,
+                        "Rescue_Float": 100
+                    },
+                    "drops": {
+                        "Mandragora_1": 0.25,
+                        "Mandragora_2": 0.15,
+                        "Water_Park_Wristband": 5,
+                        "Safety_Whistle": 8,
+                        "Rescue_Float": 5
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 3,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Safety_Whistle": 100,
+                        "Rescue_Float": 200
+                    },
+                    "drops": {
+                        "Haniwa_1": 0.25,
+                        "Haniwa_2": 0.15,
+                        "Water_Park_Wristband": 5,
+                        "Safety_Whistle": 5,
+                        "Rescue_Float": 8
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 4,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Water_Park_Wristband": 300
+                    },
+                    "drops": {
+                        "Nimrud_1": 0.25,
+                        "Nimrud_2": 0.15,
+                        "Water_Park_Wristband": 12,
+                        "Safety_Whistle": 3,
+                        "Rescue_Float": 3
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 5,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Water_Park_Wristband": 200,
+                        "Safety_Whistle": 100,
+                        "Rescue_Float": 100
+                    },
+                    "drops": {
+                        "Totem_2": 0.25,
+                        "Totem_3": 0.08,
+                        "Water_Park_Wristband": 15,
+                        "Safety_Whistle": 6,
+                        "Rescue_Float": 6
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 6,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Safety_Whistle": 250,
+                        "Rescue_Float": 150
+                    },
+                    "drops": {
+                        "Mandragora_2": 0.25,
+                        "Mandragora_3": 0.08,
+                        "Water_Park_Wristband": 6,
+                        "Safety_Whistle": 15,
+                        "Rescue_Float": 6
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 7,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Safety_Whistle": 150,
+                        "Rescue_Float": 250
+                    },
+                    "drops": {
+                        "Haniwa_2": 0.25,
+                        "Haniwa_3": 0.08,
+                        "Water_Park_Wristband": 6,
+                        "Safety_Whistle": 6,
+                        "Rescue_Float": 15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 8,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Water_Park_Wristband": 400
+                    },
+                    "drops": {
+                        "Nimrud_2": 0.25,
+                        "Nimrud_3": 0.08,
+                        "Water_Park_Wristband": 23,
+                        "Safety_Whistle": 2,
+                        "Rescue_Float": 2
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 9,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Water_Park_Wristband": 300,
+                        "Safety_Whistle": 100,
+                        "Rescue_Float": 100
+                    },
+                    "drops": {
+                        "Totem_2": 0.25,
+                        "Totem_3": 0.12,
+                        "Totem_4": 0.021,
+                        "Water_Park_Wristband": 28,
+                        "Safety_Whistle": 4,
+                        "Rescue_Float": 4
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 10,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Water_Park_Wristband": 50,
+                        "Safety_Whistle": 450
+                    },
+                    "drops": {
+                        "Mandragora_2": 0.25,
+                        "Mandragora_3": 0.12,
+                        "Mandragora_4": 0.021,
+                        "Water_Park_Wristband": 4,
+                        "Safety_Whistle": 32
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 11,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Water_Park_Wristband": 50,
+                        "Rescue_Float": 450
+                    },
+                    "drops": {
+                        "Haniwa_2": 0.25,
+                        "Haniwa_3": 0.12,
+                        "Haniwa_4": 0.021,
+                        "Water_Park_Wristband": 4,
+                        "Rescue_Float": 32
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 12,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Water_Park_Wristband": 500
+                    },
+                    "drops": {
+                        "Nimrud_2": 0.25,
+                        "Nimrud_3": 0.12,
+                        "Nimrud_4": 0.021,
+                        "Water_Park_Wristband": 36
+                    }
+                },
+                {
+                    "type": "Challenge",
+                    "level": 50,
+                    "number": 1,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "level": 60,
+                    "number": 2,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "level": 83,
+                    "number": 3,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "level": 83,
+                    "number": 4,
+                    "cost": 5
+                }
+            ],
+            "box_clear_cost": 1800,
+            "boxes": [
+                {
+                    "cycle": [
+                        "1",
+                        "3",
+                        "5"
+                    ],
+                    "rewards": [
+                        {
+                            "type": "Eleph",
+                            "id": 26012,
+                            "amount": 20,
+                            "count": 1
+                        },
+                        {
+                            "type": "EventCurrency",
+                            "id": "Life_Jacket",
+                            "amount": 10,
+                            "count": 2
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "XP_1",
+                            "amount": 1,
+                            "count": 50
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "XP_2",
+                            "amount": 1,
+                            "count": 35
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "XP_3",
+                            "amount": 1,
+                            "count": 25
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "XP_4",
+                            "amount": 1,
+                            "count": 10
+                        },
+                        {
+                            "type": "Material",
+                            "id": "290",
+                            "amount": 1,
+                            "count": 30
+                        },
+                        {
+                            "type": "Material",
+                            "id": "291",
+                            "amount": 1,
+                            "count": 15
+                        },
+                        {
+                            "type": "Material",
+                            "id": "292",
+                            "amount": 1,
+                            "count": 8
+                        },
+                        {
+                            "type": "Material",
+                            "id": "293",
+                            "amount": 1,
+                            "count": 3
+                        },
+                        {
+                            "type": "Misc",
+                            "id": "Random_Equipment_Box_0",
+                            "amount": 1,
+                            "count": 121
+                        }
+                    ]
+                },
+                {
+                    "cycle": [
+                        "2",
+                        "4",
+                        "6"
+                    ],
+                    "rewards": [
+                        {
+                            "type": "Eleph",
+                            "id": 26012,
+                            "amount": 20,
+                            "count": 1
+                        },
+                        {
+                            "type": "EventCurrency",
+                            "id": "Life_Jacket",
+                            "amount": 10,
+                            "count": 2
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "GXP_1",
+                            "amount": 1,
+                            "count": 50
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "GXP_2",
+                            "amount": 1,
+                            "count": 35
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "GXP_3",
+                            "amount": 1,
+                            "count": 25
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "GXP_4",
+                            "amount": 1,
+                            "count": 10
+                        },
+                        {
+                            "type": "Material",
+                            "id": "120",
+                            "amount": 1,
+                            "count": 30
+                        },
+                        {
+                            "type": "Material",
+                            "id": "121",
+                            "amount": 1,
+                            "count": 15
+                        },
+                        {
+                            "type": "Material",
+                            "id": "122",
+                            "amount": 1,
+                            "count": 8
+                        },
+                        {
+                            "type": "Material",
+                            "id": "123",
+                            "amount": 1,
+                            "count": 3
+                        },
+                        {
+                            "type": "Misc",
+                            "id": "Random_Equipment_Box_0",
+                            "amount": 1,
+                            "count": 121
+                        }
+                    ]
+                },
+                {
+                    "cycle": [
+                        "7"
+                    ],
+                    "rewards": [
+                        {
+                            "type": "Eleph",
+                            "id": 26012,
+                            "amount": 1,
+                            "count": 3
+                        },
+                        {
+                            "type": "EventCurrency",
+                            "id": "Life_Jacket",
+                            "amount": 10,
+                            "count": 1
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "XP_1",
+                            "amount": 1,
+                            "count": 100
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "XP_2",
+                            "amount": 1,
+                            "count": 75
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "XP_3",
+                            "amount": 1,
+                            "count": 15
+                        },
+                        {
+                            "type": "XpReport",
+                            "id": "XP_4",
+                            "amount": 1,
+                            "count": 5
+                        },
+                        {
+                            "type": "Material",
+                            "id": "290",
+                            "amount": 1,
+                            "count": 15
+                        },
+                        {
+                            "type": "Material",
+                            "id": "291",
+                            "amount": 1,
+                            "count": 7
+                        },
+                        {
+                            "type": "Material",
+                            "id": "292",
+                            "amount": 1,
+                            "count": 2
+                        },
+                        {
+                            "type": "Misc",
+                            "id": "Random_Equipment_Box_0",
+                            "amount": 1,
+                            "count": 35
+                        }
+                    ]
                 }
             ]
         }
