@@ -363,7 +363,7 @@ label {
     border-radius: 15%;
     overflow: hidden;
     cursor: default;
-    
+
     /*border: solid white;*/
     /*border-width: 0.3rem;*/
     /*margin-right: 2%;*/
@@ -443,9 +443,9 @@ label {
 }
 
 .content-section-wrapper {
-position: relative;
+    position: relative;
     display: flex;
-padding: 8px 12px;
+    padding: 8px 12px;
     border-radius: 15px;
     background-color: #e6e6ff91;
     box-shadow: 3px 3px #bbbbbb;
@@ -469,16 +469,21 @@ padding: 8px 12px;
 }
 
 .section-label {
-        display: flex;
-margin: 0 24px 0 0;
+    display: flex;
+    margin: 0 24px 0 0;
     align-items: center;
 }
 
 .sub-skill {
-        text-align: center;
+    text-align: center;
 }
 
 .sub-gear {
+    margin: 0 -4px;
+    text-align: center;
+}
+
+.sub-book {
     margin: 0 -4px;
     text-align: center;
 }
@@ -915,6 +920,12 @@ div.char-resource-wrapper .resource-display-text {
     filter: drop-shadow(2px 1px 0 white) drop-shadow(-1px -1px 0 white);
 }
 
+.book-display {
+    height: 50px;
+    -webkit-filter: drop-shadow(2px 1px 0 white) drop-shadow(-1px -1px 0 white);
+    filter: drop-shadow(2px 1px 0 white) drop-shadow(-1px -1px 0 white);
+}
+
 .skill-img {
     height: 50px;
     -webkit-filter: invert(1);
@@ -1264,8 +1275,8 @@ label.char-action-label.toggle-closed::before {
 }
 
 .transfer-modal-button-wrapper {
-    width: 100%; 
-    position: relative; 
+    width: 100%;
+    position: relative;
     min-height: 70px;
 }
 
@@ -2239,7 +2250,7 @@ input.filter-option {
         min-width: 0 !important;
         margin-top: 10px;
         flex-basis: fit-content;
-            }
+    }
 
     #content-6, #bulk-content-6 {
         /* width: 95% !important; */
@@ -2247,7 +2258,7 @@ input.filter-option {
         min-width: 0 !important;
         margin-top: 10px;
         flex-basis: fit-content;
-            }
+    }
 
     #content-7 {
         width: 48% !important;
@@ -2268,7 +2279,7 @@ input.filter-option {
         font-size: 0.75em;
         min-width: 0 !important;
         flex-basis: fit-content;
-            }
+    }
 
     .skill-img {
         height: 40px;
@@ -2279,7 +2290,7 @@ input.filter-option {
         font-size: 0.75em;
         min-width: 0 !important;
         flex-basis: fit-content;
-            }
+    }
 
     #content-11 {
         width: 41% !important;
@@ -2301,7 +2312,7 @@ input.filter-option {
         min-width: 0 !important;
         margin-bottom: 10px;
     }
-    
+
     #content-14 {
         width: 42% !important;
         font-size: 0.75em;
@@ -2319,6 +2330,11 @@ input.filter-option {
     .gear-display {
         height: 40px;
     }
+
+    .book-display {
+        height: 40px;
+    }
+
     .section-label {
         padding: 0 8px;
     }
@@ -2445,7 +2461,7 @@ input.filter-option {
     .show-stage-runs {
         max-height: 300px;
     }
-    
+
     .show-mat-chars img {
         width: 25px;
     }
@@ -2516,6 +2532,10 @@ input.filter-option {
         margin-right: 2em;
     }
 
+    .sub-book:last-of-type {
+        margin-right: 2em;
+    }
+
     #control-panel {
         scale: 0.6;
     }
@@ -2539,25 +2559,25 @@ input.filter-option {
         font-size: 1.2em;
         width: 0;
     }
-    
+
     .size-4 .charBox {
         min-width: 19%;
         font-size: 0.9em;
         width: 0;
     }
-    
+
     .size-3 .charBox {
         min-width: 19%;
         font-size: 0.9em;
         width: 0;
     }
-    
+
     .size-2 .charBox {
         min-width: 14%;
         font-size: 0.7em;
         width: 0;
     }
-    
+
     .size-1 .charBox {
         min-width: 14%;
         font-size: 0.7em;
