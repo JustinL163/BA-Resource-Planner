@@ -284,7 +284,7 @@ class ElephInfo {
 
 class StudentInvestment {
 
-    constructor(level, bond, star, ue, ue_level, ex, basic, passive, sub, gear1, gear2, gear3) {
+    constructor(level, bond, star, ue, ue_level, ex, basic, passive, sub, gear1, gear2, gear3, book_hp, book_atk, book_heal) {
         this.level = level;
         this.bond = bond;
         this.star = star;
@@ -297,6 +297,9 @@ class StudentInvestment {
         this.gear1 = gear1;
         this.gear2 = gear2;
         this.gear3 = gear3;
+        this.book_hp = book_hp;
+        this.book_atk = book_atk;
+        this.book_heal = book_heal;
     }
 
     static Default(characterInfo) {
@@ -311,6 +314,10 @@ class StudentInvestment {
             1,
             characterInfo?.StarGrade >= 2 ? 1 : 0,
             characterInfo?.StarGrade >= 3 ? 1 : 0,
+
+            0,
+            0,
+            0,
 
             0,
             0,
@@ -337,7 +344,11 @@ class StudentInvestment {
         defaultTarget.gear2 = inputValidation.gear2_target.default;
         defaultTarget.gear2 = inputValidation.gear2_target.default;
 
-        return defaultTarget
+        defaultTarget.book_hp = inputValidation.book_hp_target.default;
+        defaultTarget.book_atk = inputValidation.book_atk_target.default;
+        defaultTarget.book_heal = inputValidation.book_heal_target.default;
+
+        return defaultTarget;
     }
 }
 
@@ -1138,7 +1149,8 @@ const inputValidation = {
         "navigation": "direct",
         "Up": "input_gear3_current",
         "Left": "input_gear2_target",
-        "Down": "input_ue_level_current"
+        "Down": "input_book_hp_current",
+        "Right": "input_book_hp_current",
     },
     "bulk-gear3": {
         id: "bulk-input_gear3_current",
@@ -1174,6 +1186,317 @@ const inputValidation = {
         "navigation": "direct",
         "Up": "bulk-input_gear3_current",
         "Left": "bulk-input_gear2_target",
+        "Down": "bulk-input_book_hp_current",
+        "Right": "bulk-input_book_hp_current",
+    },
+    "book_hp": {
+        id: "input_book_hp_current",
+        location: "characterModal",
+        min: "0",
+        max: "25",
+        default: "0",
+        name: "Max HP Limit Break",
+        requisite: {
+            "modalStars.ue": {
+                type: "object",
+                name: "UE Stars",
+                compare: "equal_greater",
+                mode: "threshold",
+                sanitise: true,
+                levels: [
+                    {
+                        required: "1",
+                        max: "25"
+                    },
+                    {
+                        max: "0"
+                    }
+                ]
+            }
+        },
+        "navigation": "direct",
+        "Up": "input_gear3_target",
+        "Left": "input_gear3_target",
+        "Down": "input_book_hp_target",
+        "Right": "input_book_atk_current"
+    },
+    "book_hp_target": {
+        id: "input_book_hp_target",
+        location: "characterModal",
+        min: "0",
+        max: "25",
+        default: "0",
+        name: "Max HP Limit Break Target",
+        requisite: {
+            "modalStars.ue_target": {
+                type: "object",
+                name: "UE Stars",
+                compare: "equal_greater",
+                mode: "threshold",
+                sanitise: true,
+                levels: [
+                    {
+                        required: "1",
+                        max: "25"
+                    },
+                    {
+                        max: "0"
+                    }
+                ]
+            },
+            "book_hp": {
+                type: "input",
+                compare: "equal_greater",
+                mode: "direct",
+                sanitise: true
+            }
+        },
+        "navigation": "direct",
+        "Up": "input_book_hp_current",
+        "Left": "input_book_heal_current",
+        "Down": "input_book_atk_current",
+        "Right": "input_book_atk_target"
+    },
+    "bulk-book_hp": {
+        id: "bulk-input_book_hp_current",
+        location: "bulkEditModal",
+        min: "0",
+        max: "25",
+        default: "0",
+        blankable: true,
+        name: "Max HP Limit Break",
+        requisite: {},
+        "navigation": "direct",
+        "Up": "bulk-input_gear3_target",
+        "Left": "bulk-input_gear3_target",
+        "Down": "bulk-input_book_hp_target",
+        "Right": "bulk-input_book_atk_current"
+    },
+    "bulk-book_hp_target": {
+        id: "bulk-input_book_hp_target",
+        location: "bulkEditModal",
+        min: "0",
+        max: "25",
+        default: "0",
+        name: "Max HP Limit Break Target",
+        requisite: {
+            "bulk-book_hp": {
+                type: "input",
+                compare: "equal_greater",
+                mode: "direct",
+                sanitise: true
+            }
+        },
+        "navigation": "direct",
+        "Up": "bulk-input_book_hp_current",
+        "Left": "bulk-input_book_heal_current",
+        "Down": "bulk-input_book_atk_current",
+        "Right": "bulk-input_book_atk_target"
+    },
+    "book_atk": {
+        id: "input_book_atk_current",
+        location: "characterModal",
+        min: "0",
+        max: "25",
+        default: "0",
+        name: "Attack Limit Break",
+        requisite: {
+            "modalStars.ue": {
+                type: "object",
+                name: "UE Stars",
+                compare: "equal_greater",
+                mode: "threshold",
+                sanitise: true,
+                levels: [
+                    {
+                        required: "1",
+                        max: "25"
+                    },
+                    {
+                        max: "0"
+                    }
+                ]
+            }
+        },
+        "navigation": "direct",
+        "Up": "input_book_hp_target",
+        "Left": "input_book_hp_current",
+        "Down": "input_book_atk_target",
+        "Right": "input_book_heal_current"
+    },
+    "book_atk_target": {
+        id: "input_book_atk_target",
+        location: "characterModal",
+        min: "0",
+        max: "25",
+        default: "0",
+        name: "Attack Limit Break Target",
+        requisite: {
+            "modalStars.ue_target": {
+                type: "object",
+                name: "UE Stars",
+                compare: "equal_greater",
+                mode: "threshold",
+                sanitise: true,
+                levels: [
+                    {
+                        required: "1",
+                        max: "25"
+                    },
+                    {
+                        max: "0"
+                    }
+                ]
+            },
+            "book_atk": {
+                type: "input",
+                compare: "equal_greater",
+                mode: "direct",
+                sanitise: true
+            }
+        },
+        "navigation": "direct",
+        "Up": "input_book_atk_current",
+        "Left": "input_book_hp_target",
+        "Down": "input_book_heal_current",
+        "Right": "input_book_heal_target"
+    },
+    "bulk-book_atk": {
+        id: "bulk-input_book_atk_current",
+        location: "bulkEditModal",
+        min: "0",
+        max: "25",
+        default: "0",
+        blankable: true,
+        name: "Attack Limit Break",
+        requisite: {},
+        "navigation": "direct",
+        "Up": "bulk-input_book_hp_target",
+        "Left": "bulk-input_book_hp_current",
+        "Down": "bulk-input_book_atk_target",
+        "Right": "bulk-input_book_heal_current"
+    },
+    "bulk-book_atk_target": {
+        id: "bulk-input_book_atk_target",
+        location: "bulkEditModal",
+        min: "0",
+        max: "25",
+        default: "0",
+        name: "Attack Limit Break Target",
+        requisite: {
+            "bulk-book_atk": {
+                type: "input",
+                compare: "equal_greater",
+                mode: "direct",
+                sanitise: true
+            }
+        },
+        "navigation": "direct",
+        "Up": "bulk-input_book_atk_current",
+        "Left": "bulk-input_book_hp_target",
+        "Down": "bulk-input_book_heal_current",
+        "Right": "bulk-input_book_heal_target"
+    },
+    "book_heal": {
+        id: "input_book_heal_current",
+        location: "characterModal",
+        min: "0",
+        max: "25",
+        default: "0",
+        name: "Heal Limit Break",
+        requisite: {
+            "modalStars.ue": {
+                type: "object",
+                name: "UE Stars",
+                compare: "equal_greater",
+                mode: "threshold",
+                sanitise: true,
+                levels: [
+                    {
+                        required: "1",
+                        max: "25"
+                    },
+                    {
+                        max: "0"
+                    }
+                ]
+            }
+        },
+        "navigation": "direct",
+        "Up": "input_book_atk_target",
+        "Left": "input_book_atk_current",
+        "Down": "input_book_heal_target",
+        "Right": "input_book_hp_target"
+    },
+    "book_heal_target": {
+        id: "input_book_heal_target",
+        location: "characterModal",
+        min: "0",
+        max: "25",
+        default: "0",
+        name: "Heal Limit Break Target",
+        requisite: {
+            "modalStars.ue_target": {
+                type: "object",
+                name: "UE Stars",
+                compare: "equal_greater",
+                mode: "threshold",
+                sanitise: true,
+                levels: [
+                    {
+                        required: "1",
+                        max: "25"
+                    },
+                    {
+                        max: "0"
+                    }
+                ]
+            },
+            "book_heal": {
+                type: "input",
+                compare: "equal_greater",
+                mode: "direct",
+                sanitise: true
+            }
+        },
+        "navigation": "direct",
+        "Up": "input_book_heal_current",
+        "Left": "input_book_atk_target",
+        "Down": "input_ue_level_current"
+    },
+    "bulk-book_heal": {
+        id: "bulk-input_book_heal_current",
+        location: "bulkEditModal",
+        min: "0",
+        max: "25",
+        default: "0",
+        blankable: true,
+        name: "Heal Limit Break",
+        requisite: {},
+        "navigation": "direct",
+        "Up": "bulk-input_book_atk_target",
+        "Left": "bulk-input_book_atk_current",
+        "Down": "bulk-input_book_heal_target",
+        "Right": "bulk-input_book_hp_target"
+    },
+    "bulk-book_heal_target": {
+        id: "bulk-input_book_heal_target",
+        location: "bulkEditModal",
+        min: "0",
+        max: "25",
+        default: "0",
+        name: "Heal Limit Break Target",
+        requisite: {
+            "bulk-book_heal": {
+                type: "input",
+                compare: "equal_greater",
+                mode: "direct",
+                sanitise: true
+            }
+        },
+        "navigation": "direct",
+        "Up": "bulk-input_book_heal_current",
+        "Left": "bulk-input_book_atk_target",
         "Down": "bulk-input_ue_level_current"
     },
     "BD_1_Abydos": {

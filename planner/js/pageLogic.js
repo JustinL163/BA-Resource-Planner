@@ -134,7 +134,6 @@ function checkResources() {
         }
 
         if (data != null) {
-
             for (var i = 0; i < data.characters.length; i++) {
 
                 calculateCharResources(data.characters[i], false);
@@ -197,7 +196,17 @@ function convertOld() {
         if (data.characters != undefined) {
 
             for (let i = 0; i < data.characters.length; i++) {
+                const defaultCurrent = StudentInvestment.Default(data.characters[i]);
+                const defaultTarget = StudentInvestment.DefaultTarget(data.characters[i]);
+
                 data.characters[i].id = data.characters[i].id.toString();
+
+                for (key in defaultCurrent) {
+                    if (typeof data.characters[i].current[key] === 'undefined') {
+                        data.characters[i].current[key] = defaultCurrent[key];
+                        data.characters[i].target[key] = defaultTarget[key];
+                    }
+                }
             }
 
         }
@@ -1149,11 +1158,11 @@ function CharInputsMax() {
         cancelButtonText: GetLanguageString("label-cancel")
     }).then((result) => {
         if (result.isConfirmed) {
-            let values = [90, 90, 5, 5, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 9, 9];
+            let values = [90, 90, 5, 5, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 25, 25, 25, 25, 25, 25];
             SetCharInputValues(values);
         }
         else if (result.isDenied) {
-            let values = [90, 90, 5, 5, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10];
+            let values = [90, 90, 5, 5, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 25, 25, 25, 25, 25, 25];
             SetCharInputValues(values);
         }
     })
@@ -1219,6 +1228,13 @@ function SetCharInputValues(values) {
     document.getElementById("input_gear2_target").value = values[13];
     document.getElementById("input_gear3_current").value = values[14];
     document.getElementById("input_gear3_target").value = values[15];
+
+    document.getElementById("input_book_hp_current").value = values[16];
+    document.getElementById("input_book_hp_target").value = values[17];
+    document.getElementById("input_book_atk_current").value = values[18];
+    document.getElementById("input_book_atk_target").value = values[19];
+    document.getElementById("input_book_heal_current").value = values[20];
+    document.getElementById("input_book_heal_target").value = values[21];
 
     let charInfo = charlist[modalCharID];
 
@@ -1773,7 +1789,7 @@ function generateMultiSelectChars(newCharOptions, mode) {
 
     let multiCharsContainer = document.getElementById("charsSelectContainer");
 
-    for (let i = 0; i < newCharOptions.length; i++) {
+    for (let i = 0; i < newCharOptions.length - 1; i++) {
         createMultiSelectChar(charMap.get(newCharOptions[i]), multiCharsContainer, mode);
     }
 
@@ -3382,6 +3398,13 @@ function saveCharChanges() {
         charData.current.gear3 = document.getElementById("input_gear3_current").value;
         charData.target.gear3 = document.getElementById("input_gear3_target").value;
 
+        charData.current.book_hp = document.getElementById("input_book_hp_current").value;
+        charData.target.book_hp = document.getElementById("input_book_hp_target").value;
+        charData.current.book_atk = document.getElementById("input_book_atk_current").value;
+        charData.target.book_atk = document.getElementById("input_book_atk_target").value;
+        charData.current.book_heal = document.getElementById("input_book_heal_current").value;
+        charData.target.book_heal = document.getElementById("input_book_heal_target").value;
+
         charData.current.star = modalStars.star;
         charData.target.star = modalStars.star_target;
         charData.current.ue = modalStars.ue;
@@ -3518,6 +3541,13 @@ function populateCharModal(charId) {
         document.getElementById("input_gear3_current").value = charData.current?.gear3;
         document.getElementById("input_gear3_target").value = charData.target?.gear3;
 
+        document.getElementById("input_book_hp_current").value = charData.current?.book_hp || 0;
+        document.getElementById("input_book_hp_target").value = charData.target?.book_hp || 0;
+        document.getElementById("input_book_atk_current").value = charData.current?.book_atk || 0;
+        document.getElementById("input_book_atk_target").value = charData.target?.book_atk || 0;
+        document.getElementById("input_book_heal_current").value = charData.current?.book_heal || 0;
+        document.getElementById("input_book_heal_target").value = charData.target?.book_heal || 0;
+
         if (charData.current?.gear1 != "0") {
             document.getElementById("gear1-img").src = "icons/Gear/T" + charData.current?.gear1 + "_" + charInfo.Equipment[0] + "_small.webp";
         }
@@ -3536,6 +3566,10 @@ function populateCharModal(charId) {
         else {
             document.getElementById("gear3-img").src = "icons/Gear/T1_" + charInfo.Equipment[2] + "_small.webp";
         }
+
+        document.getElementById("book-hp-img").src = "icons/Books/Book_Health_small.webp";
+        document.getElementById("book-atk-img").src = "icons/Books/Book_Attack_small.webp";
+        document.getElementById("book-heal-img").src = "icons/Books/Book_Healing_small.webp";
 
         document.getElementById("ex-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "Ex").Icon + ".png";
         document.getElementById("basic-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "Public").Icon + ".png";
@@ -3933,6 +3967,13 @@ function charDataFromModal(charId) {
     charData.target.gear2 = document.getElementById("input_gear2_target").value;
     charData.current.gear3 = document.getElementById("input_gear3_current").value;
     charData.target.gear3 = document.getElementById("input_gear3_target").value;
+
+    charData.current.book_hp = document.getElementById("input_book_hp_current").value;
+    charData.target.book_hp = document.getElementById("input_book_hp_target").value;
+    charData.current.book_atk = document.getElementById("input_book_atk_current").value;
+    charData.target.book_atk = document.getElementById("input_book_atk_target").value;
+    charData.current.book_heal = document.getElementById("input_book_heal_current").value;
+    charData.target.book_heal = document.getElementById("input_book_heal_target").value;
 
     charData.current.star = modalStars.star;
     charData.target.star = modalStars.star_target;
@@ -6736,6 +6777,13 @@ function OpenBulkModal() {
     document.getElementById("bulk-input_gear3_current").value = "";
     document.getElementById("bulk-input_gear3_target").value = "";
 
+    document.getElementById("bulk-input_book_hp_current").value = "";
+    document.getElementById("bulk-input_book_hp_target").value = "";
+    document.getElementById("bulk-input_book_atk_current").value = "";
+    document.getElementById("bulk-input_book_atk_target").value = "";
+    document.getElementById("bulk-input_book_heal_current").value = "";
+    document.getElementById("bulk-input_book_heal_target").value = "";
+
     modalStars = { star: 0, star_target: 0, ue: 0, ue_target: 0 };
     updateBulkStarDisplays("", true);
 
@@ -6811,6 +6859,13 @@ function ConfirmBulkUpdate() {
     bulkUpdate.target.gear2 = document.getElementById("bulk-input_gear2_target").value;
     bulkUpdate.current.gear3 = document.getElementById("bulk-input_gear3_current").value;
     bulkUpdate.target.gear3 = document.getElementById("bulk-input_gear3_target").value;
+
+    bulkUpdate.current.book_hp = document.getElementById("bulk-input_book_hp_current").value;
+    bulkUpdate.target.book_hp = document.getElementById("bulk-input_book_hp_target").value;
+    bulkUpdate.current.book_atk = document.getElementById("bulk-input_book_atk_current").value;
+    bulkUpdate.target.book_atk = document.getElementById("bulk-input_book_atk_target").value;
+    bulkUpdate.current.book_heal = document.getElementById("bulk-input_book_heal_current").value;
+    bulkUpdate.target.book_heal = document.getElementById("bulk-input_book_heal_target").value;
 
     // charData.current.star = modalStars.star;
     // charData.target.star = modalStars.star_target;
@@ -6918,6 +6973,22 @@ function ApplyBulkUpdate(bulkUpdate) {
             else {
                 if (parseInt(ct.ue_level) < parseInt(cc.ue_level)) {
                     ct.ue_level = cc.ue_level;
+                }
+            }
+
+            let bookParams = ["book_hp", "book_atk", "book_heal"];
+            for (let p = 0; p < bookParams.length; p++) {
+                if (uc[bookParams[p]]) {
+                    cc[bookParams[p]] = cc.ue > 0 ? uc[bookParams[p]] : 0;
+                }
+
+                if (ut[bookParams[p]]) {
+                    ct[bookParams[p]] = ct.ue > 0 ? Math.max(ut[bookParams[p]], cc[bookParams[p]]) : 0;
+                }
+                else {
+                    if (parseInt(ct[bookParams[p]]) < parseInt(cc[bookParams[p]])) {
+                        ct[bookParams[p]] = cc[bookParams[p]];
+                    }
                 }
             }
 
