@@ -476,16 +476,31 @@ label {
 
 .sub-skill {
     text-align: center;
+    line-height: 1.25;
 }
 
 .sub-gear {
     margin: 0 -4px;
     text-align: center;
+    line-height: 1.25;
 }
 
 .sub-book {
     margin: 0 -4px;
     text-align: center;
+    line-height: 1.25;
+}
+
+#bulk-character-modal-wrapper {
+    padding: 10px 0;
+}
+
+#bulk-character-modal-wrapper .sub-skill,
+#bulk-character-modal-wrapper .sub-gear,
+#bulk-character-modal-wrapper .sub-book {
+    min-width: 50px;
+    margin: 0;
+    padding: 0 2px;
 }
 
 .two_digit_input {
@@ -921,9 +936,8 @@ div.char-resource-wrapper .resource-display-text {
 }
 
 .book-display {
-    height: 50px;
-    -webkit-filter: drop-shadow(2px 1px 0 white) drop-shadow(-1px -1px 0 white);
-    filter: drop-shadow(2px 1px 0 white) drop-shadow(-1px -1px 0 white);
+    height: 40px;
+    margin: 5px 0;
 }
 
 .skill-img {

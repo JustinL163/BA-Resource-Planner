@@ -410,7 +410,7 @@
                                 <br>
                                 <input id="input_gear3_target" type="number" class="two_digit_input">
                             </div>
-<div class="sub-gear">
+                            <div class="sub-gear">
                                 <br>
                                 <input type="number" class="two_digit_input">
                                 <br>
@@ -430,28 +430,28 @@
                                 <br>
                             </div>
                             <div class="sub-book">
+                                <p id="label-book-hp" class="display-string" data-id="label-bookhp"></p>
+                                <input id="input_book_hp_current" type="number" class="two_digit_input">
                                 <br>
-                                <input id="input_book-hp_current" type="number" class="two_digit_input">
+                                <img id="book-hp-img" class="book-display" draggable="false">
                                 <br>
-                                <img id="book-hp-img" class="book-display" draggable="false" width="64" height="50">
-                                <br>
-                                <input id="input_book-hp_target" type="number" class="two_digit_input">
+                                <input id="input_book_hp_target" type="number" class="two_digit_input">
                             </div>
                             <div class="sub-book">
+                                <p id="label-book-atk" class="display-string" data-id="label-bookatk"></p>
+                                <input id="input_book_atk_current" type="number" class="two_digit_input">
                                 <br>
-                                <input id="input_book-atk_current" type="number" class="two_digit_input">
+                                <img id="book-atk-img" class="book-display" draggable="false">
                                 <br>
-                                <img id="book-atk-img" class="book-display" draggable="false" width="64" height="50">
-                                <br>
-                                <input id="input_book-atk_target" type="number" class="two_digit_input">
+                                <input id="input_book_atk_target" type="number" class="two_digit_input">
                             </div>
                             <div class="sub-book">
+                                <p id="label-book-heal" class="display-string" data-id="label-bookheal"></p>
+                                <input id="input_book_heal_current" type="number" class="two_digit_input">
                                 <br>
-                                <input id="input_book-heal_current" type="number" class="two_digit_input">
+                                <img id="book-heal-img" class="book-display" draggable="false">
                                 <br>
-                                <img id="book-heal-img" class="book-display" draggable="false" width="64" height="50">
-                                <br>
-                                <input id="input_book-heal_target" type="number" class="two_digit_input">
+                                <input id="input_book_heal_target" type="number" class="two_digit_input">
                             </div>
                         </div>
                     </div>
@@ -603,13 +603,13 @@
         <div class="modal-content-wrapper" id="bulk-character-modal-wrapper" style="display: block; max-width: 900px;">
             <div style="overflow-y: auto; overflow-x: clip; max-height: 45vh; padding-bottom: 1em;"
                 class="scrollbar-styling">
-                <div style="display: flex; flex-wrap: wrap;">
+                <div class="modal-content-group">
                     <div class="modal-content-section" id="bulk-content-5">
-                        <div class="content-section-wrapper" style="padding: 6% 7% 6% 0;">
+                        <div class="content-section-wrapper content-section-wrapper_has_label">
                             <div class="section-label">
                                 <p class="section-name display-string" id="bulk-label-level" data-id="label-level"></p>
                             </div>
-                            <div style="margin-right: 1em;">
+                            <div>
                                 <p class="label-current display-string" data-id="label-current"></p>
                                 <input id="bulk-input_level_current" type="number" class="two_digit_input">
                                 <p class="label-target display-string" data-id="label-target"></p>
@@ -618,7 +618,7 @@
                         </div>
                     </div>
                     <div class="modal-content-section" id="bulk-content-8">
-                        <div class="content-section-wrapper" style="padding: 6% 7% 6% 0;">
+                        <div class="content-section-wrapper content-section-wrapper_has_label">
                             <div class="section-label">
                                 <p class="section-name display-string" id="bulk-label-bond" data-id="label-bond"></p>
                             </div>
@@ -703,10 +703,9 @@
                         </div>
                     </div>
                 </div>
-                <div style="display: flex; flex-wrap: wrap;">
+                <div class="modal-content-group">
                     <div class="modal-content-section" id="bulk-content-9">
-                        <div class="content-section-wrapper"
-                            style="padding-right: 15%; padding-top: 2%; padding-left: 1em;">
+                        <div class="content-section-wrapper">
                             <!-- <div class="section-label">
                             <p class="section-name display-string" id="label-skills" data-id="label-skills"></p>
                         </div> -->
@@ -753,7 +752,7 @@
                         </div>
                     </div>
                     <div class="modal-content-section" id="bulk-content-10">
-                        <div class="content-section-wrapper" style="padding: 1% 10% 1% 1em;">
+                        <div class="content-section-wrapper">
                             <!-- <div class="section-label">
                             <p class="section-name display-string" id="label-gear" data-id="label-gear"></p>
                         </div> -->
@@ -790,15 +789,46 @@
                             </div>
                         </div>
                     </div>
+                    <div class="modal-content-section" id="bulk-content-16">
+                        <div class="content-section-wrapper">
+                            <div>
+                                <br>
+                                <p class="label-current display-string" data-id="label-current"></p>
+                                <br>
+                                <p class="label-target display-string" data-id="label-target"></p>
+                                <br>
+                            </div>
+                            <div class="sub-book">
+                                <p id="bulk-label-book-hp" class="display-string" data-id="label-bookhp"></p>
+                                <input id="bulk-input_book_hp_current" type="number" class="two_digit_input">
+                                <br>
+                                <br>
+                                <input id="bulk-input_book_hp_target" type="number" class="two_digit_input">
+                            </div>
+                            <div class="sub-book">
+                                <p id="bulk-label-book-atk" class="display-string" data-id="label-bookatk"></p>
+                                <input id="bulk-input_book_atk_current" type="number" class="two_digit_input">
+                                <br>
+                                <br>
+                                <input id="bulk-input_book_atk_target" type="number" class="two_digit_input">
+                            </div>
+                            <div class="sub-book">
+                                <p id="bulk-label-book-heal" class="display-string" data-id="label-bookheal"></p>
+                                <input id="bulk-input_book_heal_current" type="number" class="two_digit_input">
+                                <br>
+                                <br>
+                                <input id="bulk-input_book_heal_target" type="number" class="two_digit_input">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="modal-content-section">
+            <div class="modal-content-buttons">
                 <button id="bulk-cancel-button-resource" class="resource-modal-button display-string"
                     onclick="CloseBulkModal()" data-id="label-cancel"></button>
                 <button id="bulk-save-button-resource" class="resource-modal-button display-string"
                     onclick="ConfirmBulkUpdate()" data-id="label-bulkupdate"></button>
             </div>
-            <div style="height: 10px;"></div>
         </div>
     </div>
     <div class="modal" id="resourceModal">
