@@ -279,9 +279,9 @@ function createCharBox(charId, container, location, lazy) {
             newUEContainer.appendChild(newStar);
         }
 
-        var classes = ["skill-bar", "gear-bar", "level-bar"];
+        var classes = ["skill-bar", "gear-bar", "book-bar", "level-bar"];
 
-        for (i = 0; i < 3; i++) {
+        for (i = 0; i < classes.length; i++) {
             const newBar = document.createElement("div");
             newBar.className = classes[i] + " info-bar";
 
@@ -386,46 +386,56 @@ function updateInfoDisplay(charId, idInject, charData) {
 
     // var charData = data.characters[dataCharIndex[charId]];
 
-    var skillCurrent = formatLevel("Ex", charData.current?.ex) + formatLevel("Other", charData.current?.basic) +
-        formatLevel("Other", charData.current?.passive) + formatLevel("Other", charData.current?.sub);
+    var skillCurrent = `${formatLevel("Ex", charData.current?.ex)}${formatLevel("Other", charData.current?.basic)}${formatLevel("Other", charData.current?.passive)}${formatLevel("Other", charData.current?.sub)}`;
 
-    var skillTarget = formatLevel("Ex", charData.target?.ex) + formatLevel("Other", charData.target?.basic) +
-        formatLevel("Other", charData.target?.passive) + formatLevel("Other", charData.target?.sub);
+    var skillTarget = `${formatLevel("Ex", charData.target?.ex)}${formatLevel("Other", charData.target?.basic)}${formatLevel("Other", charData.target?.passive)}${formatLevel("Other", charData.target?.sub)}`;
 
-    var gearCurrent = formatLevel("Gear", charData.current?.gear1) + formatLevel("Gear", charData.current?.gear2) + formatLevel("Gear", charData.current?.gear3);
-    var gearTarget = formatLevel("Gear", charData.target?.gear1) + formatLevel("Gear", charData.target?.gear2) +
-        formatLevel("Gear", charData.target?.gear3);
+    var gearCurrent = `${formatLevel("Gear", charData.current?.gear1)}${formatLevel("Gear", charData.current?.gear2)}${formatLevel("Gear", charData.current?.gear3)}`;
 
-    document.getElementById(charId + idInject + "-skill-current").innerText = skillCurrent;
+    var gearTarget = `${formatLevel("Gear", charData.target?.gear1)}${formatLevel("Gear", charData.target?.gear2)}${formatLevel("Gear", charData.target?.gear3)}`;
+
+    var bookCurrent = `${formatLevel("Book", charData.current?.book_hp)} ${formatLevel("Book", charData.current?.book_atk)} ${formatLevel("Book", charData.current?.book_heal)}`;
+
+    var bookTarget = `${formatLevel("Book", charData.target?.book_hp)} ${formatLevel("Book", charData.target?.book_atk)} ${formatLevel("Book", charData.target?.book_heal)}`;
+
+    document.getElementById(charId + idInject + "-skill-current").innerHTML = skillCurrent;
     if (skillCurrent != skillTarget) {
-        document.getElementById(charId + idInject + "-skill-target").innerText = skillTarget;
+        document.getElementById(charId + idInject + "-skill-target").innerHTML = skillTarget;
     }
     else {
-        document.getElementById(charId + idInject + "-skill-target").innerText = "";
+        document.getElementById(charId + idInject + "-skill-target").innerHTML = "";
     }
 
-    document.getElementById(charId + idInject + "-gear-current").innerText = gearCurrent;
+    document.getElementById(charId + idInject + "-gear-current").innerHTML = gearCurrent;
     if (gearCurrent != gearTarget) {
-        document.getElementById(charId + idInject + "-gear-target").innerText = gearTarget;
+        document.getElementById(charId + idInject + "-gear-target").innerHTML = gearTarget;
     }
     else {
-        document.getElementById(charId + idInject + "-gear-target").innerText = "";
+        document.getElementById(charId + idInject + "-gear-target").innerHTML = "";
     }
 
-    document.getElementById(charId + idInject + "-level-current").innerText = formatLevel("Level", charData.current.level);
+    document.getElementById(charId + idInject + "-book-current").innerHTML = bookCurrent;
+    if (bookCurrent != bookTarget) {
+        document.getElementById(charId + idInject + "-book-target").innerHTML = bookTarget;
+    }
+    else {
+        document.getElementById(charId + idInject + "-book-target").innerHTML = "";
+    }
+
+    document.getElementById(charId + idInject + "-level-current").innerHTML = formatLevel("Level", charData.current.level);
     if (charData.current.level != charData.target.level) {
-        document.getElementById(charId + idInject + "-level-target").innerText = formatLevel("Level", charData.target.level);
+        document.getElementById(charId + idInject + "-level-target").innerHTML = formatLevel("Level", charData.target.level);
     }
     else {
-        document.getElementById(charId + idInject + "-level-target").innerText = "";
+        document.getElementById(charId + idInject + "-level-target").innerHTML = "";
     }
 
-    document.getElementById(charId + idInject + "-bond-current").innerText = charData.current?.bond;
+    document.getElementById(charId + idInject + "-bond-current").innerHTML = charData.current?.bond;
     if (charData.current?.bond != charData.target?.bond) {
-        document.getElementById(charId + idInject + "-bond-target").innerText = charData.target?.bond;
+        document.getElementById(charId + idInject + "-bond-target").innerHTML = charData.target?.bond;
     }
     else {
-        document.getElementById(charId + idInject + "-bond-target").innerText = "";
+        document.getElementById(charId + idInject + "-bond-target").innerHTML = "";
     }
 }
 

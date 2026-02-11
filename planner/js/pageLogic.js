@@ -6392,31 +6392,36 @@ function getOrder() {
 
 }
 
-function formatLevel(type, level) {
+function wrapLevelValue(type, value) {
+    return `<span class="info-value">${value}</span>`;
+}
 
+function formatLevel(type, level) {
     if (type == "Other") {
         if (level == "10" || level == 10) {
-            return "M";
+            return wrapLevelValue(type, "M");
         }
     }
     else if (type == "Ex") {
         if (level == "5" || level == 5) {
-            return "M";
+            return wrapLevelValue(type, "M");
         }
     }
     else if (type == "Gear") {
         if (level == "10" || level == 10) {
-            return "X";
+            return wrapLevelValue(type, "X");
         }
+    }
+    else if (type == "Book") {
+        return wrapLevelValue(type, level.toString().padStart(2, ' '));
     }
 
     if (level != undefined) {
-        return level.toString();
+        return wrapLevelValue(type, level.toString());
     }
     else {
-        return '';
+        return wrapLevelValue(type, '');
     }
-
 }
 
 function getOffset(el) {
