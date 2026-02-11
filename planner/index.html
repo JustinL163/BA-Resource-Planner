@@ -158,7 +158,7 @@
     </div>
     <div class="modal" id="characterModal">
         <div class="modal-content-wrapper" id="character-modal-wrapper" style="display: block; max-width: 900px;">
-            <div style="display: flex; flex-wrap: wrap; overflow-y: hidden; overflow-x: clip; max-height: 35vh;">
+            <div class="modal-character-info">
                 <div class="charBox" id="displayChar">
                     <div class="charBoxwrap">
                         <div class="main-box-content">
@@ -169,8 +169,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-content-section" style="min-width: 30px; margin: initial; text-align: center; display: flex;
-                        flex-direction: column; align-self: flex-start; align-items: center;">
+                <div class="modal-content-section" style="min-width: 30px; text-align: center; align-self: flex-start; align-items: center;">
                     <img id="char-delete" class="action-icon" src="icons/UI/cross.svg" onclick="deleteClicked()"
                         style="max-width: 25px;">
                     <img id="char-max" class="action-icon" src="icons/UI/MaxIcon.png" onclick="CharInputsMax()"
@@ -178,8 +177,8 @@
                     <img id="char-max-goal" class="action-icon" src="icons/UI/MaxGoalIcon.png"
                         onclick="CharInputsGoalMax()" style="margin-top: 10px">
                 </div>
-                <div class="modal-content-section" id="content-1"
-                    style="width: 10%; min-width: 90px; margin-left: 20px;">
+                <div class="modal-content-section modal-content-section_layout_auto" id="content-1"
+                    style="width: 10%; min-width: 90px;">
                     <!-- <p id="label-school" class="display-string" data-id="label-school"></p> -->
                     <p id="display_school" class="char-info-text"></p>
                     <!-- <br> -->
@@ -192,7 +191,7 @@
                     <!-- <p id="label-defense-type" class="display-string" data-id="label-defensetype"></p> -->
                     <p id="display_defense_type" class="char-info-text"></p>
                 </div>
-                <div class="modal-content-section" id="content-2" style="width: 5%; min-width: 60px;">
+                <div class="modal-content-section modal-content-section_layout_auto" id="content-2" style="width: 5%; min-width: 60px;">
                     <!-- <p class="display-string" data-id="label-role"></p> -->
                     <br>
                     <p class="char-info-text"></p>
@@ -208,8 +207,8 @@
                 <!-- <div class="modal-content-section" id="content-3" style="width:15%; min-width: 100px;">
 
                 </div> -->
-                <div class="modal-content-section" id="content-4"
-                    style="width: 15%; min-width: 150px; display: flex; margin-left: 20px; margin-block: auto; flex-basis: fit-content;">
+                <div class="modal-content-section modal-content-section_layout_horizontal" id="content-4"
+                    style="width: 15%; min-width: 150px; margin-block: auto; flex-basis: fit-content;">
                     <div class="mood-wrapper">
                         <!-- <p class="display-string" data-id="terrain-urban"></p> -->
                         <img src="icons/Mood/Terrain_Street.png" class="terrain-icon"></img>
@@ -228,14 +227,13 @@
                 </div>
             </div>
             <div style="overflow-y: auto; overflow-x: clip; max-height: 45vh; height: 45vh;" class="scrollbar-styling">
-                <div style="display: flex; flex-wrap: wrap;">
-                    <div class="modal-content-section" id="content-5"
-                        style="width: 15%; min-width: 185px; display: flex;">
-                        <div class="content-section-wrapper" style="padding: 6% 7% 6% 0;">
+                <div class="modal-content-group">
+                    <div class="modal-content-section" id="content-5">
+                        <div class="content-section-wrapper content-section-wrapper_has_label">
                             <div class="section-label">
                                 <p class="section-name display-string" id="label-level" data-id="label-level"></p>
                             </div>
-                            <div style="margin-right: 1em;">
+                            <div>
                                 <p class="label-current display-string" data-id="label-current"></p>
                                 <input id="input_level_current" type="number" class="two_digit_input">
                                 <p class="label-target display-string" data-id="label-target"></p>
@@ -243,9 +241,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-content-section" id="content-8"
-                        style="width: 15%; min-width: 183px; display: flex;">
-                        <div class="content-section-wrapper" style="padding: 6% 7% 6% 0;">
+                    <div class="modal-content-section" id="content-8">
+                        <div class="content-section-wrapper content-section-wrapper_has_label">
                             <div class="section-label">
                                 <p class="section-name display-string" id="label-bond" data-id="label-bond"></p>
                             </div>
@@ -260,9 +257,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-content-section" id="content-6"
-                        style="width: 30%; min-width: 370px; display: flex;">
-                        <div class="content-section-wrapper" style="padding: 3% 5% 3% 1em;">
+                    <div class="modal-content-section" id="content-6">
+                        <div class="content-section-wrapper">
                             <!-- <div class="section-label">
                             <p class="section-name display-string" id="label-star" data-id="label-stars"></p>
                         </div> -->
@@ -331,11 +327,9 @@
                         </div>
                     </div>
                 </div>
-                <div style="display: flex; flex-wrap: wrap;">
-                    <div class="modal-content-section" id="content-9"
-                        style="width: 45%; min-width: 400px; display: flex; margin-top: 10px;">
-                        <div class="content-section-wrapper"
-                            style="padding-right: 15%; padding-top: 2%; padding-left: 1em;">
+                <div class="modal-content-group">
+                    <div class="modal-content-section" id="content-9">
+                        <div class="content-section-wrapper">
                             <!-- <div class="section-label">
                             <p class="section-name display-string" id="label-skills" data-id="label-skills"></p>
                         </div> -->
@@ -380,9 +374,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-content-section" id="content-10"
-                        style="width: 45%; min-width: 400px; display: flex; margin-top: 10px; justify-content: left;">
-                        <div class="content-section-wrapper" style="padding: 1% 10% 1% 1em;">
+                    <div class="modal-content-section" id="content-10">
+                        <div class="content-section-wrapper">
                             <!-- <div class="section-label">
                             <p class="section-name display-string" id="label-gear" data-id="label-gear"></p>
                         </div> -->
@@ -420,9 +413,9 @@
                         </div>
                     </div>
                 </div>
-                <div id="eleph-section" style="width: 100%; display: flex; flex-wrap: wrap;">
-                    <div class="modal-content-section" id="content-11" style="width: 14%; min-width: 165px;">
-                        <div class="content-section-wrapper">
+                <div id="eleph-section" class="modal-content-group modal-content-group_border_top">
+                    <div class="modal-content-section" id="content-11">
+                        <div class="content-section-wrapper content-section-wrapper_has_image">
                             <img draggable="false" id="char-eleph" class="eleph-icon" src="">
                             <div style="align-self: center;">
                                 <p id="label-owned" class="display-string" data-id="label-owned"></p>
@@ -433,8 +426,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-content-section" id="content-12" style="width: 16%; min-width: 190px;">
-                        <div class="content-section-wrapper">
+                    <div class="modal-content-section" id="content-12">
+                        <div class="content-section-wrapper content-section-wrapper_has_image">
                             <img draggable="false" class="eleph-icon" src="icons/Misc/Eligma.png">
                             <div style="align-self: center;">
                                 <p id="label-eleph-cost" class="display-string" data-id="label-eligmacost"></p>
@@ -446,9 +439,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-content-section" id="content-13"
-                        style="width: 20%; min-width: 230px; display: flex;">
-                        <div class="content-section-wrapper" style="padding: 6% 7% 6% 0; position: relative;">
+                    <div class="modal-content-section" id="content-13">
+                        <div class="content-section-wrapper content-section-wrapper_has_label">
                             <div class="section-label">
                                 <p class="section-name display-string" data-id="label-hardmode"></p>
                             </div>
@@ -468,8 +460,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-content-section" id="content-14" style="width: 13%; min-width: 150px;">
-                        <div class="content-section-wrapper">
+                    <div class="modal-content-section" id="content-14">
+                        <div class="content-section-wrapper content-section-wrapper_has_image">
                             <img draggable="false" class="eleph-icon" id="shop-currency-icon" src="">
                             <div style="align-self: center;">
                                 <p id="char-currency-descriptor"></p>
@@ -477,10 +469,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-content-section" id="content-15" style="width: 21%; min-width: 250px;">
-                        <div class="content-section-wrapper" style="padding: 6% 7% 6% 0%;">
+                    <div class="modal-content-section" id="content-15">
+                        <div class="content-section-wrapper content-section-wrapper_has_label">
                             <div class="section-label">
-                                <p class="section-name display-string" style="padding: 10px 15px;"
+                                <p class="section-name display-string"
                                     data-id="label-buywith"></p>
                             </div>
                             <div style="align-self: center;">
@@ -500,7 +492,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="char-resource-section" style="width: 100%; padding-bottom: 10px;">
+                <div id="char-resource-section" class="modal-content-group modal-content-group_border_top">
                     <div class="modal-content-section" style="overflow-y: auto; max-height: 200px;">
                         <div class="char-schoolmats-wrapper">
                             <div class="char-mats-wrapper" id="char-bds-wrapper"></div>
@@ -549,8 +541,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-content-section"
-                style="width: 100%; display: flex; justify-content: center; margin-top: 15px;">
+            <div class="modal-content-buttons">
                 <button id="cancel-button-resource" class="resource-modal-button display-string"
                     onclick="cancelCharModal()" data-id="label-close"></button>
                 <button id="save-button-resource" class="resource-modal-button display-string"
@@ -570,8 +561,7 @@
             <div style="overflow-y: auto; overflow-x: clip; max-height: 45vh; padding-bottom: 1em;"
                 class="scrollbar-styling">
                 <div style="display: flex; flex-wrap: wrap;">
-                    <div class="modal-content-section" id="bulk-content-5"
-                        style="width: 15%; min-width: 185px; display: flex;">
+                    <div class="modal-content-section" id="bulk-content-5">
                         <div class="content-section-wrapper" style="padding: 6% 7% 6% 0;">
                             <div class="section-label">
                                 <p class="section-name display-string" id="bulk-label-level" data-id="label-level"></p>
@@ -584,8 +574,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-content-section" id="bulk-content-8"
-                        style="width: 15%; min-width: 183px; display: flex;">
+                    <div class="modal-content-section" id="bulk-content-8">
                         <div class="content-section-wrapper" style="padding: 6% 7% 6% 0;">
                             <div class="section-label">
                                 <p class="section-name display-string" id="bulk-label-bond" data-id="label-bond"></p>
@@ -601,8 +590,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-content-section" id="bulk-content-6"
-                        style="width: 30%; min-width: 370px; display: flex;">
+                    <div class="modal-content-section" id="bulk-content-6">
                         <div class="content-section-wrapper" style="padding: 3% 5% 3% 1em;">
                             <!-- <div class="section-label">
                             <p class="section-name display-string" id="label-star" data-id="label-stars"></p>
@@ -673,8 +661,7 @@
                     </div>
                 </div>
                 <div style="display: flex; flex-wrap: wrap;">
-                    <div class="modal-content-section" id="bulk-content-9"
-                        style="width: 35%; min-width: 350px; display: flex; margin-top: 10px;">
+                    <div class="modal-content-section" id="bulk-content-9">
                         <div class="content-section-wrapper"
                             style="padding-right: 15%; padding-top: 2%; padding-left: 1em;">
                             <!-- <div class="section-label">
@@ -722,8 +709,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-content-section" id="bulk-content-10"
-                        style="width: 45%; min-width: 400px; display: flex; margin-top: 10px; justify-content: left;">
+                    <div class="modal-content-section" id="bulk-content-10">
                         <div class="content-section-wrapper" style="padding: 1% 10% 1% 1em;">
                             <!-- <div class="section-label">
                             <p class="section-name display-string" id="label-gear" data-id="label-gear"></p>
@@ -763,8 +749,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-content-section"
-                style="width: 100%; display: flex; justify-content: center; margin-top: 15px;">
+            <div class="modal-content-section">
                 <button id="bulk-cancel-button-resource" class="resource-modal-button display-string"
                     onclick="CloseBulkModal()" data-id="label-cancel"></button>
                 <button id="bulk-save-button-resource" class="resource-modal-button display-string"

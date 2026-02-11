@@ -345,6 +345,16 @@ label {
     padding-left: 2%;
 }
 
+.modal-character-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    overflow-y: hidden;
+    overflow-x: clip;
+    max-height: 35vh;
+    padding: 10px 10px 15px;
+}
+
 .modal-content-wrapper .charBox {
     width: fit-content;
     min-width: 60px;
@@ -353,8 +363,7 @@ label {
     border-radius: 15%;
     overflow: hidden;
     cursor: default;
-    padding: 10px 5px 5px 10px;
-
+    
     /*border: solid white;*/
     /*border-width: 0.3rem;*/
     /*margin-right: 2%;*/
@@ -379,15 +388,46 @@ label {
     background-color: white;
 }
 
+.modal-content-group {
+    display: flex;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 24px;
+    padding: 0 10px;
+    margin: 0 0 24px;
+}
+
+.modal-content-group_border_top {
+    border-top: 2px solid gainsboro;
+    margin-top: 20px;
+    padding-top: 20px;
+}
+
+#eleph-section.modal-content-group {
+    padding-right: 12px;
+    padding-left: 12px;
+    gap: 24px 16px
+}
+
 #eleph-section .modal-content-section {
     margin-inline: auto;
 }
 
 .modal-content-section {
-    /* padding-left: 1%; */
-    padding-top: 1%;
-    justify-content: center;
-    /* margin: auto; */
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    max-width: 100%;
+}
+
+.modal-content-section_layout_horizontal {
+    flex-direction: row;
+}
+
+.modal-content-section_layout_auto {
+    display: block;
 }
 
 .modal-content-section p {
@@ -403,10 +443,20 @@ label {
 }
 
 .content-section-wrapper {
+position: relative;
     display: flex;
+padding: 8px 12px;
     border-radius: 15px;
     background-color: #e6e6ff91;
     box-shadow: 3px 3px #bbbbbb;
+}
+
+.content-section-wrapper_has_label {
+    padding: 12px 24px;
+}
+
+.content-section-wrapper_has_image {
+    padding: 8px 16px 8px 0;
 }
 
 #other-resource-wrapper {
@@ -419,30 +469,17 @@ label {
 }
 
 .section-label {
-    padding: 0px 15px;
-    display: flex;
+        display: flex;
+margin: 0 24px 0 0;
     align-items: center;
 }
 
-.section-label p {
-    padding: 20px 15px;
-    backdrop-filter: brightness(0.95);
-    background-color: #dbdbf1;
-    border-radius: 15px;
-    overflow: hidden;
-}
-
-.section-label p:hover {
-    background-color: #cfcfe6;
-}
-
 .sub-skill {
-    padding: 0px 2%;
-    text-align: center;
+        text-align: center;
 }
 
 .sub-gear {
-    padding: 0px 2%;
+    margin: 0 -4px;
     text-align: center;
 }
 
@@ -527,18 +564,6 @@ label {
     max-width: 40px;
     max-height: 40px;
     padding-right: 5px;
-}
-
-#content-5, #bulk-content-5 {
-    margin-left: 2em;
-}
-
-#content-8, #bulk-content-8 {
-    margin-left: 2em;
-}
-
-#content-10, #bulk-content-10 {
-    margin-left: 1em;
 }
 
 #resourceModal .modal-content-wrapper {
@@ -701,6 +726,16 @@ div.editable.empty-resource:hover {
     max-height: 80px;
     height: fit-content;
     align-self: center;
+}
+
+.modal-content-buttons {
+    display: flex;
+    flex: 1 1 100%;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 15px 0 0;
 }
 
 .resource-modal-button {
@@ -872,13 +907,6 @@ div.char-resource-wrapper .resource-display-text {
     max-width: 80px;
     max-height: 80px;
     align-self: center;
-}
-
-#char-resource-section,
-#eleph-section {
-    border-top: 2px solid gainsboro;
-    margin-top: 20px;
-    padding-top: 10px;
 }
 
 .gear-display {
@@ -1386,14 +1414,6 @@ label.char-action-label.toggle-closed::before {
 .dark-theme div.char-resource-wrapper .gear-count-text,
 .dark-theme div.char-resource-wrapper .resource-display-text {
     filter: none;
-}
-
-.dark-theme .section-label p {
-    background-color: #323234;
-}
-
-.dark-theme .section-label p:hover {
-    background-color: #28282b;
 }
 
 .dark-theme #star-current-container,
@@ -2219,8 +2239,7 @@ input.filter-option {
         min-width: 0 !important;
         margin-top: 10px;
         flex-basis: fit-content;
-        margin-left: 2em;
-    }
+            }
 
     #content-6, #bulk-content-6 {
         /* width: 95% !important; */
@@ -2228,8 +2247,7 @@ input.filter-option {
         min-width: 0 !important;
         margin-top: 10px;
         flex-basis: fit-content;
-        margin-left: 2em;
-    }
+            }
 
     #content-7 {
         width: 48% !important;
@@ -2250,8 +2268,7 @@ input.filter-option {
         font-size: 0.75em;
         min-width: 0 !important;
         flex-basis: fit-content;
-        margin-left: 2em;
-    }
+            }
 
     .skill-img {
         height: 40px;
@@ -2262,8 +2279,7 @@ input.filter-option {
         font-size: 0.75em;
         min-width: 0 !important;
         flex-basis: fit-content;
-        margin-left: 2em;
-    }
+            }
 
     #content-11 {
         width: 41% !important;
@@ -2303,13 +2319,8 @@ input.filter-option {
     .gear-display {
         height: 40px;
     }
-
     .section-label {
-        padding: 0px 8px;
-    }
-
-    .section-label p {
-        padding: 15px 8px;
+        padding: 0 8px;
     }
 
     .char-resource-img {
