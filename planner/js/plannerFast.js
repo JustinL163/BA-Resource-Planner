@@ -106,6 +106,7 @@ $(document).ready(function () {
 
         if (data.characters) {
             DupeCheck();
+            addMissingInvestProperties();
 
             for (let i = 0; i < data.characters.length; i++) {
                 dataCharIndex[data.characters[i].id] = i;
@@ -178,6 +179,24 @@ function DupeCheck() {
         localStorage.setItem("save-data", JSON.stringify(data));
 
         location.reload();
+    }
+}
+
+function addMissingInvestProperties () {
+    for (const student of data.characters) {
+        // Omitting providing charlist[student.id] in both cases,
+        // because high likelyhood charlist hasn't formed yet
+        const diC = StudentInvestment.Default(),
+            diT = StudentInvestment.DefaultTarget();
+
+        for (const prop of Object.keys(diT)) {
+            if (typeof student.target[prop] !== 'undefined') {
+                continue;
+            }
+
+            student.current[prop] = diC[prop];
+            student.target[prop] = diT[prop];
+        }
     }
 }
 

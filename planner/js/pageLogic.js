@@ -3541,12 +3541,12 @@ function populateCharModal(charId) {
         document.getElementById("input_gear3_current").value = charData.current?.gear3;
         document.getElementById("input_gear3_target").value = charData.target?.gear3;
 
-        document.getElementById("input_book_hp_current").value = charData.current?.book_hp || 0;
-        document.getElementById("input_book_hp_target").value = charData.target?.book_hp || 0;
-        document.getElementById("input_book_atk_current").value = charData.current?.book_atk || 0;
-        document.getElementById("input_book_atk_target").value = charData.target?.book_atk || 0;
-        document.getElementById("input_book_heal_current").value = charData.current?.book_heal || 0;
-        document.getElementById("input_book_heal_target").value = charData.target?.book_heal || 0;
+        document.getElementById("input_book_hp_current").value = charData.current?.book_hp;
+        document.getElementById("input_book_hp_target").value = charData.target?.book_hp;
+        document.getElementById("input_book_atk_current").value = charData.current?.book_atk;
+        document.getElementById("input_book_atk_target").value = charData.target?.book_atk;
+        document.getElementById("input_book_heal_current").value = charData.current?.book_heal;
+        document.getElementById("input_book_heal_target").value = charData.target?.book_heal;
 
         if (charData.current?.gear1 != "0") {
             document.getElementById("gear1-img").src = "icons/Gear/T" + charData.current?.gear1 + "_" + charInfo.Equipment[0] + "_small.webp";
