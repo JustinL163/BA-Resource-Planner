@@ -1394,8 +1394,8 @@ function openModal(e) {
 
         let charSelected = charNames.get(charId);
 
-        document.getElementById('char-eleph').src = "icons/Eleph/Eleph_" + charId + ".png";
-        document.getElementById('char-eleph-needed-icon').src = "icons/Eleph/Eleph_" + charId + ".png";
+        document.getElementById('char-eleph').src = "icons/Eleph/Eleph_" + charId + ".webp";
+        document.getElementById('char-eleph-needed-icon').src = "icons/Eleph/Eleph_" + charId + ".webp";
 
         let hardModes = misc_data.hard_modes[charId];
         let shopCharacter = misc_data.shop_characters[charId];
@@ -1459,7 +1459,7 @@ function openModal(e) {
 
             currencyDescriptorText.innerText = GetLanguageString("label-avgdays");
 
-            document.getElementById("shop-currency-icon").src = "icons/Eleph/Eleph_" + charId + ".png";
+            document.getElementById("shop-currency-icon").src = "icons/Eleph/Eleph_" + charId + ".webp";
 
         }
         else if (shopCharacter) {
@@ -3537,10 +3537,10 @@ function populateCharModal(charId) {
             document.getElementById("gear3-img").src = "icons/Gear/T1_" + charInfo.Equipment[2] + "_small.webp";
         }
 
-        document.getElementById("ex-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "Ex").Icon + ".png";
-        document.getElementById("basic-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "Public").Icon + ".png";
-        document.getElementById("enhanced-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "Passive").Icon + ".png";
-        document.getElementById("sub-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "ExtraPassive").Icon + ".png";
+        document.getElementById("ex-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "Ex").Icon + ".webp";
+        document.getElementById("basic-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "Public").Icon + ".webp";
+        document.getElementById("enhanced-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "Passive").Icon + ".webp";
+        document.getElementById("sub-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "ExtraPassive").Icon + ".webp";
 
 
         modalStars.star = charData.current?.star;
