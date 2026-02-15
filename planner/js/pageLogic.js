@@ -159,7 +159,7 @@ function checkResources() {
 $(document).ready(function () {
 
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js')
+        navigator.serviceWorker.register('./sw.js?1')
     }
 
     loadResources();
@@ -436,14 +436,14 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.4.18".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.4.19".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         Swal.fire({
-            title: GetLanguageString("text-updatedversionprefix") + "1.4.18",
+            title: GetLanguageString("text-updatedversionprefix") + "1.4.19",
             color: alertColour,
             html: GetLanguageString("text-updatemessage")
         })
 
-        data.site_version = "1.4.18";
+        data.site_version = "1.4.19";
         // saveToLocalStorage(false);
     }
 
@@ -5868,7 +5868,7 @@ function calcGearCost(charObj, gear, gearTarget, slotNum, matDict) {
 }
 
 function calcBookCost(charObj, book, bookTarget, bookType, matDict) {
-    if ((book || book == 0) && bookTarget > book) {
+    if ((book || book == 0) && (bookTarget || bookTarget == 0) && parseInt(bookTarget) > parseInt(book)) {
         const bookObj = misc_data.cumulative_limit_break_cost[book];
         const targetBookObj = misc_data.cumulative_limit_break_cost[bookTarget];
 

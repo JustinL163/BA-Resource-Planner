@@ -228,7 +228,8 @@
     min-width: 50px;
 }
 
-.charBox *, .multiSelectChar * {
+.charBox *,
+.multiSelectChar * {
     -moz-user-select: -moz-none;
     -khtml-user-select: none;
     -webkit-user-select: none;
@@ -328,6 +329,7 @@ label {
 
 .info-value {
     word-spacing: 0;
+    margin-left: 2px;
 }
 
 .modal {
@@ -387,21 +389,25 @@ label {
     /*transition: all 0.5s;*/
 }
 
-.modal-content-wrapper::-webkit-scrollbar, .scrollbar-styling::-webkit-scrollbar {
+.modal-content-wrapper::-webkit-scrollbar,
+.scrollbar-styling::-webkit-scrollbar {
     width: 10px;
     height: 10px;
 }
 
-.modal-content-wrapper::-webkit-scrollbar-track, .scrollbar-styling::-webkit-scrollbar-track {
+.modal-content-wrapper::-webkit-scrollbar-track,
+.scrollbar-styling::-webkit-scrollbar-track {
     background-color: transparent;
 }
 
-.modal-content-wrapper::-webkit-scrollbar-thumb, .scrollbar-styling::-webkit-scrollbar-thumb {
+.modal-content-wrapper::-webkit-scrollbar-thumb,
+.scrollbar-styling::-webkit-scrollbar-thumb {
     background-color: rgb(54, 54, 54);
     border-radius: 10px;
 }
 
-.dark-theme .modal-content-wrapper::-webkit-scrollbar-thumb, .dark-theme .scrollbar-styling::-webkit-scrollbar-thumb {
+.dark-theme .modal-content-wrapper::-webkit-scrollbar-thumb,
+.dark-theme .scrollbar-styling::-webkit-scrollbar-thumb {
     background-color: white;
 }
 
@@ -801,19 +807,23 @@ div.editable.empty-resource:hover {
     filter: brightness(0.8);
 }
 
-#cancel-button-resource, #bulk-cancel-button-resource {
+#cancel-button-resource,
+#bulk-cancel-button-resource {
     background-color: #dd33334f;
 }
 
-#save-button-resource, #bulk-save-button-resource {
+#save-button-resource,
+#bulk-save-button-resource {
     background-color: #42a4f84d;
 }
 
-.dark-theme #cancel-button-resource, .dark-theme #bulk-cancel-button-resource {
+.dark-theme #cancel-button-resource,
+.dark-theme #bulk-cancel-button-resource {
     color: #efefef;
 }
 
-.dark-theme #save-button-resource, .dark-theme #bulk-save-button-resource {
+.dark-theme #save-button-resource,
+.dark-theme #bulk-save-button-resource {
     color: #efefef;
 }
 
@@ -880,19 +890,23 @@ div.resource-box.editable.focused p {
     background-repeat: no-repeat;
 }
 
-.char-resource-wrapper.char-resource-rarity-4, .drop-resource-rarity-4 {
+.char-resource-wrapper.char-resource-rarity-4,
+.drop-resource-rarity-4 {
     background-image: url(../icons/Misc/background_ssr.png);
 }
 
-.char-resource-wrapper.char-resource-rarity-3, .drop-resource-rarity-3 {
+.char-resource-wrapper.char-resource-rarity-3,
+.drop-resource-rarity-3 {
     background-image: url(../icons/Misc/background_sr.png);
 }
 
-.char-resource-wrapper.char-resource-rarity-2, .drop-resource-rarity-2 {
+.char-resource-wrapper.char-resource-rarity-2,
+.drop-resource-rarity-2 {
     background-image: url(../icons/Misc/background_r.png);
 }
 
-.char-resource-wrapper.char-resource-rarity-1, .drop-resource-rarity-1 {
+.char-resource-wrapper.char-resource-rarity-1,
+.drop-resource-rarity-1 {
     background-image: url(../icons/Misc/background_n.png);
 }
 
@@ -1186,8 +1200,21 @@ label.char-action-label.toggle-closed::before {
     background-color: #b5b5b5;
 }
 
-.label-current, .label-target, #label-star, #label-bond, #label-skills, #label-owned, #label-gear, #label-char-unlocked,
-#label-school, #label-attack-type, #label-defense-type, #label-skill-ex, #label-skill-basic, #label-skill-enhanced, #label-skill-sub {
+.label-current,
+.label-target,
+#label-star,
+#label-bond,
+#label-skills,
+#label-owned,
+#label-gear,
+#label-char-unlocked,
+#label-school,
+#label-attack-type,
+#label-defense-type,
+#label-skill-ex,
+#label-skill-basic,
+#label-skill-enhanced,
+#label-skill-sub {
     white-space: nowrap;
 }
 
@@ -1513,7 +1540,8 @@ label.char-action-label.toggle-closed::before {
     background-color: black;
 }
 
-.dark-theme .show-mat-chars, .dark-theme .show-stage-runs {
+.dark-theme .show-mat-chars,
+.dark-theme .show-stage-runs {
     background-color: #000000d1;
     color: #efefef;
     outline-color: white;
@@ -1985,14 +2013,16 @@ input.filter-option {
     background-color: #ffffff59;
 }
 
-#character-left-button, #character-right-button {
+#character-left-button,
+#character-right-button {
     width: 2em;
     position: absolute;
     filter: invert(1);
     bottom: 1em;
 }
 
-#character-left-button:hover, #character-right-button:hover {
+#character-left-button:hover,
+#character-right-button:hover {
     filter: invert(0.7);
 }
 
@@ -2437,7 +2467,8 @@ input.filter-option {
         font-size: 0.75em;
     }
 
-    .show-mat-chars, .show-stage-runs {
+    .show-mat-chars,
+    .show-stage-runs {
         font-size: 0.8em;
         outline-width: 2px;
     }
@@ -2561,7 +2592,8 @@ input.filter-option {
         left: -3%;
     }
 
-    #character-left-button, #character-right-button {
+    #character-left-button,
+    #character-right-button {
         bottom: 0;
     }
 
@@ -2573,6 +2605,10 @@ input.filter-option {
     #cancel-button-resource {
         margin-right: 10px;
         margin-left: 10px;
+    }
+
+    .info-display {
+        font-size: 70%;
     }
 }
 

@@ -3,7 +3,7 @@
  * looks like a pain to read through and I want to play Genshin
  */
 
-const staticCacheVer = 1;
+const staticCacheVer = 2;
 const staticCacheName = `baplanner-static-v${staticCacheVer}`;
 const currentCacheList = [];
 
