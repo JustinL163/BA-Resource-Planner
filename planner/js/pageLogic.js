@@ -436,14 +436,14 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.4.17".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.4.18".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         Swal.fire({
-            title: GetLanguageString("text-updatedversionprefix") + "1.4.17",
+            title: GetLanguageString("text-updatedversionprefix") + "1.4.18",
             color: alertColour,
             html: GetLanguageString("text-updatemessage")
         })
 
-        data.site_version = "1.4.17";
+        data.site_version = "1.4.18";
         // saveToLocalStorage(false);
     }
 
@@ -1428,8 +1428,8 @@ function openModal(e) {
 
         let charSelected = charNames.get(charId);
 
-        document.getElementById('char-eleph').src = "icons/Eleph/Eleph_" + charId + ".png";
-        document.getElementById('char-eleph-needed-icon').src = "icons/Eleph/Eleph_" + charId + ".png";
+        document.getElementById('char-eleph').src = "icons/Eleph/Eleph_" + charId + ".webp";
+        document.getElementById('char-eleph-needed-icon').src = "icons/Eleph/Eleph_" + charId + ".webp";
 
         let hardModes = misc_data.hard_modes[charId];
         let shopCharacter = misc_data.shop_characters[charId];
@@ -1493,7 +1493,7 @@ function openModal(e) {
 
             currencyDescriptorText.innerText = GetLanguageString("label-avgdays");
 
-            document.getElementById("shop-currency-icon").src = "icons/Eleph/Eleph_" + charId + ".png";
+            document.getElementById("shop-currency-icon").src = "icons/Eleph/Eleph_" + charId + ".webp";
 
         }
         else if (shopCharacter) {
@@ -3589,10 +3589,10 @@ function populateCharModal(charId) {
         document.getElementById("book-atk-img").src = "icons/Books/Book_ATK_small.webp";
         document.getElementById("book-heal-img").src = "icons/Books/Book_Heal_small.webp";
 
-        document.getElementById("ex-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "Ex").Icon + ".png";
-        document.getElementById("basic-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "Public").Icon + ".png";
-        document.getElementById("enhanced-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "Passive").Icon + ".png";
-        document.getElementById("sub-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "ExtraPassive").Icon + ".png";
+        document.getElementById("ex-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "Ex").Icon + ".webp";
+        document.getElementById("basic-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "Public").Icon + ".webp";
+        document.getElementById("enhanced-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "Passive").Icon + ".webp";
+        document.getElementById("sub-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "ExtraPassive").Icon + ".webp";
 
 
         modalStars.star = charData.current?.star;

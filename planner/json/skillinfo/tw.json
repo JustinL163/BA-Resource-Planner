@@ -46247,7 +46247,7 @@
                 }
             },
             "Ex": {
-                "Name": "這下就寫完了……！",
+                "Name": "這就是最後了……！",
                 "Desc": "對3名除自身外距離自身最近的我方單位造成以下效果(持續18秒)：\n- <b:AttackSpeed>增加<?1>.\n對自身造成以下效果(持續18秒)：\n- <b:AttackSpeed>增加<?2>.\n※ 自身擁有2層<s:CH0317_ExtraPassive>使用該技能時，消耗所有<s:CH0317_ExtraPassive>層數，並使該技能造成的<b:AttackSpeed='攻速增加'>效果加算0.3倍.",
                 "Parameters": [
                     [
@@ -46353,7 +46353,7 @@
                 ]
             },
             "Public": {
-                "Name": "你……有沒有讀過？",
+                "Name": "這個……讀過了嗎？",
                 "Desc": "<b>每30秒：</b>\n對自身造成以下效果(持續22秒)：\n- <b:AttackSpeed>增加<?1>.",
                 "Parameters": [
                     [
@@ -46399,7 +46399,7 @@
                 ]
             },
             "Passive": {
-                "Name": "文學筆觸",
+                "Name": "文學的筆觸",
                 "Desc": "<b>戰術入場時：</b>\n立即對自身造成以下效果(持續至退場)：\n- <b:ATK>增加<?1>.",
                 "Parameters": [
                     [
@@ -46442,7 +46442,7 @@
                 ]
             },
             "WeaponPassive": {
-                "Name": "文學筆觸＋",
+                "Name": "文學的筆觸+",
                 "Desc": "<b>戰術入場時：</b>\n立即對自身造成以下效果(持續至退場)：\n- <b:ExtendBuffDuration>增加<?1>.\n- <b:ATK>增加<?2>.",
                 "Parameters": [
                     [
@@ -46497,7 +46497,7 @@
                 ]
             },
             "ExtraPassive": {
-                "Name": "犯罪文字",
+                "Name": "Criminal Text",
                 "Desc": "<b>自身使用未受到強化的EX技能時：</b>\n立即對自身造成以下效果：\n- 獲得1層<s:CH0317_ExtraPassive>.\n\n<b>自身使用EX技能結束時：</b>\n立即對自身造成以下效果：\n- <b:ATK>增加<?1>(持續25秒).",
                 "Parameters": [
                     [
@@ -46571,7 +46571,7 @@
                 }
             },
             "Ex": {
-                "Name": "彈藥派送",
+                "Name": "子彈快遞",
                 "Desc": "對1名敵方單位造成以下效果：\n- <d:DEF>減少<?1>(持續22秒).\n- 造成自身攻擊力<?2>的傷害.",
                 "Parameters": [
                     [
@@ -46653,7 +46653,7 @@
                 ]
             },
             "Public": {
-                "Name": "派送完畢！",
+                "Name": "物品已送達！",
                 "Desc": "<b>每40秒：</b>\n對以自身為中心的圓形範圍內的我方單位造成以下效果(持續34秒)：\n- <b:AttackSpeed>增加<?1>.",
                 "Parameters": [
                     [
@@ -46706,7 +46706,7 @@
                 ]
             },
             "Passive": {
-                "Name": "經營精髓",
+                "Name": "營業的精髓",
                 "Desc": "<b>戰術入場時：</b>\n立即對自身造成以下效果(持續至退場)：\n- <b:ATK>增加<?1>.",
                 "Parameters": [
                     [
@@ -46749,7 +46749,7 @@
                 ]
             },
             "WeaponPassive": {
-                "Name": "經營精髓＋",
+                "Name": "營業的精髓+",
                 "Desc": "<b>戰術入場時：</b>\n立即對自身造成以下效果(持續至退場)：\n- <b:ExtendDebuffDuration>增加<?1>.\n- <b:ATK>增加<?2>.",
                 "Parameters": [
                     [
@@ -46804,7 +46804,7 @@
                 ]
             },
             "ExtraPassive": {
-                "Name": "洽談決裂",
+                "Name": "協商破裂",
                 "Desc": "<b>自身攻擊擁有減益狀態的敵方單位時：</b>\n對目標造成以下效果：\n- 造成自身攻擊力<?1>的追加傷害.",
                 "Parameters": [
                     [
@@ -49273,6 +49273,328 @@
                         "Stat": "CriticalPoint_Coefficient",
                         "Channel": 109,
                         "Duration": 25000
+                    }
+                ]
+            }
+        }
+    },
+    "10136": {
+        "Name": "エイミ（臨戦）",
+        "Skills": {
+            "Normal": {
+                "Effects": [
+                    {
+                        "Type": "Damage",
+                        "Hits": [
+                            10000
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Block": 1
+                    }
+                ],
+                "Frames": {
+                    "AttackEnterDuration": 55,
+                    "AttackStartDuration": 31,
+                    "AttackEndDuration": 25,
+                    "AttackBurstRoundOverDelay": 40,
+                    "AttackIngDuration": 42,
+                    "AttackReloadDuration": 67
+                },
+                "FormChange": {
+                    "Effects": [
+                        {
+                            "Type": "Damage",
+                            "Hits": [
+                                10000
+                            ],
+                            "StatModifier": {
+                                "Stat": "AttackSpeed",
+                                "Source": "Caster",
+                                "MinStatValue": 10000,
+                                "MaxStatValue": 25000,
+                                "MultiplierMin": 10000,
+                                "MultiplierMax": 24000
+                            },
+                            "Scale": [
+                                17335,
+                                19936,
+                                25136,
+                                27736,
+                                32931
+                            ],
+                            "Block": 1
+                        }
+                    ],
+                    "FixedFrameRate": 10000,
+                    "Frames": {
+                        "AttackEnterDuration": 55,
+                        "AttackStartDuration": 3,
+                        "AttackEndDuration": 3,
+                        "AttackBurstRoundOverDelay": 46,
+                        "AttackIngDuration": 60,
+                        "AttackReloadDuration": 67,
+                        "AttackReadyStartDuration": 35,
+                        "AttackReadyEndDuration": 74
+                    }
+                }
+            },
+            "Ex": {
+                "Name": "現場指定スナイパー",
+                "Desc": "スキル発動後すぐにリロード/\n精密照準体勢になり、<s:FormChange>を攻撃力の<?1>分のダメージに強化、敵1人に対して<s:CH0337_Ex>を付与（30秒経過、あるいはノーマルスキルの使用時、精密照準体勢を解除）/\nエイミ（臨戦）は<s:CH0337_Ex>が付与された敵を優先的に攻撃します。",
+                "Parameters": [
+                    [
+                        "173%",
+                        "199%",
+                        "251%",
+                        "277%",
+                        "329%"
+                    ]
+                ],
+                "Cost": [
+                    5,
+                    5,
+                    5,
+                    5,
+                    5
+                ],
+                "Duration": 165,
+                "Range": 1100,
+                "Icon": "COMMON_SKILLICON_FORMCHANGE",
+                "Effects": [
+                    {
+                        "Type": "Special",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Value": [
+                            [
+                                1,
+                                2,
+                                3,
+                                4,
+                                5
+                            ]
+                        ],
+                        "Key": "FormChange",
+                        "Channel": 16000,
+                        "ApplyFrame": 19
+                    }
+                ]
+            },
+            "Public": {
+                "Name": "シャープシューター",
+                "Desc": "精密照準体勢を維持したまま通常攻撃4回時、残弾をすべて消耗し、敵1人に対して攻撃力の<?1>分の確定会心ダメージ",
+                "Parameters": [
+                    [
+                        "413%",
+                        "434%",
+                        "454%",
+                        "537%",
+                        "558%",
+                        "579%",
+                        "661%",
+                        "682%",
+                        "703%",
+                        "785%"
+                    ]
+                ],
+                "Duration": 200,
+                "Range": 1200,
+                "Icon": "COMMON_SKILLICON_AlWAYSCRITICAL",
+                "Effects": [
+                    {
+                        "Type": "Damage",
+                        "StatModifier": {
+                            "Stat": "AttackSpeed",
+                            "Source": "Caster",
+                            "MinStatValue": 10000,
+                            "MaxStatValue": 25000,
+                            "MultiplierMin": 10000,
+                            "MultiplierMax": 24000
+                        },
+                        "Block": 1,
+                        "CriticalCheck": "Always",
+                        "Hits": [
+                            10000
+                        ],
+                        "DescParamId": 1,
+                        "Scale": [
+                            41357,
+                            43424,
+                            45496,
+                            53767,
+                            55833,
+                            57900,
+                            66171,
+                            68238,
+                            70304,
+                            78575
+                        ]
+                    }
+                ]
+            },
+            "Passive": {
+                "Name": "先制攻撃",
+                "Desc": "<b:AttackSpeed>を<?1>増加",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "AttackSpeed_Coefficient",
+                        "Channel": 24,
+                        "Value": [
+                            [
+                                1400,
+                                1470,
+                                1540,
+                                1820,
+                                1890,
+                                1960,
+                                2240,
+                                2310,
+                                2380,
+                                2660
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "WeaponPassive": {
+                "Name": "先制攻撃+",
+                "Desc": "<b:ATK>を<?1>増加/\nさらに<b:AttackSpeed>を<?2>増加",
+                "Parameters": [
+                    [
+                        "455",
+                        "478",
+                        "501",
+                        "592",
+                        "614",
+                        "637",
+                        "728",
+                        "751",
+                        "774",
+                        "865"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "AttackPower_Base",
+                        "Channel": 1702,
+                        "Value": [
+                            [
+                                455,
+                                478,
+                                501,
+                                592,
+                                614,
+                                637,
+                                728,
+                                751,
+                                774,
+                                865
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "ExtraPassive": {
+                "Name": "射線上のスペシャリスト",
+                "Desc": "精密照準体勢で<b:EnhanceExplosionRate>を<?1>加算、<b:Range>を45.3%増加、攻撃速度が100%に固定される代わりに<b:AttackSpeed>の増加量に比例して強化された通常攻撃およびノーマルスキルのダメージが1～2.4倍に変更（<b:AttackSpeed>の増加量が150%の時に最大値が適用される）",
+                "Parameters": [
+                    [
+                        "32.15%",
+                        "33.75%",
+                        "35.37%",
+                        "41.8%",
+                        "43.4%",
+                        "45%",
+                        "51.43%",
+                        "53.05%",
+                        "54.65%",
+                        "61.08%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_STATCONVERT",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Value": [
+                            [
+                                3215,
+                                3375,
+                                3537,
+                                4180,
+                                4340,
+                                4500,
+                                5143,
+                                5305,
+                                5465,
+                                6108
+                            ]
+                        ],
+                        "Stat": "EnhanceExplosionRate_Base",
+                        "Channel": 32
+                    },
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Value": [
+                            [
+                                4536,
+                                4536,
+                                4536,
+                                4536,
+                                4536,
+                                4536,
+                                4536,
+                                4536,
+                                4536,
+                                4536
+                            ]
+                        ],
+                        "Stat": "Range_Coefficient",
+                        "Channel": 18
                     }
                 ]
             }
@@ -76741,7 +77063,7 @@
                         "Stat": "CriticalDamageRate_Coefficient",
                         "Channel": 11011,
                         "Duration": 22000,
-                        "OverrideSlot": "Passive"
+                        "OverrideSlot": "HiddenPassive"
                     }
                 ]
             },
@@ -77451,7 +77773,7 @@
                 "Radius": [
                     {
                         "Type": "Circle",
-                        "Radius": 90
+                        "Radius": 100
                     }
                 ],
                 "Icon": "SKILLICON_CH0332_EXSKILL",
@@ -77720,6 +78042,293 @@
                         ],
                         "Stat": "RegenCost_Coefficient",
                         "Channel": 330
+                    }
+                ]
+            }
+        }
+    },
+    "20055": {
+        "Name": "ユズ（臨戦）",
+        "Skills": {
+            "Ex": {
+                "Name": "ゆ、ユズ、発進！",
+                "Desc": "自身を除く味方1人の<b:CostChange>を最大で50%減少（EXスキルの使用3回分） （ただし減少値は小数点以下切り捨て）/\n効果を保有した対象がEXスキルの使用時、<b:ATK>を<?1>増加（9秒間）",
+                "Parameters": [
+                    [
+                        "21.9%",
+                        "25.2%",
+                        "31.8%",
+                        "35.1%",
+                        "41.7%"
+                    ]
+                ],
+                "Cost": [
+                    4,
+                    4,
+                    4,
+                    4,
+                    4
+                ],
+                "Duration": 70,
+                "Range": 1000,
+                "Icon": "COMMON_SKILLICON_COSTDECREASE",
+                "Effects": [
+                    {
+                        "Type": "CostChange",
+                        "Target": [
+                            "Ally"
+                        ],
+                        "ValueType": "Coefficient",
+                        "Uses": 3,
+                        "ApplyFrame": 64,
+                        "Scale": [
+                            -5000,
+                            -5000,
+                            -5000,
+                            -5000,
+                            -5000
+                        ]
+                    },
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "AllyMain"
+                        ],
+                        "Value": [
+                            [
+                                2196,
+                                2526,
+                                3185,
+                                3514,
+                                4172
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 102,
+                        "Duration": 9000
+                    }
+                ]
+            },
+            "Public": {
+                "Name": "目標をセンターに入れてスイッチ",
+                "Desc": "30秒毎に、敵1人に対して<d:CriticalChanceResistPoint>を<?1>減少（22秒間）/\n攻撃力の<?2>分のダメージ",
+                "Parameters": [
+                    [
+                        "16.8%",
+                        "17.6%",
+                        "18.5%",
+                        "21.8%",
+                        "22.7%",
+                        "23.5%",
+                        "26.9%",
+                        "27.7%",
+                        "28.6%",
+                        "31.9%"
+                    ],
+                    [
+                        "185%",
+                        "195%",
+                        "204%",
+                        "241%",
+                        "250%",
+                        "260%",
+                        "297%",
+                        "306%",
+                        "316%",
+                        "353%"
+                    ]
+                ],
+                "Duration": 66,
+                "Range": 1000,
+                "Icon": "COMMON_SKILLICON_STATDEBUFF",
+                "Effects": [
+                    {
+                        "Type": "Damage",
+                        "Block": 1,
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            5000,
+                            5000
+                        ],
+                        "DescParamId": 2,
+                        "Scale": [
+                            18592,
+                            19523,
+                            20447,
+                            24164,
+                            25095,
+                            26026,
+                            29743,
+                            30674,
+                            31605,
+                            35322
+                        ]
+                    },
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Enemy"
+                        ],
+                        "Value": [
+                            [
+                                -1683,
+                                -1767,
+                                -1851,
+                                -2187,
+                                -2271,
+                                -2355,
+                                -2692,
+                                -2776,
+                                -2860,
+                                -3196
+                            ]
+                        ],
+                        "Stat": "CriticalChanceResistPoint_Coefficient",
+                        "Channel": 622,
+                        "Duration": 22000
+                    }
+                ]
+            },
+            "Passive": {
+                "Name": "メンテ延長",
+                "Desc": "<b:ATK>を<?1>増加",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2,
+                        "Value": [
+                            [
+                                1400,
+                                1470,
+                                1540,
+                                1820,
+                                1890,
+                                1960,
+                                2240,
+                                2310,
+                                2380,
+                                2660
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "WeaponPassive": {
+                "Name": "メンテ延長+",
+                "Desc": "<b:ATK>を<?1>増加/\nさらに<b:ATK>を<?2>増加",
+                "Parameters": [
+                    [
+                        "290",
+                        "304",
+                        "319",
+                        "376",
+                        "391",
+                        "405",
+                        "463",
+                        "478",
+                        "492",
+                        "550"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "AttackPower_Base",
+                        "Channel": 1702,
+                        "Value": [
+                            [
+                                290,
+                                304,
+                                319,
+                                376,
+                                391,
+                                405,
+                                463,
+                                478,
+                                492,
+                                550
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "ExtraPassive": {
+                "Name": "この戦いが終わったら……！",
+                "Desc": "味方の<b:ATK>を<?1>増加",
+                "Parameters": [
+                    [
+                        "9.1%",
+                        "9.5%",
+                        "10%",
+                        "11.8%",
+                        "12.3%",
+                        "12.7%",
+                        "14.5%",
+                        "15%",
+                        "15.5%",
+                        "17.3%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self",
+                            "AllyMain",
+                            "AllySupport"
+                        ],
+                        "Value": [
+                            [
+                                912,
+                                957,
+                                1003,
+                                1186,
+                                1231,
+                                1277,
+                                1459,
+                                1504,
+                                1550,
+                                1732
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 302
                     }
                 ]
             }

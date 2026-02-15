@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?86').done(function (json) {
+    $.getJSON('json/events.json?87').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -301,15 +301,15 @@ function InitTippies() {
 
     tippy('#info-event-bonus-maximise', {
         content: `<b>TLDR: Beat stages you need to farm with the highest bonus per token. This may take several runs.</b><br><br>
-        
-        An event stage saves your highest bonus multiplier for each token. You may need several runs to maximize this, usually focusing one token at a time due to team limitations. 
+
+        An event stage saves your highest bonus multiplier for each token. You may need several runs to maximize this, usually focusing one token at a time due to team limitations.
         You cannot forfeit or be defeated on teams with these characters, otherwise it removes their bonus. It’s fine if the bonus chars die.<br><br>
-        
+
         For example, to set up a stage with 3 currencies:<br>
         - Beat it with the highest bonus for token A<br>
         - Beat it with the highest bonus for token B<br>
         - Beat it with the highest bonus for token C<br>
-        - Now you have the maximum bonus multipliers for tokens A, B, and C. You can sweep away.<br> 
+        - Now you have the maximum bonus multipliers for tokens A, B, and C. You can sweep away.<br>
         - Repeat for every stage you need to farm.`,
         theme: 'light',
         allowHTML: true
@@ -1558,7 +1558,7 @@ function SetItemImage(itemImg, item, replacementId, small) {
     }
 
     if (item.type == "Eleph") {
-        itemImg.src = "icons/Eleph/Eleph_" + itemId + ".png";
+        itemImg.src = "icons/Eleph/Eleph_" + itemId + ".webp";
     }
     else if (item.type == "XpReport") {
         itemImg.src = "icons/LevelPart/" + itemId + ".png";
@@ -2065,7 +2065,7 @@ function CreateDropsDiv(drops) {
         else if (dropInt) {
             if (dropInt >= 10000 && dropInt < 30000) {
 
-                dropImg.src = "icons/Eleph/Eleph_" + drop + ".png";
+                dropImg.src = "icons/Eleph/Eleph_" + drop + ".webp";
 
                 dropP.innerText = drops[drop];
             }
@@ -4228,7 +4228,7 @@ function UpdateRewardsObtained(totalCurrencies, energyCost, totalArtifacts, tota
     let elephIds = Object.keys(totalEleph);
 
     elephIds.forEach((id) => {
-        elephContainer.appendChild(CreateRewardItem("icons/Eleph/Eleph_" + id + ".png", totalEleph[id].toFixed(1), ""))
+        elephContainer.appendChild(CreateRewardItem("icons/Eleph/Eleph_" + id + ".webp", totalEleph[id].toFixed(1), ""))
     })
 
     let gearNames = Object.keys(totalGear).sort().reverse();
@@ -4541,7 +4541,7 @@ function CreatePointRewardDiv(rewardType, rewardId, rewardCount) {
         dropImg.src = "icons/Misc/SecretTech.png";
     }
     else if (rewardType == "Eleph") {
-        dropImg.src = "icons/Eleph/Eleph_" + rewardId + ".png";
+        dropImg.src = "icons/Eleph/Eleph_" + rewardId + ".webp";
     }
     else if (rewardType == "Pyroxene") {
         dropImg.src = "icons/Misc/Pyroxene.png";
