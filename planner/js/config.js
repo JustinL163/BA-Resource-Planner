@@ -95,6 +95,10 @@ const matLookup = new TwoWayMap({
     292: "Mystery_3",
     293: "Mystery_4",
 
+    2000: "Book_HP",
+    2001: "Book_ATK",
+    2002: "Book_Heal",
+
     3000: "BD_1_Hyakkiyako",
     3001: "BD_2_Hyakkiyako",
     3002: "BD_3_Hyakkiyako",

@@ -421,6 +421,11 @@ label {
     padding-top: 20px;
 }
 
+.modal-content-group_layout_column {
+    align-items: center;
+    flex-direction: column;
+}
+
 #eleph-section.modal-content-group {
     padding-right: 12px;
     padding-left: 12px;
@@ -896,6 +901,10 @@ div.resource-box.editable.focused p {
     justify-content: center;
     flex-wrap: wrap;
     flex-direction: row-reverse;
+}
+
+#char-books-wrapper.char-mats-wrapper {
+    flex-direction: row;
 }
 
 .char-schoolmats-wrapper {

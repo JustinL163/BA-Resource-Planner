@@ -1196,11 +1196,11 @@ function CharInputsGoalMax() {
         cancelButtonText: GetLanguageString("label-cancel")
     }).then((result) => {
         if (result.isConfirmed) {
-            let values = [90, 5, 10, 10, 10, 10, 10, 9];
+            let values = [90, 5, 10, 10, 10, 10, 10, 10, 25, 25, 25];
             SetCharInputGoalValues(values);
         }
         else if (result.isDenied) {
-            let values = [90, 5, 10, 10, 10, 10, 10, 10];
+            let values = [90, 5, 10, 10, 10, 10, 10, 10, 25, 25, 25];
             SetCharInputGoalValues(values);
         }
     })
@@ -1220,6 +1220,10 @@ function SetCharInputGoalValues(values) {
     document.getElementById("input_gear1_target").value = values[5];
     document.getElementById("input_gear2_target").value = values[6];
     document.getElementById("input_gear3_target").value = values[7];
+
+    document.getElementById("input_book_hp_target").value = values[8];
+    document.getElementById("input_book_atk_target").value = values[9];
+    document.getElementById("input_book_heal_target").value = values[10];
 }
 
 function SetCharInputValues(values) {
@@ -4049,6 +4053,7 @@ function populateCharResources(charId) {
 
     let mainartisWrapper = document.getElementById('char-mainartis-wrapper');
     let subartisWrapper = document.getElementById('char-subartis-wrapper');
+    let booksWrapper = document.getElementById('char-books-wrapper');
     let bdWrapper = document.getElementById('char-bds-wrapper');
     let tnWrapper = document.getElementById('char-tns-wrapper');
 
@@ -4059,6 +4064,10 @@ function populateCharResources(charId) {
     while (subartisWrapper.children.length > 0) {
         subartisWrapper.children[0]._tippy.destroy();
         subartisWrapper.children[0].remove();
+    }
+    while (booksWrapper.children.length > 0) {
+        booksWrapper.children[0]._tippy.destroy();
+        booksWrapper.children[0].remove();
     }
     while (bdWrapper.children.length > 0) {
         bdWrapper.children[0]._tippy.destroy();
@@ -4096,6 +4105,9 @@ function populateCharResources(charId) {
                 if (matName[2] === "_") {
                     extraClassName = " char-resource-rarity-" + matName[3];
                 }
+                else if (matName.substring(0, 4) === 'Book') {
+                    extraClassName = " char-resource-rarity-3";
+                }
                 else {
                     extraClassName = " char-resource-rarity-" + matName.substring(matName.length - 1);
                 }
@@ -4107,6 +4119,8 @@ function populateCharResources(charId) {
 
                 if (matName.includes("BD") || matName.includes("TN")) {
                     resourceImg.src = "icons/SchoolMat/" + matName + ".webp";
+                } else if (matName.includes("Book")) {
+                    resourceImg.src = "icons/Books/" + matName + ".webp";
                 }
                 else {
                     resourceImg.src = "icons/Artifact/" + matName + ".webp";
@@ -4124,6 +4138,9 @@ function populateCharResources(charId) {
                 }
                 else if (matName.includes("TN")) {
                     tnWrapper.appendChild(wrapDiv);
+                }
+                else if (matName.includes("Book")) {
+                    booksWrapper.appendChild(wrapDiv);
                 }
                 else if (matName.includes(mainMat)) {
                     mainartisWrapper.appendChild(wrapDiv);
@@ -5639,6 +5656,10 @@ function calculateCharResources(charData, output) {
     calcGearCost(charObj, charData.current?.gear2, charData.target?.gear2, 2, charMatDict);
     calcGearCost(charObj, charData.current?.gear3, charData.target?.gear3, 3, charMatDict);
 
+    calcBookCost(charObj, charData.current?.book_hp, charData.target?.book_hp, 'HP', charMatDict);
+    calcBookCost(charObj, charData.current?.book_atk, charData.target?.book_atk, 'ATK', charMatDict);
+    calcBookCost(charObj, charData.current?.book_heal, charData.target?.book_heal, 'Heal', charMatDict);
+
     calcMysticCost(charData.current?.star, charData.target?.star, charMatDict);
 
     calcUECost(charObj, charData.current?.ue, charData.target?.ue, charData.current?.ue_level, charData.target?.ue_level, charMatDict);
@@ -5797,7 +5818,7 @@ function calcXpCost(level, levelTarget, matDict) {
 function calcGearCost(charObj, gear, gearTarget, slotNum, matDict) {
 
     // need to also save gear xp later
-    if ((gear || gear == 0) && gearTarget) {
+    if ((gear || gear == 0) && gearTarget > gear) {
 
         var gearObj = misc_data.cumulative_gear_cost["T" + gear];
         var targetGearObj = misc_data.cumulative_gear_cost["T" + gearTarget];
@@ -5844,6 +5865,50 @@ function calcGearCost(charObj, gear, gearTarget, slotNum, matDict) {
         }
     }
 
+}
+
+function calcBookCost(charObj, book, bookTarget, bookType, matDict) {
+    if ((book || book == 0) && bookTarget > book) {
+        console.log(charObj.Name, book, bookTarget, bookType);
+        const bookObj = misc_data.cumulative_limit_break_cost[book];
+        const targetBookObj = misc_data.cumulative_limit_break_cost[bookTarget];
+
+        if (!bookObj || !targetBookObj) {
+            return;
+        }
+
+        if (targetBookObj.books) {
+            const bookId = matLookup.revGet(`Book_${bookType}`)
+            if (!matDict[bookId]) {
+                matDict[bookId] = 0;
+            }
+
+            console.log(bookId, bookType, targetBookObj.books - (bookObj.books ?? 0))
+            matDict[bookId] += targetBookObj.books - (bookObj.books ?? 0);
+        }
+
+        for (let i = 0; i < 2; i++) {
+            const prop = `artifact_${i+1}`;
+            if (targetBookObj[prop]) {
+                const artifactId = charObj.PotentialMaterial + i;
+
+                if (!matDict[artifactId]) {
+                    matDict[artifactId] = 0;
+                }
+
+                matDict[artifactId] += targetBookObj[prop] - (bookObj[prop] ?? 0);
+            }
+        }
+
+        if (typeof bookObj.credit === 'number' && targetBookObj.credit) {
+
+            if (!matDict["Credit"]) {
+                matDict["Credit"] = 0;
+            }
+
+            matDict["Credit"] += targetBookObj.credit - bookObj.credit;
+        }
+    }
 }
 
 function calcMysticCost(star, starTarget, matDict) {
