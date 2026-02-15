@@ -5297,6 +5297,15 @@ function DisplayMatUsers(mat) {
     if (mat == "9999") {
         mat = 'Secret';
     }
+    else if (mat == "2000") {
+        mat = 'Book_HP';
+    }
+    else if (mat == "2001") {
+        mat = 'Book_ATK';
+    }
+    else if (mat == "2002") {
+        mat = 'Book_Heal';
+    }
 
     let element = document.getElementById(mat);
     if (element.tagName.toLowerCase() == 'p') {
