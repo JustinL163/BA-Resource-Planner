@@ -2698,8 +2698,10 @@ const inputValidation = {
         "min": "0",
         "max": "99",
         "navigation": "direct",
+        "Right": "input-Book_HP",
         "Left": "input-XP_1",
-        "Up": "input-XP_1"
+        "Up": "input-XP_1",
+        "Down": "input-Book_HP"
     },
     "XP_4": {
         "id": "input-XP_4",
@@ -2744,6 +2746,35 @@ const inputValidation = {
         "Left": "input-Credit",
         "Up": "input-Credit",
         "Down": "input-XP_2"
+    },
+    "Book_HP": {
+        "id": "input-Book_HP",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "direct",
+        "Right": "input-Book_ATK",
+        "Left": "input-Secret",
+        "Up": "input-Secret",
+    },
+    "Book_ATK": {
+        "id": "input-Book_ATK",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "direct",
+        "Right": "input-Book_Heal",
+        "Left": "input-Book_HP",
+        "Up": "input-Secret",
+    },
+    "Book_Heal": {
+        "id": "input-Book_Heal",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "direct",
+        "Left": "input-Book_ATK",
+        "Up": "input-Secret",
     },
     "T2_Hat": {
         "id": "input-T2_Hat",

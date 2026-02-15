@@ -741,9 +741,15 @@ div.editable.empty-resource:hover {
     position: relative;
 }
 
-
+.book-wrapper {
+    position: relative;
+}
 
 .resource-box .xp-icon {
+    max-width: 60px;
+}
+
+.resource-box .book-icon {
     max-width: 60px;
 }
 
@@ -756,6 +762,10 @@ div.editable.empty-resource:hover {
     margin-bottom: 10px;
     justify-content: center;
     position: relative;
+}
+
+.resource-box_align_center {
+    align-items: center;
 }
 
 .resource-box img {

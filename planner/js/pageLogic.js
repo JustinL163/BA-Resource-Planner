@@ -482,6 +482,20 @@ function init() {
         })
     }
 
+    var bookInputs = document.getElementsByClassName("book-input");
+
+    for (i = 0; i < bookInputs.length; i++) {
+        bookInputs[i].onchange = updatedResource;
+        bookInputs[i].addEventListener('focusin', (event) => {
+            event.target.className = "resource-input focused";
+            event.target.parentElement.classList.add("focused");
+        })
+        bookInputs[i].addEventListener('focusout', (event) => {
+            event.target.className = "resource-input";
+            event.target.parentElement.classList.remove("focused");
+        })
+    }
+
     var inputs = document.getElementsByClassName("input-wrapper");
 
     for (i = 0; i < inputs.length; i++) {
@@ -3567,9 +3581,9 @@ function populateCharModal(charId) {
             document.getElementById("gear3-img").src = "icons/Gear/T1_" + charInfo.Equipment[2] + "_small.webp";
         }
 
-        document.getElementById("book-hp-img").src = "icons/Books/Book_Health_small.webp";
-        document.getElementById("book-atk-img").src = "icons/Books/Book_Attack_small.webp";
-        document.getElementById("book-heal-img").src = "icons/Books/Book_Healing_small.webp";
+        document.getElementById("book-hp-img").src = "icons/Books/Book_HP_small.webp";
+        document.getElementById("book-atk-img").src = "icons/Books/Book_ATK_small.webp";
+        document.getElementById("book-heal-img").src = "icons/Books/Book_Heal_small.webp";
 
         document.getElementById("ex-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "Ex").Icon + ".png";
         document.getElementById("basic-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "Public").Icon + ".png";
@@ -4967,6 +4981,10 @@ function hideEmpty() {
     hideEmptyCell("XP_2");
     hideEmptyCell("XP_3");
     hideEmptyCell("XP_4");
+
+    hideEmptyCell("Book_HP");
+    hideEmptyCell("Book_ATK");
+    hideEmptyCell("Book_Heal");
 }
 
 function hideEmptyGear() {
