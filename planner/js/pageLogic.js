@@ -134,7 +134,6 @@ function checkResources() {
         }
 
         if (data != null) {
-
             for (var i = 0; i < data.characters.length; i++) {
 
                 calculateCharResources(data.characters[i], false);
@@ -160,7 +159,7 @@ function checkResources() {
 $(document).ready(function () {
 
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js')
+        navigator.serviceWorker.register('./sw.js?1')
     }
 
     loadResources();
@@ -197,7 +196,17 @@ function convertOld() {
         if (data.characters != undefined) {
 
             for (let i = 0; i < data.characters.length; i++) {
+                const defaultCurrent = StudentInvestment.Default(data.characters[i]);
+                const defaultTarget = StudentInvestment.DefaultTarget(data.characters[i]);
+
                 data.characters[i].id = data.characters[i].id.toString();
+
+                for (key in defaultCurrent) {
+                    if (typeof data.characters[i].current[key] === 'undefined') {
+                        data.characters[i].current[key] = defaultCurrent[key];
+                        data.characters[i].target[key] = defaultTarget[key];
+                    }
+                }
             }
 
         }
@@ -427,14 +436,14 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.4.18".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.4.19".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         Swal.fire({
-            title: GetLanguageString("text-updatedversionprefix") + "1.4.18",
+            title: GetLanguageString("text-updatedversionprefix") + "1.4.19",
             color: alertColour,
             html: GetLanguageString("text-updatemessage")
         })
 
-        data.site_version = "1.4.18";
+        data.site_version = "1.4.19";
         // saveToLocalStorage(false);
     }
 
@@ -468,6 +477,20 @@ function init() {
             event.target.parentElement.classList.add("focused");
         })
         xpInputs[i].addEventListener('focusout', (event) => {
+            event.target.className = "resource-input";
+            event.target.parentElement.classList.remove("focused");
+        })
+    }
+
+    var bookInputs = document.getElementsByClassName("book-input");
+
+    for (i = 0; i < bookInputs.length; i++) {
+        bookInputs[i].onchange = updatedResource;
+        bookInputs[i].addEventListener('focusin', (event) => {
+            event.target.className = "resource-input focused";
+            event.target.parentElement.classList.add("focused");
+        })
+        bookInputs[i].addEventListener('focusout', (event) => {
             event.target.className = "resource-input";
             event.target.parentElement.classList.remove("focused");
         })
@@ -1149,11 +1172,11 @@ function CharInputsMax() {
         cancelButtonText: GetLanguageString("label-cancel")
     }).then((result) => {
         if (result.isConfirmed) {
-            let values = [90, 90, 5, 5, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 9, 9];
+            let values = [90, 90, 5, 5, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 25, 25, 25, 25, 25, 25];
             SetCharInputValues(values);
         }
         else if (result.isDenied) {
-            let values = [90, 90, 5, 5, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10];
+            let values = [90, 90, 5, 5, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 25, 25, 25, 25, 25, 25];
             SetCharInputValues(values);
         }
     })
@@ -1173,11 +1196,11 @@ function CharInputsGoalMax() {
         cancelButtonText: GetLanguageString("label-cancel")
     }).then((result) => {
         if (result.isConfirmed) {
-            let values = [90, 5, 10, 10, 10, 10, 10, 9];
+            let values = [90, 5, 10, 10, 10, 10, 10, 10, 25, 25, 25];
             SetCharInputGoalValues(values);
         }
         else if (result.isDenied) {
-            let values = [90, 5, 10, 10, 10, 10, 10, 10];
+            let values = [90, 5, 10, 10, 10, 10, 10, 10, 25, 25, 25];
             SetCharInputGoalValues(values);
         }
     })
@@ -1197,6 +1220,10 @@ function SetCharInputGoalValues(values) {
     document.getElementById("input_gear1_target").value = values[5];
     document.getElementById("input_gear2_target").value = values[6];
     document.getElementById("input_gear3_target").value = values[7];
+
+    document.getElementById("input_book_hp_target").value = values[8];
+    document.getElementById("input_book_atk_target").value = values[9];
+    document.getElementById("input_book_heal_target").value = values[10];
 }
 
 function SetCharInputValues(values) {
@@ -1219,6 +1246,13 @@ function SetCharInputValues(values) {
     document.getElementById("input_gear2_target").value = values[13];
     document.getElementById("input_gear3_current").value = values[14];
     document.getElementById("input_gear3_target").value = values[15];
+
+    document.getElementById("input_book_hp_current").value = values[16];
+    document.getElementById("input_book_hp_target").value = values[17];
+    document.getElementById("input_book_atk_current").value = values[18];
+    document.getElementById("input_book_atk_target").value = values[19];
+    document.getElementById("input_book_heal_current").value = values[20];
+    document.getElementById("input_book_heal_target").value = values[21];
 
     let charInfo = charlist[modalCharID];
 
@@ -1773,7 +1807,7 @@ function generateMultiSelectChars(newCharOptions, mode) {
 
     let multiCharsContainer = document.getElementById("charsSelectContainer");
 
-    for (let i = 0; i < newCharOptions.length; i++) {
+    for (let i = 0; i < newCharOptions.length - 1; i++) {
         createMultiSelectChar(charMap.get(newCharOptions[i]), multiCharsContainer, mode);
     }
 
@@ -3382,6 +3416,13 @@ function saveCharChanges() {
         charData.current.gear3 = document.getElementById("input_gear3_current").value;
         charData.target.gear3 = document.getElementById("input_gear3_target").value;
 
+        charData.current.book_hp = document.getElementById("input_book_hp_current").value;
+        charData.target.book_hp = document.getElementById("input_book_hp_target").value;
+        charData.current.book_atk = document.getElementById("input_book_atk_current").value;
+        charData.target.book_atk = document.getElementById("input_book_atk_target").value;
+        charData.current.book_heal = document.getElementById("input_book_heal_current").value;
+        charData.target.book_heal = document.getElementById("input_book_heal_target").value;
+
         charData.current.star = modalStars.star;
         charData.target.star = modalStars.star_target;
         charData.current.ue = modalStars.ue;
@@ -3518,6 +3559,13 @@ function populateCharModal(charId) {
         document.getElementById("input_gear3_current").value = charData.current?.gear3;
         document.getElementById("input_gear3_target").value = charData.target?.gear3;
 
+        document.getElementById("input_book_hp_current").value = charData.current?.book_hp;
+        document.getElementById("input_book_hp_target").value = charData.target?.book_hp;
+        document.getElementById("input_book_atk_current").value = charData.current?.book_atk;
+        document.getElementById("input_book_atk_target").value = charData.target?.book_atk;
+        document.getElementById("input_book_heal_current").value = charData.current?.book_heal;
+        document.getElementById("input_book_heal_target").value = charData.target?.book_heal;
+
         if (charData.current?.gear1 != "0") {
             document.getElementById("gear1-img").src = "icons/Gear/T" + charData.current?.gear1 + "_" + charInfo.Equipment[0] + "_small.webp";
         }
@@ -3536,6 +3584,10 @@ function populateCharModal(charId) {
         else {
             document.getElementById("gear3-img").src = "icons/Gear/T1_" + charInfo.Equipment[2] + "_small.webp";
         }
+
+        document.getElementById("book-hp-img").src = "icons/Books/Book_HP_small.webp";
+        document.getElementById("book-atk-img").src = "icons/Books/Book_ATK_small.webp";
+        document.getElementById("book-heal-img").src = "icons/Books/Book_Heal_small.webp";
 
         document.getElementById("ex-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "Ex").Icon + ".webp";
         document.getElementById("basic-img").src = "icons/SkillIcon/" + GetSkillObject(charId, "Public").Icon + ".webp";
@@ -3934,6 +3986,13 @@ function charDataFromModal(charId) {
     charData.current.gear3 = document.getElementById("input_gear3_current").value;
     charData.target.gear3 = document.getElementById("input_gear3_target").value;
 
+    charData.current.book_hp = document.getElementById("input_book_hp_current").value;
+    charData.target.book_hp = document.getElementById("input_book_hp_target").value;
+    charData.current.book_atk = document.getElementById("input_book_atk_current").value;
+    charData.target.book_atk = document.getElementById("input_book_atk_target").value;
+    charData.current.book_heal = document.getElementById("input_book_heal_current").value;
+    charData.target.book_heal = document.getElementById("input_book_heal_target").value;
+
     charData.current.star = modalStars.star;
     charData.target.star = modalStars.star_target;
     charData.current.ue = modalStars.ue;
@@ -3994,6 +4053,7 @@ function populateCharResources(charId) {
 
     let mainartisWrapper = document.getElementById('char-mainartis-wrapper');
     let subartisWrapper = document.getElementById('char-subartis-wrapper');
+    let booksWrapper = document.getElementById('char-books-wrapper');
     let bdWrapper = document.getElementById('char-bds-wrapper');
     let tnWrapper = document.getElementById('char-tns-wrapper');
 
@@ -4004,6 +4064,10 @@ function populateCharResources(charId) {
     while (subartisWrapper.children.length > 0) {
         subartisWrapper.children[0]._tippy.destroy();
         subartisWrapper.children[0].remove();
+    }
+    while (booksWrapper.children.length > 0) {
+        booksWrapper.children[0]._tippy.destroy();
+        booksWrapper.children[0].remove();
     }
     while (bdWrapper.children.length > 0) {
         bdWrapper.children[0]._tippy.destroy();
@@ -4041,6 +4105,9 @@ function populateCharResources(charId) {
                 if (matName[2] === "_") {
                     extraClassName = " char-resource-rarity-" + matName[3];
                 }
+                else if (matName.substring(0, 4) === 'Book') {
+                    extraClassName = " char-resource-rarity-3";
+                }
                 else {
                     extraClassName = " char-resource-rarity-" + matName.substring(matName.length - 1);
                 }
@@ -4052,6 +4119,8 @@ function populateCharResources(charId) {
 
                 if (matName.includes("BD") || matName.includes("TN")) {
                     resourceImg.src = "icons/SchoolMat/" + matName + ".webp";
+                } else if (matName.includes("Book")) {
+                    resourceImg.src = "icons/Books/" + matName + ".webp";
                 }
                 else {
                     resourceImg.src = "icons/Artifact/" + matName + ".webp";
@@ -4069,6 +4138,9 @@ function populateCharResources(charId) {
                 }
                 else if (matName.includes("TN")) {
                     tnWrapper.appendChild(wrapDiv);
+                }
+                else if (matName.includes("Book")) {
+                    booksWrapper.appendChild(wrapDiv);
                 }
                 else if (matName.includes(mainMat)) {
                     mainartisWrapper.appendChild(wrapDiv);
@@ -4926,6 +4998,10 @@ function hideEmpty() {
     hideEmptyCell("XP_2");
     hideEmptyCell("XP_3");
     hideEmptyCell("XP_4");
+
+    hideEmptyCell("Book_HP");
+    hideEmptyCell("Book_ATK");
+    hideEmptyCell("Book_Heal");
 }
 
 function hideEmptyGear() {
@@ -5580,6 +5656,10 @@ function calculateCharResources(charData, output) {
     calcGearCost(charObj, charData.current?.gear2, charData.target?.gear2, 2, charMatDict);
     calcGearCost(charObj, charData.current?.gear3, charData.target?.gear3, 3, charMatDict);
 
+    calcBookCost(charObj, charData.current?.book_hp, charData.target?.book_hp, 'HP', charMatDict);
+    calcBookCost(charObj, charData.current?.book_atk, charData.target?.book_atk, 'ATK', charMatDict);
+    calcBookCost(charObj, charData.current?.book_heal, charData.target?.book_heal, 'Heal', charMatDict);
+
     calcMysticCost(charData.current?.star, charData.target?.star, charMatDict);
 
     calcUECost(charObj, charData.current?.ue, charData.target?.ue, charData.current?.ue_level, charData.target?.ue_level, charMatDict);
@@ -5738,7 +5818,7 @@ function calcXpCost(level, levelTarget, matDict) {
 function calcGearCost(charObj, gear, gearTarget, slotNum, matDict) {
 
     // need to also save gear xp later
-    if ((gear || gear == 0) && gearTarget) {
+    if ((gear || gear == 0) && gearTarget > gear) {
 
         var gearObj = misc_data.cumulative_gear_cost["T" + gear];
         var targetGearObj = misc_data.cumulative_gear_cost["T" + gearTarget];
@@ -5785,6 +5865,48 @@ function calcGearCost(charObj, gear, gearTarget, slotNum, matDict) {
         }
     }
 
+}
+
+function calcBookCost(charObj, book, bookTarget, bookType, matDict) {
+    if ((book || book == 0) && (bookTarget || bookTarget == 0) && parseInt(bookTarget) > parseInt(book)) {
+        const bookObj = misc_data.cumulative_limit_break_cost[book];
+        const targetBookObj = misc_data.cumulative_limit_break_cost[bookTarget];
+
+        if (!bookObj || !targetBookObj) {
+            return;
+        }
+
+        if (targetBookObj.books) {
+            const bookId = matLookup.revGet(`Book_${bookType}`)
+            if (!matDict[bookId]) {
+                matDict[bookId] = 0;
+            }
+
+            matDict[bookId] += targetBookObj.books - (bookObj.books ?? 0);
+        }
+
+        for (let i = 0; i < 2; i++) {
+            const prop = `artifact_${i+1}`;
+            if (targetBookObj[prop]) {
+                const artifactId = charObj.PotentialMaterial + i;
+
+                if (!matDict[artifactId]) {
+                    matDict[artifactId] = 0;
+                }
+
+                matDict[artifactId] += targetBookObj[prop] - (bookObj[prop] ?? 0);
+            }
+        }
+
+        if (typeof bookObj.credit === 'number' && targetBookObj.credit) {
+
+            if (!matDict["Credit"]) {
+                matDict["Credit"] = 0;
+            }
+
+            matDict["Credit"] += targetBookObj.credit - bookObj.credit;
+        }
+    }
 }
 
 function calcMysticCost(star, starTarget, matDict) {
@@ -6351,31 +6473,36 @@ function getOrder() {
 
 }
 
-function formatLevel(type, level) {
+function wrapLevelValue(type, value) {
+    return `<span class="info-value">${value}</span>`;
+}
 
+function formatLevel(type, level) {
     if (type == "Other") {
         if (level == "10" || level == 10) {
-            return "M";
+            return wrapLevelValue(type, "M");
         }
     }
     else if (type == "Ex") {
         if (level == "5" || level == 5) {
-            return "M";
+            return wrapLevelValue(type, "M");
         }
     }
     else if (type == "Gear") {
         if (level == "10" || level == 10) {
-            return "X";
+            return wrapLevelValue(type, "X");
         }
+    }
+    else if (type == "Book") {
+        return wrapLevelValue(type, level.toString().padStart(2, ' '));
     }
 
     if (level != undefined) {
-        return level.toString();
+        return wrapLevelValue(type, level.toString());
     }
     else {
-        return '';
+        return wrapLevelValue(type, '');
     }
-
 }
 
 function getOffset(el) {
@@ -6736,6 +6863,13 @@ function OpenBulkModal() {
     document.getElementById("bulk-input_gear3_current").value = "";
     document.getElementById("bulk-input_gear3_target").value = "";
 
+    document.getElementById("bulk-input_book_hp_current").value = "";
+    document.getElementById("bulk-input_book_hp_target").value = "";
+    document.getElementById("bulk-input_book_atk_current").value = "";
+    document.getElementById("bulk-input_book_atk_target").value = "";
+    document.getElementById("bulk-input_book_heal_current").value = "";
+    document.getElementById("bulk-input_book_heal_target").value = "";
+
     modalStars = { star: 0, star_target: 0, ue: 0, ue_target: 0 };
     updateBulkStarDisplays("", true);
 
@@ -6811,6 +6945,13 @@ function ConfirmBulkUpdate() {
     bulkUpdate.target.gear2 = document.getElementById("bulk-input_gear2_target").value;
     bulkUpdate.current.gear3 = document.getElementById("bulk-input_gear3_current").value;
     bulkUpdate.target.gear3 = document.getElementById("bulk-input_gear3_target").value;
+
+    bulkUpdate.current.book_hp = document.getElementById("bulk-input_book_hp_current").value;
+    bulkUpdate.target.book_hp = document.getElementById("bulk-input_book_hp_target").value;
+    bulkUpdate.current.book_atk = document.getElementById("bulk-input_book_atk_current").value;
+    bulkUpdate.target.book_atk = document.getElementById("bulk-input_book_atk_target").value;
+    bulkUpdate.current.book_heal = document.getElementById("bulk-input_book_heal_current").value;
+    bulkUpdate.target.book_heal = document.getElementById("bulk-input_book_heal_target").value;
 
     // charData.current.star = modalStars.star;
     // charData.target.star = modalStars.star_target;
@@ -6918,6 +7059,22 @@ function ApplyBulkUpdate(bulkUpdate) {
             else {
                 if (parseInt(ct.ue_level) < parseInt(cc.ue_level)) {
                     ct.ue_level = cc.ue_level;
+                }
+            }
+
+            let bookParams = ["book_hp", "book_atk", "book_heal"];
+            for (let p = 0; p < bookParams.length; p++) {
+                if (uc[bookParams[p]]) {
+                    cc[bookParams[p]] = cc.ue > 0 ? uc[bookParams[p]] : 0;
+                }
+
+                if (ut[bookParams[p]]) {
+                    ct[bookParams[p]] = ct.ue > 0 ? Math.max(ut[bookParams[p]], cc[bookParams[p]]) : 0;
+                }
+                else {
+                    if (parseInt(ct[bookParams[p]]) < parseInt(cc[bookParams[p]])) {
+                        ct[bookParams[p]] = cc[bookParams[p]];
+                    }
                 }
             }
 

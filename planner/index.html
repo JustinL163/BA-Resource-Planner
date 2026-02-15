@@ -24,7 +24,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="manifest.json" />
-    <link rel="stylesheet" href="css/styles.css?45">
+    <link rel="stylesheet" href="css/styles.css?46">
     <title>Blue Archive Resource Planner</title>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://justin163.com/planner">
@@ -38,7 +38,7 @@
     <meta name="theme-color" content="#ff00bb">
     <style id="toggleViewStyle" class="modifyable"></style>
     <script src="packages/jquery/jquery.min.js"></script>
-    <script src="js/plannerFast.js?24"></script>
+    <script src="js/plannerFast.js?25"></script>
     <link href="packages/sweetalert2/minimal.css" rel="stylesheet">
     <link href="packages/sweetalert2/dark.css" rel="stylesheet">
     <script src="packages/sweetalert2/sweetalert2.min.js" defer></script>
@@ -48,9 +48,9 @@
     <script src="packages/javascript-lp-solver/solver.js" defer></script>
     <script src="packages/html2canvas/html2canvas.js" defer></script>
     <link rel="stylesheet" href="packages/tippyjs/light.css" />
-    <script src="js/config.js?29" defer></script>
-    <script src="js/common.js?19" defer></script>
-    <script src="js/pageLogic.js?159" defer></script>
+    <script src="js/config.js?30" defer></script>
+    <script src="js/common.js?20" defer></script>
+    <script src="js/pageLogic.js?160" defer></script>
     <script src="js/filters.js?7" defer></script>
     <script src="js/lzma_worker.js?1" defer></script>
     <script src="js/cloudAPI.js?6" defer></script>
@@ -158,7 +158,7 @@
     </div>
     <div class="modal" id="characterModal">
         <div class="modal-content-wrapper" id="character-modal-wrapper" style="display: block; max-width: 900px;">
-            <div style="display: flex; flex-wrap: wrap; overflow-y: hidden; overflow-x: clip; max-height: 35vh;">
+            <div class="modal-character-info">
                 <div class="charBox" id="displayChar">
                     <div class="charBoxwrap">
                         <div class="main-box-content">
@@ -169,8 +169,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-content-section" style="min-width: 30px; margin: initial; text-align: center; display: flex;
-                        flex-direction: column; align-self: flex-start; align-items: center;">
+                <div class="modal-content-section" style="min-width: 30px; text-align: center; align-self: flex-start; align-items: center;">
                     <img id="char-delete" class="action-icon" src="icons/UI/cross.svg" onclick="deleteClicked()"
                         style="max-width: 25px;">
                     <img id="char-max" class="action-icon" src="icons/UI/MaxIcon.png" onclick="CharInputsMax()"
@@ -178,8 +177,8 @@
                     <img id="char-max-goal" class="action-icon" src="icons/UI/MaxGoalIcon.png"
                         onclick="CharInputsGoalMax()" style="margin-top: 10px">
                 </div>
-                <div class="modal-content-section" id="content-1"
-                    style="width: 10%; min-width: 90px; margin-left: 20px;">
+                <div class="modal-content-section modal-content-section_layout_auto" id="content-1"
+                    style="width: 10%; min-width: 90px;">
                     <!-- <p id="label-school" class="display-string" data-id="label-school"></p> -->
                     <p id="display_school" class="char-info-text"></p>
                     <!-- <br> -->
@@ -192,7 +191,7 @@
                     <!-- <p id="label-defense-type" class="display-string" data-id="label-defensetype"></p> -->
                     <p id="display_defense_type" class="char-info-text"></p>
                 </div>
-                <div class="modal-content-section" id="content-2" style="width: 5%; min-width: 60px;">
+                <div class="modal-content-section modal-content-section_layout_auto" id="content-2" style="width: 5%; min-width: 60px;">
                     <!-- <p class="display-string" data-id="label-role"></p> -->
                     <br>
                     <p class="char-info-text"></p>
@@ -208,8 +207,8 @@
                 <!-- <div class="modal-content-section" id="content-3" style="width:15%; min-width: 100px;">
 
                 </div> -->
-                <div class="modal-content-section" id="content-4"
-                    style="width: 15%; min-width: 150px; display: flex; margin-left: 20px; margin-block: auto; flex-basis: fit-content;">
+                <div class="modal-content-section modal-content-section_layout_horizontal" id="content-4"
+                    style="width: 15%; min-width: 150px; margin-block: auto; flex-basis: fit-content;">
                     <div class="mood-wrapper">
                         <!-- <p class="display-string" data-id="terrain-urban"></p> -->
                         <img src="icons/Mood/Terrain_Street.png" class="terrain-icon"></img>
@@ -228,14 +227,13 @@
                 </div>
             </div>
             <div style="overflow-y: auto; overflow-x: clip; max-height: 45vh; height: 45vh;" class="scrollbar-styling">
-                <div style="display: flex; flex-wrap: wrap;">
-                    <div class="modal-content-section" id="content-5"
-                        style="width: 15%; min-width: 185px; display: flex;">
-                        <div class="content-section-wrapper" style="padding: 6% 7% 6% 0;">
+                <div class="modal-content-group">
+                    <div class="modal-content-section" id="content-5">
+                        <div class="content-section-wrapper content-section-wrapper_has_label">
                             <div class="section-label">
                                 <p class="section-name display-string" id="label-level" data-id="label-level"></p>
                             </div>
-                            <div style="margin-right: 1em;">
+                            <div>
                                 <p class="label-current display-string" data-id="label-current"></p>
                                 <input id="input_level_current" type="number" class="two_digit_input">
                                 <p class="label-target display-string" data-id="label-target"></p>
@@ -243,9 +241,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-content-section" id="content-8"
-                        style="width: 15%; min-width: 183px; display: flex;">
-                        <div class="content-section-wrapper" style="padding: 6% 7% 6% 0;">
+                    <div class="modal-content-section" id="content-8">
+                        <div class="content-section-wrapper content-section-wrapper_has_label">
                             <div class="section-label">
                                 <p class="section-name display-string" id="label-bond" data-id="label-bond"></p>
                             </div>
@@ -260,9 +257,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-content-section" id="content-6"
-                        style="width: 30%; min-width: 370px; display: flex;">
-                        <div class="content-section-wrapper" style="padding: 3% 5% 3% 1em;">
+                    <div class="modal-content-section" id="content-6">
+                        <div class="content-section-wrapper">
                             <!-- <div class="section-label">
                             <p class="section-name display-string" id="label-star" data-id="label-stars"></p>
                         </div> -->
@@ -331,11 +327,9 @@
                         </div>
                     </div>
                 </div>
-                <div style="display: flex; flex-wrap: wrap;">
-                    <div class="modal-content-section" id="content-9"
-                        style="width: 45%; min-width: 400px; display: flex; margin-top: 10px;">
-                        <div class="content-section-wrapper"
-                            style="padding-right: 15%; padding-top: 2%; padding-left: 1em;">
+                <div class="modal-content-group">
+                    <div class="modal-content-section" id="content-9">
+                        <div class="content-section-wrapper">
                             <!-- <div class="section-label">
                             <p class="section-name display-string" id="label-skills" data-id="label-skills"></p>
                         </div> -->
@@ -380,9 +374,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-content-section" id="content-10"
-                        style="width: 45%; min-width: 400px; display: flex; margin-top: 10px; justify-content: left;">
-                        <div class="content-section-wrapper" style="padding: 1% 10% 1% 1em;">
+                    <div class="modal-content-section" id="content-10">
+                        <div class="content-section-wrapper">
                             <!-- <div class="section-label">
                             <p class="section-name display-string" id="label-gear" data-id="label-gear"></p>
                         </div> -->
@@ -419,10 +412,45 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div id="eleph-section" style="width: 100%; display: flex; flex-wrap: wrap;">
-                    <div class="modal-content-section" id="content-11" style="width: 14%; min-width: 165px;">
+                    <div class="modal-content-section" id="content-16">
                         <div class="content-section-wrapper">
+                            <div>
+                                <br>
+                                <p class="label-current display-string" data-id="label-current"></p>
+                                <br><br><br>
+                                <p class="label-target display-string" data-id="label-target"></p>
+                                <br>
+                            </div>
+                            <div class="sub-book">
+                                <p id="label-book-hp" class="display-string" data-id="label-bookhp"></p>
+                                <input id="input_book_hp_current" type="number" class="two_digit_input">
+                                <br>
+                                <img id="book-hp-img" class="book-display" draggable="false">
+                                <br>
+                                <input id="input_book_hp_target" type="number" class="two_digit_input">
+                            </div>
+                            <div class="sub-book">
+                                <p id="label-book-atk" class="display-string" data-id="label-bookatk"></p>
+                                <input id="input_book_atk_current" type="number" class="two_digit_input">
+                                <br>
+                                <img id="book-atk-img" class="book-display" draggable="false">
+                                <br>
+                                <input id="input_book_atk_target" type="number" class="two_digit_input">
+                            </div>
+                            <div class="sub-book">
+                                <p id="label-book-heal" class="display-string" data-id="label-bookheal"></p>
+                                <input id="input_book_heal_current" type="number" class="two_digit_input">
+                                <br>
+                                <img id="book-heal-img" class="book-display" draggable="false">
+                                <br>
+                                <input id="input_book_heal_target" type="number" class="two_digit_input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="eleph-section" class="modal-content-group modal-content-group_border_top">
+                    <div class="modal-content-section" id="content-11">
+                        <div class="content-section-wrapper content-section-wrapper_has_image">
                             <img draggable="false" id="char-eleph" class="eleph-icon" src="">
                             <div style="align-self: center;">
                                 <p id="label-owned" class="display-string" data-id="label-owned"></p>
@@ -433,8 +461,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-content-section" id="content-12" style="width: 16%; min-width: 190px;">
-                        <div class="content-section-wrapper">
+                    <div class="modal-content-section" id="content-12">
+                        <div class="content-section-wrapper content-section-wrapper_has_image">
                             <img draggable="false" class="eleph-icon" src="icons/Misc/Eligma.png">
                             <div style="align-self: center;">
                                 <p id="label-eleph-cost" class="display-string" data-id="label-eligmacost"></p>
@@ -446,9 +474,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-content-section" id="content-13"
-                        style="width: 20%; min-width: 230px; display: flex;">
-                        <div class="content-section-wrapper" style="padding: 6% 7% 6% 0; position: relative;">
+                    <div class="modal-content-section" id="content-13">
+                        <div class="content-section-wrapper content-section-wrapper_has_label">
                             <div class="section-label">
                                 <p class="section-name display-string" data-id="label-hardmode"></p>
                             </div>
@@ -468,8 +495,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-content-section" id="content-14" style="width: 13%; min-width: 150px;">
-                        <div class="content-section-wrapper">
+                    <div class="modal-content-section" id="content-14">
+                        <div class="content-section-wrapper content-section-wrapper_has_image">
                             <img draggable="false" class="eleph-icon" id="shop-currency-icon" src="">
                             <div style="align-self: center;">
                                 <p id="char-currency-descriptor"></p>
@@ -477,10 +504,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-content-section" id="content-15" style="width: 21%; min-width: 250px;">
-                        <div class="content-section-wrapper" style="padding: 6% 7% 6% 0%;">
+                    <div class="modal-content-section" id="content-15">
+                        <div class="content-section-wrapper content-section-wrapper_has_label">
                             <div class="section-label">
-                                <p class="section-name display-string" style="padding: 10px 15px;"
+                                <p class="section-name display-string"
                                     data-id="label-buywith"></p>
                             </div>
                             <div style="align-self: center;">
@@ -500,8 +527,8 @@
                         </div>
                     </div>
                 </div>
-                <div id="char-resource-section" style="width: 100%; padding-bottom: 10px;">
-                    <div class="modal-content-section" style="overflow-y: auto; max-height: 200px;">
+                <div id="char-resource-section" class="modal-content-group modal-content-group_layout_column modal-content-group_border_top">
+                    <div class="modal-content-section" style="overflow-y: auto; max-height: 250px;">
                         <div class="char-schoolmats-wrapper">
                             <div class="char-mats-wrapper" id="char-bds-wrapper"></div>
                             <div class="char-mats-wrapper" id="char-tns-wrapper"></div>
@@ -509,6 +536,9 @@
                         <div class="char-artifacts-wrapper">
                             <div class="char-mats-wrapper" id="char-mainartis-wrapper"></div>
                             <div class="char-mats-wrapper" id="char-subartis-wrapper"></div>
+                        </div>
+                        <div class="char-artifacts-wrapper">
+                            <div class="char-mats-wrapper" id="char-books-wrapper"></div>
                         </div>
                     </div>
                     <div class="modal-content-section">
@@ -549,8 +579,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-content-section"
-                style="width: 100%; display: flex; justify-content: center; margin-top: 15px;">
+            <div class="modal-content-buttons">
                 <button id="cancel-button-resource" class="resource-modal-button display-string"
                     onclick="cancelCharModal()" data-id="label-close"></button>
                 <button id="save-button-resource" class="resource-modal-button display-string"
@@ -569,14 +598,13 @@
         <div class="modal-content-wrapper" id="bulk-character-modal-wrapper" style="display: block; max-width: 900px;">
             <div style="overflow-y: auto; overflow-x: clip; max-height: 45vh; padding-bottom: 1em;"
                 class="scrollbar-styling">
-                <div style="display: flex; flex-wrap: wrap;">
-                    <div class="modal-content-section" id="bulk-content-5"
-                        style="width: 15%; min-width: 185px; display: flex;">
-                        <div class="content-section-wrapper" style="padding: 6% 7% 6% 0;">
+                <div class="modal-content-group">
+                    <div class="modal-content-section" id="bulk-content-5">
+                        <div class="content-section-wrapper content-section-wrapper_has_label">
                             <div class="section-label">
                                 <p class="section-name display-string" id="bulk-label-level" data-id="label-level"></p>
                             </div>
-                            <div style="margin-right: 1em;">
+                            <div>
                                 <p class="label-current display-string" data-id="label-current"></p>
                                 <input id="bulk-input_level_current" type="number" class="two_digit_input">
                                 <p class="label-target display-string" data-id="label-target"></p>
@@ -584,9 +612,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-content-section" id="bulk-content-8"
-                        style="width: 15%; min-width: 183px; display: flex;">
-                        <div class="content-section-wrapper" style="padding: 6% 7% 6% 0;">
+                    <div class="modal-content-section" id="bulk-content-8">
+                        <div class="content-section-wrapper content-section-wrapper_has_label">
                             <div class="section-label">
                                 <p class="section-name display-string" id="bulk-label-bond" data-id="label-bond"></p>
                             </div>
@@ -601,8 +628,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-content-section" id="bulk-content-6"
-                        style="width: 30%; min-width: 370px; display: flex;">
+                    <div class="modal-content-section" id="bulk-content-6">
                         <div class="content-section-wrapper" style="padding: 3% 5% 3% 1em;">
                             <!-- <div class="section-label">
                             <p class="section-name display-string" id="label-star" data-id="label-stars"></p>
@@ -672,11 +698,9 @@
                         </div>
                     </div>
                 </div>
-                <div style="display: flex; flex-wrap: wrap;">
-                    <div class="modal-content-section" id="bulk-content-9"
-                        style="width: 35%; min-width: 350px; display: flex; margin-top: 10px;">
-                        <div class="content-section-wrapper"
-                            style="padding-right: 15%; padding-top: 2%; padding-left: 1em;">
+                <div class="modal-content-group">
+                    <div class="modal-content-section" id="bulk-content-9">
+                        <div class="content-section-wrapper">
                             <!-- <div class="section-label">
                             <p class="section-name display-string" id="label-skills" data-id="label-skills"></p>
                         </div> -->
@@ -722,9 +746,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-content-section" id="bulk-content-10"
-                        style="width: 45%; min-width: 400px; display: flex; margin-top: 10px; justify-content: left;">
-                        <div class="content-section-wrapper" style="padding: 1% 10% 1% 1em;">
+                    <div class="modal-content-section" id="bulk-content-10">
+                        <div class="content-section-wrapper">
                             <!-- <div class="section-label">
                             <p class="section-name display-string" id="label-gear" data-id="label-gear"></p>
                         </div> -->
@@ -761,16 +784,46 @@
                             </div>
                         </div>
                     </div>
+                    <div class="modal-content-section" id="bulk-content-16">
+                        <div class="content-section-wrapper">
+                            <div>
+                                <br>
+                                <p class="label-current display-string" data-id="label-current"></p>
+                                <br>
+                                <p class="label-target display-string" data-id="label-target"></p>
+                                <br>
+                            </div>
+                            <div class="sub-book">
+                                <p id="bulk-label-book-hp" class="display-string" data-id="label-bookhp"></p>
+                                <input id="bulk-input_book_hp_current" type="number" class="two_digit_input">
+                                <br>
+                                <br>
+                                <input id="bulk-input_book_hp_target" type="number" class="two_digit_input">
+                            </div>
+                            <div class="sub-book">
+                                <p id="bulk-label-book-atk" class="display-string" data-id="label-bookatk"></p>
+                                <input id="bulk-input_book_atk_current" type="number" class="two_digit_input">
+                                <br>
+                                <br>
+                                <input id="bulk-input_book_atk_target" type="number" class="two_digit_input">
+                            </div>
+                            <div class="sub-book">
+                                <p id="bulk-label-book-heal" class="display-string" data-id="label-bookheal"></p>
+                                <input id="bulk-input_book_heal_current" type="number" class="two_digit_input">
+                                <br>
+                                <br>
+                                <input id="bulk-input_book_heal_target" type="number" class="two_digit_input">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="modal-content-section"
-                style="width: 100%; display: flex; justify-content: center; margin-top: 15px;">
+            <div class="modal-content-buttons">
                 <button id="bulk-cancel-button-resource" class="resource-modal-button display-string"
                     onclick="CloseBulkModal()" data-id="label-cancel"></button>
                 <button id="bulk-save-button-resource" class="resource-modal-button display-string"
                     onclick="ConfirmBulkUpdate()" data-id="label-bulkupdate"></button>
             </div>
-            <div style="height: 10px;"></div>
         </div>
     </div>
     <div class="modal" id="resourceModal">
@@ -788,7 +841,7 @@
                         <input id="input-Credit" class="resource-input" type="number" style="position:absolute;">
                     </div>
                 </div>
-                <div id="xp-input-wrapper" class="resource-box" style="align-items: center; display: none;">
+                <div id="xp-input-wrapper" class="resource-box resource-box_align_center" style="display: none;">
                     <div class="xp-wrapper editable">
                         <img draggable="false" class="xp-icon" src="icons/LevelPart/XP_1.png">
                         <p id="XP_1" class="resource-count-text"></p>
@@ -819,6 +872,23 @@
                     <p id="Secret" class="misc-resource" style="align-self: center;"></p>
                     <div class="input-wrapper" style="width: 60%;">
                         <input id="input-Secret" class="resource-input" type="number" style="position:absolute;">
+                    </div>
+                </div>
+                <div id="book-input-wrapper" class="resource-box resource-box_align_center">
+                    <div class="book-wrapper editable">
+                        <img draggable="false" class="book-icon" src="icons/Books/Book_HP.webp">
+                        <p id="Book_HP" class="resource-count-text"></p>
+                        <input id="input-Book_HP" class="resource-input book-input" type="number">
+                    </div>
+                    <div class="book-wrapper editable">
+                        <img draggable="false" class="book-icon" src="icons/Books/Book_ATK.webp">
+                        <p id="Book_ATK" class="resource-count-text"></p>
+                        <input id="input-Book_ATK" class="resource-input book-input" type="number">
+                    </div>
+                    <div class="book-wrapper editable">
+                        <img draggable="false" class="book-icon" src="icons/Books/Book_Heal.webp">
+                        <p id="Book_Heal" class="resource-count-text"></p>
+                        <input id="input-Book_Heal" class="resource-input book-input" type="number">
                     </div>
                 </div>
                 <div class="resource-box" style="border: none;">
