@@ -2294,87 +2294,21 @@ input.filter-option {
         width: 35px;
     }
 
-    #content-5, #bulk-content-5 {
-        /* width: 40% !important; */
+    .modal-content-group .modal-content-section {
         font-size: 0.75em;
-        min-width: 0 !important;
-        margin-top: 10px;
-        flex-basis: fit-content;
-    }
-
-    #content-6, #bulk-content-6 {
-        /* width: 95% !important; */
-        font-size: 0.75em;
-        min-width: 0 !important;
-        margin-top: 10px;
-        flex-basis: fit-content;
-    }
-
-    #content-7 {
-        width: 48% !important;
-        font-size: 0.75em;
-        min-width: 0 !important;
-        margin-top: 10px;
-    }
-
-    #content-8, #bulk-content-8 {
-        width: 40% !important;
-        font-size: 0.75em;
-        min-width: 0 !important;
-        margin-top: 10px;
-    }
-
-    #content-9, #bulk-content-9 {
-        /* width: 90% !important; */
-        font-size: 0.75em;
-        min-width: 0 !important;
-        flex-basis: fit-content;
+        flex: 1 1 auto;
     }
 
     .skill-img {
         height: 40px;
     }
 
-    #content-10, #bulk-content-10 {
-        /* width: 85% !important; */
-        font-size: 0.75em;
-        min-width: 0 !important;
-        flex-basis: fit-content;
+    #eleph-section .modal-content-section {
+        flex: 1 1 40%;
     }
 
-    #content-11 {
-        width: 41% !important;
-        font-size: 0.75em;
-        min-width: 0 !important;
-        margin-bottom: 10px;
-    }
-
-    #content-12 {
-        width: 46% !important;
-        font-size: 0.75em;
-        min-width: 0 !important;
-        margin-bottom: 10px;
-    }
-
-    #content-13 {
-        width: 45% !important;
-        font-size: 0.75em;
-        min-width: 0 !important;
-        margin-bottom: 10px;
-    }
-
-    #content-14 {
-        width: 42% !important;
-        font-size: 0.75em;
-        min-width: 0 !important;
-        margin-bottom: 10px;
-    }
-
-    #content-15 {
-        width: 53% !important;
-        font-size: 0.75em;
-        min-width: 0 !important;
-        margin-bottom: 10px;
+    #eleph-section .content-section-wrapper {
+        height: 100%;
     }
 
     .gear-display {
@@ -2572,18 +2506,6 @@ input.filter-option {
 
     .content-section-wrapper {
         min-width: 0;
-    }
-
-    .sub-skill:last-of-type {
-        margin-right: 3em;
-    }
-
-    .sub-gear:last-of-type {
-        margin-right: 2em;
-    }
-
-    .sub-book:last-of-type {
-        margin-right: 2em;
     }
 
     #control-panel {
