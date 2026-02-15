@@ -5869,7 +5869,6 @@ function calcGearCost(charObj, gear, gearTarget, slotNum, matDict) {
 
 function calcBookCost(charObj, book, bookTarget, bookType, matDict) {
     if ((book || book == 0) && bookTarget > book) {
-        console.log(charObj.Name, book, bookTarget, bookType);
         const bookObj = misc_data.cumulative_limit_break_cost[book];
         const targetBookObj = misc_data.cumulative_limit_break_cost[bookTarget];
 
@@ -5883,7 +5882,6 @@ function calcBookCost(charObj, book, bookTarget, bookType, matDict) {
                 matDict[bookId] = 0;
             }
 
-            console.log(bookId, bookType, targetBookObj.books - (bookObj.books ?? 0))
             matDict[bookId] += targetBookObj.books - (bookObj.books ?? 0);
         }
 
