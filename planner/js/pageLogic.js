@@ -5825,6 +5825,8 @@ function calcXpCost(level, levelTarget, matDict) {
 }
 
 function calcGearCost(charObj, gear, gearTarget, slotNum, matDict) {
+    gear = parseInt(gear);
+    gearTarget = parseInt(gearTarget);
 
     // need to also save gear xp later
     if ((gear || gear == 0) && gearTarget > gear) {
@@ -5877,7 +5879,10 @@ function calcGearCost(charObj, gear, gearTarget, slotNum, matDict) {
 }
 
 function calcBookCost(charObj, book, bookTarget, bookType, matDict) {
-    if ((book || book == 0) && (bookTarget || bookTarget == 0) && parseInt(bookTarget) > parseInt(book)) {
+    book = parseInt(book);
+    bookTarget = parseInt(bookTarget);
+
+    if ((book || book == 0) && bookTarget > book) {
         const bookObj = misc_data.cumulative_limit_break_cost[book];
         const targetBookObj = misc_data.cumulative_limit_break_cost[bookTarget];
 
