@@ -409,13 +409,22 @@ function updateInfoDisplay(charId, idInject, charData) {
 
     var skillTarget = `${formatLevel("Ex", charData.target?.ex)}${formatLevel("Other", charData.target?.basic)}${formatLevel("Other", charData.target?.passive)}${formatLevel("Other", charData.target?.sub)}`;
 
-    var gearCurrent = `${formatLevel("Gear", charData.current?.gear1)}${formatLevel("Gear", charData.current?.gear2)}${formatLevel("Gear", charData.current?.gear3)}${formatLevel("BondGear", charData.current?.bond_gear)}`;
+    // Bond Gear level is not shown in any way for characters that don't have it
+    var gearCurrent = `${formatLevel("Gear", charData.current?.gear1)}${formatLevel("Gear", charData.current?.gear2)}${formatLevel("Gear", charData.current?.gear3)}${charData.hasBondGear ? formatLevel("BondGear", charData.current?.bond_gear) : ''}`;
 
-    var gearTarget = `${formatLevel("Gear", charData.target?.gear1)}${formatLevel("Gear", charData.target?.gear2)}${formatLevel("Gear", charData.target?.gear3)}${formatLevel("BondGear", charData.target?.bond_gear)}`;
+    var gearTarget = `${formatLevel("Gear", charData.target?.gear1)}${formatLevel("Gear", charData.target?.gear2)}${formatLevel("Gear", charData.target?.gear3)}${charData.hasBondGear ? formatLevel("BondGear", charData.target?.bond_gear) : ''}`;
 
-    var bookCurrent = `${formatLevel("Book", charData.current?.book_hp)} ${formatLevel("Book", charData.current?.book_atk)} ${formatLevel("Book", charData.current?.book_heal)}`;
+    // Hiding Limit Break display to avoid clutter, if char has no LB applied/planned
+    if (charData.target?.book_hp == "0" && charData.target?.book_atk == "0" && charData.target?.book_heal == "0") {
+        var bookCurrent = '';
 
-    var bookTarget = `${formatLevel("Book", charData.target?.book_hp)} ${formatLevel("Book", charData.target?.book_atk)} ${formatLevel("Book", charData.target?.book_heal)}`;
+        var bookTarget = '';
+    // Otherwise showing the full display as any other
+    } else {
+        var bookCurrent = `${formatLevel("Book", charData.current?.book_hp)} ${formatLevel("Book", charData.current?.book_atk)} ${formatLevel("Book", charData.current?.book_heal)}`;
+
+        var bookTarget = `${formatLevel("Book", charData.target?.book_hp)} ${formatLevel("Book", charData.target?.book_atk)} ${formatLevel("Book", charData.target?.book_heal)}`;
+    }
 
     document.getElementById(charId + idInject + "-skill-current").innerHTML = skillCurrent;
     if (skillCurrent != skillTarget) {
