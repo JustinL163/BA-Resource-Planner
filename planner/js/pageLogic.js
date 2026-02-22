@@ -3286,9 +3286,29 @@ function getTextFormattedGroup(monospaced) {
                 if (charData.current.level.length == 1 && monospaced) {
                     charDataString += " ";
                 }
-                charDataString += formatLevel("Ex", charData.current.ex) + formatLevel("Other", charData.current.basic) +
-                    formatLevel("Other", charData.current.passive) + formatLevel("Other", charData.current.sub) + "  ";
-                charDataString += charData.current.gear1 + charData.current.gear2 + charData.current.gear3 + "  ";
+                // Skills
+                charDataString +=
+                    formatLevel("Ex", charData.current.ex, true)
+                    + formatLevel("Other", charData.current.basic, true)
+                    + formatLevel("Other", charData.current.passive, true)
+                    + formatLevel("Other", charData.current.sub, true)
+                    + "  ";
+                // Gears
+                const emptyBGValue = monospaced ? " " : "";
+                charDataString +=
+                    formatLevel("Gear", charData.current.gear1, true)
+                    + formatLevel("Gear", charData.current.gear2, true)
+                    + formatLevel("Gear", charData.current.gear3, true)
+                    // If character has no BG, we don't want to clutter output with useless numbers
+                    + (charData.hasBondGear ? charData.current.bond_gear : emptyBGValue)
+                    + "  ";
+                // Limit Break
+                const bookFormat = monospaced ? "Book" : null;
+                charDataString +=
+                    formatLevel(bookFormat, charData.current.book_hp, true)
+                    + '/' + formatLevel(bookFormat, charData.current.book_atk, true)
+                    + '/' + formatLevel(bookFormat, charData.current.book_heal, true)
+                    + "  ";
                 if (charData.current.ue_level != "0") {
                     charDataString += charData.current.ue_level;
                 }
@@ -3307,10 +3327,10 @@ function getTextFormattedGroup(monospaced) {
     }
 
     if (monospaced) {
-        textOutput += "Name" + " ".repeat(longest - 4) + " Star  Lvl Skill Gear UE\n";
+        textOutput += "Name" + " ".repeat(longest - 4) + " Star  Lvl Skill Gear  LB        UE\n";
     }
     else {
-        textOutput += "Name   Star Lvl Skill Gear UE\n";
+        textOutput += "Name   Star Lvl Skill Gear LB UE\n";
     }
 
     for (let i = 0; i < names.length; i++) {
@@ -6487,35 +6507,35 @@ function getOrder() {
 
 }
 
-function wrapLevelValue(type, value) {
-    return `<span class="info-value">${value}</span>`;
+function wrapLevelValue(type, value, noWrapping) {
+    return noWrapping ? value : `<span class="info-value">${value}</span>`;
 }
 
-function formatLevel(type, level) {
+function formatLevel(type, level, noWrapping = false) {
     if (type == "Other") {
         if (level == "10" || level == 10) {
-            return wrapLevelValue(type, "M");
+            return wrapLevelValue(type, "M", noWrapping);
         }
     }
     else if (type == "Ex") {
         if (level == "5" || level == 5) {
-            return wrapLevelValue(type, "M");
+            return wrapLevelValue(type, "M", noWrapping);
         }
     }
     else if (type == "Gear") {
         if (level == "10" || level == 10) {
-            return wrapLevelValue(type, "X");
+            return wrapLevelValue(type, "X", noWrapping);
         }
     }
     else if (type == "Book") {
-        return wrapLevelValue(type, level.toString().padStart(2, ' '));
+        return wrapLevelValue(type, level.toString().padStart(2, ' '), noWrapping);
     }
 
     if (level != undefined) {
-        return wrapLevelValue(type, level.toString());
+        return wrapLevelValue(type, level.toString(), noWrapping);
     }
     else {
-        return wrapLevelValue(type, '');
+        return wrapLevelValue(type, '', noWrapping);
     }
 }
 
