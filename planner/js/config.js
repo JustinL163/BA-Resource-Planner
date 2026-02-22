@@ -268,7 +268,7 @@ class Student {
         this.target = StudentInvestment.DefaultTarget(characterInfo);
         this.eleph = ElephInfo.Default();
         this.enabled = true;
-        this.hasBondGear = typeof characterInfo.Gear === 'object' && Object.keys(characterInfo.Gear) > 0;
+        this.hasBondGear = typeof characterInfo.Gear === 'object' && Object.keys(characterInfo.Gear).length > 0;
     }
 
     static FromVersion1Data(version1) {

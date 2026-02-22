@@ -3529,15 +3529,6 @@ function GetSkillObject(charId, skill) {
     return null;
 }
 
-function addMissingDataProperties(charData) {
-    // Bond Gear check
-    if (typeof charData.hasBondGear === 'undefined') {
-        charData.hasBondGear = charHasBondGear(charData.id);
-    }
-
-    saveToLocalStorage(false);
-}
-
 function populateCharModal(charId) {
 
     let charName = charNames.get(charId);
@@ -3546,8 +3537,6 @@ function populateCharModal(charId) {
     var charInfo = charlist[charId];
 
     if (charData != undefined) {
-        addMissingDataProperties(charData);
-
         document.getElementById("display_school").innerText = GetLanguageString('school-' + charInfo.School.toLowerCase());
         updateTextBackground("display_school", charInfo.School);
         document.getElementById("display_type").innerText = GetLanguageString("type-" + GetOldTypeFromSquadType(charInfo.SquadType).toLowerCase());

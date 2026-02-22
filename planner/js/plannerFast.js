@@ -27,6 +27,9 @@ let charBoxSize = localStorage.getItem("character_box_size") ?? "5";
 
 fetch('json/skillinfo/en.json?17').then((response) => response.json()).then((json) => {
     charlist = json;
+
+    addMissingDataProperties();
+
     if (nameReady && (data.language == "EN" || data.language == "Id")) {
         ShowNames(charlist);
     }
@@ -106,7 +109,6 @@ $(document).ready(function () {
 
         if (data.characters) {
             DupeCheck();
-            addMissingInvestProperties();
 
             for (let i = 0; i < data.characters.length; i++) {
                 dataCharIndex[data.characters[i].id] = i;
@@ -183,20 +185,45 @@ function DupeCheck() {
 }
 
 function addMissingInvestProperties () {
-    for (const student of data.characters) {
-        // Omitting providing charlist[student.id] in both cases,
-        // because high likelyhood charlist hasn't formed yet
-        const diC = StudentInvestment.Default(),
-            diT = StudentInvestment.DefaultTarget();
+    for (const charData of data.characters) {
+    }
+}
 
-        for (const prop of Object.keys(diT)) {
-            if (typeof student.target[prop] !== 'undefined') {
-                continue;
-            }
+function addMissingDataProperties() {
+    let changesPresent = false;
+    let reloadNeeded = false;
 
-            student.current[prop] = diC[prop];
-            student.target[prop] = diT[prop];
+    for (const charData of data.characters) {
+        const charInfo = charlist[charData.id];
+
+        // Bond Gear check
+        if (typeof charData.hasBondGear === 'undefined') {
+            charData.hasBondGear = typeof charInfo.Gear === 'object' && Object.keys(charInfo.Gear).length > 0;
+            changesPresent = true;
+            reloadNeeded = true;
         }
+
+        // Investments
+        const defaultInvestCurrent = StudentInvestment.Default(charInfo),
+            defaultInvestTarget = StudentInvestment.DefaultTarget(charInfo);
+
+        for (const prop of Object.keys(defaultInvestTarget)) {
+            if (typeof charData.target[prop] === 'undefined') {
+                charData.current[prop] = defaultInvestCurrent[prop];
+                charData.target[prop] = defaultInvestTarget[prop];
+                changesPresent = true;
+            }
+        }
+    }
+
+    if (!changesPresent) {
+        return;
+    }
+
+    localStorage.setItem("save-data", JSON.stringify(data));
+
+    if (reloadNeeded) {
+        location.reload();
     }
 }
 
