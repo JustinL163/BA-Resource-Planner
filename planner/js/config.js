@@ -1240,7 +1240,24 @@ const inputValidation = {
         max: "2",
         default: "0",
         name: "Bond Gear",
-        requisite: {},
+        requisite: {
+            "modalHasBondGear": {
+                type: "object",
+                name: "Has Bond Gear",
+                compare: "equal_greater",
+                mode: "threshold",
+                sanitise: true,
+                levels: [
+                    {
+                        required: "1",
+                        max: "2"
+                    },
+                    {
+                        max: "0"
+                    }
+                ]
+            }
+        },
         "navigation": "direct",
         "Up": "input_gear3_target",
         "Left": "input_gear3_current",
@@ -1255,6 +1272,22 @@ const inputValidation = {
         default: "0",
         name: "Bond Gear Target",
         requisite: {
+            "modalHasBondGear": {
+                type: "object",
+                name: "Has Bond Gear",
+                compare: "equal_greater",
+                mode: "threshold",
+                sanitise: true,
+                levels: [
+                    {
+                        required: "1",
+                        max: "2"
+                    },
+                    {
+                        max: "0"
+                    }
+                ]
+            },
             "bond_gear": {
                 type: "input",
                 compare: "equal_greater",

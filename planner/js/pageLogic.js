@@ -3,6 +3,7 @@
 var curID = 0;
 var modalCharID = 0;
 var modalStars = { "star": 0, "star_target": 0, "ue": 0, "ue_target": 0 };
+var modalHasBondGear = 0;
 const ueStarCap = 4;
 const globalMaxWorld = 28;
 const cnMaxWorld = 22;
@@ -3631,6 +3632,8 @@ function populateCharModal(charId) {
         modalStars.ue = charData.current?.ue;
         modalStars.ue_target = charData.target?.ue;
 
+        modalHasBondGear = Number(charData.hasBondGear);
+
         document.getElementById("input_eleph_owned").value = charData.eleph?.owned;
         document.getElementById("input_char_unlocked").checked = charData.eleph?.unlocked;
         document.getElementById("input_eleph_cost").value = charData.eleph?.cost;
@@ -6920,6 +6923,7 @@ function OpenBulkModal() {
     document.getElementById("bulk-input_book_heal_target").value = "";
 
     modalStars = { star: 0, star_target: 0, ue: 0, ue_target: 0 };
+    modalHasBondGear = 1;
     updateBulkStarDisplays("", true);
 
     modalOpen = "bulkEditModal";
