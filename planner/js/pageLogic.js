@@ -3520,6 +3520,15 @@ function GetSkillObject(charId, skill) {
     return null;
 }
 
+function addMissingDataProperties(charData) {
+    // Bond Gear check
+    if (typeof charData.hasBondGear === 'undefined') {
+        charData.hasBondGear = charHasBondGear(charData.id);
+    }
+
+    saveToLocalStorage(false);
+}
+
 function populateCharModal(charId) {
 
     let charName = charNames.get(charId);
@@ -3528,6 +3537,7 @@ function populateCharModal(charId) {
     var charInfo = charlist[charId];
 
     if (charData != undefined) {
+        addMissingDataProperties(charData);
 
         document.getElementById("display_school").innerText = GetLanguageString('school-' + charInfo.School.toLowerCase());
         updateTextBackground("display_school", charInfo.School);
@@ -3577,7 +3587,7 @@ function populateCharModal(charId) {
         document.getElementById("input_gear2_target").value = charData.target?.gear2;
         document.getElementById("input_gear3_current").value = charData.current?.gear3;
         document.getElementById("input_gear3_target").value = charData.target?.gear3;
-    document.getElementById("input_bond_gear_current").value = charData.current?.bond_gear;
+        document.getElementById("input_bond_gear_current").value = charData.current?.bond_gear;
         document.getElementById("input_bond_gear_target").value = charData.target?.bond_gear;
 
         document.getElementById("input_book_hp_current").value = charData.current?.book_hp;
