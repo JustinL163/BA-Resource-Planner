@@ -931,6 +931,11 @@ div.resource-box.editable.focused p {
     justify-content: center;
 }
 
+.char-othermats-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
 .char-miscresource-wrapper {
     display: flex;
     justify-content: center;
@@ -1675,13 +1680,25 @@ input.filter-option {
     text-align: center;
 }
 
+#table-parent-1 {
+    width: 100%;
+}
+
 #table-parent-5,
 #table-parent-6 {
     width: 50%;
 }
 
+#table-parent-7 {
+    width: 100%;
+}
+
 #artifact-table-2 tr:first-child td:first-child {
     padding-right: 1.5em;
+}
+
+#gift-table td:not(:first-child) {
+    padding: 0 14px 0 15px;
 }
 
 #languages {

@@ -441,6 +441,25 @@ function init() {
         stringLangPrefix: "artifact-"
     });
 
+    let giftNavigation = [];
+    createTable({
+        id: "gift-table",
+        columns: ["1", "2", "3", "4", "5", "6", "7"],
+        colOffset: 0,
+        rows: ["Gifts-1", "Gifts-2", "Gifts-3", "Gifts-4", "Gifts-5"],
+        rowOffset: 0,
+        tableNavigation: giftNavigation,
+        parent: document.getElementById("table-parent-7"),
+        reorder: false,
+        type: "resource",
+        imgLoc: "icons/Gifts/",
+        skip: [],
+        stringLangPrefix: "gift-",
+        lablingMethod: 'first-row-only',
+        inputNamingMethod: 'material-id',
+        firstMatId: 5000
+    });
+
     let gearNavigation = [];
     createTable({
         id: "gear-table",
@@ -457,28 +476,27 @@ function init() {
         stringLangPrefix: "gear-"
     });
 
-    let navObj = {};
-    for (let x in tableNavigation) {
-        for (let y in tableNavigation[x]) {
-            navObj[x + "|" + y] = tableNavigation[x][y];
+    function addTableNavigation(tableName, tableData) {
+        let navigationObject = {};
+
+        for (let x in tableData) {
+            for (let y in tableData[x]) {
+                navigationObject[x + "|" + y] = tableData[x][y];
+            }
         }
+
+        navigationObjects[tableName] = { "type": "table", "object": new TwoWayMap(navigationObject) };
     }
 
-    navigationObjects["resourceTable"] = { "type": "table", "object": new TwoWayMap(navObj) };
-
-    let navGearObj = {};
-    for (let x in gearNavigation) {
-        for (let y in gearNavigation[x]) {
-            navGearObj[x + "|" + y] = gearNavigation[x][y];
-        }
-    }
-
-    navigationObjects["gearTable"] = { "type": "table", "object": new TwoWayMap(navGearObj) };
+    let navObj = addTableNavigation("resourceTable", tableNavigation);
+    let navGiftObj = addTableNavigation("giftTable", giftNavigation);
+    let navGearObj = addTableNavigation("gearTable", gearNavigation);
 
     // colour the table rows
     colourTableRows("school-mat-table");
     colourTableRows("artifact-table-1");
     colourTableRows("artifact-table-2");
+    colourTableRows("gift-table");
 
     colourTableRows("gear-table");
 
@@ -1383,16 +1401,23 @@ function deleteChar(charId) {
 
 function colourTableRows(tableId) {
 
-    var table = document.getElementById(tableId);
+    const table = document.getElementById(tableId);
 
     for (r = 0; r < table.children[0].children.length; r++) {
-        var rowId = table.children[0].children[r].id.substring(4);
+        let rowId = table.children[0].children[r].id.substring(4);
+        let color = rowColours[rowId];
 
-        if (rowColours[rowId] != undefined) {
-
-            table.children[0].children[r].style.backgroundColor = rowColours[rowId];
-
+        if (typeof color === 'undefined') {
+            const idQuery = rowId.match(/(.+?)-\d+$/);
+            rowId = idQuery ? idQuery[1] : '';
+            color = rowColours[rowId];
         }
+
+        if (typeof color === 'undefined') {
+            continue;
+        }
+
+        table.children[0].children[r].style.backgroundColor = rowColours[rowId];
     }
 
 }
@@ -4574,6 +4599,7 @@ function openResourceModal() {
         document.getElementById("table-parent-1").style.display = "none";
         document.getElementById("table-parent-2").style.display = "none";
         document.getElementById("table-parent-3").style.display = "none";
+        document.getElementById("table-parent-7").style.display = "none";
         document.getElementById("other-resource-wrapper").style.display = "none";
 
         openDelay = 2500;
@@ -4599,9 +4625,12 @@ function openResourceModal() {
                 document.getElementById("table-parent-3").style.display = "";
             }, 3000);
             setTimeout(() => {
+                document.getElementById("table-parent-7").style.display = "";
+            }, 4000);
+            setTimeout(() => {
                 document.getElementById("other-resource-wrapper").style.display = "";
                 hideEmpty();
-            }, 4000);
+            }, 5000);
         }
 
         updateAggregateCount();
@@ -5074,10 +5103,12 @@ function hideEmpty() {
     var resourceTable = document.getElementById("school-mat-table");
     var artifactTable1 = document.getElementById("artifact-table-1");
     var artifactTable2 = document.getElementById("artifact-table-2");
+    var giftTable = document.getElementById("gift-table");
 
     hideEmptyCells(resourceTable);
     hideEmptyCells(artifactTable1);
     hideEmptyCells(artifactTable2);
+    hideEmptyCells(giftTable);
 
     hideEmptyCell("XP_1");
     hideEmptyCell("XP_2");
@@ -5149,7 +5180,10 @@ function createTable({
     type,
     imgLoc,
     skip,
-    stringLangPrefix
+    stringLangPrefix,
+    lablingMethod,
+    inputNamingMethod,
+    firstMatId
 }) {
 
     const newTable = document.createElement("table");
@@ -5179,42 +5213,67 @@ function createTable({
                 cellCombination = columns[col - 1] + "_" + rows[row];
             }
 
-            if (col == 0) {
-                if (language != "En" && language != "Kr" && language != "Th" && language != "Jp" && language != "Cn") {
-                    let localisedName = mLocalisations[language]?.Data[rows[row].replace(/ /g, '')];
-                    if (localisedName) {
-                        newCell.innerText = localisedName;
-                    }
-                    else {
-                        newCell.innerText = rows[row];
-                    }
+            // Check for a Label cell
+            if (lablingMethod !== 'none' && col == 0) {
+                if (row > 0 && lablingMethod === 'first-row-only') {
+                    newCell.innerText = '';
+                } else if (
+                    language != "En"
+                    && language != "Kr"
+                    && language != "Th"
+                    && language != "Jp"
+                    && language != "Cn"
+                ) {
+                    const labelSourceString = lablingMethod === 'first-row-only'
+                        ? `${stringLangPrefix}table`
+                        : rows[row];
+
+                    const stringId = labelSourceString.replace(/ /g, '');
+                    const localisedName = mLocalisations[language]?.Data[stringId];
+
+                    newCell.innerText = localisedName ?? labelSourceString;
                 }
                 else {
-                    newCell.innerText = GetLanguageString(stringLangPrefix + rows[row].toLowerCase().replace(/ /g, ''));
+                    const labelSourceString = lablingMethod === 'first-row-only'
+                        ? `${stringLangPrefix}table`
+                        : `${stringLangPrefix}${rows[row]}`;
+                    const stringId = labelSourceString.toLowerCase().replace(/ /g, '');
+
+                    newCell.innerText = GetLanguageString(stringId);
                 }
                 newCell.style.paddingLeft = "8px";
             }
+            // Otherwise it's an input cell
             else if (!(skip && skip.includes(cellCombination))) {
+                let inputName = null;
                 const newImg = document.createElement("img");
                 newImg.draggable = false;
                 newImg.className = type + "-icon";
                 newImg.loading = "lazy";
-                if (reorder) {
-                    newImg.src = (imgLoc + rows[row] + "_" + columns[col - 1] + "_small.webp").replace(/ /g, '');
+
+                if (inputNamingMethod === 'material-id' && typeof firstMatId === 'number') {
+                    // column indexing includes the label column, so this serves as an adjustment
+                    const labelColumnOffset = lablingMethod !== 'none' ? 1 : 0;
+                    // Every cell from left to right, top to bottom, increases result id by 1
+                    const matId = firstMatId + col - labelColumnOffset + (columns.length - labelColumnOffset) * row + row;
+                    inputName = matLookup.get(matId);
+
+                    newImg.src = (`${imgLoc}${inputName}.png`).replace(/ /g, '');
+                }
+                else if (reorder) {
+                    inputName = rows[row] + "_" + columns[col - 1];
+                    newImg.src = (imgLoc + inputName + "_small.webp").replace(/ /g, '');
                 }
                 else {
-                    newImg.src = (imgLoc + columns[col - 1] + "_" + rows[row] + "_small.webp").replace(/ /g, '');
+                    inputName = columns[col - 1] + "_" + rows[row];
+                    newImg.src = (imgLoc + inputName + "_small.webp").replace(/ /g, '');
                 }
 
                 const newP = document.createElement("p");
                 newP.className = type + "-count-text";
                 //newP.id = id + "-p_" + cellId;
-                if (reorder) {
-                    newP.id = (rows[row] + "_" + columns[col - 1]).replace(/ /g, '');
-                }
-                else {
-                    newP.id = (columns[col - 1] + "_" + rows[row]).replace(/ /g, '');
-                }
+
+                newP.id = (inputName).replace(/ /g, '');
 
                 let matFound = matLookup.reverseMap[newP.id];
                 if (matFound) {
@@ -5243,12 +5302,9 @@ function createTable({
                     event.target.className = "resource-input";
                     event.target.parentElement.classList.remove("focused");
                 })
-                if (reorder) {
-                    newInput.id = ("input-" + rows[row] + "_" + columns[col - 1]).replace(/ /g, '');
-                }
-                else {
-                    newInput.id = ("input-" + columns[col - 1] + "_" + rows[row]).replace(/ /g, '');
-                }
+
+                newInput.id = ("input-" + inputName).replace(/ /g, '');
+
                 if (matLookup.revGet(newP.id)) {
                     tableNavigation[row + rowOffset][col + colOffset] = newInput.id;
                 }

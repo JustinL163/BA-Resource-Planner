@@ -244,6 +244,7 @@ var rowColours = {
     "Nimrud": "#67e4ef66", "Mandragora": "#a1ede566", "Rohonc": "#c9ab9366", "Aether": "#ca96e066", "Antikythera": "#f7e28866",
     "Voynich": "#84b28066", "Haniwa": "#e7bef466", "Baghdad": "#d179a066", "Totem": "#b77e6166", "Fleece": "#fdf76966", "Okiku": "#ff88294a", "Atlantis": "#ecff2933",
     "Colgante": "#c2cdfe70", "Mystery": "#305c894a", "RomanDice": "#71bec566", "Quimbaya": "#e3df7466", "Rocket": "#c0f2f366",
+    "Gifts": "#866543",
     "Gloves": "#84848436", "Bag": "#84848436", "Hairpin": "#84848436", "Watch": "#84848436"
 };
 
@@ -420,6 +421,14 @@ const navMap = {
         ["-", "-", "-", "-", "|", "-", "-", "-", "-"],
         ["-", "-", "-", "-", "|", "-", "-", "-", "-"],
         ["-", "-", "-", "-", "|", "-", "-", "-", "-"],
+        ["=", "=", "=", "=", "+", "=", "=", "=", "="],
+    ],
+    "giftTable": [
+        ["-", "-", "-", "-", "-", "-", "-"],
+        ["-", "-", "-", "-", "-", "-", "-"],
+        ["-", "-", "-", "-", "-", "-", "-"],
+        ["-", "-", "-", "-", "-", "-", "-"],
+        ["-", "-", "-", "-", "-", "-", "-"],
     ],
     "gearTable": [
         ["-", "-", "-", "-", "-", "-", "-", "-", "-"],
@@ -2831,6 +2840,251 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable"
+    },
+    "Wavecat_Pillow": {
+        "id": "input-Wavecat_Pillow",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Peroro_Wheel": {
+        "id": "input-Peroro_Wheel",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "A-Pods_Pro": {
+        "id": "input-A-Pods_Pro",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Forbidden_Love": {
+        "id": "input-Forbidden_Love",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Hitgirls_Gaming_Magazine": {
+        "id": "input-Hitgirls_Gaming_Magazine",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Cherry-Rose_Lip_Gloss": {
+        "id": "input-Cherry-Rose_Lip_Gloss",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Glassy_Glow_BB_Cream": {
+        "id": "input-Glassy_Glow_BB_Cream",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Military_Camo_Foundation_Trio": {
+        "id": "input-Military_Camo_Foundation_Trio",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Luxury_Cookie_Set": {
+        "id": "input-Luxury_Cookie_Set",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Guns_Charm_and_Zeal": {
+        "id": "input-Guns_Charm_and_Zeal",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Astronomical_Telescope": {
+        "id": "input-Astronomical_Telescope",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Gamegirl_Color_Replica": {
+        "id": "input-Gamegirl_Color_Replica",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "MX-Ration_C-Type_Dessert_Flavor": {
+        "id": "input-MX-Ration_C-Type_Dessert_Flavor",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Matcha_Ramune": {
+        "id": "input-Matcha_Ramune",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Jellies_Cushion": {
+        "id": "input-Jellies_Cushion",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Jumping_Detective_Rabbit": {
+        "id": "input-Jumping_Detective_Rabbit",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Ring_Bit": {
+        "id": "input-Ring_Bit",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Buried_Treasure_Map": {
+        "id": "input-Buried_Treasure_Map",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Cosplayer_Coke-Bottle_Glasses": {
+        "id": "input-Cosplayer_Coke-Bottle_Glasses",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "World's_Most_Useless_Gadget": {
+        "id": "input-World's_Most_Useless_Gadget",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Teddy_Bear_with_Bow": {
+        "id": "input-Teddy_Bear_with_Bow",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Movie_Ticket": {
+        "id": "input-Movie_Ticket",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Thirty-Color_Paint_Set": {
+        "id": "input-Thirty-Color_Paint_Set",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Classical_Poetry_Anthology": {
+        "id": "input-Classical_Poetry_Anthology",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Cute_Dishware_Set": {
+        "id": "input-Cute_Dishware_Set",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Brain_Teaser_Puzzle_Cube": {
+        "id": "input-Brain_Teaser_Puzzle_Cube",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Large_Whole_Cake": {
+        "id": "input-Large_Whole_Cake",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Luxury_Buffet_Ticket": {
+        "id": "input-Luxury_Buffet_Ticket",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Potted_Bug-Eating_Plant": {
+        "id": "input-Potted_Bug-Eating_Plant",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Extravagant_Gilded_Jar_of_Greed": {
+        "id": "input-Extravagant_Gilded_Jar_of_Greed",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Wind-Up_Music_Box": {
+        "id": "input-Wind-Up_Music_Box",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Embroidered_Handkerchief": {
+        "id": "input-Embroidered_Handkerchief",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Encyclopedia": {
+        "id": "input-Encyclopedia",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Health_Food_Supplement": {
+        "id": "input-Health_Food_Supplement",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Summer_Floaty": {
+        "id": "input-Summer_Floaty",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
     },
     "Credit": {
         "id": "input-Credit",
