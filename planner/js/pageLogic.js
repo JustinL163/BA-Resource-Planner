@@ -1160,6 +1160,12 @@ function getExistingCharacters() {
 
 }
 
+function charHasBondGear(id) {
+    const gearData = charlist[id].Gear;
+
+    return typeof gearData === 'object' && Object.keys(gearData).length > 0;
+}
+
 function CharInputsMax() {
 
     Swal.fire({
@@ -1171,12 +1177,16 @@ function CharInputsMax() {
         denyButtonColor: '#dc9641',
         cancelButtonText: GetLanguageString("label-cancel")
     }).then((result) => {
+        const maxBondGearLevel = charHasBondGear(modalCharID) ? 2 : 0;
+
+        // Global Max
         if (result.isConfirmed) {
-            let values = [90, 90, 5, 5, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 25, 25, 25, 25, 25, 25];
+            let values = [90, 90, 5, 5, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, maxBondGearLevel, maxBondGearLevel, 25, 25, 25, 25, 25, 25];
             SetCharInputValues(values);
         }
+        // JP Max
         else if (result.isDenied) {
-            let values = [90, 90, 5, 5, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 25, 25, 25, 25, 25, 25];
+            let values = [90, 90, 5, 5, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, maxBondGearLevel, maxBondGearLevel, 25, 25, 25, 25, 25, 25];
             SetCharInputValues(values);
         }
     })
@@ -1195,12 +1205,16 @@ function CharInputsGoalMax() {
         denyButtonColor: '#dc9641',
         cancelButtonText: GetLanguageString("label-cancel")
     }).then((result) => {
+        const maxBondGearLevel = charHasBondGear(modalCharID) ? 2 : 0;
+
+        // Global Max
         if (result.isConfirmed) {
-            let values = [90, 5, 10, 10, 10, 10, 10, 10, 25, 25, 25];
+            let values = [90, 5, 10, 10, 10, 10, 10, 10, maxBondGearLevel, 25, 25, 25];
             SetCharInputGoalValues(values);
         }
+        // JP Max
         else if (result.isDenied) {
-            let values = [90, 5, 10, 10, 10, 10, 10, 10, 25, 25, 25];
+            let values = [90, 5, 10, 10, 10, 10, 10, 10, maxBondGearLevel, 25, 25, 25];
             SetCharInputGoalValues(values);
         }
     })
@@ -1220,10 +1234,11 @@ function SetCharInputGoalValues(values) {
     document.getElementById("input_gear1_target").value = values[5];
     document.getElementById("input_gear2_target").value = values[6];
     document.getElementById("input_gear3_target").value = values[7];
+    document.getElementById("input_bond_gear_target").value = values[8];
 
-    document.getElementById("input_book_hp_target").value = values[8];
-    document.getElementById("input_book_atk_target").value = values[9];
-    document.getElementById("input_book_heal_target").value = values[10];
+    document.getElementById("input_book_hp_target").value = values[9];
+    document.getElementById("input_book_atk_target").value = values[10];
+    document.getElementById("input_book_heal_target").value = values[11];
 }
 
 function SetCharInputValues(values) {
@@ -1246,13 +1261,15 @@ function SetCharInputValues(values) {
     document.getElementById("input_gear2_target").value = values[13];
     document.getElementById("input_gear3_current").value = values[14];
     document.getElementById("input_gear3_target").value = values[15];
+    document.getElementById("input_bond_gear_current").value = values[16];
+    document.getElementById("input_bond_gear_target").value = values[17];
 
-    document.getElementById("input_book_hp_current").value = values[16];
-    document.getElementById("input_book_hp_target").value = values[17];
-    document.getElementById("input_book_atk_current").value = values[18];
-    document.getElementById("input_book_atk_target").value = values[19];
-    document.getElementById("input_book_heal_current").value = values[20];
-    document.getElementById("input_book_heal_target").value = values[21];
+    document.getElementById("input_book_hp_current").value = values[18];
+    document.getElementById("input_book_hp_target").value = values[19];
+    document.getElementById("input_book_atk_current").value = values[20];
+    document.getElementById("input_book_atk_target").value = values[21];
+    document.getElementById("input_book_heal_current").value = values[22];
+    document.getElementById("input_book_heal_target").value = values[23];
 
     let charInfo = charlist[modalCharID];
 
@@ -3415,6 +3432,8 @@ function saveCharChanges() {
         charData.target.gear2 = document.getElementById("input_gear2_target").value;
         charData.current.gear3 = document.getElementById("input_gear3_current").value;
         charData.target.gear3 = document.getElementById("input_gear3_target").value;
+        charData.current.bond_gear = document.getElementById("input_bond_gear_current").value;
+        charData.target.bond_gear = document.getElementById("input_bond_gear_target").value;
 
         charData.current.book_hp = document.getElementById("input_book_hp_current").value;
         charData.target.book_hp = document.getElementById("input_book_hp_target").value;
@@ -3558,6 +3577,8 @@ function populateCharModal(charId) {
         document.getElementById("input_gear2_target").value = charData.target?.gear2;
         document.getElementById("input_gear3_current").value = charData.current?.gear3;
         document.getElementById("input_gear3_target").value = charData.target?.gear3;
+    document.getElementById("input_bond_gear_current").value = charData.current?.bond_gear;
+        document.getElementById("input_bond_gear_target").value = charData.target?.bond_gear;
 
         document.getElementById("input_book_hp_current").value = charData.current?.book_hp;
         document.getElementById("input_book_hp_target").value = charData.target?.book_hp;
@@ -3985,6 +4006,8 @@ function charDataFromModal(charId) {
     charData.target.gear2 = document.getElementById("input_gear2_target").value;
     charData.current.gear3 = document.getElementById("input_gear3_current").value;
     charData.target.gear3 = document.getElementById("input_gear3_target").value;
+    charData.current.bond_gear = document.getElementById("input_bond_gear_current").value;
+    charData.target.bond_gear = document.getElementById("input_bond_gear_target").value;
 
     charData.current.book_hp = document.getElementById("input_book_hp_current").value;
     charData.target.book_hp = document.getElementById("input_book_hp_target").value;
@@ -6876,6 +6899,8 @@ function OpenBulkModal() {
     document.getElementById("bulk-input_gear2_target").value = "";
     document.getElementById("bulk-input_gear3_current").value = "";
     document.getElementById("bulk-input_gear3_target").value = "";
+    document.getElementById("bulk-input_bond_gear_current").value = "";
+    document.getElementById("bulk-input_bond_gear_target").value = "";
 
     document.getElementById("bulk-input_book_hp_current").value = "";
     document.getElementById("bulk-input_book_hp_target").value = "";
@@ -6959,6 +6984,8 @@ function ConfirmBulkUpdate() {
     bulkUpdate.target.gear2 = document.getElementById("bulk-input_gear2_target").value;
     bulkUpdate.current.gear3 = document.getElementById("bulk-input_gear3_current").value;
     bulkUpdate.target.gear3 = document.getElementById("bulk-input_gear3_target").value;
+    bulkUpdate.current.bond_gear = document.getElementById("bulk-input_bond_gear_current").value;
+    bulkUpdate.target.bond_gear = document.getElementById("bulk-input_bond_gear_target").value;
 
     bulkUpdate.current.book_hp = document.getElementById("bulk-input_book_hp_current").value;
     bulkUpdate.target.book_hp = document.getElementById("bulk-input_book_hp_target").value;
