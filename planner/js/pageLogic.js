@@ -398,19 +398,64 @@ function init() {
     let tableNavigation = [];
 
     // generate resource modal tables
-    createTable("school-mat-table", ["BD_1", "BD_2", "BD_3", "BD_4", "TN_1", "TN_2", "TN_3", "TN_4"], 0,
-        ["Hyakkiyako", "Red Winter", "Trinity", "Gehenna", "Abydos", "Millennium", "Arius", "Shanhaijing", "Valkyrie", "Highlander", "Wildhunt"], 0,
-        tableNavigation, document.getElementById("table-parent-1"), false, "resource", "icons/SchoolMat/", [], "school-");
-    createTable("artifact-table-1", ["1", "2", "3", "4"], 0,
-        ["Nebra", "Phaistos", "Wolfsegg", "Nimrud", "Mandragora", "Rohonc", "Aether", "Antikythera", "Voynich", "Haniwa"], 11,
-        tableNavigation, document.getElementById("table-parent-2"), true, "resource", "icons/Artifact/", [], "artifact-");
-    createTable("artifact-table-2", ["1", "2", "3", "4"], 4,
-        ["Totem", "Baghdad", "Fleece", "Okiku", "Colgante", "Atlantis", "RomanDice", "Quimbaya", "Rocket", "Mystery"], 11,
-        tableNavigation, document.getElementById("table-parent-3"), true, "resource", "icons/Artifact/", [], "artifact-");
+    createTable({
+        id: "school-mat-table",
+        columns: ["BD_1", "BD_2", "BD_3", "BD_4", "TN_1", "TN_2", "TN_3", "TN_4"],
+        colOffset: 0,
+        rows: ["Hyakkiyako", "Red Winter", "Trinity", "Gehenna", "Abydos", "Millennium", "Arius", "Shanhaijing", "Valkyrie", "Highlander", "Wildhunt"],
+        rowOffset: 0,
+        tableNavigation: tableNavigation,
+        parent: document.getElementById("table-parent-1"),
+        reorder: false,
+        type: "resource",
+        imgLoc: "icons/SchoolMat/",
+        skip: [],
+        stringLangPrefix: "school-"
+    });
+    createTable({
+        id: "artifact-table-1",
+        columns: ["1", "2", "3", "4"],
+        colOffset: 0,
+        rows: ["Nebra", "Phaistos", "Wolfsegg", "Nimrud", "Mandragora", "Rohonc", "Aether", "Antikythera", "Voynich", "Haniwa"],
+        rowOffset: 11,
+        tableNavigation: tableNavigation,
+        parent: document.getElementById("table-parent-2"),
+        reorder: true,
+        type: "resource",
+        imgLoc: "icons/Artifact/",
+        skip: [],
+        stringLangPrefix: "artifact-"
+    });
+    createTable({
+        id: "artifact-table-2",
+        columns: ["1", "2", "3", "4"],
+        colOffset: 4,
+        rows: ["Totem", "Baghdad", "Fleece", "Okiku", "Colgante", "Atlantis", "RomanDice", "Quimbaya", "Rocket", "Mystery"],
+        rowOffset: 11,
+        tableNavigation: tableNavigation,
+        parent: document.getElementById("table-parent-3"),
+        reorder: true,
+        type: "resource",
+        imgLoc: "icons/Artifact/",
+        skip: [],
+        stringLangPrefix: "artifact-"
+    });
 
     let gearNavigation = [];
-    createTable("gear-table", ["T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10"], 0, ["Hat", "Gloves", "Shoes", "Bag", "Badge", "Hairpin", "Charm", "Watch", "Necklace"],
-        0, gearNavigation, document.getElementById('table-parent-4'), false, "gear", "icons/Gear/", [], "gear-");
+    createTable({
+        id: "gear-table",
+        columns: ["T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10"],
+        colOffset: 0,
+        rows: ["Hat", "Gloves", "Shoes", "Bag", "Badge", "Hairpin", "Charm", "Watch", "Necklace"],
+        rowOffset: 0,
+        tableNavigation: gearNavigation,
+        parent: document.getElementById('table-parent-4'),
+        reorder: false,
+        type: "gear",
+        imgLoc: "icons/Gear/",
+        skip: [],
+        stringLangPrefix: "gear-"
+    });
 
     let navObj = {};
     for (let x in tableNavigation) {
@@ -5092,7 +5137,20 @@ function hideEmptyCell(id) {
     }
 }
 
-function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, parent, reorder, type, imgLoc, skip, stringLangPrefix) {
+function createTable({
+    id,
+    columns,
+    colOffset,
+    rows,
+    rowOffset,
+    tableNavigation,
+    parent,
+    reorder,
+    type,
+    imgLoc,
+    skip,
+    stringLangPrefix
+}) {
 
     const newTable = document.createElement("table");
     newTable.className = "resource-table";
