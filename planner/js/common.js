@@ -81,7 +81,7 @@ function tryParseJSON(source) {
             data.exportVersion = data?.exportVersion ?? 1;
             // old data structure used. convert it to new one.
             // ideally structure does not change much.
-            // update this in case 
+            // update this in case
             if (data.exportVersion < 2) {
                 // convert version 1 to version 2
                 for (let i in data.characters) {
@@ -532,6 +532,14 @@ function InitInputValidation() {
                             }
                         }
 
+                    } else if (event.target.id == "input_bond_gear_current") {
+                        if (event.target.value != "0") {
+                            let charInfo = charlist[modalCharID];
+
+                            document.getElementById("bond_gear-img").src = "icons/BondGear/" + charInfo.Id + ".webp";
+                        } else {
+                            document.getElementById("bond_gear-img").src = "icons/Misc/Empty.png";
+                        }
                     }
                 }
 

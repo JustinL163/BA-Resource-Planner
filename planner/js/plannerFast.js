@@ -409,9 +409,9 @@ function updateInfoDisplay(charId, idInject, charData) {
 
     var skillTarget = `${formatLevel("Ex", charData.target?.ex)}${formatLevel("Other", charData.target?.basic)}${formatLevel("Other", charData.target?.passive)}${formatLevel("Other", charData.target?.sub)}`;
 
-    var gearCurrent = `${formatLevel("Gear", charData.current?.gear1)}${formatLevel("Gear", charData.current?.gear2)}${formatLevel("Gear", charData.current?.gear3)}`;
+    var gearCurrent = `${formatLevel("Gear", charData.current?.gear1)}${formatLevel("Gear", charData.current?.gear2)}${formatLevel("Gear", charData.current?.gear3)}${formatLevel("BondGear", charData.current?.bond_gear)}`;
 
-    var gearTarget = `${formatLevel("Gear", charData.target?.gear1)}${formatLevel("Gear", charData.target?.gear2)}${formatLevel("Gear", charData.target?.gear3)}`;
+    var gearTarget = `${formatLevel("Gear", charData.target?.gear1)}${formatLevel("Gear", charData.target?.gear2)}${formatLevel("Gear", charData.target?.gear3)}${formatLevel("BondGear", charData.target?.bond_gear)}`;
 
     var bookCurrent = `${formatLevel("Book", charData.current?.book_hp)} ${formatLevel("Book", charData.current?.book_atk)} ${formatLevel("Book", charData.current?.book_heal)}`;
 

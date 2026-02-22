@@ -1277,6 +1277,14 @@ function SetCharInputValues(values) {
     document.getElementById("gear1-img").src = "icons/Gear/T" + values[10] + "_" + charInfo.Equipment[0] + "_small.webp";
     document.getElementById("gear2-img").src = "icons/Gear/T" + values[12] + "_" + charInfo.Equipment[1] + "_small.webp";
     document.getElementById("gear3-img").src = "icons/Gear/T" + values[14] + "_" + charInfo.Equipment[2] + "_small.webp";
+
+    // Bond Gear
+    if (values[16] != 0) {
+        document.getElementById("bond_gear-img").src = "icons/BondGear/" + charInfo.Id + ".webp";
+    }
+    else {
+        document.getElementById("bond_gear-img").src = "icons/Misc/Empty.png";
+    }
 }
 
 function deleteClicked() {
@@ -3615,6 +3623,13 @@ function populateCharModal(charId) {
         }
         else {
             document.getElementById("gear3-img").src = "icons/Gear/T1_" + charInfo.Equipment[2] + "_small.webp";
+        }
+
+        if (charData.current?.bond_gear != "0") {
+            document.getElementById("bond_gear-img").src = "icons/BondGear/" + charInfo.Id + ".webp";
+        }
+        else {
+            document.getElementById("bond_gear-img").src = "icons/Misc/Empty.png";
         }
 
         document.getElementById("book-hp-img").src = "icons/Books/Book_HP_small.webp";
