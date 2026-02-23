@@ -7236,6 +7236,21 @@ function ApplyBulkUpdate(bulkUpdate) {
                 }
             }
 
+            if (charData.hasBondGear) {
+                if (uc["bond_gear"]) {
+                    cc["bond_gear"] = uc["bond_gear"];
+                }
+
+                if (ut["bond_gear"]) {
+                    ct["bond_gear"] = Math.max(ut["bond_gear"], cc["bond_gear"]);
+                }
+                else {
+                    if (parseInt(ct["bond_gear"]) < parseInt(cc["bond_gear"])) {
+                        ct["bond_gear"] = cc["bond_gear"];
+                    }
+                }
+            }
+
             let charInfoObj = charlist[bulkChars[i]];
 
             if (modalStars.star) {
