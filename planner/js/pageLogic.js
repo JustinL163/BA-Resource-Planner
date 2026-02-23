@@ -1061,7 +1061,6 @@ function handleKeydown(e, keyPressed) {
 // }
 
 function findPosString(string, direction, tableName) {
-
     let positions = string.split('|');
     let targetPos;
 
@@ -3852,7 +3851,7 @@ function updateTooltip(charId, skill) {
     }
     else if (skill == "basic" || skill == "basic_target") {
         tooltips[1].setProps({
-            content: getSkillFormatted(charId, "Skill1", charData.current?.basic, charData.target?.basic)
+            content: getSkillFormatted(charId, "Skill1", charData.current?.basic, charData.target?.basic, null, charData.target.bond_gear)
         })
     }
     else if (skill == "passive" || skill == "passive_target") {
@@ -3878,7 +3877,7 @@ function GetBuffName(buffid) {
     return buffName;
 }
 
-function getSkillFormatted(charId, skill, level, targetLevel, targetUe) {
+function getSkillFormatted(charId, skill, level, targetLevel, targetUe, targetBG) {
 
     if (level == 0) {
         level = 1;
@@ -3940,28 +3939,23 @@ function getSkillFormatted(charId, skill, level, targetLevel, targetUe) {
     // }
     // else {
 
-    if (skill == "Skill3") {
-        skill = "Skill4";
-    }
-
-    if (skill == "Skill2" && targetUe >= 2) {
-        skill = "Skill3";
-    }
-
     let newSkill = "";
     if (skill == "Ex") {
         newSkill = "Ex";
     }
+    else if (skill == "Skill1" && targetBG >= 2) {
+        newSkill = "GearPublic";
+    }
     else if (skill == "Skill1") {
         newSkill = "Public";
+    }
+    else if (skill == "Skill2" && targetUe >= 2) {
+        newSkill = "WeaponPassive";
     }
     else if (skill == "Skill2") {
         newSkill = "Passive"
     }
     else if (skill == "Skill3") {
-        newSkill = "WeaponPassive";
-    }
-    else if (skill == "Skill4") {
         newSkill = "ExtraPassive";
     }
     let skillObj = GetSkillObject(charId, newSkill);
@@ -7208,7 +7202,6 @@ function ConfirmBulkUpdate() {
 }
 
 function ApplyBulkUpdate(bulkUpdate) {
-
     for (let i = 0; i < bulkChars.length; i++) {
 
         let charData = data.characters.find(obj => { return obj.id == bulkChars[i] });
@@ -8060,7 +8053,6 @@ function SortType(type) {
 }
 
 function SwitchCharacter(direction) {
-
     let curChar = document.getElementById("char_" + modalCharID);
 
     let nextCharId;

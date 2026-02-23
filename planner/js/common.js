@@ -540,6 +540,8 @@ function InitInputValidation() {
                         } else {
                             document.getElementById("bond_gear-img").src = "icons/Misc/Empty.png";
                         }
+                    } else if (event.target.id == "input_bond_gear_target") {
+                        updateTooltip(modalCharID, "basic");
                     }
                 }
 
