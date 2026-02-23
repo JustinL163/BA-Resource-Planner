@@ -473,6 +473,7 @@ label {
 .content-section-wrapper {
     position: relative;
     display: flex;
+    height: 100%;
     padding: 8px 12px;
     border-radius: 15px;
     background-color: #e6e6ff91;
@@ -1701,7 +1702,7 @@ input.filter-option {
     padding: 0 14px 0 15px;
 }
 
-#gift-table td.empty-resource {
+#gift-table td.empty-resource:not(:hover,.focused) {
     filter: none;
     opacity: 0.3;
 }
@@ -2091,6 +2092,10 @@ input.filter-option {
         margin: auto;
     }
 
+    #gift-table {
+        margin: auto;
+    }
+
     #gear-table {
         margin: auto;
     }
@@ -2238,6 +2243,11 @@ input.filter-option {
         width: 100%;
     }
 
+
+    .resource-box img.book-icon {
+        width: 100%;
+    }
+
     .resource-table tr td:first-child {
         font-size: 10px;
         min-width: 60px;
@@ -2303,6 +2313,10 @@ input.filter-option {
         font-size: 1em;
     }
 
+    #gift-table td:not(:first-child) {
+        padding: 0;
+    }
+
     #school-mat-table,
     #artifact-table-1,
     #artifact-table-2 {
@@ -2357,10 +2371,6 @@ input.filter-option {
 
     #eleph-section .modal-content-section {
         flex: 1 1 40%;
-    }
-
-    #eleph-section .content-section-wrapper {
-        height: 100%;
     }
 
     .gear-display {
