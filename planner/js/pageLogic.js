@@ -4164,6 +4164,7 @@ function populateCharResources(charId) {
     let mainartisWrapper = document.getElementById('char-mainartis-wrapper');
     let subartisWrapper = document.getElementById('char-subartis-wrapper');
     let booksWrapper = document.getElementById('char-books-wrapper');
+    let giftsWrapper = document.getElementById('char-gifts-wrapper');
     let bdWrapper = document.getElementById('char-bds-wrapper');
     let tnWrapper = document.getElementById('char-tns-wrapper');
 
@@ -4178,6 +4179,10 @@ function populateCharResources(charId) {
     while (booksWrapper.children.length > 0) {
         booksWrapper.children[0]._tippy.destroy();
         booksWrapper.children[0].remove();
+    }
+    while (giftsWrapper.children.length > 0) {
+        giftsWrapper.children[0]._tippy.destroy();
+        giftsWrapper.children[0].remove();
     }
     while (bdWrapper.children.length > 0) {
         bdWrapper.children[0]._tippy.destroy();
@@ -4215,7 +4220,10 @@ function populateCharResources(charId) {
                 if (matName[2] === "_") {
                     extraClassName = " char-resource-rarity-" + matName[3];
                 }
-                else if (matName.substring(0, 4) === 'Book') {
+                else if (
+                    matName.substring(0, 4) === 'Book'
+                    || key % 5000 < 100
+                ) {
                     extraClassName = " char-resource-rarity-3";
                 }
                 else {
@@ -4229,8 +4237,12 @@ function populateCharResources(charId) {
 
                 if (matName.includes("BD") || matName.includes("TN")) {
                     resourceImg.src = "icons/SchoolMat/" + matName + ".webp";
-                } else if (matName.includes("Book")) {
+                }
+                else if (matName.includes("Book")) {
                     resourceImg.src = "icons/Books/" + matName + ".webp";
+                }
+                else if (key % 5000 < 100) {
+                    resourceImg.src = "icons/Gifts/" + matName + ".png";
                 }
                 else {
                     resourceImg.src = "icons/Artifact/" + matName + ".webp";
@@ -4251,6 +4263,9 @@ function populateCharResources(charId) {
                 }
                 else if (matName.includes("Book")) {
                     booksWrapper.appendChild(wrapDiv);
+                }
+                else if (key % 5000 < 100) {
+                    giftsWrapper.appendChild(wrapDiv);
                 }
                 else if (matName.includes(mainMat)) {
                     mainartisWrapper.appendChild(wrapDiv);
@@ -5819,6 +5834,8 @@ function calculateCharResources(charData, output) {
     calcGearCost(charObj, charData.current?.gear2, charData.target?.gear2, 2, charMatDict);
     calcGearCost(charObj, charData.current?.gear3, charData.target?.gear3, 3, charMatDict);
 
+    calcBondGearCost(charObj, charData.current?.bond_gear, charData.target?.bond_gear, charMatDict);
+
     calcBookCost(charObj, charData.current?.book_hp, charData.target?.book_hp, 'HP', charMatDict);
     calcBookCost(charObj, charData.current?.book_atk, charData.target?.book_atk, 'ATK', charMatDict);
     calcBookCost(charObj, charData.current?.book_heal, charData.target?.book_heal, 'Heal', charMatDict);
@@ -6030,6 +6047,46 @@ function calcGearCost(charObj, gear, gearTarget, slotNum, matDict) {
         }
     }
 
+}
+
+function calcBondGearCost(charObj, gear, gearTarget, matDict) {
+    const costFloorLevel = 1;
+    gear = Math.max(parseInt(gear), costFloorLevel);
+    gearTarget = parseInt(gearTarget);
+
+    // by this logic, gear should never be less than 1
+    if (gear && gearTarget > gear) {
+        const gearMat = charObj.Gear?.TierUpMaterial;
+        const gearMatAmount = charObj.Gear?.TierUpMaterialAmount;
+
+        if (!gearMat || !gearMatAmount) {
+            return;
+        }
+
+        for (let upgradedLevel = gear; upgradedLevel < gearTarget; upgradedLevel++) {
+            const matCostIndex = upgradedLevel - costFloorLevel;
+            const lvlMat = gearMat[matCostIndex];
+            const lvlMatAmount = gearMatAmount[matCostIndex];
+
+
+            for (let matIndex = 0; matIndex < lvlMat.length; matIndex++) {
+                const matId = lvlMat[matIndex];
+
+                if (!matDict[matId]) {
+                    matDict[matId] = 0;
+                }
+                matDict[matId] += lvlMatAmount[matIndex];
+            }
+
+            if (!matDict["Credit"]) {
+                matDict["Credit"] = 0;
+            }
+
+            matDict["Credit"] += misc_data.bond_gear_credit_cost[matCostIndex];
+        }
+
+
+    }
 }
 
 function calcBookCost(charObj, book, bookTarget, bookType, matDict) {
