@@ -3868,7 +3868,7 @@ function getSkillFormatted(charId, skill, level, targetLevel, targetUe) {
 
         let paramString = "<\\?" + paramCount + ">";
 
-        if (desc && desc.includes(paramString)) {
+        if (desc && desc.match(paramString)) {
 
             let paramFilled = '<span style="color: #008c9b;">' + params[paramCount - 1][level - 1] + "</span>";
 
