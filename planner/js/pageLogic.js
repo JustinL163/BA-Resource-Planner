@@ -3368,43 +3368,49 @@ function getTextFormattedGroup(monospaced) {
 
                 names.push(charNames.get(charId));
 
-                if (charData.current.ue > 0) {
+                levels.push(charDataString);
+
+                if (!charData) {
+                    continue;
+                }
+
+                if (charData?.current?.ue > 0) {
                     charDataString += "UE" + charData.current.ue + "★  ";
                 }
                 else {
-                    charDataString += charData.current.star + "★  ";
+                    charDataString += charData?.current?.star + "★  ";
                     if (monospaced) {
                         charDataString += "  ";
                     }
                 }
-                charDataString += charData.current.level + "  ";
-                if (charData.current.level.length == 1 && monospaced) {
+                charDataString += charData?.current?.level + "  ";
+                if (charData?.current?.level?.length == 1 && monospaced) {
                     charDataString += " ";
                 }
                 // Skills
                 charDataString +=
-                    formatLevel("Ex", charData.current.ex, true)
-                    + formatLevel("Other", charData.current.basic, true)
-                    + formatLevel("Other", charData.current.passive, true)
-                    + formatLevel("Other", charData.current.sub, true)
+                    formatLevel("Ex", charData?.current?.ex, true)
+                    + formatLevel("Other", charData?.current?.basic, true)
+                    + formatLevel("Other", charData?.current?.passive, true)
+                    + formatLevel("Other", charData?.current?.sub, true)
                     + "  ";
                 // Gears
                 const emptyBGValue = monospaced ? " " : "";
                 charDataString +=
-                    formatLevel("Gear", charData.current.gear1, true)
-                    + formatLevel("Gear", charData.current.gear2, true)
-                    + formatLevel("Gear", charData.current.gear3, true)
+                    formatLevel("Gear", charData?.current?.gear1, true)
+                    + formatLevel("Gear", charData?.current?.gear2, true)
+                    + formatLevel("Gear", charData?.current?.gear3, true)
                     // If character has no BG, we don't want to clutter output with useless numbers
-                    + (charData.hasBondGear ? charData.current.bond_gear : emptyBGValue)
+                    + (charData?.hasBondGear ? charData?.current?.bond_gear : emptyBGValue)
                     + "  ";
                 // Limit Break
                 const bookFormat = monospaced ? "Book" : null;
                 charDataString +=
-                    formatLevel(bookFormat, charData.current.book_hp, true)
-                    + '/' + formatLevel(bookFormat, charData.current.book_atk, true)
-                    + '/' + formatLevel(bookFormat, charData.current.book_heal, true)
+                    formatLevel(bookFormat, charData?.current?.book_hp, true)
+                    + '/' + formatLevel(bookFormat, charData?.current?.book_atk, true)
+                    + '/' + formatLevel(bookFormat, charData?.current?.book_heal, true)
                     + "  ";
-                if (charData.current.ue_level != "0") {
+                if (charData?.current?.ue_level != "0") {
                     charDataString += charData.current.ue_level;
                 }
 
