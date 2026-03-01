@@ -410,6 +410,14 @@
                                 <br>
                                 <input id="input_gear3_target" type="number" class="two_digit_input">
                             </div>
+                            <div class="sub-gear">
+                                <br>
+                                <input id="input_bond_gear_current" type="number" class="two_digit_input">
+                                <br>
+                                <img id="bond_gear-img" class="gear-display" draggable="false">
+                                <br>
+                                <input id="input_bond_gear_target" type="number" class="two_digit_input">
+                            </div>
                         </div>
                     </div>
                     <div class="modal-content-section" id="content-16">
@@ -537,8 +545,9 @@
                             <div class="char-mats-wrapper" id="char-mainartis-wrapper"></div>
                             <div class="char-mats-wrapper" id="char-subartis-wrapper"></div>
                         </div>
-                        <div class="char-artifacts-wrapper">
+                        <div class="char-othermats-wrapper">
                             <div class="char-mats-wrapper" id="char-books-wrapper"></div>
+                            <div class="char-mats-wrapper" id="char-gifts-wrapper"></div>
                         </div>
                     </div>
                     <div class="modal-content-section">
@@ -782,6 +791,13 @@
                                 <br>
                                 <input id="bulk-input_gear3_target" type="number" class="two_digit_input">
                             </div>
+                            <div class="sub-gear">
+                                <br>
+                                <input id="bulk-input_bond_gear_current" type="number" class="two_digit_input">
+                                <br>
+                                <br>
+                                <input id="bulk-input_bond_gear_target" type="number" class="two_digit_input">
+                            </div>
                         </div>
                     </div>
                     <div class="modal-content-section" id="bulk-content-16">
@@ -829,9 +845,10 @@
     <div class="modal" id="resourceModal">
         <div class="modal-content-wrapper" style="max-height: 80%;">
             <div class="modal-section-wrapper">
-                <div id="table-parent-1" style="width: 100%;"></div>
+                <div id="table-parent-1"></div>
                 <div id="table-parent-2"></div>
                 <div id="table-parent-3"></div>
+                <div id="table-parent-7"></div>
             </div>
             <div id="other-resource-wrapper">
                 <div class="resource-box" onclick="DisplayMatUsers('Credit')">

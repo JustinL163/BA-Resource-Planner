@@ -3,6 +3,7 @@
 var curID = 0;
 var modalCharID = 0;
 var modalStars = { "star": 0, "star_target": 0, "ue": 0, "ue_target": 0 };
+var modalHasBondGear = 0;
 const ueStarCap = 4;
 const globalMaxWorld = 28;
 const cnMaxWorld = 22;
@@ -397,42 +398,105 @@ function init() {
     let tableNavigation = [];
 
     // generate resource modal tables
-    createTable("school-mat-table", ["BD_1", "BD_2", "BD_3", "BD_4", "TN_1", "TN_2", "TN_3", "TN_4"], 0,
-        ["Hyakkiyako", "Red Winter", "Trinity", "Gehenna", "Abydos", "Millennium", "Arius", "Shanhaijing", "Valkyrie", "Highlander", "Wildhunt"], 0,
-        tableNavigation, document.getElementById("table-parent-1"), false, "resource", "icons/SchoolMat/", [], "school-");
-    createTable("artifact-table-1", ["1", "2", "3", "4"], 0,
-        ["Nebra", "Phaistos", "Wolfsegg", "Nimrud", "Mandragora", "Rohonc", "Aether", "Antikythera", "Voynich", "Haniwa"], 11,
-        tableNavigation, document.getElementById("table-parent-2"), true, "resource", "icons/Artifact/", [], "artifact-");
-    createTable("artifact-table-2", ["1", "2", "3", "4"], 4,
-        ["Totem", "Baghdad", "Fleece", "Okiku", "Colgante", "Atlantis", "RomanDice", "Quimbaya", "Rocket", "Mystery"], 11,
-        tableNavigation, document.getElementById("table-parent-3"), true, "resource", "icons/Artifact/", [], "artifact-");
+    createTable({
+        id: "school-mat-table",
+        columns: ["BD_1", "BD_2", "BD_3", "BD_4", "TN_1", "TN_2", "TN_3", "TN_4"],
+        colOffset: 0,
+        rows: ["Hyakkiyako", "Red Winter", "Trinity", "Gehenna", "Abydos", "Millennium", "Arius", "Shanhaijing", "Valkyrie", "Highlander", "Wildhunt"],
+        rowOffset: 0,
+        tableNavigation: tableNavigation,
+        parent: document.getElementById("table-parent-1"),
+        reorder: false,
+        type: "resource",
+        imgLoc: "icons/SchoolMat/",
+        skip: [],
+        stringLangPrefix: "school-"
+    });
+    createTable({
+        id: "artifact-table-1",
+        columns: ["1", "2", "3", "4"],
+        colOffset: 0,
+        rows: ["Nebra", "Phaistos", "Wolfsegg", "Nimrud", "Mandragora", "Rohonc", "Aether", "Antikythera", "Voynich", "Haniwa"],
+        rowOffset: 11,
+        tableNavigation: tableNavigation,
+        parent: document.getElementById("table-parent-2"),
+        reorder: true,
+        type: "resource",
+        imgLoc: "icons/Artifact/",
+        skip: [],
+        stringLangPrefix: "artifact-"
+    });
+    createTable({
+        id: "artifact-table-2",
+        columns: ["1", "2", "3", "4"],
+        colOffset: 4,
+        rows: ["Totem", "Baghdad", "Fleece", "Okiku", "Colgante", "Atlantis", "RomanDice", "Quimbaya", "Rocket", "Mystery"],
+        rowOffset: 11,
+        tableNavigation: tableNavigation,
+        parent: document.getElementById("table-parent-3"),
+        reorder: true,
+        type: "resource",
+        imgLoc: "icons/Artifact/",
+        skip: [],
+        stringLangPrefix: "artifact-"
+    });
+
+    let giftNavigation = [];
+    createTable({
+        id: "gift-table",
+        columns: ["1", "2", "3", "4", "5", "6", "7"],
+        colOffset: 0,
+        rows: ["Gifts-1", "Gifts-2", "Gifts-3", "Gifts-4", "Gifts-5"],
+        rowOffset: 0,
+        tableNavigation: giftNavigation,
+        parent: document.getElementById("table-parent-7"),
+        reorder: false,
+        type: "resource",
+        imgLoc: "icons/Gifts/",
+        skip: [],
+        stringLangPrefix: "gift-",
+        lablingMethod: 'first-row-only',
+        inputNamingMethod: 'material-id',
+        firstMatId: 5000
+    });
 
     let gearNavigation = [];
-    createTable("gear-table", ["T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10"], 0, ["Hat", "Gloves", "Shoes", "Bag", "Badge", "Hairpin", "Charm", "Watch", "Necklace"],
-        0, gearNavigation, document.getElementById('table-parent-4'), false, "gear", "icons/Gear/", [], "gear-");
+    createTable({
+        id: "gear-table",
+        columns: ["T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10"],
+        colOffset: 0,
+        rows: ["Hat", "Gloves", "Shoes", "Bag", "Badge", "Hairpin", "Charm", "Watch", "Necklace"],
+        rowOffset: 0,
+        tableNavigation: gearNavigation,
+        parent: document.getElementById('table-parent-4'),
+        reorder: false,
+        type: "gear",
+        imgLoc: "icons/Gear/",
+        skip: [],
+        stringLangPrefix: "gear-"
+    });
 
-    let navObj = {};
-    for (let x in tableNavigation) {
-        for (let y in tableNavigation[x]) {
-            navObj[x + "|" + y] = tableNavigation[x][y];
+    function addTableNavigation(tableName, tableData) {
+        let navigationObject = {};
+
+        for (let x in tableData) {
+            for (let y in tableData[x]) {
+                navigationObject[x + "|" + y] = tableData[x][y];
+            }
         }
+
+        navigationObjects[tableName] = { "type": "table", "object": new TwoWayMap(navigationObject) };
     }
 
-    navigationObjects["resourceTable"] = { "type": "table", "object": new TwoWayMap(navObj) };
-
-    let navGearObj = {};
-    for (let x in gearNavigation) {
-        for (let y in gearNavigation[x]) {
-            navGearObj[x + "|" + y] = gearNavigation[x][y];
-        }
-    }
-
-    navigationObjects["gearTable"] = { "type": "table", "object": new TwoWayMap(navGearObj) };
+    let navObj = addTableNavigation("resourceTable", tableNavigation);
+    let navGiftObj = addTableNavigation("giftTable", giftNavigation);
+    let navGearObj = addTableNavigation("gearTable", gearNavigation);
 
     // colour the table rows
     colourTableRows("school-mat-table");
     colourTableRows("artifact-table-1");
     colourTableRows("artifact-table-2");
+    colourTableRows("gift-table");
 
     colourTableRows("gear-table");
 
@@ -997,7 +1061,6 @@ function handleKeydown(e, keyPressed) {
 // }
 
 function findPosString(string, direction, tableName) {
-
     let positions = string.split('|');
     let targetPos;
 
@@ -1160,6 +1223,12 @@ function getExistingCharacters() {
 
 }
 
+function charHasBondGear(id) {
+    const gearData = charlist[id].Gear;
+
+    return typeof gearData === 'object' && Object.keys(gearData).length > 0;
+}
+
 function CharInputsMax() {
 
     Swal.fire({
@@ -1171,12 +1240,16 @@ function CharInputsMax() {
         denyButtonColor: '#dc9641',
         cancelButtonText: GetLanguageString("label-cancel")
     }).then((result) => {
+        const maxBondGearLevel = charHasBondGear(modalCharID) ? 2 : 0;
+
+        // Global Max
         if (result.isConfirmed) {
-            let values = [90, 90, 5, 5, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 25, 25, 25, 25, 25, 25];
+            let values = [90, 90, 5, 5, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, maxBondGearLevel, maxBondGearLevel, 25, 25, 25, 25, 25, 25];
             SetCharInputValues(values);
         }
+        // JP Max
         else if (result.isDenied) {
-            let values = [90, 90, 5, 5, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 25, 25, 25, 25, 25, 25];
+            let values = [90, 90, 5, 5, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, maxBondGearLevel, maxBondGearLevel, 25, 25, 25, 25, 25, 25];
             SetCharInputValues(values);
         }
     })
@@ -1195,12 +1268,16 @@ function CharInputsGoalMax() {
         denyButtonColor: '#dc9641',
         cancelButtonText: GetLanguageString("label-cancel")
     }).then((result) => {
+        const maxBondGearLevel = charHasBondGear(modalCharID) ? 2 : 0;
+
+        // Global Max
         if (result.isConfirmed) {
-            let values = [90, 5, 10, 10, 10, 10, 10, 10, 25, 25, 25];
+            let values = [90, 5, 10, 10, 10, 10, 10, 10, maxBondGearLevel, 25, 25, 25];
             SetCharInputGoalValues(values);
         }
+        // JP Max
         else if (result.isDenied) {
-            let values = [90, 5, 10, 10, 10, 10, 10, 10, 25, 25, 25];
+            let values = [90, 5, 10, 10, 10, 10, 10, 10, maxBondGearLevel, 25, 25, 25];
             SetCharInputGoalValues(values);
         }
     })
@@ -1220,10 +1297,11 @@ function SetCharInputGoalValues(values) {
     document.getElementById("input_gear1_target").value = values[5];
     document.getElementById("input_gear2_target").value = values[6];
     document.getElementById("input_gear3_target").value = values[7];
+    document.getElementById("input_bond_gear_target").value = values[8];
 
-    document.getElementById("input_book_hp_target").value = values[8];
-    document.getElementById("input_book_atk_target").value = values[9];
-    document.getElementById("input_book_heal_target").value = values[10];
+    document.getElementById("input_book_hp_target").value = values[9];
+    document.getElementById("input_book_atk_target").value = values[10];
+    document.getElementById("input_book_heal_target").value = values[11];
 }
 
 function SetCharInputValues(values) {
@@ -1246,19 +1324,29 @@ function SetCharInputValues(values) {
     document.getElementById("input_gear2_target").value = values[13];
     document.getElementById("input_gear3_current").value = values[14];
     document.getElementById("input_gear3_target").value = values[15];
+    document.getElementById("input_bond_gear_current").value = values[16];
+    document.getElementById("input_bond_gear_target").value = values[17];
 
-    document.getElementById("input_book_hp_current").value = values[16];
-    document.getElementById("input_book_hp_target").value = values[17];
-    document.getElementById("input_book_atk_current").value = values[18];
-    document.getElementById("input_book_atk_target").value = values[19];
-    document.getElementById("input_book_heal_current").value = values[20];
-    document.getElementById("input_book_heal_target").value = values[21];
+    document.getElementById("input_book_hp_current").value = values[18];
+    document.getElementById("input_book_hp_target").value = values[19];
+    document.getElementById("input_book_atk_current").value = values[20];
+    document.getElementById("input_book_atk_target").value = values[21];
+    document.getElementById("input_book_heal_current").value = values[22];
+    document.getElementById("input_book_heal_target").value = values[23];
 
     let charInfo = charlist[modalCharID];
 
     document.getElementById("gear1-img").src = "icons/Gear/T" + values[10] + "_" + charInfo.Equipment[0] + "_small.webp";
     document.getElementById("gear2-img").src = "icons/Gear/T" + values[12] + "_" + charInfo.Equipment[1] + "_small.webp";
     document.getElementById("gear3-img").src = "icons/Gear/T" + values[14] + "_" + charInfo.Equipment[2] + "_small.webp";
+
+    // Bond Gear
+    if (values[16] != 0) {
+        document.getElementById("bond_gear-img").src = "icons/BondGear/" + charInfo.Id + ".webp";
+    }
+    else {
+        document.getElementById("bond_gear-img").src = "icons/Misc/Empty.png";
+    }
 }
 
 function deleteClicked() {
@@ -1312,16 +1400,23 @@ function deleteChar(charId) {
 
 function colourTableRows(tableId) {
 
-    var table = document.getElementById(tableId);
+    const table = document.getElementById(tableId);
 
     for (r = 0; r < table.children[0].children.length; r++) {
-        var rowId = table.children[0].children[r].id.substring(4);
+        let rowId = table.children[0].children[r].id.substring(4);
+        let color = rowColours[rowId];
 
-        if (rowColours[rowId] != undefined) {
-
-            table.children[0].children[r].style.backgroundColor = rowColours[rowId];
-
+        if (typeof color === 'undefined') {
+            const idQuery = rowId.match(/(.+?)-\d+$/);
+            rowId = idQuery ? idQuery[1] : '';
+            color = rowColours[rowId];
         }
+
+        if (typeof color === 'undefined') {
+            continue;
+        }
+
+        table.children[0].children[r].style.backgroundColor = rowColours[rowId];
     }
 
 }
@@ -3435,6 +3530,8 @@ function saveCharChanges() {
         charData.target.gear2 = document.getElementById("input_gear2_target").value;
         charData.current.gear3 = document.getElementById("input_gear3_current").value;
         charData.target.gear3 = document.getElementById("input_gear3_target").value;
+        charData.current.bond_gear = document.getElementById("input_bond_gear_current").value;
+        charData.target.bond_gear = document.getElementById("input_bond_gear_target").value;
 
         charData.current.book_hp = document.getElementById("input_book_hp_current").value;
         charData.target.book_hp = document.getElementById("input_book_hp_target").value;
@@ -3529,7 +3626,6 @@ function populateCharModal(charId) {
     var charInfo = charlist[charId];
 
     if (charData != undefined) {
-
         document.getElementById("display_school").innerText = GetLanguageString('school-' + charInfo.School.toLowerCase());
         updateTextBackground("display_school", charInfo.School);
         document.getElementById("display_type").innerText = GetLanguageString("type-" + GetOldTypeFromSquadType(charInfo.SquadType).toLowerCase());
@@ -3578,6 +3674,8 @@ function populateCharModal(charId) {
         document.getElementById("input_gear2_target").value = charData.target?.gear2;
         document.getElementById("input_gear3_current").value = charData.current?.gear3;
         document.getElementById("input_gear3_target").value = charData.target?.gear3;
+        document.getElementById("input_bond_gear_current").value = charData.current?.bond_gear;
+        document.getElementById("input_bond_gear_target").value = charData.target?.bond_gear;
 
         document.getElementById("input_book_hp_current").value = charData.current?.book_hp;
         document.getElementById("input_book_hp_target").value = charData.target?.book_hp;
@@ -3605,6 +3703,13 @@ function populateCharModal(charId) {
             document.getElementById("gear3-img").src = "icons/Gear/T1_" + charInfo.Equipment[2] + "_small.webp";
         }
 
+        if (charData.current?.bond_gear != "0") {
+            document.getElementById("bond_gear-img").src = "icons/BondGear/" + charInfo.Id + ".webp";
+        }
+        else {
+            document.getElementById("bond_gear-img").src = "icons/Misc/Empty.png";
+        }
+
         document.getElementById("book-hp-img").src = "icons/Books/Book_HP_small.webp";
         document.getElementById("book-atk-img").src = "icons/Books/Book_ATK_small.webp";
         document.getElementById("book-heal-img").src = "icons/Books/Book_Heal_small.webp";
@@ -3619,6 +3724,8 @@ function populateCharModal(charId) {
         modalStars.star_target = charData.target?.star;
         modalStars.ue = charData.current?.ue;
         modalStars.ue_target = charData.target?.ue;
+
+        modalHasBondGear = Number(charData.hasBondGear);
 
         document.getElementById("input_eleph_owned").value = charData.eleph?.owned;
         document.getElementById("input_char_unlocked").checked = charData.eleph?.unlocked;
@@ -3764,7 +3871,7 @@ function updateTooltip(charId, skill) {
     }
     else if (skill == "basic" || skill == "basic_target") {
         tooltips[1].setProps({
-            content: getSkillFormatted(charId, "Skill1", charData.current?.basic, charData.target?.basic)
+            content: getSkillFormatted(charId, "Skill1", charData.current?.basic, charData.target?.basic, null, charData.target.bond_gear)
         })
     }
     else if (skill == "passive" || skill == "passive_target") {
@@ -3790,7 +3897,7 @@ function GetBuffName(buffid) {
     return buffName;
 }
 
-function getSkillFormatted(charId, skill, level, targetLevel, targetUe) {
+function getSkillFormatted(charId, skill, level, targetLevel, targetUe, targetBG) {
 
     if (level == 0) {
         level = 1;
@@ -3852,28 +3959,23 @@ function getSkillFormatted(charId, skill, level, targetLevel, targetUe) {
     // }
     // else {
 
-    if (skill == "Skill3") {
-        skill = "Skill4";
-    }
-
-    if (skill == "Skill2" && targetUe >= 2) {
-        skill = "Skill3";
-    }
-
     let newSkill = "";
     if (skill == "Ex") {
         newSkill = "Ex";
     }
+    else if (skill == "Skill1" && targetBG >= 2) {
+        newSkill = "GearPublic";
+    }
     else if (skill == "Skill1") {
         newSkill = "Public";
+    }
+    else if (skill == "Skill2" && targetUe >= 2) {
+        newSkill = "WeaponPassive";
     }
     else if (skill == "Skill2") {
         newSkill = "Passive"
     }
     else if (skill == "Skill3") {
-        newSkill = "WeaponPassive";
-    }
-    else if (skill == "Skill4") {
         newSkill = "ExtraPassive";
     }
     let skillObj = GetSkillObject(charId, newSkill);
@@ -4005,6 +4107,8 @@ function charDataFromModal(charId) {
     charData.target.gear2 = document.getElementById("input_gear2_target").value;
     charData.current.gear3 = document.getElementById("input_gear3_current").value;
     charData.target.gear3 = document.getElementById("input_gear3_target").value;
+    charData.current.bond_gear = document.getElementById("input_bond_gear_current").value;
+    charData.target.bond_gear = document.getElementById("input_bond_gear_target").value;
 
     charData.current.book_hp = document.getElementById("input_book_hp_current").value;
     charData.target.book_hp = document.getElementById("input_book_hp_target").value;
@@ -4074,6 +4178,7 @@ function populateCharResources(charId) {
     let mainartisWrapper = document.getElementById('char-mainartis-wrapper');
     let subartisWrapper = document.getElementById('char-subartis-wrapper');
     let booksWrapper = document.getElementById('char-books-wrapper');
+    let giftsWrapper = document.getElementById('char-gifts-wrapper');
     let bdWrapper = document.getElementById('char-bds-wrapper');
     let tnWrapper = document.getElementById('char-tns-wrapper');
 
@@ -4088,6 +4193,10 @@ function populateCharResources(charId) {
     while (booksWrapper.children.length > 0) {
         booksWrapper.children[0]._tippy.destroy();
         booksWrapper.children[0].remove();
+    }
+    while (giftsWrapper.children.length > 0) {
+        giftsWrapper.children[0]._tippy.destroy();
+        giftsWrapper.children[0].remove();
     }
     while (bdWrapper.children.length > 0) {
         bdWrapper.children[0]._tippy.destroy();
@@ -4125,7 +4234,10 @@ function populateCharResources(charId) {
                 if (matName[2] === "_") {
                     extraClassName = " char-resource-rarity-" + matName[3];
                 }
-                else if (matName.substring(0, 4) === 'Book') {
+                else if (
+                    matName.substring(0, 4) === 'Book'
+                    || key % 5000 < 100
+                ) {
                     extraClassName = " char-resource-rarity-3";
                 }
                 else {
@@ -4139,8 +4251,12 @@ function populateCharResources(charId) {
 
                 if (matName.includes("BD") || matName.includes("TN")) {
                     resourceImg.src = "icons/SchoolMat/" + matName + ".webp";
-                } else if (matName.includes("Book")) {
+                }
+                else if (matName.includes("Book")) {
                     resourceImg.src = "icons/Books/" + matName + ".webp";
+                }
+                else if (key % 5000 < 100) {
+                    resourceImg.src = "icons/Gifts/" + matName + ".png";
                 }
                 else {
                     resourceImg.src = "icons/Artifact/" + matName + ".webp";
@@ -4161,6 +4277,9 @@ function populateCharResources(charId) {
                 }
                 else if (matName.includes("Book")) {
                     booksWrapper.appendChild(wrapDiv);
+                }
+                else if (key % 5000 < 100) {
+                    giftsWrapper.appendChild(wrapDiv);
                 }
                 else if (matName.includes(mainMat)) {
                     mainartisWrapper.appendChild(wrapDiv);
@@ -4509,6 +4628,7 @@ function openResourceModal() {
         document.getElementById("table-parent-1").style.display = "none";
         document.getElementById("table-parent-2").style.display = "none";
         document.getElementById("table-parent-3").style.display = "none";
+        document.getElementById("table-parent-7").style.display = "none";
         document.getElementById("other-resource-wrapper").style.display = "none";
 
         openDelay = 2500;
@@ -4534,9 +4654,12 @@ function openResourceModal() {
                 document.getElementById("table-parent-3").style.display = "";
             }, 3000);
             setTimeout(() => {
+                document.getElementById("table-parent-7").style.display = "";
+            }, 4000);
+            setTimeout(() => {
                 document.getElementById("other-resource-wrapper").style.display = "";
                 hideEmpty();
-            }, 4000);
+            }, 5000);
         }
 
         updateAggregateCount();
@@ -5009,10 +5132,12 @@ function hideEmpty() {
     var resourceTable = document.getElementById("school-mat-table");
     var artifactTable1 = document.getElementById("artifact-table-1");
     var artifactTable2 = document.getElementById("artifact-table-2");
+    var giftTable = document.getElementById("gift-table");
 
     hideEmptyCells(resourceTable);
     hideEmptyCells(artifactTable1);
     hideEmptyCells(artifactTable2);
+    hideEmptyCells(giftTable);
 
     hideEmptyCell("XP_1");
     hideEmptyCell("XP_2");
@@ -5072,7 +5197,23 @@ function hideEmptyCell(id) {
     }
 }
 
-function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, parent, reorder, type, imgLoc, skip, stringLangPrefix) {
+function createTable({
+    id,
+    columns,
+    colOffset,
+    rows,
+    rowOffset,
+    tableNavigation,
+    parent,
+    reorder,
+    type,
+    imgLoc,
+    skip,
+    stringLangPrefix,
+    lablingMethod,
+    inputNamingMethod,
+    firstMatId
+}) {
 
     const newTable = document.createElement("table");
     newTable.className = "resource-table";
@@ -5101,42 +5242,67 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
                 cellCombination = columns[col - 1] + "_" + rows[row];
             }
 
-            if (col == 0) {
-                if (language != "En" && language != "Kr" && language != "Th" && language != "Jp" && language != "Cn") {
-                    let localisedName = mLocalisations[language]?.Data[rows[row].replace(/ /g, '')];
-                    if (localisedName) {
-                        newCell.innerText = localisedName;
-                    }
-                    else {
-                        newCell.innerText = rows[row];
-                    }
+            // Check for a Label cell
+            if (lablingMethod !== 'none' && col == 0) {
+                if (row > 0 && lablingMethod === 'first-row-only') {
+                    newCell.innerText = '';
+                } else if (
+                    language != "En"
+                    && language != "Kr"
+                    && language != "Th"
+                    && language != "Jp"
+                    && language != "Cn"
+                ) {
+                    const labelSourceString = lablingMethod === 'first-row-only'
+                        ? `${stringLangPrefix}table`
+                        : rows[row];
+
+                    const stringId = labelSourceString.replace(/ /g, '');
+                    const localisedName = mLocalisations[language]?.Data[stringId];
+
+                    newCell.innerText = localisedName ?? labelSourceString;
                 }
                 else {
-                    newCell.innerText = GetLanguageString(stringLangPrefix + rows[row].toLowerCase().replace(/ /g, ''));
+                    const labelSourceString = lablingMethod === 'first-row-only'
+                        ? `${stringLangPrefix}table`
+                        : `${stringLangPrefix}${rows[row]}`;
+                    const stringId = labelSourceString.toLowerCase().replace(/ /g, '');
+
+                    newCell.innerText = GetLanguageString(stringId);
                 }
                 newCell.style.paddingLeft = "8px";
             }
+            // Otherwise it's an input cell
             else if (!(skip && skip.includes(cellCombination))) {
+                let inputName = null;
                 const newImg = document.createElement("img");
                 newImg.draggable = false;
                 newImg.className = type + "-icon";
                 newImg.loading = "lazy";
-                if (reorder) {
-                    newImg.src = (imgLoc + rows[row] + "_" + columns[col - 1] + "_small.webp").replace(/ /g, '');
+
+                if (inputNamingMethod === 'material-id' && typeof firstMatId === 'number') {
+                    // column indexing includes the label column, so this serves as an adjustment
+                    const labelColumnOffset = lablingMethod !== 'none' ? 1 : 0;
+                    // Every cell from left to right, top to bottom, increases result id by 1
+                    const matId = firstMatId + col - labelColumnOffset + (columns.length - labelColumnOffset) * row + row;
+                    inputName = matLookup.get(matId);
+
+                    newImg.src = (`${imgLoc}${inputName}.png`).replace(/ /g, '');
+                }
+                else if (reorder) {
+                    inputName = rows[row] + "_" + columns[col - 1];
+                    newImg.src = (imgLoc + inputName + "_small.webp").replace(/ /g, '');
                 }
                 else {
-                    newImg.src = (imgLoc + columns[col - 1] + "_" + rows[row] + "_small.webp").replace(/ /g, '');
+                    inputName = columns[col - 1] + "_" + rows[row];
+                    newImg.src = (imgLoc + inputName + "_small.webp").replace(/ /g, '');
                 }
 
                 const newP = document.createElement("p");
                 newP.className = type + "-count-text";
                 //newP.id = id + "-p_" + cellId;
-                if (reorder) {
-                    newP.id = (rows[row] + "_" + columns[col - 1]).replace(/ /g, '');
-                }
-                else {
-                    newP.id = (columns[col - 1] + "_" + rows[row]).replace(/ /g, '');
-                }
+
+                newP.id = (inputName).replace(/ /g, '');
 
                 let matFound = matLookup.reverseMap[newP.id];
                 if (matFound) {
@@ -5165,12 +5331,9 @@ function createTable(id, columns, colOffset, rows, rowOffset, tableNavigation, p
                     event.target.className = "resource-input";
                     event.target.parentElement.classList.remove("focused");
                 })
-                if (reorder) {
-                    newInput.id = ("input-" + rows[row] + "_" + columns[col - 1]).replace(/ /g, '');
-                }
-                else {
-                    newInput.id = ("input-" + columns[col - 1] + "_" + rows[row]).replace(/ /g, '');
-                }
+
+                newInput.id = ("input-" + inputName).replace(/ /g, '');
+
                 if (matLookup.revGet(newP.id)) {
                     tableNavigation[row + rowOffset][col + colOffset] = newInput.id;
                 }
@@ -5685,6 +5848,8 @@ function calculateCharResources(charData, output) {
     calcGearCost(charObj, charData.current?.gear2, charData.target?.gear2, 2, charMatDict);
     calcGearCost(charObj, charData.current?.gear3, charData.target?.gear3, 3, charMatDict);
 
+    calcBondGearCost(charObj, charData.current?.bond_gear, charData.target?.bond_gear, charMatDict);
+
     calcBookCost(charObj, charData.current?.book_hp, charData.target?.book_hp, 'HP', charMatDict);
     calcBookCost(charObj, charData.current?.book_atk, charData.target?.book_atk, 'ATK', charMatDict);
     calcBookCost(charObj, charData.current?.book_heal, charData.target?.book_heal, 'Heal', charMatDict);
@@ -5896,6 +6061,46 @@ function calcGearCost(charObj, gear, gearTarget, slotNum, matDict) {
         }
     }
 
+}
+
+function calcBondGearCost(charObj, gear, gearTarget, matDict) {
+    const costFloorLevel = 1;
+    gear = Math.max(parseInt(gear), costFloorLevel);
+    gearTarget = parseInt(gearTarget);
+
+    // by this logic, gear should never be less than 1
+    if (gear && gearTarget > gear) {
+        const gearMat = charObj.Gear?.TierUpMaterial;
+        const gearMatAmount = charObj.Gear?.TierUpMaterialAmount;
+
+        if (!gearMat || !gearMatAmount) {
+            return;
+        }
+
+        for (let upgradedLevel = gear; upgradedLevel < gearTarget; upgradedLevel++) {
+            const matCostIndex = upgradedLevel - costFloorLevel;
+            const lvlMat = gearMat[matCostIndex];
+            const lvlMatAmount = gearMatAmount[matCostIndex];
+
+
+            for (let matIndex = 0; matIndex < lvlMat.length; matIndex++) {
+                const matId = lvlMat[matIndex];
+
+                if (!matDict[matId]) {
+                    matDict[matId] = 0;
+                }
+                matDict[matId] += lvlMatAmount[matIndex];
+            }
+
+            if (!matDict["Credit"]) {
+                matDict["Credit"] = 0;
+            }
+
+            matDict["Credit"] += misc_data.bond_gear_credit_cost[matCostIndex];
+        }
+
+
+    }
 }
 
 function calcBookCost(charObj, book, bookTarget, bookType, matDict) {
@@ -6896,6 +7101,8 @@ function OpenBulkModal() {
     document.getElementById("bulk-input_gear2_target").value = "";
     document.getElementById("bulk-input_gear3_current").value = "";
     document.getElementById("bulk-input_gear3_target").value = "";
+    document.getElementById("bulk-input_bond_gear_current").value = "";
+    document.getElementById("bulk-input_bond_gear_target").value = "";
 
     document.getElementById("bulk-input_book_hp_current").value = "";
     document.getElementById("bulk-input_book_hp_target").value = "";
@@ -6905,6 +7112,7 @@ function OpenBulkModal() {
     document.getElementById("bulk-input_book_heal_target").value = "";
 
     modalStars = { star: 0, star_target: 0, ue: 0, ue_target: 0 };
+    modalHasBondGear = 1;
     updateBulkStarDisplays("", true);
 
     modalOpen = "bulkEditModal";
@@ -6979,6 +7187,8 @@ function ConfirmBulkUpdate() {
     bulkUpdate.target.gear2 = document.getElementById("bulk-input_gear2_target").value;
     bulkUpdate.current.gear3 = document.getElementById("bulk-input_gear3_current").value;
     bulkUpdate.target.gear3 = document.getElementById("bulk-input_gear3_target").value;
+    bulkUpdate.current.bond_gear = document.getElementById("bulk-input_bond_gear_current").value;
+    bulkUpdate.target.bond_gear = document.getElementById("bulk-input_bond_gear_target").value;
 
     bulkUpdate.current.book_hp = document.getElementById("bulk-input_book_hp_current").value;
     bulkUpdate.target.book_hp = document.getElementById("bulk-input_book_hp_target").value;
@@ -7012,7 +7222,6 @@ function ConfirmBulkUpdate() {
 }
 
 function ApplyBulkUpdate(bulkUpdate) {
-
     for (let i = 0; i < bulkChars.length; i++) {
 
         let charData = data.characters.find(obj => { return obj.id == bulkChars[i] });
@@ -7036,6 +7245,21 @@ function ApplyBulkUpdate(bulkUpdate) {
                 else {
                     if (parseInt(ct[params[p]]) < parseInt(cc[params[p]])) {
                         ct[params[p]] = cc[params[p]];
+                    }
+                }
+            }
+
+            if (charData.hasBondGear) {
+                if (uc["bond_gear"]) {
+                    cc["bond_gear"] = uc["bond_gear"];
+                }
+
+                if (ut["bond_gear"]) {
+                    ct["bond_gear"] = Math.max(ut["bond_gear"], cc["bond_gear"]);
+                }
+                else {
+                    if (parseInt(ct["bond_gear"]) < parseInt(cc["bond_gear"])) {
+                        ct["bond_gear"] = cc["bond_gear"];
                     }
                 }
             }
@@ -7849,7 +8073,6 @@ function SortType(type) {
 }
 
 function SwitchCharacter(direction) {
-
     let curChar = document.getElementById("char_" + modalCharID);
 
     let nextCharId;

@@ -27,6 +27,9 @@ let charBoxSize = localStorage.getItem("character_box_size") ?? "5";
 
 fetch('json/skillinfo/en.json?17').then((response) => response.json()).then((json) => {
     charlist = json;
+
+    addMissingDataProperties();
+
     if (nameReady && (data.language == "EN" || data.language == "Id")) {
         ShowNames(charlist);
     }
@@ -106,7 +109,6 @@ $(document).ready(function () {
 
         if (data.characters) {
             DupeCheck();
-            addMissingInvestProperties();
 
             for (let i = 0; i < data.characters.length; i++) {
                 dataCharIndex[data.characters[i].id] = i;
@@ -183,20 +185,45 @@ function DupeCheck() {
 }
 
 function addMissingInvestProperties () {
-    for (const student of data.characters) {
-        // Omitting providing charlist[student.id] in both cases,
-        // because high likelyhood charlist hasn't formed yet
-        const diC = StudentInvestment.Default(),
-            diT = StudentInvestment.DefaultTarget();
+    for (const charData of data.characters) {
+    }
+}
 
-        for (const prop of Object.keys(diT)) {
-            if (typeof student.target[prop] !== 'undefined') {
-                continue;
-            }
+function addMissingDataProperties() {
+    let changesPresent = false;
+    let reloadNeeded = false;
 
-            student.current[prop] = diC[prop];
-            student.target[prop] = diT[prop];
+    for (const charData of data.characters) {
+        const charInfo = charlist[charData.id];
+
+        // Bond Gear check
+        if (typeof charData.hasBondGear === 'undefined') {
+            charData.hasBondGear = typeof charInfo.Gear === 'object' && Object.keys(charInfo.Gear).length > 0;
+            changesPresent = true;
+            reloadNeeded = true;
         }
+
+        // Investments
+        const defaultInvestCurrent = StudentInvestment.Default(charInfo),
+            defaultInvestTarget = StudentInvestment.DefaultTarget(charInfo);
+
+        for (const prop of Object.keys(defaultInvestTarget)) {
+            if (typeof charData.target[prop] === 'undefined') {
+                charData.current[prop] = defaultInvestCurrent[prop];
+                charData.target[prop] = defaultInvestTarget[prop];
+                changesPresent = true;
+            }
+        }
+    }
+
+    if (!changesPresent) {
+        return;
+    }
+
+    localStorage.setItem("save-data", JSON.stringify(data));
+
+    if (reloadNeeded) {
+        location.reload();
     }
 }
 
@@ -409,13 +436,22 @@ function updateInfoDisplay(charId, idInject, charData) {
 
     var skillTarget = `${formatLevel("Ex", charData.target?.ex)}${formatLevel("Other", charData.target?.basic)}${formatLevel("Other", charData.target?.passive)}${formatLevel("Other", charData.target?.sub)}`;
 
-    var gearCurrent = `${formatLevel("Gear", charData.current?.gear1)}${formatLevel("Gear", charData.current?.gear2)}${formatLevel("Gear", charData.current?.gear3)}`;
+    // Bond Gear level is not shown in any way for characters that don't have it
+    var gearCurrent = `${formatLevel("Gear", charData.current?.gear1)}${formatLevel("Gear", charData.current?.gear2)}${formatLevel("Gear", charData.current?.gear3)}${charData.hasBondGear ? formatLevel("BondGear", charData.current?.bond_gear) : ''}`;
 
-    var gearTarget = `${formatLevel("Gear", charData.target?.gear1)}${formatLevel("Gear", charData.target?.gear2)}${formatLevel("Gear", charData.target?.gear3)}`;
+    var gearTarget = `${formatLevel("Gear", charData.target?.gear1)}${formatLevel("Gear", charData.target?.gear2)}${formatLevel("Gear", charData.target?.gear3)}${charData.hasBondGear ? formatLevel("BondGear", charData.target?.bond_gear) : ''}`;
 
-    var bookCurrent = `${formatLevel("Book", charData.current?.book_hp)} ${formatLevel("Book", charData.current?.book_atk)} ${formatLevel("Book", charData.current?.book_heal)}`;
+    // Hiding Limit Break display to avoid clutter, if char has no LB applied/planned
+    if (charData.target?.book_hp == "0" && charData.target?.book_atk == "0" && charData.target?.book_heal == "0") {
+        var bookCurrent = '';
 
-    var bookTarget = `${formatLevel("Book", charData.target?.book_hp)} ${formatLevel("Book", charData.target?.book_atk)} ${formatLevel("Book", charData.target?.book_heal)}`;
+        var bookTarget = '';
+    // Otherwise showing the full display as any other
+    } else {
+        var bookCurrent = `${formatLevel("Book", charData.current?.book_hp)} ${formatLevel("Book", charData.current?.book_atk)} ${formatLevel("Book", charData.current?.book_heal)}`;
+
+        var bookTarget = `${formatLevel("Book", charData.target?.book_hp)} ${formatLevel("Book", charData.target?.book_atk)} ${formatLevel("Book", charData.target?.book_heal)}`;
+    }
 
     document.getElementById(charId + idInject + "-skill-current").innerHTML = skillCurrent;
     if (skillCurrent != skillTarget) {

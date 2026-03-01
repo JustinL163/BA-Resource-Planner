@@ -189,6 +189,42 @@ const matLookup = new TwoWayMap({
     4102: "TN_3_Wildhunt",
     4103: "TN_4_Wildhunt",
 
+    5000: "Wavecat_Pillow",
+    5001: "Peroro_Wheel",
+    5002: "A-Pods_Pro",
+    5003: "Forbidden_Love",
+    5004: "Hitgirls_Gaming_Magazine",
+    5005: "Cherry-Rose_Lip_Gloss",
+    5006: "Glassy_Glow_BB_Cream",
+    5007: "Military_Camo_Foundation_Trio",
+    5008: "Luxury_Cookie_Set",
+    5009: "Guns_Charm_and_Zeal",
+    5010: "Astronomical_Telescope",
+    5011: "Gamegirl_Color_Replica",
+    5012: "MX-Ration_C-Type_Dessert_Flavor",
+    5013: "Matcha_Ramune",
+    5014: "Jellies_Cushion",
+    5015: "Jumping_Detective_Rabbit",
+    5016: "Ring_Bit",
+    5017: "Buried_Treasure_Map",
+    5018: "Cosplayer_Coke-Bottle_Glasses",
+    5019: "World's_Most_Useless_Gadget",
+    5020: "Teddy_Bear_with_Bow",
+    5021: "Movie_Ticket",
+    5022: "Thirty-Color_Paint_Set",
+    5023: "Classical_Poetry_Anthology",
+    5024: "Cute_Dishware_Set",
+    5025: "Brain_Teaser_Puzzle_Cube",
+    5026: "Large_Whole_Cake",
+    5027: "Luxury_Buffet_Ticket",
+    5028: "Potted_Bug-Eating_Plant",
+    5029: "Extravagant_Gilded_Jar_of_Greed",
+    5030: "Wind-Up_Music_Box",
+    5031: "Embroidered_Handkerchief",
+    5032: "Encyclopedia",
+    5033: "Health_Food_Supplement",
+    5034: "Summer_Floaty",
+
     9999: "Secret"
 });
 
@@ -208,6 +244,7 @@ var rowColours = {
     "Nimrud": "#67e4ef66", "Mandragora": "#a1ede566", "Rohonc": "#c9ab9366", "Aether": "#ca96e066", "Antikythera": "#f7e28866",
     "Voynich": "#84b28066", "Haniwa": "#e7bef466", "Baghdad": "#d179a066", "Totem": "#b77e6166", "Fleece": "#fdf76966", "Okiku": "#ff88294a", "Atlantis": "#ecff2933",
     "Colgante": "#c2cdfe70", "Mystery": "#305c894a", "RomanDice": "#71bec566", "Quimbaya": "#e3df7466", "Rocket": "#c0f2f366",
+    "Gifts": "#755433",
     "Gloves": "#84848436", "Bag": "#84848436", "Hairpin": "#84848436", "Watch": "#84848436"
 };
 
@@ -232,6 +269,7 @@ class Student {
         this.target = StudentInvestment.DefaultTarget(characterInfo);
         this.eleph = ElephInfo.Default();
         this.enabled = true;
+        this.hasBondGear = typeof characterInfo.Gear === 'object' && Object.keys(characterInfo.Gear).length > 0;
     }
 
     static FromVersion1Data(version1) {
@@ -288,7 +326,7 @@ class ElephInfo {
 
 class StudentInvestment {
 
-    constructor(level, bond, star, ue, ue_level, ex, basic, passive, sub, gear1, gear2, gear3, book_hp, book_atk, book_heal) {
+    constructor(level, bond, star, ue, ue_level, ex, basic, passive, sub, gear1, gear2, gear3, bond_gear, book_hp, book_atk, book_heal) {
         this.level = level;
         this.bond = bond;
         this.star = star;
@@ -301,6 +339,7 @@ class StudentInvestment {
         this.gear1 = gear1;
         this.gear2 = gear2;
         this.gear3 = gear3;
+        this.bond_gear = bond_gear;
         this.book_hp = book_hp;
         this.book_atk = book_atk;
         this.book_heal = book_heal;
@@ -322,6 +361,7 @@ class StudentInvestment {
             0,
             0,
             0,
+            0,
 
             0,
             0,
@@ -340,13 +380,14 @@ class StudentInvestment {
 
         defaultTarget.bond = inputValidation.bond_target.default;
         defaultTarget.level = inputValidation.level_target.default;
-        defaultTarget.star = characterInfo?.BaseStar ?? 1;
+        defaultTarget.star = characterInfo?.StarGrade ?? 1;
         defaultTarget.ue = 0;
         defaultTarget.ue_level = inputValidation.ue_level_target.default;
 
         defaultTarget.gear1 = inputValidation.gear1_target.default;
         defaultTarget.gear2 = inputValidation.gear2_target.default;
-        defaultTarget.gear2 = inputValidation.gear2_target.default;
+        defaultTarget.gear3 = inputValidation.gear3_target.default;
+        defaultTarget.bond_gear = inputValidation.bond_gear_target.default;
 
         defaultTarget.book_hp = inputValidation.book_hp_target.default;
         defaultTarget.book_atk = inputValidation.book_atk_target.default;
@@ -380,6 +421,14 @@ const navMap = {
         ["-", "-", "-", "-", "|", "-", "-", "-", "-"],
         ["-", "-", "-", "-", "|", "-", "-", "-", "-"],
         ["-", "-", "-", "-", "|", "-", "-", "-", "-"],
+        ["=", "=", "=", "=", "+", "=", "=", "=", "="],
+    ],
+    "giftTable": [
+        ["-", "-", "-", "-", "-", "-", "-"],
+        ["-", "-", "-", "-", "-", "-", "-"],
+        ["-", "-", "-", "-", "-", "-", "-"],
+        ["-", "-", "-", "-", "-", "-", "-"],
+        ["-", "-", "-", "-", "-", "-", "-"],
     ],
     "gearTable": [
         ["-", "-", "-", "-", "-", "-", "-", "-", "-"],
@@ -976,7 +1025,7 @@ const inputValidation = {
         },
         "navigation": "direct",
         "Up": "input_gear1_current",
-        "Left": "input_gear3_current",
+        "Left": "input_bond_gear_current",
         "Down": "input_gear2_current",
         "Right": "input_gear2_target"
     },
@@ -1012,7 +1061,7 @@ const inputValidation = {
         },
         "navigation": "direct",
         "Up": "bulk-input_gear1_current",
-        "Left": "bulk-input_gear3_current",
+        "Left": "bulk-input_bond_gear_current",
         "Down": "bulk-input_gear2_current",
         "Right": "bulk-input_gear2_target"
     },
@@ -1117,7 +1166,7 @@ const inputValidation = {
         "Up": "input_gear2_target",
         "Left": "input_gear2_current",
         "Down": "input_gear3_target",
-        "Right": "input_gear1_target"
+        "Right": "input_bond_gear_current"
     },
     "gear3_target": {
         id: "input_gear3_target",
@@ -1153,8 +1202,8 @@ const inputValidation = {
         "navigation": "direct",
         "Up": "input_gear3_current",
         "Left": "input_gear2_target",
-        "Down": "input_book_hp_current",
-        "Right": "input_book_hp_current",
+        "Down": "input_bond_gear_current",
+        "Right": "input_bond_gear_target",
     },
     "bulk-gear3": {
         id: "bulk-input_gear3_current",
@@ -1169,7 +1218,7 @@ const inputValidation = {
         "Up": "bulk-input_gear2_target",
         "Left": "bulk-input_gear2_current",
         "Down": "bulk-input_gear3_target",
-        "Right": "bulk-input_gear1_target"
+        "Right": "bulk-input_bond_gear_current"
     },
     "bulk-gear3_target": {
         id: "bulk-input_gear3_target",
@@ -1190,8 +1239,113 @@ const inputValidation = {
         "navigation": "direct",
         "Up": "bulk-input_gear3_current",
         "Left": "bulk-input_gear2_target",
+        "Down": "bulk-input_bond_gear_current",
+        "Right": "bulk-input_bond_gear_target",
+    },
+    "bond_gear": {
+        id: "input_bond_gear_current",
+        location: "characterModal",
+        min: "0",
+        max: "2",
+        default: "0",
+        name: "Bond Gear",
+        requisite: {
+            "modalHasBondGear": {
+                type: "object",
+                name: "Has Bond Gear",
+                compare: "equal_greater",
+                mode: "threshold",
+                sanitise: true,
+                levels: [
+                    {
+                        required: "1",
+                        max: "2"
+                    },
+                    {
+                        max: "0"
+                    }
+                ]
+            }
+        },
+        "navigation": "direct",
+        "Up": "input_gear3_target",
+        "Left": "input_gear3_current",
+        "Down": "input_bond_gear_target",
+        "Right": "input_gear1_target"
+    },
+    "bond_gear_target": {
+        id: "input_bond_gear_target",
+        location: "characterModal",
+        min: "0",
+        max: "2",
+        default: "0",
+        name: "Bond Gear Target",
+        requisite: {
+            "modalHasBondGear": {
+                type: "object",
+                name: "Has Bond Gear",
+                compare: "equal_greater",
+                mode: "threshold",
+                sanitise: true,
+                levels: [
+                    {
+                        required: "1",
+                        max: "2"
+                    },
+                    {
+                        max: "0"
+                    }
+                ]
+            },
+            "bond_gear": {
+                type: "input",
+                compare: "equal_greater",
+                mode: "direct",
+                sanitise: true
+            }
+        },
+        "navigation": "direct",
+        "Up": "input_bond_gear_current",
+        "Left": "input_gear3_target",
+        "Down": "input_book_hp_current",
+        "Right": "input_book_hp_current"
+    },
+    "bulk-bond_gear": {
+        id: "bulk-input_bond_gear_current",
+        location: "bulkEditModal",
+        min: "0",
+        max: "2",
+        default: "0",
+        blankable: true,
+        name: "Bond Gear",
+        requisite: {},
+        "navigation": "direct",
+        "Up": "bulk-input_gear3_target",
+        "Left": "bulk-input_gear3_current",
+        "Down": "bulk-input_bond_gear_target",
+        "Right": "bulk-input_gear1_target"
+    },
+    "bulk-bond_gear_target": {
+        id: "bulk-input_bond_gear_target",
+        location: "bulkEditModal",
+        min: "0",
+        max: "2",
+        default: "0",
+        blankable: true,
+        name: "Bond Gear Target",
+        requisite: {
+            "bulk-bond_gear": {
+                type: "input",
+                compare: "equal_greater",
+                mode: "direct",
+                sanitise: true
+            }
+        },
+        "navigation": "direct",
+        "Up": "bulk-input_bond_gear_current",
+        "Left": "bulk-input_gear3_target",
         "Down": "bulk-input_book_hp_current",
-        "Right": "bulk-input_book_hp_current",
+        "Right": "bulk-input_book_hp_current"
     },
     "book_hp": {
         id: "input_book_hp_current",
@@ -1219,8 +1373,8 @@ const inputValidation = {
             }
         },
         "navigation": "direct",
-        "Up": "input_gear3_target",
-        "Left": "input_gear3_target",
+        "Up": "input_bond_gear_target",
+        "Left": "input_bond_gear_target",
         "Down": "input_book_hp_target",
         "Right": "input_book_atk_current"
     },
@@ -1271,8 +1425,8 @@ const inputValidation = {
         name: "Max HP Limit Break",
         requisite: {},
         "navigation": "direct",
-        "Up": "bulk-input_gear3_target",
-        "Left": "bulk-input_gear3_target",
+        "Up": "bulk-input_bond_gear_target",
+        "Left": "bulk-input_bond_gear_target",
         "Down": "bulk-input_book_hp_target",
         "Right": "bulk-input_book_atk_current"
     },
@@ -2686,6 +2840,251 @@ const inputValidation = {
         "min": "0",
         "max": "9999",
         "navigation": "resourceTable"
+    },
+    "Wavecat_Pillow": {
+        "id": "input-Wavecat_Pillow",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Peroro_Wheel": {
+        "id": "input-Peroro_Wheel",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "A-Pods_Pro": {
+        "id": "input-A-Pods_Pro",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Forbidden_Love": {
+        "id": "input-Forbidden_Love",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Hitgirls_Gaming_Magazine": {
+        "id": "input-Hitgirls_Gaming_Magazine",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Cherry-Rose_Lip_Gloss": {
+        "id": "input-Cherry-Rose_Lip_Gloss",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Glassy_Glow_BB_Cream": {
+        "id": "input-Glassy_Glow_BB_Cream",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Military_Camo_Foundation_Trio": {
+        "id": "input-Military_Camo_Foundation_Trio",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Luxury_Cookie_Set": {
+        "id": "input-Luxury_Cookie_Set",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Guns_Charm_and_Zeal": {
+        "id": "input-Guns_Charm_and_Zeal",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Astronomical_Telescope": {
+        "id": "input-Astronomical_Telescope",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Gamegirl_Color_Replica": {
+        "id": "input-Gamegirl_Color_Replica",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "MX-Ration_C-Type_Dessert_Flavor": {
+        "id": "input-MX-Ration_C-Type_Dessert_Flavor",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Matcha_Ramune": {
+        "id": "input-Matcha_Ramune",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Jellies_Cushion": {
+        "id": "input-Jellies_Cushion",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Jumping_Detective_Rabbit": {
+        "id": "input-Jumping_Detective_Rabbit",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Ring_Bit": {
+        "id": "input-Ring_Bit",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Buried_Treasure_Map": {
+        "id": "input-Buried_Treasure_Map",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Cosplayer_Coke-Bottle_Glasses": {
+        "id": "input-Cosplayer_Coke-Bottle_Glasses",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "World's_Most_Useless_Gadget": {
+        "id": "input-World's_Most_Useless_Gadget",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Teddy_Bear_with_Bow": {
+        "id": "input-Teddy_Bear_with_Bow",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Movie_Ticket": {
+        "id": "input-Movie_Ticket",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Thirty-Color_Paint_Set": {
+        "id": "input-Thirty-Color_Paint_Set",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Classical_Poetry_Anthology": {
+        "id": "input-Classical_Poetry_Anthology",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Cute_Dishware_Set": {
+        "id": "input-Cute_Dishware_Set",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Brain_Teaser_Puzzle_Cube": {
+        "id": "input-Brain_Teaser_Puzzle_Cube",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Large_Whole_Cake": {
+        "id": "input-Large_Whole_Cake",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Luxury_Buffet_Ticket": {
+        "id": "input-Luxury_Buffet_Ticket",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Potted_Bug-Eating_Plant": {
+        "id": "input-Potted_Bug-Eating_Plant",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Extravagant_Gilded_Jar_of_Greed": {
+        "id": "input-Extravagant_Gilded_Jar_of_Greed",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Wind-Up_Music_Box": {
+        "id": "input-Wind-Up_Music_Box",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Embroidered_Handkerchief": {
+        "id": "input-Embroidered_Handkerchief",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Encyclopedia": {
+        "id": "input-Encyclopedia",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Health_Food_Supplement": {
+        "id": "input-Health_Food_Supplement",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
+    },
+    "Summer_Floaty": {
+        "id": "input-Summer_Floaty",
+        "location": "resourceModal",
+        "min": "0",
+        "max": "9999",
+        "navigation": "giftTable"
     },
     "Credit": {
         "id": "input-Credit",

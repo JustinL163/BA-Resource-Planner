@@ -473,6 +473,7 @@ label {
 .content-section-wrapper {
     position: relative;
     display: flex;
+    height: 100%;
     padding: 8px 12px;
     border-radius: 15px;
     background-color: #e6e6ff91;
@@ -927,6 +928,11 @@ div.resource-box.editable.focused p {
 }
 
 .char-artifacts-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.char-othermats-wrapper {
     display: flex;
     justify-content: center;
 }
@@ -1675,13 +1681,30 @@ input.filter-option {
     text-align: center;
 }
 
+#table-parent-1 {
+    width: 100%;
+}
+
 #table-parent-5,
 #table-parent-6 {
     width: 50%;
 }
 
+#table-parent-7 {
+    width: 100%;
+}
+
 #artifact-table-2 tr:first-child td:first-child {
     padding-right: 1.5em;
+}
+
+#gift-table td:not(:first-child) {
+    padding: 0 14px 0 15px;
+}
+
+#gift-table td.empty-resource:not(:hover,.focused) {
+    filter: none;
+    opacity: 0.3;
 }
 
 #languages {
@@ -2069,6 +2092,10 @@ input.filter-option {
         margin: auto;
     }
 
+    #gift-table {
+        margin: auto;
+    }
+
     #gear-table {
         margin: auto;
     }
@@ -2216,6 +2243,11 @@ input.filter-option {
         width: 100%;
     }
 
+
+    .resource-box img.book-icon {
+        width: 100%;
+    }
+
     .resource-table tr td:first-child {
         font-size: 10px;
         min-width: 60px;
@@ -2281,6 +2313,10 @@ input.filter-option {
         font-size: 1em;
     }
 
+    #gift-table td:not(:first-child) {
+        padding: 0;
+    }
+
     #school-mat-table,
     #artifact-table-1,
     #artifact-table-2 {
@@ -2335,10 +2371,6 @@ input.filter-option {
 
     #eleph-section .modal-content-section {
         flex: 1 1 40%;
-    }
-
-    #eleph-section .content-section-wrapper {
-        height: 100%;
     }
 
     .gear-display {
