@@ -19,7 +19,7 @@ try {
 }
 
 if (data == null) {
-    data = { exportVersion: 2, characters: [], character_order: [], disabled_characters: [], owned_materials: {}, groups: fastDefaultGroups, language: "EN", level_cap: 87 };
+    data = { exportVersion: 2, characters: [], character_order: [], disabled_characters: [], owned_materials: {}, groups: fastDefaultGroups, language: "EN", level_cap: 90 };
     localStorage.setItem("save-data", JSON.stringify(data));
 }
 
