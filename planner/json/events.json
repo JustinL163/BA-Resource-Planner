@@ -1,8 +1,1522 @@
 {
     "event_order": [
-        "art-for-whom"
+        "magical-girl-trinity"
     ],
     "events": {
+        "magical-girl-trinity": {
+            "active": true,
+            "icon": "magical_girl_trinity_event_icon.jpg",
+            "display_name": "Magical Girl Heavy Caliber ～Era's Ambition and the Right to Justice～",
+            "reset_time": 1773082800,
+            "start_time": 1773108000,
+            "end_time": 1774317599,
+            "maint_hours": 6,
+            "available_targets": [
+                "Shop",
+                "Materials",
+                "Currency",
+                "Manual"
+            ],
+            "currency_targets": [
+                "Event_Point"
+            ],
+            "event_point_target": 15000,
+            "currencies": {
+                "Event_Point": {
+                    "icon": "Event_Point.png",
+                    "shortname": "Event Point",
+                    "source": "StageDrop",
+                    "clear": 0,
+                    "bonus_units": [
+                        {
+                            "id": "10129",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "16003",
+                            "bonus": 0.2
+                        },
+                        {
+                            "id": "10013",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10035",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10124",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10012",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20051",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "26004",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20003",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10020", 
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "16011", 
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "10073", 
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "10077", 
+                            "bonus": 0.1
+                        }
+                    ]
+                },
+                "Amusement_Park_Ticket": {
+                    "icon": "Amusement_Park_Ticket.png",
+                    "shortname": "Amusement Park Ticket",
+                    "source": "StageDrop",
+                    "clear": 19705,
+                    "bonus_units": [
+                        {
+                            "id": "10129",
+                            "bonus": 0.30
+                        },
+                        {
+                            "id": "16018",
+                            "bonus": 0.20
+                        },
+                        {
+                            "id": "10068",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10073",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16005",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "26004",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20004",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10077",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "13003",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "10035",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "10013",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "16013",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "26015",
+                            "bonus": 0.1
+                        }
+                    ]
+                },
+                "Popcorn_Bucket": {
+                    "icon": "Popcorn_Bucket.png",
+                    "shortname": "Popcorn Bucket",
+                    "source": "StageDrop",
+                    "clear": 18110,
+                    "bonus_units": [
+                        {
+                            "id": "20051",
+                            "bonus": 0.3
+                        },
+                        {
+                            "id": "16018",
+                            "bonus": 0.20
+                        },
+                        {
+                            "id": "16003",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "13003",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16011",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16013",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10020",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20003",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "26015",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10124",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "16005",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "20004",
+                            "bonus": 0.1
+                        }
+                    ]
+                },
+                "Borderland_Coin": {
+                    "icon": "Borderland_Coin.png",
+                    "shortname": "Borderland Coin",
+                    "source": "ShopPurchase",
+                    "pull_currency": "Event_Point",
+                    "bonus_units": []
+                }
+            },
+            "shops": {
+                "Amusement_Park_Ticket": [
+                    {
+                        "type": "XpReport",
+                        "id": "XP_1",
+                        "count": 90,
+                        "cost": 1,
+                        "amount": 3
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_2",
+                        "count": 95,
+                        "cost": 3
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_3",
+                        "count": 30,
+                        "cost": 12
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_4",
+                        "count": 12,
+                        "cost": 60
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3020",
+                        "count": 30,
+                        "cost": 10
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3021",
+                        "count": 18,
+                        "cost": 30
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3022",
+                        "count": 12,
+                        "cost": 100
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3023",
+                        "count": 4,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Material",
+                        "id": "170",
+                        "count": 45,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "171",
+                        "count": 22,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "172",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "173",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "240",
+                        "count": 45,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "241",
+                        "count": 22,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "242",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "243",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "A-Pods_Pro",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Jellies_Cushion",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Hitgirls_Gaming_Magazine",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Forbidden_Love",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Stylish_Comb",
+                        "count": 1,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "My_Event085_Giveawaytable",
+                        "count": 1,
+                        "cost": 2000,
+                        "limited": true
+                    }
+                ],
+                "Popcorn_Bucket": [
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_1",
+                        "count": 180,
+                        "cost": 1
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_2",
+                        "count": 95,
+                        "cost": 4
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_3",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_4",
+                        "count": 12,
+                        "cost": 60
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4020",
+                        "count": 50,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4021",
+                        "count": 38,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4022",
+                        "count": 25,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4023",
+                        "count": 15,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "180",
+                        "count": 45,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "181",
+                        "count": 22,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "182",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "183",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "210",
+                        "count": 45,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "211",
+                        "count": 22,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "212",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "213",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Peroro_Wheel",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "World's_Most_Useless_Gadget",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Thrice-a-day_Dumbbell_Set",
+                        "count": 1,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "My_Event085_Helmetcleankit",
+                        "count": 1,
+                        "cost": 2000,
+                        "limited": true
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Streets_of_Thugs_Volume_1",
+                        "count": 1,
+                        "cost": 300
+                    },
+                ],
+                "Event_Point": [
+                    {
+                        "type": "EventCurrency",
+                        "id": "Borderland_Coin",
+                        "count": 0,
+                        "overflow": true,
+                        "cost": 300,
+                        "overflow_cap": 999
+                    }
+                ]
+            },
+            "stage_groups": [
+                "1-4",
+                "5-8",
+                "9-12"
+            ],
+            "stages": [
+                {
+                    "type": "Story",
+                    "level": 10,
+                    "number": 1,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 10,
+                        "Amusement_Park_Ticket": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 11,
+                    "number": 2,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 10,
+                        "Popcorn_Bucket": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 12,
+                    "number": 3,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 10,
+                        "Amusement_Park_Ticket": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 13,
+                    "number": 4,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 10,
+                        "Popcorn_Bucket": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 14,
+                    "number": 5,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 10,
+                        "Amusement_Park_Ticket": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 15,
+                    "number": 6,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 10,
+                        "Popcorn_Bucket": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 16,
+                    "number": 7,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 10,
+                        "Amusement_Park_Ticket": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 17,
+                    "number": 8,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 10,
+                        "Popcorn_Bucket": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 18,
+                    "number": 9,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 10,
+                        "Amusement_Park_Ticket": 10
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 19,
+                    "number": 10,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 10,
+                        "Popcorn_Bucket": 10
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 1,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Event_Point": 150,
+                        "Amusement_Park_Ticket": 100,
+                        "Popcorn_Bucket": 100
+                    },
+                    "drops": {
+                        "Event_Point": 6,
+                        "Amusement_Park_Ticket": 6,
+                        "Popcorn_Bucket": 6,
+                        "RomanDice_1": 0.25,
+                        "RomanDice_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 2,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Event_Point": 150,
+                        "Amusement_Park_Ticket": 400,
+                        "Popcorn_Bucket": 200
+                    },
+                    "drops": {
+                        "Event_Point": 6,
+                        "Amusement_Park_Ticket": 9,
+                        "Popcorn_Bucket": 3,
+                        "Nebra_1": 0.25,
+                        "Nebra_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 3,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Event_Point": 150,
+                        "Amusement_Park_Ticket": 200,
+                        "Popcorn_Bucket": 400
+                    },
+                    "drops": {
+                        "Event_Point": 6,
+                        "Amusement_Park_Ticket": 3,
+                        "Popcorn_Bucket": 9,
+                        "Aether_1": 0.25,
+                        "Aether_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 4,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Event_Point": 300
+                    },
+                    "drops": {
+                        "Event_Point": 8,
+                        "Amusement_Park_Ticket": 4,
+                        "Popcorn_Bucket": 4,
+                        "Wolfsegg_1": 0.25,
+                        "Wolfsegg_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 5,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Event_Point": 150,
+                        "Amusement_Park_Ticket": 200,
+                        "Popcorn_Bucket": 200
+                    },
+                    "drops": {
+                        "Event_Point": 5,
+                        "Super_Alloy_Peg": 11,
+                        "Popcorn_Bucket": 11,
+                        "RomanDice_2": 0.25,
+                        "RomanDice_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 6,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Event_Point": 150,
+                        "Amusement_Park_Ticket": 500,
+                        "Popcorn_Bucket": 300
+                    },
+                    "drops": {
+                        "Event_Point": 5,
+                        "Amusement_Park_Ticket": 17,
+                        "Popcorn_Bucket": 5,
+                        "Nebra_2": 0.25,
+                        "Nebra_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 7,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Event_Point": 150,
+                        "Amusement_Park_Ticket": 300,
+                        "Popcorn_Bucket": 500
+                    },
+                    "drops": {
+                        "Event_Point": 5,
+                        "Amusement_Park_Ticket": 5,
+                        "Popcorn_Bucket": 17,
+                        "Aether_2": 0.25,
+                        "Aether_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 8,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Event_Point": 400
+                    },
+                    "drops": {
+                        "Event_Point": 16,
+                        "Amusement_Park_Ticket": 4,
+                        "Popcorn_Bucket": 4,
+                        "Wolfsegg_2": 0.25,
+                        "Wolfsegg_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 9,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Event_Point": 150,
+                        "Amusement_Park_Ticket": 200,
+                        "Popcorn_Bucket": 200
+                    },
+                    "drops": {
+                        "Event_Point": 4,
+                        "Amusement_Park_Ticket": 16,
+                        "Popcorn_Bucket": 16,
+                        "RomanDice_2": 0.25,
+                        "RomanDice_3": 0.12,
+                        "RomanDice_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 10,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Event_Point": 150,
+                        "Amusement_Park_Ticket": 500,
+                        "Popcorn_Bucket": 300
+                    },
+                    "drops": {
+                        "Event_Point": 4,
+                        "Amusement_Park_Ticket": 32,
+                        "Nebra_2": 0.25,
+                        "Nebra_3": 0.12,
+                        "Nebra_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 11,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Event_Point": 150,
+                        "Amusement_Park_Ticket": 300,
+                        "Popcorn_Bucket": 500
+                    },
+                    "drops": {
+                        "Event_Point": 4,
+                        "Popcorn_Bucket": 32,
+                        "Aether_2": 0.25,
+                        "Aether_3": 0.12,
+                        "Aether_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 12,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Event_Point": 500
+                    },
+                    "drops": {
+                        "Event_Point": 32,
+                        "Wolfsegg_2": 0.25,
+                        "Wolfsegg_3": 0.12,
+                        "Wolfsegg_4": 0.021
+                    }
+                },
+                {
+                    "type": "Challenge",
+                    "level": 50,
+                    "number": 1,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "level": 85,
+                    "number": 2,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "level": 90,
+                    "number": 3,
+                    "cost": 5
+                }
+            ],
+            "point_rewards": [
+                {
+                    "points": 10,
+                    "type": "XpReport",
+                    "id": "XP_1",
+                    "count": 20
+                },
+                {
+                    "points": 50,
+                    "type": "XpOrb",
+                    "id": "GXP_1",
+                    "count": 20
+                },
+                {
+                    "points": 100,
+                    "type": "TN_1_Trinity",
+                    "id": "4020",
+                    "count": 7
+                },
+                {
+                    "points": 200,
+                    "type": "TN_2_Trinity",
+                    "id": "4021",
+                    "count": 3
+                },
+                {
+                    "points": 300,
+                    "type": "Eleph",
+                    "id": "16018",
+                    "count": 20            
+                },
+                {
+                    "points": 400,
+                    "type": "XpReport",
+                    "id": "XP_1",
+                    "count": 20
+                },
+                {
+                    "points": 500,
+                    "type": "XpOrb",
+                    "id": "GXP_1",
+                    "count": 20
+                },
+                {
+                    "points": 600,
+                    "type": "TN_1_Trinity",
+                    "id": "4020",
+                    "count": 7
+                },
+                {
+                    "points": 700,
+                    "type": "TN_2_Trinity",
+                    "id": "4021",
+                    "count": 4
+                },
+                {
+                    "points": 800,
+                    "type": "XpReport",
+                    "id": "XP_2",
+                    "count": 20
+                },
+                {
+                    "points": 900,
+                    "type": "XpOrb",
+                    "id": "GXP_2",
+                    "count": 20
+                },
+                {
+                    "points": 1000,
+                    "type": "Eleph",
+                    "id": "16018",
+                    "count": 20
+                },
+                {
+                    "points": 1200,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 5
+                },
+                {
+                    "points": 1400,
+                    "type": "XpOrb",
+                    "id": "GXP_3",
+                    "count": 2
+                },
+                {
+                    "points": 1600,
+                    "type": "TN_1_Trinity",
+                    "id": "4020",
+                    "count": 8
+                },
+                {
+                    "points": 1800,
+                    "type": "TN_2_Trinity",
+                    "id": "4021",
+                    "count": 7
+                },
+                {
+                    "points": 2000,
+                    "type": "Eligma",
+                    "count": 10
+                },
+                {
+                    "points": 2200,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 5
+                },
+                {
+                    "points": 2400,
+                    "type": "XpOrb",
+                    "id": "GXP_3",
+                    "count": 2
+                },
+                {
+                    "points": 2600,
+                    "type": "Credit",
+                    "count": 1000000
+                },
+                {
+                    "points": 2800,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 5
+                },
+                {
+                    "points": 3000,
+                    "type": "Eleph",
+                    "id": "16018",
+                    "count": 20
+                },
+                {
+                    "points": 3200,
+                    "type": "XpOrb",
+                    "id": "GXP_3",
+                    "count": 3
+                },
+                {
+                    "points": 3400,
+                    "type": "Credit",
+                    "count": 1000000
+                },
+                {
+                    "points": 3600,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 5
+                },
+                {
+                    "points": 3800,
+                    "type": "XpOrb",
+                    "id": "GXP_3",
+                    "count": 3
+                },
+                {
+                    "points": 4000,
+                    "type": "Eligma",
+                    "count": 10
+                },
+                {
+                    "points": 4200,
+                    "type": "TN_3_Trinity",
+                    "id": "4022",
+                    "count": 4
+                },
+                {
+                    "points": 4400,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 5
+                },
+                {
+                    "points": 4600,
+                    "type": "Credit",
+                    "count": 1500000
+                },
+                {
+                    "points": 4800,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 5
+                },
+                {
+                    "points": 5000,
+                    "type": "Eleph",
+                    "id": "16018",
+                    "count": 20
+                },
+                {
+                    "points": 5500,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 10
+                },
+                {
+                    "points": 6000,
+                    "type": "Eleph",
+                    "id": "16018",
+                    "count": 20
+                },
+                {
+                    "points": 6500,
+                    "type": "Credit",
+                    "count": 1500000
+                },
+                {
+                    "points": 7000,
+                    "type": "TN_3_Trinity",
+                    "id": "4022",
+                    "count": 4
+                },
+                {
+                    "points": 7500,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 10
+                },
+                {
+                    "points": 8000,
+                    "type": "Eligma",
+                    "count": 15
+                },
+                {
+                    "points": 9000,
+                    "type": "Pyroxene",
+                    "count": 200
+                },
+                {
+                    "points": 10000,
+                    "type": "SecretTech",
+                    "count": 1
+                },
+                {
+                    "points": 11000,
+                    "type": "TN_4_Trinity",
+                    "id": "4023",
+                    "count": 1
+                },
+                {
+                    "points": 12000,
+                    "type": "XpReport",
+                    "id": "XP_4",
+                    "count": 5
+                },
+                {
+                    "points": 13000,
+                    "type": "TN_4_Trinity",
+                    "id": "4023",
+                    "count": 2
+                },
+                {
+                    "points": 14000,
+                    "type": "XpOrb",
+                    "id": "GXP_4",
+                    "count": 5
+                },
+                {
+                    "points": 15000,
+                    "type": "XpReport",
+                    "id": "XP_4",
+                    "count": 10
+                }
+            ],
+            "omikuji": {
+                "pull_currency": "Borderland_Coin",
+                "pull_cost": 1,
+                "TargetGrade": 4,
+                "ProbModifyStartCount": 5,
+                "MaxPullCount": 15,
+                "slips": [
+                    {
+                        "Grade": 0,
+                        "Prob": 1200,
+                        "ProbModifyValue": -120,
+                        "ProbModifyLimit": 0,
+                        "RewardId": [
+                            23,
+                            4022,
+                            170,
+                            190,
+                            230,
+                            240,
+                            1
+                        ],
+                        "RewardAmount": [
+                            1,
+                            1,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.25,
+                            300000 
+                        ]
+                    },
+                    {
+                        "Grade": 1,
+                        "Prob": 1400,
+                        "ProbModifyValue": -140,
+                        "ProbModifyLimit": 0,
+                        "RewardId": [
+                            4020,
+                            16018,
+                            191,
+                            171,
+                            231,
+                            241,
+                            190,
+                            170,
+                            230,
+                            240,
+                            1
+                        ],
+                        "RewardAmount": [
+                            1,
+                            1,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.25,
+                            1.25,
+                            1.25,
+                            1.25,
+                            1.25,
+                            200000
+                        ]
+                    },
+                    {
+                        "Grade": 1,
+                        "Prob": 1400,
+                        "ProbModifyValue": -140,
+                        "ProbModifyLimit": 0,
+                        "RewardId": [
+                            4020,
+                            16018,
+                            191,
+                            171,
+                            231,
+                            241,
+                            190,
+                            170,
+                            230,
+                            240,
+                            1
+                        ],
+                        "RewardAmount": [
+                            1,
+                            1,
+                            0.50,
+                            0.50,
+                            0.50,
+                            0.50,
+                            1.25,
+                            1.25,
+                            1.25,
+                            1.25,
+                            200000
+                        ]
+                    },
+                    {
+                        "Grade": 2,
+                        "Prob": 875,
+                        "ProbModifyValue": -87,
+                        "ProbModifyLimit": 0,
+                        "RewardId": [
+                            4020,
+                            16018,
+                            191,
+                            171,
+                            231,
+                            241,
+                            1
+                        ],
+                        "RewardAmount": [
+                            1,
+                            1,
+                            0.75,
+                            0.75,
+                            0.75,
+                            0.75,
+                            200000
+                        ]
+                    },
+                    {
+                        "Grade": 2,
+                        "Prob": 875,
+                        "ProbModifyValue": -87,
+                        "ProbModifyLimit": 0,
+                        "RewardId": [
+                            4020,
+                            4021,
+                            16018,
+                            191,
+                            171,
+                            231,
+                            241,
+                            1
+                        ],
+                        "RewardAmount": [
+                            1,
+                            1,
+                            1,
+                            0.75,
+                            0.75,
+                            0.75,
+                            0.75,
+                            200000
+                        ]
+                    },
+                    {
+                        "Grade": 2,
+                        "Prob": 875,
+                        "ProbModifyValue": -87,
+                        "ProbModifyLimit": 0,
+                        "RewardId": [
+                            4020,
+                            4021,
+                            16018,
+                            191,
+                            171,
+                            231,
+                            241,
+                            192,
+                            172,
+                            232,
+                            242,
+                            1
+                        ],
+                        "RewardAmount": [
+                            1,
+                            1,
+                            1,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.75,
+                            0.75,
+                            0.75,
+                            0.75,
+                            200000
+                        ]
+                    },
+                    
+                        "Grade": 2,
+                        "Prob": 875,
+                        "ProbModifyValue": -87,
+                        "ProbModifyLimit": 0,
+                        "RewardId": [
+                            4020,
+                            4021,
+                            16018,
+                            191,
+                            171,
+                            231,
+                            241,
+                            192,
+                            172,
+                            232,
+                            242,
+                            1
+                        ],
+                        "RewardAmount": [
+                            1,
+                            1,
+                            1,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.75,
+                            0.75,
+                            0.75,
+                            0.75,
+                            200000
+                        ]
+                    },
+                    {
+                        "Grade": 3,
+                        "Prob": 500,
+                        "ProbModifyValue": -50,
+                        "ProbModifyLimit": 0,
+                        "RewardId": [
+                            23,
+                            16018,
+                            4021,
+                            192,
+                            172,
+                            232,
+                            242,
+                            1
+                        ],
+                        "RewardAmount": [
+                            1,
+                            1,
+                            1,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.25,
+                            150000
+                        ]
+                    },
+                    {
+                        "Grade": 3,
+                        "Prob": 500,
+                        "ProbModifyValue": -50,
+                        "ProbModifyLimit": 0,
+                        "RewardId": [
+                            23,
+                            16018,
+                            4021,
+                            192,
+                            172,
+                            232,
+                            242,
+                            1
+                        ],
+                        "RewardAmount": [
+                            1,
+                            1,
+                            1,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.25,
+                            150000
+                        ]
+                    },
+                    {
+                        "Grade": 3,
+                        "Prob": 500,
+                        "ProbModifyValue": -50,
+                        "ProbModifyLimit": 0,
+                        "RewardId": [
+                            23,
+                            16018,
+                            4021,
+                            192,
+                            172,
+                            232,
+                            242,
+                            1
+                        ],
+                        "RewardAmount": [
+                            1,
+                            1,
+                            1,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.25,
+                            150000
+                        ]
+                    },
+                   {
+                        "Grade": 3,
+                        "Prob": 500,
+                        "ProbModifyValue": -50,
+                        "ProbModifyLimit": 0,
+                        "RewardId": [
+                            23,
+                            16018,
+                            4021,
+                            192,
+                            172,
+                            232,
+                            242,
+                            1
+                        ],
+                        "RewardAmount": [
+                            1,
+                            2,
+                            1,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.25,
+                            150000
+                        ]
+                    },
+                    {
+                        "Grade": 4,
+                        "Prob": 125,
+                        "ProbModifyValue": 237,
+                        "ProbModifyLimit": 2500,
+                        "RewardId": [
+                            23,
+                            16018,
+                            4022,
+                            153,
+                            173,
+                            253,
+                            263,
+                            1
+                        ],
+                        "RewardAmount": [
+                            1,
+                            2,
+                            1,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.25,
+                            100000
+                        ]
+                    },
+                    {
+                        "Grade": 4,
+                        "Prob": 125,
+                        "ProbModifyValue": 237,
+                        "ProbModifyLimit": 2500,
+                        "RewardId": [
+                            23,
+                            16018,
+                            4022,
+                            153,
+                            173,
+                            253,
+                            263,
+                            1
+                        ],
+                        "RewardAmount": [
+                            1,
+                            3,
+                            1,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.25,
+                            100000
+                        ]
+                    },
+                    {
+                        "Grade": 4,
+                        "Prob": 125,
+                        "ProbModifyValue": 238,
+                        "ProbModifyLimit": 2500,
+                        "RewardId": [
+                            23,
+                            16018,
+                            4022,
+                            153,
+                            173,
+                            253,
+                            263,
+                            1
+                        ],
+                        "RewardAmount": [
+                            1,
+                            3,
+                            1,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.25,
+                            100000
+                        ]
+                    },
+                    {
+                        "Grade": 4,
+                        "Prob": 125,
+                        "ProbModifyValue": 238,
+                        "ProbModifyLimit": 2500,
+                        "RewardId": [
+                            23,
+                            16018,
+                            4022,
+                            153,
+                            173,
+                            253,
+                            263,
+                            1
+                        ],
+                        "RewardAmount": [
+                            1,
+                            2,
+                            1,
+                            0.25,
+                            0.25,
+                            0.25,
+                            0.25,
+                            100000
+                        ]
+                    }
+                ]
+            }
+        },
         "moonlight-dream": {
             "active": true,
             "icon": "Event_839_Jp.png",
