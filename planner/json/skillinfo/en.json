@@ -66783,7 +66783,7 @@
         },
         "Weapon": {
             "Name": "Arcane Magic Wand",
-            "Desc": "A rifle that Eri claims is a magic wand.\n\nPerhaps the two are similar in that they can both can shoot flames and make things disappear.",
+            "Desc": "A rifle that Eri claims is a magic wand.\n\nPerhaps the two are similar in that they can both shoot flames and make things disappear.",
             "AdaptationType": "Street",
             "AdaptationValue": 1,
             "AttackPower1": 134,
@@ -113722,7 +113722,7 @@
         ],
         "Skills": {
             "Ex": {
-                "Name": "Let’s Eat Together!",
+                "Name": "Let's Eat Together!",
                 "Desc": "Increases the <b:AttackSpeed> of one ally by <?1> for 24s.",
                 "Parameters": [
                     [
@@ -113766,7 +113766,7 @@
                 ]
             },
             "Public": {
-                "Name": "Umm, Not This One!",
+                "Name": "This Isn't It!",
                 "Desc": "Every 200 times a critical hit is landed by allies, decreases the <d:DEF> of one enemy by <?1> for 21s and deals <?2> damage to them.",
                 "Parameters": [
                     [
@@ -113846,7 +113846,7 @@
                 ]
             },
             "Passive": {
-                "Name": "Let’s Sculpt It, I Guess?",
+                "Name": "Should I Carve It?",
                 "Desc": "Increases <b:ATK> by <?1>.",
                 "Parameters": [
                     [
@@ -113889,7 +113889,7 @@
                 ]
             },
             "WeaponPassive": {
-                "Name": "Let’s Sculpt It, I Guess?+",
+                "Name": "Should I Carve It?+",
                 "Desc": "Increases <b:ExtendBuffDuration> by <?1> and <b:ATK> by <?2>.",
                 "Parameters": [
                     [
@@ -113944,7 +113944,7 @@
                 ]
             },
             "ExtraPassive": {
-                "Name": "Liberation of Image",
+                "Name": "Art Liberation",
                 "Desc": "Increases all allies' <b:CriticalDamage> by <?1>.",
                 "Parameters": [
                     [
@@ -113990,8 +113990,8 @@
             }
         },
         "Weapon": {
-            "Name": "携帯用穿孔機",
-            "Desc": "リツがいつも携帯するサブマシンガン。\n\n石材に向けて引き金を引き、穴を開ける用途としてよく使うのだとか。",
+            "Name": "Portable Drilling Machine",
+            "Desc": "An SMG that Ritsu always carries with her.\n\nShe'll sometimes press its muzzle against a rock and pull the trigger to break up the stone. ",
             "AdaptationType": "Street",
             "AdaptationValue": 1,
             "AttackPower1": 106,
@@ -116377,6 +116377,478 @@
             ]
         ],
         "PotentialMaterial": 190
+    },
+    "20056": {
+        "Name": "Koyuki (Pajamas)",
+        "Id": 20056,
+        "School": "Millennium",
+        "StarGrade": 3,
+        "SquadType": "Support",
+        "TacticRole": "Supporter",
+        "Position": "Back",
+        "BulletType": "Mystic",
+        "ArmorType": "LightArmor",
+        "StreetBattleAdaptation": 4,
+        "OutdoorBattleAdaptation": 0,
+        "IndoorBattleAdaptation": 2,
+        "WeaponType": "MG",
+        "Equipment": [
+            "Shoes",
+            "Badge",
+            "Watch"
+        ],
+        "Skills": {
+            "Ex": {
+                "Name": "I Haven't Heard About This!",
+                "Desc": "Removes 1 debuff from an ally and increases their <b:CriticalDamage> by <?1> for 30s.\nIf a debuff is successfully removed from the target, improves the increase to <b:CriticalDamage> by <b>3&times;</b>.",
+                "Parameters": [
+                    [
+                        "8.1%",
+                        "9.3%",
+                        "11.8%",
+                        "13%",
+                        "15.4%"
+                    ]
+                ],
+                "Cost": [
+                    3,
+                    3,
+                    3,
+                    3,
+                    3
+                ],
+                "Duration": 161,
+                "Range": 1000,
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Dispel",
+                        "Target": [
+                            "Ally"
+                        ]
+                    },
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "AllyMain"
+                        ],
+                        "Value": [
+                            [
+                                815,
+                                937,
+                                1181,
+                                1304,
+                                1548
+                            ],
+                            [
+                                2443,
+                                2810,
+                                3543,
+                                3909,
+                                4642
+                            ]
+                        ],
+                        "StackLabel": [
+                            {
+                                "Disabled": true,
+                                "Label": "3×"
+                            },
+                            {
+                                "Label": "3×"
+                            }
+                        ],
+                        "Stat": "CriticalDamageRate_Coefficient",
+                        "Channel": 111,
+                        "Duration": 30000,
+                        "ApplyFrame": 45
+                    }
+                ]
+            },
+            "Public": {
+                "Name": "Boom!",
+                "Desc": "Every 40s, deals <?1> damage to enemies in a fan-shaped area. Deals <?2> as additional damage to <b>extra-large</b> sized enemies.",
+                "Parameters": [
+                    [
+                        "234%",
+                        "245%",
+                        "257%",
+                        "304%",
+                        "315%",
+                        "327%",
+                        "374%",
+                        "386%",
+                        "397%",
+                        "444%"
+                    ],
+                    [
+                        "93.6%",
+                        "98.3%",
+                        "103%",
+                        "121%",
+                        "126%",
+                        "131%",
+                        "149%",
+                        "154%",
+                        "159%",
+                        "177%"
+                    ]
+                ],
+                "Duration": 105,
+                "Range": 1000,
+                "Radius": [
+                    {
+                        "Type": "Fan",
+                        "Radius": 500,
+                        "Degree": 60
+                    }
+                ],
+                "Icon": "COMMON_SKILLICON_FAN",
+                "Effects": [
+                    {
+                        "Type": "Damage",
+                        "Block": 0,
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            2000,
+                            2000,
+                            2000,
+                            2000,
+                            2000
+                        ],
+                        "DescParamId": 1,
+                        "Scale": [
+                            23408,
+                            24577,
+                            25746,
+                            30429,
+                            31598,
+                            32767,
+                            37450,
+                            38619,
+                            39788,
+                            44471
+                        ]
+                    },
+                    {
+                        "Type": "Damage",
+                        "Condition": {
+                            "Type": "TargetProp",
+                            "Parameter": "Size",
+                            "Operand": "Equal",
+                            "Value": "XLarge"
+                        },
+                        "Block": 0,
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            2000,
+                            2000,
+                            2000,
+                            2000,
+                            2000
+                        ],
+                        "DescParamId": 2,
+                        "Scale": [
+                            9366,
+                            9835,
+                            10304,
+                            12173,
+                            12642,
+                            13111,
+                            14980,
+                            15449,
+                            15918,
+                            17787
+                        ]
+                    }
+                ]
+            },
+            "Passive": {
+                "Name": "The Art of Staying Up All Night",
+                "Desc": "Increases <b:ATK> by <?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2,
+                        "Value": [
+                            [
+                                1400,
+                                1470,
+                                1540,
+                                1820,
+                                1890,
+                                1960,
+                                2240,
+                                2310,
+                                2380,
+                                2660
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "WeaponPassive": {
+                "Name": "The Art of Staying Up All Night+",
+                "Desc": "Increases <b:CriticalDamage> by <?1> and <b:ATK> by <?2>.",
+                "Parameters": [
+                    [
+                        "2000",
+                        "2100",
+                        "2200",
+                        "2600",
+                        "2700",
+                        "2800",
+                        "3200",
+                        "3300",
+                        "3400",
+                        "3800"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "CriticalDamageRate_Base",
+                        "Channel": 1711,
+                        "Value": [
+                            [
+                                2000,
+                                2100,
+                                2200,
+                                2600,
+                                2700,
+                                2800,
+                                3200,
+                                3300,
+                                3400,
+                                3800
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "ExtraPassive": {
+                "Name": "Pajama Power",
+                "Desc": "Increases all allies' <b:AttackSpeed> by <?1>.",
+                "Parameters": [
+                    [
+                        "9.1%",
+                        "9.5%",
+                        "10%",
+                        "11.8%",
+                        "12.3%",
+                        "12.7%",
+                        "14.5%",
+                        "15%",
+                        "15.5%",
+                        "17.3%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self",
+                            "AllyMain",
+                            "AllySupport"
+                        ],
+                        "Value": [
+                            [
+                                912,
+                                957,
+                                1003,
+                                1186,
+                                1231,
+                                1277,
+                                1459,
+                                1504,
+                                1550,
+                                1732
+                            ]
+                        ],
+                        "Stat": "AttackSpeed_Coefficient",
+                        "Channel": 324
+                    }
+                ]
+            }
+        },
+        "Weapon": {
+            "Name": "マリ・ガン",
+            "Desc": "コユキと共にあらゆる苦難を乗り越えてきたマシンガン。\n\nトラブルを起こす持ち主とは違い、淡々と補佐してくれる頼もしい相棒……実は何も考えてないだけかもしれない。",
+            "AdaptationType": "Street",
+            "AdaptationValue": 1,
+            "AttackPower1": 108,
+            "AttackPower100": 1078,
+            "MaxHP1": 636,
+            "MaxHP100": 6360,
+            "HealPower1": 201,
+            "HealPower100": 2014,
+            "StatLevelUpType": "Standard"
+        },
+        "Gear": {},
+        "SkillExMaterial": [
+            [
+                3050,
+                210
+            ],
+            [
+                3051,
+                3050,
+                211,
+                140
+            ],
+            [
+                3052,
+                3051,
+                212,
+                141
+            ],
+            [
+                3053,
+                3052,
+                213,
+                142
+            ]
+        ],
+        "SkillExMaterialAmount": [
+            [
+                12,
+                17
+            ],
+            [
+                12,
+                18,
+                13,
+                31
+            ],
+            [
+                12,
+                18,
+                11,
+                26
+            ],
+            [
+                8,
+                18,
+                7,
+                22
+            ]
+        ],
+        "SkillMaterial": [
+            [
+                4050
+            ],
+            [
+                4050
+            ],
+            [
+                4051,
+                4050,
+                210
+            ],
+            [
+                4051,
+                211,
+                140
+            ],
+            [
+                4052,
+                4051,
+                211,
+                140
+            ],
+            [
+                4052,
+                212,
+                141
+            ],
+            [
+                4053,
+                4052,
+                213,
+                142
+            ],
+            [
+                4053,
+                213,
+                142
+            ]
+        ],
+        "SkillMaterialAmount": [
+            [
+                5
+            ],
+            [
+                8
+            ],
+            [
+                5,
+                12,
+                5
+            ],
+            [
+                8,
+                5,
+                12
+            ],
+            [
+                5,
+                12,
+                10,
+                19
+            ],
+            [
+                8,
+                3,
+                17
+            ],
+            [
+                8,
+                12,
+                4,
+                8
+            ],
+            [
+                12,
+                9,
+                14
+            ]
+        ],
+        "PotentialMaterial": 210
     },
     "23000": {
         "Name": "Airi",
