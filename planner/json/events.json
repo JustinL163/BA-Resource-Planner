@@ -1,6 +1,6 @@
 {
     "event_order": [
-        "magical-girl-trinity"
+        "winter-skies-renaissance"
     ],
     "events": {
         "magical-girl-trinity": {
@@ -65,19 +65,19 @@
                             "bonus": 0.15
                         },
                         {
-                            "id": "10020", 
+                            "id": "10020",
                             "bonus": 0.1
                         },
                         {
-                            "id": "16011", 
+                            "id": "16011",
                             "bonus": 0.1
                         },
                         {
-                            "id": "10073", 
+                            "id": "10073",
                             "bonus": 0.1
                         },
                         {
-                            "id": "10077", 
+                            "id": "10077",
                             "bonus": 0.1
                         }
                     ]
@@ -859,7 +859,7 @@
                     "points": 300,
                     "type": "Eleph",
                     "id": "16018",
-                    "count": 20            
+                    "count": 20
                 },
                 {
                     "points": 400,
@@ -1121,7 +1121,7 @@
                             0.25,
                             0.25,
                             0.25,
-                            300000 
+                            300000
                         ]
                     },
                     {
@@ -1384,7 +1384,7 @@
                             150000
                         ]
                     },
-                   {
+                    {
                         "Grade": 3,
                         "Prob": 500,
                         "ProbModifyValue": -50,
@@ -18880,7 +18880,9 @@
                 "Currency",
                 "Manual"
             ],
-            "currency_targets": ["Shop_Card"],
+            "currency_targets": [
+                "Shop_Card"
+            ],
             "event_point_target": 0,
             "currencies": {
                 "Shop_Card": {
@@ -19875,6 +19877,1024 @@
                         "Totem_1": 10,
                         "GXP_2": 8
                     }
+                }
+            ]
+        },
+        "winter-skies-renaissance": {
+            "active": true,
+            "icon": "Event_852_Jp.png",
+            "display_name": "Winter Skies Renaissance",
+            "reset_time": 1775502000,
+            "start_time": 1775527200,
+            "end_time": 1776736800,
+            "maint_hours": 6,
+            "available_targets": [
+                "Shop",
+                "Materials",
+                "Currency",
+                "Manual"
+            ],
+            "currency_targets": [
+                "Event_Point"
+            ],
+            "event_point_target": 15000,
+            "currencies": {
+                "Event_Point": {
+                    "icon": "Event_Point.png",
+                    "shortname": "Event Point",
+                    "source": "StageDrop",
+                    "clear": 0,
+                    "bonus_units": [
+                        {
+                            "id": "20052",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "10131",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "26004",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20003",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10020",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20024",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10035",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "13013",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10059",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20004",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20048",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10073",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10122",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10061",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10003",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10019",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20005",
+                            "bonus": 0.15
+                        }
+                    ]
+                },
+                "Critique_Notebook": {
+                    "icon": "Critique_Notebook.png",
+                    "shortname": "Critique Notebook",
+                    "source": "StageDrop",
+                    "clear": 14195,
+                    "bonus_units": [
+                        {
+                            "id": "20052",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "26004",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10020",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10075",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "13013",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20004",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10073",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "23008",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10036",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10003",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "23007",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20005",
+                            "bonus": 0.15
+                        }
+                    ]
+                },
+                "Bundle_of_Receipts": {
+                    "icon": "Bundle_of_Receipts.png",
+                    "shortname": "Bundle of Receipts",
+                    "source": "StageDrop",
+                    "clear": 16300,
+                    "bonus_units": [
+                        {
+                            "id": "10131",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "20003",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20024",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10035",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10075",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10059",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20048",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10122",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "23008",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10061",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10036",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10019",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "23007",
+                            "bonus": 0.15
+                        }
+                    ]
+                },
+                "Cultural_Book_Sample": {
+                    "icon": "Cultural_Book_Sample.png",
+                    "shortname": "Cultural Book Sample",
+                    "source": "",
+                    "clear": 170,
+                    "bonus_units": []
+                }
+            },
+            "shops": {
+                "Critique_Notebook": [
+                    {
+                        "type": "XpReport",
+                        "id": "XP_1",
+                        "count": 90,
+                        "cost": 1,
+                        "amount": 3
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_2",
+                        "count": 95,
+                        "cost": 3
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_3",
+                        "count": 30,
+                        "cost": 12
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_4",
+                        "count": 12,
+                        "cost": 60
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3010",
+                        "count": 30,
+                        "cost": 10
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3011",
+                        "count": 18,
+                        "cost": 30
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3012",
+                        "count": 12,
+                        "cost": 100
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3013",
+                        "count": 4,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Material",
+                        "id": "120",
+                        "count": 150,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "121",
+                        "count": 50,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "122",
+                        "count": 30,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "123",
+                        "count": 11,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Guns_Charm_and_Zeal",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Classical_Poetry_Anthology",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Music_Concert_Ticket",
+                        "count": 1,
+                        "cost": 300
+                    }
+                ],
+                "Bundle_of_Receipts": [
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_1",
+                        "count": 180,
+                        "cost": 1
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_2",
+                        "count": 95,
+                        "cost": 4
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_3",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_4",
+                        "count": 12,
+                        "cost": 60
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4010",
+                        "count": 50,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4011",
+                        "count": 38,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4012",
+                        "count": 25,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4013",
+                        "count": 15,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "110",
+                        "count": 150,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "111",
+                        "count": 50,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "112",
+                        "count": 30,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "113",
+                        "count": 11,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Extravagant_Gilded_Jar_of_Greed",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Forbidden_Love",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Retro_Jewelled_Egg",
+                        "count": 1,
+                        "cost": 300
+                    }
+                ],
+                "Cultural_Book_Sample": [
+                    {
+                        "type": "Furniture",
+                        "id": "My_Event086_Salesdesk",
+                        "count": 1,
+                        "cost": 20,
+                        "limited": true
+                    },
+                    {
+                        "type": "Pyroxene",
+                        "id": "Pyroxene-120",
+                        "count": 10,
+                        "cost": 4,
+                        "amount": 120
+                    },
+                    {
+                        "type": "Eligma",
+                        "id": "Eligma-5",
+                        "count": 10,
+                        "cost": 2,
+                        "amount": 5
+                    },
+                    {
+                        "type": "SecretTech",
+                        "id": "SecretTech",
+                        "count": 1,
+                        "cost": 10
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-1000000",
+                        "count": 5,
+                        "cost": 5,
+                        "amount": 1000000
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-500000",
+                        "count": 10,
+                        "cost": 3,
+                        "amount": 500000
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-150000",
+                        "count": 25,
+                        "cost": 1,
+                        "amount": 150000
+                    }
+                ]
+            },
+            "stage_groups": [
+                "1-4",
+                "5-8",
+                "9-12"
+            ],
+            "stages": [
+                {
+                    "type": "Story",
+                    "level": 10,
+                    "number": 1,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 100,
+                        "Critique_Notebook": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 11,
+                    "number": 2,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 100,
+                        "Bundle_of_Receipts": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 12,
+                    "number": 3,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 100,
+                        "Critique_Notebook": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 13,
+                    "number": 4,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 100,
+                        "Bundle_of_Receipts": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 14,
+                    "number": 5,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 100,
+                        "Critique_Notebook": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 15,
+                    "number": 6,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 100,
+                        "Bundle_of_Receipts": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 16,
+                    "number": 7,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 100,
+                        "Critique_Notebook": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 17,
+                    "number": 8,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 100,
+                        "Bundle_of_Receipts": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 18,
+                    "number": 9,
+                    "cost": 10,
+                    "initial": {
+                        "Event_Point": 100,
+                        "Critique_Notebook": 20,
+                        "Bundle_of_Receipts": 20
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 1,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Event_Point": 100,
+                        "Critique_Notebook": 50,
+                        "Bundle_of_Receipts": 50
+                    },
+                    "drops": {
+                        "Event_Point": 2,
+                        "Critique_Notebook": 8,
+                        "Bundle_of_Receipts": 8,
+                        "Nebra_1": 0.25,
+                        "Nebra_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 2,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Event_Point": 100,
+                        "Critique_Notebook": 100
+                    },
+                    "drops": {
+                        "Critique_Notebook": 12,
+                        "Bundle_of_Receipts": 6,
+                        "Antikythera_1": 0.25,
+                        "Antikythera_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 3,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Event_Point": 100,
+                        "Bundle_of_Receipts": 100
+                    },
+                    "drops": {
+                        "Critique_Notebook": 6,
+                        "Bundle_of_Receipts": 12,
+                        "Voynich_1": 0.25,
+                        "Voynich_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 4,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Event_Point": 100
+                    },
+                    "drops": {
+                        "Event_Point": 12,
+                        "Critique_Notebook": 3,
+                        "Bundle_of_Receipts": 3,
+                        "Mystery_1": 0.25,
+                        "Mystery_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 5,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Event_Point": 200,
+                        "Critique_Notebook": 100,
+                        "Bundle_of_Receipts": 100
+                    },
+                    "drops": {
+                        "Event_Point": 5,
+                        "Critique_Notebook": 11,
+                        "Bundle_of_Receipts": 11,
+                        "Nebra_2": 0.25,
+                        "Nebra_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 6,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Event_Point": 200,
+                        "Critique_Notebook": 200
+                    },
+                    "drops": {
+                        "Critique_Notebook": 16,
+                        "Bundle_of_Receipts": 11,
+                        "Antikythera_2": 0.25,
+                        "Antikythera_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 7,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Event_Point": 200,
+                        "Bundle_of_Receipts": 200
+                    },
+                    "drops": {
+                        "Critique_Notebook": 11,
+                        "Bundle_of_Receipts": 16,
+                        "Voynich_2": 0.25,
+                        "Voynich_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 8,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Event_Point": 200
+                    },
+                    "drops": {
+                        "Event_Point": 19,
+                        "Critique_Notebook": 4,
+                        "Bundle_of_Receipts": 4,
+                        "Mystery_2": 0.25,
+                        "Mystery_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 9,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Event_Point": 300,
+                        "Critique_Notebook": 300,
+                        "Bundle_of_Receipts": 300
+                    },
+                    "drops": {
+                        "Event_Point": 8,
+                        "Critique_Notebook": 14,
+                        "Bundle_of_Receipts": 14,
+                        "Nebra_2": 0.25,
+                        "Nebra_3": 0.12,
+                        "Nebra_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 10,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Event_Point": 300,
+                        "Critique_Notebook": 600
+                    },
+                    "drops": {
+                        "Event_Point": 4,
+                        "Critique_Notebook": 32,
+                        "Antikythera_2": 0.25,
+                        "Antikythera_3": 0.12,
+                        "Antikythera_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 11,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Event_Point": 300,
+                        "Bundle_of_Receipts": 600
+                    },
+                    "drops": {
+                        "Event_Point": 4,
+                        "Bundle_of_Receipts": 32,
+                        "Voynich_2": 0.25,
+                        "Voynich_3": 0.12,
+                        "Voynich_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 80,
+                    "number": 12,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Event_Point": 300
+                    },
+                    "drops": {
+                        "Event_Point": 36,
+                        "Mystery_2": 0.25,
+                        "Mystery_3": 0.12,
+                        "Mystery_4": 0.021
+                    }
+                },
+                {
+                    "type": "Challenge",
+                    "level": 50,
+                    "number": 1,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "level": 85,
+                    "number": 2,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "level": 90,
+                    "number": 3,
+                    "cost": 5
+                }
+            ],
+            "point_rewards": [
+                {
+                    "points": 10,
+                    "type": "XpReport",
+                    "id": "XP_1",
+                    "count": 15
+                },
+                {
+                    "points": 50,
+                    "type": "XpOrb",
+                    "id": "GXP_1",
+                    "count": 15
+                },
+                {
+                    "points": 100,
+                    "count": 12
+                },
+                {
+                    "points": 200,
+                    "count": 4
+                },
+                {
+                    "points": 300,
+                    "count": 4
+                },
+                {
+                    "points": 400,
+                    "type": "XpReport",
+                    "id": "XP_1",
+                    "count": 15
+                },
+                {
+                    "points": 500,
+                    "type": "XpOrb",
+                    "id": "GXP_1",
+                    "count": 15
+                },
+                {
+                    "points": 600,
+                    "count": 12
+                },
+                {
+                    "points": 700,
+                    "count": 4
+                },
+                {
+                    "points": 800,
+                    "type": "XpReport",
+                    "id": "XP_2",
+                    "count": 10
+                },
+                {
+                    "points": 900,
+                    "type": "XpOrb",
+                    "id": "GXP_2",
+                    "count": 15
+                },
+                {
+                    "points": 1000,
+                    "count": 10
+                },
+                {
+                    "points": 1200,
+                    "type": "XpReport",
+                    "id": "XP_2",
+                    "count": 15
+                },
+                {
+                    "points": 1400,
+                    "type": "XpOrb",
+                    "id": "GXP_3",
+                    "count": 2
+                },
+                {
+                    "points": 1600,
+                    "count": 4
+                },
+                {
+                    "points": 1800,
+                    "count": 10
+                },
+                {
+                    "points": 2000,
+                    "type": "Eligma",
+                    "count": 5
+                },
+                {
+                    "points": 2200,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 2
+                },
+                {
+                    "points": 2400,
+                    "type": "XpOrb",
+                    "id": "GXP_3",
+                    "count": 2
+                },
+                {
+                    "points": 2600,
+                    "type": "Credit",
+                    "count": 800000
+                },
+                {
+                    "points": 2800,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 2
+                },
+                {
+                    "points": 3000,
+                    "count": 4
+                },
+                {
+                    "points": 3200,
+                    "type": "XpOrb",
+                    "id": "GXP_3",
+                    "count": 2
+                },
+                {
+                    "points": 3400,
+                    "type": "Credit",
+                    "count": 900000
+                },
+                {
+                    "points": 3600,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 2
+                },
+                {
+                    "points": 3800,
+                    "type": "XpOrb",
+                    "id": "GXP_3",
+                    "count": 3
+                },
+                {
+                    "points": 4000,
+                    "type": "Eligma",
+                    "count": 10
+                },
+                {
+                    "points": 4200,
+                    "count": 3
+                },
+                {
+                    "points": 4400,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 3
+                },
+                {
+                    "points": 4600,
+                    "type": "Credit",
+                    "count": 1000000
+                },
+                {
+                    "points": 4800,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 3
+                },
+                {
+                    "points": 5000,
+                    "count": 3
+                },
+                {
+                    "points": 5500,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 3
+                },
+                {
+                    "points": 6000,
+                    "count": 4
+                },
+                {
+                    "points": 6500,
+                    "type": "Credit",
+                    "count": 1100000
+                },
+                {
+                    "points": 7000,
+                    "count": 3
+                },
+                {
+                    "points": 7500,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 3
+                },
+                {
+                    "points": 8000,
+                    "type": "Eligma",
+                    "count": 15
+                },
+                {
+                    "points": 9000,
+                    "type": "Credit",
+                    "count": 1200000
+                },
+                {
+                    "points": 10000,
+                    "type": "Eligma",
+                    "count": 20
+                },
+                {
+                    "points": 11000,
+                    "count": 4
+                },
+                {
+                    "points": 12000,
+                    "type": "XpReport",
+                    "id": "XP_4",
+                    "count": 3
+                },
+                {
+                    "points": 13000,
+                    "count": 2
+                },
+                {
+                    "points": 14000,
+                    "type": "XpOrb",
+                    "id": "GXP_4",
+                    "count": 3
+                },
+                {
+                    "points": 15000,
+                    "type": "XpReport",
+                    "id": "XP_4",
+                    "count": 3
                 }
             ]
         }

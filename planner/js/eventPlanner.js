@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?89').done(function (json) {
+    $.getJSON('json/events.json?91').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -86,7 +86,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?352').done(function (json) {
+    $.getJSON('json/strings.json?354').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -1706,6 +1706,10 @@ function CalculateItemPurchases() {
 
         if (current_event == "honorable-sea-showdown") {
             event_data.currency_needed["Wooden_Doll_(Yukari)"] = event_data.currency_needed["Wooden_Doll_(Renge)"] * 270;
+        }
+
+        if (current_event == "winter-skies-renaissance") {
+            event_data.currency_needed["Event_Point"] = event_data.currency_needed["Cultural_Book_Sample"] * 120;
         }
 
         // currencyNeededPre[shopNames[s]] = totalPurchaseCost;
