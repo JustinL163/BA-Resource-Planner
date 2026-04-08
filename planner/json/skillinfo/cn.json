@@ -35146,7 +35146,7 @@
                 }
             },
             "Ex": {
-                "Name": "弹道导弹轰炸",
+                "Name": "弹道导弹打击",
                 "Desc": "对1名敌方单位造成以下效果：\n- 造成自身攻击力<?1>的伤害.\n对以上述单位为中心的圆形范围内除该单位外的其他敌方单位造成以下效果：\n- 造成自身攻击力<?2>的伤害.",
                 "Parameters": [
                     [
@@ -35238,7 +35238,7 @@
                 ]
             },
             "Public": {
-                "Name": "水弹轰击",
+                "Name": "水压冲击",
                 "Desc": "<b>每35秒：</b>\n对1名敌方单位造成以下效果：\n- 造成自身攻击力<?1>的伤害.",
                 "Parameters": [
                     [
@@ -35288,7 +35288,7 @@
                 ]
             },
             "Passive": {
-                "Name": "毁灭的美学",
+                "Name": "毁灭美学",
                 "Desc": "<b>战术入场时：</b>\n立即对自身造成以下效果(持续至退场)：\n- <b:ATK>增加<?1>.",
                 "Parameters": [
                     [
@@ -35331,7 +35331,7 @@
                 ]
             },
             "WeaponPassive": {
-                "Name": "毁灭的美学＋",
+                "Name": "毁灭美学+",
                 "Desc": "<b>战术入场时：</b>\n立即对自身造成以下效果(持续至退场)：\n- <b:ATK>增加<?1>.\n- <b:ATK>增加<?2>.",
                 "Parameters": [
                     [
@@ -78329,6 +78329,318 @@
                         ],
                         "Stat": "AttackPower_Coefficient",
                         "Channel": 302
+                    }
+                ]
+            }
+        }
+    },
+    "20056": {
+        "Name": "コユキ（パジャマ）",
+        "Skills": {
+            "Ex": {
+                "Name": "こんなの聞いてません！",
+                "Desc": "味方1人の弱体状態を1つ解除/\nストライカーの味方に対して、<b:CriticalDamage>率を<?1>増加（30秒間）/\n今回のスキルで弱体状態を解除した場合、このスキルの<b:CriticalDamage>増加効果が3倍に増加",
+                "Parameters": [
+                    [
+                        "8.1%",
+                        "9.3%",
+                        "11.8%",
+                        "13%",
+                        "15.4%"
+                    ]
+                ],
+                "Cost": [
+                    3,
+                    3,
+                    3,
+                    3,
+                    3
+                ],
+                "Duration": 161,
+                "Range": 1000,
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Dispel",
+                        "Target": [
+                            "Ally"
+                        ]
+                    },
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "AllyMain"
+                        ],
+                        "Value": [
+                            [
+                                815,
+                                937,
+                                1181,
+                                1304,
+                                1548
+                            ],
+                            [
+                                2443,
+                                2810,
+                                3543,
+                                3909,
+                                4642
+                            ]
+                        ],
+                        "StackLabel": [
+                            {
+                                "Disabled": true,
+                                "Label": "3×"
+                            },
+                            {
+                                "Label": "3×"
+                            }
+                        ],
+                        "Stat": "CriticalDamageRate_Coefficient",
+                        "Channel": 111,
+                        "Duration": 30000,
+                        "ApplyFrame": 45
+                    }
+                ]
+            },
+            "Public": {
+                "Name": "ドッカーン",
+                "Desc": "40秒毎に、扇形範囲内の敵に対して攻撃力の<?1>分のダメージ/\n超大型の敵には攻撃力の<?2>分の追加ダメージ",
+                "Parameters": [
+                    [
+                        "234%",
+                        "245%",
+                        "257%",
+                        "304%",
+                        "315%",
+                        "327%",
+                        "374%",
+                        "386%",
+                        "397%",
+                        "444%"
+                    ],
+                    [
+                        "93.6%",
+                        "98.3%",
+                        "103%",
+                        "121%",
+                        "126%",
+                        "131%",
+                        "149%",
+                        "154%",
+                        "159%",
+                        "177%"
+                    ]
+                ],
+                "Duration": 105,
+                "Range": 1000,
+                "Radius": [
+                    {
+                        "Type": "Fan",
+                        "Radius": 500,
+                        "Degree": 60
+                    }
+                ],
+                "Icon": "COMMON_SKILLICON_FAN",
+                "Effects": [
+                    {
+                        "Type": "Damage",
+                        "Block": 0,
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            2000,
+                            2000,
+                            2000,
+                            2000,
+                            2000
+                        ],
+                        "DescParamId": 1,
+                        "Scale": [
+                            23408,
+                            24577,
+                            25746,
+                            30429,
+                            31598,
+                            32767,
+                            37450,
+                            38619,
+                            39788,
+                            44471
+                        ]
+                    },
+                    {
+                        "Type": "Damage",
+                        "Condition": {
+                            "Type": "TargetProp",
+                            "Parameter": "Size",
+                            "Operand": "Equal",
+                            "Value": "XLarge"
+                        },
+                        "Block": 0,
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            2000,
+                            2000,
+                            2000,
+                            2000,
+                            2000
+                        ],
+                        "DescParamId": 2,
+                        "Scale": [
+                            9366,
+                            9835,
+                            10304,
+                            12173,
+                            12642,
+                            13111,
+                            14980,
+                            15449,
+                            15918,
+                            17787
+                        ]
+                    }
+                ]
+            },
+            "Passive": {
+                "Name": "徹夜の美学",
+                "Desc": "<b:ATK>を<?1>増加",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2,
+                        "Value": [
+                            [
+                                1400,
+                                1470,
+                                1540,
+                                1820,
+                                1890,
+                                1960,
+                                2240,
+                                2310,
+                                2380,
+                                2660
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "WeaponPassive": {
+                "Name": "徹夜の美学+",
+                "Desc": "<b:CriticalDamage>を<?1>増加/\nさらに<b:ATK>を<?2>増加",
+                "Parameters": [
+                    [
+                        "2000",
+                        "2100",
+                        "2200",
+                        "2600",
+                        "2700",
+                        "2800",
+                        "3200",
+                        "3300",
+                        "3400",
+                        "3800"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "CriticalDamageRate_Base",
+                        "Channel": 1711,
+                        "Value": [
+                            [
+                                2000,
+                                2100,
+                                2200,
+                                2600,
+                                2700,
+                                2800,
+                                3200,
+                                3300,
+                                3400,
+                                3800
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "ExtraPassive": {
+                "Name": "パジャマの力",
+                "Desc": "味方の<b:AttackSpeed>を<?1>増加",
+                "Parameters": [
+                    [
+                        "9.1%",
+                        "9.5%",
+                        "10%",
+                        "11.8%",
+                        "12.3%",
+                        "12.7%",
+                        "14.5%",
+                        "15%",
+                        "15.5%",
+                        "17.3%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self",
+                            "AllyMain",
+                            "AllySupport"
+                        ],
+                        "Value": [
+                            [
+                                912,
+                                957,
+                                1003,
+                                1186,
+                                1231,
+                                1277,
+                                1459,
+                                1504,
+                                1550,
+                                1732
+                            ]
+                        ],
+                        "Stat": "AttackSpeed_Coefficient",
+                        "Channel": 324
                     }
                 ]
             }

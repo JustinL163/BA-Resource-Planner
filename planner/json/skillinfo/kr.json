@@ -78157,6 +78157,318 @@
             }
         }
     },
+    "20056": {
+        "Name": "코유키(파자마)",
+        "Skills": {
+            "Ex": {
+                "Name": "이럴 줄은 몰랐다고요!",
+                "Desc": "아군 1인의 해로운 효과 1개 제거/\n스트라이커 아군에게 <b:CriticalDamage> <?1> 증가(30초간)/\n이번 스킬로 해로운 효과를 제거한 경우, 이 스킬의 <b:CriticalDamage> 증가 효과 3배로 증가",
+                "Parameters": [
+                    [
+                        "8.1%",
+                        "9.3%",
+                        "11.8%",
+                        "13%",
+                        "15.4%"
+                    ]
+                ],
+                "Cost": [
+                    3,
+                    3,
+                    3,
+                    3,
+                    3
+                ],
+                "Duration": 161,
+                "Range": 1000,
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Dispel",
+                        "Target": [
+                            "Ally"
+                        ]
+                    },
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "AllyMain"
+                        ],
+                        "Value": [
+                            [
+                                815,
+                                937,
+                                1181,
+                                1304,
+                                1548
+                            ],
+                            [
+                                2443,
+                                2810,
+                                3543,
+                                3909,
+                                4642
+                            ]
+                        ],
+                        "StackLabel": [
+                            {
+                                "Disabled": true,
+                                "Label": "3×"
+                            },
+                            {
+                                "Label": "3×"
+                            }
+                        ],
+                        "Stat": "CriticalDamageRate_Coefficient",
+                        "Channel": 111,
+                        "Duration": 30000,
+                        "ApplyFrame": 45
+                    }
+                ]
+            },
+            "Public": {
+                "Name": "와장창 혹은 우당탕",
+                "Desc": "40초 마다 부채꼴범위 내의 적에게 공격력 <?1> 대미지/\n초대형 대상에게 공격력 <?2> 추가 대미지 ",
+                "Parameters": [
+                    [
+                        "234%",
+                        "245%",
+                        "257%",
+                        "304%",
+                        "315%",
+                        "327%",
+                        "374%",
+                        "386%",
+                        "397%",
+                        "444%"
+                    ],
+                    [
+                        "93.6%",
+                        "98.3%",
+                        "103%",
+                        "121%",
+                        "126%",
+                        "131%",
+                        "149%",
+                        "154%",
+                        "159%",
+                        "177%"
+                    ]
+                ],
+                "Duration": 105,
+                "Range": 1000,
+                "Radius": [
+                    {
+                        "Type": "Fan",
+                        "Radius": 500,
+                        "Degree": 60
+                    }
+                ],
+                "Icon": "COMMON_SKILLICON_FAN",
+                "Effects": [
+                    {
+                        "Type": "Damage",
+                        "Block": 0,
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            2000,
+                            2000,
+                            2000,
+                            2000,
+                            2000
+                        ],
+                        "DescParamId": 1,
+                        "Scale": [
+                            23408,
+                            24577,
+                            25746,
+                            30429,
+                            31598,
+                            32767,
+                            37450,
+                            38619,
+                            39788,
+                            44471
+                        ]
+                    },
+                    {
+                        "Type": "Damage",
+                        "Condition": {
+                            "Type": "TargetProp",
+                            "Parameter": "Size",
+                            "Operand": "Equal",
+                            "Value": "XLarge"
+                        },
+                        "Block": 0,
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            2000,
+                            2000,
+                            2000,
+                            2000,
+                            2000
+                        ],
+                        "DescParamId": 2,
+                        "Scale": [
+                            9366,
+                            9835,
+                            10304,
+                            12173,
+                            12642,
+                            13111,
+                            14980,
+                            15449,
+                            15918,
+                            17787
+                        ]
+                    }
+                ]
+            },
+            "Passive": {
+                "Name": "밤샘의 미학",
+                "Desc": "<b:ATK> <?1> 증가",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2,
+                        "Value": [
+                            [
+                                1400,
+                                1470,
+                                1540,
+                                1820,
+                                1890,
+                                1960,
+                                2240,
+                                2310,
+                                2380,
+                                2660
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "WeaponPassive": {
+                "Name": "밤샘의 미학+",
+                "Desc": "<b:CriticalDamage> <?1> 증가/\n추가로 <b:ATK> <?2> 증가",
+                "Parameters": [
+                    [
+                        "2000",
+                        "2100",
+                        "2200",
+                        "2600",
+                        "2700",
+                        "2800",
+                        "3200",
+                        "3300",
+                        "3400",
+                        "3800"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "CriticalDamageRate_Base",
+                        "Channel": 1711,
+                        "Value": [
+                            [
+                                2000,
+                                2100,
+                                2200,
+                                2600,
+                                2700,
+                                2800,
+                                3200,
+                                3300,
+                                3400,
+                                3800
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "ExtraPassive": {
+                "Name": "파자마 효과",
+                "Desc": "아군의 <b:AttackSpeed> <?1> 증가",
+                "Parameters": [
+                    [
+                        "9.1%",
+                        "9.5%",
+                        "10%",
+                        "11.8%",
+                        "12.3%",
+                        "12.7%",
+                        "14.5%",
+                        "15%",
+                        "15.5%",
+                        "17.3%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self",
+                            "AllyMain",
+                            "AllySupport"
+                        ],
+                        "Value": [
+                            [
+                                912,
+                                957,
+                                1003,
+                                1186,
+                                1231,
+                                1277,
+                                1459,
+                                1504,
+                                1550,
+                                1732
+                            ]
+                        ],
+                        "Stat": "AttackSpeed_Coefficient",
+                        "Channel": 324
+                    }
+                ]
+            }
+        }
+    },
     "23000": {
         "Name": "아이리",
         "Skills": {
