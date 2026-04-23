@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?91').done(function (json) {
+    $.getJSON('json/events.json?92').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -86,7 +86,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?354').done(function (json) {
+    $.getJSON('json/strings.json?356').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -2747,7 +2747,7 @@ function CalculateStageDrops(result, ignoreRequirement) {
         }
     }
 
-    if (current_event == "ive-alive"  || current_event == "ive-alive-rerun") {
+    if (current_event == "ive-alive" || current_event == "ive-alive-rerun") {
         totalCurrencies["Event_Point"] = Math.floor(totalCurrencies["Countdown_Calendar"] / 720) * 400;
         // event_point_target = 20000;
         maxEventPoints = totalCurrencies["Event_Point"];
@@ -3355,6 +3355,13 @@ function CalculateStageDrops(result, ignoreRequirement) {
         totalEleph["26015"] ??= 0;
         totalEleph["26015"] += (Math.floor((totalCurrencies["Justice_Task_Force_Armband"] ?? 0) / 2000) * 5);
         totalCurrencies["Shanhaijing_Tea_Garden's_Fine_Tea"] = (Math.floor((totalCurrencies["Justice_Task_Force_Armband"] ?? 0) / 2000) * 10);
+    }
+    else if (current_event == "serenade-promenade-rerun") {
+        if (totalEleph["10058"]) {
+            totalEleph["16016"] ??= 0;
+            totalEleph["16016"] += totalEleph["10058"];
+            totalEleph["10058"] = 0;
+        }
     }
 
     if (feasible) {
