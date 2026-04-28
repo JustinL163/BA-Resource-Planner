@@ -500,14 +500,14 @@ function init() {
 
     colourTableRows("gear-table");
 
-    if ("1.4.19".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
+    if ("1.4.20".localeCompare(data.site_version ?? "0.0.0", undefined, { numeric: true, sensitivity: 'base' }) == 1) {
         Swal.fire({
-            title: GetLanguageString("text-updatedversionprefix") + "1.4.19",
+            title: GetLanguageString("text-updatedversionprefix") + "1.4.20",
             color: alertColour,
             html: GetLanguageString("text-updatemessage")
         })
 
-        data.site_version = "1.4.19";
+        data.site_version = "1.4.20";
         // saveToLocalStorage(false);
     }
 
