@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?93').done(function (json) {
+    $.getJSON('json/events.json?94').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -86,7 +86,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?357').done(function (json) {
+    $.getJSON('json/strings.json?358').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -1697,6 +1697,10 @@ function CalculateItemPurchases() {
         }
 
         if (current_event == "descent-of-five-senses") {
+            event_data.currency_needed["Moonlight_Festival_Voucher"] = event_data.currency_needed["Moonlight_Festival_Firecrackers"] * 270;
+        }
+
+        if (current_event == "descent-of-five-senses-rerun") {
             event_data.currency_needed["Moonlight_Festival_Voucher"] = event_data.currency_needed["Moonlight_Festival_Firecrackers"] * 270;
         }
 
