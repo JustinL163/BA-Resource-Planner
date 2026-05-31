@@ -59,6 +59,7 @@
                     }
                 ],
                 "Icon": "COMMON_SKILLICON_CIRCLE",
+                "SortHits": 2,
                 "Effects": [
                     {
                         "Type": "Damage",
@@ -34061,6 +34062,7 @@
                                 3333,
                                 3334
                             ],
+                            "AdditionalDamage": true,
                             "Scale": [
                                 1522,
                                 1755,
@@ -34494,6 +34496,7 @@
                                 3333,
                                 3334
                             ],
+                            "AdditionalDamage": true,
                             "Scale": [
                                 2952,
                                 3399,
@@ -36111,6 +36114,7 @@
                     }
                 ],
                 "Icon": "COMMON_SKILLICON_CIRCLE",
+                "SortHits": 7,
                 "Effects": [
                     {
                         "Type": "Damage",
@@ -44745,6 +44749,7 @@
                 ],
                 "Range": 750,
                 "Icon": "SKILLICON_CH0294_SELECTEXSKILL",
+                "SortHits": 6,
                 "Effects": [],
                 "ExtraSkills": [
                     {
@@ -48075,7 +48080,7 @@
         }
     },
     "10132": {
-        "Name": "月夜（禮服）",
+        "Name": "月夜(禮服)",
         "Skills": {
             "Normal": {
                 "Effects": [
@@ -48103,7 +48108,7 @@
                 }
             },
             "Ex": {
-                "Name": "忍者是，不會，退縮的！",
+                "Name": "忍者，絕不退縮！",
                 "Desc": "對自身造成以下效果：\n- 位移至指定位置.\n- 位移至指定位置後：<b:AttackSpeed>增加<?2>(持續30秒).\n- 位移至指定位置後：對自身生成掩體進入掩體掩護狀態(持續40秒).\n&nbsp;&nbsp;※ 掩體額外擁有月夜(禮服)生命值<?1>的<b:MAXHP>.\n&nbsp;&nbsp;※ 掩體的防禦屬性與月夜(禮服)相同.",
                 "Parameters": [
                     [
@@ -48179,7 +48184,7 @@
                 ]
             },
             "Public": {
-                "Name": "我想，吃拉麵……",
+                "Name": "好想吃拉麵……呼嗚嗚……",
                 "Desc": "<b>自身生命值不高於40%時：</b>\n對自身造成以下效果(持續30秒)：\n- 獲得自身治癒力<?1>的<b:Shield>.\n\n※ 每場戰鬥該技能僅可觸發1次.",
                 "Parameters": [
                     [
@@ -48219,7 +48224,7 @@
                 ]
             },
             "Passive": {
-                "Name": "這是，特訓的成果……！",
+                "Name": "這是……模特兒特訓的成果！",
                 "Desc": "<b>戰術入場時：</b>\n立即對自身造成以下效果(持續至退場)：\n- <b:MAXHP>增加<?1>.",
                 "Parameters": [
                     [
@@ -48262,7 +48267,7 @@
                 ]
             },
             "WeaponPassive": {
-                "Name": "這是，特訓的成果……！＋",
+                "Name": "這是……模特兒特訓的成果！+",
                 "Desc": "<b>戰術入場時：</b>\n立即對自身造成以下效果(持續至退場)：\n- <b:MAXHP>增加<?1>.\n- <b:MAXHP>增加<?2>.",
                 "Parameters": [
                     [
@@ -48317,7 +48322,7 @@
                 ]
             },
             "ExtraPassive": {
-                "Name": "放輕鬆……做好，心理準備！",
+                "Name": "放鬆緊張，堅定覺悟……！",
                 "Desc": "<b>自身擁有</b><b:Shield><b>期間：</b>\n立即對自身造成以下效果(持續至條件失效)：\n- 獲得<b:NinjaWalking>.\n\n※ <b:NinjaWalking>效果：賦予自身治癒力<?1>的持續治療.",
                 "Parameters": [
                     [
@@ -48358,7 +48363,7 @@
         }
     },
     "10133": {
-        "Name": "莉央（武裝）",
+        "Name": "莉央(武裝)",
         "Skills": {
             "Normal": {
                 "Effects": [
@@ -48531,7 +48536,7 @@
                 ]
             },
             "WeaponPassive": {
-                "Name": "進化演算法＋",
+                "Name": "進化演算法+",
                 "Desc": "<b>戰術入場時：</b>\n立即對自身造成以下效果(持續至退場)：\n- <b:CriticalDamage>增加<?1>.\n- <b:ATK>增加<?2>.",
                 "Parameters": [
                     [
@@ -48586,7 +48591,7 @@
                 ]
             },
             "ExtraPassive": {
-                "Name": "元啟發式",
+                "Name": "Metaheuristic",
                 "Desc": "<b>自身攻擊時：</b>\n對防禦屬性為<b class='ba-col-explosion'>輕型護甲</b>的敵方單位造成以下效果(持續13秒)(冷卻5秒)：\n- 20%機率：<d:ReduceWeakDamagedRate>加算<?1>.",
                 "Parameters": [
                     [
@@ -48681,6 +48686,7 @@
                 ],
                 "Range": 850,
                 "Icon": "SKILLICON_CH0334_SELECTEXSKILL",
+                "SortHits": 30,
                 "Effects": [],
                 "ExtraSkills": [
                     {
@@ -50572,7 +50578,7 @@
         }
     },
     "10139": {
-        "Name": "ニコ",
+        "Name": "仁子",
         "Skills": {
             "Normal": {
                 "Effects": [
@@ -50597,8 +50603,8 @@
                 }
             },
             "Ex": {
-                "Name": "CSAR",
-                "Desc": "味方1人の弱体状態を1つ解除/\n自身を中心とした円形範囲内の味方の<b:EnhanceExDamageRate>を<?1>加算（35秒間）、さらにその対象がアタッカーの場合「索敵」を1個付与（「索敵」は最大6個まで重複）",
+                "Name": "戰鬥搜救",
+                "Desc": "對1名我方單位造成以下效果：\n- 解除1個減益狀態.\n對以自身為中心的圓形範圍內的我方單位造成以下效果：\n- <b:EnhanceExDamageRate>加算<?1>(持續35秒).\n- 目標戰術類別為輸出時：賦予1層<s:CH0172_Ex>.\n&nbsp;&nbsp;※ <s:CH0172_Ex>各單位最多擁有6層.",
                 "Parameters": [
                     [
                         "25.5%",
@@ -50617,12 +50623,6 @@
                 ],
                 "Duration": 169,
                 "Range": 850,
-                "Radius": [
-                    {
-                        "Type": "Circle",
-                        "Radius": 350
-                    }
-                ],
                 "Icon": "COMMON_SKILLICON_WEAPONBUFF",
                 "Effects": [
                     {
@@ -50652,8 +50652,8 @@
                 ]
             },
             "Public": {
-                "Name": "ブロークンアロー",
-                "Desc": "35秒毎に、敵3人に対して攻撃力の<?1>分のダメージ/\n攻撃力の<?2>分の<d:Burn>持続ダメージを付与（20秒間）",
+                "Name": "斷箭",
+                "Desc": "<b>每35秒：</b>\n對3名敵方單位造成以下效果：\n- 造成自身攻擊力<?1>的傷害.\n- 施加自身攻擊力<?2>的<d:Burn>(持續20秒).",
                 "Parameters": [
                     [
                         "227%",
@@ -50731,8 +50731,8 @@
                 ]
             },
             "Passive": {
-                "Name": "火器熟練",
-                "Desc": "<b:Range>を200、<b:ATK>を<?1>増加",
+                "Name": "火器精通",
+                "Desc": "<b>戰術入場時：</b>\n立即對自身造成以下效果(持續至退場)：\n- <b:Range>增加200.\n- <b:ATK>增加<?1>.",
                 "Parameters": [
                     [
                         "11.2%",
@@ -50796,8 +50796,8 @@
                 ]
             },
             "WeaponPassive": {
-                "Name": "火器熟練+",
-                "Desc": "<b:ExtendBuffDuration>を<?1>増加/\nさらに<b:Range>を200、<b:ATK>を<?2>増加",
+                "Name": "火器精通＋",
+                "Desc": "<b>戰術入場時：</b>\n立即對自身造成以下效果(持續至退場)：\n- <b:ExtendBuffDuration>增加<?1>.\n- <b:Range>增加200.\n- <b:ATK>增加<?2>.",
                 "Parameters": [
                     [
                         "1000",
@@ -50851,8 +50851,8 @@
                 ]
             },
             "ExtraPassive": {
-                "Name": "小隊のお世話焼き",
-                "Desc": "自身のEXスキルで味方にバフ効果を付与した時、該当味方に対して、味方全体の「索敵」1個毎に<b:EnhanceExDamageRate>を<?1>加算（35秒間）（最大6個まで）",
+                "Name": "小隊的熱心腸",
+                "Desc": "<b>自身使用EX技能時：</b>\n立即對該次EX技能賦予增益狀態的全體目標造成以下效果：\n- <b:EnhanceExDamageRate>加算(我方單位<s:CH0172_Ex>層數之和×<?1>)(持續35秒).\n&nbsp;&nbsp;※ 最多計入6層.\n\n※ 觸發順序後於EX技能判定賦予<s:CH0172_Ex>.",
                 "Parameters": [
                     [
                         "2.1%",
@@ -50984,7 +50984,7 @@
         }
     },
     "10140": {
-        "Name": "クルミ",
+        "Name": "胡桃",
         "Skills": {
             "Normal": {
                 "Effects": [
@@ -51013,8 +51013,8 @@
                 }
             },
             "Ex": {
-                "Name": "防護盾、展開",
-                "Desc": "スキル発動後すぐにリロード/\n治癒力の<?1>分の戦術<b:Shield>効果を発動（10秒間）、戦術<b:Shield>が維持される間、戦術防御状態に変更\n（戦術<b:Shield>：効果終了時、<b:Shield>残量の50%分のHPを回復する。戦術<b:Shield>を保有中に他の<b:Shield>効果が付与された場合、<b:Shield>が付与される代わりに自身の治癒力の100%分の戦術<b:Shield>を回復）",
+                "Name": "防護盾牌，部署",
+                "Desc": "對自身造成以下效果：\n- 立即換彈.\n- 獲得治癒力<?1>的<b:TacticalShield>(持續10秒).\n&nbsp;&nbsp;※ <b:TacticalShield>存在期間，使自身變為<s:FormChange='戰術防禦狀態'>.\n\n※ <b:TacticalShield>效果：\n- 該狀態效果結束時，使擁有該狀態的單位回復<b:TacticalShield>剩餘數值50%的生命值.\n- 擁有該狀態效果的單位獲得其他<b:Shield>效果時，改為使該單位擁有的<b:TacticalShield>回復該單位治癒力100%的數值.",
                 "Parameters": [
                     [
                         "226%",
@@ -51051,8 +51051,8 @@
                 "ExtraSkills": [
                     {
                         "Id": "CH0173ExtraPassive02",
-                        "Name": "鉄壁の防御",
-                        "Desc": "戦術防御状態のクルミは通常攻撃をしない代わりに<b:Shield>が攻撃を受けた時、治癒力の<?1>分の戦術<b:Shield>を回復（最大で30回分まで適用）/\n戦術防御状態の解除時、敵1人に対して<c:Stunned>を付与（<?2>間）",
+                        "Name": "固若金湯",
+                        "Desc": "<b>自身處於</b><s:FormChange='戰術防禦狀態'><b>期間：</b>\n立即對自身造成以下效果(持續至條件失效)：\n- 不進行普通攻擊.\n- <b:TacticalShield>受到攻擊時：<b:TacticalShield>回復自身治癒力<?1>的數值.\n&nbsp;&nbsp;※ 最多觸發30次.\n\n<b>自身退出</b><s:FormChange='戰術防禦狀態'><b>時：</b>\n對1名敵方單位造成以下效果：\n- 施加<c:Stunned>(持續<?2>).",
                         "Parameters": [
                             [
                                 "21.2%",
@@ -51104,8 +51104,8 @@
                 ]
             },
             "Public": {
-                "Name": "攻勢転換",
-                "Desc": "戦術防御状態の解除時、敵1人の<d:CriticalDamageRateResist>率を<?1>減少（32秒間）/\n攻撃力の<?2>分のダメージ",
+                "Name": "攻勢轉換",
+                "Desc": "<b>自身退出</b><s:FormChange='戰術防禦狀態'><b>時：</b>\n對1名敵方單位造成以下效果：\n- <d:CriticalDamageRateResist>減少<?1>(持續32秒).\n- 造成自身攻擊力<?2>的傷害.",
                 "Parameters": [
                     [
                         "15.1%",
@@ -51215,8 +51215,8 @@
                 ]
             },
             "Passive": {
-                "Name": "セラミック装甲板",
-                "Desc": "<b:DEF>を<?1>増加",
+                "Name": "陶瓷防彈護板",
+                "Desc": "<b>戰術入場時：</b>\n立即對自身造成以下效果(持續至退場)：\n- <b:DEF>增加<?1>.",
                 "Parameters": [
                     [
                         "14%",
@@ -51258,8 +51258,8 @@
                 ]
             },
             "WeaponPassive": {
-                "Name": "セラミック装甲板+",
-                "Desc": "<b:MAXHP>を<?1>増加/\nさらに<b:DEF>を<?2>増加",
+                "Name": "陶瓷防彈護板＋",
+                "Desc": "<b>戰術入場時：</b>\n立即對自身造成以下效果(持續至退場)：\n- <b:MAXHP>增加<?1>.\n- <b:DEF>增加<?2>.",
                 "Parameters": [
                     [
                         "4554",
@@ -51313,8 +51313,8 @@
                 ]
             },
             "ExtraPassive": {
-                "Name": "槌支える鉄床",
-                "Desc": "<b:CostRegen>を<?1>増加、戦術<b:Shield>が維持されている間は追加で<b:CostRegen>を<?2>増加/\n戦術<b:Shield>が5秒以上維持された場合、該当戦術<b:Shield>が終了時にストライカーの味方の<b:ATK>を<?3>増加（35秒間）",
+                "Name": "錘砧之砧",
+                "Desc": "<b>戰術入場時：</b>\n立即對自身造成以下效果(持續至退場)：\n- <b:CostRegen>增加<?1>.\n\n<b>自身擁有</b><b:TacticalShield><b>期間：</b>\n立即對自身造成以下效果(持續至條件失效)：\n- <b:CostRegen>增加<?2>.\n\n<b>自身擁有的</b><b:TacticalShield><b>效果結束時：</b>\n立即對全體STRIKER學生造成以下效果：\n- 該<b:TacticalShield>存在不低於5秒：<b:ATK>增加<?3>(持續35秒).",
                 "Parameters": [
                     [
                         "96",
@@ -51482,6 +51482,326 @@
                         "Stat": "AttackPower_Coefficient",
                         "Channel": 102,
                         "Duration": 35000
+                    }
+                ]
+            }
+        }
+    },
+    "10141": {
+        "Name": "ハルカ（ドレス）",
+        "Skills": {
+            "Normal": {
+                "Effects": [
+                    {
+                        "Type": "Damage",
+                        "Hits": [
+                            1666,
+                            1666,
+                            1667,
+                            1667,
+                            1667,
+                            1667
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Block": 1
+                    }
+                ],
+                "Frames": {
+                    "AttackEnterDuration": 40,
+                    "AttackStartDuration": 22,
+                    "AttackEndDuration": 28,
+                    "AttackBurstRoundOverDelay": 29,
+                    "AttackIngDuration": 40,
+                    "AttackReloadDuration": 62
+                }
+            },
+            "Ex": {
+                "Name": "この身を捧げて",
+                "Desc": "敵1人に対して、攻撃力の<?1>分のダメージ（この攻撃は敵の防御力を<?2>無視します）/\n自身に対して最大HPの6.8%分の固定ダメージ\n（このスキルでハルカ（ドレス）は退却しません）",
+                "Parameters": [
+                    [
+                        "778%",
+                        "895%",
+                        "1011%",
+                        "1128%",
+                        "1245%"
+                    ],
+                    [
+                        "35%",
+                        "35%",
+                        "50%",
+                        "50%",
+                        "68%"
+                    ]
+                ],
+                "Cost": [
+                    4,
+                    4,
+                    4,
+                    4,
+                    4
+                ],
+                "Duration": 138,
+                "Range": 650,
+                "Radius": [
+                    {
+                        "Type": "Circle",
+                        "Radius": 50
+                    }
+                ],
+                "Icon": "COMMON_SKILLICON_TARGET",
+                "Effects": [
+                    {
+                        "Type": "Damage",
+                        "Block": 0,
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            3333,
+                            3333,
+                            3334
+                        ],
+                        "DescParamId": 1,
+                        "Scale": [
+                            77843,
+                            89517,
+                            101191,
+                            112871,
+                            124545
+                        ],
+                        "IgnoreDef": [
+                            6500,
+                            6500,
+                            5000,
+                            5000,
+                            3200
+                        ]
+                    }
+                ]
+            },
+            "Public": {
+                "Name": "花が咲くように",
+                "Desc": "35秒毎に、<b:ATK>を<?1>増加（30秒間）/\n治癒力の<?2>分の回復（現在のHPに比例して回復量が1～2倍に変更）（HPが少ないほど回復量が増加）",
+                "Parameters": [
+                    [
+                        "20.7%",
+                        "21.8%",
+                        "22.8%",
+                        "27%",
+                        "28%",
+                        "29%",
+                        "33.2%",
+                        "34.2%",
+                        "35.3%",
+                        "39.4%"
+                    ],
+                    [
+                        "68.2%",
+                        "71.6%",
+                        "75.1%",
+                        "88.7%",
+                        "92.1%",
+                        "95.5%",
+                        "109%",
+                        "112%",
+                        "116%",
+                        "129%"
+                    ]
+                ],
+                "Duration": 152,
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Value": [
+                            [
+                                2077,
+                                2181,
+                                2285,
+                                2700,
+                                2804,
+                                2908,
+                                3323,
+                                3427,
+                                3531,
+                                3946
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2,
+                        "Duration": 30000,
+                        "ApplyFrame": 95
+                    },
+                    {
+                        "Type": "Heal",
+                        "TargetHpRateModifier": {
+                            "MinHpRate": 0,
+                            "MaxHpRate": 10000,
+                            "MultiplierMin": 2,
+                            "MultiplierMax": 1
+                        },
+                        "Target": "Self",
+                        "ApplyFrame": 95,
+                        "Scale": [
+                            6828,
+                            7168,
+                            7510,
+                            8875,
+                            9215,
+                            9558,
+                            10923,
+                            11265,
+                            11605,
+                            12970
+                        ]
+                    }
+                ]
+            },
+            "Passive": {
+                "Name": "雑草の本懐",
+                "Desc": "<b:ATK>を<?1>増加",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2,
+                        "Value": [
+                            [
+                                1400,
+                                1470,
+                                1540,
+                                1820,
+                                1890,
+                                1960,
+                                2240,
+                                2310,
+                                2380,
+                                2660
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "WeaponPassive": {
+                "Name": "雑草の本懐+",
+                "Desc": "<b:CriticalDamage>を<?1>増加/\nさらに<b:ATK>を<?2>増加",
+                "Parameters": [
+                    [
+                        "2000",
+                        "2100",
+                        "2200",
+                        "2600",
+                        "2700",
+                        "2800",
+                        "3200",
+                        "3300",
+                        "3400",
+                        "3800"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "CriticalDamageRate_Base",
+                        "Channel": 1711,
+                        "Value": [
+                            [
+                                2000,
+                                2100,
+                                2200,
+                                2600,
+                                2700,
+                                2800,
+                                3200,
+                                3300,
+                                3400,
+                                3800
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "ExtraPassive": {
+                "Name": "消えてください消えてください！",
+                "Desc": "ダメージを受けた場合、「許さない」を1個獲得（30秒間）（クールタイム4秒）/\n「許さない」は最大3個まで重複、「許さない」1個毎に<b:CriticalDamage>率を<?1>増加",
+                "Parameters": [
+                    [
+                        "5.3%",
+                        "5.6%",
+                        "5.9%",
+                        "7%",
+                        "7.2%",
+                        "7.5%",
+                        "8.6%",
+                        "8.8%",
+                        "9.1%",
+                        "10.2%"
+                    ]
+                ],
+                "Icon": "SKILLICON_CH0247_EXTRAPASSIVESKILL",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "StackSame": 3,
+                        "Icon": "Special_CH0247_ExtraPassive",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Value": [
+                            [
+                                538,
+                                565,
+                                592,
+                                700,
+                                726,
+                                754,
+                                861,
+                                888,
+                                915,
+                                1022
+                            ]
+                        ],
+                        "Stat": "CriticalDamageRate_Coefficient",
+                        "Channel": 90221,
+                        "Duration": 30000
                     }
                 ]
             }
@@ -58055,6 +58375,7 @@
                                 5000,
                                 5000
                             ],
+                            "AdditionalDamage": true,
                             "Scale": [
                                 6700,
                                 9205,
@@ -59314,14 +59635,7 @@
                     5
                 ],
                 "Duration": 110,
-                "Range": 650,
-                "Radius": [
-                    {
-                        "Type": "Obb",
-                        "Width": 50,
-                        "Height": 1200
-                    }
-                ],
+                "Range": 1200,
                 "Icon": "COMMON_SKILLICON_BURNNIG",
                 "Effects": [
                     {
@@ -62445,6 +62759,7 @@
                 ],
                 "Range": 650,
                 "Icon": "SKILLICON_CH0166_SELECTEXSKILL",
+                "SortHits": 1,
                 "Effects": [],
                 "ExtraSkills": [
                     {
@@ -63073,7 +63388,7 @@
         }
     },
     "16019": {
-        "Name": "季（武裝）",
+        "Name": "季(武裝)",
         "Skills": {
             "Normal": {
                 "Effects": [
@@ -63106,7 +63421,7 @@
                 }
             },
             "Ex": {
-                "Name": "特殊武器：雙持能量手槍",
+                "Name": "Special Weapon: Dual Energy Pistol",
                 "Desc": "根據指定目標的類型，造成以下效果中的1類：\n<b>指定1名敵方單位時：</b>\n對該目標造成以下效果：\n- 造成自身攻擊力<?1>的傷害.\n- 施加<c:Stunned>(持續(<?2>+充能階段×<?4>)).\n<b>指定1名我方單位時：</b>\n- 對該目標造成以下效果：\n- 回復自身治癒力<?3>的生命值.\n- 解除(1+充能階段×1)個減益狀態.\n\n對自身造成以下效果：\n- 該技能結束後：重置自身能量充能狀態為<s:EnergyBatteryEmpty>.",
                 "Parameters": [
                     [
@@ -63236,7 +63551,7 @@
                 }
             },
             "Public": {
-                "Name": "完美的女僕，完美的偵察",
+                "Name": "完美女僕，完美偵察員",
                 "Desc": "<b>每40秒：</b>\n對自身造成以下效果：\n- <b:ATK>增加<?1>(持續30秒).\n對自身造成以下效果中的1種：\n- 能量充能狀態為<s:EnergyBatteryEmpty>時：能量充能狀態提升至<s:EnergyBatteryHalf>.\n- 能量充能狀態為<s:EnergyBatteryHalf>時：能量充能狀態提升至<s:EnergyBatteryFull>.",
                 "Parameters": [
                     [
@@ -63282,7 +63597,7 @@
                 ]
             },
             "Passive": {
-                "Name": "新的愛好？",
+                "Name": "新的興趣（？）",
                 "Desc": "<b>戰術入場時：</b>\n立即對自身造成以下效果(持續至退場)：\n- <b:ATK>增加<?1>.\n- <b:HealPower>增加<?2>.",
                 "Parameters": [
                     [
@@ -63359,7 +63674,7 @@
                 ]
             },
             "WeaponPassive": {
-                "Name": "新的愛好？＋",
+                "Name": "新的興趣（？）+",
                 "Desc": "<b>戰術入場時：</b>\n立即對自身造成以下效果(持續至退場)：\n- <b:ATK>增加<?1>.\n- <b:HealPower>增加<?2>.\n- <b:ATK>增加<?3>.\n- <b:HealPower>增加<?4>.",
                 "Parameters": [
                     [
@@ -63460,7 +63775,7 @@
                 ]
             },
             "ExtraPassive": {
-                "Name": "迅速行動，報告稍後進行",
+                "Name": "先行動，後報告",
                 "Desc": "<b>自身攻擊時：</b>\n對防禦屬性為<b class='ba-col-pierce'>重型裝甲</b>的敵方單位造成以下效果：\n- 造成自身攻擊力<?1>的追加傷害.",
                 "Parameters": [
                     [
@@ -63504,7 +63819,7 @@
         }
     },
     "16020": {
-        "Name": "オトギ",
+        "Name": "御伽",
         "Skills": {
             "Normal": {
                 "Effects": [
@@ -63573,8 +63888,8 @@
                 }
             },
             "Ex": {
-                "Name": "指定射撃開始",
-                "Desc": "指定射撃姿勢になり、<b:ATK>を<?1>増加、<b:AttackSpeed>を<?2>増加、<b:Range>を46%増加（35秒間）/\n敵1人に対して<s:CH0337_Ex>を付与し、オトギは<s:CH0337_Ex>が付与された敵を優先的に攻撃（35秒間）/\n発動後すぐにリロード",
+                "Name": "開始指定射擊",
+                "Desc": "對1名敵方單位造成以下效果(持續35秒)：\n- 施加<s:CH0174_Ex>.\n&nbsp;&nbsp;※ 自身優先攻擊擁有<s:CH0174_Ex>的目標.\n對自身造成以下效果：\n- 切換<s:FormChange='指定射擊姿勢'>(持續35秒).\n- <b:ATK>增加<?1>(持續35秒).\n- <b:AttackSpeed>增加<?2>(持續35秒).\n- <b:Range>增加46%(持續35秒).\n- 立即換彈.",
                 "Parameters": [
                     [
                         "32.6%",
@@ -63686,8 +64001,8 @@
                 ]
             },
             "Public": {
-                "Name": "HEIAP弾切替",
-                "Desc": "指定射撃姿勢で弾薬数が0になった時、敵1人に対して攻撃力の<?1>分のダメージ",
+                "Name": "切換高爆燃燒穿甲彈",
+                "Desc": "<b>自身處於</b><s:FormChange='指定射擊姿勢'><b>且彈匣彈藥耗盡時：</b>\n對1名敵方單位造成以下效果：\n- 造成自身攻擊力<?1>的傷害.",
                 "Parameters": [
                     [
                         "184%",
@@ -63738,8 +64053,8 @@
                 ]
             },
             "Passive": {
-                "Name": "速射熟練",
-                "Desc": "<b:AttackSpeed>を<?1>増加",
+                "Name": "速射精通",
+                "Desc": "<b>戰術入場時：</b>\n立即對自身造成以下效果(持續至退場)：\n- <b:AttackSpeed>增加<?1>.",
                 "Parameters": [
                     [
                         "14%",
@@ -63781,8 +64096,8 @@
                 ]
             },
             "WeaponPassive": {
-                "Name": "速射熟練+",
-                "Desc": "<b:ATK>を<?1>増加/\nさらに<b:AttackSpeed>を<?2>増加",
+                "Name": "速射精通＋",
+                "Desc": "<b>戰術入場時：</b>\n立即對自身造成以下效果(持續至退場)：\n- <b:ATK>增加<?1>.\n- <b:AttackSpeed>增加<?2>.",
                 "Parameters": [
                     [
                         "536",
@@ -63836,8 +64151,8 @@
                 ]
             },
             "ExtraPassive": {
-                "Name": "狙撃手の勘",
-                "Desc": "<b:ATK>を<?1>増加/\n<b:EnhanceExDamageRate>の加算値に比例して通常攻撃、およびノーマルスキルのダメージが1～2倍に変更（<b:EnhanceExDamageRate>の加算値が100%の時に最大値が適用される）",
+                "Name": "狙擊手的直覺",
+                "Desc": "<b>戰術入場時：</b>\n立即對自身造成以下效果(持續至退場)：\n- <b:ATK>增加<?1>.\n- 根據自身擁有的<b:EnhanceExDamageRate>加算的效果，使自身普通攻擊及基本技能的傷害變為1~2倍.\n&nbsp;&nbsp;※ 達到<b:EnhanceExDamageRate>加算100%時應用最大值.",
                 "Parameters": [
                     [
                         "16.8%",
@@ -68930,14 +69245,7 @@
                     3
                 ],
                 "Duration": 250,
-                "Range": 950,
-                "Radius": [
-                    {
-                        "Type": "Obb",
-                        "Width": 50,
-                        "Height": 1000
-                    }
-                ],
+                "Range": 1000,
                 "Icon": "COMMON_SKILLICON_STATDEBUFF",
                 "Effects": [
                     {
@@ -77032,7 +77340,7 @@
                     {
                         "Id": "SM019701Passive01",
                         "Name": "豐盛的一桌！",
-                        "Desc": "對以自身為中心的圓形範圍(持續30秒)內的我方單位持續造成以下效果：\n- <b:ATK>增加<?1>.",
+                        "Desc": "對以自身為中心的圓形範圍(持續30秒)內的我方單位持續造成以下效果(範圍內生效)：\n- <b:ATK>增加<?1>.",
                         "Parameters": [
                             [
                                 "21.6%",
@@ -79957,10 +80265,10 @@
         }
     },
     "20053": {
-        "Name": "三千留（禮服）",
+        "Name": "三千留(禮服)",
         "Skills": {
             "Ex": {
-                "Name": "少女忍法帖，小小三千溜喔啊啊！",
+                "Name": "少女忍法帖，小小三千喵啊啊！",
                 "Desc": "對1名我方單位造成以下效果：\n- 回復自身治癒力<?1>的生命值.",
                 "Parameters": [
                     [
@@ -79997,7 +80305,7 @@
                 ]
             },
             "Public": {
-                "Name": "秘技就傳授於你吧！",
+                "Name": "傳授祕儀的時候到了！",
                 "Desc": "<b>戰鬥開始時：</b>\n對除自身外的我方單位造成以下效果：\n- <b:ATK>增加<?1>(持續60秒).\n- <b:CostChange>減少1(EX技能使用1次後失效)\n\n※ 每場戰鬥該技能僅可觸發1次.",
                 "Parameters": [
                     [
@@ -80064,7 +80372,7 @@
                 ]
             },
             "Passive": {
-                "Name": "此亦忍者裝束也！",
+                "Name": "看好了！此乃忍者服是也！",
                 "Desc": "<b>戰術入場時：</b>\n立即對自身造成以下效果(持續至退場)：\n- <b:HealPower>增加<?1>.",
                 "Parameters": [
                     [
@@ -80107,7 +80415,7 @@
                 ]
             },
             "WeaponPassive": {
-                "Name": "此亦忍者裝束也！＋",
+                "Name": "看好了！此乃忍者服是也！+",
                 "Desc": "<b>戰術入場時：</b>\n立即對自身造成以下效果(持續至退場)：\n- <b:HealPower>增加<?1>.\n- <b:HealPower>增加<?2>.",
                 "Parameters": [
                     [
@@ -80162,7 +80470,7 @@
                 ]
             },
             "ExtraPassive": {
-                "Name": "內應流奧義！",
+                "Name": "祕術！臥底流奧義！",
                 "Desc": "<b>戰術入場時：</b>\n立即對我方全體學生造成以下效果(持續至退場)：\n- <b:CostRegen>增加<?1>.",
                 "Parameters": [
                     [
@@ -80209,10 +80517,10 @@
         }
     },
     "20054": {
-        "Name": "陽葵（武裝）",
+        "Name": "陽葵(武裝)",
         "Skills": {
             "Ex": {
-                "Name": "畢竟這是室外用的輪椅",
+                "Name": "這是室外用輪椅喔？",
                 "Desc": "指定1名我方單位後造成以下效果：\n- 在戰場上召喚戰術支援載具「室外用輪椅」(持續30秒).\n&nbsp;&nbsp;※ 室外用輪椅額外擁有日鞠(臨戰)生命值<?1>的<b:MAXHP>.\n對以上述指定目標為中心的圓形範圍(持續3秒)內的我方單位造成以下效果(範圍內生效)：\n- 回復自身治癒力<?2>的生命值共計5次.\n※ 該範圍為場地效果.\n\n※ 戰場上僅可同時存在1臺戰術支援載具.",
                 "Parameters": [
                     [
@@ -80325,7 +80633,7 @@
                 ]
             },
             "Public": {
-                "Name": "我全知全能",
+                "Name": "我可是全知又萬能的呢",
                 "Desc": "<b>自身使用EX技能時：</b>\n對1名我方單位造成以下效果(持續30秒)：\n- <b:CriticalDamage>增加<?1>.\n\n※ 優先指定該次EX技能指定的目標.",
                 "Parameters": [
                     [
@@ -80372,7 +80680,7 @@
                 ]
             },
             "Passive": {
-                "Name": "冰雪中綻放的高貴之花",
+                "Name": "孤高雪中之花",
                 "Desc": "<b>戰術入場時：</b>\n立即對自身造成以下效果(持續至退場)：\n- <b:MAXHP>增加<?1>.",
                 "Parameters": [
                     [
@@ -80415,7 +80723,7 @@
                 ]
             },
             "WeaponPassive": {
-                "Name": "冰雪中綻放的高貴之花＋",
+                "Name": "孤高雪中之花+",
                 "Desc": "<b>戰術入場時：</b>\n立即對自身造成以下效果(持續至退場)：\n- <b:MAXHP>增加<?1>.\n- <b:MAXHP>增加<?2>.",
                 "Parameters": [
                     [
@@ -80470,7 +80778,7 @@
                 ]
             },
             "ExtraPassive": {
-                "Name": "超天才病弱美少女駭客的智囊",
+                "Name": "超天才病弱美少女駭客的狀況應對",
                 "Desc": "<b>戰術入場時：</b>\n立即對我方全體學生造成以下效果(持續至退場)：\n- <b:CostRegen>增加<?1>.",
                 "Parameters": [
                     [
@@ -81384,6 +81692,534 @@
                         ],
                         "Stat": "CriticalDamageRate_Coefficient",
                         "Channel": 311
+                    }
+                ]
+            }
+        }
+    },
+    "20058": {
+        "Name": "繪里香",
+        "Skills": {
+            "Ex": {
+                "Name": "就選它了！",
+                "Desc": "對1名我方單位造成以下效果：\n- 回復自身治癒力<?2>的生命值.\n- 解除<?1>減益狀態.\n對自身造成以下效果：\n- 獲得(該次技能解除的減益狀態個數)層<s:CH0076_Ex>.\n&nbsp;&nbsp;※ <s:CH0076_Ex>最多擁有3層.",
+                "Parameters": [
+                    [
+                        "1個",
+                        "1個",
+                        "2個",
+                        "2個",
+                        "3個"
+                    ],
+                    [
+                        "147%",
+                        "169%",
+                        "213%",
+                        "235%",
+                        "279%"
+                    ]
+                ],
+                "Cost": [
+                    3,
+                    3,
+                    3,
+                    3,
+                    3
+                ],
+                "Duration": 100,
+                "Range": 1000,
+                "Icon": "COMMON_SKILLICON_DISPEL",
+                "Effects": [
+                    {
+                        "Type": "Dispel",
+                        "Target": "Ally"
+                    },
+                    {
+                        "Type": "Heal",
+                        "Target": "Ally",
+                        "ApplyFrame": 32,
+                        "Scale": [
+                            14700,
+                            16905,
+                            21315,
+                            23520,
+                            27930
+                        ]
+                    }
+                ]
+            },
+            "Public": {
+                "Name": "來，給你",
+                "Desc": "<b>自身擁有3層</b><s:CH0076_Ex><b>時(冷卻8秒)：</b>\n對自身造成以下效果：\n- 移除所有<s:CH0076_Ex>.\n對全體STRIKER學生造成以下效果(持續33秒)：\n- <b:CriticalDamage>增加<?1>.",
+                "Parameters": [
+                    [
+                        "13.4%",
+                        "14.1%",
+                        "14.8%",
+                        "17.5%",
+                        "18.1%",
+                        "18.8%",
+                        "21.5%",
+                        "22.2%",
+                        "22.9%",
+                        "25.6%"
+                    ]
+                ],
+                "Duration": 216,
+                "Range": 1000,
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "AllyMain"
+                        ],
+                        "Value": [
+                            [
+                                1348,
+                                1415,
+                                1482,
+                                1752,
+                                1819,
+                                1886,
+                                2156,
+                                2223,
+                                2291,
+                                2560
+                            ]
+                        ],
+                        "Stat": "CriticalDamageRate_Coefficient",
+                        "Channel": 111,
+                        "Duration": 33000,
+                        "ApplyFrame": 38
+                    }
+                ]
+            },
+            "Passive": {
+                "Name": "請用OK繃",
+                "Desc": "<b>戰術入場時：</b>\n立即對自身造成以下效果(持續至退場)：\n- <b:HealPower>增加<?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_STATBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "HealPower_Coefficient",
+                        "Channel": 4,
+                        "Value": [
+                            [
+                                1400,
+                                1470,
+                                1540,
+                                1820,
+                                1890,
+                                1960,
+                                2240,
+                                2310,
+                                2380,
+                                2660
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "WeaponPassive": {
+                "Name": "請用OK繃＋",
+                "Desc": "<b>戰術入場時：</b>\n立即對自身造成以下效果(持續至退場)：\n- <b:HealPower>增加<?1>.\n- <b:HealPower>增加<?2>.",
+                "Parameters": [
+                    [
+                        "676",
+                        "710",
+                        "744",
+                        "879",
+                        "913",
+                        "946",
+                        "1081",
+                        "1115",
+                        "1149",
+                        "1284"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_STATBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "HealPower_Base",
+                        "Channel": 1704,
+                        "Value": [
+                            [
+                                676,
+                                710,
+                                744,
+                                879,
+                                913,
+                                946,
+                                1081,
+                                1115,
+                                1149,
+                                1284
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "ExtraPassive": {
+                "Name": "閃亮☆的感覺？",
+                "Desc": "<b>戰術入場時：</b>\n立即對我方戰術類別為輸出的學生造成以下效果(持續至退場)：\n- <b:CriticalDamage>增加<?1>.",
+                "Parameters": [
+                    [
+                        "12.7%",
+                        "13.4%",
+                        "14%",
+                        "16.5%",
+                        "17.2%",
+                        "17.8%",
+                        "20.4%",
+                        "21%",
+                        "21.7%",
+                        "24.2%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Restrictions": [
+                            {
+                                "Property": "TacticRole",
+                                "Operand": "Equal",
+                                "Value": "DamageDealer"
+                            }
+                        ],
+                        "Target": [
+                            "Self",
+                            "AllyMain",
+                            "AllySupport"
+                        ],
+                        "Value": [
+                            [
+                                1277,
+                                1340,
+                                1404,
+                                1659,
+                                1723,
+                                1787,
+                                2042,
+                                2105,
+                                2170,
+                                2425
+                            ]
+                        ],
+                        "Stat": "CriticalDamageRate_Coefficient",
+                        "Channel": 311
+                    }
+                ]
+            }
+        }
+    },
+    "20059": {
+        "Name": "ムツキ（ドレス）",
+        "Skills": {
+            "Ex": {
+                "Name": "爆燃のメヌエット",
+                "Desc": "敵1人に対して、攻撃力の<?1>分のダメージ",
+                "Parameters": [
+                    [
+                        "1740%",
+                        "2001%",
+                        "2523%",
+                        "2784%",
+                        "3306%"
+                    ]
+                ],
+                "Cost": [
+                    6,
+                    6,
+                    6,
+                    6,
+                    6
+                ],
+                "Duration": 229,
+                "Range": 1000,
+                "Icon": "COMMON_SKILLICON_TARGET",
+                "Effects": [
+                    {
+                        "Type": "Damage",
+                        "Block": 0,
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            2000,
+                            2000,
+                            2000,
+                            2000,
+                            2000
+                        ],
+                        "DescParamId": 1,
+                        "Scale": [
+                            174048,
+                            200158,
+                            252371,
+                            278481,
+                            330694
+                        ]
+                    }
+                ]
+            },
+            "Public": {
+                "Name": "足元気をつけて！",
+                "Desc": "30秒毎に、円形範囲内の敵に対して<d:CriticalDamageRateResist>率を<?1>減少（20秒間）/\n円形範囲内の敵に対して、1秒毎に攻撃力の<?2>分のダメージ（10秒間）",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.3%",
+                        "19%",
+                        "19.7%",
+                        "22.5%",
+                        "23.2%",
+                        "23.9%",
+                        "26.7%"
+                    ],
+                    [
+                        "29.7%",
+                        "31.2%",
+                        "32.7%",
+                        "38.7%",
+                        "40.1%",
+                        "41.6%",
+                        "47.6%",
+                        "49.1%",
+                        "50.6%",
+                        "56.5%"
+                    ]
+                ],
+                "Duration": 100,
+                "Range": 1000,
+                "Radius": [
+                    {
+                        "Type": "Circle",
+                        "Radius": 50
+                    }
+                ],
+                "Icon": "COMMON_SKILLICON_STATDEBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Enemy"
+                        ],
+                        "Value": [
+                            [
+                                -1408,
+                                -1479,
+                                -1549,
+                                -1831,
+                                -1901,
+                                -1972,
+                                -2253,
+                                -2323,
+                                -2394,
+                                -2675
+                            ]
+                        ],
+                        "Stat": "CriticalDamageResistRate_Coefficient",
+                        "Channel": 623,
+                        "Duration": 20000,
+                        "ApplyFrame": 70
+                    },
+                    {
+                        "Type": "Damage",
+                        "Block": 0,
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            10000
+                        ],
+                        "DescParamId": 1,
+                        "Scale": [
+                            2975,
+                            3129,
+                            3276,
+                            3871,
+                            4018,
+                            4165,
+                            4760,
+                            4914,
+                            5061,
+                            5656
+                        ]
+                    }
+                ]
+            },
+            "Passive": {
+                "Name": "もーっと面白くなるよ？",
+                "Desc": "<b:ATK>を<?1>増加",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2,
+                        "Value": [
+                            [
+                                1400,
+                                1470,
+                                1540,
+                                1820,
+                                1890,
+                                1960,
+                                2240,
+                                2310,
+                                2380,
+                                2660
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "WeaponPassive": {
+                "Name": "もーっと面白くなるよ？+",
+                "Desc": "<b:Penetration>を<?1>増加/\nさらに<b:ATK>を<?2>増加",
+                "Parameters": [
+                    [
+                        "360",
+                        "378",
+                        "396",
+                        "468",
+                        "486",
+                        "504",
+                        "576",
+                        "594",
+                        "612",
+                        "684"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "DefensePenetration_Base",
+                        "Channel": 1731,
+                        "Value": [
+                            [
+                                360,
+                                378,
+                                396,
+                                468,
+                                486,
+                                504,
+                                576,
+                                594,
+                                612,
+                                684
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "ExtraPassive": {
+                "Name": "一緒に遊ぼっ！",
+                "Desc": "味方スペシャル生徒の<b:ATK>を<?1>増加",
+                "Parameters": [
+                    [
+                        "14.2%",
+                        "15%",
+                        "15.7%",
+                        "18.5%",
+                        "19.2%",
+                        "20%",
+                        "22.8%",
+                        "23.5%",
+                        "24.2%",
+                        "27.1%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self",
+                            "AllySupport"
+                        ],
+                        "Value": [
+                            [
+                                1428,
+                                1500,
+                                1571,
+                                1857,
+                                1928,
+                                2000,
+                                2285,
+                                2357,
+                                2428,
+                                2714
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 302
                     }
                 ]
             }
