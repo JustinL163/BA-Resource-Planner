@@ -25,7 +25,7 @@ if (data == null) {
 
 let charBoxSize = localStorage.getItem("character_box_size") ?? "5";
 
-fetch('json/skillinfo/en.json?18').then((response) => response.json()).then((json) => {
+fetch('json/skillinfo/en.json?19').then((response) => response.json()).then((json) => {
     charlist = json;
 
     addMissingDataProperties();
@@ -42,20 +42,20 @@ fetch('json/strings.json?31').then((response) => response.json()).then((json) =>
     }
 });
 
-fetch('json/skillinfo/localisation_en.json?18').then((response) => response.json()).then((json) => {
+fetch('json/skillinfo/localisation_en.json?19').then((response) => response.json()).then((json) => {
     skillbuffnames["en"] = json;
 });
 
 if (data?.language) {
     if (data.language != "EN" && data.language != "Id") {
-        fetch('json/skillinfo/' + data.language.toLowerCase() + ".json?18").then((response) => response.json()).then((json) => {
+        fetch('json/skillinfo/' + data.language.toLowerCase() + ".json?19").then((response) => response.json()).then((json) => {
             chartranslate = json;
             if (nameReady) {
                 ShowNames(chartranslate);
             }
         });
 
-        fetch('json/skillinfo/localisation_' + data.language.toLowerCase() + '.json?18').then((response) => response.json()).then((json) => {
+        fetch('json/skillinfo/localisation_' + data.language.toLowerCase() + '.json?19').then((response) => response.json()).then((json) => {
             skillbuffnames[data.language.toLowerCase()] = json;
         });
     }
