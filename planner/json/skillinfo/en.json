@@ -71397,7 +71397,7 @@
                 ]
             },
             "Public": {
-                "Name": "Brave Magic",
+                "Name": "The Magic of Courage",
                 "Desc": "When running out of ammo, immediately reloads and deals <?1> damage to one enemy.",
                 "Parameters": [
                     [
@@ -71453,7 +71453,7 @@
                 ]
             },
             "Passive": {
-                "Name": "Unyielding Heart",
+                "Name": "Unyielding Spirit",
                 "Desc": "Increases <b:ATK> by <?1>.",
                 "Parameters": [
                     [
@@ -71496,7 +71496,7 @@
                 ]
             },
             "WeaponPassive": {
-                "Name": "Unyielding Heart+",
+                "Name": "Unyielding Spirit+",
                 "Desc": "Increases <b:CriticalDamage> by <?1> and <b:ATK> by <?2>.",
                 "Parameters": [
                     [
@@ -71629,8 +71629,8 @@
             }
         },
         "Weapon": {
-            "Name": "光の剣：スーパーノヴァ for アビ・エシュフ",
-            "Desc": "レールガンを軽量化し、連続射撃が可能なようにカスタマイズされたアサルトライフル。\n\n伝説の剣を手にすることで、少女は勇者となった。そう、アリスの冒険もここから始まったのだ。",
+            "Name": "Supernova: Abi-Eshuh's Sword of Light",
+            "Desc": "An energy rifle, custom made with a special frame. This new edition is lighter, with a much higher firing rate.\n\nA hero's adventure begins after finding the legendary sword. That's where Aris' adventure began as well.",
             "AdaptationType": "Street",
             "AdaptationValue": 1,
             "AttackPower1": 177,
@@ -71815,7 +71815,7 @@
                 }
             },
             "Ex": {
-                "Name": "Here I Am",
+                "Name": "Me, Here and Now",
                 "Desc": "Deploys an amplifier for 25s, increasing the <b:ATK> by <?1> and <b:EnhanceMysticRate> by <?2> of allies in a circular area around it while they stay within range.",
                 "Parameters": [
                     [
@@ -71891,7 +71891,7 @@
                 ]
             },
             "Public": {
-                "Name": "So You've Made Me Angry!?",
+                "Name": "You're Making Me So Mad!",
                 "Desc": "When the amplifier's duration ends, deals <?1> damage to one enemy.\nAlso deals <?2> of the damage accumulated by the amplifier. (This damage cannot be critical and is unaffected by Kei's attributes.)",
                 "Parameters": [
                     [
@@ -71947,7 +71947,7 @@
                 ]
             },
             "Passive": {
-                "Name": "I Will Keep Resisting!",
+                "Name": "I WILL Resist You!",
                 "Desc": "Increases <b:CriticalDamage> by <?1>.",
                 "Parameters": [
                     [
@@ -71990,7 +71990,7 @@
                 ]
             },
             "WeaponPassive": {
-                "Name": "I Will Keep Resisting!+",
+                "Name": "I WILL Resist You!+",
                 "Desc": "Increases <b:MAXHP> by <?1> and <b:CriticalDamage> by <?2>.",
                 "Parameters": [
                     [
@@ -72045,7 +72045,7 @@
                 ]
             },
             "ExtraPassive": {
-                "Name": "Companions Walking Together",
+                "Name": "Those Who Walk Together",
                 "Desc": "After the amplifier is deployed, increases the <b:CriticalChance> of allies within its range by <?1> for 25s.\nWhile the amplifier is deployed, 10% of the damage dealt to enemies by allies other than Kei that are in the amplifier's range is accumulated, up to a maximum of 5000% of Kei's base ATK. (Accumulated damage is reset each time the amplifier is deployed.)",
                 "Parameters": [
                     [
@@ -72091,8 +72091,8 @@
             }
         },
         "Weapon": {
-            "Name": "ルミナス・ノヴァ",
-            "Desc": "ケイ専用のレールガン。\n\n新たな一歩を踏み出した彼女に相応しい逸品となっている。",
+            "Name": "Luminous Nova",
+            "Desc": "Kei's exclusive railgun.\n\nIt's the perfect weapon for her as she finds her way in the world.",
             "AdaptationType": "Street",
             "AdaptationValue": 1,
             "AttackPower1": 162,
@@ -75502,6 +75502,498 @@
             ]
         ],
         "PotentialMaterial": 110
+    },
+    "10142": {
+        "Name": "Nagusa (Swimsuit)",
+        "Id": 10142,
+        "School": "Hyakkiyako",
+        "StarGrade": 3,
+        "SquadType": "Main",
+        "TacticRole": "Supporter",
+        "Position": "Back",
+        "BulletType": "Explosion",
+        "ArmorType": "HeavyArmor",
+        "StreetBattleAdaptation": 0,
+        "OutdoorBattleAdaptation": 4,
+        "IndoorBattleAdaptation": 2,
+        "WeaponType": "SR",
+        "Equipment": [
+            "Gloves",
+            "Hairpin",
+            "Watch"
+        ],
+        "Skills": {
+            "Normal": {
+                "Effects": [
+                    {
+                        "Type": "Damage",
+                        "Hits": [
+                            10000
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Block": 1
+                    }
+                ],
+                "Frames": {
+                    "AttackEnterDuration": 32,
+                    "AttackStartDuration": 27,
+                    "AttackEndDuration": 17,
+                    "AttackBurstRoundOverDelay": 43,
+                    "AttackIngDuration": 29,
+                    "AttackReloadDuration": 85
+                }
+            },
+            "Ex": {
+                "Name": "Beautiful as a Flower",
+                "Desc": "Increases the <b:EnhanceExplosionRate> of self and Special students by <?1> for 20s.",
+                "Parameters": [
+                    [
+                        "53.6%",
+                        "61.6%",
+                        "77.7%",
+                        "85.7%",
+                        "101%"
+                    ]
+                ],
+                "Cost": [
+                    3,
+                    3,
+                    3,
+                    3,
+                    3
+                ],
+                "Duration": 165,
+                "Icon": "COMMON_SKILLICON_BULLETTYPEBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "AllySupport"
+                        ],
+                        "Value": [
+                            [
+                                5361,
+                                6165,
+                                7773,
+                                8576,
+                                10185
+                            ]
+                        ],
+                        "Stat": "EnhanceExplosionRate_Base",
+                        "Channel": 132,
+                        "Duration": 20000,
+                        "ApplyFrame": 20
+                    },
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Value": [
+                            [
+                                5361,
+                                6165,
+                                7773,
+                                8576,
+                                10185
+                            ]
+                        ],
+                        "Stat": "EnhanceExplosionRate_Base",
+                        "Channel": 32,
+                        "Duration": 20000,
+                        "ApplyFrame": 21
+                    }
+                ]
+            },
+            "Public": {
+                "Name": "Unsealed Fastball",
+                "Desc": "Every 25s, decreases the <d:CriticalDamageRateResist> of the enemy with the highest Max HP by <?1> for 18s, and deals <?2> damage to them.",
+                "Parameters": [
+                    [
+                        "15.8%",
+                        "16.6%",
+                        "17.4%",
+                        "20.6%",
+                        "21.4%",
+                        "22.2%",
+                        "25.3%",
+                        "26.1%",
+                        "26.9%",
+                        "30.1%"
+                    ],
+                    [
+                        "145%",
+                        "152%",
+                        "160%",
+                        "189%",
+                        "196%",
+                        "203%",
+                        "233%",
+                        "240%",
+                        "247%",
+                        "276%"
+                    ]
+                ],
+                "Duration": 130,
+                "Range": 950,
+                "Icon": "COMMON_SKILLICON_STATDEBUFF",
+                "Effects": [
+                    {
+                        "Type": "Damage",
+                        "Block": 0,
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            10000
+                        ],
+                        "DescParamId": 2,
+                        "Scale": [
+                            14562,
+                            15292,
+                            16016,
+                            18931,
+                            19655,
+                            20385,
+                            23300,
+                            24024,
+                            24754,
+                            27663
+                        ]
+                    },
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Enemy"
+                        ],
+                        "Value": [
+                            [
+                                -1587,
+                                -1666,
+                                -1745,
+                                -2062,
+                                -2141,
+                                -2221,
+                                -2538,
+                                -2617,
+                                -2696,
+                                -3013
+                            ]
+                        ],
+                        "Stat": "CriticalDamageResistRate_Coefficient",
+                        "Channel": 623,
+                        "Duration": 18000,
+                        "ApplyFrame": 32
+                    }
+                ]
+            },
+            "Passive": {
+                "Name": "Flower That Overcame Twilight",
+                "Desc": "Increases <b:ATK> by <?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2,
+                        "Value": [
+                            [
+                                1400,
+                                1470,
+                                1540,
+                                1820,
+                                1890,
+                                1960,
+                                2240,
+                                2310,
+                                2380,
+                                2660
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "WeaponPassive": {
+                "Name": "Flower That Overcame Twilight+",
+                "Desc": "Increases <b:ExtendBuffDuration> by <?1> and <b:ATK> by <?2>.",
+                "Parameters": [
+                    [
+                        "1000",
+                        "1050",
+                        "1100",
+                        "1300",
+                        "1350",
+                        "1400",
+                        "1600",
+                        "1650",
+                        "1700",
+                        "1900"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "ExtendBuffDuration_Base",
+                        "Channel": 1738,
+                        "Value": [
+                            [
+                                1000,
+                                1050,
+                                1100,
+                                1300,
+                                1350,
+                                1400,
+                                1600,
+                                1650,
+                                1700,
+                                1900
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "ExtraPassive": {
+                "Name": "The Heir to Hundred Lotus",
+                "Desc": "Increases the <b:EnhanceExplosionRate> of self and Special students by <?1>.",
+                "Parameters": [
+                    [
+                        "26.1%",
+                        "27.4%",
+                        "28.7%",
+                        "33.9%",
+                        "35.2%",
+                        "36.5%",
+                        "41.8%",
+                        "43.1%",
+                        "44.4%",
+                        "49.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_BULLETTYPEBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Value": [
+                            [
+                                2614,
+                                2744,
+                                2875,
+                                3397,
+                                3528,
+                                3658,
+                                4182,
+                                4311,
+                                4443,
+                                4965
+                            ]
+                        ],
+                        "Stat": "EnhanceExplosionRate_Base",
+                        "Channel": 32
+                    },
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "AllySupport"
+                        ],
+                        "Value": [
+                            [
+                                2614,
+                                2744,
+                                2875,
+                                3397,
+                                3528,
+                                3658,
+                                4182,
+                                4311,
+                                4443,
+                                4965
+                            ]
+                        ],
+                        "Stat": "EnhanceExplosionRate_Base",
+                        "Channel": 132
+                    }
+                ]
+            }
+        },
+        "Weapon": {
+            "Name": "百蓮",
+            "Desc": "どこか神秘的な雰囲気を放つ、古びたライフル。\n\n大預言者クズノハから受け継がれた百花繚乱の部長の証は、青い海でも静かに輝いている。",
+            "AdaptationType": "Outdoor",
+            "AdaptationValue": 1,
+            "AttackPower1": 97,
+            "AttackPower100": 973,
+            "MaxHP1": 569,
+            "MaxHP100": 5690,
+            "HealPower1": 0,
+            "HealPower100": 0,
+            "StatLevelUpType": "Standard"
+        },
+        "Gear": {},
+        "SkillExMaterial": [
+            [
+                3000,
+                250
+            ],
+            [
+                3001,
+                3000,
+                251,
+                130
+            ],
+            [
+                3002,
+                3001,
+                252,
+                131
+            ],
+            [
+                3003,
+                3002,
+                253,
+                132
+            ]
+        ],
+        "SkillExMaterialAmount": [
+            [
+                12,
+                16
+            ],
+            [
+                12,
+                18,
+                11,
+                29
+            ],
+            [
+                12,
+                18,
+                11,
+                26
+            ],
+            [
+                8,
+                18,
+                7,
+                21
+            ]
+        ],
+        "SkillMaterial": [
+            [
+                4000
+            ],
+            [
+                4000
+            ],
+            [
+                4001,
+                4000,
+                250
+            ],
+            [
+                4001,
+                251,
+                130
+            ],
+            [
+                4002,
+                4001,
+                251,
+                130
+            ],
+            [
+                4002,
+                252,
+                131
+            ],
+            [
+                4003,
+                4002,
+                253,
+                132
+            ],
+            [
+                4003,
+                253,
+                132
+            ]
+        ],
+        "SkillMaterialAmount": [
+            [
+                5
+            ],
+            [
+                8
+            ],
+            [
+                5,
+                12,
+                5
+            ],
+            [
+                8,
+                5,
+                13
+            ],
+            [
+                5,
+                12,
+                10,
+                19
+            ],
+            [
+                8,
+                3,
+                17
+            ],
+            [
+                8,
+                12,
+                4,
+                8
+            ],
+            [
+                12,
+                9,
+                14
+            ]
+        ],
+        "PotentialMaterial": 250
     },
     "13000": {
         "Name": "Akane",
