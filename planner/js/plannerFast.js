@@ -1,7 +1,7 @@
 let data;
 let fastLanguage = "En";
 let fastAprilFools = false;
-const fastDefaultGroups = { "Binah": [], "Chesed": [], "Hod": [], "ShiroKuro": [], "Perorodzilla": [], "Goz": [], "Hieronymous": [], "Kaiten": [] }
+const fastDefaultGroups = { "Binah": [], "Chesed": [], "Hod": [], "ShiroKuro": [], "Perorodzilla": [], "Goz": [], "Hieronymous": [], "Kaiten": [], "Gregorius": [], "Wakamo": [], "Kurokage": [], "Geburah": [], "Yesod": [], "Drumbarka": [] }
 let dataCharIndex = {};
 let disabledChars = [];
 let charlist, chartranslate, language_strings, skillbuffnames = {};
