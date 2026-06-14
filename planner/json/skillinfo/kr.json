@@ -51622,7 +51622,7 @@
             },
             "ExtraPassive": {
                 "Name": "사라져주세요사라져주세요!",
-                "Desc": "피해를 입을 경우 용서 못해 1개 적립(30초간)(쿨타임 4초)/\n용서 못해는 최대 3개까지 중첩, 용서 못해 1개당 <b:CriticalDamage> <?1> 증가",
+                "Desc": "피해를 입을 경우 <s:CH0247_ExtraPassive> 1개 적립(30초간)(쿨타임 4초)/\n<s:CH0247_ExtraPassive>는 최대 3개까지 중첩, <s:CH0247_ExtraPassive> 1개당 <b:CriticalDamage> <?1> 증가",
                 "Parameters": [
                     [
                         "5.3%",
@@ -51663,6 +51663,338 @@
                         "Stat": "CriticalDamageRate_Coefficient",
                         "Channel": 90221,
                         "Duration": 30000
+                    }
+                ]
+            }
+        }
+    },
+    "10142": {
+        "Name": "나구사(수영복)",
+        "Skills": {
+            "Normal": {
+                "Effects": [
+                    {
+                        "Type": "Damage",
+                        "Hits": [
+                            10000
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Block": 1
+                    }
+                ],
+                "Frames": {
+                    "AttackEnterDuration": 32,
+                    "AttackStartDuration": 27,
+                    "AttackEndDuration": 17,
+                    "AttackBurstRoundOverDelay": 43,
+                    "AttackIngDuration": 29,
+                    "AttackReloadDuration": 85
+                }
+            },
+            "Ex": {
+                "Name": "꽃처럼 아름답게",
+                "Desc": "자신과 스페셜 학생에게 <b:EnhanceExplosionRate> <?1> 가산(20초간)",
+                "Parameters": [
+                    [
+                        "53.6%",
+                        "61.6%",
+                        "77.7%",
+                        "85.7%",
+                        "101%"
+                    ]
+                ],
+                "Cost": [
+                    3,
+                    3,
+                    3,
+                    3,
+                    3
+                ],
+                "Duration": 165,
+                "Icon": "COMMON_SKILLICON_BULLETTYPEBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "AllySupport"
+                        ],
+                        "Value": [
+                            [
+                                5361,
+                                6165,
+                                7773,
+                                8576,
+                                10185
+                            ]
+                        ],
+                        "Stat": "EnhanceExplosionRate_Base",
+                        "Channel": 132,
+                        "Duration": 20000,
+                        "ApplyFrame": 20
+                    },
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Value": [
+                            [
+                                5361,
+                                6165,
+                                7773,
+                                8576,
+                                10185
+                            ]
+                        ],
+                        "Stat": "EnhanceExplosionRate_Base",
+                        "Channel": 32,
+                        "Duration": 20000,
+                        "ApplyFrame": 21
+                    }
+                ]
+            },
+            "Public": {
+                "Name": "봉인 해제 강속구",
+                "Desc": "25초마다 최대 체력이 가장 높은 적 1인의 <d:CriticalDamageRateResist> <?1> 감소(18초간)/\n공격력 <?2> 대미지",
+                "Parameters": [
+                    [
+                        "15.8%",
+                        "16.6%",
+                        "17.4%",
+                        "20.6%",
+                        "21.4%",
+                        "22.2%",
+                        "25.3%",
+                        "26.1%",
+                        "26.9%",
+                        "30.1%"
+                    ],
+                    [
+                        "145%",
+                        "152%",
+                        "160%",
+                        "189%",
+                        "196%",
+                        "203%",
+                        "233%",
+                        "240%",
+                        "247%",
+                        "276%"
+                    ]
+                ],
+                "Duration": 130,
+                "Range": 950,
+                "Icon": "COMMON_SKILLICON_STATDEBUFF",
+                "Effects": [
+                    {
+                        "Type": "Damage",
+                        "Block": 0,
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            10000
+                        ],
+                        "DescParamId": 2,
+                        "Scale": [
+                            14562,
+                            15292,
+                            16016,
+                            18931,
+                            19655,
+                            20385,
+                            23300,
+                            24024,
+                            24754,
+                            27663
+                        ]
+                    },
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Enemy"
+                        ],
+                        "Value": [
+                            [
+                                -1587,
+                                -1666,
+                                -1745,
+                                -2062,
+                                -2141,
+                                -2221,
+                                -2538,
+                                -2617,
+                                -2696,
+                                -3013
+                            ]
+                        ],
+                        "Stat": "CriticalDamageResistRate_Coefficient",
+                        "Channel": 623,
+                        "Duration": 18000,
+                        "ApplyFrame": 32
+                    }
+                ]
+            },
+            "Passive": {
+                "Name": "황혼을 타개한 꽃",
+                "Desc": "<b:ATK> <?1> 증가",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2,
+                        "Value": [
+                            [
+                                1400,
+                                1470,
+                                1540,
+                                1820,
+                                1890,
+                                1960,
+                                2240,
+                                2310,
+                                2380,
+                                2660
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "WeaponPassive": {
+                "Name": "황혼을 타개한 꽃+",
+                "Desc": "이로운 효과 유지력 <?1> 증가/\n추가로 <b:ATK> <?2> 증가",
+                "Parameters": [
+                    [
+                        "1000",
+                        "1050",
+                        "1100",
+                        "1300",
+                        "1350",
+                        "1400",
+                        "1600",
+                        "1650",
+                        "1700",
+                        "1900"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "ExtendBuffDuration_Base",
+                        "Channel": 1738,
+                        "Value": [
+                            [
+                                1000,
+                                1050,
+                                1100,
+                                1300,
+                                1350,
+                                1400,
+                                1600,
+                                1650,
+                                1700,
+                                1900
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "ExtraPassive": {
+                "Name": "백련의 계승자",
+                "Desc": "자신과 스페셜 학생의 <b:EnhanceExplosionRate> <?1> 가산",
+                "Parameters": [
+                    [
+                        "26.1%",
+                        "27.4%",
+                        "28.7%",
+                        "33.9%",
+                        "35.2%",
+                        "36.5%",
+                        "41.8%",
+                        "43.1%",
+                        "44.4%",
+                        "49.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_BULLETTYPEBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Value": [
+                            [
+                                2614,
+                                2744,
+                                2875,
+                                3397,
+                                3528,
+                                3658,
+                                4182,
+                                4311,
+                                4443,
+                                4965
+                            ]
+                        ],
+                        "Stat": "EnhanceExplosionRate_Base",
+                        "Channel": 32
+                    },
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "AllySupport"
+                        ],
+                        "Value": [
+                            [
+                                2614,
+                                2744,
+                                2875,
+                                3397,
+                                3528,
+                                3658,
+                                4182,
+                                4311,
+                                4443,
+                                4965
+                            ]
+                        ],
+                        "Stat": "EnhanceExplosionRate_Base",
+                        "Channel": 132
                     }
                 ]
             }
