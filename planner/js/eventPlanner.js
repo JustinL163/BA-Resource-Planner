@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?94').done(function (json) {
+    $.getJSON('json/events.json?95').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -86,7 +86,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?358').done(function (json) {
+    $.getJSON('json/strings.json?359').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -2772,7 +2772,7 @@ function CalculateStageDrops(result, ignoreRequirement) {
 
     if (displayIncluded['PointRewards']) {
 
-        let intResults = AddPointRewards(maxEventPoints, totalEleph, totalXps, 0, 0, 0);
+        let intResults = AddPointRewards(maxEventPoints, totalEleph, totalXps, 0, 0, 0, totalSchoolMats);
         if (intResults) {
             totalCredit += intResults[0];
             totalEligma += intResults[1];
@@ -3498,7 +3498,7 @@ function AddShopPurchases(totalArtifacts, totalSchoolMats, totalEleph, totalXps,
     return [totalCredit, totalEligma, totalSecretTech];
 }
 
-function AddPointRewards(pointTarget, totalEleph, totalXps, totalCredit, totalEligma, totalSecretTech) {
+function AddPointRewards(pointTarget, totalEleph, totalXps, totalCredit, totalEligma, totalSecretTech, totalSchoolMats) {
 
     let pointTiers = event_config.events[current_event].point_rewards;
 
@@ -3538,6 +3538,13 @@ function AddPointRewards(pointTarget, totalEleph, totalXps, totalCredit, totalEl
             }
 
             totalEleph[pTier.id] += (pTier.count);
+        }
+        else if (pTier.type == "SchoolMat") {
+            if (!totalSchoolMats[pTier.id]) {
+                totalSchoolMats[pTier.id] = 0;
+            }
+
+            totalSchoolMats[pTier.id] += pTier.count;
         }
     }
 
@@ -4560,6 +4567,9 @@ function CreatePointRewardDiv(rewardType, rewardId, rewardCount) {
     }
     else if (rewardType == "Pyroxene") {
         dropImg.src = "icons/Misc/Pyroxene.png";
+    }
+    else if (rewardType == "SchoolMat") {
+        dropImg.src = "icons/SchoolMat/" + rewardId + ".webp";
     }
 
     dropP.innerText = commafy(rewardCount);
