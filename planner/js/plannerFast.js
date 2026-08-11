@@ -198,7 +198,6 @@ function addMissingDataProperties() {
 
         // Bond Gear check
         if (typeof charData.hasBondGear === 'undefined') {
-            console.log({name: charData.name});
             charData.hasBondGear = typeof charInfo.Gear === 'object' && Object.keys(charInfo.Gear).length > 0;
             changesPresent = true;
             reloadNeeded = true;

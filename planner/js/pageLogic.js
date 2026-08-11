@@ -510,7 +510,6 @@ function init() {
             if (!charData.hasBondGear) {
                 const hasBondGear = typeof charInfo.Gear === 'object' && Object.keys(charInfo.Gear).length > 0;
                 changesPresent = changesPresent || charData.hasBondGear !== hasBondGear;
-                console.log({has: charData.hasBondGear, fr: hasBondGear, name: charData.name});
                 charData.hasBondGear = hasBondGear;
             }
         }
