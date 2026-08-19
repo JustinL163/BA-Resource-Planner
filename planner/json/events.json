@@ -1,6 +1,6 @@
 {
     "event_order": [
-        "box-shadow-looming-rerun"
+        "lore-pursuit"
     ],
     "events": {
         "magical-girl-trinity": {
@@ -28980,6 +28980,1141 @@
                     "points": 15000,
                     "type": "Pyroxene",
                     "count": 200
+                }
+            ]
+        },
+        "lore-pursuit": {
+            "active": true,
+            "icon": "Event_857_Jp.png",
+            "display_name": "Special Operation: Lore Pursuit",
+            "reset_time": 1786993200,
+            "start_time": 1787018400,
+            "end_time": 1788228000,
+            "maint_hours": 6,
+            "available_targets": [
+                "Shop",
+                "Materials",
+                "Currency",
+                "Manual"
+            ],
+            "currency_targets": [
+                "Event_Point"
+            ],
+            "event_point_target": 24000,
+            "currencies": {
+                "Event_Point": {
+                    "icon": "Event_Point.png",
+                    "shortname": "Event Point",
+                    "source": "StageDrop",
+                    "clear": 0,
+                    "bonus_units": [
+                        {
+                            "id": "10139",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "10140",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "16020",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10038",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20014",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20018",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10039",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "13012",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "26012",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16008",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20023",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10096",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10137",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10033",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "23001",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "20022",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "10114",
+                            "bonus": 0.1
+                        }
+                    ]
+                },
+                "Cooling_Pack": {
+                    "icon": "Cooling_Pack.png",
+                    "shortname": "Cooling Pack",
+                    "source": "StageDrop",
+                    "clear": 16090,
+                    "bonus_units": [
+                        {
+                            "id": "10139",
+                            "bonus": 0.3
+                        },
+                        {
+                            "id": "16020",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10071",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10072",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20018",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10097",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10039",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "26010",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "26012",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16008",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20037",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10137",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10043",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "23001",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "26002",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "10114",
+                            "bonus": 0.1
+                        }
+                    ]
+                },
+                "SRT_Combat_Ration": {
+                    "icon": "SRT_Combat_Ration.png",
+                    "shortname": "SRT Combat Ration",
+                    "source": "StageDrop",
+                    "clear": 15464,
+                    "bonus_units": [
+                        {
+                            "id": "10140",
+                            "bonus": 0.3
+                        },
+                        {
+                            "id": "16020",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10038",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10071",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20014",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10072",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10097",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "26010",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "13012",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20037",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20023",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10096",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10033",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "10043",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "20022",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "26002",
+                            "bonus": 0.1
+                        }
+                    ]
+                },
+                "Cucumber-Flavored_Toothpaste": {
+                    "icon": "Cucumber-Flavored_Toothpaste.png",
+                    "shortname": "Cucumber-Flavored Toothpaste",
+                    "source": "",
+                    "clear": 200,
+                    "bonus_units": []
+                },
+                "Route_Map": {
+                    "icon": "Route_Map.png",
+                    "shortname": "Route Map",
+                    "source": "",
+                    "clear": 0,
+                    "bonus_units": []
+                }
+            },
+            "shops": {
+                "Cooling_Pack": [
+                    {
+                        "type": "XpReport",
+                        "id": "XP_1",
+                        "count": 90,
+                        "cost": 1,
+                        "amount": 5
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_2",
+                        "count": 70,
+                        "cost": 4,
+                        "amount": 2
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_3",
+                        "count": 45,
+                        "cost": 8
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_4",
+                        "count": 18,
+                        "cost": 40
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3080",
+                        "count": 30,
+                        "cost": 10
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3081",
+                        "count": 18,
+                        "cost": 30
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3082",
+                        "count": 12,
+                        "cost": 100
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3083",
+                        "count": 4,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Material",
+                        "id": "130",
+                        "count": 60,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "131",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "132",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "133",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "270",
+                        "count": 60,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "271",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "272",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "273",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "MX-Ration_C-Type_Dessert_Flavor",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Military_Camo_Foundation_Trio",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Mille-Feuille_Traditional_Parfait",
+                        "count": 1,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "My_Event091_Gunrange",
+                        "count": 1,
+                        "cost": 2000,
+                        "limited": true
+                    }
+                ],
+                "SRT_Combat_Ration": [
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_1",
+                        "count": 180,
+                        "cost": 1,
+                        "amount": 2
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_2",
+                        "count": 95,
+                        "cost": 2
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_3",
+                        "count": 30,
+                        "cost": 8
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_4",
+                        "count": 12,
+                        "cost": 32
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4080",
+                        "count": 50,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4081",
+                        "count": 38,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4082",
+                        "count": 25,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4083",
+                        "count": 15,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "150",
+                        "count": 60,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "151",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "152",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "153",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "220",
+                        "count": 60,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "221",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "222",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "223",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Glassy_Glow_BB_Cream",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Teddy_Bear_with_Bow",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "The_Life_Board_Game",
+                        "count": 1,
+                        "cost": 300
+                    }
+                ],
+                "Cucumber-Flavored_Toothpaste": [
+                    {
+                        "type": "Furniture",
+                        "id": "My_Event091_Strategytable",
+                        "count": 1,
+                        "cost": 20,
+                        "limited": true
+                    },
+                    {
+                        "type": "Pyroxene",
+                        "id": "Pyroxene-120",
+                        "count": 10,
+                        "cost": 4,
+                        "amount": 120
+                    },
+                    {
+                        "type": "Eligma",
+                        "id": "Eligma-5",
+                        "count": 10,
+                        "cost": 2,
+                        "amount": 5
+                    },
+                    {
+                        "type": "SecretTech",
+                        "id": "SecretTech",
+                        "count": 1,
+                        "cost": 12
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Ring_Bit",
+                        "count": 2,
+                        "cost": 2,
+                        "amount": 5
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Buried_Treasure_Map",
+                        "count": 2,
+                        "cost": 2,
+                        "amount": 5
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Thrice-a-day_Dumbbell_Set",
+                        "count": 1,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-1000000",
+                        "count": 3,
+                        "cost": 10,
+                        "amount": 1000000
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-500000",
+                        "count": 5,
+                        "cost": 7,
+                        "amount": 500000
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-200000",
+                        "count": 10,
+                        "cost": 3,
+                        "amount": 200000
+                    }
+                ],
+                "Event_Point": [
+                    {
+                        "type": "EventCurrency",
+                        "id": "Route_Map~~1",
+                        "count": 1,
+                        "amount": 15,
+                        "cost": 3000
+                    },
+                    {
+                        "type": "EventCurrency",
+                        "id": "Route_Map~~2",
+                        "count": 1,
+                        "amount": 15,
+                        "cost": 3000
+                    },
+                    {
+                        "type": "EventCurrency",
+                        "id": "Route_Map~~3",
+                        "count": 1,
+                        "amount": 20,
+                        "cost": 4000
+                    },
+                    {
+                        "type": "EventCurrency",
+                        "id": "Route_Map~~4",
+                        "count": 1,
+                        "amount": 20,
+                        "cost": 4000
+                    },
+                    {
+                        "type": "EventCurrency",
+                        "id": "Route_Map~~5",
+                        "count": 1,
+                        "amount": 25,
+                        "cost": 5000
+                    },
+                    {
+                        "type": "EventCurrency",
+                        "id": "Route_Map~~6",
+                        "count": 1,
+                        "amount": 25,
+                        "cost": 5000
+                    },
+                    {
+                        "type": "EventCurrency",
+                        "id": "Route_Map",
+                        "count": 41,
+                        "amount": 25,
+                        "default": 0,
+                        "cost": 5000,
+                        "overflow": true,
+                        "overflow_cap": 41
+                    }
+                ]
+            },
+            "stage_groups": [
+                "1-4",
+                "5-8",
+                "9-12"
+            ],
+            "stages": [
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 1,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Event_Point": 50,
+                        "Cooling_Pack": 50,
+                        "SRT_Combat_Ration": 50
+                    },
+                    "drops": {
+                        "Event_Point": 8,
+                        "Cooling_Pack": 5,
+                        "SRT_Combat_Ration": 5,
+                        "Nimrud_1": 0.25,
+                        "Nimrud_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 2,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Event_Point": 50,
+                        "Cooling_Pack": 200,
+                        "SRT_Combat_Ration": 100
+                    },
+                    "drops": {
+                        "Event_Point": 5,
+                        "Cooling_Pack": 8,
+                        "SRT_Combat_Ration": 5,
+                        "Rohonc_1": 0.25,
+                        "Rohonc_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 3,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Event_Point": 50,
+                        "Cooling_Pack": 100,
+                        "SRT_Combat_Ration": 200
+                    },
+                    "drops": {
+                        "Event_Point": 5,
+                        "Cooling_Pack": 5,
+                        "SRT_Combat_Ration": 8,
+                        "Baghdad_1": 0.25,
+                        "Baghdad_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 4,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Event_Point": 200
+                    },
+                    "drops": {
+                        "Event_Point": 12,
+                        "Cooling_Pack": 3,
+                        "SRT_Combat_Ration": 3,
+                        "Atlantis_1": 0.25,
+                        "Atlantis_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 5,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Event_Point": 150,
+                        "Cooling_Pack": 100,
+                        "SRT_Combat_Ration": 100
+                    },
+                    "drops": {
+                        "Event_Point": 15,
+                        "Cooling_Pack": 6,
+                        "SRT_Combat_Ration": 6,
+                        "Nimrud_2": 0.25,
+                        "Nimrud_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 6,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Event_Point": 100,
+                        "Cooling_Pack": 250,
+                        "SRT_Combat_Ration": 150
+                    },
+                    "drops": {
+                        "Event_Point": 6,
+                        "Cooling_Pack": 15,
+                        "SRT_Combat_Ration": 6,
+                        "Rohonc_2": 0.25,
+                        "Rohonc_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 7,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Event_Point": 100,
+                        "Cooling_Pack": 150,
+                        "SRT_Combat_Ration": 250
+                    },
+                    "drops": {
+                        "Event_Point": 6,
+                        "Cooling_Pack": 6,
+                        "SRT_Combat_Ration": 15,
+                        "Baghdad_2": 0.25,
+                        "Baghdad_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 8,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Event_Point": 300
+                    },
+                    "drops": {
+                        "Event_Point": 23,
+                        "Cooling_Pack": 2,
+                        "SRT_Combat_Ration": 2,
+                        "Atlantis_2": 0.25,
+                        "Atlantis_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 65,
+                    "number": 9,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Event_Point": 200,
+                        "Cooling_Pack": 100,
+                        "SRT_Combat_Ration": 100
+                    },
+                    "drops": {
+                        "Event_Point": 28,
+                        "Cooling_Pack": 4,
+                        "SRT_Combat_Ration": 4,
+                        "Nimrud_2": 0.25,
+                        "Nimrud_3": 0.12,
+                        "Nimrud_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 65,
+                    "number": 10,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Event_Point": 100,
+                        "Cooling_Pack": 450
+                    },
+                    "drops": {
+                        "Cooling_Pack": 36,
+                        "Rohonc_2": 0.25,
+                        "Rohonc_3": 0.12,
+                        "Rohonc_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 65,
+                    "number": 11,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Event_Point": 100,
+                        "SRT_Combat_Ration": 450
+                    },
+                    "drops": {
+                        "SRT_Combat_Ration": 36,
+                        "Baghdad_2": 0.25,
+                        "Baghdad_3": 0.12,
+                        "Baghdad_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 65,
+                    "number": 12,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Event_Point": 400
+                    },
+                    "drops": {
+                        "Event_Point": 36,
+                        "Atlantis_2": 0.25,
+                        "Atlantis_3": 0.12,
+                        "Atlantis_4": 0.021
+                    }
+                },
+                {
+                    "type": "Challenge",
+                    "level": 50,
+                    "number": 1,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "level": 85,
+                    "number": 2,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "level": 90,
+                    "number": 3,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "level": 90,
+                    "number": null,
+                    "cost": 5
+                }
+            ],
+            "point_rewards": [
+                {
+                    "points": 10,
+                    "type": "XpReport",
+                    "id": "XP_1",
+                    "count": 45
+                },
+                {
+                    "points": 50,
+                    "type": "XpOrb",
+                    "id": "GXP_1",
+                    "count": 15
+                },
+                {
+                    "points": 100,
+                    "type": "SchoolMat",
+                    "id": "TN_1_Valkyrie",
+                    "count": 12
+                },
+                {
+                    "points": 200,
+                    "type": "SchoolMat",
+                    "id": "BD_1_Valkyrie",
+                    "count": 4
+                },
+                {
+                    "points": 300,
+                    "type": "SchoolMat",
+                    "id": "BD_2_Valkyrie",
+                    "count": 4
+                },
+                {
+                    "points": 400,
+                    "type": "XpReport",
+                    "id": "XP_1",
+                    "count": 45
+                },
+                {
+                    "points": 500,
+                    "type": "XpOrb",
+                    "id": "GXP_1",
+                    "count": 15
+                },
+                {
+                    "points": 600,
+                    "type": "SchoolMat",
+                    "id": "TN_1_Valkyrie",
+                    "count": 12
+                },
+                {
+                    "points": 700,
+                    "type": "SchoolMat",
+                    "id": "BD_1_Valkyrie",
+                    "count": 4
+                },
+                {
+                    "points": 800,
+                    "type": "XpReport",
+                    "id": "XP_2",
+                    "count": 30
+                },
+                {
+                    "points": 900,
+                    "type": "XpOrb",
+                    "id": "GXP_2",
+                    "count": 15
+                },
+                {
+                    "points": 1000,
+                    "type": "SchoolMat",
+                    "id": "TN_2_Valkyrie",
+                    "count": 10
+                },
+                {
+                    "points": 1200,
+                    "type": "XpReport",
+                    "id": "XP_2",
+                    "count": 45
+                },
+                {
+                    "points": 1400,
+                    "type": "XpOrb",
+                    "id": "GXP_3",
+                    "count": 2
+                },
+                {
+                    "points": 1600,
+                    "type": "SchoolMat",
+                    "id": "BD_1_Valkyrie",
+                    "count": 4
+                },
+                {
+                    "points": 1800,
+                    "type": "SchoolMat",
+                    "id": "TN_2_Valkyrie",
+                    "count": 10
+                },
+                {
+                    "points": 2000,
+                    "type": "Eligma",
+                    "count": 10
+                },
+                {
+                    "points": 2200,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 6
+                },
+                {
+                    "points": 2400,
+                    "type": "XpOrb",
+                    "id": "GXP_3",
+                    "count": 2
+                },
+                {
+                    "points": 2600,
+                    "type": "Credit",
+                    "count": 800000
+                },
+                {
+                    "points": 2800,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 6
+                },
+                {
+                    "points": 3000,
+                    "type": "SchoolMat",
+                    "id": "BD_2_Valkyrie",
+                    "count": 4
+                },
+                {
+                    "points": 3200,
+                    "type": "XpOrb",
+                    "id": "GXP_3",
+                    "count": 2
+                },
+                {
+                    "points": 3400,
+                    "type": "Credit",
+                    "count": 900000
+                },
+                {
+                    "points": 3600,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 6
+                },
+                {
+                    "points": 3800,
+                    "type": "XpOrb",
+                    "id": "GXP_3",
+                    "count": 3
+                },
+                {
+                    "points": 4000,
+                    "type": "Eligma",
+                    "count": 15
+                },
+                {
+                    "points": 4200,
+                    "type": "SchoolMat",
+                    "id": "TN_3_Valkyrie",
+                    "count": 3
+                },
+                {
+                    "points": 4400,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 9
+                },
+                {
+                    "points": 4600,
+                    "type": "Credit",
+                    "count": 1000000
+                },
+                {
+                    "points": 4800,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 9
+                },
+                {
+                    "points": 5000,
+                    "type": "SchoolMat",
+                    "id": "TN_3_Valkyrie",
+                    "count": 3
+                },
+                {
+                    "points": 5500,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 9
+                },
+                {
+                    "points": 6000,
+                    "type": "SchoolMat",
+                    "id": "TN_3_Valkyrie",
+                    "count": 4
+                },
+                {
+                    "points": 6500,
+                    "type": "Credit",
+                    "count": 1100000
+                },
+                {
+                    "points": 7000,
+                    "type": "SchoolMat",
+                    "id": "BD_3_Valkyrie",
+                    "count": 3
+                },
+                {
+                    "points": 7500,
+                    "type": "XpReport",
+                    "id": "XP_3",
+                    "count": 9
+                },
+                {
+                    "points": 8000,
+                    "type": "Eligma",
+                    "count": 25
+                },
+                {
+                    "points": 9000,
+                    "type": "Credit",
+                    "count": 1200000
+                },
+                {
+                    "points": 10000,
+                    "type": "Pyroxene",
+                    "count": 200
+                },
+                {
+                    "points": 11000,
+                    "type": "SchoolMat",
+                    "id": "TN_4_Valkyrie",
+                    "count": 4
+                },
+                {
+                    "points": 12000,
+                    "type": "XpReport",
+                    "id": "XP_4",
+                    "count": 9
+                },
+                {
+                    "points": 13000,
+                    "type": "SchoolMat",
+                    "id": "BD_4_Valkyrie",
+                    "count": 2
+                },
+                {
+                    "points": 14000,
+                    "type": "XpOrb",
+                    "id": "GXP_4",
+                    "count": 3
+                },
+                {
+                    "points": 15000,
+                    "type": "XpReport",
+                    "id": "XP_4",
+                    "count": 9
                 }
             ]
         }

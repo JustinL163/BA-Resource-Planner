@@ -71,7 +71,7 @@ let currentTab = "";
 
 function loadResources() {
 
-    $.getJSON('json/events.json?98').done(function (json) {
+    $.getJSON('json/events.json?99').done(function (json) {
         event_config = json;
         checkResources();
     });
@@ -86,7 +86,7 @@ function loadResources() {
         checkResources();
     });
 
-    $.getJSON('json/strings.json?362').done(function (json) {
+    $.getJSON('json/strings.json?363').done(function (json) {
         language_strings = json;
         checkResources();
     });
@@ -1429,7 +1429,7 @@ function CreateShopItem(item, currency) {
 
     let initValue = event_data.shop_purchases[current_currency]?.[item.id];
     if (event_data.shop_purchases["overflow_" + current_currency]?.[item.id]) {
-        initValue = event_data.shop_purchases["overflow_" + current_currency]?.[item.id];
+        initValue = event_data.shop_purchases["overflow_" + current_currency]?.[item.id] ?? 0;
         inputElement.disabled = true;
     }
 
@@ -1595,7 +1595,11 @@ function SetItemImage(itemImg, item, replacementId, small) {
         itemImg.src = "icons/Misc/Pyroxene.png";
     }
     else if (item.type == "EventCurrency") {
-        itemImg.src = "icons/EventIcon/CurrencyIcon/" + itemId + ".png";
+        let displayItemId = itemId;
+        if (itemId.includes("~~")) {
+            displayItemId = itemId.substring(0, itemId.indexOf("~~"));
+        }
+        itemImg.src = "icons/EventIcon/CurrencyIcon/" + displayItemId + ".png";
     }
     else if (item.type == "Misc") {
         itemImg.src = "icons/MiscItem/" + itemId + ".png";
@@ -2715,15 +2719,27 @@ function CalculateStageDrops(result, ignoreRequirement) {
 
             for (let ii = 0; ii < shop.length; ii++) {
                 if (shop[ii].overflow && shop[ii].type == "EventCurrency") {
-                    let overflowAmount = Math.max(Math.min(Math.floor(leftoverCurrency / shop[ii].cost), shop[ii].overflow_cap), 0);
+                    let overflowAmount = Math.max(Math.min(Math.floor(leftoverCurrency / shop[ii].cost), shop[ii].overflow_cap), 0) ?? 0;
                     event_data.shop_purchases["overflow_" + currencyNames[i]] = {};
                     event_data.shop_purchases["overflow_" + currencyNames[i]][shop[ii].id] = overflowAmount;
+                    if (document.getElementById("input-" + shop[ii].id)) {
+                        document.getElementById("input-" + shop[ii].id).value = overflowAmount;
+                    }
                     if (!event_data.shop_purchases[currencyNames[i]]) {
                         event_data.shop_purchases[currencyNames[i]] = {};
                     }
                     event_data.shop_purchases[currencyNames[i]][shop[ii].id] = 0;
 
-                    totalCurrencies[shop[ii].id] = overflowAmount;
+                    totalCurrencies[shop[ii].id] = (totalCurrencies[shop[ii].id] ?? 0) + overflowAmount * shop[ii].amount;
+                }
+            }
+
+            for (let ii = 0; ii < shop.length; ii++) {
+                if (shop[ii] && shop[ii].type == "EventCurrency") {
+                    if (shop[ii].id.includes("~~")) {
+                        let trimmedId = shop[ii].id.substring(0, shop[ii].id.indexOf("~~"));
+                        totalCurrencies[trimmedId] = (totalCurrencies[trimmedId] ?? 0) + parseInt(event_data.shop_purchases[currencyNames[i]][shop[ii].id]) * shop[ii].amount;
+                    }
                 }
             }
         }
@@ -2745,7 +2761,16 @@ function CalculateStageDrops(result, ignoreRequirement) {
 
             for (let ii = 0; ii < shop.length; ii++) {
                 if (shop[ii].overflow && shop[ii].type == "EventCurrency") {
-                    totalCurrencies[shop[ii].id] = event_data.shop_purchases[currencyNames[i]][shop[ii].id];
+                    totalCurrencies[shop[ii].id] = parseInt(event_data.shop_purchases[currencyNames[i]][shop[ii].id]) * shop[ii].amount;
+                }
+            }
+
+            for (let ii = 0; ii < shop.length; ii++) {
+                if (shop[ii] && shop[ii].type == "EventCurrency") {
+                    if (shop[ii].id.includes("~~")) {
+                        let trimmedId = shop[ii].id.substring(0, shop[ii].id.indexOf("~~"));
+                        totalCurrencies[trimmedId] = (totalCurrencies[trimmedId] ?? 0) + parseInt(event_data.shop_purchases[currencyNames[i]][shop[ii].id]) * shop[ii].amount;
+                    }
                 }
             }
         }
@@ -2900,7 +2925,7 @@ function CalculateStageDrops(result, ignoreRequirement) {
 
             for (let ii = 0; ii < shop.length; ii++) {
                 if (shop[ii].overflow) {
-                    let overflowAmount = Math.max(Math.min(Math.floor(leftoverCurrency / shop[ii].cost), shop[ii].overflow_cap), 0);
+                    let overflowAmount = Math.max(Math.min(Math.floor(leftoverCurrency / shop[ii].cost), shop[ii].overflow_cap), 0) ?? 0;
                     event_data.shop_purchases["overflow_" + currencyNames[i]] = {};
                     event_data.shop_purchases["overflow_" + currencyNames[i]][shop[ii].id] = overflowAmount;
                     if (!event_data.shop_purchases[currencyNames[i]]) {
@@ -3366,6 +3391,110 @@ function CalculateStageDrops(result, ignoreRequirement) {
             totalEleph["16016"] += totalEleph["10058"];
             totalEleph["10058"] = 0;
         }
+    }
+    else if (current_event == "lore-pursuit") {
+        const addReward = (rewards, id, amount) => rewards[id] = (rewards[id] ?? 0) + amount;
+
+        if (totalCurrencies["Route_Map"] >= 15) {
+            addReward(totalEleph, "16020", 25);
+            addReward(totalCurrencies, "Cucumber-Flavored_Toothpaste", 25);
+            totalCredit += 945000;
+            Object.entries({
+                "BD_1_Valkyrie": 8, "BD_2_Valkyrie": 4, "BD_3_Valkyrie": 3, "BD_4_Valkyrie": 1
+            }).forEach(([k, v]) => addReward(totalSchoolMats, k, v));
+            Object.entries({
+                "XP_1": 40, "XP_2": 28, "XP_3": 25, "XP_4": 5
+            }).forEach(([k, v]) => addReward(totalXps, k, v));
+            Object.entries({
+                "Mystery_1": 19, "Mystery_2": 13, "Mystery_3": 4, "Mystery_4": 2
+            }).forEach(([k, v]) => addReward(totalArtifacts, k, v));
+        }
+        if (totalCurrencies["Route_Map"] >= 30) {
+            addReward(totalEleph, "16020", 25);
+            addReward(totalCurrencies, "Cucumber-Flavored_Toothpaste", 25);
+            totalCredit += 945000;
+            Object.entries({
+                "TN_1_Valkyrie": 7, "TN_2_Valkyrie": 4, "TN_3_Valkyrie": 3, "TN_4_Valkyrie": 1
+            }).forEach(([k, v]) => addReward(totalSchoolMats, k, v));
+            Object.entries({
+                "GXP_1": 60, "GXP_2": 40, "GXP_3": 30, "GXP_4": 5
+            }).forEach(([k, v]) => addReward(totalXps, k, v));
+            Object.entries({
+                "Antikythera_1": 19, "Antikythera_2": 13, "Antikythera_3": 4, "Antikythera_4": 2
+            }).forEach(([k, v]) => addReward(totalArtifacts, k, v));
+        }
+        if (totalCurrencies["Route_Map"] >= 50) {
+            addReward(totalEleph, "16020", 35);
+            addReward(totalCurrencies, "Cucumber-Flavored_Toothpaste", 35);
+            totalCredit += 1400000;
+            Object.entries({
+                "BD_1_Valkyrie": 11, "BD_2_Valkyrie": 5, "BD_3_Valkyrie": 4, "BD_4_Valkyrie": 2
+            }).forEach(([k, v]) => addReward(totalSchoolMats, k, v));
+            Object.entries({
+                "XP_1": 55, "XP_2": 40, "XP_3": 35, "XP_4": 7
+            }).forEach(([k, v]) => addReward(totalXps, k, v));
+            Object.entries({
+                "Mystery_1": 27, "Mystery_2": 18, "Mystery_3": 5, "Mystery_4": 3
+            }).forEach(([k, v]) => addReward(totalArtifacts, k, v));
+        }
+        if (totalCurrencies["Route_Map"] >= 70) {
+            addReward(totalEleph, "16020", 35);
+            addReward(totalCurrencies, "Cucumber-Flavored_Toothpaste", 35);
+            totalCredit += 1400000;
+            Object.entries({
+                "TN_1_Valkyrie": 10, "TN_2_Valkyrie": 5, "TN_3_Valkyrie": 4, "TN_4_Valkyrie": 2
+            }).forEach(([k, v]) => addReward(totalSchoolMats, k, v));
+            Object.entries({
+                "GXP_1": 80, "GXP_2": 60, "GXP_3": 40, "GXP_4": 7
+            }).forEach(([k, v]) => addReward(totalXps, k, v));
+            Object.entries({
+                "Antikythera_1": 27, "Antikythera_2": 18, "Antikythera_3": 5, "Antikythera_4": 3
+            }).forEach(([k, v]) => addReward(totalArtifacts, k, v));
+        }
+        if (totalCurrencies["Route_Map"] >= 95) {
+            addReward(totalEleph, "16020", 40);
+            addReward(totalCurrencies, "Cucumber-Flavored_Toothpaste", 40);
+            totalCredit += 1500000;
+            Object.entries({
+                "BD_1_Valkyrie": 12, "BD_2_Valkyrie": 6, "BD_3_Valkyrie": 4, "BD_4_Valkyrie": 2
+            }).forEach(([k, v]) => addReward(totalSchoolMats, k, v));
+            Object.entries({
+                "XP_1": 60, "XP_2": 40, "XP_3": 40, "XP_4": 8
+            }).forEach(([k, v]) => addReward(totalXps, k, v));
+            Object.entries({
+                "Mystery_1": 30, "Mystery_2": 20, "Mystery_3": 6, "Mystery_4": 3
+            }).forEach(([k, v]) => addReward(totalArtifacts, k, v));
+        }
+        if (totalCurrencies["Route_Map"] >= 120) {
+            addReward(totalEleph, "16020", 40);
+            addReward(totalCurrencies, "Cucumber-Flavored_Toothpaste", 40);
+            totalCredit += 1500000;
+            Object.entries({
+                "TN_1_Valkyrie": 11, "TN_2_Valkyrie": 6, "TN_3_Valkyrie": 4, "TN_4_Valkyrie": 2
+            }).forEach(([k, v]) => addReward(totalSchoolMats, k, v));
+            Object.entries({
+                "GXP_1": 90, "GXP_2": 70, "GXP_3": 45, "GXP_4": 8
+            }).forEach(([k, v]) => addReward(totalXps, k, v));
+            Object.entries({
+                "Antikythera_1": 30, "Antikythera_2": 20, "Antikythera_3": 6, "Antikythera_4": 3
+            }).forEach(([k, v]) => addReward(totalArtifacts, k, v));
+        }
+        let extraLoops = Math.floor((totalCurrencies["Route_Map"] - 120) / 25);
+        for (let i = 0; i < extraLoops; i++) {
+            addReward(totalEleph, "16020", 10);
+            addReward(totalCurrencies, "Cucumber-Flavored_Toothpaste", 10);
+            totalCredit += 1000000;
+            Object.entries({
+                "TN_1_Valkyrie": 2, "TN_2_Valkyrie": 2, "TN_3_Valkyrie": 1
+            }).forEach(([k, v]) => addReward(totalSchoolMats, k, v));
+            Object.entries({
+                "XP_1": 90, "XP_2": 70, "XP_3": 60, "GXP_1": 90, "GXP_2": 70, "GXP_3": 45
+            }).forEach(([k, v]) => addReward(totalXps, k, v));
+            Object.entries({
+                "Antikythera_1": 20, "Antikythera_2": 9, "Antikythera_3": 3
+            }).forEach(([k, v]) => addReward(totalArtifacts, k, v));
+        }
+
     }
 
     if (feasible) {
@@ -5034,7 +5163,12 @@ function InitMaxShopPurchases() {
 
         shopList[shop].forEach((item) => {
 
-            shopPurchases[shop][item.id] = item.count;
+            if (item.default) {
+                shopPurchases[shop][item.id] = item.default;
+            }
+            else {
+                shopPurchases[shop][item.id] = item.count;
+            }
         })
     })
 
