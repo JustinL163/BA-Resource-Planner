@@ -5163,7 +5163,7 @@ function InitMaxShopPurchases() {
 
         shopList[shop].forEach((item) => {
 
-            if (item.default) {
+            if (item.default !== undefined) {
                 shopPurchases[shop][item.id] = item.default;
             }
             else {
