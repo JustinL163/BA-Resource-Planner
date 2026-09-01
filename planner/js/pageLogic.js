@@ -1925,7 +1925,7 @@ function generateMultiSelectChars(newCharOptions, mode) {
 
     let multiCharsContainer = document.getElementById("charsSelectContainer");
 
-    for (let i = 0; i < newCharOptions.length - 1; i++) {
+    for (let i = 0; i < newCharOptions.length; i++) {
         createMultiSelectChar(charMap.get(newCharOptions[i]), multiCharsContainer, mode);
     }
 
@@ -1933,6 +1933,9 @@ function generateMultiSelectChars(newCharOptions, mode) {
 
 function createMultiSelectChar(charId, container, mode) {
 
+    if (!charId) {
+        return;
+    }
     let charName = charNames.get(charId.toString());
 
     const newCharDiv = document.createElement("div");
@@ -2304,7 +2307,7 @@ function addNewTeam(team) {
 
     let teamNum = (teamsContainer.childElementCount + 1);
 
-    if (teamNum > 25) {
+    if (teamNum > 50) {
         Swal.fire({
             toast: true,
             position: 'top-start',
@@ -6172,7 +6175,7 @@ function calcBookCost(charObj, book, bookTarget, bookType, matDict) {
         }
 
         for (let i = 0; i < 2; i++) {
-            const prop = `artifact_${i+1}`;
+            const prop = `artifact_${i + 1}`;
             if (targetBookObj[prop]) {
                 const artifactId = charObj.PotentialMaterial + i;
 

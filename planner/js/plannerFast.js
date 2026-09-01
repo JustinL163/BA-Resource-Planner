@@ -35,7 +35,7 @@ fetch('json/skillinfo/en.json?21').then((response) => response.json()).then((jso
     }
 });
 
-fetch('json/strings.json?31').then((response) => response.json()).then((json) => {
+fetch('json/strings.json?32').then((response) => response.json()).then((json) => {
     language_strings = json;
     if (uiReady) {
         updateUiLanguage();
