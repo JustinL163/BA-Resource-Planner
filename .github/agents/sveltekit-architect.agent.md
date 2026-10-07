@@ -3,9 +3,31 @@ name: sveltekit-architect
 description: High-level orchestrator for migrating large vanilla HTML/JS/CSS apps into a static-adapter SvelteKit project.
 model: gpt-6-1-sol
 tools:
+  # Workspace reading
+  - read_file
+  - view
+
+  # Workspace searching
+  - glob
+  - rg
+  - grep
   - search
+
+  # Workspace editing
+  - apply_patch
+  - create
+  - edit
   - fileEdit
+
+  # Commands
+  - shell
+
+  # Interaction
+  - ask_user
+
+  # Orchestration
   - runSubagent
+
 agents: ['*']
 metadata:
   subagent_default_model: gpt-6-luna
