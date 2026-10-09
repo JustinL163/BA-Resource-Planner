@@ -216,7 +216,7 @@ describe('complete box event requirements, models and reward parity', () => {
     expect(() => decodeStandardEvent({ ...raw, box_clear_cost: 0 })).toThrow();
     const omikuji = events['magical-girl-trinity'];
     if (!isRecord(omikuji)) throw new Error('Missing Omikuji fixture.');
-    expect(() => decodeStandardEvent({ ...raw, omikuji: omikuji.omikuji })).toThrow('Mixed gacha mechanics');
+    expect(() => decodeStandardEvent({ ...raw, omikuji: omikuji.omikuji })).toThrow('Mixed special-event mechanics');
     expect(() => decodeStandardEvent({ ...raw, boxes: [] })).toThrow();
     const archives = decodeEventCatalog(config, true);
     expect(archives.filter((entry) => entry.archived && entry.event?.boxes).map((entry) => entry.id)).toEqual(boxEventIds);

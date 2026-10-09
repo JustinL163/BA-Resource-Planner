@@ -3,6 +3,7 @@ import type { PlannerMetadata } from '../planner/types';
 import { calculateInitialClear } from './budget';
 import { boxPullCurrencyNeeded, boxRewards } from './boxes';
 import { cardPullRequirement } from './cards';
+import { lessonProgress } from './lessons';
 import type { EventAmounts } from './types';
 import type { EventPlan, EventRequirements, EventSummary, ShopItem, StandardEvent } from './standard-types';
 
@@ -349,6 +350,10 @@ export function summarizeEventRuns(
     const shopRewards = addShopRewards(event, plan, metadata, { artifacts, schoolMats, eleph, xps });
     eligma = finite(eligma + shopRewards.eligma, 'Event Eligma total');
     secretTech = finite(secretTech + shopRewards.secretTech, 'Event SecretTech total');
+  }
+  if (event.lessons) {
+    const progress = lessonProgress(event.lessons, plan.lesson_pre_runs ?? [], plan.lesson_post_runs ?? {}, currencies.Event_Point ?? 0);
+    if (progress.pointsRemaining < 0) feasible = false;
   }
   return {
     runs, currencies, artifacts, schoolMats, eleph, xps, gear, credit, eligma, secretTech,

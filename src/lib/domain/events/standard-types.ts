@@ -2,7 +2,7 @@ import type { CharacterInfo, PlannerMetadata } from '../planner/types';
 import type { CoreEvent, EventAmounts, EventCurrency, EventEnergy, EventEnergySettings, EventStage } from './types';
 
 export type EventMode = '' | 'Shop' | 'Materials' | 'Currency' | 'Manual';
-export type EventTab = 'Targets' | 'Energy' | 'Bonus' | 'Shop' | 'Stages' | 'Points' | 'Boxes' | 'Cards' | 'Dice' | 'Omikuji' | 'Owned';
+export type EventTab = 'Targets' | 'Energy' | 'Bonus' | 'Shop' | 'Stages' | 'Points' | 'Boxes' | 'Cards' | 'Dice' | 'Omikuji' | 'Lessons' | 'Owned';
 export interface OmikujiSlip {
   Grade: number;
   Prob: number;
@@ -18,6 +18,26 @@ export interface OmikujiDefinition {
   ProbModifyStartCount: number;
   MaxPullCount: number;
   slips: OmikujiSlip[];
+}
+export interface LessonLocation {
+  name1: string;
+  name2: string;
+  unlock_rank: number;
+  unlock_2: number;
+  id_swap: Record<string, string>;
+}
+export interface LessonReward {
+  type: string;
+  id?: string;
+  count?: number;
+  chance?: number;
+}
+export interface LessonDefinition {
+  locations: LessonLocation[];
+  rank_upgrades: number[];
+  level_unlocks: number[];
+  lesson_cost: number;
+  rewards: LessonReward[][];
 }
 export interface EventReward {
   id: string | number;
@@ -70,6 +90,7 @@ export interface StandardEvent extends CoreEvent {
   card_drops?: CardDraw[];
   dice_race?: DiceRace;
   omikuji?: OmikujiDefinition;
+  lessons?: LessonDefinition;
 }
 export type SavedAmounts = Record<string, number | string>;
 export interface EventPlan extends EventEnergySettings, Record<string, unknown> {
@@ -88,6 +109,8 @@ export interface EventPlan extends EventEnergySettings, Record<string, unknown> 
   dice_roll_currency_owned?: number;
   omikuji_pull_rewards?: CardStatistics;
   omikuji_pull_currency_owned?: number;
+  lesson_pre_runs?: number[];
+  lesson_post_runs?: SavedAmounts;
 }
 export interface EventRequirements {
   needed: EventAmounts;
@@ -124,6 +147,9 @@ export interface EventActions {
   setPurchase(currency: string, item: string, count: number): boolean;
   setManualRuns(stage: number, count: number): boolean;
   setStandardDeviation(value: number): boolean;
+  setLessonPreRuns(runs: number[]): boolean;
+  setLessonPostRuns(runs: SavedAmounts): boolean;
+  resetLessons(): boolean;
 }
 export interface EventSettingsProps {
   tab: EventTab;

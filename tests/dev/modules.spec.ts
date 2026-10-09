@@ -137,3 +137,15 @@ test('development serves the original Omikuji worker and renders the reviewed sl
   await expect(page.locator('[data-event-omikuji-slip]')).not.toHaveCount(0);
   expect(errors).toEqual([]);
 });
+
+test('development hydrates only the generated Lessons archive and hides inapplicable stage-group filters', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  await page.goto('/planner/event-planner/');
+  await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
+  await page.locator('[data-event-id="on-your-mark"]').click();
+  await page.locator('[data-event-tab="Lessons"]').click();
+  await expect(page.locator('[data-event-lesson-location]')).toHaveCount(4);
+  await expect(page.locator('.stage-groups')).toHaveCount(0);
+  expect(errors).toEqual([]);
+});

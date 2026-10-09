@@ -98,13 +98,15 @@
   </section>
 {:else if tab === 'Stages'}
   <section class="market">
-    <div class="stage-groups" role="group" aria-label={t('label-tabstages')}>
+    {#if event.stage_groups.some(Boolean)}
+      <div class="stage-groups" role="group" aria-label={t('label-tabstages')}>
       {#each stageGroupIndexes as index}
         <label><input type="checkbox" checked={plan.enabled_stage_groups[index]}
           onchange={(event) => updateStageGroup(index, event.currentTarget.checked)} />
           {t('label-tabstages')} {event.stage_groups[index]}</label>
       {/each}
-    </div>
+      </div>
+    {/if}
     <div class="table-scroll">
       <table>
         <thead><tr>

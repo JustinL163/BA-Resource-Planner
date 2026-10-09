@@ -10,6 +10,7 @@ const assets = join(root, '.generated-static');
 const content = join(root, '.generated-content');
 const documentNames = ['credit', 'privacy', 'changelog'];
 const migratedNames = [...documentNames, 'debug'];
+const lessonEventIds = ['on-your-mark', 'hot-spring-rerun', 'restoration-project', 'on-your-mark-rerun'];
 const supportedTags = new Set([
   'div', 'h2', 'h3', 'h4', 'p', 'ul', 'ol', 'li', 'br', 'a',
   'strong', 'b', 'em', 'i', 'span', 'code'
@@ -63,6 +64,17 @@ await mkdir(assets, { recursive: true });
 await mkdir(content, { recursive: true });
 await generatePlannerMetadata(root, join(content, 'planner.ts'));
 await cp(join(root, 'planner', 'json', 'strings.json'), join(content, 'strings.json'));
+const oldEvents = JSON.parse(await readFile(join(root, 'planner', 'json', 'old_events.json'), 'utf8'));
+if (!oldEvents || typeof oldEvents !== 'object' || !oldEvents.events || typeof oldEvents.events !== 'object') {
+  throw new Error('Archived event data must contain an events object.');
+}
+const lessonEvents = {};
+for (const id of lessonEventIds) {
+  const event = oldEvents.events[id];
+  if (!event || typeof event !== 'object' || Array.isArray(event)) throw new Error(`Missing archived lesson event ${id}.`);
+  lessonEvents[id] = event;
+}
+await writeFile(join(content, 'lesson-events.json'), `${JSON.stringify({ events: lessonEvents }, null, 2)}\n`);
 const aliases = JSON.parse(await readFile(join(root, 'planner', 'json', 'student_info.json'), 'utf8'));
 if (!aliases || typeof aliases !== 'object' || Array.isArray(aliases)) throw new Error('Manual search aliases must be an object.');
 for (const [id, languages] of Object.entries(aliases)) {

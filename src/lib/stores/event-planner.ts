@@ -28,7 +28,11 @@ function eventSource(root: Record<string, unknown>, id: string): unknown {
   return isRecord(root.events_data) ? root.events_data[id] : undefined;
 }
 
-export function createEventPlanner(metadata: PlannerMetadata, storageProvider: () => Storage = () => window.localStorage) {
+export function createEventPlanner(
+  metadata: PlannerMetadata,
+  storageProvider: () => Storage = () => window.localStorage,
+  lessonArchive?: unknown
+) {
   const state = writable<EventState>({ loading: false, error: '', saved: false, catalog: [], dataset: null, names: {}, cafeEnergy: {}, selected: '', plan: null });
   const namesCache = new Map<string, Record<string, string>>();
   let fingerprint = '';
@@ -157,6 +161,31 @@ export function createEventPlanner(metadata: PlannerMetadata, storageProvider: (
       if (!entry.event?.card_drops && !entry.event?.dice_race && !entry.event?.omikuji) throw new Error('RNG adjustment is unavailable for this event.');
       plan.standard_deviation = validateStandardDeviation(value);
     }); },
+    setLessonPreRuns(runs) { return commit((plan, entry) => {
+      const lessons = entry.event?.lessons;
+      if (!lessons || !Array.isArray(runs)) throw new Error('Lesson runs are unavailable for this event.');
+      const maxRuns = lessons.rank_upgrades[lessons.rank_upgrades.length - 1] / lessons.lesson_cost;
+      if (runs.length > maxRuns) throw new Error('Lesson rank-up runs exceed the maximum rank.');
+      plan.lesson_pre_runs = runs.map((location) => eventInteger(location, 'lesson location', lessons.locations.length - 1));
+    }); },
+    setLessonPostRuns(runs) { return commit((plan, entry) => {
+      const lessons = entry.event?.lessons;
+      if (!lessons || !isRecord(runs)) throw new Error('Post-rank lesson runs are unavailable for this event.');
+      const checked: NonNullable<EventPlan['lesson_post_runs']> = Object.create(null);
+      for (const [location, amount] of Object.entries(runs)) {
+        if (!/^(0|[1-9]\d*)$/.test(location) || Number(location) >= lessons.locations.length) {
+          throw new Error(`Unknown lesson location "${location}".`);
+        }
+        eventInteger(amount, 'lesson runs', 200000);
+        checked[location] = amount;
+      }
+      plan.lesson_post_runs = checked;
+    }); },
+    resetLessons() { return commit((plan, entry) => {
+      if (!entry.event?.lessons) throw new Error('Lessons are unavailable for this event.');
+      plan.lesson_pre_runs = [];
+      plan.lesson_post_runs = {};
+    }); },
     setGroups(groups) { return commit((plan) => {
       if (groups.length !== 3 || groups.some((flag) => typeof flag !== 'boolean')) throw new Error('Invalid stage groups.');
       plan.enabled_stage_groups = groups.some(Boolean) ? [groups[0], groups[1], groups[2]] : [false, false, true];
@@ -225,7 +254,7 @@ export function createEventPlanner(metadata: PlannerMetadata, storageProvider: (
             if (typeof amount !== 'number' || !Number.isFinite(amount)) throw new Error('Invalid cafe energy rate.');
             cafeEnergy[rank] = amount;
           }
-          state.update((value) => ({ ...value, dataset, catalog: decodeEventCatalog(config, true), cafeEnergy }));
+          state.update((value) => ({ ...value, dataset, catalog: decodeEventCatalog(config, true, lessonArchive), cafeEnergy }));
         }
         await reload(true);
       } catch (problem) {

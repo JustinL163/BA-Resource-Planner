@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount, untrack } from 'svelte';
   import { metadata } from '$content/planner';
+  import lessonArchive from '$content/lesson-events.json';
   import strings from '$content/strings.json';
   import { getLanguageString } from '$lib/domain/localisation';
   import { preferences } from '$lib/stores/preferences';
@@ -9,6 +10,7 @@
   import { applyCardRewards } from '$lib/domain/events/cards';
   import { applyDiceRewards } from '$lib/domain/events/dice';
   import { applyOmikujiRewards } from '$lib/domain/events/omikuji';
+  import { applyLessonRewards } from '$lib/domain/events/lessons';
   import { calculateEventBonuses, calculateEventEnergy } from '$lib/domain/events/budget';
   import { buildStageModel, buildMaterialTargetModel, buildStageVariables, materialDropOptions } from '$lib/domain/events/models';
   import { isRecord } from '$lib/domain/planner/save';
@@ -24,9 +26,10 @@
   import EventBoxes from '$lib/components/events/EventBoxes.svelte';
   import EventCards from '$lib/components/events/EventCards.svelte';
   import EventOmikuji from '$lib/components/events/EventOmikuji.svelte';
+  import EventLessons from '$lib/components/events/EventLessons.svelte';
   import EventDice from '$lib/components/events/EventDice.svelte';
 
-  const planner = createEventPlanner(metadata);
+  const planner = createEventPlanner(metadata, undefined, lessonArchive);
   const t = (id: string) => getLanguageString(strings, id, $preferences.language);
   let tab = $state<EventTab>('Targets');
   let now = $state(0);
@@ -41,12 +44,13 @@
   let includeCards = $state(false);
   let includeDice = $state(false);
   let includeOmikuji = $state(false);
+  let includeLessons = $state(false);
   let showArchives = $state(false);
   let eventListOpen = $state(false);
   let entry = $derived($planner.catalog.find((entry) => entry.id === $planner.selected));
   let event = $derived(entry?.event ?? null);
-  let tabs = $derived((['Targets', 'Energy', 'Bonus', 'Shop', 'Stages', ...(event?.point_rewards ? ['Points'] : []), ...(event?.boxes ? ['Boxes'] : []), ...(event?.card_drops ? ['Cards'] : []), ...(event?.dice_race ? ['Dice'] : []), ...(event?.omikuji ? ['Omikuji'] : []), ...(event?.active ? ['Owned'] : [])]).filter((key): key is EventTab =>
-    ['Targets', 'Energy', 'Bonus', 'Shop', 'Stages', 'Points', 'Boxes', 'Cards', 'Dice', 'Omikuji', 'Owned'].includes(key)));
+  let tabs = $derived((['Targets', 'Energy', 'Bonus', 'Shop', 'Stages', ...(event?.point_rewards ? ['Points'] : []), ...(event?.boxes ? ['Boxes'] : []), ...(event?.card_drops ? ['Cards'] : []), ...(event?.dice_race ? ['Dice'] : []), ...(event?.omikuji ? ['Omikuji'] : []), ...(event?.lessons ? ['Lessons'] : []), ...(event?.active ? ['Owned'] : [])]).filter((key): key is EventTab =>
+    ['Targets', 'Energy', 'Bonus', 'Shop', 'Stages', 'Points', 'Boxes', 'Cards', 'Dice', 'Omikuji', 'Lessons', 'Owned'].includes(key)));
   let calculation = $derived.by(() => {
     if (!event || !$planner.plan || !$planner.dataset || !now) return null;
     try {
@@ -112,13 +116,19 @@
   }), planner.saveSimulation, t);
   let includeSimulation = $derived(Boolean(event?.card_drops && includeCards || event?.dice_race && includeDice || event?.omikuji && includeOmikuji));
   let result = $derived.by(() => {
-    const rounded = simulation.rounded;
-    if (!includeSimulation || !event || !baseResult?.value || !rounded) return baseResult;
+    if (!event || !baseResult?.value || !$planner.plan) return baseResult;
     try {
-      return { value: event.card_drops ? applyCardRewards(event, baseResult.value, rounded, metadata)
-        : event.dice_race ? applyDiceRewards(baseResult.value, rounded) : applyOmikujiRewards(baseResult.value, rounded, metadata), error: '' };
+      let value = event.lessons && includeLessons
+        ? applyLessonRewards(baseResult.value, event.lessons, $planner.plan.lesson_pre_runs ?? [], $planner.plan.lesson_post_runs ?? {}, metadata)
+        : baseResult.value;
+      const rounded = simulation.rounded;
+      if (includeSimulation && rounded) {
+        value = event.card_drops ? applyCardRewards(event, value, rounded, metadata)
+          : event.dice_race ? applyDiceRewards(value, rounded) : applyOmikujiRewards(value, rounded, metadata);
+      }
+      return { value, error: '' };
     } catch (problem) {
-      return { value: null, error: problem instanceof Error ? problem.message : t('ui-event-card-failed') };
+      return { value: null, error: problem instanceof Error ? problem.message : t('ui-event-calculation-failed') };
     }
   });
 
@@ -206,6 +216,9 @@
             sampleCount={simulation.sampleCount} canSimulate={simulationFunds !== null}
             simulate={() => { void simulation.run(); }} cancel={() => simulation.cancel()} setDeviation={planner.setStandardDeviation}
             item={(reward) => eventItem(reward, event, metadata, $planner.names)} {t} />
+        {:else if tab === 'Lessons' && event.lessons}
+          <EventLessons lessons={event.lessons} plan={$planner.plan} pointsAvailable={baseResult?.value?.currencies.Event_Point ?? 0}
+            actions={actions} item={(reward) => eventItem(reward, event, metadata, $planner.names)} {t} />
         {:else if tab === 'Boxes' && event.boxes}
           <EventBoxes boxes={event.boxes} item={(reward) => eventItem(reward, event, metadata, $planner.names)} {t} />
         {:else if ['Targets', 'Energy', 'Bonus', 'Owned'].includes(tab)}
@@ -227,6 +240,7 @@
                   {#if event.card_drops}<label><input type="checkbox" bind:checked={includeCards} />{t('label-includecards')}</label>{/if}
           {#if event.dice_race}<label><input type="checkbox" bind:checked={includeDice} />{t('label-includedice')}</label>{/if}
           {#if event.omikuji}<label><input type="checkbox" bind:checked={includeOmikuji} />{t('label-includeomikuji')}</label>{/if}
+          {#if event.lessons}<label><input type="checkbox" bind:checked={includeLessons} />{t('label-includelessons')}</label>{/if}
         </div>
         {#if includeSimulation}
           {#if simulation.rounding}<p role="status">{t(`ui-event-${simulation.kind}-adjusting`)}</p>
