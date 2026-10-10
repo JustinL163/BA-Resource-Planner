@@ -8,10 +8,10 @@ import { decodeLessonDefinition } from './lessons';
 import { decodeInvasion } from './invasion';
 import { decodeCardStatistics, validateStandardDeviation } from './card-statistics';
 import type { EventEnergySettings } from './types';
-import type { BoxCycle, EventMode, EventPlan, PointReward, SavedAmounts, ShopItem, StandardEvent } from './standard-types';
+import type { BoxCycle, DerivedCurrencyRule, EventMode, EventPlan, PointReward, SavedAmounts, ShopItem, StandardEvent } from './standard-types';
 
 export interface EventEntry { id: string; name: string; icon: string; comingSoon: boolean; event: StandardEvent | null; archived?: boolean }
-export const standardEventIds = ['lore-pursuit-s2', 'box-shadow-looming-rerun'];
+export const standardEventIds = ['lore-pursuit-s2', 'box-shadow-looming-rerun', 'box-shadow-looming', 'secret-midnight-party', 'secret-midnight-party-rerun', 'honorable-sea-showdown', 'serenade-promenade-rerun'];
 export const boxEventIds = ['moonlight-dream', 'pandemic-hazard', '0068-opera-with-love-rerun', 'say-bing-rerun', 'kivotos-unsolved-mysteries'];
 export const cardEventIds = ['get-hyped-and-march-on-rerun', 'art-for-whom'];
 export const diceEventIds = ['occult-research-society'];
@@ -19,6 +19,17 @@ export const omikujiEventIds = ['magical-girl-trinity', 'new-year-march-rerun', 
 export const lessonEventIds = ['on-your-mark', 'hot-spring-rerun', 'restoration-project', 'on-your-mark-rerun'];
 export const invasionEventIds = ['valentine-rerun'];
 const modes: EventMode[] = ['', 'Shop', 'Materials', 'Currency', 'Manual'];
+const secretMidnightPartyCurrencyRule: DerivedCurrencyRule = {
+  from: 'BOOM_Classic_Collection', to: 'Youkai_MAX_Umeboshi_Flavor', multiplier: 270
+};
+const honorableSeaShowdownCurrencyRule: DerivedCurrencyRule = {
+  from: 'Wooden_Doll_(Renge)', to: 'Wooden_Doll_(Yukari)', multiplier: 270
+};
+const derivedCurrencyRulesByEvent: Record<string, DerivedCurrencyRule[]> = {
+  'secret-midnight-party': [secretMidnightPartyCurrencyRule],
+  'secret-midnight-party-rerun': [secretMidnightPartyCurrencyRule],
+  'honorable-sea-showdown': [honorableSeaShowdownCurrencyRule]
+};
 
 function number(value: unknown, label: string, max = Infinity): number {
   if ((typeof value !== 'number' && typeof value !== 'string') || String(value).trim() === '' ||
@@ -54,7 +65,7 @@ function reward(value: unknown): ShopItem {
   return item;
 }
 
-export function decodeStandardEvent(value: unknown): StandardEvent {
+export function decodeStandardEvent(value: unknown, eventId?: string): StandardEvent {
   const core = decodeCoreEvent(value);
   if (!isRecord(value) || typeof value.display_name !== 'string' || !isRecord(value.shops) ||
     !Array.isArray(value.available_targets) || !Array.isArray(value.currency_targets)) throw new Error('Invalid standard event.');
@@ -64,6 +75,8 @@ export function decodeStandardEvent(value: unknown): StandardEvent {
   const lessons = value.lessons === undefined ? undefined : decodeLessonDefinition(value.lessons, value.lessons_template);
   const invasion = value.invasion_config === undefined && value.invasion_stages === undefined
     ? undefined : decodeInvasion(value.invasion_config, value.invasion_stages);
+  const derivedCurrencyRules = eventId !== undefined && Object.hasOwn(derivedCurrencyRulesByEvent, eventId)
+    ? derivedCurrencyRulesByEvent[eventId] : undefined;
   if ((lessons && (omikuji || cards || dice || invasion || value.boxes !== undefined)) ||
     (invasion && (omikuji || cards || dice || value.boxes !== undefined)) ||
     Number(Boolean(omikuji)) + Number(Boolean(cards)) + Number(Boolean(dice)) + Number(value.boxes !== undefined) > 1) {
@@ -100,12 +113,15 @@ export function decodeStandardEvent(value: unknown): StandardEvent {
   const currencies: StandardEvent['currencies'] = {};
   if (!isRecord(value.currencies)) throw new Error('Invalid event currencies.');
   for (const [key, currency] of Object.entries(value.currencies)) {
-    if (!isRecord(currency) || (currency.source !== 'StageDrop' &&
+    if (!isRecord(currency) || typeof currency.shortname !== 'string') throw new Error('This currency requires the legacy planner.');
+    const supportedDerivedCurrencySource = derivedCurrencyRules?.some((rule) => rule.from === key && currency.source === '');
+    if ((currency.source !== 'StageDrop' &&
       // The legacy Lessons/Invasion definitions omit the source on Event_Point.
       !((lessons || invasion) && key === 'Event_Point' && currency.source === undefined) &&
       !(boxes && currency.source === 'BoxPull') && !(cards && currency.source === 'CardPull') &&
-      !(omikuji && (currency.source === 'ShopPurchase' || currency.source === 'ShopBuy'))) ||
-      typeof currency.shortname !== 'string') throw new Error('This currency requires the legacy planner.');
+      !(omikuji && (currency.source === 'ShopPurchase' || currency.source === 'ShopBuy')) && !supportedDerivedCurrencySource)) {
+      throw new Error('This currency requires the legacy planner.');
+    }
     const currencyIcon = currency.icon ?? ((lessons || invasion) && key === 'Event_Point' ? 'Event_Point.png' : undefined);
     currencies[key] = { ...core.currencies[key], icon: asset(currencyIcon), shortname: currency.shortname };
     if (currency.clear !== undefined) currencies[key].clear = number(currency.clear, 'currency target');
@@ -149,12 +165,23 @@ export function decodeStandardEvent(value: unknown): StandardEvent {
         currencies[currency].source === 'StageDrop');
       const supportedInvasionOverflow = Boolean(invasion && item.type === 'Eleph' &&
         item.count === -1 && item.overflow_cap && currencies[currency].source === 'StageDrop');
-      if (!supportedOmikujiOverflow && !supportedInvasionOverflow) {
+      const supportedSerenadeOverflow = Boolean(eventId === 'serenade-promenade-rerun' &&
+        currency === 'Event_Point' && currencies[currency].source === 'StageDrop' &&
+        item.type === 'Eleph' && String(item.id) === '16016' && item.count === 0 &&
+        item.cost === 450 && item.overflow_cap === 999);
+      if (!supportedOmikujiOverflow && !supportedInvasionOverflow && !supportedSerenadeOverflow) {
         throw new Error('This overflow shop requires the legacy planner.');
       }
       if (omikuji && String(item.id) === omikuji.pull_currency && item.amount === undefined) item.amount = 1;
       return item;
     });
+  }
+  for (const rule of derivedCurrencyRules ?? []) {
+    if (!currencies[rule.from] || currencies[rule.from].source !== '' ||
+      currencies[rule.to]?.source !== 'StageDrop' || !value.currency_targets.includes(rule.to) ||
+      !shops[rule.from]?.length || !Number.isFinite(rule.multiplier) || rule.multiplier <= 0) {
+      throw new Error('Invalid derived event currency rule.');
+    }
   }
   if (omikuji) {
     const matching = Object.entries(shops).flatMap(([currency, items]) =>
@@ -178,6 +205,16 @@ export function decodeStandardEvent(value: unknown): StandardEvent {
           throw new Error(`Unknown initial Invasion currency "${initialNames[index]}".`);
         }
       }
+    }
+  }
+  if (eventId === 'serenade-promenade-rerun') {
+    const overflowItems = Object.entries(shops).flatMap(([currency, items]) =>
+      items.filter((item) => item.overflow).map((item) => ({ currency, item })));
+    if (overflowItems.length !== 1 || overflowItems[0].currency !== 'Event_Point' ||
+      overflowItems[0].item.type !== 'Eleph' || String(overflowItems[0].item.id) !== '16016' ||
+      overflowItems[0].item.count !== 0 || overflowItems[0].item.cost !== 450 ||
+      overflowItems[0].item.overflow_cap !== 999 || currencies.Event_Point?.source !== 'StageDrop') {
+      throw new Error('Serenade Promenade rerun requires one capped Event Point Eleph overflow shop item.');
     }
   }
   if (invasion) {
@@ -209,6 +246,8 @@ export function decodeStandardEvent(value: unknown): StandardEvent {
     ...core, display_name: value.display_name, icon: asset(value.icon), currencies, shops,
     available_targets: available, currency_targets: value.currency_targets, stage_groups: stageGroups
   };
+  if (derivedCurrencyRules) result.derivedCurrencyRules = derivedCurrencyRules.map((rule) => ({ ...rule }));
+  if (eventId !== undefined) result.eventId = eventId;
   if (!Array.isArray(value.stages)) throw new Error('Invalid standard event stages.');
   const rawStages = value.stages;
   result.stages = core.stages.map((stage, index) => {
@@ -263,7 +302,7 @@ export function decodeEventCatalog(value: unknown, includeSupportedArchives = fa
     if (!isRecord(event) || typeof event.display_name !== 'string') throw new Error(`Missing event ${id}.`);
     return {
       id, name: event.display_name, icon: asset(event.icon), comingSoon: key.startsWith('|'),
-      event: [...standardEventIds, ...boxEventIds, ...cardEventIds, ...diceEventIds, ...omikujiEventIds, ...lessonEventIds, ...invasionEventIds].includes(id) ? decodeStandardEvent(event) : null,
+      event: [...standardEventIds, ...boxEventIds, ...cardEventIds, ...diceEventIds, ...omikujiEventIds, ...lessonEventIds, ...invasionEventIds].includes(id) ? decodeStandardEvent(event, id) : null,
       ...(index >= listedCount ? { archived: true } : {})
     };
   });
@@ -314,6 +353,9 @@ export function decodeEventPlan(value: unknown, event: StandardEvent): EventPlan
   const mode = raw.optimisation_type ?? '';
   const selectedMode = modes.find((entry) => entry === mode);
   if (selectedMode === undefined || (selectedMode && !event.available_targets.includes(selectedMode))) throw new Error('Invalid saved event optimization mode.');
+  // The legacy planner stores calculated Serenade overflow in this side channel.
+  // The replacement derives the amount from the plan, so carrying it would double count.
+  if (event.eventId === 'serenade-promenade-rerun') delete purchases.overflow_Event_Point;
   let options: EventPlan['optimisation_options'] = null;
   if (mode === 'Currency' && raw.optimisation_options !== null && raw.optimisation_options !== undefined) {
     if (typeof raw.optimisation_options !== 'string' || !event.currency_targets.includes(raw.optimisation_options)) throw new Error('Invalid saved currency target.');
@@ -333,7 +375,7 @@ export function decodeEventPlan(value: unknown, event: StandardEvent): EventPlan
       eventInteger(value, 'stage runs', 2000);
     }
   }
-  if (selectedMode === 'Currency' && (event.omikuji || event.invasion)) {
+  if (selectedMode === 'Currency' && (event.omikuji || event.invasion || event.eventId === 'serenade-promenade-rerun')) {
     for (const [currency, items] of Object.entries(event.shops)) {
       if (!items.some((item) => item.overflow)) continue;
       purchases[currency] ??= Object.create(null);
@@ -345,6 +387,15 @@ export function decodeEventPlan(value: unknown, event: StandardEvent): EventPlan
       }, 0);
       needed[currency] = totalCost;
     }
+  }
+  for (const rule of event.derivedCurrencyRules ?? []) {
+    if (!Object.hasOwn(needed, rule.from)) throw new Error(`Missing source currency requirement "${rule.from}".`);
+    const sourceAmount = Number(needed[rule.from]);
+    const derivedAmount = sourceAmount * rule.multiplier;
+    if (!Number.isFinite(sourceAmount) || sourceAmount < 0 || !Number.isFinite(derivedAmount)) {
+      throw new Error(`Invalid derived currency requirement for "${rule.to}".`);
+    }
+    needed[rule.to] = derivedAmount;
   }
   const result: EventPlan = {
     ...raw, enabled_bonus_units: enabled, shop_purchases: purchases, currency_needed: needed,

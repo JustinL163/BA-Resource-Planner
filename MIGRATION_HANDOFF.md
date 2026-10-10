@@ -8,12 +8,12 @@ and inspect the worktree before making changes.
 
 - Repository: `JustinL163/BA-Resource-Planner`.
 - Current branch/worktree: `justinl163-didactic-telegram`.
-- Latest commit: `61bb34b` (`Migrate guessing game to Svelte`).
+- Latest commit: `b5072a7` (`Migrate guessing game to Svelte`).
 - The Lessons and Valentine Patrol rerun Invasion migrations are already in
   history; do not cherry-pick or reapply them.
 - The Raid Videos migration and UI refinement are committed in `6e98c73`.
 - The Tournament Tracker migration is committed in `f3126b9`.
-- The Guessing Game migration is committed in `61bb34b`; push status is not
+- The Guessing Game migration is committed in `b5072a7`; push status is not
   checked.
 
 ## User goal and constraints
@@ -96,7 +96,43 @@ byte-identical, and legacy image URLs and `localStorage["records"]` are
 preserved. The implementation does not register a new service worker; the
 existing game worker/cache lifecycle remains for the legacy page and is part of
 the final PWA transition. See verification results below. This slice is committed
-in `61bb34b`.
+in `b5072a7`.
+
+The broader event audit added the original **BOX Shadow Looming** event to the
+Svelte planner as a separate ID from its already-supported rerun. Its standard
+stages, shops, and point rewards use the existing flow; the legacy
+`floor(Event_Point / 300) * 2 + 119 + 8` Eleph rule is isolated to the original
+ID. Unit parity covers the 0/299/300/599/600 point boundaries and confirms the
+rerun does not inherit the rule. This slice is verified in the current worktree
+and has not been committed. The targeted unit run passed (56 tests); see
+verification below for the complete checks.
+
+The **Secret Midnight Party** slice adds the event and its rerun to the same
+standard planner. Both preserve the legacy 270:1 conversion from the BOOM shop
+requirement to a Youkai stage requirement, recalculate and save the derived
+Youkai amount after shop edits, and subtract initial-clear or owned Youkai only
+after conversion. BOOM remains raw shop/save data and is not exposed as an owned
+or farmable stage currency. The legacy feasibility check treated the source-less
+BOOM requirement as if it had to be farmed, making otherwise satisfiable plans
+appear infeasible; the Svelte model intentionally checks only farmable stage
+currencies while retaining the legacy shop target and displayed rewards. This
+slice is verified in the current worktree and remains uncommitted.
+
+The **Fair and Square Aquatic Showdown** slice adds Honorable Sea Showdown as a
+standard event. It preserves the 270:1 Wooden Doll (Renge) shop-to-Yukari stage
+currency conversion, including recalculation and save after shop edits. The
+source-less shop currency remains raw purchase data; only the derived, farmable
+Yukari currency is subtracted for Owned mode and checked for feasibility. The
+slice is verified in the current worktree and remains uncommitted.
+
+The archived **Serenade Promenade rerun** is now in the standard planner. Its
+Event Point Eleph overflow row is limited to 999 purchases at 450 points each;
+Currency mode derives the purchase count from leftover Event Points. Its shop
+10058 Eleph is moved into 16016 after point and shop rewards are accumulated,
+preserving existing 16016 rewards. Legacy calculated `overflow_Event_Point`
+save entries are discarded as derived state to avoid double counting. The shop
+receives the calculated overflow count for display. This slice is verified in
+the current worktree and remains uncommitted.
 
 ## Recent completed stage
 
@@ -109,19 +145,26 @@ production-browser, and dev-browser baselines below; do not reimplement it.
 ## Remaining migration work, in suggested order
 
 1. **Broader event catalog/mechanics.** The current event file has 28 definitions;
-   15 are allowlisted for the Svelte planner and 13 stage/shop-looking definitions
-   remain unreviewed: `secret-midnight-party`, `box-shadow-looming`,
-   `railroad-runaway`, `ive-alive-rerun`, `honorable-sea-showdown`,
-   `summer-sky's-promise`, `sheside-outside-rerun`, `winter-skies-renaissance`,
-   `serenade-promenade-rerun`, `descent-of-five-senses-rerun`,
-   `game-dev-department-cleanup-mission`, `secret-midnight-party-rerun`, and
-   `lore-pursuit`. `old_events.json` has 40 definitions; only its four Lessons
-   entries and Valentine Patrol Invasion entry are in the generated archive.
-   Audit event-specific branches in `planner/js/eventPlanner.js` before widening
-   either allowlist; field shape alone does not prove parity. There are legacy
-   event-specific transformations/mini-games beyond the explicitly decoded
-   `boxes`, `card_drops`, `dice_race`, `omikuji`, `lessons`, and `invasion`
-   properties. In particular, preserve separate mechanics or keep them gated.
+   20 are allowlisted for the Svelte planner and 8 stage/shop-looking definitions
+   remain unreviewed:
+   `railroad-runaway`, `ive-alive-rerun`, `summer-sky's-promise`,
+   `sheside-outside-rerun`, `winter-skies-renaissance`,
+   `descent-of-five-senses-rerun`,
+   `game-dev-department-cleanup-mission`, and `lore-pursuit`. `old_events.json`
+   has 40 definitions; only its four Lessons entries and Valentine Patrol
+   Invasion entry are in the generated archive.
+   The remaining candidates have been audited against `planner/js/eventPlanner.js`;
+   field shape alone does not prove parity. The next contained slice is
+   **Winter Skies Renaissance**: its 120:1 Cultural Book Sample to Event Point
+   shop conversion fits the existing derived-currency rule, but its initial and
+   owned points, point target and reward tiers still need direct parity coverage.
+   **Descent of Five Senses rerun** has a MinigameDrop conversion; **Railroad Runaway** has a
+   threshold/repeat minigame reward transform; **I've aLIVE rerun** converts
+   Countdown Calendar into Event Points; and **Summer Sky's Promise** has a
+   threshold reward transform plus a source-less shop currency. Keep these and
+   other unfamiliar mechanics gated until their plan inputs and feasibility are
+   characterized. Keep Game Dev Department Cleanup Mission gated because its
+   uncapped Credit overflow produces invalid legacy totals.
 
 2. **Resource-page residuals.** `README.md` notes optional/display controls that
    remain reachable only through the old planner. Before retiring
@@ -189,15 +232,65 @@ Guessing Game continuation verification (2026-10-10):
 - The Svelte game uses `/game/`; `/game/guesser.html` and existing game assets
   remain available. No new service worker registration was added.
 
+BOX Shadow Looming event continuation verification (2026-10-10):
+
+- `npm.cmd test`: 1,320 tests passed.
+- `npm.cmd run check`: 0 Svelte/TypeScript errors and warnings.
+- `npm.cmd run build`: static `adapter-static` build succeeds.
+- `npm.cmd run test:browser`: 127 production-preview browser tests passed,
+  including the original event archive, saved manual runs, and point-based
+  Eleph display.
+- `npm.cmd run test:dev`: 13 Vite development-server tests passed.
+- The targeted `tests/unit/standard-event.test.ts` run passed all 56 tests;
+  parity vectors cover 0, 299, 300, 599, and 600 Event Points. The rerun remains
+  unaffected by the original event's custom rule.
+
+Secret Midnight Party continuation verification (2026-10-10):
+
+- `npm.cmd test`: 1,352 tests passed.
+- `npm.cmd run check`: 0 Svelte/TypeScript errors and warnings.
+- `npm.cmd run build`: static `adapter-static` build succeeds.
+- `npm.cmd run test:browser`: 128 production-preview browser tests passed.
+- `npm.cmd run test:dev`: 13 Vite development-server tests passed.
+
+Honorable Sea Showdown continuation verification (2026-10-10):
+
+- `npm.cmd test`: 1,368 tests passed.
+- `npm.cmd run check`: 0 Svelte/TypeScript errors and warnings.
+- `npm.cmd run build`: static `adapter-static` build succeeds.
+- `npm.cmd run test:browser`: 129 production-preview browser tests passed,
+  including the Renge shop conversion, Owned currency, and legacy planner
+  availability.
+- `npm.cmd run test:dev`: 13 Vite development-server tests passed.
+- The targeted `tests/unit/standard-event.test.ts` run passed all 104 tests,
+  including the 270:1 Renge-to-Yukari conversion, edited shop-save values,
+  Owned subtraction, legacy calculations, and Materials mode with a feasible
+  energy fixture. The slice remains uncommitted.
+
+Serenade Promenade rerun continuation verification (2026-10-10):
+
+- `npm.cmd test`: 1,390 tests passed.
+- `npm.cmd run check`: 0 Svelte/TypeScript errors and warnings.
+- `npm.cmd run build`: static `adapter-static` build succeeds.
+- `npm.cmd run test:browser`: 130 production-preview browser tests passed,
+  including the calculated overflow display and `/planner/events.html` fallback.
+- `npm.cmd run test:dev`: 13 Vite development-server tests passed.
+- The targeted `tests/unit/standard-event.test.ts` run passed all 126 tests.
+  Legacy summary parity covers manual 10058-to-16016 remapping, combined point
+  and overflow rewards, and Currency-mode overflow boundaries from 0 through
+  the 999-item cap.
+
 ## Resume prompt
 
 > Read `MIGRATION_HANDOFF.md` and `README.md`, then inspect the current branch and
 > `git status` before editing. The Valentine Patrol Invasion, Lessons, Raid
 > Videos, Tournament Tracker, and Guessing Game migrations are already present;
-> do not reapply them. Continue with the broader event catalog/mechanics audit:
-> review the event-specific
-> branches in `planner/js/eventPlanner.js`, characterize candidate events against
-> the legacy implementation, and keep unfamiliar mechanics gated until parity is
-> established. Preserve the legacy pages, workers and API contracts. Add
-> independent tests, run targeted plus full checks, and do not commit or push
-> unless explicitly asked.
+> do not reapply them. The original BOX Shadow Looming event, Secret Midnight
+> Party pair, Fair and Square Aquatic Showdown, and Serenade Promenade rerun are
+> supported in the current worktree with legacy-parity coverage, but remain
+> uncommitted. The remaining event candidates have been audited; continue with
+> Winter Skies Renaissance, preserving its 120:1 Cultural Book Sample-to-Event
+> Point conversion, point target, and point-tier rewards. Keep unfamiliar mechanics gated
+> until parity is established. Preserve the legacy pages, workers and API
+> contracts. Add independent tests, run targeted plus full checks, and do not
+> commit or push unless explicitly asked.

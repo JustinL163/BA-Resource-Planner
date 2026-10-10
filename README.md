@@ -76,9 +76,20 @@ Card size uses the existing `character_box_size` preference.
 The standard Svelte event planner is available at `/planner/event-planner/`
 through **Svelte Events**. Its compact Targets, Energy, Bonus, Shop, Stages,
 Points and Owned tabs support the current Lore Pursuit (Season 2) event.
-Box Shadow Looming rerun is also characterized and supported when included in
-the event list. Unreviewed special events are explicitly gated to the legacy
-planner until their complete mechanics are migrated; `standardEventIds`,
+Box Shadow Looming rerun and the original BOX Shadow Looming event are supported
+as separate event IDs; the original's point-to-Eleph rule is characterized
+against the legacy page. Secret Midnight Party and its rerun are also supported;
+their BOOM Classic Collection shop requirement converts to a Youkai MAX Umeboshi
+Flavor stage target at 270:1 and retains both values in saved event data.
+Fair and Square Aquatic Showdown converts its Wooden Doll (Renge) shop cost to
+the farmable Wooden Doll (Yukari) target at 270:1; the source shop value and
+derived stage target are both retained in saved event data.
+The Serenade Promenade rerun is also in the reviewed archive: its capped Event
+Point overflow purchase converts leftover points into Mine (Pop Idol) Eleph,
+and shop 10058 Eleph is combined with 16016 point and overflow rewards.
+Unreviewed special events are explicitly gated to the legacy planner until their
+complete mechanics are migrated;
+`standardEventIds`,
 `boxEventIds`, `cardEventIds`, `diceEventIds`, `omikujiEventIds`,
 `lessonEventIds`, and `invasionEventIds` are reviewed allowlists rather than
 assuming an unfamiliar event is generic. The four reviewed archived Lessons
@@ -88,8 +99,10 @@ archive bundle rather than fetching the full older-event catalog.
 Box-draw events also support a compact **Boxes** tab and a session-only **Box
 Rewards** display toggle. **Show earlier supported events** reveals the reviewed
 earlier events without changing the current event list: Moonlight Dream,
-Pandemic Hazard, 0068 Opera with Love rerun, Say-Bing rerun, and Kivotos Unsolved
-Mysteries, plus the supported standard rerun. Cycle tabs retain the original
+Pandemic Hazard, 0068 Opera with Love rerun, Say-Bing rerun, Kivotos Unsolved
+Mysteries, both BOX Shadow Looming IDs, Secret Midnight Party with its rerun,
+Fair and Square Aquatic Showdown, and the Serenade Promenade rerun.
+Cycle tabs retain the original
 alternating sets and repeating final set, with per-draw amount and stock shown
 separately. Box-shop currency targets convert to the exact required whole-box
 draw currency, including legacy Owned/first-clear subtraction conventions.

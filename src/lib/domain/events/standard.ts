@@ -31,6 +31,16 @@ export function eventRequirements(event: StandardEvent, plan: EventPlan, invasio
     throw new Error('Event currency requirements and owned amounts must be records.');
   }
   if (!isRecord(invasionCurrencies)) throw new Error('Invasion currency rewards must be a record.');
+  const currencyNeeded: EventPlan['currency_needed'] = Object.assign(Object.create(null), plan.currency_needed);
+  for (const rule of event.derivedCurrencyRules ?? []) {
+    if (!Object.hasOwn(currencyNeeded, rule.from)) throw new Error(`Missing source currency requirement "${rule.from}".`);
+    const sourceAmount = Number(currencyNeeded[rule.from]);
+    const derivedAmount = sourceAmount * rule.multiplier;
+    if (!Number.isFinite(sourceAmount) || sourceAmount < 0 || !Number.isFinite(derivedAmount)) {
+      throw new Error(`Invalid derived currency requirement for "${rule.to}".`);
+    }
+    currencyNeeded[rule.to] = derivedAmount;
+  }
   const invasionAmount = (currency: string): number => {
     if (!Object.prototype.hasOwnProperty.call(invasionCurrencies, currency)) return 0;
     const amount = finite(invasionCurrencies[currency], `Invasion reward for "${currency}"`);
@@ -39,7 +49,7 @@ export function eventRequirements(event: StandardEvent, plan: EventPlan, invasio
   };
   const midEvent = Object.values(plan.currency_owned).some((value) => parseLegacyInt(value) > 0);
   const needed: EventAmounts = {};
-  for (const [currency, rawAmount] of Object.entries(plan.currency_needed)) {
+  for (const [currency, rawAmount] of Object.entries(currencyNeeded)) {
     if (!Object.hasOwn(event.currencies, currency)) throw new Error(`Unknown required event currency "${currency}".`);
     if ((typeof rawAmount !== 'number' && typeof rawAmount !== 'string') ||
       (typeof rawAmount === 'string' && rawAmount.trim() === '')) {
@@ -50,6 +60,7 @@ export function eventRequirements(event: StandardEvent, plan: EventPlan, invasio
       throw new Error(`Required amount for "${currency}" must be finite and non-negative.`);
     }
     const source = event.currencies[currency];
+    if (event.derivedCurrencyRules?.some((rule) => rule.from === currency)) continue;
     if (source.source === 'BoxPull') {
       if (!event.boxes || event.box_clear_cost === undefined || !source.pull_currency) throw new Error('Missing box currency configuration.');
       const pullAmount = boxPullCurrencyNeeded({ boxes: event.boxes, box_clear_cost: event.box_clear_cost }, amount);
@@ -323,6 +334,20 @@ export function summarizeEventRuns(
         if (!Number.isSafeInteger(count) || count < 0 || count > item.overflow_cap) {
           throw new Error(`Invalid Invasion overflow purchase count for "${id}".`);
         }
+      } else if (event.eventId === 'serenade-promenade-rerun' && item.type === 'Eleph' &&
+        item.count === 0 && item.cost > 0 && item.overflow_cap) {
+        if (plan.optimisation_type === 'Currency') {
+          const spend = Number(plan.currency_needed[shopCurrency] ?? 0);
+          if (!Number.isFinite(spend)) throw new Error(`Invalid currency spend for "${shopCurrency}".`);
+          count = Math.max(Math.min(Math.floor((currencies[shopCurrency] - spend) / item.cost), item.overflow_cap), 0);
+          if (includeShop) addAmount(eleph, id, count * (item.amount ?? 1), `Overflow Eleph "${id}"`);
+        } else {
+          const stored = plan.shop_purchases[shopCurrency]?.[id] ?? 0;
+          count = parseLegacyInt(stored);
+          if (!Number.isSafeInteger(count) || count < 0 || count > item.overflow_cap) {
+            throw new Error(`Invalid Serenade overflow purchase count for "${id}".`);
+          }
+        }
       } else {
         throw new Error('Invalid event currency overflow purchase.');
       }
@@ -366,9 +391,18 @@ export function summarizeEventRuns(
     eligma = finite(eligma + shopRewards.eligma, 'Event Eligma total');
     secretTech = finite(secretTech + shopRewards.secretTech, 'Event SecretTech total');
   }
+  if (event.eventId === 'serenade-promenade-rerun' && eleph['10058']) {
+    addAmount(eleph, '16016', eleph['10058'], 'Serenade Promenade Eleph conversion');
+    setOwn(eleph, '10058', 0);
+  }
   if (event.lessons) {
     const progress = lessonProgress(event.lessons, plan.lesson_pre_runs ?? [], plan.lesson_post_runs ?? {}, currencies.Event_Point ?? 0);
     if (progress.pointsRemaining < 0) feasible = false;
+  }
+  if (event.eventId === 'box-shadow-looming') {
+    const points = finite(currencies.Event_Point ?? 0, 'BOX Shadow Looming event points');
+    // Match the legacy base reward and add 2 Eleph for each 300 Event Points.
+    setOwn(eleph, '26014', Math.floor(points / 300) * 2 + 119 + 8);
   }
   return {
     runs, currencies, artifacts, schoolMats, eleph, xps, gear, credit, eligma, secretTech,

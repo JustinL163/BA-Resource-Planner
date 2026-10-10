@@ -242,7 +242,8 @@
         {:else}
           <EventMarket {tab} {event} plan={$planner.plan} runs={result?.value?.feasible ? result.value.runs : {}} variables={calculation?.variables ?? {}}
             initial={calculation?.requirements?.initial ?? { rewards: {}, cost: 0 }} midEvent={calculation?.requirements?.midEvent ?? false}
-            pointsObtained={result?.value?.feasible ? result.value.currencies.Event_Point ?? 0 : 0} {actions}
+            pointsObtained={result?.value?.feasible ? result.value.currencies.Event_Point ?? 0 : 0}
+            overflowPurchases={result?.value?.overflowPurchases ?? {}} {actions}
             item={(reward) => eventItem(reward, event, metadata, $planner.names)} {t} />
         {/if}
       {/key}

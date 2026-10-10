@@ -53,6 +53,7 @@ export interface InvasionDefinition {
   first_day_attempts: number;
   stages: InvasionStage[];
 }
+export interface DerivedCurrencyRule { from: string; to: string; multiplier: number }
 export interface InvasionRewards {
   currencies: EventAmounts;
   eleph: EventAmounts;
@@ -94,10 +95,12 @@ export interface BoxRewards {
   currencyName: string;
 }
 export interface StandardEvent extends CoreEvent {
+  eventId?: string;
   display_name: string;
   icon: string;
   active?: boolean;
   event_point_target?: number;
+  derivedCurrencyRules?: DerivedCurrencyRule[];
   available_targets: Exclude<EventMode, ''>[];
   currency_targets: string[];
   stage_groups: string[];

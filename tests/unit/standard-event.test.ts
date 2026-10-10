@@ -9,7 +9,7 @@ import { boxPullCurrencyNeeded } from '../../src/lib/domain/events/boxes';
 import { createEventPlanner } from '../../src/lib/stores/event-planner';
 import { isRecord } from '../../src/lib/domain/planner/save';
 import { createLegacyContext, evaluate, readJson, readSource } from './legacy-harness';
-import type { EventPlan, EventSummary } from '../../src/lib/domain/events/standard-types';
+import type { EventPlan, EventRequirements, EventSummary } from '../../src/lib/domain/events/standard-types';
 
 const config = readJson('planner', 'json', 'events.json');
 const students = readJson('planner', 'json', 'skillinfo', 'en.json');
@@ -19,9 +19,9 @@ if (!isRecord(config) || !isRecord(config.events)) throw new Error('Invalid even
 const rawEvents = config.events;
 
 function reference(id: string, plan: EventPlan, includeShop = false, includePoints = false, runs: unknown = { '9': 10 }) {
-  const event = decodeStandardEvent(rawEvents[id]);
+  const event = decodeStandardEvent(rawEvents[id], id);
   const context = createLegacyContext(['config.js', 'common.js', 'eventPlanner.js'], {
-    fixture: { config, students, misc, id, plan, includeShop, includePoints, runs },
+    fixture: { config, students, misc, id, plan: structuredClone(plan), includeShop, includePoints, runs },
     BAEventEngine: eventEngine, Date: { now: () => (event.reset_time + 3 * 86400 + 3600) * 1000 }
   });
   runInContext(readSource('tests', 'fixtures', 'event-core.legacy.js'), context);
@@ -55,12 +55,16 @@ function reference(id: string, plan: EventPlan, includeShop = false, includePoin
 
 describe('standard event compatibility and frozen reward outputs', () => {
   for (const id of standardEventIds) {
-    const event = decodeStandardEvent(rawEvents[id]);
+    const event = decodeStandardEvent(rawEvents[id], id);
     it.each([false, true])(`${id} requirements before/after Owned mode=%s`, (owned) => {
       const plan = decodeEventPlan(undefined, event);
       if (owned) plan.currency_owned = { Event_Point: '1234' };
       const old = reference(id, plan);
-      expect(eventRequirements(event, plan)).toEqual(old.requirements);
+      const legacyRequirements = old.requirements as EventRequirements;
+      const expected = { ...legacyRequirements, needed: { ...legacyRequirements.needed } };
+      for (const rule of event.derivedCurrencyRules ?? []) delete expected.needed[rule.from];
+      if (event.derivedCurrencyRules?.length && String(expected.pointTarget) === 'NaN') expected.pointTarget = Number.NaN;
+      expect(eventRequirements(event, plan)).toEqual(expected);
     });
     for (const owned of [false, true]) for (const includeShop of [false, true]) for (const includePoints of [false, true]) {
       it(`${id} Manual rewards owned=${owned} shop=${includeShop} points=${includePoints}`, () => {
@@ -72,7 +76,8 @@ describe('standard event compatibility and frozen reward outputs', () => {
         const requirements = eventRequirements(event, plan);
         const bonuses = eventEngine.calculateEventBonuses(id, event, [], {});
         const summary = summarizeEventRuns(event, plan, requirements, bonuses, old.energy, plan.optimisation_options, includeShop, includePoints, metadata);
-        const { runs, feasible, ...rewards } = summary;
+        const { runs, feasible, overflowPurchases, ...rewards } = summary;
+        void overflowPurchases;
         expect(feasible).toBe(!old.infeasible);
         expect(runs).toEqual(old.runs);
         expect(rewards).toEqual(old.summary);
@@ -90,6 +95,9 @@ describe('standard event compatibility and frozen reward outputs', () => {
       const plan = decodeEventPlan(undefined, event);
       plan.optimisation_type = mode;
       plan.pyro_refreshes = 6; plan.pvp_refreshes = 4; plan.energy_pack = true; plan.energy_carryover = 2000;
+      if (id === 'honorable-sea-showdown' && mode === 'Materials') {
+        plan.cafe_rank = 10; plan.pyro_refreshes = 20; plan.energy_carryover = 3000;
+      }
       plan.enabled_bonus_units = [...new Set(Object.values(event.currencies).flatMap((currency) => currency.bonus_units.map((unit) => unit.id)))];
       if (mode === 'Currency') plan.optimisation_options = event.currency_targets[0];
       if (mode === 'Materials') {
@@ -100,14 +108,188 @@ describe('standard event compatibility and frozen reward outputs', () => {
       const old = reference(id, plan, true, true, 'solve');
       const contextBonuses: Record<string, number> = runInContext('currencyBonuses', old.context);
       const summary = summarizeEventRuns(event, plan, eventRequirements(event, plan), contextBonuses, old.energy, old.solution, true, true, metadata);
-      const { runs, feasible, ...rewards } = summary;
-      expect(feasible).toBe(!old.infeasible);
-      if (feasible) {
+      const { runs, feasible, overflowPurchases, ...rewards } = summary;
+      void overflowPurchases;
+      if (event.derivedCurrencyRules?.length) {
+        // The old result marks this event infeasible because its source-less BOOM input is
+        // checked as if it had to be farmed. The replacement checks only the derived stage currency.
+        expect(feasible).toBe(true);
+        expect(runs).toEqual(old.runs);
+        expect(rewards).toEqual(old.summary);
+      } else {
+        expect(feasible).toBe(!old.infeasible);
+      }
+      if (feasible && !event.derivedCurrencyRules?.length) {
         expect(runs).toEqual(old.runs);
         expect(rewards).toEqual(old.summary);
       }
     });
   }
+  it('matches the original BOX Shadow Looming point-to-Eleph formula at tier boundaries without applying it to the rerun', () => {
+    const id = 'box-shadow-looming';
+    const event = decodeStandardEvent(rawEvents[id], id);
+    for (const [points, expected] of [[0, 127], [299, 127], [300, 129], [599, 129], [600, 131]] as const) {
+      const plan = decodeEventPlan(undefined, event);
+      plan.optimisation_type = 'Manual';
+      plan.optimisation_options = {};
+      plan.currency_owned = { Event_Point: String(points), EXPO_Souvenirs: '1' };
+      const old = reference(id, plan, false, false, {});
+      const summary = summarizeEventRuns(event, plan, eventRequirements(event, plan), {}, old.energy, {}, false, false, metadata);
+      expect(summary.eleph['26014']).toBe(expected);
+      const { runs, feasible, ...rewards } = summary;
+      expect(feasible).toBe(!old.infeasible);
+      expect(runs).toEqual(old.runs);
+      expect(rewards).toEqual(old.summary);
+    }
+
+    const rerunId = 'box-shadow-looming-rerun';
+    const rerun = decodeStandardEvent(rawEvents[rerunId], rerunId);
+    const rerunPlan = decodeEventPlan(undefined, rerun);
+    rerunPlan.optimisation_type = 'Manual';
+    rerunPlan.optimisation_options = {};
+    rerunPlan.currency_owned = { Event_Point: '600', EXPO_Souvenirs: '1' };
+    const oldRerun = reference(rerunId, rerunPlan, false, false, {});
+    const rerunSummary = summarizeEventRuns(rerun, rerunPlan, eventRequirements(rerun, rerunPlan), {}, oldRerun.energy, {}, false, false, metadata);
+    expect(rerunSummary.eleph['26014']).toBeUndefined();
+  });
+
+  it.each(['secret-midnight-party', 'secret-midnight-party-rerun'])('%s preserves the 270:1 BOOM shop conversion through initial, edited and Owned requirements', (id) => {
+    const event = decodeStandardEvent(rawEvents[id], id);
+    const rule = event.derivedCurrencyRules?.[0];
+    if (!rule || rule.from !== 'BOOM_Classic_Collection' || rule.to !== 'Youkai_MAX_Umeboshi_Flavor') {
+      throw new Error('Missing Secret Midnight Party currency rule.');
+    }
+    const defaults = decodeEventPlan(undefined, event);
+    expect(defaults.currency_needed[rule.from]).toBe(200);
+    expect(defaults.currency_needed[rule.to]).toBe(54000);
+    expect(eventRequirements(event, defaults).initial.rewards[rule.to]).toBe(10330);
+    expect(eventRequirements(event, defaults).needed[rule.to]).toBe(43670);
+    expect(eventRequirements(event, {
+      ...defaults, currency_needed: { ...defaults.currency_needed, [rule.from]: 40, [rule.to]: 54000 }
+    }).needed[rule.to]).toBe(470);
+
+    const edited = decodeEventPlan({
+      ...defaults,
+      currency_needed: { ...defaults.currency_needed, [rule.from]: 40, [rule.to]: 54000 }
+    }, event);
+    expect(edited.currency_needed[rule.to]).toBe(10800);
+    expect(eventRequirements(event, edited).needed[rule.to]).toBe(470);
+
+    const midwayWithOtherCurrency = { ...edited, currency_owned: { Fluffy_Pillow: '1' } };
+    expect(eventRequirements(event, midwayWithOtherCurrency).needed[rule.to]).toBe(10800);
+    const midwayWithYoukai = { ...edited, currency_owned: { [rule.to]: '500' } };
+    expect(eventRequirements(event, midwayWithYoukai).needed[rule.to]).toBe(10300);
+    const midwayWithLegacyBoomOwned = { ...edited, currency_owned: { [rule.from]: '1' } };
+    expect(eventRequirements(event, midwayWithLegacyBoomOwned).needed[rule.to]).toBe(10800);
+
+    const zero = decodeEventPlan({ ...edited, currency_needed: { ...edited.currency_needed, [rule.from]: 0 } }, event);
+    expect(zero.currency_needed[rule.to]).toBe(0);
+    expect(eventRequirements(event, zero).needed[rule.to]).toBe(0);
+    expect(() => decodeEventPlan({ shop_purchases: { [rule.from]: {} }, currency_needed: { [rule.to]: 100 } }, event)).toThrow('Missing source currency requirement');
+    expect(() => decodeStandardEvent(rawEvents[id])).toThrow('This currency requires the legacy planner');
+  });
+
+  it('preserves the 270:1 Wooden Doll conversion for Fair and Square Aquatic Showdown', () => {
+    const id = 'honorable-sea-showdown';
+    const event = decodeStandardEvent(rawEvents[id], id);
+    const rule = event.derivedCurrencyRules?.[0];
+    if (!rule || rule.from !== 'Wooden_Doll_(Renge)' || rule.to !== 'Wooden_Doll_(Yukari)') {
+      throw new Error('Missing Fair and Square Aquatic Showdown currency rule.');
+    }
+
+    const defaults = decodeEventPlan(undefined, event);
+    expect(defaults.currency_needed[rule.from]).toBe(200);
+    expect(defaults.currency_needed[rule.to]).toBe(54000);
+    const initialTarget = eventRequirements(event, defaults).initial.rewards[rule.to];
+    expect(eventRequirements(event, defaults).needed[rule.to]).toBe(Math.max(54000 - initialTarget, 0));
+
+    const edited = decodeEventPlan({
+      ...defaults,
+      currency_needed: { ...defaults.currency_needed, [rule.from]: 40, [rule.to]: 54000 }
+    }, event);
+    expect(edited.currency_needed[rule.to]).toBe(10800);
+    expect(eventRequirements(event, edited).needed[rule.to]).toBe(Math.max(10800 - initialTarget, 0));
+
+    expect(eventRequirements(event, { ...edited, currency_owned: { [rule.to]: '500' } }).needed[rule.to]).toBe(10300);
+    expect(eventRequirements(event, { ...edited, currency_owned: { [rule.from]: '1' } }).needed[rule.to]).toBe(10800);
+    expect(() => decodeStandardEvent(rawEvents[id])).toThrow('This currency requires the legacy planner');
+  });
+
+  it('preserves the Serenade Promenade rerun overflow cap and remaps 10058 Eleph into existing 16016 rewards', () => {
+    const id = 'serenade-promenade-rerun';
+    const event = decodeStandardEvent(rawEvents[id], id);
+    const overflow = event.shops.Event_Point.find((item) => item.overflow);
+    expect(overflow).toMatchObject({ type: 'Eleph', id: 16016, count: 0, cost: 450, overflow_cap: 999 });
+    expect(decodeEventCatalog(config, true).find((entry) => entry.id === id)).toMatchObject({
+      name: 'Serenade Promenade', archived: true, comingSoon: false
+    });
+    expect(() => decodeStandardEvent(rawEvents[id])).toThrow('This overflow shop requires the legacy planner');
+
+    const plan = decodeEventPlan(undefined, event);
+    plan.optimisation_type = 'Manual';
+    plan.optimisation_options = {};
+    plan.currency_owned = { Event_Point: '300' };
+    plan.shop_purchases.Event_Point['10058'] = 1;
+    plan.shop_purchases.Event_Point['16016'] = 2;
+    plan.currency_needed.Event_Point = event.shops.Event_Point.reduce((total, item) =>
+      total + Number(plan.shop_purchases.Event_Point[String(item.id)] ?? 0) * item.cost, 0);
+
+    const old = reference(id, plan, true, true, {});
+    const summary = summarizeEventRuns(event, plan, eventRequirements(event, plan),
+      eventEngine.calculateEventBonuses(id, event, [], {}), old.energy, {}, true, true, metadata);
+    const { runs, feasible, overflowPurchases, ...rewards } = summary;
+    void overflowPurchases;
+    expect(feasible).toBe(!old.infeasible);
+    expect(runs).toEqual(old.runs);
+    expect(rewards).toEqual(old.summary);
+    expect(summary.eleph['16016']).toBe(17);
+    expect(summary.eleph['10058']).toBe(0);
+  });
+
+  it.each([0, 449, 450, 450 * 999 - 1, 450 * 999, 450 * 1000])(
+    'matches legacy Serenade Currency overflow at %s leftover Event Points', (leftover) => {
+      const id = 'serenade-promenade-rerun';
+      const event = decodeStandardEvent(rawEvents[id], id);
+      const plan = decodeEventPlan(undefined, event);
+      plan.optimisation_type = 'Currency';
+      plan.optimisation_options = 'Event_Point';
+      plan.shop_purchases.Event_Point = Object.fromEntries(event.shops.Event_Point.map((item) => [String(item.id), 0]));
+      plan.currency_needed = Object.fromEntries(Object.keys(event.currencies).map((currency) => [currency, 0]));
+      plan.currency_owned = { Event_Point: String(leftover), Live_Ticket: '1' };
+
+      const old = reference(id, plan, true, false, {});
+      const summary = summarizeEventRuns(event, plan, eventRequirements(event, plan),
+        eventEngine.calculateEventBonuses(id, event, [], {}), old.energy, {}, true, false, metadata);
+      const expected = runInContext('event_data.shop_purchases.overflow_Event_Point?.[16016] ?? 0', old.context);
+      expect(summary.overflowPurchases?.Event_Point?.['16016']).toBe(expected);
+      const { runs, feasible, overflowPurchases, ...rewards } = summary;
+      void overflowPurchases;
+      expect(feasible).toBe(!old.infeasible);
+      expect(runs).toEqual(old.runs);
+      expect(rewards).toEqual(old.summary);
+      expect(summary.overflowPurchases?.Event_Point?.['16016']).toBe(Math.min(Math.floor(leftover / 450), 999));
+    }
+  );
+
+  it('drops legacy calculated Serenade overflow saves and bounds regular overflow purchases', () => {
+    const id = 'serenade-promenade-rerun';
+    const event = decodeStandardEvent(rawEvents[id], id);
+    const defaults = decodeEventPlan(undefined, event);
+    const oldSave = decodeEventPlan({
+      ...defaults,
+      optimisation_type: 'Currency',
+      optimisation_options: 'Event_Point',
+      shop_purchases: { ...defaults.shop_purchases, overflow_Event_Point: { '16016': 12 } }
+    }, event);
+    expect(oldSave.shop_purchases.overflow_Event_Point).toBeUndefined();
+    expect(oldSave.shop_purchases.Event_Point['16016']).toBe(0);
+    expect(() => decodeEventPlan({
+      ...defaults,
+      optimisation_type: 'Manual',
+      shop_purchases: { ...defaults.shop_purchases, Event_Point: { ...defaults.shop_purchases.Event_Point, '16016': 1000 } }
+    }, event)).toThrow('Invalid event purchase count');
+  });
+
   it('accepts legacy numeric-string Manual runs and does not fabricate solver success', () => {
     const event = decodeStandardEvent(rawEvents['lore-pursuit-s2']);
     const plan = decodeEventPlan(undefined, event);
@@ -131,7 +313,7 @@ class MemoryStorage implements Storage {
   setItem(key: string, value: string) { this.entries.set(key, value); }
 }
 
-async function store(storage: MemoryStorage) {
+async function store(storage: MemoryStorage, selected = 'lore-pursuit-s2') {
   const planner = createEventPlanner(metadata, () => storage);
   const fetchMock = vi.spyOn(globalThis, 'fetch').mockImplementation(async (input) => {
     const url = String(input);
@@ -139,7 +321,7 @@ async function store(storage: MemoryStorage) {
     return new Response(JSON.stringify(value), { status: 200, headers: { 'Content-Type': 'application/json' } });
   });
   try { await planner.initialise(); } finally { fetchMock.mockRestore(); }
-  planner.select('lore-pursuit-s2');
+  planner.select(selected);
   return planner;
 }
 
@@ -149,6 +331,22 @@ describe('event saves, state safety and explicit standard-event gating', () => {
     expect(entries.map((entry) => Boolean(entry.event))).toEqual([true, true, true]);
     expect(entries[2].comingSoon).toBe(true);
     expect(() => decodeEventPlan({ enabled_stage_groups: [false, false, false] }, decodeStandardEvent(rawEvents['lore-pursuit-s2']))).toThrow();
+  });
+
+  it('exposes the original BOX Shadow Looming event as a reviewed archive while keeping other unreviewed events gated', () => {
+    const entries = decodeEventCatalog(config, true);
+    const shadowRaw = rawEvents['box-shadow-looming'];
+    if (!isRecord(shadowRaw) || !Array.isArray(shadowRaw.point_rewards)) throw new Error('Missing BOX Shadow Looming point rewards.');
+    const shadow = entries.find((entry) => entry.id === 'box-shadow-looming');
+    expect(shadow).toMatchObject({
+      name: 'BOX Shadow Looming Over Millennium', archived: true, comingSoon: false
+    });
+    expect(shadow?.event?.eventId).toBe('box-shadow-looming');
+    expect(shadow?.event?.stage_groups).toEqual(['1-4', '5-8', '9-12']);
+    expect(shadow?.event?.point_rewards).toHaveLength(shadowRaw.point_rewards.length);
+
+    const unreviewed = decodeEventCatalog({ ...config, event_order: ["summer-sky's-promise"] });
+    expect(unreviewed[0].event).toBeNull();
   });
 
   it('preserves prototype-shaped unknown zero shop keys as inert saved data', () => {
@@ -176,6 +374,44 @@ describe('event saves, state safety and explicit standard-event gating', () => {
     expect(result.events_data.other).toEqual(source.events_data.other);
     expect(result.events_data['lore-pursuit-s2'].futureSetting).toEqual({ keep: true });
     expect(result.events_data['lore-pursuit-s2'].optimisation_options).toEqual({ '9': 12 });
+  });
+
+  it.each(['secret-midnight-party', 'secret-midnight-party-rerun'])('%s saves the derived requirement again after BOOM shop edits', async (id) => {
+    const storage = new MemoryStorage();
+    const planner = await store(storage, id);
+    const initial = get(planner).plan;
+    const event = get(planner).catalog.find((entry) => entry.id === id)?.event;
+    if (!initial || !event) throw new Error('Missing event plan.');
+    expect(initial.currency_needed.Youkai_MAX_Umeboshi_Flavor).toBe(54000);
+
+    for (const item of event.shops.BOOM_Classic_Collection) {
+      expect(planner.setPurchase('BOOM_Classic_Collection', String(item.id), 0)).toBe(true);
+    }
+    expect(planner.setPurchase('BOOM_Classic_Collection', 'Pyroxene-1200', 1)).toBe(true);
+    const saved = JSON.parse(storage.getItem('save-data')!).events_data[id];
+    expect(saved.currency_needed.BOOM_Classic_Collection).toBe(40);
+    expect(saved.currency_needed.Youkai_MAX_Umeboshi_Flavor).toBe(10800);
+
+    expect(planner.setPurchase('BOOM_Classic_Collection', 'Pyroxene-1200', 0)).toBe(true);
+    expect(JSON.parse(storage.getItem('save-data')!).events_data[id].currency_needed.Youkai_MAX_Umeboshi_Flavor).toBe(0);
+  });
+
+  it('saves the derived Wooden Doll requirement again after Renge shop edits', async () => {
+    const id = 'honorable-sea-showdown';
+    const storage = new MemoryStorage();
+    const planner = await store(storage, id);
+    const initial = get(planner).plan;
+    const event = get(planner).catalog.find((entry) => entry.id === id)?.event;
+    if (!initial || !event) throw new Error('Missing event plan.');
+    expect(initial.currency_needed['Wooden_Doll_(Yukari)']).toBe(54000);
+
+    for (const item of event.shops['Wooden_Doll_(Renge)']) {
+      expect(planner.setPurchase('Wooden_Doll_(Renge)', String(item.id), 0)).toBe(true);
+    }
+    expect(planner.setPurchase('Wooden_Doll_(Renge)', 'Pyroxene-1200', 1)).toBe(true);
+    const saved = JSON.parse(storage.getItem('save-data')!).events_data[id];
+    expect(saved.currency_needed['Wooden_Doll_(Renge)']).toBe(40);
+    expect(saved.currency_needed['Wooden_Doll_(Yukari)']).toBe(10800);
   });
 
   it.each(boxEventIds)('keeps %s boxed shop targets transactional and rejects edits to reward-only Owned currency', async (id) => {

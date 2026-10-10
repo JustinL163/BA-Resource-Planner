@@ -119,7 +119,7 @@ export function createEventPlanner(
       if (!entry.event?.available_targets.includes(mode)) throw new Error('This optimization mode is unavailable.');
       plan.optimisation_type = mode; plan.optimisation_options = null;
       if (mode === 'Currency' && entry.event.currency_targets.length === 1) plan.optimisation_options = entry.event.currency_targets[0];
-      if (mode === 'Currency' && (entry.event.omikuji || entry.event.invasion)) {
+      if (mode === 'Currency' && (entry.event.omikuji || entry.event.invasion || entry.event.eventId === 'serenade-promenade-rerun')) {
         for (const [currency, items] of Object.entries(entry.event.shops)) {
           for (const item of items) if (item.overflow) {
             plan.shop_purchases[currency] ??= {};

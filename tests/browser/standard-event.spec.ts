@@ -14,6 +14,18 @@ const unreviewedArchive = oldConfig.events['after-school-sweets'];
 if (!isRecord(unreviewedArchive)) throw new Error('Missing unreviewed archive fixture.');
 const event = decodeStandardEvent(currentEvents['lore-pursuit-s2']);
 const eventTime = (event.reset_time + 3 * 86400 + 3600) * 1000;
+const shadowId = 'box-shadow-looming';
+const shadowEvent = decodeStandardEvent(currentEvents[shadowId], shadowId);
+const shadowTime = (shadowEvent.reset_time + 3 * 86400 + 3600) * 1000;
+const secretId = 'secret-midnight-party';
+const secretEvent = decodeStandardEvent(currentEvents[secretId], secretId);
+const secretTime = (secretEvent.reset_time + 3 * 86400 + 3600) * 1000;
+const honorableId = 'honorable-sea-showdown';
+const honorableEvent = decodeStandardEvent(currentEvents[honorableId], honorableId);
+const honorableTime = (honorableEvent.reset_time + 3 * 86400 + 3600) * 1000;
+const serenadeId = 'serenade-promenade-rerun';
+const serenadeEvent = decodeStandardEvent(currentEvents[serenadeId], serenadeId);
+const serenadeTime = (serenadeEvent.reset_time + 3 * 86400 + 3600) * 1000;
 
 function savedPlan() {
   const plan = decodeEventPlan({ futureSetting: { keep: true } }, event);
@@ -108,6 +120,140 @@ test('worker failures are visible, retry works, and invalid edits never change s
   const owned = page.getByRole('spinbutton', { name: 'Owned Cooling Pack', exact: true });
   await owned.fill('200'); await owned.press('Tab');
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('save-data')!).events_data['lore-pursuit-s2'].currency_owned.Cooling_Pack)).toBe(200);
+});
+
+test('original BOX Shadow Looming is available in supported archives and displays its point-based Eleph reward', async ({ page }) => {
+  const plan = decodeEventPlan({ futureSetting: { keep: true } }, shadowEvent);
+  plan.optimisation_type = 'Manual';
+  plan.optimisation_options = { '9': 10 };
+  plan.currency_owned = { Event_Point: '600' };
+  const save = { exportVersion: 2, futureField: { keep: true }, events_data: { [shadowId]: plan } };
+  await page.clock.setFixedTime(shadowTime);
+  await page.addInitScript((data) => localStorage.setItem('save-data', JSON.stringify(data)), save);
+  await page.goto('/planner/event-planner/');
+  await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
+  await page.locator(`[data-event-id="${shadowId}"]`).click();
+  await expect(page.getByRole('heading', { name: 'BOX Shadow Looming Over Millennium', exact: true })).toBeVisible();
+  await page.locator('[data-event-tab="Stages"]').click();
+  const runs = page.getByRole('spinbutton', { name: 'Runs Q9', exact: true });
+  await expect(runs).toHaveValue('10');
+  await expect(page.locator('[data-event-reward="26014"]')).toContainText('131');
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('save-data')!).futureField)).toEqual({ keep: true });
+});
+
+test('Secret Midnight Party keeps its BOOM input and converted Youkai target in saved event settings', async ({ page }) => {
+  const plan = decodeEventPlan(undefined, secretEvent);
+  const save = { exportVersion: 2, events_data: { [secretId]: plan } };
+  await page.clock.setFixedTime(secretTime);
+  await page.addInitScript((data) => {
+    if (!localStorage.getItem('save-data')) localStorage.setItem('save-data', JSON.stringify(data));
+  }, save);
+  await page.goto('/planner/event-planner/');
+  await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
+  await page.locator(`[data-event-id="${secretId}"]`).click();
+  await expect(page.locator('[data-event-tab]')).toHaveCount(6);
+  await page.locator('[data-event-mode="Shop"]').click();
+  await page.locator('[data-event-tab="Shop"]').click();
+  await page.locator('[data-event-shop-tab="BOOM_Classic_Collection"]').click();
+  for (const item of secretEvent.shops.BOOM_Classic_Collection) {
+    if (String(item.id) === 'Pyroxene-1200') continue;
+    const purchase = page.locator(`[data-event-purchase="${item.id}"] input`);
+    await purchase.fill('0');
+    await purchase.press('Tab');
+  }
+  const pyroxenePurchase = page.locator('[data-event-purchase="Pyroxene-1200"] input');
+  await pyroxenePurchase.fill('1');
+  await pyroxenePurchase.press('Tab');
+  let stored = await page.evaluate(() => JSON.parse(localStorage.getItem('save-data')!).events_data['secret-midnight-party']);
+  expect(stored.currency_needed.BOOM_Classic_Collection).toBe(40);
+  expect(stored.currency_needed.Youkai_MAX_Umeboshi_Flavor).toBe(10800);
+  await page.locator('[data-event-tab="Owned"]').click();
+  await expect(page.locator('input[data-event-currency="BOOM_Classic_Collection"]')).toHaveCount(0);
+  const youkaiOwned = page.locator('input[data-event-currency="Youkai_MAX_Umeboshi_Flavor"]');
+  await youkaiOwned.fill('500');
+  await youkaiOwned.press('Tab');
+  stored = await page.evaluate(() => JSON.parse(localStorage.getItem('save-data')!).events_data['secret-midnight-party']);
+  expect(stored.currency_owned.Youkai_MAX_Umeboshi_Flavor).toBe(500);
+  expect(stored.currency_needed.Youkai_MAX_Umeboshi_Flavor).toBe(10800);
+
+  await page.evaluate(() => {
+    const root = JSON.parse(localStorage.getItem('save-data')!);
+    root.events_data['secret-midnight-party'].currency_needed.Youkai_MAX_Umeboshi_Flavor = 999999;
+    localStorage.setItem('save-data', JSON.stringify(root));
+  });
+  await page.reload();
+  await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
+  await page.locator(`[data-event-id="${secretId}"]`).click();
+  await page.locator('[data-event-tab="Owned"]').click();
+  await youkaiOwned.fill('501');
+  await youkaiOwned.press('Tab');
+  stored = await page.evaluate(() => JSON.parse(localStorage.getItem('save-data')!).events_data['secret-midnight-party']);
+  expect(stored.currency_needed.Youkai_MAX_Umeboshi_Flavor).toBe(10800);
+  expect(stored.currency_owned.Youkai_MAX_Umeboshi_Flavor).toBe(501);
+});
+
+test('Honorable Sea Showdown converts Renge shop costs to Yukari currency and leaves the legacy event planner available', async ({ page }) => {
+  const plan = decodeEventPlan(undefined, honorableEvent);
+  const save = { exportVersion: 2, events_data: { [honorableId]: plan } };
+  await page.clock.setFixedTime(honorableTime);
+  await page.addInitScript((data) => localStorage.setItem('save-data', JSON.stringify(data)), save);
+  await page.goto('/planner/event-planner/');
+  await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
+  await page.locator(`[data-event-id="${honorableId}"]`).click();
+  await expect(page.getByRole('heading', { name: 'Fair and Square Aquatic Showdown', exact: true })).toBeVisible();
+  await page.locator('[data-event-mode="Shop"]').click();
+  await page.locator('[data-event-tab="Shop"]').click();
+  await page.locator('[data-event-shop-tab="Wooden_Doll_(Renge)"]').click();
+  for (const item of honorableEvent.shops['Wooden_Doll_(Renge)']) {
+    if (String(item.id) === 'Pyroxene-1200') continue;
+    const purchase = page.locator(`[data-event-purchase="${item.id}"] input`);
+    await purchase.fill('0');
+    await purchase.press('Tab');
+  }
+  const pyroxenePurchase = page.locator('[data-event-purchase="Pyroxene-1200"] input');
+  await pyroxenePurchase.fill('1');
+  await pyroxenePurchase.press('Tab');
+  let stored = await page.evaluate(() => JSON.parse(localStorage.getItem('save-data')!).events_data['honorable-sea-showdown']);
+  expect(stored.currency_needed['Wooden_Doll_(Renge)']).toBe(40);
+  expect(stored.currency_needed['Wooden_Doll_(Yukari)']).toBe(10800);
+
+  await page.locator('[data-event-tab="Owned"]').click();
+  await expect(page.locator('input[data-event-currency="Wooden_Doll_(Renge)"]')).toHaveCount(0);
+  const yukariOwned = page.locator('input[data-event-currency="Wooden_Doll_(Yukari)"]');
+  await yukariOwned.fill('500');
+  await yukariOwned.press('Tab');
+  stored = await page.evaluate(() => JSON.parse(localStorage.getItem('save-data')!).events_data['honorable-sea-showdown']);
+  expect(stored.currency_owned['Wooden_Doll_(Yukari)']).toBe(500);
+  expect(stored.currency_needed['Wooden_Doll_(Yukari)']).toBe(10800);
+
+  await page.getByRole('link', { name: 'Open legacy tools', exact: true }).click();
+  await page.locator('#lore-pursuit-s2').click();
+  expect(await page.evaluate('current_event')).toBe('lore-pursuit-s2');
+});
+
+test('Serenade Promenade rerun calculates capped overflow Eleph and keeps legacy planner available', async ({ page }) => {
+  const plan = decodeEventPlan(undefined, serenadeEvent);
+  plan.optimisation_type = 'Currency';
+  plan.optimisation_options = 'Event_Point';
+  plan.currency_needed = Object.fromEntries(Object.keys(serenadeEvent.currencies).map((currency) => [currency, 0]));
+  plan.shop_purchases.Event_Point = Object.fromEntries(serenadeEvent.shops.Event_Point.map((item) => [String(item.id), 0]));
+  plan.currency_owned = { Event_Point: '200000' };
+  const save = { exportVersion: 2, events_data: { [serenadeId]: plan } };
+  await page.clock.setFixedTime(serenadeTime);
+  await page.addInitScript((data) => localStorage.setItem('save-data', JSON.stringify(data)), save);
+  await page.goto('/planner/event-planner/');
+  await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
+  await page.locator(`[data-event-id="${serenadeId}"]`).click();
+  await expect(page.getByRole('heading', { name: 'Serenade Promenade', exact: true })).toBeVisible();
+  await page.locator('[data-event-tab="Shop"]').click();
+  await page.locator('[data-event-shop-tab="Event_Point"]').click();
+  const overflowPurchase = page.locator('[data-event-purchase="16016"] input');
+  const overflowCount = Number(await overflowPurchase.inputValue());
+  expect(overflowCount).toBeGreaterThan(0);
+  expect(overflowCount).toBeLessThanOrEqual(999);
+  await expect(overflowPurchase).toHaveAttribute('max', '999');
+  await expect(overflowPurchase).toBeDisabled();
+  await expect(page.getByRole('link', { name: 'Open legacy tools', exact: true })).toHaveAttribute('href', '/planner/events.html');
 });
 
 test('cross-tab event changes block stale edits but unrelated save changes are retained', async ({ context }) => {
