@@ -108,6 +108,13 @@ describe('standard event compatibility and frozen reward outputs', () => {
         if (!material) throw new Error('Missing material optimization fixture.');
         plan.optimisation_options = { [material]: true };
       }
+      if (id === 'lore-pursuit' && mode === 'Currency') {
+        // The legacy fresh-plan path leaves this spend undefined, producing NaN
+        // automatic Route Map purchases. Seed the intended fixed shop spend so
+        // the oracle compares the finite migrated behavior.
+        plan.currency_needed.Event_Point = event.shops.Event_Point.reduce((total, item) =>
+          total + Number(plan.shop_purchases.Event_Point[String(item.id)] ?? 0) * item.cost, 0);
+      }
       const old = reference(id, plan, true, true, 'solve');
       const contextBonuses: Record<string, number> = runInContext('currencyBonuses', old.context);
       const summary = summarizeEventRuns(event, plan, eventRequirements(event, plan), contextBonuses, old.energy, old.solution, true, true, metadata);
@@ -722,6 +729,65 @@ describe('standard event compatibility and frozen reward outputs', () => {
     expect(() => summarizeEventRuns(event, plan, eventRequirements(event, plan), {}, 10000, { feasible: false }, false, false, metadata)).toThrow();
     plan.currency_needed.Unknown = 123;
     expect(() => eventRequirements(event, plan)).toThrow('Unknown required event currency');
+  });
+});
+
+describe('archived Lore Pursuit Route Map compatibility', () => {
+  const id = 'lore-pursuit';
+  const event = decodeStandardEvent(rawEvents[id], id);
+
+  it('loads the original event as a supported archive and restricts its source-less currencies to its reviewed definition', () => {
+    const entries = decodeEventCatalog(config, true);
+    const archived = entries.find((entry) => entry.id === id);
+    expect(archived).toMatchObject({ name: 'Special Operation: Lore Pursuit', archived: true, comingSoon: false });
+    expect(archived?.event?.eventId).toBe(id);
+    expect(() => decodeStandardEvent(rawEvents[id], 'lore-pursuit-s2')).toThrow('This currency requires the legacy planner.');
+
+    const changed = structuredClone(rawEvents[id]) as Record<string, any>;
+    changed.shops.Event_Point[0].amount = 16;
+    expect(() => decodeStandardEvent(changed, id)).toThrow('Invalid Lore Pursuit Route Map reward configuration.');
+  });
+
+  it.each([14, 15, 29, 30, 49, 50, 69, 70, 94, 95, 119, 120, 144, 145])(
+    'matches legacy milestone rewards at %s Route Maps', (routeMaps) => {
+      const plan = decodeEventPlan({ currency_owned: { Route_Map: routeMaps } }, event);
+      plan.optimisation_type = 'Manual';
+      const old = reference(id, plan, false, false, {});
+      const summary = summarizeEventRuns(event, plan, eventRequirements(event, plan), {}, old.energy, {}, false, false, metadata);
+      const { runs, feasible, overflowPurchases, ...rewards } = summary;
+      void runs; void feasible; void overflowPurchases;
+      expect(rewards).toEqual(old.summary);
+    }
+  );
+
+  it('reserves fixed Event Point shop spend and derives the capped Route Map overflow in Currency mode', () => {
+    const base = decodeEventPlan(undefined, event);
+    const plan = decodeEventPlan({ ...base, optimisation_type: 'Currency', optimisation_options: 'Event_Point',
+      currency_owned: { Event_Point: 31000 }, shop_purchases: {
+        ...base.shop_purchases,
+        overflow_Event_Point: { Route_Map: null }
+      } }, event);
+    expect(plan.currency_needed.Event_Point).toBe(24000);
+    expect(plan.shop_purchases).not.toHaveProperty('overflow_Event_Point');
+    expect(plan.shop_purchases.Event_Point.Route_Map).toBe(0);
+
+    const old = reference(id, plan, false, false, {});
+    const summary = summarizeEventRuns(event, plan, eventRequirements(event, plan), {}, old.energy, {}, false, false, metadata);
+    expect(summary.overflowPurchases?.Event_Point.Route_Map).toBe(1);
+    expect(summary.currencies.Route_Map).toBe(145);
+    const { runs, feasible, overflowPurchases, ...rewards } = summary;
+    void runs; void feasible; void overflowPurchases;
+    expect(rewards).toEqual(old.summary);
+  });
+
+  it('persists the reserved spend when Currency mode is selected for a fresh plan', async () => {
+    const storage = new MemoryStorage();
+    const planner = await store(storage, id);
+    expect(planner.setMode('Currency')).toBe(true);
+    const saved = JSON.parse(storage.getItem('save-data')!).events_data[id];
+    expect(saved.currency_needed.Event_Point).toBe(24000);
+    expect(saved.shop_purchases.Event_Point.Route_Map).toBe(0);
+    expect(saved.shop_purchases).not.toHaveProperty('overflow_Event_Point');
   });
 });
 

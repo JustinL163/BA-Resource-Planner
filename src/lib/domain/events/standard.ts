@@ -8,6 +8,49 @@ import type { EventAmounts } from './types';
 import type { EventPlan, EventRequirements, EventSummary, ShopItem, StandardEvent } from './standard-types';
 
 const summerSkyTeaCurrency = "Shanhaijing_Tea_Garden's_Fine_Tea";
+const lorePursuitRouteMilestones = [
+  {
+    routes: 15, eleph: 25, toothpaste: 25, credit: 945000,
+    schoolMats: { BD_1_Valkyrie: 8, BD_2_Valkyrie: 4, BD_3_Valkyrie: 3, BD_4_Valkyrie: 1 },
+    xps: { XP_1: 40, XP_2: 28, XP_3: 25, XP_4: 5 },
+    artifacts: { Mystery_1: 19, Mystery_2: 13, Mystery_3: 4, Mystery_4: 2 }
+  },
+  {
+    routes: 30, eleph: 25, toothpaste: 25, credit: 945000,
+    schoolMats: { TN_1_Valkyrie: 7, TN_2_Valkyrie: 4, TN_3_Valkyrie: 3, TN_4_Valkyrie: 1 },
+    xps: { GXP_1: 60, GXP_2: 40, GXP_3: 30, GXP_4: 5 },
+    artifacts: { Antikythera_1: 19, Antikythera_2: 13, Antikythera_3: 4, Antikythera_4: 2 }
+  },
+  {
+    routes: 50, eleph: 35, toothpaste: 35, credit: 1400000,
+    schoolMats: { BD_1_Valkyrie: 11, BD_2_Valkyrie: 5, BD_3_Valkyrie: 4, BD_4_Valkyrie: 2 },
+    xps: { XP_1: 55, XP_2: 40, XP_3: 35, XP_4: 7 },
+    artifacts: { Mystery_1: 27, Mystery_2: 18, Mystery_3: 5, Mystery_4: 3 }
+  },
+  {
+    routes: 70, eleph: 35, toothpaste: 35, credit: 1400000,
+    schoolMats: { TN_1_Valkyrie: 10, TN_2_Valkyrie: 5, TN_3_Valkyrie: 4, TN_4_Valkyrie: 2 },
+    xps: { GXP_1: 80, GXP_2: 60, GXP_3: 40, GXP_4: 7 },
+    artifacts: { Antikythera_1: 27, Antikythera_2: 18, Antikythera_3: 5, Antikythera_4: 3 }
+  },
+  {
+    routes: 95, eleph: 40, toothpaste: 40, credit: 1500000,
+    schoolMats: { BD_1_Valkyrie: 12, BD_2_Valkyrie: 6, BD_3_Valkyrie: 4, BD_4_Valkyrie: 2 },
+    xps: { XP_1: 60, XP_2: 40, XP_3: 40, XP_4: 8 },
+    artifacts: { Mystery_1: 30, Mystery_2: 20, Mystery_3: 6, Mystery_4: 3 }
+  },
+  {
+    routes: 120, eleph: 40, toothpaste: 40, credit: 1500000,
+    schoolMats: { TN_1_Valkyrie: 11, TN_2_Valkyrie: 6, TN_3_Valkyrie: 4, TN_4_Valkyrie: 2 },
+    xps: { GXP_1: 90, GXP_2: 70, GXP_3: 45, GXP_4: 8 },
+    artifacts: { Antikythera_1: 30, Antikythera_2: 20, Antikythera_3: 6, Antikythera_4: 3 }
+  }
+] as const;
+const lorePursuitRepeatRewards = {
+  schoolMats: { TN_1_Valkyrie: 2, TN_2_Valkyrie: 2, TN_3_Valkyrie: 1 },
+  xps: { XP_1: 90, XP_2: 70, XP_3: 60, GXP_1: 90, GXP_2: 70, GXP_3: 45 },
+  artifacts: { Antikythera_1: 20, Antikythera_2: 9, Antikythera_3: 3 }
+} as const;
 
 function setOwn<T>(record: Record<string, T>, key: string, value: T): void {
   Object.defineProperty(record, key, { value, enumerable: true, configurable: true, writable: true });
@@ -19,6 +62,40 @@ function finite(value: unknown, label: string): number {
 function addAmount(record: EventAmounts, key: string, amount: number, label: string): void {
   const current = Object.prototype.hasOwnProperty.call(record, key) ? record[key] : 0;
   setOwn(record, key, finite(current + finite(amount, label), label));
+}
+function addRewardBundle(record: EventAmounts, rewards: Readonly<Record<string, number>>, label: string): void {
+  for (const [key, amount] of Object.entries(rewards)) addAmount(record, key, amount, `${label} "${key}"`);
+}
+function applyLorePursuitRouteRewards(currencies: EventAmounts, artifacts: EventAmounts,
+  schoolMats: EventAmounts, eleph: EventAmounts, xps: EventAmounts): number {
+  if (!Object.prototype.hasOwnProperty.call(currencies, 'Route_Map')) return 0;
+  const routeMaps = finite(currencies.Route_Map, 'Lore Pursuit Route Maps');
+  let credit = 0;
+  for (const milestone of lorePursuitRouteMilestones) {
+    if (routeMaps < milestone.routes) continue;
+    addAmount(eleph, '16020', milestone.eleph, 'Lore Pursuit milestone Eleph');
+    addAmount(currencies, 'Cucumber-Flavored_Toothpaste', milestone.toothpaste, 'Lore Pursuit milestone toothpaste');
+    credit = finite(credit + milestone.credit, 'Lore Pursuit milestone Credit');
+    addRewardBundle(schoolMats, milestone.schoolMats, 'Lore Pursuit milestone school material');
+    addRewardBundle(xps, milestone.xps, 'Lore Pursuit milestone XP');
+    addRewardBundle(artifacts, milestone.artifacts, 'Lore Pursuit milestone artifact');
+  }
+  const repeatCount = Math.max(0, Math.floor((routeMaps - 120) / 25));
+  if (repeatCount > 0) {
+    addAmount(eleph, '16020', repeatCount * 10, 'Lore Pursuit repeat Eleph');
+    addAmount(currencies, 'Cucumber-Flavored_Toothpaste', repeatCount * 10, 'Lore Pursuit repeat toothpaste');
+    credit = finite(credit + repeatCount * 1000000, 'Lore Pursuit repeat Credit');
+    for (const [key, amount] of Object.entries(lorePursuitRepeatRewards.schoolMats)) {
+      addAmount(schoolMats, key, repeatCount * amount, `Lore Pursuit repeat school material "${key}"`);
+    }
+    for (const [key, amount] of Object.entries(lorePursuitRepeatRewards.xps)) {
+      addAmount(xps, key, repeatCount * amount, `Lore Pursuit repeat XP "${key}"`);
+    }
+    for (const [key, amount] of Object.entries(lorePursuitRepeatRewards.artifacts)) {
+      addAmount(artifacts, key, repeatCount * amount, `Lore Pursuit repeat artifact "${key}"`);
+    }
+  }
+  return credit;
 }
 function parseLegacyInt(value: unknown): number {
   return Number.parseInt(String(value));
@@ -89,6 +166,11 @@ export function eventRequirements(event: StandardEvent, plan: EventPlan, invasio
     if (event.eventId === 'ive-alive-rerun' && currency === 'Event_Point') {
       // The legacy deduction subtracts an absent invasion amount for this
       // source-less currency, so the requirement is NaN and is ignored.
+      setOwn(needed, currency, Number.NaN);
+    }
+    if (event.eventId === 'lore-pursuit' && currency === 'Cucumber-Flavored_Toothpaste') {
+      // The legacy page subtracts the missing Invasion amount for this
+      // source-less reward currency, so it stays outside the stage solver.
       setOwn(needed, currency, Number.NaN);
     }
     if (event.eventId === "summer-sky's-promise" && currency === summerSkyTeaCurrency) {
@@ -267,6 +349,7 @@ export function summarizeEventRuns(
       (event.eventId === 'sheside-outside-rerun' && name === 'Tournament_Water_Gun' &&
         event.currencies[name]?.source === 'MinigameDrop') ||
       (event.eventId === 'ive-alive-rerun' && name === 'Event_Point') ||
+      (event.eventId === 'lore-pursuit' && name === 'Cucumber-Flavored_Toothpaste') ||
       (event.eventId === "summer-sky's-promise" && name === summerSkyTeaCurrency)) && Number.isNaN(amount)) continue;
     if (!Number.isFinite(amount) || amount < 0) throw new Error(`Invalid required amount for "${name}".`);
   }
@@ -377,7 +460,33 @@ export function summarizeEventRuns(
       if (!item.overflow) continue;
       const id = String(item.id);
       let count: number;
-      if (event.omikuji && item.type === 'EventCurrency' && item.cost > 0 && item.overflow_cap) {
+      if (event.eventId === 'lore-pursuit' && shopCurrency === 'Event_Point' &&
+        item.type === 'EventCurrency' && id === 'Route_Map' && item.cost > 0 && item.overflow_cap) {
+        if (plan.optimisation_type === 'Currency') {
+          const selectedSpend = items.reduce((total, selectedItem) => {
+            if (selectedItem.overflow) return total;
+            const selected = plan.shop_purchases[shopCurrency]?.[String(selectedItem.id)] ??
+              selectedItem.default ?? selectedItem.count;
+            const selectedCount = parseLegacyInt(selected);
+            if (!Number.isSafeInteger(selectedCount) || selectedCount < 0 || selectedCount > selectedItem.count) {
+              throw new Error(`Invalid purchase count for "${String(selectedItem.id)}".`);
+            }
+            return finite(total + selectedCount * selectedItem.cost, `Shop cost for "${shopCurrency}"`);
+          }, 0);
+          const spendValue = plan.currency_needed[shopCurrency] ?? selectedSpend;
+          const spend = Number(spendValue);
+          if (!Number.isFinite(spend) || spend < 0) throw new Error(`Invalid currency spend for "${shopCurrency}".`);
+          count = Math.max(Math.min(Math.floor((currencies[shopCurrency] - spend) / item.cost), item.overflow_cap), 0);
+          addAmount(currencies, id, count * (item.amount ?? 1), `Overflow currency "${id}"`);
+        } else {
+          const stored = plan.shop_purchases[shopCurrency]?.[id] ?? item.default ?? 0;
+          count = parseLegacyInt(stored);
+          if (!Number.isSafeInteger(count) || count < 0 || count > item.overflow_cap) {
+            throw new Error(`Invalid overflow purchase count for "${id}".`);
+          }
+          setOwn(currencies, id, count * (item.amount ?? 1));
+        }
+      } else if (event.omikuji && item.type === 'EventCurrency' && item.cost > 0 && item.overflow_cap) {
         if (plan.optimisation_type === 'Currency') {
           const spend = Number(plan.currency_needed[shopCurrency] ?? 0);
           if (!Number.isFinite(spend)) throw new Error(`Invalid currency spend for "${shopCurrency}".`);
@@ -435,6 +544,20 @@ export function summarizeEventRuns(
     }
   }
 
+  if (event.eventId === 'lore-pursuit' && Object.prototype.hasOwnProperty.call(currencies, 'Event_Point')) {
+    for (const item of event.shops.Event_Point ?? []) {
+      if (item.overflow || item.type !== 'EventCurrency' || !String(item.id).includes('~~')) continue;
+      const id = String(item.id);
+      const stored = plan.shop_purchases.Event_Point?.[id] ?? item.default ?? item.count;
+      const count = parseLegacyInt(stored);
+      if (!Number.isSafeInteger(count) || count < 0 || count > item.count) {
+        throw new Error(`Invalid Event Point Route Map purchase count for "${id}".`);
+      }
+      const routeMapId = id.slice(0, id.indexOf('~~'));
+      addAmount(currencies, routeMapId, count * (item.amount ?? 1), `Shop currency "${routeMapId}"`);
+    }
+  }
+
   let boxInfo: EventSummary['boxes'];
   if (includeBoxes && event.boxes) {
     if (event.box_clear_cost === undefined) throw new Error('Missing box clear cost.');
@@ -475,6 +598,9 @@ export function summarizeEventRuns(
   if (event.eventId === 'serenade-promenade-rerun' && eleph['10058']) {
     addAmount(eleph, '16016', eleph['10058'], 'Serenade Promenade Eleph conversion');
     setOwn(eleph, '10058', 0);
+  }
+  if (event.eventId === 'lore-pursuit') {
+    credit = finite(credit + applyLorePursuitRouteRewards(currencies, artifacts, schoolMats, eleph, xps), 'Event Credit total');
   }
   if (event.lessons) {
     const progress = lessonProgress(event.lessons, plan.lesson_pre_runs ?? [], plan.lesson_post_runs ?? {}, currencies.Event_Point ?? 0);

@@ -32,52 +32,27 @@ workers available as fallbacks until parity is established.
   lifecycle remain available.
 - Shared/supporting content routes have Svelte equivalents. See `README.md` for
   the user-facing feature summary.
-
-The latest committed event slices include I’ve aLIVE rerun, Summer Sky’s Promise,
-and Sheside Outside rerun. Their edge behavior should remain explicit:
-
-- I’ve aLIVE derives summary points from Countdown Calendar after first clears
-  and Owned balances; its legacy point target does not constrain the solver.
-  Invalid uncapped Eleph overflow is normalized, while explicit purchases remain
-  bounded.
-- Summer Sky’s Promise applies the 2,000-Armband milestones after first clears
-  and Owned balances. Fine Tea's source-less farming target retains legacy NaN
-  behavior and stays outside solver/Owned controls; its shop remains editable.
-- Sheside Outside uses Game Corner Ticket as its only stage target. Tournament
-  Water Gun remains an unconstrained `MinigameDrop` with the legacy NaN
-  requirement, no Owned control, and an editable shop. No minigame transform is
-  inferred.
+- Keep `game-dev-department-cleanup-mission` legacy-only until its uncapped
+  Credit overflow is modeled safely.
 
 ## Next work
 
-1. Audit the archived `lore-pursuit` definition against the legacy planner before
-   allowlisting it. The current event catalog has 28 definitions: 26 are
-   allowlisted and two remain gated. Keep
-   `game-dev-department-cleanup-mission` gated because its uncapped Credit
-   overflow can produce invalid legacy totals. `old_events.json` currently
-   contributes the four reviewed Lessons entries and Valentine Patrol Invasion.
-2. Compare remaining controls and dialogs in `planner/index.html` with
-   `/planner/resources/`; note any intentional omissions before retiring the
-   legacy planner.
-3. Finish the route/PWA transition only after parity review. `_redirects` still
-   sends the root to the legacy resource planner. `planner/sw.js` and
-   `game/sw-game.js` use separate cache names but their activation handlers can
-   delete other origin caches. Namespace and stage cache cleanup, then verify
-   offline, install, and upgrade behavior without breaking installed clients.
+1. **Resource-page residuals.** `README.md` notes optional/display controls that
+   remain reachable only through the old planner. Compare remaining controls and
+   dialogs in `planner/index.html` with `/planner/resources/`; note any intentional
+   omissions before retiring the legacy planner.
+2. **Final route/PWA transition.** The root redirect in `_redirects` still opens
+   the legacy resource planner; the shared Svelte navigation links modern
+   Resources, Events, Raid Videos and Tournaments. Switch remaining defaults
+   only after end-to-end parity is accepted, keeping old addresses usable.
+   Keep service-worker caches isolated and stage activation/cleanup for installed
+   clients; test offline, install, and upgrade behavior.
 
 ## Latest verification
 
-Verified 2026-10-11 on the current migration changes:
+Verified 2026-10-11 for archived Lore Pursuit: 1,514 unit tests, static build,
+137 production browser tests, 13 development browser tests, Svelte check with
+zero warnings/errors, and `git diff --check` all passed.
 
-- `npm.cmd test`: 1,483 tests passed.
-- `npm.cmd run check`: 0 errors and 0 warnings.
-- `npm.cmd run build`: static `adapter-static` build succeeded.
-- `npm.cmd run test:browser -- --reporter=dot`: 136 production-preview tests
-  passed.
-- `npm.cmd run test:dev`: 13 tests passed.
-- Targeted `npm.cmd test -- tests/unit/standard-event.test.ts`: 219 tests passed.
-- `git diff --check`: clean.
-
-Browser tests use mocked/intercepted remote APIs; do not use real credentials or
-call user accounts during verification. The test/build commands regenerate
+Browser tests use mocked remote APIs. Build and verification commands regenerate
 ignored directories as needed.

@@ -14,6 +14,9 @@ const unreviewedArchive = oldConfig.events['after-school-sweets'];
 if (!isRecord(unreviewedArchive)) throw new Error('Missing unreviewed archive fixture.');
 const event = decodeStandardEvent(currentEvents['lore-pursuit-s2']);
 const eventTime = (event.reset_time + 3 * 86400 + 3600) * 1000;
+const lorePursuitId = 'lore-pursuit';
+const lorePursuitEvent = decodeStandardEvent(currentEvents[lorePursuitId], lorePursuitId);
+const lorePursuitTime = (lorePursuitEvent.reset_time + 3 * 86400 + 3600) * 1000;
 const shadowId = 'box-shadow-looming';
 const shadowEvent = decodeStandardEvent(currentEvents[shadowId], shadowId);
 const shadowTime = (shadowEvent.reset_time + 3 * 86400 + 3600) * 1000;
@@ -54,6 +57,37 @@ function savedPlan() {
     language: 'EN', futureField: { keep: true }, events_data: { untouched: { target: 42 }, 'lore-pursuit-s2': plan }
   };
 }
+
+function savedLorePursuitPlan() {
+  const plan = decodeEventPlan({ futureSetting: { keep: true } }, lorePursuitEvent);
+  return {
+    exportVersion: 2, events_data: { [lorePursuitId]: plan }
+  };
+}
+
+test('archived Lore Pursuit exposes Route Map rewards and saves finite Currency overflow across reload', async ({ page }) => {
+  await page.clock.setFixedTime(lorePursuitTime);
+  await page.addInitScript((data) => { if (!localStorage.getItem('save-data')) localStorage.setItem('save-data', JSON.stringify(data)); }, savedLorePursuitPlan());
+  await page.goto('/planner/event-planner/');
+  await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
+  const archivedEvent = page.locator(`[data-event-id="${lorePursuitId}"]`);
+  await expect(archivedEvent).toBeVisible();
+  await archivedEvent.click();
+  await expect(page.getByRole('heading', { name: 'Special Operation: Lore Pursuit', exact: true })).toBeVisible();
+  await page.locator('[data-event-mode="Currency"]').click();
+  let saved = await page.evaluate(() => JSON.parse(localStorage.getItem('save-data')!));
+  expect(saved.events_data[lorePursuitId].currency_needed.Event_Point).toBe(24000);
+  expect(saved.events_data[lorePursuitId].shop_purchases.Event_Point.Route_Map).toBe(0);
+  expect(saved.events_data[lorePursuitId].shop_purchases).not.toHaveProperty('overflow_Event_Point');
+
+  await page.reload();
+  await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
+  await page.locator(`[data-event-id="${lorePursuitId}"]`).click();
+  await expect(page.locator('[data-event-mode="Currency"]')).toHaveAttribute('aria-pressed', 'true');
+  saved = await page.evaluate(() => JSON.parse(localStorage.getItem('save-data')!));
+  expect(saved.events_data[lorePursuitId].currency_needed.Event_Point).toBe(24000);
+  expect(saved.events_data[lorePursuitId].futureSetting).toEqual({ keep: true });
+});
 
 test('standard event tabs use a real solver worker and preserve legacy-compatible saves across reload', async ({ page }) => {
   const errors: string[] = [];

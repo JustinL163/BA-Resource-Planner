@@ -91,6 +91,9 @@ Winter Skies Renaissance is available in the same earlier-event list. Its
 Cultural Book Sample shop cost converts to Event Points at 120:1, its point
 target and reward thresholds remain selectable, and the legacy count-only tiers
 remain unclassified in the reward summary.
+The original archived Lore Pursuit is also supported there. Event Point shop
+purchases convert to Route Maps, whose rewards apply at 15, 30, 50, 70, 95 and
+120 maps, then repeat for each additional full 25 maps.
 The Descent of the Five Senses rerun is also supported there. Its Firecracker
 shop spend converts to farmable Moonlight Festival Vouchers at 270:1; Firecrackers
 remain a shop input and are not treated as a stage or Owned currency.
@@ -125,8 +128,9 @@ earlier events without changing the current event list: Moonlight Dream,
 Pandemic Hazard, 0068 Opera with Love rerun, Say-Bing rerun, Kivotos Unsolved
 Mysteries, both BOX Shadow Looming IDs, Secret Midnight Party with its rerun,
 Fair and Square Aquatic Showdown, the Serenade Promenade rerun, Winter Skies
-Renaissance, the Descent of the Five Senses rerun, Highlander Railroad Runaway,
-I’ve aLIVE rerun, Summer Sky’s Promise, and Sheside Outside rerun.
+Renaissance, original Lore Pursuit, the Descent of the Five Senses rerun,
+Highlander Railroad Runaway, I’ve aLIVE rerun, Summer Sky’s Promise, and
+Sheside Outside rerun.
 Cycle tabs retain the original
 alternating sets and repeating final set, with per-draw amount and stock shown
 separately. Box-shop currency targets convert to the exact required whole-box

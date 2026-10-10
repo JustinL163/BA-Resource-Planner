@@ -11,7 +11,7 @@ import type { EventEnergySettings } from './types';
 import type { BoxCycle, DerivedCurrencyRule, EventMode, EventPlan, PointReward, SavedAmounts, ShopItem, StandardEvent } from './standard-types';
 
 export interface EventEntry { id: string; name: string; icon: string; comingSoon: boolean; event: StandardEvent | null; archived?: boolean }
-export const standardEventIds = ['lore-pursuit-s2', 'box-shadow-looming-rerun', 'box-shadow-looming', 'secret-midnight-party', 'secret-midnight-party-rerun', 'honorable-sea-showdown', 'serenade-promenade-rerun', 'winter-skies-renaissance', 'descent-of-five-senses-rerun', 'railroad-runaway', 'ive-alive-rerun', "summer-sky's-promise", 'sheside-outside-rerun'];
+export const standardEventIds = ['lore-pursuit-s2', 'lore-pursuit', 'box-shadow-looming-rerun', 'box-shadow-looming', 'secret-midnight-party', 'secret-midnight-party-rerun', 'honorable-sea-showdown', 'serenade-promenade-rerun', 'winter-skies-renaissance', 'descent-of-five-senses-rerun', 'railroad-runaway', 'ive-alive-rerun', "summer-sky's-promise", 'sheside-outside-rerun'];
 export const boxEventIds = ['moonlight-dream', 'pandemic-hazard', '0068-opera-with-love-rerun', 'say-bing-rerun', 'kivotos-unsolved-mysteries'];
 export const cardEventIds = ['get-hyped-and-march-on-rerun', 'art-for-whom'];
 export const diceEventIds = ['occult-research-society'];
@@ -31,6 +31,22 @@ const winterSkiesRenaissanceCurrencyRule: DerivedCurrencyRule = {
 const descentOfFiveSensesRerunCurrencyRule: DerivedCurrencyRule = {
   from: 'Moonlight_Festival_Firecrackers', to: 'Moonlight_Festival_Voucher', multiplier: 270, source: 'MinigameDrop'
 };
+const lorePursuitRouteMapRows = [
+  { id: 'Route_Map~~1', count: 1, amount: 15, cost: 3000 },
+  { id: 'Route_Map~~2', count: 1, amount: 15, cost: 3000 },
+  { id: 'Route_Map~~3', count: 1, amount: 20, cost: 4000 },
+  { id: 'Route_Map~~4', count: 1, amount: 20, cost: 4000 },
+  { id: 'Route_Map~~5', count: 1, amount: 25, cost: 5000 },
+  { id: 'Route_Map~~6', count: 1, amount: 25, cost: 5000 }
+] as const;
+function lorePursuitRouteRowsMatch(items: ShopItem[]): boolean {
+  return items.every((item, index) => {
+    const expected = lorePursuitRouteMapRows[index];
+    return expected !== undefined && item.type === 'EventCurrency' && String(item.id) === expected.id &&
+      item.count === expected.count && item.amount === expected.amount && item.cost === expected.cost &&
+      item.default === undefined && item.overflow !== true;
+  });
+}
 const derivedCurrencyRulesByEvent: Record<string, DerivedCurrencyRule[]> = {
   'secret-midnight-party': [secretMidnightPartyCurrencyRule],
   'secret-midnight-party-rerun': [secretMidnightPartyCurrencyRule],
@@ -128,6 +144,8 @@ export function decodeStandardEvent(value: unknown, eventId?: string): StandardE
       key === 'Iron_Pipe' && currency.source === 'MinigameDrop';
     const supportedIveAliveEventPoint = eventId === 'ive-alive-rerun' &&
       key === 'Event_Point' && currency.source === '';
+    const supportedLorePursuitCurrency = eventId === 'lore-pursuit' &&
+      (key === 'Cucumber-Flavored_Toothpaste' || key === 'Route_Map') && currency.source === '';
     const supportedSummerSkyTea = eventId === "summer-sky's-promise" &&
       key === "Shanhaijing_Tea_Garden's_Fine_Tea" && currency.source === '';
     const supportedSheSideMinigameCurrency = eventId === 'sheside-outside-rerun' &&
@@ -138,7 +156,7 @@ export function decodeStandardEvent(value: unknown, eventId?: string): StandardE
       !(boxes && currency.source === 'BoxPull') && !(cards && currency.source === 'CardPull') &&
       !(omikuji && (currency.source === 'ShopPurchase' || currency.source === 'ShopBuy')) &&
       !supportedDerivedCurrencySource && !supportedRailroadMinigameCurrency && !supportedIveAliveEventPoint &&
-      !supportedSummerSkyTea && !supportedSheSideMinigameCurrency)) {
+      !supportedSummerSkyTea && !supportedSheSideMinigameCurrency && !supportedLorePursuitCurrency)) {
       throw new Error('This currency requires the legacy planner.');
     }
     const currencyIcon = currency.icon ?? ((lessons || invasion) && key === 'Event_Point' ? 'Event_Point.png' : undefined);
@@ -192,7 +210,12 @@ export function decodeStandardEvent(value: unknown, eventId?: string): StandardE
         currency === 'Event_Point' && currencies[currency].source === '' &&
         item.type === 'Eleph' && String(item.id) === '16016' && item.count === -1 &&
         item.cost === 250 && item.overflow_cap === undefined);
-      if (!supportedOmikujiOverflow && !supportedInvasionOverflow && !supportedSerenadeOverflow && !supportedIveAliveOverflow) {
+      const supportedLorePursuitOverflow = Boolean(eventId === 'lore-pursuit' &&
+        currency === 'Event_Point' && currencies[currency].source === 'StageDrop' &&
+        item.type === 'EventCurrency' && String(item.id) === 'Route_Map' && item.count === 41 &&
+        item.amount === 25 && item.default === 0 && item.cost === 5000 && item.overflow_cap === 41);
+      if (!supportedOmikujiOverflow && !supportedInvasionOverflow && !supportedSerenadeOverflow &&
+        !supportedIveAliveOverflow && !supportedLorePursuitOverflow) {
         throw new Error('This overflow shop requires the legacy planner.');
       }
       if (omikuji && String(item.id) === omikuji.pull_currency && item.amount === undefined) item.amount = 1;
@@ -231,6 +254,33 @@ export function decodeStandardEvent(value: unknown, eventId?: string): StandardE
       currencies.Tournament_Water_Gun?.source !== 'MinigameDrop' ||
       currencies.Tournament_Water_Gun.clear !== 152 || !shops.Tournament_Water_Gun?.length)) {
     throw new Error('Invalid SheSide Outside minigame currency configuration.');
+  }
+  if (eventId === 'lore-pursuit') {
+    const eventPointItems = shops.Event_Point ?? [];
+    const toothpaste = currencies['Cucumber-Flavored_Toothpaste'];
+    const routeMap = currencies.Route_Map;
+    const availableTargets = value.available_targets;
+    const fixedRows = eventPointItems.filter((item) => !item.overflow);
+    const overflowRows = Object.values(shops).flat().filter((item) => item.overflow);
+    const expectedOverflow = eventPointItems.find((item) => item.overflow);
+    const exactFixedRows = fixedRows.length === lorePursuitRouteMapRows.length &&
+      lorePursuitRouteRowsMatch(fixedRows);
+    const eventCurrencyRows = Object.entries(shops).flatMap(([currency, items]) =>
+      items.filter((item) => item.type === 'EventCurrency').map((item) => ({ currency, item })));
+    if (currencies.Event_Point?.source !== 'StageDrop' ||
+      toothpaste?.source !== '' || toothpaste.clear !== 200 ||
+      routeMap?.source !== '' || routeMap.clear !== 0 ||
+      value.currency_targets.length !== 1 || value.currency_targets[0] !== 'Event_Point' ||
+      !Array.isArray(availableTargets) || availableTargets.length !== 4 ||
+      !['Shop', 'Materials', 'Currency', 'Manual'].every((mode) => availableTargets.includes(mode)) ||
+      value.event_point_target !== 24000 || eventPointItems.length !== 7 || !exactFixedRows ||
+      eventCurrencyRows.length !== 7 || eventCurrencyRows.some(({ currency }) => currency !== 'Event_Point') ||
+      overflowRows.length !== 1 || overflowRows[0] !== expectedOverflow ||
+      !expectedOverflow || expectedOverflow.type !== 'EventCurrency' || String(expectedOverflow.id) !== 'Route_Map' ||
+      expectedOverflow.count !== 41 || expectedOverflow.amount !== 25 || expectedOverflow.default !== 0 ||
+      expectedOverflow.cost !== 5000 || expectedOverflow.overflow_cap !== 41) {
+      throw new Error('Invalid Lore Pursuit Route Map reward configuration.');
+    }
   }
   for (const rule of derivedCurrencyRules ?? []) {
     if (!currencies[rule.from] || currencies[rule.from].source !== (rule.source ?? '') ||
@@ -403,10 +453,10 @@ export function decodeEventPlan(value: unknown, event: StandardEvent): EventPlan
   if (!isRecord(shopValue)) throw new Error('Invalid saved event shops.');
   const purchases: EventPlan['shop_purchases'] = Object.create(null);
   for (const [key, entries] of Object.entries(shopValue)) {
-    // The legacy page stores calculated Event Point overflow under this transient
-    // side channel. Its missing cap can serialize NaN as null; the Svelte page
-    // calculates no automatic overflow for this uncapped row.
-    if (event.eventId === 'ive-alive-rerun' && key === 'overflow_Event_Point') continue;
+    // Legacy pages cache calculated Event Point overflow under this transient
+    // side channel. The summary derives Lore Pursuit's capped amount; the
+    // uncapped I’ve aLIVE row stays at zero in Currency mode.
+    if ((event.eventId === 'ive-alive-rerun' || event.eventId === 'lore-pursuit') && key === 'overflow_Event_Point') continue;
     if (event.eventId === 'ive-alive-rerun' && key === 'Event_Point' && isRecord(entries)) {
       const safeEntries = Object.assign(Object.create(null), entries);
       // Older saves initialize the unlimited row with its count sentinel (-1).
@@ -436,6 +486,16 @@ export function decodeEventPlan(value: unknown, event: StandardEvent): EventPlan
   // The replacement derives the amount from the plan, so carrying it would double count.
   if (event.eventId === 'serenade-promenade-rerun') delete purchases.overflow_Event_Point;
   if (event.eventId === 'ive-alive-rerun') delete purchases.overflow_Event_Point;
+  if (event.eventId === 'lore-pursuit') {
+    delete purchases.overflow_Event_Point;
+    purchases.Event_Point ??= Object.create(null);
+    for (const item of event.shops.Event_Point ?? []) {
+      const key = String(item.id);
+      if (purchases.Event_Point[key] === undefined) {
+        purchases.Event_Point[key] = item.overflow ? 0 : item.default ?? item.count;
+      }
+    }
+  }
   let options: EventPlan['optimisation_options'] = null;
   if (mode === 'Currency' && raw.optimisation_options !== null && raw.optimisation_options !== undefined) {
     if (typeof raw.optimisation_options !== 'string' || !event.currency_targets.includes(raw.optimisation_options)) throw new Error('Invalid saved currency target.');
@@ -455,7 +515,7 @@ export function decodeEventPlan(value: unknown, event: StandardEvent): EventPlan
       eventInteger(value, 'stage runs', 2000);
     }
   }
-  if (selectedMode === 'Currency' && (event.omikuji || event.invasion || event.eventId === 'serenade-promenade-rerun')) {
+  if (selectedMode === 'Currency' && (event.omikuji || event.invasion || event.eventId === 'serenade-promenade-rerun' || event.eventId === 'lore-pursuit')) {
     for (const [currency, items] of Object.entries(event.shops)) {
       if (!items.some((item) => item.overflow)) continue;
       purchases[currency] ??= Object.create(null);
