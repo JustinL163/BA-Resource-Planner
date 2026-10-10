@@ -81,7 +81,9 @@
             <span class="product-name">{product.name}</span>
             {#if purchase.amount !== undefined}<span class="amount-multiplier">×{formatAmount(purchase.amount)}</span>{/if}
             <label class="quantity">
-              <input type="number" min="0" max={purchase.overflow ? purchase.overflow_cap : purchase.count} step="1"
+              <input type="number" min="0" max={purchase.overflow
+                ? purchase.overflow_cap ?? (event.eventId === 'ive-alive-rerun' ? 200000 : undefined)
+                : purchase.count} step="1"
                 value={purchase.overflow && plan.optimisation_type === 'Currency'
                   ? overflowPurchases[activeCurrency]?.[String(purchase.id)] ?? 0
                   : plan.shop_purchases[activeCurrency]?.[String(purchase.id)] ?? 0}

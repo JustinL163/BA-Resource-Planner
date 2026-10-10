@@ -7,6 +7,8 @@ import { lessonProgress } from './lessons';
 import type { EventAmounts } from './types';
 import type { EventPlan, EventRequirements, EventSummary, ShopItem, StandardEvent } from './standard-types';
 
+const summerSkyTeaCurrency = "Shanhaijing_Tea_Garden's_Fine_Tea";
+
 function setOwn<T>(record: Record<string, T>, key: string, value: T): void {
   Object.defineProperty(record, key, { value, enumerable: true, configurable: true, writable: true });
 }
@@ -75,13 +77,24 @@ export function eventRequirements(event: StandardEvent, plan: EventPlan, invasio
       setOwn(needed, source.pull_currency, Math.max(cardPullRequirement(amount,
         positiveOwned(plan.currency_owned, source.pull_currency), initial.rewards[source.pull_currency] ?? 0) -
         invasionAmount(currency), 0));
-    } else if (event.eventId === 'railroad-runaway' && source.source === 'MinigameDrop') {
-      // The legacy planner subtracts a missing invasion amount for this source,
-      // leaving NaN. Its stage model and pre-transform feasibility check ignore it.
+    } else if ((event.eventId === 'railroad-runaway' && source.source === 'MinigameDrop') ||
+      (event.eventId === 'sheside-outside-rerun' && currency === 'Tournament_Water_Gun' && source.source === 'MinigameDrop')) {
+      // The legacy planner subtracts a missing invasion amount for these
+      // MinigameDrop currencies, leaving NaN outside the stage model.
       setOwn(needed, currency, Number.NaN);
     } else {
       const subtract = midEvent ? positiveOwned(plan.currency_owned, currency) : initial.rewards[currency] ?? 0;
       setOwn(needed, currency, Math.max(amount - subtract - invasionAmount(currency), 0));
+    }
+    if (event.eventId === 'ive-alive-rerun' && currency === 'Event_Point') {
+      // The legacy deduction subtracts an absent invasion amount for this
+      // source-less currency, so the requirement is NaN and is ignored.
+      setOwn(needed, currency, Number.NaN);
+    }
+    if (event.eventId === "summer-sky's-promise" && currency === summerSkyTeaCurrency) {
+      // The legacy source-less shop currency subtracts a missing Invasion value,
+      // leaving a NaN requirement that does not constrain stage farming.
+      setOwn(needed, currency, Number.NaN);
     }
   }
   const rawTarget = plan.point_target || event.event_point_target || 0;
@@ -94,11 +107,11 @@ export function eventRequirements(event: StandardEvent, plan: EventPlan, invasio
   const pointTarget = Math.max(target - (pointSubtract ?? Number.NaN), 0);
   return { needed, pointTarget, midEvent, initial };
 }
-function checkSolverStatus(value: Record<string, unknown>): void {
+function checkSolverStatus(value: Record<string, unknown>, ignoreInfeasible = false): void {
   if (Object.hasOwn(value, 'result')) finite(value.result, 'Solver objective result');
   if (Object.prototype.hasOwnProperty.call(value, 'feasible')) {
     if (typeof value.feasible !== 'boolean') throw new Error('Invalid solver feasibility status.');
-    if (!value.feasible) throw new Error('Event solver reported no feasible solution.');
+    if (!value.feasible && !ignoreInfeasible) throw new Error('Event solver reported no feasible solution.');
   }
   if (Object.prototype.hasOwnProperty.call(value, 'bounded')) {
     if (typeof value.bounded !== 'boolean') throw new Error('Invalid solver bounded status.');
@@ -200,10 +213,13 @@ export function summarizeEventRuns(
 ): EventSummary {
   finite(energyAvailable, 'Available event energy');
   if (!isRecord(solution)) throw new Error('Event solver result must be a record.');
-  checkSolverStatus(solution);
+  const ignoreInfeasibleStatus = event.eventId === 'ive-alive-rerun';
+  // The legacy page ignores solver feasibility markers for this event and
+  // evaluates the rounded midpoint runs itself.
+  checkSolverStatus(solution, ignoreInfeasibleStatus);
   const rawRuns = Object.prototype.hasOwnProperty.call(solution, 'midpoint') ? solution.midpoint : solution;
   if (!isRecord(rawRuns)) throw new Error('Event solver midpoint must be a record.');
-  checkSolverStatus(rawRuns);
+  checkSolverStatus(rawRuns, ignoreInfeasibleStatus);
   if (!isRecord(event.currencies) || !Array.isArray(event.stages)) throw new Error('Invalid standard event definition.');
   if (!isRecord(metadata.materialNames)) throw new Error('Material names must be a record.');
   const questStages = new Map<string, StandardEvent['stages'][number]>();
@@ -247,7 +263,11 @@ export function summarizeEventRuns(
     (!Number.isFinite(requirements.pointTarget) && !Number.isNaN(requirements.pointTarget))) throw new Error('Invalid event point requirement.');
   for (const [name, amount] of Object.entries(requirements.needed)) {
     if ((['BoxPull', 'CardPull'].includes(event.currencies[name]?.source ?? '') ||
-      (event.eventId === 'railroad-runaway' && event.currencies[name]?.source === 'MinigameDrop')) && Number.isNaN(amount)) continue;
+      (event.eventId === 'railroad-runaway' && event.currencies[name]?.source === 'MinigameDrop') ||
+      (event.eventId === 'sheside-outside-rerun' && name === 'Tournament_Water_Gun' &&
+        event.currencies[name]?.source === 'MinigameDrop') ||
+      (event.eventId === 'ive-alive-rerun' && name === 'Event_Point') ||
+      (event.eventId === "summer-sky's-promise" && name === summerSkyTeaCurrency)) && Number.isNaN(amount)) continue;
     if (!Number.isFinite(amount) || amount < 0) throw new Error(`Invalid required amount for "${name}".`);
   }
 
@@ -311,6 +331,14 @@ export function summarizeEventRuns(
     }
   }
 
+  if (event.eventId === 'ive-alive-rerun') {
+    const calendar = finite(currencies.Countdown_Calendar ?? 0, 'Countdown Calendar');
+    // The legacy minigame converts the full Calendar balance after first clears
+    // or Owned amounts have been added. It also overwrites an Owned Event Point
+    // balance at this point in the calculation.
+    setOwn(currencies, 'Event_Point', Math.floor(calendar / 720) * 400);
+  }
+
   if (event.eventId === 'railroad-runaway') {
     const stickers = finite(currencies.Highlander_Commemorative_Sticker ?? 0, 'Highlander Commemorative Stickers');
     const thresholds = [2250, 7200, 11850, 16050, 19350, 21900];
@@ -330,6 +358,15 @@ export function summarizeEventRuns(
         addAmount(currencies, 'Iron_Pipe', repeatRewards * 10, 'Railroad Runaway repeat Iron Pipes');
       }
     }
+  }
+
+  if (event.eventId === "summer-sky's-promise") {
+    const armbands = finite(currencies.Justice_Task_Force_Armband ?? 0, 'Justice Task Force Armbands');
+    const milestones = Math.floor(armbands / 2000);
+    // The legacy transform runs after initial clears or Owned balances have
+    // been added, and overwrites the source-less tea total at each milestone.
+    addAmount(eleph, '26015', milestones * 5, 'Summer Sky Miyako Eleph milestone');
+    setOwn(currencies, summerSkyTeaCurrency, milestones * 10);
   }
 
   const overflowPurchases: NonNullable<EventSummary['overflowPurchases']> = Object.create(null);
@@ -372,6 +409,21 @@ export function summarizeEventRuns(
           count = parseLegacyInt(stored);
           if (!Number.isSafeInteger(count) || count < 0 || count > item.overflow_cap) {
             throw new Error(`Invalid Serenade overflow purchase count for "${id}".`);
+          }
+        }
+      } else if (event.eventId === 'ive-alive-rerun' && shopCurrency === 'Event_Point' &&
+        item.type === 'Eleph' && id === '16016' && item.count === -1 && item.cost === 250 &&
+        item.overflow_cap === undefined) {
+        // The legacy page's automatic calculation produces NaN because this
+        // unlimited row has no cap. Keep Currency mode finite, and allow
+        // explicit finite purchases in the other modes.
+        if (plan.optimisation_type === 'Currency') {
+          count = 0;
+        } else {
+          const stored = plan.shop_purchases[shopCurrency]?.[id] ?? 0;
+          count = parseLegacyInt(stored);
+          if (!Number.isSafeInteger(count) || count < 0 || count > 200000) {
+            throw new Error(`Invalid I\u2019ve aLIVE overflow purchase count for "${id}".`);
           }
         }
       } else {

@@ -124,7 +124,17 @@ describe('standard event compatibility and frozen reward outputs', () => {
       }
       if (feasible && !event.derivedCurrencyRules?.length) {
         expect(runs).toEqual(old.runs);
-        expect(rewards).toEqual(old.summary);
+        if (id === 'ive-alive-rerun' && mode === 'Currency') {
+          const legacyRewards = structuredClone(old.summary) as EventSummary;
+          // The legacy unlimited-row calculation uses an undefined cap and
+          // produces NaN Eleph; keep the new summary finite at zero instead.
+          if (Number.isNaN(legacyRewards.eleph['16016']) || String(legacyRewards.eleph['16016']) === 'NaN') {
+            legacyRewards.eleph['16016'] = 0;
+          }
+          expect(rewards).toEqual(legacyRewards);
+        } else {
+          expect(rewards).toEqual(old.summary);
+        }
       }
     });
   }
@@ -425,6 +435,208 @@ describe('standard event compatibility and frozen reward outputs', () => {
     expect(summary.feasible).toBe(!legacy.infeasible);
   });
 
+  it('preserves SheSide Outside stage farming and the inactive Tournament Water Gun minigame currency', async () => {
+    const id = 'sheside-outside-rerun';
+    const event = decodeStandardEvent(rawEvents[id], id);
+    const defaults = decodeEventPlan(undefined, event);
+    const requirements = eventRequirements(event, defaults);
+
+    expect(decodeEventCatalog(config, true).find((entry) => entry.id === id)).toMatchObject({
+      name: 'Sheside Outside', archived: true, comingSoon: false
+    });
+    expect(event.currency_targets).toEqual(['Game_Corner_Ticket']);
+    expect(event.currencies.Tournament_Water_Gun.source).toBe('MinigameDrop');
+    expect(defaults.currency_needed.Tournament_Water_Gun).toBe(152);
+    expect(requirements.initial.cost).toBe(310);
+    expect(requirements.initial.rewards).toMatchObject({
+      Game_Corner_Ticket: 1232,
+      Helmet_Association_Commemorative_Coin: 1516,
+      Food_Stall_Menu: 1496
+    });
+    expect(requirements.needed).toMatchObject({
+      Helmet_Association_Commemorative_Coin: 17614,
+      Food_Stall_Menu: 20809,
+      Tournament_Water_Gun: Number.NaN
+    });
+    expect(() => decodeStandardEvent(rawEvents[id])).toThrow('This currency requires the legacy planner');
+    expect(() => decodeStandardEvent(rawEvents[id], 'railroad-runaway')).toThrow('This currency requires the legacy planner');
+
+    const owned = decodeEventPlan(undefined, event);
+    owned.currency_owned = { Tournament_Water_Gun: '300' };
+    expect(eventRequirements(event, owned).needed.Tournament_Water_Gun).toBeNaN();
+
+    const storage = new MemoryStorage();
+    const planner = await store(storage, id);
+    expect(planner.setPurchase('Tournament_Water_Gun', 'Pyroxene-600', 0)).toBe(true);
+    const saved = JSON.parse(storage.getItem('save-data')!).events_data[id];
+    expect(saved.currency_needed.Tournament_Water_Gun).toBe(132);
+    const savedPlan = decodeEventPlan(saved, event);
+    expect(savedPlan.shop_purchases.Tournament_Water_Gun['Pyroxene-600']).toBe(0);
+
+    savedPlan.optimisation_type = 'Manual';
+    savedPlan.optimisation_options = {};
+    const legacy = reference(id, savedPlan, true, false, {});
+    const summary = summarizeEventRuns(event, savedPlan, eventRequirements(event, savedPlan), {}, legacy.energy,
+      {}, true, false, metadata);
+    const { runs, feasible, overflowPurchases, ...rewards } = summary;
+    void overflowPurchases;
+    expect(feasible).toBe(!legacy.infeasible);
+    expect(runs).toEqual(legacy.runs);
+    expect(rewards).toEqual(legacy.summary);
+  });
+
+  it('preserves the I\u2019ve aLIVE rerun Calendar conversion and safely handles its uncapped Eleph overflow', () => {
+    const id = 'ive-alive-rerun';
+    const event = decodeStandardEvent(rawEvents[id], id);
+    const defaults = decodeEventPlan(undefined, event);
+    const requirements = eventRequirements(event, defaults);
+    const overflow = event.shops.Event_Point.find((item) => item.overflow);
+
+    expect(decodeEventCatalog(config, true).find((entry) => entry.id === id)).toMatchObject({
+      archived: true, comingSoon: false
+    });
+    expect(event.currency_targets).toEqual(['Countdown_Calendar']);
+    expect(overflow).toMatchObject({ type: 'Eleph', id: 16016, count: -1, cost: 250, overflow: true });
+    expect(overflow?.overflow_cap).toBeUndefined();
+    expect(requirements.initial).toEqual({
+      cost: 300,
+      rewards: { Countdown_Calendar: 7224, Energy_Cookie: 1570, Motivational_Candy: 1570 }
+    });
+    expect(requirements.needed).toMatchObject({ Energy_Cookie: 12225, Motivational_Candy: 12330 });
+    expect(requirements.needed.Event_Point).toBeNaN();
+    // The legacy page subtracts a missing Event_Point first-clear value and
+    // therefore leaves the point-target constraint inactive on a fresh plan.
+    expect(requirements.pointTarget).toBeNaN();
+    expect(() => decodeStandardEvent(rawEvents[id])).toThrow('This currency requires the legacy planner');
+    expect(() => decodeStandardEvent(rawEvents[id], 'railroad-runaway')).toThrow('This currency requires the legacy planner');
+
+    for (const [runs, expectedPoints] of [[0, 4000], [559, 14800], [560, 15200]] as const) {
+      const plan = decodeEventPlan(undefined, event);
+      plan.optimisation_type = 'Manual';
+      plan.optimisation_options = { '12': runs };
+      const old = reference(id, plan, false, true, plan.optimisation_options);
+      const summary = summarizeEventRuns(event, plan, eventRequirements(event, plan), {}, old.energy,
+        plan.optimisation_options, false, true, metadata);
+      const { runs: actualRuns, feasible, overflowPurchases, ...rewards } = summary;
+      void overflowPurchases;
+      expect(summary.currencies.Event_Point).toBe(expectedPoints);
+      expect(summary.currencies.Event_Point).toBe((old.summary as EventSummary).currencies.Event_Point);
+      expect(actualRuns).toEqual(old.runs);
+      expect(feasible).toBe(!old.infeasible);
+      expect(rewards).toEqual(old.summary);
+    }
+
+    const owned = decodeEventPlan(undefined, event);
+    owned.optimisation_type = 'Manual';
+    owned.optimisation_options = {};
+    owned.currency_owned = { Countdown_Calendar: '7200', Event_Point: '10000' };
+    const ownedLegacy = reference(id, owned, false, false, {});
+    const ownedSummary = summarizeEventRuns(event, owned, eventRequirements(event, owned), {}, ownedLegacy.energy,
+      {}, false, false, metadata);
+    expect(ownedSummary.currencies.Event_Point).toBe(4000);
+    expect(ownedSummary.currencies.Event_Point).toBe((ownedLegacy.summary as EventSummary).currencies.Event_Point);
+
+    const purchasePlan = decodeEventPlan(undefined, event);
+    purchasePlan.optimisation_type = 'Manual';
+    purchasePlan.optimisation_options = {};
+    purchasePlan.shop_purchases.Event_Point['16016'] = 3;
+    const purchaseLegacy = reference(id, purchasePlan, true, false, {});
+    const purchaseSummary = summarizeEventRuns(event, purchasePlan, eventRequirements(event, purchasePlan), {}, purchaseLegacy.energy,
+      {}, true, false, metadata);
+    expect(purchaseSummary.eleph['16016']).toBe(3);
+    expect(purchaseSummary.eleph['16016']).toBe((purchaseLegacy.summary as EventSummary).eleph['16016']);
+
+    const currencyPlan = decodeEventPlan(undefined, event);
+    currencyPlan.optimisation_type = 'Currency';
+    currencyPlan.optimisation_options = 'Countdown_Calendar';
+    const currencySummary = summarizeEventRuns(event, currencyPlan, eventRequirements(event, currencyPlan), {}, 10000,
+      {}, true, false, metadata);
+    expect(currencySummary.overflowPurchases?.Event_Point?.['16016']).toBe(0);
+    expect(currencySummary.eleph['16016']).toBe(0);
+
+    const legacySaved = decodeEventPlan({
+      ...defaults,
+      shop_purchases: {
+        ...defaults.shop_purchases,
+        Event_Point: { ...defaults.shop_purchases.Event_Point, '16016': -1 },
+        overflow_Event_Point: { '16016': null }
+      }
+    }, event);
+    expect(legacySaved.shop_purchases.Event_Point['16016']).toBe(0);
+    expect(legacySaved.shop_purchases).not.toHaveProperty('overflow_Event_Point');
+  });
+
+  it('saves explicit I\u2019ve aLIVE rerun overflow Eleph purchases with legacy defaults normalized', async () => {
+    const id = 'ive-alive-rerun';
+    const event = decodeStandardEvent(rawEvents[id], id);
+    const storage = new MemoryStorage();
+    const planner = await store(storage, id);
+    expect(planner.setPurchase('Event_Point', '16016', 3)).toBe(true);
+    const saved = JSON.parse(storage.getItem('save-data')!).events_data[id];
+    expect(saved.shop_purchases.Event_Point['16016']).toBe(3);
+    expect(saved.currency_needed.Event_Point).toBe(23010);
+    expect(decodeEventPlan(saved, event).shop_purchases.Event_Point['16016']).toBe(3);
+  });
+
+  it("preserves Summer Sky's Promise Armband milestones and source-less Tea behavior", () => {
+    const id = "summer-sky's-promise";
+    const tea = "Shanhaijing_Tea_Garden's_Fine_Tea";
+    const event = decodeStandardEvent(rawEvents[id], id);
+    const defaults = decodeEventPlan(undefined, event);
+    const requirements = eventRequirements(event, defaults);
+
+    expect(decodeEventCatalog(config, true).find((entry) => entry.id === id)).toMatchObject({
+      name: "Summer Sky's Promise", archived: true, comingSoon: false
+    });
+    expect(event.currency_targets).toEqual(['Justice_Task_Force_Armband']);
+    expect(event.currencies[tea].source).toBe('');
+    expect(defaults.currency_needed[tea]).toBe(181);
+    expect(requirements.needed[tea]).toBeNaN();
+    expect(requirements.initial.rewards.Justice_Task_Force_Armband).toBe(4130);
+    expect(() => decodeStandardEvent(rawEvents[id])).toThrow('This currency requires the legacy planner');
+    expect(() => decodeStandardEvent(rawEvents[id], 'railroad-runaway')).toThrow('This currency requires the legacy planner');
+
+    const firstClearLegacy = reference(id, defaults, false, false, {});
+    const firstClearSummary = summarizeEventRuns(event, defaults, requirements, {}, firstClearLegacy.energy,
+      {}, false, false, metadata);
+    expect(firstClearSummary.eleph['26015']).toBe(10);
+    expect(firstClearSummary.currencies[tea]).toBe(20);
+    expect(firstClearSummary.eleph['26015']).toBe((firstClearLegacy.summary as EventSummary).eleph['26015']);
+    expect(firstClearSummary.currencies[tea]).toBe((firstClearLegacy.summary as EventSummary).currencies[tea]);
+
+    for (const [armbands, expectedMilestones] of [[0, 0], [1999, 0], [2000, 1], [2001, 1],
+      [3999, 1], [4000, 2], [4001, 2], [6000, 3]] as const) {
+      const plan = decodeEventPlan(undefined, event);
+      plan.optimisation_type = 'Manual';
+      plan.optimisation_options = {};
+      plan.currency_owned = {
+        Justice_Task_Force_Armband: String(armbands),
+        [tea]: '777'
+      };
+      const legacy = reference(id, plan, false, false, {});
+      const summary = summarizeEventRuns(event, plan, eventRequirements(event, plan), {}, legacy.energy,
+        {}, false, false, metadata);
+      expect(summary.eleph['26015'], `${armbands} Armbands`).toBe(expectedMilestones * 5);
+      expect(summary.currencies[tea], `${armbands} Armbands`).toBe(expectedMilestones * 10);
+      expect(summary.eleph['26015']).toBe((legacy.summary as EventSummary).eleph['26015']);
+      expect(summary.currencies[tea]).toBe((legacy.summary as EventSummary).currencies[tea]);
+      expect(summary.feasible).toBe(!legacy.infeasible);
+    }
+
+    const purchased = decodeEventPlan(undefined, event);
+    purchased.optimisation_type = 'Manual';
+    purchased.optimisation_options = {};
+    purchased.currency_owned = { Justice_Task_Force_Armband: '2000', [tea]: '777' };
+    purchased.shop_purchases[tea]['26015'] = 2;
+    const purchasedLegacy = reference(id, purchased, true, false, {});
+    const purchasedSummary = summarizeEventRuns(event, purchased, eventRequirements(event, purchased), {},
+      purchasedLegacy.energy, {}, true, false, metadata);
+    expect(purchasedSummary.eleph['26015']).toBe(25);
+    expect(purchasedSummary.eleph['26015']).toBe((purchasedLegacy.summary as EventSummary).eleph['26015']);
+    expect(purchasedSummary.currencies[tea]).toBe(10);
+    expect(purchasedSummary.currencies[tea]).toBe((purchasedLegacy.summary as EventSummary).currencies[tea]);
+  });
+
   it('preserves the Serenade Promenade rerun overflow cap and remaps 10058 Eleph into existing 16016 rewards', () => {
     const id = 'serenade-promenade-rerun';
     const event = decodeStandardEvent(rawEvents[id], id);
@@ -555,7 +767,7 @@ describe('event saves, state safety and explicit standard-event gating', () => {
     expect(shadow?.event?.stage_groups).toEqual(['1-4', '5-8', '9-12']);
     expect(shadow?.event?.point_rewards).toHaveLength(shadowRaw.point_rewards.length);
 
-    const unreviewed = decodeEventCatalog({ ...config, event_order: ["summer-sky's-promise"] });
+    const unreviewed = decodeEventCatalog({ ...config, event_order: ['game-dev-department-cleanup-mission'] });
     expect(unreviewed[0].event).toBeNull();
   });
 

@@ -11,7 +11,7 @@ import type { EventEnergySettings } from './types';
 import type { BoxCycle, DerivedCurrencyRule, EventMode, EventPlan, PointReward, SavedAmounts, ShopItem, StandardEvent } from './standard-types';
 
 export interface EventEntry { id: string; name: string; icon: string; comingSoon: boolean; event: StandardEvent | null; archived?: boolean }
-export const standardEventIds = ['lore-pursuit-s2', 'box-shadow-looming-rerun', 'box-shadow-looming', 'secret-midnight-party', 'secret-midnight-party-rerun', 'honorable-sea-showdown', 'serenade-promenade-rerun', 'winter-skies-renaissance', 'descent-of-five-senses-rerun', 'railroad-runaway'];
+export const standardEventIds = ['lore-pursuit-s2', 'box-shadow-looming-rerun', 'box-shadow-looming', 'secret-midnight-party', 'secret-midnight-party-rerun', 'honorable-sea-showdown', 'serenade-promenade-rerun', 'winter-skies-renaissance', 'descent-of-five-senses-rerun', 'railroad-runaway', 'ive-alive-rerun', "summer-sky's-promise", 'sheside-outside-rerun'];
 export const boxEventIds = ['moonlight-dream', 'pandemic-hazard', '0068-opera-with-love-rerun', 'say-bing-rerun', 'kivotos-unsolved-mysteries'];
 export const cardEventIds = ['get-hyped-and-march-on-rerun', 'art-for-whom'];
 export const diceEventIds = ['occult-research-society'];
@@ -126,12 +126,19 @@ export function decodeStandardEvent(value: unknown, eventId?: string): StandardE
       rule.from === key && currency.source === (rule.source ?? ''));
     const supportedRailroadMinigameCurrency = eventId === 'railroad-runaway' &&
       key === 'Iron_Pipe' && currency.source === 'MinigameDrop';
+    const supportedIveAliveEventPoint = eventId === 'ive-alive-rerun' &&
+      key === 'Event_Point' && currency.source === '';
+    const supportedSummerSkyTea = eventId === "summer-sky's-promise" &&
+      key === "Shanhaijing_Tea_Garden's_Fine_Tea" && currency.source === '';
+    const supportedSheSideMinigameCurrency = eventId === 'sheside-outside-rerun' &&
+      key === 'Tournament_Water_Gun' && currency.source === 'MinigameDrop';
     if ((currency.source !== 'StageDrop' &&
       // The legacy Lessons/Invasion definitions omit the source on Event_Point.
       !((lessons || invasion) && key === 'Event_Point' && currency.source === undefined) &&
       !(boxes && currency.source === 'BoxPull') && !(cards && currency.source === 'CardPull') &&
       !(omikuji && (currency.source === 'ShopPurchase' || currency.source === 'ShopBuy')) &&
-      !supportedDerivedCurrencySource && !supportedRailroadMinigameCurrency)) {
+      !supportedDerivedCurrencySource && !supportedRailroadMinigameCurrency && !supportedIveAliveEventPoint &&
+      !supportedSummerSkyTea && !supportedSheSideMinigameCurrency)) {
       throw new Error('This currency requires the legacy planner.');
     }
     const currencyIcon = currency.icon ?? ((lessons || invasion) && key === 'Event_Point' ? 'Event_Point.png' : undefined);
@@ -181,7 +188,11 @@ export function decodeStandardEvent(value: unknown, eventId?: string): StandardE
         currency === 'Event_Point' && currencies[currency].source === 'StageDrop' &&
         item.type === 'Eleph' && String(item.id) === '16016' && item.count === 0 &&
         item.cost === 450 && item.overflow_cap === 999);
-      if (!supportedOmikujiOverflow && !supportedInvasionOverflow && !supportedSerenadeOverflow) {
+      const supportedIveAliveOverflow = Boolean(eventId === 'ive-alive-rerun' &&
+        currency === 'Event_Point' && currencies[currency].source === '' &&
+        item.type === 'Eleph' && String(item.id) === '16016' && item.count === -1 &&
+        item.cost === 250 && item.overflow_cap === undefined);
+      if (!supportedOmikujiOverflow && !supportedInvasionOverflow && !supportedSerenadeOverflow && !supportedIveAliveOverflow) {
         throw new Error('This overflow shop requires the legacy planner.');
       }
       if (omikuji && String(item.id) === omikuji.pull_currency && item.amount === undefined) item.amount = 1;
@@ -193,6 +204,33 @@ export function decodeStandardEvent(value: unknown, eventId?: string): StandardE
       !value.currency_targets.includes('Highlander_Commemorative_Sticker') ||
       currencies.Iron_Pipe?.source !== 'MinigameDrop' || !shops.Iron_Pipe?.length)) {
     throw new Error('Invalid Railroad Runaway minigame reward configuration.');
+  }
+  if (eventId === 'ive-alive-rerun') {
+    const overflow = shops.Event_Point?.filter((item) => item.overflow) ?? [];
+    if (currencies.Countdown_Calendar?.source !== 'StageDrop' ||
+      currencies.Event_Point?.source !== '' ||
+      !value.currency_targets.includes('Countdown_Calendar') ||
+      value.event_point_target !== 15000 || overflow.length !== 1 ||
+      overflow[0].type !== 'Eleph' || String(overflow[0].id) !== '16016' ||
+      overflow[0].count !== -1 || overflow[0].cost !== 250 || overflow[0].overflow_cap !== undefined) {
+      throw new Error('Invalid I\u2019ve aLIVE rerun minigame reward configuration.');
+    }
+  }
+  if (eventId === "summer-sky's-promise") {
+    const tea = "Shanhaijing_Tea_Garden's_Fine_Tea";
+    if (currencies.Justice_Task_Force_Armband?.source !== 'StageDrop' ||
+      value.currency_targets.length !== 1 || value.currency_targets[0] !== 'Justice_Task_Force_Armband' ||
+      currencies[tea]?.source !== '' ||
+      !shops[tea]?.some((item) => item.type === 'Eleph' && String(item.id) === '26015')) {
+      throw new Error("Invalid Summer Sky's Promise tea milestone configuration.");
+    }
+  }
+  if (eventId === 'sheside-outside-rerun' &&
+    (currencies.Game_Corner_Ticket?.source !== 'StageDrop' ||
+      value.currency_targets.length !== 1 || value.currency_targets[0] !== 'Game_Corner_Ticket' ||
+      currencies.Tournament_Water_Gun?.source !== 'MinigameDrop' ||
+      currencies.Tournament_Water_Gun.clear !== 152 || !shops.Tournament_Water_Gun?.length)) {
+    throw new Error('Invalid SheSide Outside minigame currency configuration.');
   }
   for (const rule of derivedCurrencyRules ?? []) {
     if (!currencies[rule.from] || currencies[rule.from].source !== (rule.source ?? '') ||
@@ -364,7 +402,21 @@ export function decodeEventPlan(value: unknown, event: StandardEvent): EventPlan
   const shopValue = raw.shop_purchases ?? {};
   if (!isRecord(shopValue)) throw new Error('Invalid saved event shops.');
   const purchases: EventPlan['shop_purchases'] = Object.create(null);
-  for (const [key, entries] of Object.entries(shopValue)) purchases[key] = amounts(entries, 'purchases');
+  for (const [key, entries] of Object.entries(shopValue)) {
+    // The legacy page stores calculated Event Point overflow under this transient
+    // side channel. Its missing cap can serialize NaN as null; the Svelte page
+    // calculates no automatic overflow for this uncapped row.
+    if (event.eventId === 'ive-alive-rerun' && key === 'overflow_Event_Point') continue;
+    if (event.eventId === 'ive-alive-rerun' && key === 'Event_Point' && isRecord(entries)) {
+      const safeEntries = Object.assign(Object.create(null), entries);
+      // Older saves initialize the unlimited row with its count sentinel (-1).
+      // In the editable purchase list, the sentinel means no selected purchase.
+      if (safeEntries['16016'] === -1 || safeEntries['16016'] === '-1') safeEntries['16016'] = 0;
+      purchases[key] = amounts(safeEntries, 'purchases');
+    } else {
+      purchases[key] = amounts(entries, 'purchases');
+    }
+  }
   let needed = amounts(raw.currency_needed ?? {}, 'currency requirements');
   if (!Object.keys(purchases).length) {
     for (const [currency, items] of Object.entries(event.shops)) {
@@ -383,6 +435,7 @@ export function decodeEventPlan(value: unknown, event: StandardEvent): EventPlan
   // The legacy planner stores calculated Serenade overflow in this side channel.
   // The replacement derives the amount from the plan, so carrying it would double count.
   if (event.eventId === 'serenade-promenade-rerun') delete purchases.overflow_Event_Point;
+  if (event.eventId === 'ive-alive-rerun') delete purchases.overflow_Event_Point;
   let options: EventPlan['optimisation_options'] = null;
   if (mode === 'Currency' && raw.optimisation_options !== null && raw.optimisation_options !== undefined) {
     if (typeof raw.optimisation_options !== 'string' || !event.currency_targets.includes(raw.optimisation_options)) throw new Error('Invalid saved currency target.');
@@ -435,7 +488,11 @@ export function decodeEventPlan(value: unknown, event: StandardEvent): EventPlan
   if (raw.point_target !== null && raw.point_target !== undefined) eventInteger(raw.point_target, 'point target');
   for (const [currency, items] of Object.entries(event.shops)) {
     for (const item of items) if (purchases[currency]?.[String(item.id)] !== undefined) {
-      eventInteger(purchases[currency][String(item.id)], 'purchase count', item.overflow ? item.overflow_cap ?? item.count : item.count);
+      const unlimitedIveAlivePurchase = event.eventId === 'ive-alive-rerun' && currency === 'Event_Point' &&
+        String(item.id) === '16016' && item.overflow && item.count === -1 && item.overflow_cap === undefined;
+      eventInteger(purchases[currency][String(item.id)], 'purchase count', item.overflow
+        ? item.overflow_cap ?? (unlimitedIveAlivePurchase ? 200000 : item.count)
+        : item.count);
     }
   }
   if (event.card_drops || event.dice_race || event.omikuji) {

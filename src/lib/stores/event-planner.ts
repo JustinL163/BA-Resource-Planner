@@ -196,7 +196,11 @@ export function createEventPlanner(
       if (reward.overflow && plan.optimisation_type === 'Currency') throw new Error('This overflow purchase is calculated automatically in Currency mode.');
       if (reward.locked && !Object.values(plan.currency_owned).some((amount) => Number.parseInt(String(amount)) > 0)) throw new Error('This shop item is locked until Owned mode.');
       plan.shop_purchases[currency] ??= {};
-      plan.shop_purchases[currency][item] = eventInteger(count, 'purchase count', reward.overflow ? reward.overflow_cap ?? reward.count : reward.count);
+      const unlimitedIveAlivePurchase = entry.event?.eventId === 'ive-alive-rerun' && currency === 'Event_Point' &&
+        item === '16016' && reward.overflow && reward.count === -1 && reward.overflow_cap === undefined;
+      plan.shop_purchases[currency][item] = eventInteger(count, 'purchase count', reward.overflow
+        ? reward.overflow_cap ?? (unlimitedIveAlivePurchase ? 200000 : reward.count)
+        : reward.count);
       plan.currency_needed[currency] = (entry.event?.shops[currency] ?? []).reduce((total, reward) => total + Number(plan.shop_purchases[currency][String(reward.id)] ?? 0) * reward.cost, 0);
       const source = entry.event?.currencies[currency];
       if (source?.source === 'BoxPull') {

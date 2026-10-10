@@ -97,7 +97,19 @@ remain a shop input and are not treated as a stage or Owned currency.
 Highlander Railroad Runaway is also available in the supported archive. Its
 Sticker thresholds add Highlander Hikari Eleph and Iron Pipes; Iron Pipe remains
 a minigame reward outside solver and Owned controls, matching the legacy
-feasibility timing. The `/planner/events.html` fallback remains available.
+feasibility timing. I’ve aLIVE rerun is also supported there. Its summary derives
+Event Points as `floor(Countdown Calendar / 720) * 400` after first clears or
+Owned balances are added, matching the legacy calculation. The legacy point
+target does not constrain its stage solver. Its uncapped 16016 Eleph row accepts
+explicit purchases up to 200,000; Currency mode leaves automatic overflow at
+zero because the legacy calculation produces an invalid value without a cap.
+Summer Sky’s Promise is also supported there. Every 2,000 Armbands adds five
+Miyako Eleph and sets the Fine Tea shop requirement to ten per milestone; its
+source-less Fine Tea farming requirement retains the legacy NaN behavior and
+stays out of solver and Owned controls. The Sheside Outside rerun uses Game
+Corner Ticket as its only stage target; Tournament Water Gun remains an
+unconstrained MinigameDrop with an editable shop and no Owned control.
+The `/planner/events.html` fallback remains available.
 Unreviewed special events are explicitly gated to the legacy planner until their
 complete mechanics are migrated;
 `standardEventIds`,
@@ -113,8 +125,8 @@ earlier events without changing the current event list: Moonlight Dream,
 Pandemic Hazard, 0068 Opera with Love rerun, Say-Bing rerun, Kivotos Unsolved
 Mysteries, both BOX Shadow Looming IDs, Secret Midnight Party with its rerun,
 Fair and Square Aquatic Showdown, the Serenade Promenade rerun, Winter Skies
-Renaissance, the Descent of the Five Senses rerun, and Highlander Railroad
-Runaway.
+Renaissance, the Descent of the Five Senses rerun, Highlander Railroad Runaway,
+I’ve aLIVE rerun, Summer Sky’s Promise, and Sheside Outside rerun.
 Cycle tabs retain the original
 alternating sets and repeating final set, with per-draw amount and stock shown
 separately. Box-shop currency targets convert to the exact required whole-box

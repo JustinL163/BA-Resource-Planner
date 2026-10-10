@@ -1,337 +1,83 @@
 # Blue Archive Planner migration handoff
 
-As of 2026-10-11. This file is intended to let a fresh Codex app session resume
-the migration without relying on chat history. Read it together with `README.md`
-and inspect the worktree before making changes.
+Updated 2026-10-11. Read this with `README.md`, then inspect `git status` and
+`git log -1` before continuing. This handoff intentionally avoids pinning a
+commit hash so it stays current after routine commits.
 
-## Current repository state
+## Goal and guardrails
 
-- Repository: `JustinL163/BA-Resource-Planner`.
-- Current branch/worktree: `justinl163-didactic-telegram`.
-- Latest commit: `86a1799` (`Migrate additional event planner stages`).
-- The Lessons and Valentine Patrol rerun Invasion migrations are already in
-  history; do not cherry-pick or reapply them.
-- The Raid Videos migration and UI refinement are committed in `6e98c73`.
-- The Tournament Tracker migration is committed in `f3126b9`.
-- The Guessing Game migration is committed in `b5072a7`; push status is not
-  checked.
-- The broader event slices through Serenade Promenade are committed in
-  `86a1799`; Winter Skies Renaissance and the Descent of the Five Senses rerun
-  are prior uncommitted slices. Railroad Runaway is the current migration slice.
+Continue the incremental migration to SvelteKit with `adapter-static`, preserving
+legacy behavior and URLs while each replacement is verified. Keep old pages and
+workers available as fallbacks until parity is established.
 
-## User goal and constraints
+- Preserve `save-data`, feature-specific localStorage keys, unknown save fields,
+  exports, and existing client-side cloud/API contracts.
+- Treat legacy calculations, solver ordering, rounding, and worker payloads as
+  compatibility requirements. Use characterization fixtures and browser checks
+  before replacing behavior; keep heavy simulations in workers.
+- Use `npm.cmd`/`npx.cmd` in Windows PowerShell when `.ps1` shims are blocked.
+- An existing untracked file named `=` is unrelated to the migration; leave it
+  untouched.
 
-The goal is a complete conversion of the Blue Archive helper site to modular
-SvelteKit while preserving calculations, saves, compact UI conventions and
-worker performance. Heavy simulations must continue to run in Web Workers.
+## Current migration map
 
-- Keep `adapter-static`: no server routes/actions or runtime server dependencies.
-  Data loads from static assets or client-side APIs.
-- Preserve existing `save-data` and feature-specific localStorage keys, unknown
-  fields, export compatibility, existing cloud/API contracts and old URLs.
-- Treat legacy formulas, LP solver output/order, math.js rounding and worker
-  payloads as compatibility contracts. Characterize against independent legacy
-  fixtures before replacing them.
-- Do not remove the old pages or workers as part of a UI migration; keep working
-  fallbacks until the replacement is verified.
-- On Windows use `npm.cmd`/`npx.cmd` if PowerShell blocks `.ps1` shims.
-- The user previously requested bounded work delegated to GPT-6 Luna xhigh
-  subagents when appropriate. Review any delegated output independently.
+- Resources: `/planner/resources/`; legacy planner remains available.
+- Events: `/planner/event-planner/`; reviewed allowlists cover standard, box,
+  card, dice, Omikuji, Lessons, and Invasion flows. Keep
+  `/planner/events.html` available.
+- Raid Videos: `/planner/raids/`; `/planner/raids.html` remains available.
+- Tournament Tracker: `/planner/tournaments/`; `/planner/tournaments.html`
+  remains available.
+- Guessing Game: `/game/`; `/game/guesser.html`, assets, and existing worker/cache
+  lifecycle remain available.
+- Shared/supporting content routes have Svelte equivalents. See `README.md` for
+  the user-facing feature summary.
 
-## What is already migrated
+The latest committed event slices include I’ve aLIVE rerun, Summer Sky’s Promise,
+and Sheside Outside rerun. Their edge behavior should remain explicit:
 
-**Svelte foundation:** static SvelteKit build, shared layout/preferences,
-credits/privacy/changelog/debug routes and compatibility redirects.
+- I’ve aLIVE derives summary points from Countdown Calendar after first clears
+  and Owned balances; its legacy point target does not constrain the solver.
+  Invalid uncapped Eleph overflow is normalized, while explicit purchases remain
+  bounded.
+- Summer Sky’s Promise applies the 2,000-Armband milestones after first clears
+  and Owned balances. Fine Tea's source-less farming target retains legacy NaN
+  behavior and stays outside solver/Owned controls; its shop remains editable.
+- Sheside Outside uses Game Corner Ticket as its only stage target. Tournament
+  Water Gun remains an unconstrained `MinigameDrop` with the legacy NaN
+  requirement, no Owned control, and an editable shop. No minigame transform is
+  inferred.
 
-**Resource planner** at `/planner/resources/`: character editing, inventory and
-resource totals, compact character cards, drag/touch/keyboard ordering,
-inclusion controls, team/group editing, bulk editing, selector/search aliases,
-gear-farming recommendations in a worker, skill details, local backup/import,
-and compatible cloud transfers.
+## Next work
 
-**Event calculations:** extracted AP/bonus/first-clear/model calculations, with
-the existing LP solver in a worker. `/planner/event-planner/` currently supports
-the allowlisted standard, box, card, dice, Omikuji, Lessons, and Invasion flows.
-Normal simulation workers, solver, statistics and math.js remain unchanged.
-Invasion uses a pure typed rules module; it is not a simulation.
+1. Audit the archived `lore-pursuit` definition against the legacy planner before
+   allowlisting it. The current event catalog has 28 definitions: 26 are
+   allowlisted and two remain gated. Keep
+   `game-dev-department-cleanup-mission` gated because its uncapped Credit
+   overflow can produce invalid legacy totals. `old_events.json` currently
+   contributes the four reviewed Lessons entries and Valentine Patrol Invasion.
+2. Compare remaining controls and dialogs in `planner/index.html` with
+   `/planner/resources/`; note any intentional omissions before retiring the
+   legacy planner.
+3. Finish the route/PWA transition only after parity review. `_redirects` still
+   sends the root to the legacy resource planner. `planner/sw.js` and
+   `game/sw-game.js` use separate cache names but their activation handlers can
+   delete other origin caches. Namespace and stage cache cleanup, then verify
+   offline, install, and upgrade behavior without breaking installed clients.
 
-**Raid Videos** at `/planner/raids/`: static Svelte route with JP/Global/CN raid
-timelines, boss/terrain/difficulty filters, student include/exclude filters,
-video lists, and a submission/editor flow. The existing `/planner/raids.html`
-page and its source files remain available. Catalog JSON stays at
-`planner/json/raids.json`; video feeds still load from the existing raw GitHub
-URL. The `local-submissions` lifecycle, `default-raids-server` preference,
-client-side `submitraid`/`editraid` APIs, and shared search/credential helpers are
-preserved. Legacy video entries are clickable links; the old embed helper had no
-active call sites.
+## Latest verification
 
-**Tournament Tracker** at `/planner/tournaments/`: static Svelte editor with the
-active S7 Wakamo controls, player-order-insensitive record lookup, force pick,
-five bans per side, two ordered 4-Striker/2-Special team lists, borrowed student
-markers, scores, and CSV export. It keeps the existing client-side
-`GET /loadtourneydata` and `POST /settourneydata` contract, stores the password
-under `TournamentPassword`, and sends it only in that request header. The
-original `/planner/tournaments.html` page remains available.
+Verified 2026-10-11 on the current migration changes:
 
-**Supporting pages:** legacy content pages have static Svelte equivalents.
+- `npm.cmd test`: 1,483 tests passed.
+- `npm.cmd run check`: 0 errors and 0 warnings.
+- `npm.cmd run build`: static `adapter-static` build succeeded.
+- `npm.cmd run test:browser -- --reporter=dot`: 136 production-preview tests
+  passed.
+- `npm.cmd run test:dev`: 13 tests passed.
+- Targeted `npm.cmd test -- tests/unit/standard-event.test.ts`: 219 tests passed.
+- `git diff --check`: clean.
 
-**Guessing Game** at `/game/`: Svelte implementation of all eight quiz types,
-freeform/multiple-choice answers, settings, score and failed-question retry
-flow, compatible `records` storage, and category image preloading. The static
-dataset and old asset URLs are reused. The existing `/game/guesser.html` page
-and its assets remain available and unchanged as a fallback.
-
-## Continuation progress (2026-10-10)
-
-The Raid Videos route was committed in `6e98c73`. The shared navigation points
-to `/planner/raids/`; development and production static preview serve the Svelte
-route there, while `/planner/raids.html` still serves the legacy page.
-
-The Tournament Tracker is implemented at `/planner/tournaments/`; the
-development and production static routes use Svelte while
-`/planner/tournaments.html` remains the legacy fallback. Its client API uses the
-existing `TournamentPassword` header and exact record payload. It is committed
-in `f3126b9`.
-
-The Guessing Game now uses the Svelte route `/game/`, matching the existing game
-manifest start URL. Its legacy URL `/game/guesser.html` remains available and
-byte-identical, and legacy image URLs and `localStorage["records"]` are
-preserved. The implementation does not register a new service worker; the
-existing game worker/cache lifecycle remains for the legacy page and is part of
-the final PWA transition. See verification results below. This slice is committed
-in `b5072a7`.
-
-Commit `86a1799` adds the broader standard-event slices through the original
-**BOX Shadow Looming**, both **Secret Midnight Party** IDs, **Honorable Sea
-Showdown**, and the archived **Serenade Promenade rerun**. The BOX event's
-`floor(Event_Point / 300) * 2 + 119 + 8` Eleph rule remains isolated from its
-rerun. Secret Midnight Party and Honorable Sea Showdown preserve their derived
-shop-to-stage currency rules and resave converted requirements after edits.
-Serenade Promenade preserves the capped 450-point overflow row and combines
-shop 10058 Eleph with 16016 point and overflow rewards.
-
-The current uncommitted **Winter Skies Renaissance** slice uses the standard
-event flow and preserves its 120:1 Cultural Book Sample-to-Event Point shop
-conversion, 15,000-point target, initial-clear and Owned deductions, and point
-reward tiers. Its 15 count-only tiers remain selectable but are not classified
-into reward totals, matching the legacy page. The old `/planner/events.html`
-page remains available.
-
-The current uncommitted **Descent of the Five Senses rerun** slice uses the
-standard event flow and converts Firecracker shop spend into farmable Moonlight
-Festival Vouchers at 270:1. The default 200 Firecrackers therefore sets a
-54,000 Voucher requirement, overriding the Voucher metadata clear value; fresh
-initial clears leave 43,670 Vouchers, 11,404 Mooncakes, and 14,119 Nutritional
-Supplements to farm. Firecrackers remain a MinigameDrop shop input and are not
-treated as a stage-farmed or Owned currency. The source exception is limited to
-this event's explicit derived-currency rule. The old `/planner/events.html`
-page remains available.
-
-The current uncommitted **Highlander Railroad Runaway** slice adds the event to
-the supported archive and converts Sticker milestones into Highlander Hikari
-Eleph and Iron Pipes. The six inclusive thresholds start at 2,250 Stickers;
-each additional 3,300 Stickers after 21,900 adds 6 Eleph and 10 Pipes. Iron Pipe
-remains a `MinigameDrop`, outside solver and Owned controls. As in the legacy
-planner, farm feasibility is checked before the reward transform, so a manually
-increased Pipe target is not rechecked after conversion. The old
-`/planner/events.html` page remains available.
-
-## Recent completed stage
-
-Commit `50f62cf` adds the archived **Schale's Happy Valentine Patrol rerun**
-Invasion schedule to the Svelte event planner. It preserves the original attempt
-and reset formulas, requirement deductions, capped Eleph shop row, and
-session-only optional reward display. It is covered by the same legacy-parity,
-production-browser, and dev-browser baselines below; do not reimplement it.
-
-## Remaining migration work, in suggested order
-
-1. **Broader event catalog/mechanics.** The current event file has 28 definitions;
-   23 are allowlisted for the Svelte planner and 5 stage/shop-looking definitions
-   remain unreviewed:
-   `ive-alive-rerun`, `summer-sky's-promise`,
-   `sheside-outside-rerun`, `game-dev-department-cleanup-mission`, and
-   `lore-pursuit`. `old_events.json`
-   has 40 definitions; only its four Lessons entries and Valentine Patrol
-   Invasion entry are in the generated archive.
-   The remaining candidates have been audited against `planner/js/eventPlanner.js`;
-   field shape alone does not prove parity. The next contained candidate is
-   **I've aLIVE rerun**, which converts Countdown Calendar into Event Points.
-   **Summer Sky's Promise** has a threshold reward transform plus a source-less
-   shop currency. Keep these and other unfamiliar mechanics gated until their
-   plan inputs and feasibility are characterized. Keep Game Dev Department
-   Cleanup Mission gated because its uncapped Credit overflow produces invalid
-   legacy totals.
-
-2. **Resource-page residuals.** `README.md` notes optional/display controls that
-   remain reachable only through the old planner. Before retiring
-   `planner/index.html`, compare its remaining controls/modals with
-   `/planner/resources/`, and record each omission or explicitly mark obsolete.
-
-3. **Final route/PWA transition.** The root redirect in `_redirects` still opens
-   the legacy resource planner; the shared Svelte navigation links modern
-   Resources, Events, Raid Videos and Tournaments. Switch remaining defaults
-   only after end-to-end parity is accepted, keeping old addresses usable.
-   `planner/sw.js` currently uses cache `baplanner-static-v2` and
-   `game/sw-game.js` uses `baplanner-static-v1`; both activation handlers
-   enumerate origin-wide CacheStorage and delete names outside their own
-   in-memory allowlist. Since CacheStorage is shared across the origin, either
-   worker can delete the other app's cache. Give caches distinct namespaces and
-   stage activation/cleanup for already-installed clients; test
-   offline/install/upgrade behavior.
-
-## Verification and commands
-
-At handoff, the verified baseline is:
-
-- `npm.cmd test`: 1,280 tests passed.
-- `npm.cmd run check`: 0 Svelte/TypeScript errors and warnings.
-- `npm.cmd run build`: static `adapter-static` build succeeds.
-- `npm.cmd run test:browser`: 116 production-preview browser tests passed.
-- `npm.cmd run test:dev`: 11 Vite development-server tests passed.
-- Original `planner/js/eventPlanner.js`, card/dice/Omikuji workers,
-  `planner/packages/javascript-lp-solver/solver.js` and
-  `planner/packages/mathjs/math.js` were unchanged by the Invasion stage.
-
-Production browser tests launch/stop their own preview server; development tests
-launch/stop Vite on port 5174. Tests mock/intercept remote APIs; do not use real
-credentials or call user accounts during verification. Generated directories
-`.generated-content`, `.generated-static`, `.svelte-kit`, and `build` are ignored
-and regenerated by preparation/check/build commands. Remove only generated
-`test-results` after testing.
-
-Raid Videos continuation verification (2026-10-10):
-
-- `npm.cmd test`: 1,288 tests passed.
-- `npm.cmd run check`: 0 Svelte/TypeScript errors and warnings.
-- `npm.cmd run build`: static `adapter-static` build succeeds.
-- `npm.cmd run test:browser`: 120 production-preview browser tests passed,
-  including Raid Videos and legacy-page preservation.
-- `npm.cmd run test:dev`: 12 Vite development-server tests passed.
-
-Tournament Tracker continuation verification (2026-10-10):
-
-- `npm.cmd test`: 1,299 tests passed.
-- `npm.cmd run check`: 0 Svelte/TypeScript errors and warnings.
-- `npm.cmd run build`: static `adapter-static` build succeeds.
-- `npm.cmd run test:browser`: 123 production-preview browser tests passed,
-  including Tournament Tracker and legacy-page preservation.
-- `npm.cmd run test:dev`: 13 Vite development-server tests passed.
-
-Guessing Game continuation verification (2026-10-10):
-
-- `npm.cmd test`: 1,304 tests passed.
-- `npm.cmd run check`: 0 Svelte/TypeScript errors and warnings.
-- `npm.cmd run build`: static `adapter-static` build succeeds.
-- `npm.cmd run test:browser`: 126 production-preview browser tests passed,
-  including game workflows and byte-identity preservation of the legacy page.
-- `npm.cmd run test:dev`: 13 Vite development-server tests passed.
-- The Svelte game uses `/game/`; `/game/guesser.html` and existing game assets
-  remain available. No new service worker registration was added.
-
-BOX Shadow Looming event continuation verification (2026-10-10):
-
-- `npm.cmd test`: 1,320 tests passed.
-- `npm.cmd run check`: 0 Svelte/TypeScript errors and warnings.
-- `npm.cmd run build`: static `adapter-static` build succeeds.
-- `npm.cmd run test:browser`: 127 production-preview browser tests passed,
-  including the original event archive, saved manual runs, and point-based
-  Eleph display.
-- `npm.cmd run test:dev`: 13 Vite development-server tests passed.
-- The targeted `tests/unit/standard-event.test.ts` run passed all 56 tests;
-  parity vectors cover 0, 299, 300, 599, and 600 Event Points. The rerun remains
-  unaffected by the original event's custom rule.
-
-Secret Midnight Party continuation verification (2026-10-10):
-
-- `npm.cmd test`: 1,352 tests passed.
-- `npm.cmd run check`: 0 Svelte/TypeScript errors and warnings.
-- `npm.cmd run build`: static `adapter-static` build succeeds.
-- `npm.cmd run test:browser`: 128 production-preview browser tests passed.
-- `npm.cmd run test:dev`: 13 Vite development-server tests passed.
-
-Honorable Sea Showdown continuation verification (2026-10-10):
-
-- `npm.cmd test`: 1,368 tests passed.
-- `npm.cmd run check`: 0 Svelte/TypeScript errors and warnings.
-- `npm.cmd run build`: static `adapter-static` build succeeds.
-- `npm.cmd run test:browser`: 129 production-preview browser tests passed,
-  including the Renge shop conversion, Owned currency, and legacy planner
-  availability.
-- `npm.cmd run test:dev`: 13 Vite development-server tests passed.
-- The targeted `tests/unit/standard-event.test.ts` run passed all 104 tests,
-  including the 270:1 Renge-to-Yukari conversion, edited shop-save values,
-  Owned subtraction, legacy calculations, and Materials mode with a feasible
-  energy fixture. The slice is committed in `86a1799`.
-
-Serenade Promenade rerun continuation verification (2026-10-10):
-
-- `npm.cmd test`: 1,390 tests passed.
-- `npm.cmd run check`: 0 Svelte/TypeScript errors and warnings.
-- `npm.cmd run build`: static `adapter-static` build succeeds.
-- `npm.cmd run test:browser`: 130 production-preview browser tests passed,
-  including the calculated overflow display and `/planner/events.html` fallback.
-- `npm.cmd run test:dev`: 13 Vite development-server tests passed.
-- The targeted `tests/unit/standard-event.test.ts` run passed all 126 tests.
-  Legacy summary parity covers manual 10058-to-16016 remapping, combined point
-  and overflow rewards, and Currency-mode overflow boundaries from 0 through
-  the 999-item cap.
-
-Winter Skies Renaissance continuation verification (2026-10-11):
-
-- `npm.cmd test`: 1,406 tests passed.
-- `npm.cmd run check`: 0 Svelte/TypeScript errors and warnings.
-- `npm.cmd run build`: static `adapter-static` build succeeds.
-- `npm.cmd run test:browser`: 131 production-preview browser tests passed,
-  including the count-only point-tier UI, shop conversion after edits, Owned
-  Event Points, and `/planner/events.html` fallback.
-- `npm.cmd run test:dev`: 13 Vite development-server tests passed.
-- The targeted `tests/unit/standard-event.test.ts` run passed all 142 tests.
-  Eight snapshots were added for the newly allowlisted event; frozen legacy
-  results confirm count-only point tiers do not add summary rewards.
-
-Descent of the Five Senses rerun continuation verification (2026-10-11):
-
-- `npm.cmd test`: 1,422 tests passed.
-- `npm.cmd run check`: 0 Svelte/TypeScript errors and warnings.
-- `npm.cmd run build`: static `adapter-static` build succeeds.
-- `npm.cmd run test:browser`: 132 production-preview browser tests passed,
-  including edited Firecracker purchases, save/reload, Owned filtering and the
-  `/planner/events.html` fallback.
-- `npm.cmd run test:dev`: 13 Vite development-server tests passed.
-- The targeted `tests/unit/standard-event.test.ts` run passed all 158 tests.
-  Eight snapshots were added for the newly allowlisted event. Legacy parity
-  confirms the 270:1 shop conversion, default 54,000 Voucher target, initial
-  clear deductions and Owned-currency deductions.
-
-Highlander Railroad Runaway continuation verification (2026-10-11):
-
-- `npm.cmd test`: 1,437 tests passed.
-- `npm.cmd run check`: 0 Svelte/TypeScript errors and warnings.
-- `npm.cmd run build`: static `adapter-static` build succeeds.
-- `npm.cmd run test:browser`: 133 production-preview browser tests passed,
-  including supported archive selection, MinigameDrop/Owned filtering, and the
-  `/planner/events.html` fallback.
-- `npm.cmd run test:dev`: 13 Vite development-server tests passed.
-- The targeted `tests/unit/standard-event.test.ts` run passed all 173 tests.
-  Eight snapshots were added for the newly allowlisted event. Legacy parity
-  covers the six Sticker thresholds, repeat boundaries at 21,900 and 25,200,
-  first-clear rewards, and the pre-transform feasibility check that can leave
-  an edited Iron Pipe target unmet.
-
-## Resume prompt
-
-> Read `MIGRATION_HANDOFF.md` and `README.md`, then inspect the current branch and
-> `git status` before editing. The Valentine Patrol Invasion, Lessons, Raid
-> Videos, Tournament Tracker, and Guessing Game migrations are already present;
-> do not reapply them. The original BOX Shadow Looming event, Secret Midnight
-> Party pair, Fair and Square Aquatic Showdown, and Serenade Promenade rerun are
-> supported with legacy-parity coverage and committed in `86a1799`. Winter
-> Skies Renaissance, Descent of the Five Senses rerun, and Highlander Railroad
-> Runaway are implemented in the current worktree with legacy parity and full
-> verification. Railroad converts Sticker milestones into Eleph and Iron Pipes,
-> while keeping the original pre-transform feasibility behavior.
-> Review the current diff and verification results, then continue with I've
-> aLIVE rerun. Keep unfamiliar mechanics gated until parity is established.
-> Preserve legacy pages, workers and API contracts. Add independent tests, run
-> targeted plus full checks, and do not commit or push unless explicitly asked.
+Browser tests use mocked/intercepted remote APIs; do not use real credentials or
+call user accounts during verification. The test/build commands regenerate
+ignored directories as needed.

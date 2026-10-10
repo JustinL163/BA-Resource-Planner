@@ -202,9 +202,9 @@
   </aside>
   <section class="event-content">
     {#if !entry}<p>{t('label-selectevent')}</p>
-    {:else if !event}<h2>{entry.name}</h2><p>{t('ui-event-special-legacy')}</p><a href="/planner/events.html" data-sveltekit-reload>{t('ui-legacy-tools')}</a>
+    {:else if !event}<h2>{entry.name || t(`event-${entry.id}`)}</h2><p>{t('ui-event-special-legacy')}</p><a href="/planner/events.html" data-sveltekit-reload>{t('ui-legacy-tools')}</a>
     {:else if $planner.plan && $planner.dataset}
-      <h2>{event.display_name}</h2>
+      <h2>{event.display_name || (t(`event-${entry.id}`) === 'Undefined' ? entry.name : t(`event-${entry.id}`))}</h2>
       <nav class="tabs" aria-label={t('page-event-planner')}>
         {#each tabs as item}<button aria-pressed={tab === item} data-event-tab={item} class:selected={tab === item} onclick={() => tab = item}>{t(item === 'Points' ? 'label-tabpointrewards' : `label-tab${item.toLowerCase()}`)}</button>{/each}
       </nav>
