@@ -55,6 +55,19 @@ test('development uses the Svelte raid route while retaining the legacy HTML add
   expect(errors).toEqual([]);
 });
 
+test('development uses the Svelte tournament route and still serves the original HTML fallback', async ({ page, request }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  const response = await page.goto('/planner/tournaments/');
+  expect(response?.status()).toBe(200);
+  await expect(page.getByRole('heading', { level: 1, name: 'Tournaments' })).toBeVisible();
+  await expect(page.getByRole('combobox', { name: 'Tournament', exact: true })).toHaveValue('tournament-7');
+  const legacy = await request.get('/planner/tournaments.html');
+  expect(legacy.status()).toBe(200);
+  expect(await legacy.text()).toContain('id="tournament-container"');
+  expect(errors).toEqual([]);
+});
+
 test('development serves the event calculation bridge as JavaScript and the existing event page uses it', async ({ page, request }) => {
   const response = await request.get('/planner/js/shared/events.js');
   expect(response.status()).toBe(200);

@@ -8,12 +8,12 @@ and inspect the worktree before making changes.
 
 - Repository: `JustinL163/BA-Resource-Planner`.
 - Current branch/worktree: `justinl163-didactic-telegram`.
-- Latest commit: `50f62cf` (`Migrated invasion event type`).
-- The Valentine Patrol rerun Invasion migration is committed in `50f62cf`,
-  together with the prior uncommitted Lessons migration. Do not cherry-pick or
-  reapply those changes.
-- The worktree was clean after `50f62cf`; this post-commit handoff refresh is the
-  only intended uncommitted change. Push status was not checked.
+- Latest commit: `6e98c73` (`Migrate raid videos to Svelte`).
+- The Lessons and Valentine Patrol rerun Invasion migrations are already in
+  history; do not cherry-pick or reapply them.
+- The Raid Videos migration and UI refinement are committed in `6e98c73`.
+- The Tournament Tracker migration is the current uncommitted feature slice.
+  No commit or push has been made for this slice; push status is not checked.
 
 ## User goal and constraints
 
@@ -61,15 +61,28 @@ client-side `submitraid`/`editraid` APIs, and shared search/credential helpers a
 preserved. Legacy video entries are clickable links; the old embed helper had no
 active call sites.
 
+**Tournament Tracker** at `/planner/tournaments/`: static Svelte editor with the
+active S7 Wakamo controls, player-order-insensitive record lookup, force pick,
+five bans per side, two ordered 4-Striker/2-Special team lists, borrowed student
+markers, scores, and CSV export. It keeps the existing client-side
+`GET /loadtourneydata` and `POST /settourneydata` contract, stores the password
+under `TournamentPassword`, and sends it only in that request header. The
+original `/planner/tournaments.html` page remains available.
+
 **Supporting pages:** legacy content pages have static Svelte equivalents.
-The tournament editor and guessing game are still legacy.
+The guessing game is still legacy.
 
 ## Continuation progress (2026-10-10)
 
-The Raid Videos route is implemented and verified in the current worktree. The
-shared navigation now points to `/planner/raids/`; development and production
-static preview serve the Svelte route there, while `/planner/raids.html` still
-serves the legacy page. No commit or push was made.
+The Raid Videos route was committed in `6e98c73`. The shared navigation points
+to `/planner/raids/`; development and production static preview serve the Svelte
+route there, while `/planner/raids.html` still serves the legacy page.
+
+The Tournament Tracker is implemented at `/planner/tournaments/`; the
+development and production static routes use Svelte while
+`/planner/tournaments.html` remains the legacy fallback. Its client API uses the
+existing `TournamentPassword` header and exact record payload. See the current
+verification results below. This slice remains uncommitted.
 
 ## Recent completed stage
 
@@ -81,16 +94,7 @@ production-browser, and dev-browser baselines below; do not reimplement it.
 
 ## Remaining migration work, in suggested order
 
-1. **Tournament tracker.** Current entry is `/planner/tournaments.html`
-   (`planner/tournaments.html`, `planner/js/tournament.js`). Preserve tournament,
-   stage, game, players, armor, force-pick, up to five bans per side, two team
-   lists, scores, existing-record lookup, import/export and confirmation/error
-   behavior. Current HTML exposes S7 Wakamo. `TournamentPassword` is stored in
-   localStorage; `cloudAPI.js` uses `GET /loadtourneydata` and `POST
-   /settourneydata` with the `TournamentPassword` header. Keep requests
-   client-side; do not expose the password in logs or serialized saves.
-
-2. **Guessing game.** Current entry is `/game/guesser.html` with logic/styles/data
+1. **Guessing game.** Current entry is `/game/guesser.html` with logic/styles/data
    under `game/guesser/`. Preserve Halos, Weapons, Chocolates, Silhouettes,
    Surnames, Ages, Birthdays and Heights; freeform/multiple-choice input; timer,
    guess-count, colour, lenience, date and conscious-state settings; scoring,
@@ -98,7 +102,7 @@ production-browser, and dev-browser baselines below; do not reimplement it.
    the static `game/guesser/data.json` and preloads image data. Keep the original
    game and asset paths until the Svelte replacement is verified.
 
-3. **Broader event catalog/mechanics.** The current event file has 28 definitions;
+2. **Broader event catalog/mechanics.** The current event file has 28 definitions;
    15 are allowlisted for the Svelte planner and 13 stage/shop-looking definitions
    remain unreviewed: `secret-midnight-party`, `box-shadow-looming`,
    `railroad-runaway`, `ive-alive-rerun`, `honorable-sea-showdown`,
@@ -113,15 +117,15 @@ production-browser, and dev-browser baselines below; do not reimplement it.
    `boxes`, `card_drops`, `dice_race`, `omikuji`, `lessons`, and `invasion`
    properties. In particular, preserve separate mechanics or keep them gated.
 
-4. **Resource-page residuals.** `README.md` notes optional/display controls that
+3. **Resource-page residuals.** `README.md` notes optional/display controls that
    remain reachable only through the old planner. Before retiring
    `planner/index.html`, compare its remaining controls/modals with
    `/planner/resources/`, and record each omission or explicitly mark obsolete.
 
-5. **Final route/PWA transition.** The root redirect in `_redirects` still opens
+4. **Final route/PWA transition.** The root redirect in `_redirects` still opens
    the legacy resource planner; the shared Svelte navigation links modern
-   Resources, Events and Raid Videos. Switch remaining defaults only after
-   end-to-end parity is accepted, keeping old addresses usable.
+   Resources, Events, Raid Videos and Tournaments. Switch remaining defaults
+   only after end-to-end parity is accepted, keeping old addresses usable.
    `planner/sw.js` currently uses cache `baplanner-static-v2` and
    `game/sw-game.js` uses `baplanner-static-v1`; both activation handlers
    enumerate origin-wide CacheStorage and delete names outside their own
@@ -159,14 +163,23 @@ Raid Videos continuation verification (2026-10-10):
   including Raid Videos and legacy-page preservation.
 - `npm.cmd run test:dev`: 12 Vite development-server tests passed.
 
+Tournament Tracker continuation verification (2026-10-10):
+
+- `npm.cmd test`: 1,299 tests passed.
+- `npm.cmd run check`: 0 Svelte/TypeScript errors and warnings.
+- `npm.cmd run build`: static `adapter-static` build succeeds.
+- `npm.cmd run test:browser`: 123 production-preview browser tests passed,
+  including Tournament Tracker and legacy-page preservation.
+- `npm.cmd run test:dev`: 13 Vite development-server tests passed.
+
 ## Resume prompt
 
 > Read `MIGRATION_HANDOFF.md` and `README.md`, then inspect the current branch and
-> `git status` before editing. The Valentine Patrol Invasion, Lessons and Raid
-> Videos migrations are already present; do not reapply them. Continue the
-> full-site SvelteKit migration with the tournament tracker as the next feature
-> slice. First inspect the bounded tournament UI/data/API surfaces and write
-> down compatibility requirements, then implement a static-safe Svelte route.
-> Keep the legacy page and cloud contract compatible. Add independent tests
-> before changing behavior, run targeted plus full checks, and do not commit or
-> push unless explicitly asked.
+> `git status` before editing. The Valentine Patrol Invasion, Lessons, Raid
+> Videos, and Tournament Tracker migrations are already present; do not reapply
+> them. Continue the full-site SvelteKit migration with the Guessing Game as the
+> next feature slice. First inspect its bounded UI/data/storage/asset surfaces
+> and record compatibility requirements, then implement a static-safe Svelte
+> route. Keep the legacy page and asset paths until the replacement is verified.
+> Add independent tests before changing behavior, run targeted plus full checks,
+> and do not commit or push unless explicitly asked.

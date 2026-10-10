@@ -38,9 +38,11 @@ It starts and stops its own Vite server on port 5174.
   browser-independent resource calculations, and simulation coordination.
 - `planner` and `game`: original feature sources, datasets, assets, and reference
   implementations. Resource/event planners and Raid Videos have Svelte screens;
-  their legacy sources remain available as references or fallbacks. Tournaments
-  and the guessing game still use their legacy screens. Resource calculations and
-  normal event simulation coordination delegate to shared TypeScript modules.
+  their legacy sources remain available as references or fallbacks. The
+  tournament tracker also has a Svelte screen with its old HTML page retained as
+  a fallback. The guessing game still uses its legacy screen. Resource
+  calculations and normal event simulation coordination delegate to shared
+  TypeScript modules.
 - `scripts/prepare-site.mjs`: copies unmigrated features and assets without
   changing their paths; converts static document content to typed nodes for
   declarative Svelte rendering; builds the temporary legacy bridges under
@@ -197,6 +199,21 @@ Team image export lazily loads the existing bundled html2canvas library and
 downloads a PNG without any server or third-party request. Text export aligns
 each character's own investment shorthand and marks borrowed picks.
 
+## Tournament tracker
+
+The Svelte tournament tracker is available at `/planner/tournaments/` through
+the **Tournaments** navigation link. It retains the active S7 Wakamo match
+controls, player-order-insensitive record lookup, force pick, five bans per side,
+two ordered team lists, borrowed student markers, scores, CSV export, and the
+original confirmation and cooldown behavior. Team submissions keep the legacy
+four-Striker/two-Special slot order and `[studentId]` encoding for borrowed picks.
+
+Tournament records still load from `GET /loadtourneydata` and save to
+`POST /settourneydata` on the existing API host. The existing
+`TournamentPassword` localStorage key is sent only in the request header. The
+legacy `/planner/tournaments.html` page remains available as a fallback; CSV
+export uses English student names and the legacy column layout.
+
 ## Character selection and search aliases
 
 The default add-character picker and team slot picker share the raid video's
@@ -345,9 +362,9 @@ typed text/value tokens, never injected HTML.
 
 Remaining resource work includes legacy-only display/optional controls still
 reachable through the legacy planner.
-The remaining site migrations include the tournament tracker and guessing game,
-plus the unreviewed event catalog and resource-page residuals documented in
-`MIGRATION_HANDOFF.md`. Raid Videos now uses `/planner/raids/`; the original
-`/planner/raids.html` page remains available as a fallback.
+The remaining site migrations include the guessing game, the unreviewed event
+catalog, and resource-page residuals documented in `MIGRATION_HANDOFF.md`. Raid
+Videos now uses `/planner/raids/`; the original `/planner/raids.html` page
+remains available as a fallback.
 PWA cache replacement must include a deliberate transition for installed clients;
 the original service workers are retained in this layer.

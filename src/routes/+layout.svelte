@@ -17,6 +17,7 @@
     { href: '/planner/events.html', label: 'page-event-planner', legacy: true },
     { href: '/planner/event-planner/', label: 'page-modernevents', legacy: false },
     { href: '/planner/raids/', label: 'page-raids', legacy: false },
+    { href: '/planner/tournaments/', label: 'page-tournaments', legacy: false },
     { href: '/planner/changelog/', label: 'page-changelog', legacy: false },
     { href: '/planner/privacy/', label: 'page-privacy', legacy: false },
     { href: '/planner/credit/', label: 'page-credit', legacy: false }
