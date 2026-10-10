@@ -40,9 +40,9 @@ It starts and stops its own Vite server on port 5174.
   implementations. Resource/event planners and Raid Videos have Svelte screens;
   their legacy sources remain available as references or fallbacks. The
   tournament tracker also has a Svelte screen with its old HTML page retained as
-  a fallback. The guessing game still uses its legacy screen. Resource
-  calculations and normal event simulation coordination delegate to shared
-  TypeScript modules.
+  a fallback. The Guessing Game has a Svelte screen at `/game/`, and its original
+  HTML page remains available. Resource calculations and normal event simulation
+  coordination delegate to shared TypeScript modules.
 - `scripts/prepare-site.mjs`: copies unmigrated features and assets without
   changing their paths; converts static document content to typed nodes for
   declarative Svelte rendering; builds the temporary legacy bridges under
@@ -214,6 +214,22 @@ Tournament records still load from `GET /loadtourneydata` and save to
 legacy `/planner/tournaments.html` page remains available as a fallback; CSV
 export uses English student names and the legacy column layout.
 
+## Guessing Game
+
+The Svelte Guessing Game is available at `/game/`. It supports Halos, Weapons,
+Chocolates, Silhouettes, Surnames, Ages, Birthdays and Heights, with the legacy
+freeform and multiple-choice modes, timer, guess count, colour, lenience, date
+and conscious-state settings. Question pools come from the existing static
+dataset, and question art keeps its legacy asset URLs. The game preserves the
+score format, failed-question retry flow and high scores in
+`localStorage["records"]`; unrelated record fields are retained. The image
+preload action remains available for the selected category.
+
+The old `/game/guesser.html` page and its assets remain available while the
+replacement is reviewed. The Svelte route uses the existing game manifest. The
+game service worker is retained for the legacy page; cache namespace and
+activation cleanup still need a coordinated PWA migration.
+
 ## Character selection and search aliases
 
 The default add-character picker and team slot picker share the raid video's
@@ -362,9 +378,9 @@ typed text/value tokens, never injected HTML.
 
 Remaining resource work includes legacy-only display/optional controls still
 reachable through the legacy planner.
-The remaining site migrations include the guessing game, the unreviewed event
-catalog, and resource-page residuals documented in `MIGRATION_HANDOFF.md`. Raid
-Videos now uses `/planner/raids/`; the original `/planner/raids.html` page
-remains available as a fallback.
+The remaining site migrations include the broader event catalog/mechanics audit
+and resource-page residuals documented in `MIGRATION_HANDOFF.md`. Raid Videos
+now uses `/planner/raids/`; the original `/planner/raids.html` page remains
+available as a fallback.
 PWA cache replacement must include a deliberate transition for installed clients;
 the original service workers are retained in this layer.

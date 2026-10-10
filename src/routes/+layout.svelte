@@ -11,6 +11,7 @@
 
   let { children }: { children: Snippet } = $props();
   let menuOpen = $state(false);
+  const standaloneGame = $derived(page.url.pathname === '/game/');
   const links = [
     { href: '/planner/index.html', label: 'page-resource-planner', legacy: true },
     { href: '/planner/resources/', label: 'page-modernplanner', legacy: false },
@@ -18,6 +19,7 @@
     { href: '/planner/event-planner/', label: 'page-modernevents', legacy: false },
     { href: '/planner/raids/', label: 'page-raids', legacy: false },
     { href: '/planner/tournaments/', label: 'page-tournaments', legacy: false },
+    { href: '/game/', label: 'page-guesser', legacy: false },
     { href: '/planner/changelog/', label: 'page-changelog', legacy: false },
     { href: '/planner/privacy/', label: 'page-privacy', legacy: false },
     { href: '/planner/credit/', label: 'page-credit', legacy: false }
@@ -48,13 +50,16 @@
 </script>
 
 <svelte:head>
-  <link rel="manifest" href="/planner/manifest.json" />
+  <link rel="manifest" href={standaloneGame ? '/game/manifest.json' : '/planner/manifest.json'} />
   <meta name="theme-color" content="#7c5b7d" />
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3XZ18739WF"></script>
 </svelte:head>
 
-<div class="site" data-theme={$preferences.theme}>
-  <a class="skip-link" href="#main-content">Skip to content</a>
+<div class="site" class:game-shell={standaloneGame} data-theme={$preferences.theme}>
+  {#if !standaloneGame}
+    <a class="skip-link" href="#main-content">Skip to content</a>
+  {/if}
+  {#if !standaloneGame}
   <header class="site-header" class:enhanced={$preferences.ready}>
     <a class="logo" href="/planner/index.html" data-sveltekit-reload>Justin163</a>
     <button
@@ -99,10 +104,11 @@
       >{$preferences.theme === 'dark' ? 'Light theme' : 'Dark theme'}</button>
     </div>
   </header>
-  {#if $preferences.error}
+  {/if}
+  {#if $preferences.error && !standaloneGame}
     <p class="error-banner" role="alert">{$preferences.error}</p>
   {/if}
-  <main id="main-content" tabindex="-1">
+  <main id="main-content" class:game-main={standaloneGame} tabindex="-1">
     {@render children()}
   </main>
 </div>

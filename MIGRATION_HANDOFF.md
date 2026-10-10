@@ -8,12 +8,13 @@ and inspect the worktree before making changes.
 
 - Repository: `JustinL163/BA-Resource-Planner`.
 - Current branch/worktree: `justinl163-didactic-telegram`.
-- Latest commit: `6e98c73` (`Migrate raid videos to Svelte`).
+- Latest commit: `61bb34b` (`Migrate guessing game to Svelte`).
 - The Lessons and Valentine Patrol rerun Invasion migrations are already in
   history; do not cherry-pick or reapply them.
 - The Raid Videos migration and UI refinement are committed in `6e98c73`.
-- The Tournament Tracker migration is the current uncommitted feature slice.
-  No commit or push has been made for this slice; push status is not checked.
+- The Tournament Tracker migration is committed in `f3126b9`.
+- The Guessing Game migration is committed in `61bb34b`; push status is not
+  checked.
 
 ## User goal and constraints
 
@@ -70,7 +71,12 @@ under `TournamentPassword`, and sends it only in that request header. The
 original `/planner/tournaments.html` page remains available.
 
 **Supporting pages:** legacy content pages have static Svelte equivalents.
-The guessing game is still legacy.
+
+**Guessing Game** at `/game/`: Svelte implementation of all eight quiz types,
+freeform/multiple-choice answers, settings, score and failed-question retry
+flow, compatible `records` storage, and category image preloading. The static
+dataset and old asset URLs are reused. The existing `/game/guesser.html` page
+and its assets remain available and unchanged as a fallback.
 
 ## Continuation progress (2026-10-10)
 
@@ -81,8 +87,16 @@ route there, while `/planner/raids.html` still serves the legacy page.
 The Tournament Tracker is implemented at `/planner/tournaments/`; the
 development and production static routes use Svelte while
 `/planner/tournaments.html` remains the legacy fallback. Its client API uses the
-existing `TournamentPassword` header and exact record payload. See the current
-verification results below. This slice remains uncommitted.
+existing `TournamentPassword` header and exact record payload. It is committed
+in `f3126b9`.
+
+The Guessing Game now uses the Svelte route `/game/`, matching the existing game
+manifest start URL. Its legacy URL `/game/guesser.html` remains available and
+byte-identical, and legacy image URLs and `localStorage["records"]` are
+preserved. The implementation does not register a new service worker; the
+existing game worker/cache lifecycle remains for the legacy page and is part of
+the final PWA transition. See verification results below. This slice is committed
+in `61bb34b`.
 
 ## Recent completed stage
 
@@ -94,15 +108,7 @@ production-browser, and dev-browser baselines below; do not reimplement it.
 
 ## Remaining migration work, in suggested order
 
-1. **Guessing game.** Current entry is `/game/guesser.html` with logic/styles/data
-   under `game/guesser/`. Preserve Halos, Weapons, Chocolates, Silhouettes,
-   Surnames, Ages, Birthdays and Heights; freeform/multiple-choice input; timer,
-   guess-count, colour, lenience, date and conscious-state settings; scoring,
-   failed-student retry and records under localStorage key `records`. It fetches
-   the static `game/guesser/data.json` and preloads image data. Keep the original
-   game and asset paths until the Svelte replacement is verified.
-
-2. **Broader event catalog/mechanics.** The current event file has 28 definitions;
+1. **Broader event catalog/mechanics.** The current event file has 28 definitions;
    15 are allowlisted for the Svelte planner and 13 stage/shop-looking definitions
    remain unreviewed: `secret-midnight-party`, `box-shadow-looming`,
    `railroad-runaway`, `ive-alive-rerun`, `honorable-sea-showdown`,
@@ -117,12 +123,12 @@ production-browser, and dev-browser baselines below; do not reimplement it.
    `boxes`, `card_drops`, `dice_race`, `omikuji`, `lessons`, and `invasion`
    properties. In particular, preserve separate mechanics or keep them gated.
 
-3. **Resource-page residuals.** `README.md` notes optional/display controls that
+2. **Resource-page residuals.** `README.md` notes optional/display controls that
    remain reachable only through the old planner. Before retiring
    `planner/index.html`, compare its remaining controls/modals with
    `/planner/resources/`, and record each omission or explicitly mark obsolete.
 
-4. **Final route/PWA transition.** The root redirect in `_redirects` still opens
+3. **Final route/PWA transition.** The root redirect in `_redirects` still opens
    the legacy resource planner; the shared Svelte navigation links modern
    Resources, Events, Raid Videos and Tournaments. Switch remaining defaults
    only after end-to-end parity is accepted, keeping old addresses usable.
@@ -172,14 +178,26 @@ Tournament Tracker continuation verification (2026-10-10):
   including Tournament Tracker and legacy-page preservation.
 - `npm.cmd run test:dev`: 13 Vite development-server tests passed.
 
+Guessing Game continuation verification (2026-10-10):
+
+- `npm.cmd test`: 1,304 tests passed.
+- `npm.cmd run check`: 0 Svelte/TypeScript errors and warnings.
+- `npm.cmd run build`: static `adapter-static` build succeeds.
+- `npm.cmd run test:browser`: 126 production-preview browser tests passed,
+  including game workflows and byte-identity preservation of the legacy page.
+- `npm.cmd run test:dev`: 13 Vite development-server tests passed.
+- The Svelte game uses `/game/`; `/game/guesser.html` and existing game assets
+  remain available. No new service worker registration was added.
+
 ## Resume prompt
 
 > Read `MIGRATION_HANDOFF.md` and `README.md`, then inspect the current branch and
 > `git status` before editing. The Valentine Patrol Invasion, Lessons, Raid
-> Videos, and Tournament Tracker migrations are already present; do not reapply
-> them. Continue the full-site SvelteKit migration with the Guessing Game as the
-> next feature slice. First inspect its bounded UI/data/storage/asset surfaces
-> and record compatibility requirements, then implement a static-safe Svelte
-> route. Keep the legacy page and asset paths until the replacement is verified.
-> Add independent tests before changing behavior, run targeted plus full checks,
-> and do not commit or push unless explicitly asked.
+> Videos, Tournament Tracker, and Guessing Game migrations are already present;
+> do not reapply them. Continue with the broader event catalog/mechanics audit:
+> review the event-specific
+> branches in `planner/js/eventPlanner.js`, characterize candidate events against
+> the legacy implementation, and keep unfamiliar mechanics gated until parity is
+> established. Preserve the legacy pages, workers and API contracts. Add
+> independent tests, run targeted plus full checks, and do not commit or push
+> unless explicitly asked.

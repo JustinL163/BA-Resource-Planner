@@ -33,6 +33,12 @@ button:disabled, select:disabled { cursor: wait; }
   --success: #285633;
   color-scheme: light;
 }
+.site.game-shell {
+  --background: #f7f7f7;
+  --surface: #ffffff;
+  --text: #20212a;
+  color-scheme: light;
+}
 .site-header {
   position: sticky;
   top: 0;
@@ -58,6 +64,7 @@ button:disabled, select:disabled { cursor: wait; }
 .preferences { display: flex; gap: 0.5rem; margin-left: auto; }
 .menu-button { display: none; }
 main { /* max-width: 1200px;*/ margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.site.game-shell main.game-main { width: 100%; max-width: none; min-height: 100vh; margin: 0; padding: 0; }
 h1 { margin: 0 0 1.5rem; font-size: clamp(1.7rem, 4vw, 2.3rem); }
 main a { color: var(--link); overflow-wrap: anywhere; }
 .document .changelog-section { padding: 1.25rem; background: var(--surface); border-radius: 0.65rem; }
