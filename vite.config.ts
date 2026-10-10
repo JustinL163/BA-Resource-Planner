@@ -9,7 +9,7 @@ const legacyPageUrls: Plugin = {
       '/planner': '/planner/index.html',
       '/planner/': '/planner/index.html'
     };
-    for (const name of ['events', 'raids', 'tournaments']) {
+    for (const name of ['events', 'tournaments']) {
       aliases[`/planner/${name}`] = `/planner/${name}.html`;
       aliases[`/planner/${name}/`] = `/planner/${name}.html`;
     }

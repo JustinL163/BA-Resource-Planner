@@ -44,6 +44,17 @@ test('development preserves legacy JSON assets and hydrates all shared-layout ro
   expect(errors).toEqual([]);
 });
 
+test('development uses the Svelte raid route while retaining the legacy HTML address', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  await page.goto('/planner/raids/');
+  await expect(page.getByRole('heading', { level: 1, name: 'Raid Videos' })).toBeVisible();
+  await expect(page.locator('.server-row')).toHaveCount(3);
+  await page.goto('/planner/raids.html');
+  await expect(page.locator('#raid-timeline')).toBeAttached();
+  expect(errors).toEqual([]);
+});
+
 test('development serves the event calculation bridge as JavaScript and the existing event page uses it', async ({ page, request }) => {
   const response = await request.get('/planner/js/shared/events.js');
   expect(response.status()).toBe(200);

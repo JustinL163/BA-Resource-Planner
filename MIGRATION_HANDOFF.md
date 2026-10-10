@@ -1,6 +1,6 @@
 # Blue Archive Planner migration handoff
 
-As of 2026-10-09. This file is intended to let a fresh Codex app session resume
+As of 2026-10-10. This file is intended to let a fresh Codex app session resume
 the migration without relying on chat history. Read it together with `README.md`
 and inspect the worktree before making changes.
 
@@ -8,13 +8,12 @@ and inspect the worktree before making changes.
 
 - Repository: `JustinL163/BA-Resource-Planner`.
 - Current branch/worktree: `justinl163-didactic-telegram`.
-- Latest commit: `0e1758b` (`migrated lesson type events`).
-- **The Valentine Patrol rerun Invasion migration is implemented but uncommitted.**
-  Preserve the current dirty worktree. It is the active, verified work, not
-  disposable generated output. Do not reset/restore it. `MIGRATION_HANDOFF.md`
-  and the README status correction are also part of the handoff.
-- No changes were pushed. The latest Invasion tests passed; the details are
-  under “Verification” below.
+- Latest commit: `50f62cf` (`Migrated invasion event type`).
+- The Valentine Patrol rerun Invasion migration is committed in `50f62cf`,
+  together with the prior uncommitted Lessons migration. Do not cherry-pick or
+  reapply those changes.
+- The worktree was clean after `50f62cf`; this post-commit handoff refresh is the
+  only intended uncommitted change. Push status was not checked.
 
 ## User goal and constraints
 
@@ -52,59 +51,37 @@ the allowlisted standard, box, card, dice, Omikuji, Lessons, and Invasion flows.
 Normal simulation workers, solver, statistics and math.js remain unchanged.
 Invasion uses a pure typed rules module; it is not a simulation.
 
+**Raid Videos** at `/planner/raids/`: static Svelte route with JP/Global/CN raid
+timelines, boss/terrain/difficulty filters, student include/exclude filters,
+video lists, and a submission/editor flow. The existing `/planner/raids.html`
+page and its source files remain available. Catalog JSON stays at
+`planner/json/raids.json`; video feeds still load from the existing raw GitHub
+URL. The `local-submissions` lifecycle, `default-raids-server` preference,
+client-side `submitraid`/`editraid` APIs, and shared search/credential helpers are
+preserved. Legacy video entries are clickable links; the old embed helper had no
+active call sites.
+
 **Supporting pages:** legacy content pages have static Svelte equivalents.
-Raid-video UI, the tournament editor and the guessing game are still legacy.
+The tournament editor and guessing game are still legacy.
 
-## Active uncommitted Invasion work
+## Continuation progress (2026-10-10)
 
-The Svelte event planner now supports the archived **Schale's Happy Valentine
-Patrol rerun** Invasion schedule. This work is in the current uncommitted diff:
+The Raid Videos route is implemented and verified in the current worktree. The
+shared navigation now points to `/planner/raids/`; development and production
+static preview serve the Svelte route there, while `/planner/raids.html` still
+serves the legacy page. No commit or push was made.
 
-- `src/lib/domain/events/invasion.ts`: strict decoder, exact full-event/Owned
-  attempt arithmetic and pure reward application.
-- `src/lib/domain/events/standard-save.ts` and `standard-types.ts`: one-event
-  allowlist, decode/save support, legacy `Event_Point` omission handling and
-  the capped Eleph overflow shop-row exception.
-- `src/lib/domain/events/standard.ts`: invasion currencies reduce remaining
-  farm requirements and are always included in totals.
-- `src/lib/stores/event-planner.ts`, `src/routes/planner/event-planner/+page.svelte`,
-  `EventSettings.svelte`: event calculation and session-only **Invasion Rewards**
-  toggle; Event Point bonuses display even though the archived currency omits
-  its legacy `source`.
-- `scripts/prepare-site.mjs`: generates a bounded archive with four Lessons
-  events plus this one Invasion event; the full `old_events.json` is not
-  imported by the new route.
-- `tests/fixtures/invasion.legacy.js`, `tests/unit/event-invasion.test.ts`,
-  `tests/browser/event-invasion.spec.ts`, and `tests/dev/modules.spec.ts`:
-  independent parity and integration coverage.
+## Recent completed stage
 
-The legacy first-day rule is unusual: all configured stages through
-`max_stage - 1` contribute initial rewards and one clear; the maximum stage's
-first-day drops are multiplied by `first_day_attempts - max_stage + 1`. The final
-stage then contributes `daily_attempts * (resets_total - 1)` in full-event mode,
-or `daily_attempts * resets_left` in Owned mode. Keep those conventions exact.
-
-Its capped overflow shop item is an Eleph row with `count: -1`; do not normalize
-it as an Omikuji EventCurrency ticket or auto-buy it in Currency mode. Invasion
-currencies always count toward stage totals and reduce needed shop currencies.
-Eleph/XP/Credit reward display is optional and session-only.
+Commit `50f62cf` adds the archived **Schale's Happy Valentine Patrol rerun**
+Invasion schedule to the Svelte event planner. It preserves the original attempt
+and reset formulas, requirement deductions, capped Eleph shop row, and
+session-only optional reward display. It is covered by the same legacy-parity,
+production-browser, and dev-browser baselines below; do not reimplement it.
 
 ## Remaining migration work, in suggested order
 
-1. **Raid-video page.** Current entry is `/planner/raids.html`
-   (`planner/raids.html`, `planner/js/raids.js`). Preserve the raid timeline,
-   server selection (JP/Global/CN), boss/difficulty/other filters, video list and
-   embeds, local submissions, submission editor, and account-authenticated
-   submit/edit. It reads `planner/json/raids.json` and fetches per-raid video JSON
-   from `https://raw.githubusercontent.com/JustinL163/ba-planner-data/main/
-   shared-videos/{server}/raids/{uid}.json`. It stores local submissions in
-   `local-submissions` and the default server in `default-raids-server`.
-   Submission APIs are in `planner/js/cloudAPI.js` (`submitraid`, `editraid`);
-   reuse the already-migrated `username`/`authkey` client credential handling.
-   The canonical-name/fuzzy student-search logic is already shared, but the page
-   UI and data lifecycle are not migrated.
-
-2. **Tournament tracker.** Current entry is `/planner/tournaments.html`
+1. **Tournament tracker.** Current entry is `/planner/tournaments.html`
    (`planner/tournaments.html`, `planner/js/tournament.js`). Preserve tournament,
    stage, game, players, armor, force-pick, up to five bans per side, two team
    lists, scores, existing-record lookup, import/export and confirmation/error
@@ -113,7 +90,7 @@ Eleph/XP/Credit reward display is optional and session-only.
    /settourneydata` with the `TournamentPassword` header. Keep requests
    client-side; do not expose the password in logs or serialized saves.
 
-3. **Guessing game.** Current entry is `/game/guesser.html` with logic/styles/data
+2. **Guessing game.** Current entry is `/game/guesser.html` with logic/styles/data
    under `game/guesser/`. Preserve Halos, Weapons, Chocolates, Silhouettes,
    Surnames, Ages, Birthdays and Heights; freeform/multiple-choice input; timer,
    guess-count, colour, lenience, date and conscious-state settings; scoring,
@@ -121,7 +98,7 @@ Eleph/XP/Credit reward display is optional and session-only.
    the static `game/guesser/data.json` and preloads image data. Keep the original
    game and asset paths until the Svelte replacement is verified.
 
-4. **Broader event catalog/mechanics.** The current event file has 28 definitions;
+3. **Broader event catalog/mechanics.** The current event file has 28 definitions;
    15 are allowlisted for the Svelte planner and 13 stage/shop-looking definitions
    remain unreviewed: `secret-midnight-party`, `box-shadow-looming`,
    `railroad-runaway`, `ive-alive-rerun`, `honorable-sea-showdown`,
@@ -136,14 +113,14 @@ Eleph/XP/Credit reward display is optional and session-only.
    `boxes`, `card_drops`, `dice_race`, `omikuji`, `lessons`, and `invasion`
    properties. In particular, preserve separate mechanics or keep them gated.
 
-5. **Resource-page residuals.** `README.md` notes optional/display controls that
+4. **Resource-page residuals.** `README.md` notes optional/display controls that
    remain reachable only through the old planner. Before retiring
    `planner/index.html`, compare its remaining controls/modals with
    `/planner/resources/`, and record each omission or explicitly mark obsolete.
 
-6. **Final route/PWA transition.** The root redirect in `_redirects` still opens
+5. **Final route/PWA transition.** The root redirect in `_redirects` still opens
    the legacy resource planner; the shared Svelte navigation links modern
-   Resources and Events but still links legacy Raids. Switch defaults only after
+   Resources, Events and Raid Videos. Switch remaining defaults only after
    end-to-end parity is accepted, keeping old addresses usable.
    `planner/sw.js` currently uses cache `baplanner-static-v2` and
    `game/sw-game.js` uses `baplanner-static-v1`; both activation handlers
@@ -173,15 +150,23 @@ credentials or call user accounts during verification. Generated directories
 and regenerated by preparation/check/build commands. Remove only generated
 `test-results` after testing.
 
+Raid Videos continuation verification (2026-10-10):
+
+- `npm.cmd test`: 1,288 tests passed.
+- `npm.cmd run check`: 0 Svelte/TypeScript errors and warnings.
+- `npm.cmd run build`: static `adapter-static` build succeeds.
+- `npm.cmd run test:browser`: 120 production-preview browser tests passed,
+  including Raid Videos and legacy-page preservation.
+- `npm.cmd run test:dev`: 12 Vite development-server tests passed.
+
 ## Resume prompt
 
 > Read `MIGRATION_HANDOFF.md` and `README.md`, then inspect the current branch and
-> `git status` before editing. Preserve the uncommitted Valentine Patrol Invasion
-> migration; do not reset or replace it. Continue the full-site SvelteKit
-> migration with the Raid Videos page as the next feature slice. First inspect
-> the bounded raid UI/data/API surfaces, write down compatibility requirements,
-> then implement a static-safe Svelte route using the existing shared search and
-> credentials helpers. Keep `/planner/raids.html`, cloud endpoints, saved local
-> submissions and asset URLs compatible. Add frozen/independent tests before
-> changing behavior, run targeted plus full checks, and do not commit or push
-> unless explicitly asked.
+> `git status` before editing. The Valentine Patrol Invasion, Lessons and Raid
+> Videos migrations are already present; do not reapply them. Continue the
+> full-site SvelteKit migration with the tournament tracker as the next feature
+> slice. First inspect the bounded tournament UI/data/API surfaces and write
+> down compatibility requirements, then implement a static-safe Svelte route.
+> Keep the legacy page and cloud contract compatible. Add independent tests
+> before changing behavior, run targeted plus full checks, and do not commit or
+> push unless explicitly asked.

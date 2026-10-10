@@ -22,7 +22,7 @@ const redirects = (await readFile(join(root, '_redirects'), 'utf8'))
   .filter((line) => line.trim() && !line.startsWith('#'))
   .map((line) => line.trim().split(/\s+/));
 const legacyAliases = new Map(
-  ['events', 'raids', 'tournaments'].flatMap((name) => [
+  ['events', 'tournaments'].flatMap((name) => [
     [`/planner/${name}`, `/planner/${name}.html`],
     [`/planner/${name}/`, `/planner/${name}.html`]
   ])

@@ -37,9 +37,10 @@ It starts and stops its own Vite server on port 5174.
 - `src`: prerendered Svelte routes, shared layout, typed preferences/localisation,
   browser-independent resource calculations, and simulation coordination.
 - `planner` and `game`: original feature sources, datasets, assets, and reference
-  implementations. Resource/event planners, raids, tournaments, and the game
-  retain their legacy screens during the staged migration. Resource calculations
-  and normal event simulation coordination now delegate to shared TypeScript modules.
+  implementations. Resource/event planners and Raid Videos have Svelte screens;
+  their legacy sources remain available as references or fallbacks. Tournaments
+  and the guessing game still use their legacy screens. Resource calculations and
+  normal event simulation coordination delegate to shared TypeScript modules.
 - `scripts/prepare-site.mjs`: copies unmigrated features and assets without
   changing their paths; converts static document content to typed nodes for
   declarative Svelte rendering; builds the temporary legacy bridges under
@@ -344,6 +345,9 @@ typed text/value tokens, never injected HTML.
 
 Remaining resource work includes legacy-only display/optional controls still
 reachable through the legacy planner.
-The remaining site migrations include raids, tournaments, and the guessing game.
+The remaining site migrations include the tournament tracker and guessing game,
+plus the unreviewed event catalog and resource-page residuals documented in
+`MIGRATION_HANDOFF.md`. Raid Videos now uses `/planner/raids/`; the original
+`/planner/raids.html` page remains available as a fallback.
 PWA cache replacement must include a deliberate transition for installed clients;
 the original service workers are retained in this layer.
