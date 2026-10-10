@@ -5,6 +5,7 @@ import { decodeCardDraws } from './cards';
 import { decodeDiceRace, diceRewardNames } from './dice';
 import { decodeOmikuji, omikujiRewardNames } from './omikuji';
 import { decodeLessonDefinition } from './lessons';
+import { decodeInvasion } from './invasion';
 import { decodeCardStatistics, validateStandardDeviation } from './card-statistics';
 import type { EventEnergySettings } from './types';
 import type { BoxCycle, EventMode, EventPlan, PointReward, SavedAmounts, ShopItem, StandardEvent } from './standard-types';
@@ -16,6 +17,7 @@ export const cardEventIds = ['get-hyped-and-march-on-rerun', 'art-for-whom'];
 export const diceEventIds = ['occult-research-society'];
 export const omikujiEventIds = ['magical-girl-trinity', 'new-year-march-rerun', 'pray-ball', 'an-unconcealed-path', 'pray-ball-rerun'];
 export const lessonEventIds = ['on-your-mark', 'hot-spring-rerun', 'restoration-project', 'on-your-mark-rerun'];
+export const invasionEventIds = ['valentine-rerun'];
 const modes: EventMode[] = ['', 'Shop', 'Materials', 'Currency', 'Manual'];
 
 function number(value: unknown, label: string, max = Infinity): number {
@@ -37,17 +39,17 @@ function asset(value: unknown): string {
 
 function reward(value: unknown): ShopItem {
   if (!isRecord(value) || (typeof value.id !== 'string' && typeof value.id !== 'number') || typeof value.type !== 'string') throw new Error('Invalid event reward.');
-  const item: ShopItem = { id: value.id, type: value.type, count: eventInteger(value.count, 'reward count'), cost: number(value.cost ?? 0, 'reward cost') };
+  if (value.overflow !== undefined && typeof value.overflow !== 'boolean') throw new Error('Invalid event overflow flag.');
+  const overflow = value.overflow === true;
+  const count = overflow && value.count === -1 ? -1 : eventInteger(value.count, 'reward count');
+  const item: ShopItem = { id: value.id, type: value.type, count, cost: number(value.cost ?? 0, 'reward cost') };
   if (value.amount !== undefined) item.amount = number(value.amount, 'reward amount');
   if (value.default !== undefined) item.default = eventInteger(value.default, 'default purchase', item.count);
   if (value.locked !== undefined) {
     if (typeof value.locked !== 'boolean') throw new Error('Invalid event locked purchase.');
     item.locked = value.locked;
   }
-  if (value.overflow !== undefined) {
-    if (typeof value.overflow !== 'boolean') throw new Error('Invalid event overflow flag.');
-    item.overflow = value.overflow;
-  }
+  if (value.overflow !== undefined) item.overflow = overflow;
   if (value.overflow_cap !== undefined) item.overflow_cap = eventInteger(value.overflow_cap, 'overflow cap');
   return item;
 }
@@ -56,12 +58,14 @@ export function decodeStandardEvent(value: unknown): StandardEvent {
   const core = decodeCoreEvent(value);
   if (!isRecord(value) || typeof value.display_name !== 'string' || !isRecord(value.shops) ||
     !Array.isArray(value.available_targets) || !Array.isArray(value.currency_targets)) throw new Error('Invalid standard event.');
-  if (value.invasion_stages !== undefined || value.invasion_config !== undefined) throw new Error('This event requires the legacy planner.');
   const cards = value.card_drops === undefined ? undefined : decodeCardDraws(value.card_drops);
   const dice = value.dice_race === undefined ? undefined : decodeDiceRace(value.dice_race);
   const omikuji = value.omikuji === undefined ? undefined : decodeOmikuji(value.omikuji);
   const lessons = value.lessons === undefined ? undefined : decodeLessonDefinition(value.lessons, value.lessons_template);
-  if ((lessons && (omikuji || cards || dice || value.boxes !== undefined)) ||
+  const invasion = value.invasion_config === undefined && value.invasion_stages === undefined
+    ? undefined : decodeInvasion(value.invasion_config, value.invasion_stages);
+  if ((lessons && (omikuji || cards || dice || invasion || value.boxes !== undefined)) ||
+    (invasion && (omikuji || cards || dice || value.boxes !== undefined)) ||
     Number(Boolean(omikuji)) + Number(Boolean(cards)) + Number(Boolean(dice)) + Number(value.boxes !== undefined) > 1) {
     throw new Error('Mixed special-event mechanics require the legacy planner.');
   }
@@ -97,12 +101,13 @@ export function decodeStandardEvent(value: unknown): StandardEvent {
   if (!isRecord(value.currencies)) throw new Error('Invalid event currencies.');
   for (const [key, currency] of Object.entries(value.currencies)) {
     if (!isRecord(currency) || (currency.source !== 'StageDrop' &&
-      // The legacy Lessons definitions omit the source on Event_Point.
-      !(lessons && key === 'Event_Point' && currency.source === undefined) &&
+      // The legacy Lessons/Invasion definitions omit the source on Event_Point.
+      !((lessons || invasion) && key === 'Event_Point' && currency.source === undefined) &&
       !(boxes && currency.source === 'BoxPull') && !(cards && currency.source === 'CardPull') &&
       !(omikuji && (currency.source === 'ShopPurchase' || currency.source === 'ShopBuy'))) ||
       typeof currency.shortname !== 'string') throw new Error('This currency requires the legacy planner.');
-    currencies[key] = { ...core.currencies[key], icon: asset(currency.icon), shortname: currency.shortname };
+    const currencyIcon = currency.icon ?? ((lessons || invasion) && key === 'Event_Point' ? 'Event_Point.png' : undefined);
+    currencies[key] = { ...core.currencies[key], icon: asset(currencyIcon), shortname: currency.shortname };
     if (currency.clear !== undefined) currencies[key].clear = number(currency.clear, 'currency target');
     if (currency.source === 'BoxPull' || currency.source === 'CardPull') {
       if (typeof currency.pull_currency !== 'string') throw new Error('Draw reward currency has no draw currency.');
@@ -139,11 +144,15 @@ export function decodeStandardEvent(value: unknown): StandardEvent {
     shops[currency] = items.map((source: unknown) => {
       const item = reward(source);
       if (!item.overflow) return item;
-      if (!omikuji || currency !== 'Event_Point' || item.type !== 'EventCurrency' || item.count !== 0 ||
-        !item.overflow_cap || currencies[currency].source !== 'StageDrop') {
+      const supportedOmikujiOverflow = Boolean(omikuji && currency === 'Event_Point' &&
+        item.type === 'EventCurrency' && item.count === 0 && item.overflow_cap &&
+        currencies[currency].source === 'StageDrop');
+      const supportedInvasionOverflow = Boolean(invasion && item.type === 'Eleph' &&
+        item.count === -1 && item.overflow_cap && currencies[currency].source === 'StageDrop');
+      if (!supportedOmikujiOverflow && !supportedInvasionOverflow) {
         throw new Error('This overflow shop requires the legacy planner.');
       }
-      if (String(item.id) === omikuji.pull_currency && item.amount === undefined) item.amount = 1;
+      if (omikuji && String(item.id) === omikuji.pull_currency && item.amount === undefined) item.amount = 1;
       return item;
     });
   }
@@ -153,6 +162,30 @@ export function decodeStandardEvent(value: unknown): StandardEvent {
         .map((item) => ({ currency, item })));
     if (matching.length !== 1 || matching[0].currency !== 'Event_Point') {
       throw new Error('Omikuji requires one capped Event Point overflow draw currency.');
+    }
+  }
+  if (invasion) {
+    for (const stage of invasion.stages) {
+      const dropNames = Object.keys(stage.drops);
+      for (let index = 0; index < dropNames.length; index += 1) {
+        if (stage.drop_key[index] === 'Currency' && !Object.hasOwn(currencies, dropNames[index])) {
+          throw new Error(`Unknown Invasion currency "${dropNames[index]}".`);
+        }
+      }
+      const initialNames = Object.keys(stage.initial);
+      for (let index = 0; index < initialNames.length; index += 1) {
+        if (stage.initial_key[index] === 'Currency' && !Object.hasOwn(currencies, initialNames[index])) {
+          throw new Error(`Unknown initial Invasion currency "${initialNames[index]}".`);
+        }
+      }
+    }
+  }
+  if (invasion) {
+    const overflowItems = Object.entries(shops).flatMap(([currency, items]) =>
+      items.filter((item) => item.overflow).map((item) => ({ currency, item })));
+    if (overflowItems.length !== 1 || overflowItems[0].item.type !== 'Eleph' ||
+      overflowItems[0].item.count !== -1 || !overflowItems[0].item.overflow_cap) {
+      throw new Error('The Invasion event requires one capped Eleph overflow shop item.');
     }
   }
   const available: Exclude<EventMode, ''>[] = [];
@@ -203,33 +236,34 @@ export function decodeStandardEvent(value: unknown): StandardEvent {
   if (dice) result.dice_race = dice;
   if (omikuji) result.omikuji = omikuji;
   if (lessons) result.lessons = lessons;
+  if (invasion) result.invasion = invasion;
   return result;
 }
 
-export function decodeEventCatalog(value: unknown, includeSupportedArchives = false, lessonArchive?: unknown): EventEntry[] {
+export function decodeEventCatalog(value: unknown, includeSupportedArchives = false, reviewedArchive?: unknown): EventEntry[] {
   if (!isRecord(value) || !isRecord(value.events) || !Array.isArray(value.event_order)) throw new Error('Invalid event catalog.');
   const events = value.events;
-  let lessonEvents: Record<string, unknown> = {};
-  if (lessonArchive !== undefined) {
-    if (!isRecord(lessonArchive) || !isRecord(lessonArchive.events)) throw new Error('Invalid archived lesson event catalog.');
-    lessonEvents = lessonArchive.events;
+  let archivedEvents: Record<string, unknown> = {};
+  if (reviewedArchive !== undefined) {
+    if (!isRecord(reviewedArchive) || !isRecord(reviewedArchive.events)) throw new Error('Invalid reviewed archived event catalog.');
+    archivedEvents = reviewedArchive.events;
   }
   const listedCount = value.event_order.length;
   const order: unknown[] = [...value.event_order];
   if (includeSupportedArchives) {
     const listed = new Set(order.filter((key): key is string => typeof key === 'string').map((key) => key.replace(/^\|/, '')));
-    for (const id of [...standardEventIds, ...boxEventIds, ...cardEventIds, ...diceEventIds, ...omikujiEventIds, ...lessonEventIds]) {
-      if (!listed.has(id) && (Object.hasOwn(events, id) || Object.hasOwn(lessonEvents, id))) order.push(id);
+    for (const id of [...standardEventIds, ...boxEventIds, ...cardEventIds, ...diceEventIds, ...omikujiEventIds, ...lessonEventIds, ...invasionEventIds]) {
+      if (!listed.has(id) && (Object.hasOwn(events, id) || Object.hasOwn(archivedEvents, id))) order.push(id);
     }
   }
   return order.map((key: unknown, index: number) => {
     if (typeof key !== 'string') throw new Error('Invalid event list entry.');
     const id = key.replace(/^\|/, '');
-    const event = Object.hasOwn(events, id) ? events[id] : lessonEvents[id];
+    const event = Object.hasOwn(events, id) ? events[id] : archivedEvents[id];
     if (!isRecord(event) || typeof event.display_name !== 'string') throw new Error(`Missing event ${id}.`);
     return {
       id, name: event.display_name, icon: asset(event.icon), comingSoon: key.startsWith('|'),
-      event: [...standardEventIds, ...boxEventIds, ...cardEventIds, ...diceEventIds, ...omikujiEventIds, ...lessonEventIds].includes(id) ? decodeStandardEvent(event) : null,
+      event: [...standardEventIds, ...boxEventIds, ...cardEventIds, ...diceEventIds, ...omikujiEventIds, ...lessonEventIds, ...invasionEventIds].includes(id) ? decodeStandardEvent(event) : null,
       ...(index >= listedCount ? { archived: true } : {})
     };
   });
@@ -267,7 +301,11 @@ export function decodeEventPlan(value: unknown, event: StandardEvent): EventPlan
   for (const [key, entries] of Object.entries(shopValue)) purchases[key] = amounts(entries, 'purchases');
   let needed = amounts(raw.currency_needed ?? {}, 'currency requirements');
   if (!Object.keys(purchases).length) {
-    for (const [currency, items] of Object.entries(event.shops)) purchases[currency] = Object.fromEntries(items.map((item) => [String(item.id), item.default ?? item.count]));
+    for (const [currency, items] of Object.entries(event.shops)) {
+      purchases[currency] = Object.fromEntries(items.map((item) => [
+        String(item.id), item.default ?? (item.overflow ? 0 : item.count)
+      ]));
+    }
     needed = {};
   }
   if (!Object.keys(needed).length) needed = Object.fromEntries(Object.entries(event.currencies).filter(([, currency]) => currency.clear).map(([key, currency]) => [key, currency.clear ?? 0]));
@@ -293,6 +331,19 @@ export function decodeEventPlan(value: unknown, event: StandardEvent): EventPlan
     for (const [key, value] of Object.entries(options)) {
       if (!event.stages.some((stage) => stage.type === 'Quest' && String(stage.number) === key)) throw new Error(`Unknown saved quest ${key}.`);
       eventInteger(value, 'stage runs', 2000);
+    }
+  }
+  if (selectedMode === 'Currency' && (event.omikuji || event.invasion)) {
+    for (const [currency, items] of Object.entries(event.shops)) {
+      if (!items.some((item) => item.overflow)) continue;
+      purchases[currency] ??= Object.create(null);
+      for (const item of items) if (item.overflow) purchases[currency][String(item.id)] = 0;
+      const totalCost = items.reduce((total, item) => {
+        const next = total + Number(purchases[currency][String(item.id)] ?? 0) * item.cost;
+        if (!Number.isFinite(next)) throw new Error(`Invalid shop cost for "${currency}".`);
+        return next;
+      }, 0);
+      needed[currency] = totalCost;
     }
   }
   const result: EventPlan = {

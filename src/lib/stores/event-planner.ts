@@ -31,7 +31,7 @@ function eventSource(root: Record<string, unknown>, id: string): unknown {
 export function createEventPlanner(
   metadata: PlannerMetadata,
   storageProvider: () => Storage = () => window.localStorage,
-  lessonArchive?: unknown
+  reviewedArchive?: unknown
 ) {
   const state = writable<EventState>({ loading: false, error: '', saved: false, catalog: [], dataset: null, names: {}, cafeEnergy: {}, selected: '', plan: null });
   const namesCache = new Map<string, Record<string, string>>();
@@ -119,7 +119,7 @@ export function createEventPlanner(
       if (!entry.event?.available_targets.includes(mode)) throw new Error('This optimization mode is unavailable.');
       plan.optimisation_type = mode; plan.optimisation_options = null;
       if (mode === 'Currency' && entry.event.currency_targets.length === 1) plan.optimisation_options = entry.event.currency_targets[0];
-      if (mode === 'Currency' && entry.event.omikuji) {
+      if (mode === 'Currency' && (entry.event.omikuji || entry.event.invasion)) {
         for (const [currency, items] of Object.entries(entry.event.shops)) {
           for (const item of items) if (item.overflow) {
             plan.shop_purchases[currency] ??= {};
@@ -254,7 +254,7 @@ export function createEventPlanner(
             if (typeof amount !== 'number' || !Number.isFinite(amount)) throw new Error('Invalid cafe energy rate.');
             cafeEnergy[rank] = amount;
           }
-          state.update((value) => ({ ...value, dataset, catalog: decodeEventCatalog(config, true, lessonArchive), cafeEnergy }));
+          state.update((value) => ({ ...value, dataset, catalog: decodeEventCatalog(config, true, reviewedArchive), cafeEnergy }));
         }
         await reload(true);
       } catch (problem) {

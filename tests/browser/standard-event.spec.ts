@@ -10,8 +10,8 @@ if (!isRecord(config) || !isRecord(config.events) || !isRecord(oldConfig) || !is
 }
 const catalog = config;
 const currentEvents = config.events;
-const valentine = oldConfig.events['valentine-rerun'];
-if (!isRecord(valentine)) throw new Error('Missing invasion event fixture.');
+const unreviewedArchive = oldConfig.events['after-school-sweets'];
+if (!isRecord(unreviewedArchive)) throw new Error('Missing unreviewed archive fixture.');
 const event = decodeStandardEvent(currentEvents['lore-pursuit-s2']);
 const eventTime = (event.reset_time + 3 * 86400 + 3600) * 1000;
 
@@ -163,21 +163,21 @@ test('changing to Manual mode cancels a pending worker and cannot receive stale 
   await expect(page.getByRole('status').filter({ hasText: 'Optimizing stages' })).toHaveCount(0);
 });
 
-test('unreviewed Invasion events remain gated and mobile standard tabs stay within the viewport', async ({ page, context }) => {
+test('unreviewed archived events remain gated and mobile standard tabs stay within the viewport', async ({ page, context }) => {
   await page.clock.setFixedTime(eventTime);
   await context.route('**/json/events.json*', (route) => route.fulfill({
     contentType: 'application/json',
     body: JSON.stringify({
       ...catalog,
-      events: { ...currentEvents, 'valentine-rerun': valentine },
-      event_order: ['lore-pursuit-s2', 'valentine-rerun']
+      events: { ...currentEvents, 'after-school-sweets': unreviewedArchive },
+      event_order: ['lore-pursuit-s2', 'after-school-sweets']
     })
   }));
   await page.addInitScript((data) => localStorage.setItem('save-data', JSON.stringify(data)), savedPlan());
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto('/planner/event-planner/');
   const before = await page.evaluate(() => localStorage.getItem('save-data'));
-  await page.locator('[data-event-id="valentine-rerun"]').click();
+  await page.locator('[data-event-id="after-school-sweets"]').click();
   await expect(page.getByText('This event has special mechanics', { exact: false })).toBeVisible();
   await expect(page.locator('[data-event-tab]')).toHaveCount(0);
   expect(await page.evaluate(() => localStorage.getItem('save-data'))).toBe(before);

@@ -76,11 +76,11 @@ Points and Owned tabs support the current Lore Pursuit (Season 2) event.
 Box Shadow Looming rerun is also characterized and supported when included in
 the event list. Unreviewed special events are explicitly gated to the legacy
 planner until their complete mechanics are migrated; `standardEventIds`,
-`boxEventIds`, `cardEventIds`, `diceEventIds`, `omikujiEventIds`, and
-`lessonEventIds` are reviewed allowlists rather than assuming an unfamiliar
-event is generic. The four reviewed archived Lessons events are loaded from a
-generated, bounded archive bundle rather than fetching the full older-event
-catalog.
+`boxEventIds`, `cardEventIds`, `diceEventIds`, `omikujiEventIds`,
+`lessonEventIds`, and `invasionEventIds` are reviewed allowlists rather than
+assuming an unfamiliar event is generic. The four reviewed archived Lessons
+events and the reviewed Invasion event are loaded from a generated, bounded
+archive bundle rather than fetching the full older-event catalog.
 
 Box-draw events also support a compact **Boxes** tab and a session-only **Box
 Rewards** display toggle. **Show earlier supported events** reveals the reviewed
@@ -147,7 +147,7 @@ and sigma adjustment run in the shared statistics worker. Rewards remain a
 session-only display option and use the existing `omikuji_pull_rewards`,
 `omikuji_pull_currency_owned` and `standard_deviation` save fields. Changing
 farming inputs cancels pending work, while RNG-only changes reuse saved
-statistics. Invasion and unreviewed special mechanics remain legacy-only.
+statistics. Unreviewed special mechanics remain legacy-only.
 
 The reviewed **Lessons** tab is also available for On Your Mark, Hot Springs
 Resort Daily Logs, Restoration Project, and the On Your Mark rerun. Pre-rank
@@ -156,8 +156,15 @@ location choices and post-rank runs retain the existing `lesson_pre_runs` and
 Event Point add/max limits, per-location material substitutions, and the
 legacy expected-reward classification. **Lesson Rewards** is a session-only
 summary toggle; over-spending farmed Event Points keeps the plan infeasible.
-Only those four curated event definitions are loaded from `old_events.json`;
-other special events, including Invasion, remain on the legacy planner.
+Only those four curated lesson definitions are loaded from `old_events.json`;
+other special event definitions remain on the legacy planner.
+
+The archived **Schale's Happy Valentine Patrol rerun** includes its fixed
+Invasion schedule. The original maximum-stage first-day attempt rule,
+remaining-reset daily attempts, and first-clear rewards are preserved. Invasion
+currencies always count toward the stage plan and reduce needed farm currencies;
+**Invasion Rewards** is a session-only toggle for its Eleph, XP, and Credit
+summary. The original event, solver, and simulation files remain untouched.
 
 Shop, currency and material optimization uses the original bundled LP solver
 in a cancellable worker, never a blocking main-thread fallback. Manual runs,
@@ -298,7 +305,9 @@ the current and archived event definitions.
 The original event page remains available with all special-event tabs and
 simulation workers. Its core calculations share this verified foundation with
 the standard Svelte event interface; the reviewed box, card, dice, Omikuji, and
-Lessons flows have also moved. Invasion remains legacy-only.
+Lessons flows have also moved. The reviewed Valentine Patrol rerun Invasion
+schedule is supported in the Svelte event planner; unreviewed special mechanics
+remain legacy-only.
 
 Upgrade-cost formulas live in `src/lib/domain/resources`, without DOM access,
 storage, or mutable global state. The legacy planner delegates through a generated
@@ -335,7 +344,6 @@ typed text/value tokens, never injected HTML.
 
 Remaining resource work includes legacy-only display/optional controls still
 reachable through the legacy planner.
-The remaining site migrations include invasion, raids, tournaments, and the
-guessing game.
+The remaining site migrations include raids, tournaments, and the guessing game.
 PWA cache replacement must include a deliberate transition for installed clients;
 the original service workers are retained in this layer.

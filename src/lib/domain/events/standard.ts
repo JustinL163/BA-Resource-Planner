@@ -25,11 +25,18 @@ function positiveOwned(owned: Record<string, unknown>, key: string): number {
   const parsed = parseLegacyInt(owned[key]);
   return parsed > 0 ? parsed : 0;
 }
-export function eventRequirements(event: StandardEvent, plan: EventPlan): EventRequirements {
+export function eventRequirements(event: StandardEvent, plan: EventPlan, invasionCurrencies: EventAmounts = {}): EventRequirements {
   const initial = calculateInitialClear(event);
   if (!isRecord(plan.currency_needed) || !isRecord(plan.currency_owned)) {
     throw new Error('Event currency requirements and owned amounts must be records.');
   }
+  if (!isRecord(invasionCurrencies)) throw new Error('Invasion currency rewards must be a record.');
+  const invasionAmount = (currency: string): number => {
+    if (!Object.prototype.hasOwnProperty.call(invasionCurrencies, currency)) return 0;
+    const amount = finite(invasionCurrencies[currency], `Invasion reward for "${currency}"`);
+    if (amount < 0) throw new Error(`Invasion reward for "${currency}" cannot be negative.`);
+    return amount;
+  };
   const midEvent = Object.values(plan.currency_owned).some((value) => parseLegacyInt(value) > 0);
   const needed: EventAmounts = {};
   for (const [currency, rawAmount] of Object.entries(plan.currency_needed)) {
@@ -50,15 +57,16 @@ export function eventRequirements(event: StandardEvent, plan: EventPlan): EventR
       const subtract = initial.rewards[currency] && !midEvent
         ? initial.rewards[source.pull_currency] ?? 0 : positiveOwned(plan.currency_owned, currency);
       if (!(initial.rewards[currency] && !midEvent)) setOwn(needed, currency, Number.NaN);
-      setOwn(needed, source.pull_currency, Math.max(pullAmount - subtract, 0));
+      setOwn(needed, source.pull_currency, Math.max(pullAmount - subtract - invasionAmount(currency), 0));
     } else if (source.source === 'CardPull') {
       if (!source.pull_currency) throw new Error('Missing card draw currency.');
       setOwn(needed, currency, Number.NaN);
-      setOwn(needed, source.pull_currency, cardPullRequirement(amount,
-        positiveOwned(plan.currency_owned, source.pull_currency), initial.rewards[source.pull_currency] ?? 0));
+      setOwn(needed, source.pull_currency, Math.max(cardPullRequirement(amount,
+        positiveOwned(plan.currency_owned, source.pull_currency), initial.rewards[source.pull_currency] ?? 0) -
+        invasionAmount(currency), 0));
     } else {
       const subtract = midEvent ? positiveOwned(plan.currency_owned, currency) : initial.rewards[currency] ?? 0;
-      setOwn(needed, currency, Math.max(amount - subtract, 0));
+      setOwn(needed, currency, Math.max(amount - subtract - invasionAmount(currency), 0));
     }
   }
   const rawTarget = plan.point_target || event.event_point_target || 0;
@@ -293,23 +301,30 @@ export function summarizeEventRuns(
     if (!Object.prototype.hasOwnProperty.call(currencies, shopCurrency)) continue;
     for (const item of items) {
       if (!item.overflow) continue;
-      if (!event.omikuji || item.type !== 'EventCurrency' || item.cost <= 0 || !item.overflow_cap) {
-        throw new Error('Invalid event currency overflow purchase.');
-      }
       const id = String(item.id);
       let count: number;
-      if (plan.optimisation_type === 'Currency') {
-        const spend = Number(plan.currency_needed[shopCurrency] ?? 0);
-        if (!Number.isFinite(spend)) throw new Error(`Invalid currency spend for "${shopCurrency}".`);
-        count = Math.max(Math.min(Math.floor((currencies[shopCurrency] - spend) / item.cost), item.overflow_cap), 0);
-        addAmount(currencies, id, count * (item.amount ?? 1), `Overflow currency "${id}"`);
-      } else {
-        const stored = plan.shop_purchases[shopCurrency]?.[id] ?? 0;
+      if (event.omikuji && item.type === 'EventCurrency' && item.cost > 0 && item.overflow_cap) {
+        if (plan.optimisation_type === 'Currency') {
+          const spend = Number(plan.currency_needed[shopCurrency] ?? 0);
+          if (!Number.isFinite(spend)) throw new Error(`Invalid currency spend for "${shopCurrency}".`);
+          count = Math.max(Math.min(Math.floor((currencies[shopCurrency] - spend) / item.cost), item.overflow_cap), 0);
+          addAmount(currencies, id, count * (item.amount ?? 1), `Overflow currency "${id}"`);
+        } else {
+          const stored = plan.shop_purchases[shopCurrency]?.[id] ?? 0;
+          count = parseLegacyInt(stored);
+          if (!Number.isSafeInteger(count) || count < 0 || count > item.overflow_cap) {
+            throw new Error(`Invalid overflow purchase count for "${id}".`);
+          }
+          setOwn(currencies, id, count * (item.amount ?? 1));
+        }
+      } else if (event.invasion && item.type === 'Eleph' && item.count === -1 && item.cost > 0 && item.overflow_cap) {
+        const stored = plan.optimisation_type === 'Currency' ? 0 : plan.shop_purchases[shopCurrency]?.[id] ?? 0;
         count = parseLegacyInt(stored);
         if (!Number.isSafeInteger(count) || count < 0 || count > item.overflow_cap) {
-          throw new Error(`Invalid overflow purchase count for "${id}".`);
+          throw new Error(`Invalid Invasion overflow purchase count for "${id}".`);
         }
-        setOwn(currencies, id, count * (item.amount ?? 1));
+      } else {
+        throw new Error('Invalid event currency overflow purchase.');
       }
       overflowPurchases[shopCurrency] ??= Object.create(null);
       setOwn(overflowPurchases[shopCurrency], id, count);

@@ -39,6 +39,26 @@ export interface LessonDefinition {
   lesson_cost: number;
   rewards: LessonReward[][];
 }
+export interface InvasionStage {
+  number: number;
+  level: number;
+  initial: EventAmounts;
+  initial_key: string[];
+  drops: EventAmounts;
+  drop_key: string[];
+}
+export interface InvasionDefinition {
+  max_stage: number;
+  daily_attempts: number;
+  first_day_attempts: number;
+  stages: InvasionStage[];
+}
+export interface InvasionRewards {
+  currencies: EventAmounts;
+  eleph: EventAmounts;
+  xps: EventAmounts;
+  credit: number;
+}
 export interface EventReward {
   id: string | number;
   type: string;
@@ -91,6 +111,7 @@ export interface StandardEvent extends CoreEvent {
   dice_race?: DiceRace;
   omikuji?: OmikujiDefinition;
   lessons?: LessonDefinition;
+  invasion?: InvasionDefinition;
 }
 export type SavedAmounts = Record<string, number | string>;
 export interface EventPlan extends EventEnergySettings, Record<string, unknown> {

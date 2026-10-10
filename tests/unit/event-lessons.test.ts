@@ -108,7 +108,7 @@ describe('reviewed lesson event definitions and exact progression', () => {
       expect(entry?.event?.boxes).toBeUndefined();
     }
     expect(decodeEventCatalog(currentConfig, true).some((entry) => entry.event?.lessons)).toBe(false);
-    expect(() => decodeEventCatalog(currentConfig, true, {})).toThrow('lesson event catalog');
+    expect(() => decodeEventCatalog(currentConfig, true, {})).toThrow('reviewed archived event catalog');
   });
 
   for (const id of lessonEventIds) {

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount, untrack } from 'svelte';
   import { metadata } from '$content/planner';
-  import lessonArchive from '$content/lesson-events.json';
+  import reviewedArchive from '$content/reviewed-event-archive.json';
   import strings from '$content/strings.json';
   import { getLanguageString } from '$lib/domain/localisation';
   import { preferences } from '$lib/stores/preferences';
@@ -11,6 +11,7 @@
   import { applyDiceRewards } from '$lib/domain/events/dice';
   import { applyOmikujiRewards } from '$lib/domain/events/omikuji';
   import { applyLessonRewards } from '$lib/domain/events/lessons';
+  import { applyInvasionRewards, calculateInvasionRewards } from '$lib/domain/events/invasion';
   import { calculateEventBonuses, calculateEventEnergy } from '$lib/domain/events/budget';
   import { buildStageModel, buildMaterialTargetModel, buildStageVariables, materialDropOptions } from '$lib/domain/events/models';
   import { isRecord } from '$lib/domain/planner/save';
@@ -29,7 +30,7 @@
   import EventLessons from '$lib/components/events/EventLessons.svelte';
   import EventDice from '$lib/components/events/EventDice.svelte';
 
-  const planner = createEventPlanner(metadata, undefined, lessonArchive);
+  const planner = createEventPlanner(metadata, undefined, reviewedArchive);
   const t = (id: string) => getLanguageString(strings, id, $preferences.language);
   let tab = $state<EventTab>('Targets');
   let now = $state(0);
@@ -45,6 +46,7 @@
   let includeDice = $state(false);
   let includeOmikuji = $state(false);
   let includeLessons = $state(false);
+  let includeInvasion = $state(false);
   let showArchives = $state(false);
   let eventListOpen = $state(false);
   let entry = $derived($planner.catalog.find((entry) => entry.id === $planner.selected));
@@ -55,9 +57,14 @@
     if (!event || !$planner.plan || !$planner.dataset || !now) return null;
     try {
       const plan = $planner.plan;
-      const requirements = eventRequirements(event, plan);
+      const initialRequirements = eventRequirements(event, plan);
       const bonuses = calculateEventBonuses(entry?.id ?? '', event, plan.enabled_bonus_units, $planner.dataset.students);
-      const budget = calculateEventEnergy(entry?.id ?? '', event, plan, $planner.cafeEnergy, requirements.midEvent, requirements.initial.cost, now);
+      const budget = calculateEventEnergy(entry?.id ?? '', event, plan, $planner.cafeEnergy,
+        initialRequirements.midEvent, initialRequirements.initial.cost, now);
+      const invasionRewards = event.invasion
+        ? calculateInvasionRewards(event.invasion, budget.resetsTotal, budget.resetsLeft, initialRequirements.midEvent)
+        : null;
+      const requirements = invasionRewards ? eventRequirements(event, plan, invasionRewards.currencies) : initialRequirements;
       const inputs = {
         eventId: entry?.id ?? '', bonuses, needed: requirements.needed, energyAvailable: budget.available,
         pointTarget: requirements.pointTarget, enabledGroups: plan.enabled_stage_groups, upgradeBases: false
@@ -73,9 +80,16 @@
         }
         if (Object.values(selected).some(Boolean)) model = buildMaterialTargetModel(event, inputs, selected);
       }
-      return { requirements, bonuses, budget, model, variables: buildStageVariables(event, bonuses, plan.enabled_stage_groups), materials: materialDropOptions(event), error: '' };
+      return {
+        requirements, bonuses, budget, model, invasionRewards,
+        variables: buildStageVariables(event, bonuses, plan.enabled_stage_groups),
+        materials: materialDropOptions(event), error: ''
+      };
     } catch (problem) {
-      return { requirements: null, bonuses: {}, budget: null, model: null, variables: {}, materials: [], error: problem instanceof Error ? problem.message : t('ui-event-calculation-failed') };
+      return {
+        requirements: null, bonuses: {}, budget: null, model: null, invasionRewards: null,
+        variables: {}, materials: [], error: problem instanceof Error ? problem.message : t('ui-event-calculation-failed')
+      };
     }
   });
   let solveKey = $derived(JSON.stringify({ id: entry?.id, blocked: Boolean($planner.error), model: calculation?.model, manual: $planner.plan?.optimisation_type === 'Manual' ? $planner.plan.optimisation_options ?? {} : null, retry }));
@@ -121,6 +135,7 @@
       let value = event.lessons && includeLessons
         ? applyLessonRewards(baseResult.value, event.lessons, $planner.plan.lesson_pre_runs ?? [], $planner.plan.lesson_post_runs ?? {}, metadata)
         : baseResult.value;
+      if (calculation?.invasionRewards) value = applyInvasionRewards(value, calculation.invasionRewards, includeInvasion);
       const rounded = simulation.rounded;
       if (includeSimulation && rounded) {
         value = event.card_drops ? applyCardRewards(event, value, rounded, metadata)
@@ -241,6 +256,7 @@
           {#if event.dice_race}<label><input type="checkbox" bind:checked={includeDice} />{t('label-includedice')}</label>{/if}
           {#if event.omikuji}<label><input type="checkbox" bind:checked={includeOmikuji} />{t('label-includeomikuji')}</label>{/if}
           {#if event.lessons}<label><input type="checkbox" bind:checked={includeLessons} />{t('label-includelessons')}</label>{/if}
+          {#if event.invasion}<label><input type="checkbox" bind:checked={includeInvasion} />{t('label-includeinvasion')}</label>{/if}
         </div>
         {#if includeSimulation}
           {#if simulation.rounding}<p role="status">{t(`ui-event-${simulation.kind}-adjusting`)}</p>

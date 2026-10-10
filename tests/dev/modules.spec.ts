@@ -149,3 +149,28 @@ test('development hydrates only the generated Lessons archive and hides inapplic
   await expect(page.locator('.stage-groups')).toHaveCount(0);
   expect(errors).toEqual([]);
 });
+
+test('development hydrates the reviewed Invasion archive and shows its session-only reward toggle', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  await page.goto('/planner/event-planner/');
+  await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
+  await page.locator('[data-event-id="valentine-rerun"]').click();
+  await expect(page.getByRole('checkbox', { name: 'Invasion Rewards', exact: true })).toBeVisible();
+  await expect(page.locator('[data-event-tab="Invasion"]')).toHaveCount(0);
+  expect(errors).toEqual([]);
+});
+
+test('development keeps the Invasion overflow shop rule and preserves the legacy Event Point definition', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  await page.goto('/planner/event-planner/');
+  await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
+  await page.locator('[data-event-id="valentine-rerun"]').click();
+  await page.locator('[data-event-tab="Shop"]').click();
+  await page.locator('[data-event-shop-tab="Garbage_Bag"]').click();
+  const overflow = page.locator('[data-event-purchase="16008"][data-event-shop="Garbage_Bag"] input');
+  await expect(overflow).toHaveAttribute('max', '620');
+  await expect(overflow).toHaveValue('0');
+  expect(errors).toEqual([]);
+});

@@ -22,7 +22,8 @@
     isBooleanRecord(plan.optimisation_options) ? plan.optimisation_options : {}
   );
   let currencies = $derived(Object.entries(event.currencies));
-  let stageCurrencies = $derived(currencies.filter(([, currency]) => currency.source === 'StageDrop'));
+  let stageCurrencies = $derived(currencies.filter(([id, currency]) => currency.source === 'StageDrop' ||
+    ((event.lessons || event.invasion) && id === 'Event_Point')));
   let bonusIds = $derived([...new Set(currencies.flatMap(([, currency]) => currency.bonus_units.map(({ id }) => id)))]);
   let materialIds = $derived(new Map(Object.entries(metadata.materialNames).map(([id, name]) => [name, id])));
 
