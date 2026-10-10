@@ -53,7 +53,7 @@ export interface InvasionDefinition {
   first_day_attempts: number;
   stages: InvasionStage[];
 }
-export interface DerivedCurrencyRule { from: string; to: string; multiplier: number }
+export interface DerivedCurrencyRule { from: string; to: string; multiplier: number; source?: '' | 'MinigameDrop' }
 export interface InvasionRewards {
   currencies: EventAmounts;
   eleph: EventAmounts;
@@ -67,7 +67,7 @@ export interface EventReward {
   amount?: number;
 }
 export interface ShopItem extends EventReward { cost: number; default?: number; locked?: boolean; overflow?: boolean; overflow_cap?: number }
-export interface PointReward extends EventReward { points: number }
+export interface PointReward { id?: string | number; type?: string; count: number; amount?: number; points: number }
 export interface BoxCycle { cycle: string[]; rewards: (EventReward & { amount: number })[] }
 export interface BoxEvent { boxes: BoxCycle[]; box_clear_cost: number }
 export interface CardDraw { icon: string; chance: number; chance4?: number; drops: EventAmounts }

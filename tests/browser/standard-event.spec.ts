@@ -26,6 +26,15 @@ const honorableTime = (honorableEvent.reset_time + 3 * 86400 + 3600) * 1000;
 const serenadeId = 'serenade-promenade-rerun';
 const serenadeEvent = decodeStandardEvent(currentEvents[serenadeId], serenadeId);
 const serenadeTime = (serenadeEvent.reset_time + 3 * 86400 + 3600) * 1000;
+const winterId = 'winter-skies-renaissance';
+const winterEvent = decodeStandardEvent(currentEvents[winterId], winterId);
+const winterTime = (winterEvent.reset_time + 3 * 86400 + 3600) * 1000;
+const descentId = 'descent-of-five-senses-rerun';
+const descentEvent = decodeStandardEvent(currentEvents[descentId], descentId);
+const descentTime = (descentEvent.reset_time + 3 * 86400 + 3600) * 1000;
+const railroadId = 'railroad-runaway';
+const railroadEvent = decodeStandardEvent(currentEvents[railroadId], railroadId);
+const railroadTime = (railroadEvent.reset_time + 3 * 86400 + 3600) * 1000;
 
 function savedPlan() {
   const plan = decodeEventPlan({ futureSetting: { keep: true } }, event);
@@ -254,6 +263,105 @@ test('Serenade Promenade rerun calculates capped overflow Eleph and keeps legacy
   await expect(overflowPurchase).toHaveAttribute('max', '999');
   await expect(overflowPurchase).toBeDisabled();
   await expect(page.getByRole('link', { name: 'Open legacy tools', exact: true })).toHaveAttribute('href', '/planner/events.html');
+});
+
+test('Winter Skies preserves point thresholds and derives Event Points from its shop', async ({ page }) => {
+  const plan = decodeEventPlan(undefined, winterEvent);
+  const save = { exportVersion: 2, futureField: { keep: true }, events_data: { [winterId]: plan } };
+  await page.clock.setFixedTime(winterTime);
+  await page.addInitScript((data) => localStorage.setItem('save-data', JSON.stringify(data)), save);
+  await page.goto('/planner/event-planner/');
+  await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
+  await page.locator(`[data-event-id="${winterId}"]`).click();
+  await expect(page.getByRole('heading', { name: 'Winter Skies Renaissance', exact: true })).toBeVisible();
+
+  await page.locator('[data-event-tab="Points"]').click();
+  const countOnlyTier = page.locator('[data-event-point="100"]');
+  await expect(countOnlyTier).toContainText('×12');
+  await expect(countOnlyTier.locator('img')).toHaveCount(0);
+  await countOnlyTier.click();
+  await page.locator('[data-event-point="15000"]').click();
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('save-data')!).events_data['winter-skies-renaissance'].point_target)).toBe(15000);
+
+  await page.locator('[data-event-tab="Targets"]').click();
+  await page.locator('[data-event-mode="Shop"]').click();
+  await page.locator('[data-event-tab="Shop"]').click();
+  await page.locator('[data-event-shop-tab="Cultural_Book_Sample"]').click();
+  for (const item of winterEvent.shops.Cultural_Book_Sample) {
+    const purchase = page.locator(`[data-event-purchase="${item.id}"] input`);
+    await purchase.fill('0');
+    await purchase.press('Tab');
+  }
+  const pyroxenePurchase = page.locator('[data-event-purchase="Pyroxene-120"] input');
+  await pyroxenePurchase.fill('10');
+  await pyroxenePurchase.press('Tab');
+  const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('save-data')!).events_data['winter-skies-renaissance']);
+  expect(stored.currency_needed.Cultural_Book_Sample).toBe(40);
+  expect(stored.currency_needed.Event_Point).toBe(4800);
+
+  await page.locator('[data-event-tab="Owned"]').click();
+  const owned = page.locator('input[data-event-currency="Event_Point"]');
+  await owned.fill('1000');
+  await owned.press('Tab');
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('save-data')!).events_data['winter-skies-renaissance'].currency_owned.Event_Point)).toBe(1000);
+  await expect(page.getByRole('link', { name: 'Open legacy tools', exact: true })).toHaveAttribute('href', '/planner/events.html');
+});
+
+test('Descent rerun derives its Voucher target from Firecracker purchases and keeps Firecrackers out of Owned', async ({ page }) => {
+  const plan = decodeEventPlan(undefined, descentEvent);
+  const save = { exportVersion: 2, events_data: { [descentId]: plan } };
+  await page.clock.setFixedTime(descentTime);
+  await page.addInitScript((data) => {
+    if (!localStorage.getItem('save-data')) localStorage.setItem('save-data', JSON.stringify(data));
+  }, save);
+  await page.goto('/planner/event-planner/');
+  await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
+  await page.locator(`[data-event-id="${descentId}"]`).click();
+  await expect(page.getByRole('heading', { name: 'Descent of the Five Senses', exact: true })).toBeVisible();
+
+  await page.locator('[data-event-tab="Shop"]').click();
+  await page.locator('[data-event-shop-tab="Moonlight_Festival_Firecrackers"]').click();
+  for (const item of descentEvent.shops.Moonlight_Festival_Firecrackers) {
+    if (String(item.id) === 'Pyroxene-1200') continue;
+    const purchase = page.locator(`[data-event-purchase="${String(item.id)}"] input`);
+    await purchase.fill('0');
+    await purchase.press('Tab');
+  }
+  let stored = await page.evaluate(() => JSON.parse(localStorage.getItem('save-data')!).events_data['descent-of-five-senses-rerun']);
+  expect(stored.currency_needed.Moonlight_Festival_Firecrackers).toBe(40);
+  expect(stored.currency_needed.Moonlight_Festival_Voucher).toBe(10800);
+
+  await page.locator('[data-event-tab="Owned"]').click();
+  await expect(page.locator('input[data-event-currency="Moonlight_Festival_Firecrackers"]')).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'Open legacy tools', exact: true })).toHaveAttribute('href', '/planner/events.html');
+
+  await page.reload();
+  await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
+  await page.locator(`[data-event-id="${descentId}"]`).click();
+  stored = await page.evaluate(() => JSON.parse(localStorage.getItem('save-data')!).events_data['descent-of-five-senses-rerun']);
+  expect(stored.currency_needed.Moonlight_Festival_Voucher).toBe(10800);
+});
+
+test('Railroad Runaway is available in the supported archive and keeps the legacy page available', async ({ page }) => {
+  const plan = decodeEventPlan(undefined, railroadEvent);
+  const save = { exportVersion: 2, events_data: { [railroadId]: plan } };
+  await page.clock.setFixedTime(railroadTime);
+  await page.addInitScript((data) => localStorage.setItem('save-data', JSON.stringify(data)), save);
+  await page.goto('/planner/event-planner/');
+  await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
+  await page.locator(`[data-event-id="${railroadId}"]`).click();
+  await expect(page.getByRole('heading', { name: 'Highlander Railroad Runaway', exact: true })).toBeVisible();
+  await expect(page.locator('[data-event-tab]')).toHaveCount(6);
+
+  await page.locator('[data-event-tab="Shop"]').click();
+  await expect(page.locator('[data-event-shop-tab="Iron_Pipe"]')).toBeVisible();
+  await page.locator('[data-event-tab="Owned"]').click();
+  await expect(page.locator('input[data-event-currency="Iron_Pipe"]')).toHaveCount(0);
+  await expect(page.locator('input[data-event-currency="Highlander_Commemorative_Sticker"]')).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Open legacy tools', exact: true })).toHaveAttribute('href', '/planner/events.html');
+  await page.getByRole('link', { name: 'Open legacy tools', exact: true }).click();
+  await expect(page.locator('#events-list')).toBeVisible();
+  expect(await page.evaluate('location.pathname')).toBe('/planner/events.html');
 });
 
 test('cross-tab event changes block stale edits but unrelated save changes are retained', async ({ context }) => {

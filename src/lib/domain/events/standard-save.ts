@@ -11,7 +11,7 @@ import type { EventEnergySettings } from './types';
 import type { BoxCycle, DerivedCurrencyRule, EventMode, EventPlan, PointReward, SavedAmounts, ShopItem, StandardEvent } from './standard-types';
 
 export interface EventEntry { id: string; name: string; icon: string; comingSoon: boolean; event: StandardEvent | null; archived?: boolean }
-export const standardEventIds = ['lore-pursuit-s2', 'box-shadow-looming-rerun', 'box-shadow-looming', 'secret-midnight-party', 'secret-midnight-party-rerun', 'honorable-sea-showdown', 'serenade-promenade-rerun'];
+export const standardEventIds = ['lore-pursuit-s2', 'box-shadow-looming-rerun', 'box-shadow-looming', 'secret-midnight-party', 'secret-midnight-party-rerun', 'honorable-sea-showdown', 'serenade-promenade-rerun', 'winter-skies-renaissance', 'descent-of-five-senses-rerun', 'railroad-runaway'];
 export const boxEventIds = ['moonlight-dream', 'pandemic-hazard', '0068-opera-with-love-rerun', 'say-bing-rerun', 'kivotos-unsolved-mysteries'];
 export const cardEventIds = ['get-hyped-and-march-on-rerun', 'art-for-whom'];
 export const diceEventIds = ['occult-research-society'];
@@ -25,10 +25,18 @@ const secretMidnightPartyCurrencyRule: DerivedCurrencyRule = {
 const honorableSeaShowdownCurrencyRule: DerivedCurrencyRule = {
   from: 'Wooden_Doll_(Renge)', to: 'Wooden_Doll_(Yukari)', multiplier: 270
 };
+const winterSkiesRenaissanceCurrencyRule: DerivedCurrencyRule = {
+  from: 'Cultural_Book_Sample', to: 'Event_Point', multiplier: 120
+};
+const descentOfFiveSensesRerunCurrencyRule: DerivedCurrencyRule = {
+  from: 'Moonlight_Festival_Firecrackers', to: 'Moonlight_Festival_Voucher', multiplier: 270, source: 'MinigameDrop'
+};
 const derivedCurrencyRulesByEvent: Record<string, DerivedCurrencyRule[]> = {
   'secret-midnight-party': [secretMidnightPartyCurrencyRule],
   'secret-midnight-party-rerun': [secretMidnightPartyCurrencyRule],
-  'honorable-sea-showdown': [honorableSeaShowdownCurrencyRule]
+  'honorable-sea-showdown': [honorableSeaShowdownCurrencyRule],
+  'winter-skies-renaissance': [winterSkiesRenaissanceCurrencyRule],
+  'descent-of-five-senses-rerun': [descentOfFiveSensesRerunCurrencyRule]
 };
 
 function number(value: unknown, label: string, max = Infinity): number {
@@ -114,12 +122,16 @@ export function decodeStandardEvent(value: unknown, eventId?: string): StandardE
   if (!isRecord(value.currencies)) throw new Error('Invalid event currencies.');
   for (const [key, currency] of Object.entries(value.currencies)) {
     if (!isRecord(currency) || typeof currency.shortname !== 'string') throw new Error('This currency requires the legacy planner.');
-    const supportedDerivedCurrencySource = derivedCurrencyRules?.some((rule) => rule.from === key && currency.source === '');
+    const supportedDerivedCurrencySource = derivedCurrencyRules?.some((rule) =>
+      rule.from === key && currency.source === (rule.source ?? ''));
+    const supportedRailroadMinigameCurrency = eventId === 'railroad-runaway' &&
+      key === 'Iron_Pipe' && currency.source === 'MinigameDrop';
     if ((currency.source !== 'StageDrop' &&
       // The legacy Lessons/Invasion definitions omit the source on Event_Point.
       !((lessons || invasion) && key === 'Event_Point' && currency.source === undefined) &&
       !(boxes && currency.source === 'BoxPull') && !(cards && currency.source === 'CardPull') &&
-      !(omikuji && (currency.source === 'ShopPurchase' || currency.source === 'ShopBuy')) && !supportedDerivedCurrencySource)) {
+      !(omikuji && (currency.source === 'ShopPurchase' || currency.source === 'ShopBuy')) &&
+      !supportedDerivedCurrencySource && !supportedRailroadMinigameCurrency)) {
       throw new Error('This currency requires the legacy planner.');
     }
     const currencyIcon = currency.icon ?? ((lessons || invasion) && key === 'Event_Point' ? 'Event_Point.png' : undefined);
@@ -176,8 +188,14 @@ export function decodeStandardEvent(value: unknown, eventId?: string): StandardE
       return item;
     });
   }
+  if (eventId === 'railroad-runaway' &&
+    (currencies.Highlander_Commemorative_Sticker?.source !== 'StageDrop' ||
+      !value.currency_targets.includes('Highlander_Commemorative_Sticker') ||
+      currencies.Iron_Pipe?.source !== 'MinigameDrop' || !shops.Iron_Pipe?.length)) {
+    throw new Error('Invalid Railroad Runaway minigame reward configuration.');
+  }
   for (const rule of derivedCurrencyRules ?? []) {
-    if (!currencies[rule.from] || currencies[rule.from].source !== '' ||
+    if (!currencies[rule.from] || currencies[rule.from].source !== (rule.source ?? '') ||
       currencies[rule.to]?.source !== 'StageDrop' || !value.currency_targets.includes(rule.to) ||
       !shops[rule.from]?.length || !Number.isFinite(rule.multiplier) || rule.multiplier <= 0) {
       throw new Error('Invalid derived event currency rule.');
@@ -239,7 +257,16 @@ export function decodeStandardEvent(value: unknown, eventId?: string): StandardE
       if (!isRecord(tier)) throw new Error('Invalid event point tier.');
       const identified = tier.id === undefined && typeof tier.type === 'string' &&
         ['Credit', 'Eligma', 'SecretTech', 'Pyroxene', 'Energy'].includes(tier.type) ? { ...tier, id: tier.type } : tier;
-      points.push({ ...reward(identified), points: eventInteger(tier.points, 'point tier') });
+      const pointTier = eventInteger(tier.points, 'point tier');
+      if (identified.type === undefined && identified.id === undefined) {
+        if (eventId !== 'winter-skies-renaissance') throw new Error('Unclassified point rewards require the reviewed Winter Skies event.');
+        // Winter Skies has count-only tiers in the legacy data. They are selectable
+        // point thresholds, but the legacy reward summary does not classify them.
+        points.push({ points: pointTier, count: eventInteger(tier.count, 'point reward count') });
+      } else {
+        const item = reward(identified);
+        points.push({ id: item.id, type: item.type, count: item.count, ...(item.amount === undefined ? {} : { amount: item.amount }), points: pointTier });
+      }
     }
   }
   const result: StandardEvent = {

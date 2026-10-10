@@ -63,7 +63,10 @@ describe('standard event compatibility and frozen reward outputs', () => {
       const legacyRequirements = old.requirements as EventRequirements;
       const expected = { ...legacyRequirements, needed: { ...legacyRequirements.needed } };
       for (const rule of event.derivedCurrencyRules ?? []) delete expected.needed[rule.from];
-      if (event.derivedCurrencyRules?.length && String(expected.pointTarget) === 'NaN') expected.pointTarget = Number.NaN;
+      for (const [currency, amount] of Object.entries(expected.needed)) {
+        if (String(amount) === 'NaN') expected.needed[currency] = Number.NaN;
+      }
+      if (String(expected.pointTarget) === 'NaN') expected.pointTarget = Number.NaN;
       expect(eventRequirements(event, plan)).toEqual(expected);
     });
     for (const owned of [false, true]) for (const includeShop of [false, true]) for (const includePoints of [false, true]) {
@@ -213,6 +216,213 @@ describe('standard event compatibility and frozen reward outputs', () => {
     expect(eventRequirements(event, { ...edited, currency_owned: { [rule.to]: '500' } }).needed[rule.to]).toBe(10300);
     expect(eventRequirements(event, { ...edited, currency_owned: { [rule.from]: '1' } }).needed[rule.to]).toBe(10800);
     expect(() => decodeStandardEvent(rawEvents[id])).toThrow('This currency requires the legacy planner');
+  });
+
+  it('preserves Winter Skies shop conversion, first-clear and Owned Event Points, and count-only point tiers', () => {
+    const id = 'winter-skies-renaissance';
+    const event = decodeStandardEvent(rawEvents[id], id);
+    const rule = event.derivedCurrencyRules?.[0];
+    if (!rule || rule.from !== 'Cultural_Book_Sample' || rule.to !== 'Event_Point' || rule.multiplier !== 120) {
+      throw new Error('Missing Winter Skies currency rule.');
+    }
+
+    const defaults = decodeEventPlan(undefined, event);
+    expect(defaults.currency_needed[rule.from]).toBe(170);
+    expect(defaults.currency_needed[rule.to]).toBe(20400);
+    const initial = eventRequirements(event, defaults);
+    expect(initial.initial.rewards).toMatchObject({ Event_Point: 3390, Critique_Notebook: 1543, Bundle_of_Receipts: 1543 });
+    expect(initial.needed[rule.to]).toBe(17010);
+    expect(initial.pointTarget).toBe(11610);
+
+    const edited = decodeEventPlan({
+      ...defaults,
+      currency_needed: { ...defaults.currency_needed, [rule.from]: 40, [rule.to]: 999999 }
+    }, event);
+    expect(edited.currency_needed[rule.to]).toBe(4800);
+    const expectedLegacyRequirements = (plan: EventPlan): EventRequirements => {
+      const old = reference(id, plan).requirements as EventRequirements;
+      const expected = { ...old, needed: { ...old.needed } };
+      delete expected.needed[rule.from];
+      return expected;
+    };
+    expect(eventRequirements(event, edited)).toEqual(expectedLegacyRequirements(edited));
+    expect(eventRequirements(event, edited).needed[rule.to]).toBe(1410);
+
+    const ownedPlan = { ...edited, currency_owned: { [rule.to]: '1000' } };
+    const owned = eventRequirements(event, ownedPlan);
+    expect(owned).toEqual(expectedLegacyRequirements(ownedPlan));
+    expect(owned.needed[rule.to]).toBe(3800);
+    expect(owned.pointTarget).toBe(14000);
+
+    const untyped = event.point_rewards?.filter((tier) => tier.type === undefined);
+    expect(untyped?.map((tier) => [tier.points, tier.count])).toEqual([
+      [100, 12], [200, 4], [300, 4], [600, 12], [700, 4], [1000, 10], [1600, 4], [1800, 10],
+      [3000, 4], [4200, 3], [5000, 3], [6000, 4], [7000, 3], [11000, 4], [13000, 2]
+    ]);
+    expect(decodeEventCatalog(config, true).find((entry) => entry.id === id)).toMatchObject({
+      name: 'Winter Skies Renaissance', archived: true, comingSoon: false
+    });
+    expect(() => decodeStandardEvent(rawEvents[id])).toThrow('This currency requires the legacy planner');
+  });
+
+  it('saves the Winter Skies derived Event Point requirement after Cultural Book Sample shop edits', async () => {
+    const id = 'winter-skies-renaissance';
+    const storage = new MemoryStorage();
+    const planner = await store(storage, id);
+    const event = get(planner).catalog.find((entry) => entry.id === id)?.event;
+    if (!event) throw new Error('Missing Winter Skies event.');
+
+    for (const item of event.shops.Cultural_Book_Sample) {
+      expect(planner.setPurchase('Cultural_Book_Sample', String(item.id), 0)).toBe(true);
+    }
+    expect(planner.setPurchase('Cultural_Book_Sample', 'Pyroxene-120', 10)).toBe(true);
+    const saved = JSON.parse(storage.getItem('save-data')!).events_data[id];
+    expect(saved.currency_needed.Cultural_Book_Sample).toBe(40);
+    expect(saved.currency_needed.Event_Point).toBe(4800);
+  });
+
+  it('preserves the Descent rerun Firecracker-to-Voucher shop conversion and gates MinigameDrop to this rule', () => {
+    const id = 'descent-of-five-senses-rerun';
+    const event = decodeStandardEvent(rawEvents[id], id);
+    const rule = event.derivedCurrencyRules?.[0];
+    if (!rule || rule.from !== 'Moonlight_Festival_Firecrackers' || rule.to !== 'Moonlight_Festival_Voucher' ||
+      rule.multiplier !== 270 || rule.source !== 'MinigameDrop') {
+      throw new Error('Missing Descent rerun currency rule.');
+    }
+
+    const defaults = decodeEventPlan(undefined, event);
+    expect(defaults.currency_needed[rule.from]).toBe(200);
+    expect(defaults.currency_needed[rule.to]).toBe(54000);
+    const initial = eventRequirements(event, defaults);
+    expect(initial.initial.rewards).toMatchObject({
+      Moonlight_Festival_Voucher: 10330,
+      Moonlight_Festival_Mooncake: 1541,
+      Special_Nutritional_Supplement: 1531
+    });
+    expect(initial.needed).toMatchObject({
+      Moonlight_Festival_Voucher: 43670,
+      Moonlight_Festival_Mooncake: 11404,
+      Special_Nutritional_Supplement: 14119
+    });
+    expect(initial.needed).not.toHaveProperty(rule.from);
+
+    const edited = decodeEventPlan({
+      ...defaults,
+      currency_needed: { ...defaults.currency_needed, [rule.from]: 40, [rule.to]: 18000 }
+    }, event);
+    expect(edited.currency_needed[rule.to]).toBe(10800);
+    expect(eventRequirements(event, edited).needed[rule.to]).toBe(470);
+
+    const zero = decodeEventPlan({
+      ...edited,
+      currency_needed: { ...edited.currency_needed, [rule.from]: 0 }
+    }, event);
+    expect(zero.currency_needed[rule.to]).toBe(0);
+    expect(eventRequirements(event, zero).needed[rule.to]).toBe(0);
+
+    const owned = eventRequirements(event, {
+      ...edited,
+      currency_owned: {
+        [rule.to]: '500',
+        Moonlight_Festival_Mooncake: '100',
+        Special_Nutritional_Supplement: '200'
+      }
+    });
+    expect(owned.needed).toMatchObject({
+      Moonlight_Festival_Voucher: 10300,
+      Moonlight_Festival_Mooncake: 12845,
+      Special_Nutritional_Supplement: 15450
+    });
+    expect(owned.needed).not.toHaveProperty(rule.from);
+    expect(decodeEventCatalog(config, true).find((entry) => entry.id === id)).toMatchObject({
+      name: 'Descent of the Five Senses', archived: true, comingSoon: false
+    });
+    expect(() => decodeStandardEvent(rawEvents[id])).toThrow('This currency requires the legacy planner');
+    expect(() => decodeStandardEvent(rawEvents[id], 'winter-skies-renaissance')).toThrow('This currency requires the legacy planner');
+  });
+
+  it('saves the Descent rerun derived Voucher target after Firecracker shop edits', async () => {
+    const id = 'descent-of-five-senses-rerun';
+    const storage = new MemoryStorage();
+    const planner = await store(storage, id);
+    const event = get(planner).catalog.find((entry) => entry.id === id)?.event;
+    if (!event) throw new Error('Missing Descent rerun event.');
+
+    for (const item of event.shops.Moonlight_Festival_Firecrackers) {
+      expect(planner.setPurchase('Moonlight_Festival_Firecrackers', String(item.id), 0)).toBe(true);
+    }
+    expect(planner.setPurchase('Moonlight_Festival_Firecrackers', 'Pyroxene-1200', 1)).toBe(true);
+    const saved = JSON.parse(storage.getItem('save-data')!).events_data[id];
+    expect(saved.currency_needed.Moonlight_Festival_Firecrackers).toBe(40);
+    expect(saved.currency_needed.Moonlight_Festival_Voucher).toBe(10800);
+    expect(decodeEventPlan(saved, event).currency_needed.Moonlight_Festival_Voucher).toBe(10800);
+  });
+
+  it('preserves Railroad Runaway Sticker milestones, repeat rewards, and the legacy MinigameDrop feasibility edge', () => {
+    const id = 'railroad-runaway';
+    const event = decodeStandardEvent(rawEvents[id], id);
+    expect(event.currencies.Iron_Pipe.source).toBe('MinigameDrop');
+    expect(event.derivedCurrencyRules).toBeUndefined();
+    expect(decodeEventCatalog(config, true).find((entry) => entry.id === id)).toMatchObject({
+      name: 'Highlander Railroad Runaway', archived: true, comingSoon: false
+    });
+    expect(() => decodeStandardEvent(rawEvents[id])).toThrow('This currency requires the legacy planner');
+    expect(() => decodeStandardEvent(rawEvents[id], 'descent-of-five-senses-rerun')).toThrow('This currency requires the legacy planner');
+
+    const defaults = decodeEventPlan(undefined, event);
+    expect(defaults.currency_needed).toMatchObject({
+      Highlander_Commemorative_Sticker: 22000,
+      Freight_Train_Route_Map: 16095,
+      Mysterious_Cargo: 18200,
+      Iron_Pipe: 215
+    });
+    const initial = eventRequirements(event, defaults);
+    expect(initial.initial.cost).toBe(295);
+    expect(initial.initial.rewards).toMatchObject({
+      Highlander_Commemorative_Sticker: 2230,
+      Freight_Train_Route_Map: 1531,
+      Mysterious_Cargo: 1531
+    });
+    expect(initial.needed).toMatchObject({
+      Highlander_Commemorative_Sticker: 19770,
+      Freight_Train_Route_Map: 14564,
+      Mysterious_Cargo: 16669,
+      Iron_Pipe: Number.NaN
+    });
+
+    const thresholds = [2250, 7200, 11850, 16050, 19350, 21900];
+    for (const stickers of [2249, 2250, 2251, 7199, 7200, 7201, 11849, 11850, 11851,
+      16049, 16050, 16051, 19349, 19350, 19351, 21899, 21900, 21901,
+      25199, 25200, 25201]) {
+      const plan = decodeEventPlan(undefined, event);
+      plan.optimisation_type = 'Manual';
+      plan.optimisation_options = {};
+      plan.currency_owned = { Highlander_Commemorative_Sticker: String(stickers) };
+      const legacy = reference(id, plan, false, false, {});
+      const legacySummary = legacy.summary as EventSummary;
+      const summary = summarizeEventRuns(event, plan, eventRequirements(event, plan), {}, legacy.energy, {}, false, false, metadata);
+      const milestones = thresholds.filter((threshold) => stickers >= threshold).length;
+      const repeats = stickers >= 21900 ? Math.floor((stickers - 21900) / 3300) : 0;
+      const expectedEleph = milestones * 40 + repeats * 6;
+      const expectedPipes = milestones === 0 ? 0 : 15 + (milestones - 1) * 40 + repeats * 10;
+      expect(summary.eleph['16017'] ?? 0, `${stickers} Stickers Eleph`).toBe(expectedEleph);
+      expect(summary.currencies.Iron_Pipe ?? 0, `${stickers} Stickers Iron Pipes`).toBe(expectedPipes);
+      expect(summary.eleph['16017'] ?? 0).toBe(legacySummary.eleph['16017'] ?? 0);
+      expect(summary.currencies.Iron_Pipe ?? 0).toBe(legacySummary.currencies.Iron_Pipe ?? 0);
+    }
+
+    const editedTarget = decodeEventPlan(undefined, event);
+    editedTarget.optimisation_type = 'Shop';
+    editedTarget.currency_needed.Iron_Pipe = 216;
+    editedTarget.currency_owned = {
+      Highlander_Commemorative_Sticker: '22000', Freight_Train_Route_Map: '16095', Mysterious_Cargo: '18200'
+    };
+    const legacy = reference(id, editedTarget, true, true, {});
+    const summary = summarizeEventRuns(event, editedTarget, eventRequirements(event, editedTarget), {}, legacy.energy, {}, true, true, metadata);
+    expect(summary.eleph['16017']).toBe(240);
+    expect(summary.currencies.Iron_Pipe).toBe(215);
+    expect(summary.feasible).toBe(true);
+    expect(summary.feasible).toBe(!legacy.infeasible);
   });
 
   it('preserves the Serenade Promenade rerun overflow cap and remaps 10058 Eleph into existing 16016 rewards', () => {

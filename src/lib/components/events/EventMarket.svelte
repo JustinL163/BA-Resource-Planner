@@ -173,15 +173,19 @@
   <section class="market">
     <div class="point-grid">
       {#each event.point_rewards ?? [] as reward, index (`${reward.points}:${reward.id}:${index}`)}
-        {@const product = item(reward)}
+        {@const product = reward.type !== undefined && reward.id !== undefined ? item(reward as EventReward) : null}
         <button type="button" class="point-tier"
+          class:untyped={product === null}
           class:selected={reward.points <= selectedPointTarget}
           class:obtained={reward.points > selectedPointTarget && reward.points <= pointsObtained}
           data-event-point={reward.points} aria-pressed={reward.points <= selectedPointTarget}
+          aria-label={product
+            ? `${formatAmount(reward.points)} ${t('label-points')}: ${product.name} ×${formatAmount(reward.count)}`
+            : `${formatAmount(reward.points)} ${t('label-points')}: ${t('label-rewards')} ×${formatAmount(reward.count)}`}
           onclick={() => actions.setPointTarget(reward.points)}>
           <strong class="threshold">{formatAmount(reward.points)}</strong>
-          {#if product.image}<img src={product.image} alt="" />{/if}
-          <span>{product.name}</span>
+          {#if product?.image}<img src={product.image} alt="" />{/if}
+          {#if product}<span>{product.name}</span>{/if}
           <strong>×{formatAmount(reward.count)}</strong>
         </button>
       {/each}
@@ -221,6 +225,7 @@
   .initial-clear .drop { min-width: 0; white-space: normal; overflow-wrap: anywhere; }
   .point-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.35rem; }
   .point-tier { display: grid; grid-template-columns: auto 30px minmax(0, 1fr) auto; align-items: center; gap: 0.35rem; min-width: 0; padding: 0.4rem; text-align: left; font-size: 0.75rem; }
+  .point-tier.untyped { grid-template-columns: auto auto; justify-content: start; }
   .point-tier img { width: 30px; height: 30px; object-fit: contain; }
   .point-tier span { min-width: 0; overflow-wrap: anywhere; }
   .point-tier.selected { background: #7c5b7d44; border-color: #7c5b7d; }

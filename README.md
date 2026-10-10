@@ -87,6 +87,17 @@ derived stage target are both retained in saved event data.
 The Serenade Promenade rerun is also in the reviewed archive: its capped Event
 Point overflow purchase converts leftover points into Mine (Pop Idol) Eleph,
 and shop 10058 Eleph is combined with 16016 point and overflow rewards.
+Winter Skies Renaissance is available in the same earlier-event list. Its
+Cultural Book Sample shop cost converts to Event Points at 120:1, its point
+target and reward thresholds remain selectable, and the legacy count-only tiers
+remain unclassified in the reward summary.
+The Descent of the Five Senses rerun is also supported there. Its Firecracker
+shop spend converts to farmable Moonlight Festival Vouchers at 270:1; Firecrackers
+remain a shop input and are not treated as a stage or Owned currency.
+Highlander Railroad Runaway is also available in the supported archive. Its
+Sticker thresholds add Highlander Hikari Eleph and Iron Pipes; Iron Pipe remains
+a minigame reward outside solver and Owned controls, matching the legacy
+feasibility timing. The `/planner/events.html` fallback remains available.
 Unreviewed special events are explicitly gated to the legacy planner until their
 complete mechanics are migrated;
 `standardEventIds`,
@@ -101,7 +112,9 @@ Rewards** display toggle. **Show earlier supported events** reveals the reviewed
 earlier events without changing the current event list: Moonlight Dream,
 Pandemic Hazard, 0068 Opera with Love rerun, Say-Bing rerun, Kivotos Unsolved
 Mysteries, both BOX Shadow Looming IDs, Secret Midnight Party with its rerun,
-Fair and Square Aquatic Showdown, and the Serenade Promenade rerun.
+Fair and Square Aquatic Showdown, the Serenade Promenade rerun, Winter Skies
+Renaissance, the Descent of the Five Senses rerun, and Highlander Railroad
+Runaway.
 Cycle tabs retain the original
 alternating sets and repeating final set, with per-draw amount and stock shown
 separately. Box-shop currency targets convert to the exact required whole-box

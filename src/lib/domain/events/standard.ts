@@ -75,6 +75,10 @@ export function eventRequirements(event: StandardEvent, plan: EventPlan, invasio
       setOwn(needed, source.pull_currency, Math.max(cardPullRequirement(amount,
         positiveOwned(plan.currency_owned, source.pull_currency), initial.rewards[source.pull_currency] ?? 0) -
         invasionAmount(currency), 0));
+    } else if (event.eventId === 'railroad-runaway' && source.source === 'MinigameDrop') {
+      // The legacy planner subtracts a missing invasion amount for this source,
+      // leaving NaN. Its stage model and pre-transform feasibility check ignore it.
+      setOwn(needed, currency, Number.NaN);
     } else {
       const subtract = midEvent ? positiveOwned(plan.currency_owned, currency) : initial.rewards[currency] ?? 0;
       setOwn(needed, currency, Math.max(amount - subtract - invasionAmount(currency), 0));
@@ -242,7 +246,8 @@ export function summarizeEventRuns(
   if (typeof requirements.pointTarget !== 'number' ||
     (!Number.isFinite(requirements.pointTarget) && !Number.isNaN(requirements.pointTarget))) throw new Error('Invalid event point requirement.');
   for (const [name, amount] of Object.entries(requirements.needed)) {
-    if (['BoxPull', 'CardPull'].includes(event.currencies[name]?.source ?? '') && Number.isNaN(amount)) continue;
+    if ((['BoxPull', 'CardPull'].includes(event.currencies[name]?.source ?? '') ||
+      (event.eventId === 'railroad-runaway' && event.currencies[name]?.source === 'MinigameDrop')) && Number.isNaN(amount)) continue;
     if (!Number.isFinite(amount) || amount < 0) throw new Error(`Invalid required amount for "${name}".`);
   }
 
@@ -303,6 +308,27 @@ export function summarizeEventRuns(
   } else {
     for (const [name, amount] of Object.entries(requirements.initial.rewards)) {
       addAmount(currencies, name, finite(amount, `Initial reward "${name}"`), `Initial reward "${name}"`);
+    }
+  }
+
+  if (event.eventId === 'railroad-runaway') {
+    const stickers = finite(currencies.Highlander_Commemorative_Sticker ?? 0, 'Highlander Commemorative Stickers');
+    const thresholds = [2250, 7200, 11850, 16050, 19350, 21900];
+    if (stickers >= thresholds[0]) {
+      // Railroad Runaway's legacy minigame converts Sticker milestones into
+      // Iron Pipes and Highlander Hikari Eleph after farm feasibility is checked.
+      setOwn(eleph, '16017', 40);
+      setOwn(currencies, 'Iron_Pipe', 15);
+      for (const threshold of thresholds.slice(1)) {
+        if (stickers < threshold) continue;
+        addAmount(eleph, '16017', 40, 'Railroad Runaway Eleph milestone');
+        addAmount(currencies, 'Iron_Pipe', 40, 'Railroad Runaway Iron Pipe milestone');
+      }
+      if (stickers >= thresholds[thresholds.length - 1]) {
+        const repeatRewards = Math.floor((stickers - thresholds[thresholds.length - 1]) / 3300);
+        addAmount(eleph, '16017', repeatRewards * 6, 'Railroad Runaway repeat Eleph');
+        addAmount(currencies, 'Iron_Pipe', repeatRewards * 10, 'Railroad Runaway repeat Iron Pipes');
+      }
     }
   }
 
@@ -374,6 +400,9 @@ export function summarizeEventRuns(
   }
 
   if (includePoints && event.point_rewards) for (const tier of event.point_rewards) {
+    // Count-only legacy tiers are visible/selectable thresholds but have no
+    // recognized type, so AddPointRewards deliberately ignores their counts.
+    if (tier.type === undefined) continue;
     const points = finite(tier.points, 'Point reward tier');
     const count = finite(tier.count, `Point reward "${String(tier.id)}"`);
     if (points > currencies.Event_Point) break;

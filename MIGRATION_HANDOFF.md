@@ -1,6 +1,6 @@
 # Blue Archive Planner migration handoff
 
-As of 2026-10-10. This file is intended to let a fresh Codex app session resume
+As of 2026-10-11. This file is intended to let a fresh Codex app session resume
 the migration without relying on chat history. Read it together with `README.md`
 and inspect the worktree before making changes.
 
@@ -8,13 +8,16 @@ and inspect the worktree before making changes.
 
 - Repository: `JustinL163/BA-Resource-Planner`.
 - Current branch/worktree: `justinl163-didactic-telegram`.
-- Latest commit: `b5072a7` (`Migrate guessing game to Svelte`).
+- Latest commit: `86a1799` (`Migrate additional event planner stages`).
 - The Lessons and Valentine Patrol rerun Invasion migrations are already in
   history; do not cherry-pick or reapply them.
 - The Raid Videos migration and UI refinement are committed in `6e98c73`.
 - The Tournament Tracker migration is committed in `f3126b9`.
 - The Guessing Game migration is committed in `b5072a7`; push status is not
   checked.
+- The broader event slices through Serenade Promenade are committed in
+  `86a1799`; Winter Skies Renaissance and the Descent of the Five Senses rerun
+  are prior uncommitted slices. Railroad Runaway is the current migration slice.
 
 ## User goal and constraints
 
@@ -98,41 +101,40 @@ existing game worker/cache lifecycle remains for the legacy page and is part of
 the final PWA transition. See verification results below. This slice is committed
 in `b5072a7`.
 
-The broader event audit added the original **BOX Shadow Looming** event to the
-Svelte planner as a separate ID from its already-supported rerun. Its standard
-stages, shops, and point rewards use the existing flow; the legacy
-`floor(Event_Point / 300) * 2 + 119 + 8` Eleph rule is isolated to the original
-ID. Unit parity covers the 0/299/300/599/600 point boundaries and confirms the
-rerun does not inherit the rule. This slice is verified in the current worktree
-and has not been committed. The targeted unit run passed (56 tests); see
-verification below for the complete checks.
+Commit `86a1799` adds the broader standard-event slices through the original
+**BOX Shadow Looming**, both **Secret Midnight Party** IDs, **Honorable Sea
+Showdown**, and the archived **Serenade Promenade rerun**. The BOX event's
+`floor(Event_Point / 300) * 2 + 119 + 8` Eleph rule remains isolated from its
+rerun. Secret Midnight Party and Honorable Sea Showdown preserve their derived
+shop-to-stage currency rules and resave converted requirements after edits.
+Serenade Promenade preserves the capped 450-point overflow row and combines
+shop 10058 Eleph with 16016 point and overflow rewards.
 
-The **Secret Midnight Party** slice adds the event and its rerun to the same
-standard planner. Both preserve the legacy 270:1 conversion from the BOOM shop
-requirement to a Youkai stage requirement, recalculate and save the derived
-Youkai amount after shop edits, and subtract initial-clear or owned Youkai only
-after conversion. BOOM remains raw shop/save data and is not exposed as an owned
-or farmable stage currency. The legacy feasibility check treated the source-less
-BOOM requirement as if it had to be farmed, making otherwise satisfiable plans
-appear infeasible; the Svelte model intentionally checks only farmable stage
-currencies while retaining the legacy shop target and displayed rewards. This
-slice is verified in the current worktree and remains uncommitted.
+The current uncommitted **Winter Skies Renaissance** slice uses the standard
+event flow and preserves its 120:1 Cultural Book Sample-to-Event Point shop
+conversion, 15,000-point target, initial-clear and Owned deductions, and point
+reward tiers. Its 15 count-only tiers remain selectable but are not classified
+into reward totals, matching the legacy page. The old `/planner/events.html`
+page remains available.
 
-The **Fair and Square Aquatic Showdown** slice adds Honorable Sea Showdown as a
-standard event. It preserves the 270:1 Wooden Doll (Renge) shop-to-Yukari stage
-currency conversion, including recalculation and save after shop edits. The
-source-less shop currency remains raw purchase data; only the derived, farmable
-Yukari currency is subtracted for Owned mode and checked for feasibility. The
-slice is verified in the current worktree and remains uncommitted.
+The current uncommitted **Descent of the Five Senses rerun** slice uses the
+standard event flow and converts Firecracker shop spend into farmable Moonlight
+Festival Vouchers at 270:1. The default 200 Firecrackers therefore sets a
+54,000 Voucher requirement, overriding the Voucher metadata clear value; fresh
+initial clears leave 43,670 Vouchers, 11,404 Mooncakes, and 14,119 Nutritional
+Supplements to farm. Firecrackers remain a MinigameDrop shop input and are not
+treated as a stage-farmed or Owned currency. The source exception is limited to
+this event's explicit derived-currency rule. The old `/planner/events.html`
+page remains available.
 
-The archived **Serenade Promenade rerun** is now in the standard planner. Its
-Event Point Eleph overflow row is limited to 999 purchases at 450 points each;
-Currency mode derives the purchase count from leftover Event Points. Its shop
-10058 Eleph is moved into 16016 after point and shop rewards are accumulated,
-preserving existing 16016 rewards. Legacy calculated `overflow_Event_Point`
-save entries are discarded as derived state to avoid double counting. The shop
-receives the calculated overflow count for display. This slice is verified in
-the current worktree and remains uncommitted.
+The current uncommitted **Highlander Railroad Runaway** slice adds the event to
+the supported archive and converts Sticker milestones into Highlander Hikari
+Eleph and Iron Pipes. The six inclusive thresholds start at 2,250 Stickers;
+each additional 3,300 Stickers after 21,900 adds 6 Eleph and 10 Pipes. Iron Pipe
+remains a `MinigameDrop`, outside solver and Owned controls. As in the legacy
+planner, farm feasibility is checked before the reward transform, so a manually
+increased Pipe target is not rechecked after conversion. The old
+`/planner/events.html` page remains available.
 
 ## Recent completed stage
 
@@ -145,26 +147,21 @@ production-browser, and dev-browser baselines below; do not reimplement it.
 ## Remaining migration work, in suggested order
 
 1. **Broader event catalog/mechanics.** The current event file has 28 definitions;
-   20 are allowlisted for the Svelte planner and 8 stage/shop-looking definitions
+   23 are allowlisted for the Svelte planner and 5 stage/shop-looking definitions
    remain unreviewed:
-   `railroad-runaway`, `ive-alive-rerun`, `summer-sky's-promise`,
-   `sheside-outside-rerun`, `winter-skies-renaissance`,
-   `descent-of-five-senses-rerun`,
-   `game-dev-department-cleanup-mission`, and `lore-pursuit`. `old_events.json`
+   `ive-alive-rerun`, `summer-sky's-promise`,
+   `sheside-outside-rerun`, `game-dev-department-cleanup-mission`, and
+   `lore-pursuit`. `old_events.json`
    has 40 definitions; only its four Lessons entries and Valentine Patrol
    Invasion entry are in the generated archive.
    The remaining candidates have been audited against `planner/js/eventPlanner.js`;
-   field shape alone does not prove parity. The next contained slice is
-   **Winter Skies Renaissance**: its 120:1 Cultural Book Sample to Event Point
-   shop conversion fits the existing derived-currency rule, but its initial and
-   owned points, point target and reward tiers still need direct parity coverage.
-   **Descent of Five Senses rerun** has a MinigameDrop conversion; **Railroad Runaway** has a
-   threshold/repeat minigame reward transform; **I've aLIVE rerun** converts
-   Countdown Calendar into Event Points; and **Summer Sky's Promise** has a
-   threshold reward transform plus a source-less shop currency. Keep these and
-   other unfamiliar mechanics gated until their plan inputs and feasibility are
-   characterized. Keep Game Dev Department Cleanup Mission gated because its
-   uncapped Credit overflow produces invalid legacy totals.
+   field shape alone does not prove parity. The next contained candidate is
+   **I've aLIVE rerun**, which converts Countdown Calendar into Event Points.
+   **Summer Sky's Promise** has a threshold reward transform plus a source-less
+   shop currency. Keep these and other unfamiliar mechanics gated until their
+   plan inputs and feasibility are characterized. Keep Game Dev Department
+   Cleanup Mission gated because its uncapped Credit overflow produces invalid
+   legacy totals.
 
 2. **Resource-page residuals.** `README.md` notes optional/display controls that
    remain reachable only through the old planner. Before retiring
@@ -265,7 +262,7 @@ Honorable Sea Showdown continuation verification (2026-10-10):
 - The targeted `tests/unit/standard-event.test.ts` run passed all 104 tests,
   including the 270:1 Renge-to-Yukari conversion, edited shop-save values,
   Owned subtraction, legacy calculations, and Materials mode with a feasible
-  energy fixture. The slice remains uncommitted.
+  energy fixture. The slice is committed in `86a1799`.
 
 Serenade Promenade rerun continuation verification (2026-10-10):
 
@@ -280,6 +277,48 @@ Serenade Promenade rerun continuation verification (2026-10-10):
   and overflow rewards, and Currency-mode overflow boundaries from 0 through
   the 999-item cap.
 
+Winter Skies Renaissance continuation verification (2026-10-11):
+
+- `npm.cmd test`: 1,406 tests passed.
+- `npm.cmd run check`: 0 Svelte/TypeScript errors and warnings.
+- `npm.cmd run build`: static `adapter-static` build succeeds.
+- `npm.cmd run test:browser`: 131 production-preview browser tests passed,
+  including the count-only point-tier UI, shop conversion after edits, Owned
+  Event Points, and `/planner/events.html` fallback.
+- `npm.cmd run test:dev`: 13 Vite development-server tests passed.
+- The targeted `tests/unit/standard-event.test.ts` run passed all 142 tests.
+  Eight snapshots were added for the newly allowlisted event; frozen legacy
+  results confirm count-only point tiers do not add summary rewards.
+
+Descent of the Five Senses rerun continuation verification (2026-10-11):
+
+- `npm.cmd test`: 1,422 tests passed.
+- `npm.cmd run check`: 0 Svelte/TypeScript errors and warnings.
+- `npm.cmd run build`: static `adapter-static` build succeeds.
+- `npm.cmd run test:browser`: 132 production-preview browser tests passed,
+  including edited Firecracker purchases, save/reload, Owned filtering and the
+  `/planner/events.html` fallback.
+- `npm.cmd run test:dev`: 13 Vite development-server tests passed.
+- The targeted `tests/unit/standard-event.test.ts` run passed all 158 tests.
+  Eight snapshots were added for the newly allowlisted event. Legacy parity
+  confirms the 270:1 shop conversion, default 54,000 Voucher target, initial
+  clear deductions and Owned-currency deductions.
+
+Highlander Railroad Runaway continuation verification (2026-10-11):
+
+- `npm.cmd test`: 1,437 tests passed.
+- `npm.cmd run check`: 0 Svelte/TypeScript errors and warnings.
+- `npm.cmd run build`: static `adapter-static` build succeeds.
+- `npm.cmd run test:browser`: 133 production-preview browser tests passed,
+  including supported archive selection, MinigameDrop/Owned filtering, and the
+  `/planner/events.html` fallback.
+- `npm.cmd run test:dev`: 13 Vite development-server tests passed.
+- The targeted `tests/unit/standard-event.test.ts` run passed all 173 tests.
+  Eight snapshots were added for the newly allowlisted event. Legacy parity
+  covers the six Sticker thresholds, repeat boundaries at 21,900 and 25,200,
+  first-clear rewards, and the pre-transform feasibility check that can leave
+  an edited Iron Pipe target unmet.
+
 ## Resume prompt
 
 > Read `MIGRATION_HANDOFF.md` and `README.md`, then inspect the current branch and
@@ -287,10 +326,12 @@ Serenade Promenade rerun continuation verification (2026-10-10):
 > Videos, Tournament Tracker, and Guessing Game migrations are already present;
 > do not reapply them. The original BOX Shadow Looming event, Secret Midnight
 > Party pair, Fair and Square Aquatic Showdown, and Serenade Promenade rerun are
-> supported in the current worktree with legacy-parity coverage, but remain
-> uncommitted. The remaining event candidates have been audited; continue with
-> Winter Skies Renaissance, preserving its 120:1 Cultural Book Sample-to-Event
-> Point conversion, point target, and point-tier rewards. Keep unfamiliar mechanics gated
-> until parity is established. Preserve the legacy pages, workers and API
-> contracts. Add independent tests, run targeted plus full checks, and do not
-> commit or push unless explicitly asked.
+> supported with legacy-parity coverage and committed in `86a1799`. Winter
+> Skies Renaissance, Descent of the Five Senses rerun, and Highlander Railroad
+> Runaway are implemented in the current worktree with legacy parity and full
+> verification. Railroad converts Sticker milestones into Eleph and Iron Pipes,
+> while keeping the original pre-transform feasibility behavior.
+> Review the current diff and verification results, then continue with I've
+> aLIVE rerun. Keep unfamiliar mechanics gated until parity is established.
+> Preserve legacy pages, workers and API contracts. Add independent tests, run
+> targeted plus full checks, and do not commit or push unless explicitly asked.
