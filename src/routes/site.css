@@ -40,6 +40,7 @@ button, select { padding: 0.5rem 0.75rem; border-radius: 0.4rem; }
 button { cursor: pointer; }
 button:disabled, select:disabled { cursor: wait; }
 :focus-visible { outline: 3px solid #c8a0ef; outline-offset: 3px; }
+dialog:focus-visible { outline: none; outline-offset: 0; }
 
 .site {
   --background: #242424;
@@ -52,6 +53,17 @@ button:disabled, select:disabled { cursor: wait; }
   background: var(--background);
   color: var(--text);
   color-scheme: dark;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.site dialog,
+.site dialog * {
+  -webkit-user-select: none;
+  user-select: none;
+}
+.site :is(input, textarea, select, [contenteditable="true"], [role="textbox"]) {
+  -webkit-user-select: text;
+  user-select: text;
 }
 .site[data-theme="light"] {
   --background: #afb7ca;

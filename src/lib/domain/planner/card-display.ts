@@ -11,12 +11,14 @@ export function formatInvestment(type: string, value: InvestmentValue): string {
   return String(value ?? '');
 }
 
-export function cardInvestments(character: PlannerCharacter) {
+export function cardInvestments(character: PlannerCharacter, preserveEmptySkillSlots = false) {
   const line = (side: 'current' | 'target', kind: 'skills' | 'gear' | 'books' | 'level') => {
     const investment = character[side];
-    if (kind === 'skills') return [
-      formatInvestment('Ex', investment.ex), ...[investment.basic, investment.passive, investment.sub].map((value) => formatInvestment('Other', value))
-    ].join('');
+    if (kind === 'skills') return (['ex', 'basic', 'passive', 'sub'] as const).map((key) => {
+      const value = investment[key];
+      if (preserveEmptySkillSlots && (value === null || value === undefined || value === '')) return ' ';
+      return formatInvestment(key === 'ex' ? 'Ex' : 'Other', value);
+    }).join('');
     if (kind === 'gear') return [investment.gear1, investment.gear2, investment.gear3]
       .map((value) => formatInvestment('Gear', value)).join('') + (character.hasBondGear ? formatInvestment('BondGear', investment.bond_gear) : '');
     if (kind === 'books') {

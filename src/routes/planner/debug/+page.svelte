@@ -28,5 +28,5 @@
 <pre id="text-body">{output}</pre>
 
 <style>
-  pre { white-space: pre-wrap; overflow-wrap: anywhere; user-select: text; }
+  pre { white-space: pre-wrap; overflow-wrap: anywhere; }
 </style>

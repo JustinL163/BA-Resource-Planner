@@ -101,6 +101,15 @@
     return filtered.sort((a, b) =>
       (order.get(a.id) ?? data.characters.indexOf(a)) - (order.get(b.id) ?? data.characters.indexOf(b)));
   });
+  let selectedVisibleIndex = $derived(visible.findIndex((character) => character.id === editing));
+  let hasPreviousCharacter = $derived(selectedVisibleIndex > 0);
+  let hasNextCharacter = $derived(selectedVisibleIndex >= 0 && selectedVisibleIndex < visible.length - 1);
+
+  function navigateCharacter(direction: -1 | 1) {
+    if (selectedVisibleIndex < 0) return;
+    const adjacent = visible[selectedVisibleIndex + direction];
+    if (adjacent) editing = adjacent.id;
+  }
 
   onMount(() => {
     const controller = new AbortController();
@@ -476,7 +485,9 @@
 {#if selected && $planner.dataset}
   {#key selected.id}
     <CharacterEditor character={selected} info={$planner.dataset.students[selected.id]} name={$planner.names[selected.id] ?? selected.name}
-      dataset={$planner.dataset} {metadata} language={$preferences.language} save={planner.edit} remove={() => planner.remove(selected.id)}
+      dataset={$planner.dataset} {metadata} language={$preferences.language} scribble={$planner.scribble}
+      included={!$planner.data?.disabled_characters.includes(selected.id)} save={planner.edit} remove={() => planner.remove(selected.id)}
+      hasPrevious={hasPreviousCharacter} hasNext={hasNextCharacter} navigate={navigateCharacter}
       close={() => editing = ''} error={$planner.error} {t} />
   {/key}
 {/if}

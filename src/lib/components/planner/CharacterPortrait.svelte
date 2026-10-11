@@ -1,15 +1,15 @@
 <script lang="ts">
   import type { PlannerCharacter, PlannerMetadata } from '$lib/domain/planner/types';
   import { cardInvestments } from '$lib/domain/planner/card-display';
-  let { id, name, character, metadata, scribble, borrowed = false, borrowedLabel = 'Borrowed', excluded = false }: {
+  let { id, name, character, metadata, scribble, borrowed = false, borrowedLabel = 'Borrowed', excluded = false, preview = false, radius = '15%' }: {
     id: string; name: string; character?: PlannerCharacter; metadata: PlannerMetadata;
-    scribble: boolean; borrowed?: boolean; borrowedLabel?: string; excluded?: boolean;
+    scribble: boolean; borrowed?: boolean; borrowedLabel?: string; excluded?: boolean; preview?: boolean; radius?: string;
   } = $props();
   let portrait = $derived((scribble && metadata.scribblePortraits[id]) || metadata.portraits[id]);
-  let lines = $derived(character && !borrowed ? cardInvestments(character) : []);
+  let lines = $derived(character && !borrowed ? cardInvestments(character, preview) : []);
 </script>
 
-<span class="portrait" class:excluded>
+<span class="portrait" class:excluded style:--portrait-radius={radius}>
   <span class="portrait-content">
     {#if portrait}<img class="portrait-image character-image" src={portrait} alt="" loading="lazy" draggable="false" width="160" height="180" />{/if}
     {#if character && !borrowed}
@@ -34,7 +34,7 @@
   {/if}
   <span class="name" aria-hidden="true">{name}</span>
   {#if borrowed}<span class="borrowed" aria-hidden="true">{borrowedLabel}</span>{/if}
-  {#if excluded}<span class="excluded-mark" aria-hidden="true">&minus;</span>{/if}
+  {#if excluded}<span class="excluded-mark" aria-hidden="true"></span>{/if}
   </span>
   {#if character && !borrowed}
     <span class="stars" aria-hidden="true">
@@ -48,10 +48,10 @@
 </span>
 
 <style>
-  .portrait { display: block; position: relative; overflow: visible; border-radius: 15%; aspect-ratio: 8 / 9; color: white; }
-  .portrait-content { position: absolute; inset: 0; overflow: hidden; border-radius: 15%; }
-  .portrait-image { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 15%; pointer-events: none; }
-  .name { position: absolute; inset: auto 0 0; border-radius: 0 0 15% 15%; background: #121625b3; padding: 0.2em; font-size: max(11px, calc(var(--card-size) * 0.086)); line-height: 1.15; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: -1px -1px 0 #000, 0px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0px 1px 0 #000, 1px 1px 0 #000; }
+  .portrait { display: block; position: relative; overflow: visible; border-radius: var(--portrait-radius, 15%); aspect-ratio: 8 / 9; color: white; }
+  .portrait-content { position: absolute; inset: 0; overflow: hidden; border-radius: var(--portrait-radius, 15%); }
+  .portrait-image { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: var(--portrait-radius, 15%); pointer-events: none; }
+  .name { position: absolute; inset: auto 0 0; border-radius: 0 0 var(--portrait-radius, 15%) var(--portrait-radius, 15%); background: #121625b3; padding: 0.2em; font-size: max(11px, calc(var(--card-size) * 0.086)); line-height: 1.15; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: -1px -1px 0 #000, 0px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0px 1px 0 #000, 1px 1px 0 #000; }
   .borrowed { position: absolute; inset: 0 0 auto; background: #002658ba; padding: 0.15em; font-size: 0.8em; }
   .investment { position: absolute; display: flex; flex-direction: column; background: #16131e85; border-radius: 0.15em; padding: 0.08em 0.15em; font: bold max(11px, calc(var(--card-size) * 0.115))/1.05 monospace; text-shadow: 0 1px 2px black; white-space: pre; }
   .target { color: #ffffa6; display: block; }
@@ -67,5 +67,6 @@
   .bond img { width: 100%; pointer-events: none; }
   .bond > span { position: absolute; inset: 10% 0 auto; font: bold max(10px, calc(var(--card-size) * 0.085))/1.1 monospace; text-shadow: -1px -1px black, 1px 1px black; }
   .excluded { filter: grayscale(0.8) brightness(0.55); }
-  .excluded-mark { position: absolute; top: 25%; left: 38%; width: 24%; border: 2px solid white; border-radius: 50%; background: #672b39; line-height: 1; font-size: 1.4em; }
+  .excluded-mark { position: absolute; top: 25%; left: 38%; display: grid; width: 24%; min-width: 0; aspect-ratio: 1; box-sizing: border-box; place-items: center; border: 2px solid white; border-radius: 50%; background: #672b39; }
+  .excluded-mark::after { content: ''; width: 55%; height: 2px; border-radius: 999px; background: white; }
 </style>

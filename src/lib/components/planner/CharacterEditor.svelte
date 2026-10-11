@@ -11,15 +11,18 @@
   import { modal } from './dialog';
   import SkillDetails from './SkillDetails.svelte';
 
-  let { character, info, name, dataset, metadata, language, save, remove, close, error, t }: {
+  let { character, info, name, dataset, metadata, language, scribble, included, hasPrevious, hasNext, navigate, save, remove, close, error, t }: {
     character: PlannerCharacter; info: CharacterInfo; name: string; dataset: PlannerDataset;
-    metadata: PlannerMetadata; language: Language; save: (character: PlannerCharacter, expected: string) => boolean;
+    metadata: PlannerMetadata; language: Language; scribble: boolean; included: boolean; hasPrevious: boolean; hasNext: boolean;
+    navigate: (direction: -1 | 1) => void; save: (character: PlannerCharacter, expected: string) => boolean;
     remove: () => boolean; close: () => void; error: string; t: (id: string) => string;
   } = $props();
   let draft = $state(untrack(() => structuredClone(character)));
   const expected = untrack(() => characterFingerprint(character));
   let dirty = $derived(characterFingerprint(draft) !== expected);
+  let skillInputFocused = $state(false);
   let discardPrompt = $state(false);
+  let pendingNavigation = $state<-1 | 1 | null>(null);
   let deleting = $state(false);
   let mounted = $state(false);
   let skillData = $state<SkillData | null>(null);
@@ -29,19 +32,63 @@
   const skillFields: SkillKey[] = ['ex', 'basic', 'passive', 'sub'];
   function requestClose() {
     if (!dirty) { close(); return; }
+    pendingNavigation = null;
     discardPrompt = true;
   }
-  function interceptDirtyEscape(event: KeyboardEvent) {
-    if (event.key !== 'Escape' || !dirty) return;
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    if (event.repeat) return;
-    discardPrompt = !discardPrompt;
+  function requestNavigation(direction: -1 | 1) {
+    if (direction < 0 ? !hasPrevious : !hasNext) return;
+    if (!dirty) { navigate(direction); return; }
+    pendingNavigation = direction;
+    discardPrompt = true;
+  }
+  function cancelDiscard() {
+    discardPrompt = false;
+    pendingNavigation = null;
+  }
+  function discardAndProceed() {
+    const direction = pendingNavigation;
+    discardPrompt = false;
+    pendingNavigation = null;
+    if (direction) navigate(direction);
+    else close();
+  }
+  function trackSkillInputFocus(event: FocusEvent) {
+    const target = event.type === 'focusout' ? event.relatedTarget : event.target;
+    skillInputFocused = target instanceof Element && target.matches('.skill-level-input');
+  }
+  function skillLevelForPreview(value: unknown, key: SkillKey): number {
+    const level = typeof value === 'number' ? value : typeof value === 'string' && value.trim() ? Number(value) : NaN;
+    return Number.isInteger(level) && level >= 0 && level <= (key === 'ex' ? 5 : 10) ? level : 0;
+  }
+  function interceptEditorKeys(event: KeyboardEvent) {
+    if (event.key === 'Escape' && dirty) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      if (event.repeat) return;
+      if (discardPrompt) cancelDiscard();
+      else {
+        pendingNavigation = null;
+        discardPrompt = true;
+      }
+      return;
+    }
+    if (discardPrompt || event.repeat || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+    const target = event.target;
+    if (target instanceof Element && target.closest('input, textarea, select, [contenteditable="true"], [role="textbox"]')) return;
+    if (event.key === 'ArrowLeft' && hasPrevious) {
+      event.preventDefault();
+      event.stopPropagation();
+      requestNavigation(-1);
+    } else if (event.key === 'ArrowRight' && hasNext) {
+      event.preventDefault();
+      event.stopPropagation();
+      requestNavigation(1);
+    }
   }
   onMount(() => {
     mounted = true;
-    window.addEventListener('keydown', interceptDirtyEscape, true);
-    return () => window.removeEventListener('keydown', interceptDirtyEscape, true);
+    window.addEventListener('keydown', interceptEditorKeys, true);
+    return () => window.removeEventListener('keydown', interceptEditorKeys, true);
   });
   $effect(() => {
     if (!mounted) return;
@@ -69,7 +116,8 @@
       const { definitions, fallback } = studentSkills(info.Skills, data, character.id);
       return {
         skills: skillFields.map((key) => {
-          const description = formatSkill(definitions, data.buffNames, key, draft.current[key], draft.target[key], draft.target.ue, draft.target.bond_gear);
+          const description = formatSkill(definitions, data.buffNames, key,
+            skillLevelForPreview(draft.current[key], key), skillLevelForPreview(draft.target[key], key), draft.target.ue, draft.target.bond_gear);
           return { key, label: t(`label-skill${key}`), description, fallback: fallback.has(description.variant) };
         }),
         error: ''
@@ -95,30 +143,34 @@
     const bounds = event.currentTarget.getBoundingClientRect();
     if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) requestClose();
   }}>
-  <form onsubmit={(event) => { event.preventDefault(); if (!validation.error && save(draft, expected)) close(); }}>
+  <form onsubmit={(event) => { event.preventDefault(); if (!validation.error && save(draft, expected)) close(); }}
+    onfocusin={trackSkillInputFocus} onfocusout={trackSkillInputFocus}>
     <header class="editor-header">
-      <h2 id="editor-title">{t('ui-edit-character')} {name}</h2>
+      <h2 id="editor-title">{t('ui-edit-character')}</h2>
+      <div class="editor-navigation">
+        {#if hasPrevious}<button type="button" aria-label={t('ui-previous-character')} onclick={() => requestNavigation(-1)}>&larr;</button>{/if}
+        {#if hasNext}<button type="button" aria-label={t('ui-next-character')} onclick={() => requestNavigation(1)}>&rarr;</button>{/if}
+      </div>
       <div class="header-actions">
         <button type="button" onclick={requestClose}>{t('label-cancel')}</button>
         <button type="submit" disabled={Boolean(validation.error)}>{t('label-save').trim()}</button>
       </div>
     </header>
     <div class="editor-content">
-      {#if error || validation.error}<p class="error" role="alert">{error || validation.error}</p>{/if}
+      <SkillDetails skills={skillViews.skills} character={draft} {info} {name} {metadata} {scribble} {included} {t}
+        onInvestmentChange={(key, side, value) => { draft[side][key] = value; }} />
+      {#if error || (validation.error && !skillInputFocused)}<p class="error" role="alert">{error || validation.error}</p>{/if}
       {#if skillLoading}<p role="status">{t('ui-skill-loading')}</p>{/if}
       {#if skillError || skillViews.error}
         <p class="error" role="alert">{skillError || skillViews.error}
           {#if skillError}<button type="button" onclick={() => skillRetry++}>{t('ui-retry')}</button>{/if}
         </p>
       {/if}
-      <div hidden={skillLoading || Boolean(skillError || skillViews.error)}>
-        <SkillDetails skills={skillViews.skills} {t} />
-      </div>
       <div class="table-scroll">
         <table>
           <thead><tr><th>{t('ui-investment')}</th><th>{t('label-current')}</th><th>{t('label-target')}</th></tr></thead>
           <tbody>
-            {#each metadata.fields as field (field.key)}
+            {#each metadata.fields.filter((field) => !skillFields.includes(field.key as SkillKey)) as field (field.key)}
               <tr>
                 <th scope="row">{field.label}</th>
                 {#each ['current', 'target'] as side}
@@ -173,11 +225,11 @@
   </form>
   {#if discardPrompt}
     <dialog use:modal={{ blurPreviousOnClose: false }} class="discard-confirmation" role="alertdialog" aria-labelledby="discard-title"
-      oncancel={(event) => { event.preventDefault(); event.stopPropagation(); discardPrompt = false; }}>
+      oncancel={(event) => { event.preventDefault(); event.stopPropagation(); cancelDiscard(); }}>
       <h2 id="discard-title">{t('text-unsavedchanges')}</h2>
       <div class="discard-actions">
-        <button type="button" onclick={() => discardPrompt = false}>{t('button-goback')}</button>
-        <button type="button" class="discard-button" onclick={close}>{t('button-discardchanges')}</button>
+        <button type="button" onclick={cancelDiscard}>{t('button-goback')}</button>
+        <button type="button" class="discard-button" onclick={discardAndProceed}>{t('button-discardchanges')}</button>
       </div>
     </dialog>
   {/if}
@@ -188,6 +240,8 @@
   form { margin: 0; }
   .editor-header { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.7rem 1rem; background: var(--surface); border-bottom: 1px solid #7c5b7d66; }
   .editor-header h2 { flex: 1; min-width: 0; margin: 0; font-size: 1.25rem; }
+  .editor-navigation { display: flex; gap: 0.35rem; }
+  .editor-navigation button { min-width: 2.25rem; padding: 0.25rem 0.5rem; font-size: 1.25rem; line-height: 1; }
   .header-actions { display: flex; align-items: center; gap: 0.5rem; }
   .header-actions button { white-space: nowrap; }
   .editor-content { padding: 0.75rem 1rem 1rem; }

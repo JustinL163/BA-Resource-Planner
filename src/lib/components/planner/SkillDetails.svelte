@@ -1,15 +1,25 @@
 <script lang="ts">
   import type { FormattedSkill, SkillKey } from '$lib/domain/planner/skills';
+  import type { CharacterInfo, PlannerCharacter, PlannerMetadata } from '$lib/domain/planner/types';
+  import CharacterCard from './CharacterCard.svelte';
 
-  let { skills, t }: {
+  let { skills, character, info, name, metadata, scribble, included, t, onInvestmentChange }: {
     skills: Array<{ key: SkillKey; label: string; description: FormattedSkill; fallback: boolean }>;
+    character: PlannerCharacter;
+    info: CharacterInfo;
+    name: string;
+    metadata: PlannerMetadata;
+    scribble: boolean;
+    included: boolean;
     t: (id: string) => string;
+    onInvestmentChange: (key: SkillKey, side: 'current' | 'target', value: string) => void;
   } = $props();
 
   let pointerKey = $state<SkillKey | null>(null);
   let focusKey = $state<SkillKey | null>(null);
   let pinnedKey = $state<SkillKey | null>(null);
   let suppressedFocusKey: SkillKey | null = null;
+  let touchPinnedKey: SkillKey | null = null;
   let skillButtons: Partial<Record<SkillKey, HTMLButtonElement | undefined>> = {};
 
   let selected = $derived.by(() => {
@@ -35,6 +45,33 @@
     focusKey = key;
   }
 
+  function previewFromInput(key: SkillKey) {
+    if (touchPinnedKey === key) return;
+    touchPinnedKey = null;
+    pinnedKey = null;
+    pointerKey = key;
+    focusKey = key;
+  }
+
+  function activateInput(key: SkillKey, event: PointerEvent) {
+    if (event.pointerType === 'touch') {
+      touchPinnedKey = key;
+      pinnedKey = key;
+      pointerKey = null;
+      focusKey = null;
+    } else {
+      touchPinnedKey = null;
+    }
+  }
+
+  function clickInput(key: SkillKey) {
+    if (touchPinnedKey === key) {
+      touchPinnedKey = null;
+      return;
+    }
+    previewFromInput(key);
+  }
+
   function closeDescription(key: SkillKey) {
     suppressedFocusKey = key;
     skillButtons[key]?.focus();
@@ -55,32 +92,59 @@
     if (!(next instanceof Node) || !event.currentTarget.contains(next)) focusKey = null;
   }}
 >
-  <div class="skill-strip" data-skill-details>
-    {#each skills as skill (skill.key)}
-      <button
-        type="button"
-        class="skill-button"
-        class:active={selected?.key === skill.key}
-        bind:this={skillButtons[skill.key]}
-        data-skill-key={skill.key}
-        aria-label={`${skill.label}: ${t('ui-skill-details')}`}
-        aria-expanded={selected?.key === skill.key}
-        aria-controls="skill-description"
-        aria-pressed={pinnedKey === skill.key}
-        onpointerenter={() => pointerKey = skill.key}
-        onfocus={() => previewOnFocus(skill.key)}
-        onclick={() => togglePinned(skill.key)}
-      >
-        <img src={`/planner/icons/SkillIcon/${skill.description.icon}.webp`} alt="" aria-hidden="true" draggable="false" />
-        <span class="skill-label">{skill.label}</span>
-      </button>
-    {/each}
+  <div class="skill-overview">
+    <div class="portrait-frame">
+      <CharacterCard {character} {info} {name} {metadata} {scribble} {included}
+        edit={() => {}} include={() => {}} mode="edit" dragging={false} keyboard={() => {}} preview={true} {t} />
+    </div>
+    <div class="skill-strip" data-skill-details>
+      {#each skills as skill (skill.key)}
+        {@const rule = metadata.fields.find((field) => field.key === skill.key)}
+        <div class="skill-tile" class:active={selected?.key === skill.key}>
+          {#if rule}
+            <input class="skill-level-input current" type="number" min={rule.min} max={rule.max} step="1"
+              aria-label={`${skill.label} ${t('label-current')}`} value={String(character.current[skill.key] ?? '')}
+              onpointerenter={() => pointerKey = skill.key}
+              onpointerdown={(event) => activateInput(skill.key, event)}
+              onfocus={() => previewFromInput(skill.key)}
+              onclick={() => clickInput(skill.key)}
+              oninput={(event) => onInvestmentChange(skill.key, 'current', event.currentTarget.value)} />
+          {/if}
+          <button
+            type="button"
+            class="skill-button"
+            bind:this={skillButtons[skill.key]}
+            data-skill-key={skill.key}
+            aria-label={`${skill.label}: ${t('ui-skill-details')}`}
+            aria-expanded={selected?.key === skill.key}
+            aria-controls="skill-description"
+            aria-pressed={pinnedKey === skill.key}
+            onpointerenter={() => pointerKey = skill.key}
+            onfocus={() => previewOnFocus(skill.key)}
+            onclick={() => togglePinned(skill.key)}
+          >
+            <img src={`/planner/icons/SkillIcon/${skill.description.icon}.webp`} alt="" aria-hidden="true" draggable="false" />
+            <span class="skill-label">{skill.label}</span>
+          </button>
+          {#if rule}
+            <input class="skill-level-input target" type="number" min={Math.max(rule.min, Number(character.current[skill.key]) || 0)} max={rule.max} step="1"
+              aria-label={`${skill.label} ${t('label-target')}`} value={String(character.target[skill.key] ?? '')}
+              onpointerenter={() => pointerKey = skill.key}
+              onpointerdown={(event) => activateInput(skill.key, event)}
+              onfocus={() => previewFromInput(skill.key)}
+              onclick={() => clickInput(skill.key)}
+              oninput={(event) => onInvestmentChange(skill.key, 'target', event.currentTarget.value)} />
+          {/if}
+        </div>
+      {/each}
+    </div>
   </div>
 
   {#if selected}
     <section
       id="skill-description"
       class="skill-description"
+      class:preview={pinnedKey !== selected.key}
       aria-labelledby="skill-description-heading"
       data-skill-description={selected.key}
       data-skill-variant={selected.description.variant}
@@ -93,7 +157,9 @@
             <span>{t('label-target')}: <strong>{selected.description.targetLevel}</strong></span>
           </div>
         </div>
-        <button type="button" class="close-button" onclick={() => closeDescription(selected.key)}>{t('ui-close')}</button>
+        {#if pinnedKey === selected.key}
+          <button type="button" class="close-button" onclick={() => closeDescription(selected.key)}>{t('ui-close')}</button>
+        {/if}
       </header>
 
       {#if selected.description.cost}
@@ -135,14 +201,24 @@
 </div>
 
 <style>
-  .skill-details { min-width: 0; max-width: 100%; }
-  .skill-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.4rem; }
-  .skill-button { display: flex; min-width: 0; flex-direction: column; align-items: center; justify-content: center; gap: 0.25rem; padding: 0.4rem 0.25rem; border: 1px solid #7c5b7d; border-radius: 0.5rem; background: var(--surface); color: var(--text); cursor: pointer; }
-  .skill-button:hover, .skill-button.active { background: #7c5b7d22; }
+  .skill-details { min-width: 0; max-width: 100%; display: grid; gap: 0.5rem; }
+  .skill-overview { display: grid; grid-template-columns: minmax(6rem, 10rem) minmax(0, 1fr); align-items: start; gap: 0.75rem; }
+  .portrait-frame { width: 100%; max-width: 10rem; justify-self: start; container-type: inline-size; }
+  .skill-strip { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.4rem; }
+  .skill-tile { display: grid; min-width: 0; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 0.2rem; padding: 0.3rem; border: 1px solid #7c5b7d; border-radius: 0.5rem; background: var(--surface); }
+  .skill-tile:hover, .skill-tile.active { background: #7c5b7d22; }
+  .skill-button { display: flex; min-width: 0; flex-direction: column; align-items: center; justify-content: center; gap: 0.2rem; padding: 0.15rem 0; border: 0; background: transparent; color: var(--text); cursor: pointer; }
   .skill-button:focus-visible, .close-button:focus-visible { outline: 2px solid #7c5b7d; outline-offset: 2px; }
-  .skill-button img { width: 2.25rem; height: 2.25rem; object-fit: contain; }
-  .skill-label { max-width: 100%; overflow-wrap: anywhere; text-align: center; font-size: 0.75rem; line-height: 1.15; }
-  .skill-description { min-width: 0; max-width: 100%; margin-top: 0.5rem; padding: 0.65rem 0.75rem; border: 1px solid #7c5b7d; border-radius: 0.5rem; background: #7c5b7d12; overflow-wrap: anywhere; }
+  .skill-button img { width: 2.1rem; height: 2.1rem; object-fit: contain; }
+  .skill-label { max-width: 100%; overflow-wrap: anywhere; text-align: center; font-size: 0.7rem; line-height: 1.1; }
+  .skill-level-input { width: 2.4ch; min-width: 2.4ch; max-width: 100%; padding: 0.1rem 0; border: 0; border-bottom: 1px solid #7c5b7d66; border-radius: 0; background: transparent; font: 600 0.9rem/1 monospace; text-align: center; }
+  .skill-level-input.current { justify-self: start; color: white; }
+  .skill-level-input.target { justify-self: end; color: #ffffa6; }
+  .skill-level-input[type="number"] { appearance: textfield; -moz-appearance: textfield; }
+  .skill-level-input::-webkit-inner-spin-button, .skill-level-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  @media (min-width: 601px) { .skill-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .skill-description { min-width: 0; max-width: 100%; padding: 0.65rem 0.75rem; border: 1px solid #7c5b7d; border-radius: 0.5rem; background: #7c5b7d12; overflow-wrap: anywhere; }
+  .skill-description.preview { border-style: dashed; }
   .description-header { display: flex; min-width: 0; align-items: flex-start; justify-content: space-between; gap: 0.5rem; }
   h3 { min-width: 0; margin: 0; font-size: 1rem; }
   .skill-levels { display: flex; flex-wrap: wrap; gap: 0.25rem 0.75rem; margin-top: 0.2rem; font-size: 0.8rem; }
