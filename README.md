@@ -418,11 +418,15 @@ offer retry without changing the saved plan. Description markup is rendered as
 typed text/value tokens, never injected HTML.
 `tests/fixtures/skills.legacy.js` is the frozen independent formatter reference.
 
-Remaining resource work includes legacy-only display/optional controls still
-reachable through the legacy planner.
-The remaining site migrations include the broader event catalog/mechanics audit
-and resource-page residuals documented in `MIGRATION_HANDOFF.md`. Raid Videos
-now uses `/planner/raids/`; the original `/planner/raids.html` page remains
-available as a fallback.
+The Svelte resource planner retains the legacy optional displays and controls:
+resource and gear tiles open enabled-character usage breakdowns outside Owned
+mode; character filters include EX materials; sorting includes the legacy presets
+with current-level values and UE terrain adaptation bonuses; and the bottom tool
+bar toggles the saved alternate portrait style. The floating control panel is
+replaced by inline actions, the team screenshot preview by direct PNG download,
+and the stage-run popup by inline gear-farming results. `/planner/index.html`
+remains available through the route/PWA transition. The broader event catalog and
+mechanics audit also remains. Raid Videos uses `/planner/raids/`; the original
+`/planner/raids.html` page remains available as a fallback.
 PWA cache replacement must include a deliberate transition for installed clients;
 the original service workers are retained in this layer.

@@ -55,7 +55,7 @@
   <div class="results" role="group" aria-label={t('ui-search-results')}>
     {#each matches as id, position (id)}
       <button type="button" disabled={selecting} aria-label={`${t('ui-pick')} ${names[id] ?? id}`} title={names[id] ?? id} onclick={() => { void select(id); }}>
-        {#if metadata.portraits[id]}<img src={metadata.portraits[id]} alt="" draggable="false" width="100" height="112" />{/if}
+        {#if metadata.portraits[id]}<img class="character-image" src={metadata.portraits[id]} alt="" draggable="false" width="100" height="112" />{/if}
         <span class="number" aria-hidden="true">{position + 1}</span>
         <span class="name" class:visually-hidden={compact}>{names[id] ?? id}</span>
       </button>

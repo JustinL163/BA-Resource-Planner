@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import { modal } from './dialog';
-  let { title, close, children, width = '1120px', busy = false, t }: {
+  let { title, close, children, width = '1300px', busy = false, t }: {
     title: string; close: () => void; children: Snippet; width?: string; busy?: boolean; t: (id: string) => string;
   } = $props();
 </script>

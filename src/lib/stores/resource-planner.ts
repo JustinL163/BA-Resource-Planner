@@ -204,6 +204,17 @@ export function createResourcePlanner(metadata: PlannerMetadata, storageProvider
     setServer(server: FarmServer) {
       return commit((data) => { data.server = farmServer(server); });
     },
+    setImageStyle(scribble: boolean) {
+      try {
+        storageProvider().setItem('image-style', String(scribble));
+        state.update((value) => ({ ...value, scribble, error: '' }));
+        announceSaveChange();
+        return true;
+      } catch (error) {
+        report(error);
+        return false;
+      }
+    },
     move(id: string, direction: -1 | 1) {
       return commit((data) => {
         const order = data.character_order.filter((item) => data.characters.some((character) => character.id === item));

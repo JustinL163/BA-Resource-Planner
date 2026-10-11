@@ -33,6 +33,7 @@ button:disabled, select:disabled { cursor: wait; }
   --success: #285633;
   color-scheme: light;
 }
+.site[data-theme="dark"] .character-image { filter: brightness(0.9); }
 .site.game-shell {
   --background: #f7f7f7;
   --surface: #ffffff;
@@ -62,7 +63,18 @@ button:disabled, select:disabled { cursor: wait; }
 .site-header nav a[aria-current="page"] { background: #454858; color: #fafa87; }
 .site-header nav a:hover { background: #454858; }
 .preferences { display: flex; gap: 0.5rem; margin-left: auto; }
+.menu-button, .theme-button {
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  padding: 0.3rem;
+  border: 0;
+  background: transparent;
+}
 .menu-button { display: none; }
+.theme-button { display: flex; }
+.menu-button img { width: 20px; height: 20px; filter: invert(1); }
+.theme-button img { width: 18px; height: 18px; filter: invert(1); }
 main { /* max-width: 1200px;*/ margin: 0 auto; padding: 2rem 1.25rem 4rem; }
 .site.game-shell main.game-main { width: 100%; max-width: none; min-height: 100vh; margin: 0; padding: 0; }
 h1 { margin: 0 0 1.5rem; font-size: clamp(1.7rem, 4vw, 2.3rem); }
@@ -79,14 +91,39 @@ main a { color: var(--link); overflow-wrap: anywhere; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 
 @media (max-width: 1000px) {
-  .enhanced .menu-button { display: block; margin-left: auto; }
-  .preferences { margin-left: 0; }
-  .site-header nav { order: 3; width: 100%; }
-  .site-header.enhanced nav { display: none; }
-  .site-header nav.open { display: flex; flex-direction: column; }
+  .site-header { flex-wrap: nowrap; gap: 0.45rem; padding: 0.4rem 0.75rem; }
+  .site-header .menu-button { display: flex; }
+  .logo { flex: 0 0 auto; white-space: nowrap; }
+  .preferences { flex: 0 0 auto; align-items: center; }
+  .preferences select { max-width: 9rem; padding: 0.3rem 0.45rem; font-size: 0.85rem; }
+  .site-header nav { display: none; }
+  .site-header nav.open {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    width: auto;
+    max-height: calc(100dvh - 3rem);
+    overflow-y: auto;
+    padding: 0.35rem;
+    background: #282a35;
+    box-shadow: 0 0.4rem 0.8rem #0006;
+  }
+  .site-header nav.open a { padding: 0.65rem 0.75rem; }
 }
 @media (max-width: 480px) {
-  .preferences { width: 100%; justify-content: flex-end; }
+  .site-header { gap: 0.25rem; padding: 0.25rem 0.4rem; min-height: 42px; }
+  .site-header .menu-button { width: 2rem; height: 2rem; padding: 0.25rem; }
+  .menu-button img { width: 19px; height: 19px; }
+  .logo { font-size: 1rem; }
+  .preferences { gap: 0.2rem; }
+  .preferences label { min-width: 0; }
+  .preferences select { width: min(7.5rem, 32vw); max-width: 32vw; padding: 0.25rem 0.3rem; font-size: 0.75rem; }
+  .theme-button { width: 2rem; height: 2rem; padding: 0.25rem; }
+  .theme-button img { width: 18px; height: 18px; }
   main { padding: 1.25rem 0.75rem 3rem; }
   .document .changelog-section { padding: 1rem; }
 }

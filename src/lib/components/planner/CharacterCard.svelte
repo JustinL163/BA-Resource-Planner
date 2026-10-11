@@ -3,11 +3,11 @@
   import { cardInvestments, type CardMode } from '$lib/domain/planner/card-display';
   import CharacterPortrait from './CharacterPortrait.svelte';
 
-  let { character, info, name, included, metadata, scribble, edit, include, mode, dragging, dropPosition, keyboard,
+  let { character, info, name, included, metadata, scribble, edit, include, mode, dragging, keyboard,
     bulkSelected = false, selectBulk = () => {}, t }: {
     character: PlannerCharacter; info: CharacterInfo; name: string; included: boolean;
     metadata: PlannerMetadata; scribble: boolean; edit: () => void; mode: CardMode;
-    include: (included: boolean) => void; dragging: boolean; dropPosition: '' | 'before' | 'after';
+    include: (included: boolean) => void; dragging: boolean;
     keyboard: (event: KeyboardEvent) => void; bulkSelected?: boolean; selectBulk?: () => void;
     t: (id: string) => string;
   } = $props();
@@ -21,7 +21,7 @@
   }
 </script>
 
-<button class="character" class:excluded={!included} class:dragging class:before={dropPosition === 'before'} class:after={dropPosition === 'after'}
+<button class="character" class:excluded={!included} class:dragging
   class:movable={mode === 'move'} class:bulk-selected={bulkSelected} data-sort-id={character.id}
   style:--accent={metadata.colours[info.School]}
   onclick={activate} oncontextmenu={(event) => { event.preventDefault(); if (mode === 'bulk') selectBulk(); else include(!included); }}
@@ -39,6 +39,4 @@
   .movable { cursor: grab; touch-action: none; }
   .dragging { opacity: 0.45; cursor: grabbing; }
   .bulk-selected { outline: 3px solid #82dafb; outline-offset: 3px; }
-  .before::before, .after::after { content: ''; position: absolute; top: 0; bottom: 0; width: 4px; background: #b9efbb; border-radius: 2px; }
-  .before::before { left: -7px; } .after::after { right: -7px; }
 </style>

@@ -9,6 +9,7 @@ export interface ResourceItem {
 
 export function resourceItem(key: string, metadata: PlannerMetadata): ResourceItem {
   const name = metadata.materialNames[key] ?? key;
+  const imageKey = key === 'RaidTokenCost' ? 'RaidToken' : key;
   let group = 'Other';
   if (metadata.equipment.includes(key)) group = 'Equipment';
   else if (key.startsWith('XP_') || key.startsWith('GXP_')) group = 'XP items';
@@ -18,7 +19,7 @@ export function resourceItem(key: string, metadata: PlannerMetadata): ResourceIt
   else if (Number(key) >= 5000 && Number(key) < 9999) group = 'Gifts';
   else if (Number(key) >= 2000 && Number(key) < 3000) group = 'Limit break books';
   else if (key === 'Credit' || key === 'Eligma') group = 'Currency';
-  return { key, name: name.replaceAll('_', ' '), group, image: metadata.images[key] };
+  return { key, name: name.replaceAll('_', ' '), group, image: metadata.images[key] ?? metadata.images[imageKey] };
 }
 
 export function inventoryCatalog(metadata: PlannerMetadata, totals: ResourceTotals): ResourceItem[] {

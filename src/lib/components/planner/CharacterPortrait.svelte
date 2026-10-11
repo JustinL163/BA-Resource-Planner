@@ -10,15 +10,9 @@
 </script>
 
 <span class="portrait" class:excluded>
-  {#if portrait}<img class="portrait-image" src={portrait} alt="" loading="lazy" draggable="false" width="160" height="180" />{/if}
-  {#if character && !borrowed}
-    <span class="stars" aria-hidden="true">
-      {#each Array(5) as _, index}
-        {#if index < Number(character.target.star) || index < Number(character.current.star)}
-          <img src={`/planner/icons/Misc/mysticstar${index < Number(character.current.star) ? '' : '-greyed'}.png`} alt="" draggable="false" />
-        {/if}
-      {/each}
-    </span>
+  <span class="portrait-content">
+    {#if portrait}<img class="portrait-image character-image" src={portrait} alt="" loading="lazy" draggable="false" width="160" height="180" />{/if}
+    {#if character && !borrowed}
     <span class="ue-stars" aria-hidden="true">
       {#each Array(4) as _, index}
         {#if index < Number(character.target.ue) || index < Number(character.current.ue)}
@@ -41,23 +35,35 @@
   <span class="name" aria-hidden="true">{name}</span>
   {#if borrowed}<span class="borrowed" aria-hidden="true">{borrowedLabel}</span>{/if}
   {#if excluded}<span class="excluded-mark" aria-hidden="true">&minus;</span>{/if}
+  </span>
+  {#if character && !borrowed}
+    <span class="stars" aria-hidden="true">
+      {#each Array(5) as _, index}
+        {#if index < Number(character.target.star) || index < Number(character.current.star)}
+          <img src={`/planner/icons/Misc/mysticstar${index < Number(character.current.star) ? '' : '-greyed'}.png`} alt="" draggable="false" />
+        {/if}
+      {/each}
+    </span>
+  {/if}
 </span>
 
 <style>
-  .portrait { display: block; position: relative; overflow: hidden; border-radius: 15%; aspect-ratio: 8 / 9; color: white; }
-  .portrait-image { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
-  .name { position: absolute; inset: auto 0 0; background: #121625d9; padding: 0.2em; font-size: max(11px, calc(var(--card-size) * 0.086)); line-height: 1.15; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .portrait { display: block; position: relative; overflow: visible; border-radius: 15%; aspect-ratio: 8 / 9; color: white; }
+  .portrait-content { position: absolute; inset: 0; overflow: hidden; border-radius: 15%; }
+  .portrait-image { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 15%; pointer-events: none; }
+  .name { position: absolute; inset: auto 0 0; border-radius: 0 0 15% 15%; background: #121625b3; padding: 0.2em; font-size: max(11px, calc(var(--card-size) * 0.086)); line-height: 1.15; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: -1px -1px 0 #000, 0px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0px 1px 0 #000, 1px 1px 0 #000; }
   .borrowed { position: absolute; inset: 0 0 auto; background: #002658ba; padding: 0.15em; font-size: 0.8em; }
-  .investment { position: absolute; display: flex; flex-direction: column; background: #16131ee8; border-radius: 0.15em; padding: 0.08em 0.15em; font: bold max(11px, calc(var(--card-size) * 0.115))/1.05 monospace; text-shadow: 0 1px 2px black; white-space: pre; }
-  .target { color: #fafa87; display: block; }
+  .investment { position: absolute; display: flex; flex-direction: column; background: #16131e85; border-radius: 0.15em; padding: 0.08em 0.15em; font: bold max(11px, calc(var(--card-size) * 0.115))/1.05 monospace; text-shadow: 0 1px 2px black; white-space: pre; }
+  .target { color: #ffffa6; display: block; }
   .skills { left: 0; bottom: 22%; letter-spacing: 0.02em; }
   .gear { right: 0; bottom: 22%; letter-spacing: 0.02em; }
   .books { right: 0; top: 36%; font-size: max(10px, calc(var(--card-size) * 0.088)); }
   .level { right: 0; top: 5%; }
   .stars, .ue-stars { display: flex; position: absolute; left: 3%; top: 1%; width: 70%; }
-  .ue-stars { top: 14%; }
+  .stars { top: -7%; z-index: 1; }
+  .ue-stars { top: 6%; }
   .stars img, .ue-stars img { width: 20%; height: auto; object-fit: contain; pointer-events: none; }
-  .bond { position: absolute; top: 34%; left: 3%; width: 20%; }
+  .bond { position: absolute; top: 22%; left: 3%; width: 20%; }
   .bond img { width: 100%; pointer-events: none; }
   .bond > span { position: absolute; inset: 10% 0 auto; font: bold max(10px, calc(var(--card-size) * 0.085))/1.1 monospace; text-shadow: -1px -1px black, 1px 1px black; }
   .excluded { filter: grayscale(0.8) brightness(0.55); }

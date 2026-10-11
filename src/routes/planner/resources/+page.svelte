@@ -11,8 +11,10 @@
   import ResourceInventory from '$lib/components/planner/ResourceInventory.svelte';
   import TransferDialog from '$lib/components/planner/TransferDialog.svelte';
   import type { ResourceMode } from '$lib/components/planner/ResourceCell.svelte';
-  import { sortable, type DragState } from '$lib/components/planner/sortable';
+  import { sortableReorder, type DragState } from '$lib/components/planner/sortable';
   import type { CardMode } from '$lib/domain/planner/card-display';
+  import { availableExMaterialFilterOptions, matchesExMaterialFilter } from '$lib/domain/planner/ex-material-filter';
+  import { legacySortPresetKeys, sortPlannerCharacters, type LegacySortPresetKey } from '$lib/domain/planner/legacy-sort';
   import TeamsEditor from '$lib/components/planner/TeamsEditor.svelte';
   import BulkEditor from '$lib/components/planner/BulkEditor.svelte';
   import { memberIds } from '$lib/domain/planner/groups';
@@ -28,8 +30,9 @@
   let armour = $state('');
   let weapon = $state('');
   let rarity = $state('');
+  let exMaterial = $state('');
   let included = $state('');
-  let sort = $state('custom');
+  let sort = $state<LegacySortPresetKey>('custom');
   let mainView = $state<'characters' | 'teams'>('characters');
   let selectedGroup = $state('');
   let groupFilter = $state('');
@@ -58,6 +61,8 @@
   let armours = $derived([...new Set(definitions.map((info) => info.ArmorType))].sort());
   let weapons = $derived([...new Set(definitions.map((info) => info.WeaponType))].sort());
   let rarities = $derived([...new Set(definitions.map((info) => info.StarGrade))].sort());
+  let exMaterials = $derived($planner.dataset
+    ? availableExMaterialFilterOptions($planner.dataset.students, metadata) : []);
   let bulkCharacters = $derived($planner.data?.characters.filter((character) => bulkIds.includes(character.id)) ?? []);
   let groupMembers = $derived.by(() => {
     try {
@@ -76,18 +81,19 @@
     const order = new Map(data.character_order.map((id, index) => [id, index]));
     const names = $planner.names;
     const disabled = new Set(data.disabled_characters);
-    return data.characters.filter((character) => {
+    const filtered = data.characters.filter((character) => {
       const info = dataset.students[character.id];
       return `${names[character.id] ?? info.Name} ${info.Name} ${character.id}`.toLowerCase().includes(search.toLowerCase()) &&
         (!school || info.School === school) && (!role || info.SquadType === role) &&
         (!attack || info.BulletType === attack) && (!armour || info.ArmorType === armour) &&
         (!weapon || info.WeaponType === weapon) && (!rarity || info.StarGrade === Number(rarity)) &&
+        (!exMaterial || matchesExMaterialFilter(info, exMaterial, metadata)) &&
         (!groupMembers.ids || groupMembers.ids.has(character.id)) &&
         (!included || (included === 'yes' ? !disabled.has(character.id) : disabled.has(character.id)));
-    }).sort((a, b) => sort === 'name'
-      ? (names[a.id] ?? dataset.students[a.id].Name).localeCompare(names[b.id] ?? dataset.students[b.id].Name)
-      : sort === 'level' ? Number(b.target.level) - Number(a.target.level)
-      : (order.get(a.id) ?? data.characters.indexOf(a)) - (order.get(b.id) ?? data.characters.indexOf(b)));
+    });
+    if (sort !== 'custom') return sortPlannerCharacters(filtered, sort, dataset.students, names, $preferences.language);
+    return filtered.sort((a, b) =>
+      (order.get(a.id) ?? data.characters.indexOf(a)) - (order.get(b.id) ?? data.characters.indexOf(b)));
   });
 
   onMount(() => {
@@ -225,27 +231,40 @@
         {#each weapons as name}<option>{name}</option>{/each}</select></label>
       <label>{t('ui-base-rarity')}<select bind:value={rarity}><option value="">{t('label-all')}</option>
         {#each rarities as value}<option value={String(value)}>{value}</option>{/each}</select></label>
+      {#if exMaterials.length}
+        <label>{t('ui-ex-material')}<select bind:value={exMaterial}><option value="">{t('label-all')}</option>
+          {#each exMaterials as option (option.key)}
+            {@const localized = t(`artifact-${option.key}`)}
+            <option value={option.key}>{localized === 'Undefined' ? option.label.replaceAll('_', ' ') : localized}</option>
+          {/each}
+        </select></label>
+      {/if}
       <label>{t('ui-included')}<select bind:value={included}><option value="">{t('label-all')}</option>
         <option value="yes">{t('ui-included')}</option><option value="no">{t('ui-excluded')}</option></select></label>
       <label>{t('ui-sort')}<select bind:value={sort}>
-        <option value="custom">{t('ui-custom-order')}</option><option value="name">{t('ui-name-order')}</option>
-        <option value="level">{t('ui-level-order')}</option></select></label>
+        {#each legacySortPresetKeys as preset}
+          <option value={preset}>{t({ custom: 'ui-custom-order', name: 'ui-name-order', level: 'ui-level-order',
+            star: 'label-stars', bond: 'label-bond', academy: 'label-school', ex: 'label-skillex',
+            street: 'terrain-urban', outdoor: 'terrain-outdoors', indoor: 'terrain-indoors',
+            bullet: 'label-attacktype', armour: 'label-defensetype', role: 'label-role', weapon: 'label-weapontype'
+          }[preset])}</option>
+        {/each}
+      </select></label>
       </div>
       <div class="toolbar">
       <button onclick={() => planner.includeMany(visible.map((character) => character.id), true)}>{t('ui-include-all')}</button>
       <button onclick={() => planner.includeMany(visible.map((character) => character.id), false)}>{t('ui-exclude-all')}</button>
-      <button onclick={() => { search = ''; school = ''; role = ''; attack = ''; armour = ''; weapon = ''; rarity = ''; included = ''; groupFilter = ''; upToGroup = false; }}>{t('ui-reset-filters')}</button>
+      <button onclick={() => { search = ''; school = ''; role = ''; attack = ''; armour = ''; weapon = ''; rarity = ''; exMaterial = ''; included = ''; groupFilter = ''; upToGroup = false; }}>{t('ui-reset-filters')}</button>
       </div>
     </details>
     <div class="characters" bind:this={grid} style:--card-size={`${sizes[cardSize - 1]}px`}
-      use:sortable={{ mode, change: showDrag, drop: reorder }} aria-label={t('footer-characters')}>
+      use:sortableReorder={{ mode, change: showDrag, drop: reorder }} aria-label={t('footer-characters')}>
       {#each visible as character (character.id)}
         <CharacterCard {character} info={$planner.dataset.students[character.id]}
           name={$planner.names[character.id] ?? character.name} {metadata} scribble={$planner.scribble}
           included={!$planner.data.disabled_characters.includes(character.id)} {t}
           {mode} dragging={drag?.source === character.id}
           bulkSelected={mode === 'bulk' && bulkIds.includes(character.id)} selectBulk={() => toggleBulk(character.id)}
-          dropPosition={drag?.target === character.id && drag.source !== character.id ? drag.after ? 'after' : 'before' : ''}
           edit={() => editing = character.id} include={(value) => planner.include(character.id, value)}
           keyboard={(event) => keyboardMove(event, character.id)} />
       {/each}
@@ -259,22 +278,31 @@
 {/if}
 
 <nav class="planner-actions" aria-label={t('ui-planner-tools')}>
-  <button disabled={!totals} onclick={() => dialog = 'resources'}><img src="/planner/icons/Misc/Credit.png" alt="" />{t('footer-resources')}</button>
-  <button disabled={!totals} onclick={() => dialog = 'gear'}><img src="/planner/icons/Gear/T10_Hat_small.webp" alt="" />{t('footer-gear')}</button>
+  <button disabled={!totals} onclick={() => dialog = 'resources'}><img src="/planner/icons/Misc/Credit.png" alt="" /><span>{t('footer-resources')}</span></button>
+  <button disabled={!totals} onclick={() => dialog = 'gear'}><img src="/planner/icons/Gear/T10_Hat_small.webp" alt="" /><span>{t('footer-gear')}</span></button>
   <button disabled={!$planner.data} onclick={() => { mainView = mainView === 'teams' ? 'characters' : 'teams'; chooseMode('edit'); }}>
-    {t(mainView === 'teams' ? 'footer-characters' : 'footer-teamseditor')}
+    <span>{t(mainView === 'teams' ? 'footer-characters' : 'footer-teamseditor')}</span>
   </button>
-  <button onclick={() => dialog = 'transfer'}>{t('footer-transfer')}</button>
+  <button onclick={() => dialog = 'transfer'}><span>{t('footer-transfer')}</span></button>
+  <button aria-label={t($planner.scribble ? 'ui-use-original-portraits' : 'ui-use-scribble-portraits')}
+    title={t($planner.scribble ? 'ui-use-original-portraits' : 'ui-use-scribble-portraits')}
+    aria-pressed={$planner.scribble} onclick={() => planner.setImageStyle(!$planner.scribble)}>
+    <img src={$planner.scribble ? '/planner/icons/UI/ShirokoScribble.png' : '/planner/icons/UI/ShirokoIcon.png'} alt="" />
+  </button>
 </nav>
 
 {#if dialog === 'resources' && totals && $planner.dataset}
   <ResourceInventory {totals} {metadata} setOwned={planner.owned} {t} gear={false} bind:mode={resourceMode}
     dataset={$planner.dataset} savedServer={$planner.data?.server} setServer={planner.setServer}
+    characters={$planner.data?.characters ?? []} disabledCharacters={$planner.data?.disabled_characters ?? []}
+    names={$planner.names} scribble={$planner.scribble}
     close={() => dialog = ''} error={$planner.error} {levelCap} setCap={(value) => levelCap = value} />
 {:else if dialog === 'gear' && totals && $planner.dataset}
   <ResourceInventory {totals} {metadata} setOwned={planner.owned} {t} gear={true} bind:mode={gearMode}
     bind:campaignMultiplier
     dataset={$planner.dataset} savedServer={$planner.data?.server} setServer={planner.setServer}
+    characters={$planner.data?.characters ?? []} disabledCharacters={$planner.data?.disabled_characters ?? []}
+    names={$planner.names} scribble={$planner.scribble}
     close={() => dialog = ''} error={$planner.error} {levelCap} setCap={(value) => levelCap = value} />
 {:else if dialog === 'transfer'}
   <TransferDialog ready={Boolean($planner.data)} canImport={Boolean($planner.dataset)}
@@ -319,9 +347,18 @@
   .add-card { flex: 0 0 var(--card-size); width: var(--card-size); aspect-ratio: 8 / 9; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 0.5rem; color: inherit; background: transparent; border: 2px dashed #7c5b7d; border-radius: 16%; font-size: max(11px, calc(var(--card-size) * 0.085)); }
   .add-card span:first-child { font-size: 2.5rem; line-height: 1; }
   .saved { color: var(--success); margin-left: auto; font-size: 0.85rem; }
-  .planner-actions { position: fixed; bottom: max(0.75rem, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); display: flex; gap: 0.5rem; padding: 0.5rem; max-width: calc(100vw - 1rem); width: max-content; border: 1px solid #7c5b7d; border-radius: 0.75rem; background: var(--surface); box-shadow: 0 2px 10px #0005; z-index: 9; }
+  .planner-actions { position: fixed; bottom: max(0.75rem, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; padding: 0.5rem; max-width: calc(100vw - 1rem); width: max-content; border: 1px solid #7c5b7d; border-radius: 0.75rem; background: var(--surface); box-shadow: 0 2px 10px #0005; z-index: 9; }
   .planner-actions button { display: flex; align-items: center; gap: 0.4rem; }
   .planner-actions img { width: 26px; height: 26px; object-fit: contain; }
   .error { color: var(--error); }
-  @media (max-width: 480px) { .filters label { flex: 1 1 140px; } .section-heading { align-items: flex-start; } .planner-actions button { padding: 0.4rem; flex-direction: column; justify-content: center; font-size: 0.75rem; min-width: 0; } .modes { flex-wrap: wrap; } }
+  @media (max-width: 480px) {
+    .filters label { flex: 1 1 140px; }
+    .section-heading { align-items: flex-start; }
+    .planner-actions { width: calc(100vw - 0.5rem); max-width: calc(100vw - 0.5rem); flex-wrap: nowrap; gap: 0.1rem; padding: 0.2rem; }
+    .planner-actions button { flex: 1 1 auto; min-width: 0; padding: 0.2rem 0.15rem; justify-content: center; gap: 0.12rem; font-size: clamp(0.6rem, 2.6vw, 0.72rem); white-space: nowrap; }
+    .planner-actions button span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .planner-actions button[aria-pressed] { flex: 0 0 auto; padding: 0.2rem; }
+    .planner-actions img { width: 16px; height: 16px; flex: 0 0 auto; }
+    .modes { flex-wrap: wrap; }
+  }
 </style>

@@ -48,7 +48,7 @@
             <input type="checkbox" checked={pending.includes(id)} onchange={(event) => {
               selected = event.currentTarget.checked ? [...selected, id] : selected.filter((value) => value !== id);
             }} />
-            {#if metadata.portraits[id]}<img src={metadata.portraits[id]} alt="" loading="lazy" width="50" height="56" />{/if}
+            {#if metadata.portraits[id]}<img class="character-image" src={metadata.portraits[id]} alt="" loading="lazy" width="50" height="56" />{/if}
             <span>{names[id] ?? info.Name}<small>{info.School}</small></span>
           </label>
         {/each}

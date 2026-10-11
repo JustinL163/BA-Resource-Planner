@@ -61,15 +61,15 @@
   {/if}
   {#if !standaloneGame}
   <header class="site-header" class:enhanced={$preferences.ready}>
-    <a class="logo" href="/planner/index.html" data-sveltekit-reload>Justin163</a>
     <button
       class="menu-button"
-      disabled={!$preferences.ready}
       aria-label="Toggle navigation"
+      title="Toggle navigation"
       aria-expanded={menuOpen}
       aria-controls="site-navigation"
       onclick={() => menuOpen = !menuOpen}
-    >Menu</button>
+    ><img src="/planner/icons/UI/hamburger.svg" alt="" /></button>
+    <a class="logo" href="/planner/index.html" data-sveltekit-reload>Justin163</a>
     <nav id="site-navigation" aria-label="Main navigation" class:open={menuOpen}>
       {#each links as link}
         <a
@@ -97,11 +97,14 @@
         </select>
       </label>
       <button
+        class="theme-button"
         disabled={!$preferences.ready}
+        aria-label={$preferences.theme === 'dark' ? 'Light theme' : 'Dark theme'}
+        title={$preferences.theme === 'dark' ? 'Light theme' : 'Dark theme'}
         onclick={() => preferences.update({
           theme: $preferences.theme === 'dark' ? 'light' : 'dark'
         })}
-      >{$preferences.theme === 'dark' ? 'Light theme' : 'Dark theme'}</button>
+      ><img src={$preferences.theme === 'dark' ? '/planner/icons/UI/sun.svg' : '/planner/icons/UI/moon-black.svg'} alt="" /></button>
     </div>
   </header>
   {/if}

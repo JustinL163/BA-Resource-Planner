@@ -37,18 +37,28 @@ workers available as fallbacks until parity is established.
 
 ## Next work
 
-1. **Resource-page residuals.** `README.md` notes optional/display controls that
-   remain reachable only through the old planner. Compare remaining controls and
-   dialogs in `planner/index.html` with `/planner/resources/`; note any intentional
-   omissions before retiring the legacy planner.
-2. **Final route/PWA transition.** The root redirect in `_redirects` still opens
+1. **Final route/PWA transition.** The root redirect in `_redirects` still opens
    the legacy resource planner; the shared Svelte navigation links modern
    Resources, Events, Raid Videos and Tournaments. Switch remaining defaults
    only after end-to-end parity is accepted, keeping old addresses usable.
    Keep service-worker caches isolated and stage activation/cleanup for installed
    clients; test offline, install, and upgrade behavior.
 
+Resource-page optional controls have Svelte equivalents now: resource tiles open
+enabled-character usage breakdowns outside Owned mode; the character filters
+include EX materials; all legacy sort presets preserve current-value ordering and
+terrain adaptation bonuses; and the fixed planner toolbar toggles the persisted
+`image-style` preference. The inline toolbar, direct team-image download, and
+inline gear-stage results are deliberate layout replacements. The legacy April
+Fools Pyroxene/gacha overlay remains outside the resource planner replacement
+scope. The old `/planner/index.html` page stays available through the route/PWA
+transition. The legacy filter builder does not produce a user-facing JP-only
+filter despite retaining an unused class marker.
+
 ## Latest verification
+
+For the resource controls and dialogs in this worktree, `npm.cmd run check`
+passed with zero errors or warnings. Test suites were not run.
 
 Verified 2026-10-11 for archived Lore Pursuit: 1,514 unit tests, static build,
 137 production browser tests, 13 development browser tests, Svelte check with

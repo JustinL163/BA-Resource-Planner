@@ -1,4 +1,5 @@
 import type { Action } from 'svelte/action';
+import Sortable from 'sortablejs';
 import type { CardMode } from '$lib/domain/planner/card-display';
 
 export interface DragState { source: string; target: string; after: boolean }
@@ -125,6 +126,140 @@ export const sortable: Action<HTMLElement, SortableOptions> = (node, initial) =>
       node.removeEventListener('lostpointercapture', lostCapture);
       window.removeEventListener('keydown', keydown);
       window.removeEventListener('blur', cancel);
+    }
+  };
+};
+
+export const sortableReorder: Action<HTMLElement, SortableOptions> = (node, initial) => {
+  const clickSuppressionMs = 300;
+  let options = initial;
+  let originalChildren: Node[] = [];
+  let originalIds: string[] = [];
+  let dragSource = '';
+  let started = false;
+  let suppressUntil = 0;
+
+  function ids() {
+    return Array.from(node.children)
+      .filter((child): child is HTMLElement => child instanceof HTMLElement && child.hasAttribute('data-sort-id'))
+      .map((child) => child.dataset.sortId ?? '');
+  }
+
+  function filtered(event: Event | TouchEvent, target: HTMLElement) {
+    if (options.mode === 'disable' || options.mode === 'bulk') return true;
+    const input = event as MouseEvent & { pointerType?: string };
+    if (input.ctrlKey || input.metaKey) return true;
+    const id = target.dataset.sortId ?? '';
+    if (options.canStart && !options.canStart(id)) return true;
+    const touch = event.type.startsWith('touch') || input.pointerType === 'touch';
+    const shift = input.shiftKey ?? false;
+    return touch && options.mode !== 'move' && !shift;
+  }
+
+  function restoreOriginalOrder() {
+    for (let index = originalChildren.length - 1; index >= 0; index--) {
+      const child = originalChildren[index];
+      const next = originalChildren[index + 1] ?? null;
+      if (child.nextSibling !== next) node.insertBefore(child, next);
+    }
+  }
+
+  function clearDragState() {
+    restoreOriginalOrder();
+    originalChildren = [];
+    originalIds = [];
+    dragSource = '';
+    started = false;
+    options.change(null);
+  }
+
+  function createSortable() {
+    return Sortable.create(node, {
+      draggable: '[data-sort-id]',
+      forceFallback: false,
+      fallbackOnBody: true,
+      fallbackTolerance: 8,
+      preventOnFilter: false,
+      animation: 150,
+      scroll: true,
+      scrollSensitivity: 60,
+      scrollSpeed: 12,
+      disabled: options.mode === 'disable' || options.mode === 'bulk',
+      filter: filtered,
+      onStart(event) {
+        dragSource = event.item.dataset.sortId ?? '';
+        // Keep Svelte's keyed children in their source order until the data update commits the move.
+        originalChildren = Array.from(node.childNodes);
+        originalIds = ids();
+        started = Boolean(dragSource);
+        if (started) options.change({ source: dragSource, target: dragSource, after: false });
+      },
+      onMove(event) {
+        const source = event.dragged.dataset.sortId ?? dragSource;
+        const target = event.related.dataset.sortId ?? '';
+        if (!source || !target || (options.canDrop && !options.canDrop(source, target))) return false;
+      },
+      onEnd(event) {
+        const source = event.item.dataset.sortId ?? dragSource;
+        const originalEvent = (event as Event & { originalEvent?: Event }).originalEvent;
+        const cancelled = originalEvent?.type === 'pointercancel' || originalEvent?.type === 'touchcancel';
+        const newIds = ids();
+        const oldIndex = originalIds.indexOf(source);
+        const newIndex = newIds.indexOf(source);
+        let result: DragState | null = null;
+        if (!cancelled && oldIndex >= 0 && newIndex >= 0 && oldIndex !== newIndex) {
+          const after = newIndex > oldIndex;
+          const target = newIds[newIndex + (after ? -1 : 1)];
+          if (target && target !== source && (!options.canDrop || options.canDrop(source, target))) {
+            result = { source, target, after };
+          }
+        }
+
+        if (started) suppressUntil = Date.now() + clickSuppressionMs;
+        clearDragState();
+        if (result) options.drop(result);
+      }
+    });
+  }
+
+  let instance = createSortable();
+
+  function cancelDrag() {
+    if (!started) return;
+    suppressUntil = Date.now() + clickSuppressionMs;
+    instance.destroy();
+    clearDragState();
+    instance = createSortable();
+  }
+
+  function keydown(event: KeyboardEvent) {
+    if (event.key === 'Escape') cancelDrag();
+  }
+
+  function click(event: MouseEvent) {
+    if (Date.now() < suppressUntil) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+  }
+
+  node.addEventListener('click', click, true);
+  window.addEventListener('keydown', keydown);
+  window.addEventListener('blur', cancelDrag);
+  return {
+    update(next) {
+      const changedMode = options.mode !== next.mode;
+      options = next;
+      if (changedMode && started) cancelDrag();
+      else instance.option('disabled', next.mode === 'disable' || next.mode === 'bulk');
+    },
+    destroy() {
+      const wasDragging = started;
+      instance.destroy();
+      node.removeEventListener('click', click, true);
+      window.removeEventListener('keydown', keydown);
+      window.removeEventListener('blur', cancelDrag);
+      if (wasDragging) clearDragState();
     }
   };
 };
