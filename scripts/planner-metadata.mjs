@@ -32,7 +32,7 @@ export async function generatePlannerMetadata(root, destination) {
   if (!globalCap || !cnCap) throw new Error('Farming world caps could not be read from the legacy planner.');
   metadata.worldCaps = { Global: Number(globalCap[1]), CN: Number(cnCap[1]), JP: null };
   const image = (key, folder, name) => {
-    for (const filename of [`${name}_small.webp`, `${name}.webp`, `${name}.png`]) {
+    for (const filename of [`${name}.webp`, `${name}.png`, `${name}_small.webp`]) {
       if (existsSync(join(root, 'planner', 'icons', folder, filename))) {
         metadata.images[key] = `/planner/icons/${folder}/${encodeURIComponent(filename)}`;
         return;

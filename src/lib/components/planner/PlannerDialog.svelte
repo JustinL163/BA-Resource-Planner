@@ -17,7 +17,7 @@
 </dialog>
 
 <style>
-  dialog { width: min(var(--dialog-width), calc(100vw - 1rem)); max-height: 88dvh; padding: 0; background: var(--surface); color: var(--text); border: 1px solid #7c5b7d; border-radius: 1.1rem; overflow-y: auto; overscroll-behavior: contain; }
+  dialog { width: fit-content; max-width: min(var(--dialog-width), calc(100vw - 1rem)); max-height: 88dvh; padding: 0; background: var(--surface); color: var(--text); border: 1px solid #7c5b7d; border-radius: 1.1rem; overflow-y: auto; overscroll-behavior: contain; }
   dialog::backdrop { background: #000a; }
   header { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.7rem 1rem; background: var(--surface); border-bottom: 1px solid #7c5b7d66; }
   h2 { margin: 0; font-size: 1.25rem; }

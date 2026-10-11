@@ -23,11 +23,17 @@ export function resourceItem(key: string, metadata: PlannerMetadata): ResourceIt
 }
 
 export function inventoryCatalog(metadata: PlannerMetadata, totals: ResourceTotals): ResourceItem[] {
-  const keys = new Set([...Object.keys(metadata.materialNames), ...metadata.equipment, ...Object.keys(totals.owned), 'Credit', 'Eligma']);
+  const generatedKeys: string[] = [];
   for (let tier = 1; tier <= 4; tier++) {
-    keys.add(`XP_${tier}`); keys.add(`GXP_${tier}`);
-    for (const type of ['Spring', 'Hammer', 'Barrel', 'Needle']) keys.add(`T${tier}_${type}`);
+    generatedKeys.push(`XP_${tier}`, `GXP_${tier}`);
+    for (const type of ['Spring', 'Hammer', 'Barrel', 'Needle']) generatedKeys.push(`T${tier}_${type}`);
   }
+  const generated = new Set(generatedKeys);
+  // Append owned-only keys last so changing a value cannot move an existing cell.
+  const keys = new Set([
+    ...Object.keys(metadata.materialNames).filter((key) => !generated.has(key)), ...metadata.equipment,
+    'Credit', 'Eligma', ...generatedKeys, ...Object.keys(totals.owned)
+  ]);
   return [...keys].filter((key) => !['Xp', 'GearXp', 'Eleph', 'ShopResets'].includes(key) && !key.endsWith('Cost'))
     .map((key) => resourceItem(key, metadata));
 }

@@ -96,74 +96,80 @@
     if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) requestClose();
   }}>
   <form onsubmit={(event) => { event.preventDefault(); if (!validation.error && save(draft, expected)) close(); }}>
-    <h2 id="editor-title">{t('ui-edit-character')} {name}</h2>
-    {#if error || validation.error}<p class="error" role="alert">{error || validation.error}</p>{/if}
-    {#if skillLoading}<p role="status">{t('ui-skill-loading')}</p>{/if}
-    {#if skillError || skillViews.error}
-      <p class="error" role="alert">{skillError || skillViews.error}
-        {#if skillError}<button type="button" onclick={() => skillRetry++}>{t('ui-retry')}</button>{/if}
-      </p>
-    {/if}
-    <div hidden={skillLoading || Boolean(skillError || skillViews.error)}>
-      <SkillDetails skills={skillViews.skills} {t} />
-    </div>
-    <div class="table-scroll">
-      <table>
-        <thead><tr><th>{t('ui-investment')}</th><th>{t('label-current')}</th><th>{t('label-target')}</th></tr></thead>
-        <tbody>
-          {#each metadata.fields as field (field.key)}
-            <tr>
-              <th scope="row">{field.label}</th>
-              {#each ['current', 'target'] as side}
-                <td>
-                  {#if side === 'current'}
-                    <input type="number" aria-label={`${field.label} ${t('label-current')}`} min={field.min} max={field.max} step="1" required bind:value={draft.current[field.key]} />
-                  {:else}
-                    <input type="number" aria-label={`${field.label} ${t('label-target')}`} min={Math.max(field.min, Number(draft.current[field.key]) || 0)} max={field.max} step="1" required bind:value={draft.target[field.key]} />
-                  {/if}
-                </td>
-              {/each}
-            </tr>
-          {/each}
-        </tbody>
-      </table>
-    </div>
-    <fieldset>
-      <legend>{t('ui-eleph-settings')}</legend>
-      <div class="eleph-fields">
-        {#each [
-          { key: 'owned', label: 'ui-eleph-owned', min: 0, max: undefined },
-          { key: 'cost', label: 'ui-eligma-price', min: 1, max: 5 },
-          { key: 'purchasable', label: 'ui-eligma-remaining', min: 0, max: undefined },
-          { key: 'farm_nodes', label: 'ui-farm-runs', min: 0, max: undefined }
-        ] as field}
-          <label>{t(field.label)}<input type="number" min={field.min} max={field.max} step="1" required bind:value={draft.eleph[field.key]} /></label>
-        {/each}
+    <header class="editor-header">
+      <h2 id="editor-title">{t('ui-edit-character')} {name}</h2>
+      <div class="header-actions">
+        <button type="button" onclick={requestClose}>{t('label-cancel')}</button>
+        <button type="submit" disabled={Boolean(validation.error)}>{t('label-save').trim()}</button>
       </div>
-      <label><input type="checkbox" bind:checked={draft.eleph.unlocked} />{t('ui-unlocked')}</label>
-      <label><input type="checkbox" bind:checked={draft.eleph.use_eligma} />{t('ui-use-eligma')}</label>
-      <label><input type="checkbox" bind:checked={draft.eleph.use_shop} />{t('ui-use-shop')}</label>
-      <label><input type="checkbox" bind:checked={draft.eleph.node_refresh} />{t('ui-node-refresh')}</label>
-    </fieldset>
-    <details>
-      <summary>{t('ui-cost-preview')}</summary>
-      {#if validation.resources}
-        <dl>{#each Object.entries(validation.resources) as [key, amount]}
-          <div><dt>{resourceItem(key, metadata).name}</dt><dd>{formatAmount(amount)}</dd></div>
-        {/each}</dl>
-        {#if !Number.isFinite(validation.resources.ShopResets ?? 0)}<p>{t('ui-farm-warning')}</p>{/if}
+    </header>
+    <div class="editor-content">
+      {#if error || validation.error}<p class="error" role="alert">{error || validation.error}</p>{/if}
+      {#if skillLoading}<p role="status">{t('ui-skill-loading')}</p>{/if}
+      {#if skillError || skillViews.error}
+        <p class="error" role="alert">{skillError || skillViews.error}
+          {#if skillError}<button type="button" onclick={() => skillRetry++}>{t('ui-retry')}</button>{/if}
+        </p>
       {/if}
-    </details>
-    {#if deleting}
-      <p role="alert">{t('ui-confirm-remove')} {name}?</p>
-      <button type="button" onclick={() => { if (remove()) close(); }}>{t('ui-confirm-remove')}</button>
-      <button type="button" onclick={() => deleting = false}>{t('label-cancel')}</button>
-    {/if}
-    <footer>
-      <button type="button" class="danger" onclick={() => deleting = true}>{t('ui-remove-character')}</button>
-      <button type="button" onclick={requestClose}>{t('label-cancel')}</button>
-      <button type="submit" disabled={Boolean(validation.error)}>{t('ui-save-character')}</button>
-    </footer>
+      <div hidden={skillLoading || Boolean(skillError || skillViews.error)}>
+        <SkillDetails skills={skillViews.skills} {t} />
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>{t('ui-investment')}</th><th>{t('label-current')}</th><th>{t('label-target')}</th></tr></thead>
+          <tbody>
+            {#each metadata.fields as field (field.key)}
+              <tr>
+                <th scope="row">{field.label}</th>
+                {#each ['current', 'target'] as side}
+                  <td>
+                    {#if side === 'current'}
+                      <input type="number" aria-label={`${field.label} ${t('label-current')}`} min={field.min} max={field.max} step="1" required bind:value={draft.current[field.key]} />
+                    {:else}
+                      <input type="number" aria-label={`${field.label} ${t('label-target')}`} min={Math.max(field.min, Number(draft.current[field.key]) || 0)} max={field.max} step="1" required bind:value={draft.target[field.key]} />
+                    {/if}
+                  </td>
+                {/each}
+              </tr>
+            {/each}
+          </tbody>
+        </table>
+      </div>
+      <fieldset>
+        <legend>{t('ui-eleph-settings')}</legend>
+        <div class="eleph-fields">
+          {#each [
+            { key: 'owned', label: 'ui-eleph-owned', min: 0, max: undefined },
+            { key: 'cost', label: 'ui-eligma-price', min: 1, max: 5 },
+            { key: 'purchasable', label: 'ui-eligma-remaining', min: 0, max: undefined },
+            { key: 'farm_nodes', label: 'ui-farm-runs', min: 0, max: undefined }
+          ] as field}
+            <label>{t(field.label)}<input type="number" min={field.min} max={field.max} step="1" required bind:value={draft.eleph[field.key]} /></label>
+          {/each}
+        </div>
+        <label><input type="checkbox" bind:checked={draft.eleph.unlocked} />{t('ui-unlocked')}</label>
+        <label><input type="checkbox" bind:checked={draft.eleph.use_eligma} />{t('ui-use-eligma')}</label>
+        <label><input type="checkbox" bind:checked={draft.eleph.use_shop} />{t('ui-use-shop')}</label>
+        <label><input type="checkbox" bind:checked={draft.eleph.node_refresh} />{t('ui-node-refresh')}</label>
+      </fieldset>
+      <details>
+        <summary>{t('ui-cost-preview')}</summary>
+        {#if validation.resources}
+          <dl>{#each Object.entries(validation.resources) as [key, amount]}
+            <div><dt>{resourceItem(key, metadata).name}</dt><dd>{formatAmount(amount)}</dd></div>
+          {/each}</dl>
+          {#if !Number.isFinite(validation.resources.ShopResets ?? 0)}<p>{t('ui-farm-warning')}</p>{/if}
+        {/if}
+      </details>
+      {#if deleting}
+        <p role="alert">{t('ui-confirm-remove')} {name}?</p>
+        <button type="button" onclick={() => { if (remove()) close(); }}>{t('ui-confirm-remove')}</button>
+        <button type="button" onclick={() => deleting = false}>{t('label-cancel')}</button>
+      {/if}
+      <footer>
+        <button type="button" class="danger" onclick={() => deleting = true}>{t('ui-remove-character')}</button>
+      </footer>
+    </div>
   </form>
   {#if discardPrompt}
     <dialog use:modal={{ blurPreviousOnClose: false }} class="discard-confirmation" role="alertdialog" aria-labelledby="discard-title"
@@ -178,8 +184,14 @@
 </dialog>
 
 <style>
-  dialog { width: min(700px, calc(100vw - 1.5rem)); max-height: 90vh; padding: 1.25rem; background: var(--surface); color: var(--text); border-radius: 0.75rem; border: 1px solid #7c5b7d; }
-  dialog.discard-confirmation { width: min(27rem, calc(100vw - 2rem)); max-height: none; padding: 1.25rem; box-shadow: 0 1rem 3rem #0008; }
+  dialog:not(.discard-confirmation) { width: min(700px, calc(100vw - 1.5rem)); max-height: 90dvh; padding: 0; background: var(--surface); color: var(--text); border-radius: 0.75rem; border: 1px solid #7c5b7d; overflow-y: auto; overscroll-behavior: contain; }
+  form { margin: 0; }
+  .editor-header { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.7rem 1rem; background: var(--surface); border-bottom: 1px solid #7c5b7d66; }
+  .editor-header h2 { flex: 1; min-width: 0; margin: 0; font-size: 1.25rem; }
+  .header-actions { display: flex; align-items: center; gap: 0.5rem; }
+  .header-actions button { white-space: nowrap; }
+  .editor-content { padding: 0.75rem 1rem 1rem; }
+  dialog.discard-confirmation { width: min(27rem, calc(100vw - 2rem)); max-height: none; padding: 1.25rem; background: var(--surface); color: var(--text); border: 1px solid #7c5b7d; border-radius: 0.75rem; box-shadow: 0 1rem 3rem #0008; }
   .discard-confirmation h2 { margin: 0; font-size: 1.15rem; }
   .discard-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.2rem; }
   .discard-button { background: #a32f3d; color: white; }
@@ -201,5 +213,5 @@
   @media (max-width: 600px) {
     dialog:not(.discard-confirmation) { width: 100vw; max-width: 100vw; margin-inline: 0; }
   }
-  @media (max-width: 480px) { dialog { padding: 0.75rem; } th, td { padding: 0.3rem; } }
+  @media (max-width: 480px) { .editor-header { padding: 0.6rem; } .editor-content { padding: 0.6rem; } th, td { padding: 0.3rem; } }
 </style>
