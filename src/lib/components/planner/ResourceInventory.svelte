@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { sanitizeIntegerInput } from '$lib/actions/sanitize-integer-input';
   import type { PlannerCharacter, PlannerMetadata, ResourceTotals } from '$lib/domain/planner/types';
   import { formatAmount, type ResourceItem } from '$lib/domain/planner/catalog';
   import { inventoryLayout } from '$lib/domain/planner/inventory-layout';
@@ -125,7 +126,7 @@
       {/each}
     </div>
     {#if !gear}
-      <label>{t('ui-level-cap')}<input type="number" min="78" max={metadata.maxLevel} step="1" value={levelCap}
+      <label>{t('ui-level-cap')}<input use:sanitizeIntegerInput type="number" min="78" max={metadata.maxLevel} step="1" value={levelCap}
         onchange={(event) => {
           const value = event.currentTarget.valueAsNumber;
           if (Number.isInteger(value) && value >= 78 && value <= metadata.maxLevel) { setCap(value); capError = ''; }

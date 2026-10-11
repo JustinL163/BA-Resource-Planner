@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { sanitizeIntegerInput } from '$lib/actions/sanitize-integer-input';
   import type { ResourceItem } from '$lib/domain/planner/catalog';
   import { formatAmount } from '$lib/domain/planner/catalog';
   import type { ResourceTotals } from '$lib/domain/planner/types';
@@ -101,7 +102,7 @@
     {#if item.image}<img class="resource-image" src={item.image} alt="" loading="lazy" draggable="false" />
     {:else}<span class="resource-name" use:fitResourceText={{ text: item.name, layout: 'name' }}>{item.name}</span>{/if}
     <span class="amount" use:fitResourceText={{ text: amountLabel, layout: inlineAmount ? 'inline-amount' : 'cell-amount' }} aria-hidden="true">{amountLabel}</span>
-    <input class="resource-input" type="number" aria-label={`${t('label-owned')} ${item.name}`} min="0" step="1"
+    <input use:sanitizeIntegerInput class="resource-input" type="number" aria-label={`${t('label-owned')} ${item.name}`} min="0" step="1"
       value={amount}
       onchange={(event) => {
         const input = event.currentTarget;

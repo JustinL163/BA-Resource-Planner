@@ -1,7 +1,8 @@
 <script lang="ts">
   import { onMount, untrack } from 'svelte';
+  import { sanitizeIntegerInput } from '$lib/actions/sanitize-integer-input';
   import type { Language } from '$lib/domain/localisation';
-  import type { CharacterInfo, PlannerCharacter, PlannerDataset, PlannerMetadata } from '$lib/domain/planner/types';
+  import type { CharacterInfo, InvestmentKey, PlannerCharacter, PlannerDataset, PlannerMetadata } from '$lib/domain/planner/types';
   import { formatSkill, type SkillKey } from '$lib/domain/planner/skills';
   import { loadSkillData, studentSkills, type SkillData } from '$lib/services/planner-skills';
   import { characterFingerprint } from '$lib/domain/planner/defaults';
@@ -20,7 +21,7 @@
   let draft = $state(untrack(() => structuredClone(character)));
   const expected = untrack(() => characterFingerprint(character));
   let dirty = $derived(characterFingerprint(draft) !== expected);
-  let skillInputFocused = $state(false);
+  let numberInputFocused = $state(false);
   let discardPrompt = $state(false);
   let pendingNavigation = $state<-1 | 1 | null>(null);
   let deleting = $state(false);
@@ -30,6 +31,9 @@
   let skillLoading = $state(false);
   let skillRetry = $state(0);
   const skillFields: SkillKey[] = ['ex', 'basic', 'passive', 'sub'];
+  const fieldsShownInDetails = new Set<InvestmentKey>([
+    ...skillFields, 'gear1', 'gear2', 'gear3', 'bond_gear'
+  ]);
   function requestClose() {
     if (!dirty) { close(); return; }
     pendingNavigation = null;
@@ -52,9 +56,25 @@
     if (direction) navigate(direction);
     else close();
   }
-  function trackSkillInputFocus(event: FocusEvent) {
+  function trackNumberInputFocus(event: FocusEvent) {
     const target = event.type === 'focusout' ? event.relatedTarget : event.target;
-    skillInputFocused = target instanceof Element && target.matches('.skill-level-input');
+    numberInputFocused = target instanceof HTMLInputElement && target.type === 'number';
+  }
+  function fieldMinimum(key: string, side: 'current' | 'target', minimum: number): number {
+    let result = minimum;
+    if (side === 'target') result = Math.max(result, Number(draft.current[key]) || 0);
+    if (key === 'star') {
+      if (side === 'current') result = Math.max(result, info.StarGrade);
+      if (Number(draft[side].ue) > 0) result = Math.max(result, 5);
+    }
+    return result;
+  }
+  function fieldMaximum(key: string, side: 'current' | 'target', maximum: number): number {
+    if (key === 'ue' && Number(draft[side].star) < 5) return 0;
+    if (key === 'ue_level') return [0, 30, 40, 50, 60][Number(draft[side].ue)] ?? 0;
+    if (key === 'bond_gear' && !draft.hasBondGear) return 0;
+    if (key.startsWith('book_') && !Number(draft[side].ue)) return 0;
+    return maximum;
   }
   function skillLevelForPreview(value: unknown, key: SkillKey): number {
     const level = typeof value === 'number' ? value : typeof value === 'string' && value.trim() ? Number(value) : NaN;
@@ -72,8 +92,15 @@
       }
       return;
     }
-    if (discardPrompt || event.repeat || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
     const target = event.target;
+    if (event.key === 'Enter' && target instanceof HTMLInputElement && target.closest('dialog[aria-labelledby="editor-title"]')) {
+      event.preventDefault();
+      if (discardPrompt || event.repeat) return;
+      if (event.ctrlKey && !event.metaKey && !event.altKey && !event.shiftKey) target.form?.requestSubmit();
+      else target.blur();
+      return;
+    }
+    if (discardPrompt || event.repeat || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
     if (target instanceof Element && target.closest('input, textarea, select, [contenteditable="true"], [role="textbox"]')) return;
     if (event.key === 'ArrowLeft' && hasPrevious) {
       event.preventDefault();
@@ -144,12 +171,14 @@
     if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) requestClose();
   }}>
   <form onsubmit={(event) => { event.preventDefault(); if (!validation.error && save(draft, expected)) close(); }}
-    onfocusin={trackSkillInputFocus} onfocusout={trackSkillInputFocus}>
+    onfocusin={trackNumberInputFocus} onfocusout={trackNumberInputFocus}>
     <header class="editor-header">
       <h2 id="editor-title">{t('ui-edit-character')}</h2>
       <div class="editor-navigation">
-        {#if hasPrevious}<button type="button" aria-label={t('ui-previous-character')} onclick={() => requestNavigation(-1)}>&larr;</button>{/if}
-        {#if hasNext}<button type="button" aria-label={t('ui-next-character')} onclick={() => requestNavigation(1)}>&rarr;</button>{/if}
+        <button type="button" class:boundary-hidden={!hasPrevious} aria-hidden={!hasPrevious} disabled={!hasPrevious}
+          aria-label={t('ui-previous-character')} onclick={() => requestNavigation(-1)}>&larr;</button>
+        <button type="button" class:boundary-hidden={!hasNext} aria-hidden={!hasNext} disabled={!hasNext}
+          aria-label={t('ui-next-character')} onclick={() => requestNavigation(1)}>&rarr;</button>
       </div>
       <div class="header-actions">
         <button type="button" onclick={requestClose}>{t('label-cancel')}</button>
@@ -159,7 +188,7 @@
     <div class="editor-content">
       <SkillDetails skills={skillViews.skills} character={draft} {info} {name} {metadata} {scribble} {included} {t}
         onInvestmentChange={(key, side, value) => { draft[side][key] = value; }} />
-      {#if error || (validation.error && !skillInputFocused)}<p class="error" role="alert">{error || validation.error}</p>{/if}
+      {#if error || (validation.error && !numberInputFocused)}<p class="error" role="alert">{error || validation.error}</p>{/if}
       {#if skillLoading}<p role="status">{t('ui-skill-loading')}</p>{/if}
       {#if skillError || skillViews.error}
         <p class="error" role="alert">{skillError || skillViews.error}
@@ -170,15 +199,15 @@
         <table>
           <thead><tr><th>{t('ui-investment')}</th><th>{t('label-current')}</th><th>{t('label-target')}</th></tr></thead>
           <tbody>
-            {#each metadata.fields.filter((field) => !skillFields.includes(field.key as SkillKey)) as field (field.key)}
+            {#each metadata.fields.filter((field) => !fieldsShownInDetails.has(field.key)) as field (field.key)}
               <tr>
                 <th scope="row">{field.label}</th>
                 {#each ['current', 'target'] as side}
                   <td>
                     {#if side === 'current'}
-                      <input type="number" aria-label={`${field.label} ${t('label-current')}`} min={field.min} max={field.max} step="1" required bind:value={draft.current[field.key]} />
+                      <input use:sanitizeIntegerInput type="number" aria-label={`${field.label} ${t('label-current')}`} min={fieldMinimum(field.key, 'current', field.min)} max={fieldMaximum(field.key, 'current', field.max)} step="1" required bind:value={draft.current[field.key]} />
                     {:else}
-                      <input type="number" aria-label={`${field.label} ${t('label-target')}`} min={Math.max(field.min, Number(draft.current[field.key]) || 0)} max={field.max} step="1" required bind:value={draft.target[field.key]} />
+                      <input use:sanitizeIntegerInput type="number" aria-label={`${field.label} ${t('label-target')}`} min={fieldMinimum(field.key, 'target', field.min)} max={fieldMaximum(field.key, 'target', field.max)} step="1" required bind:value={draft.target[field.key]} />
                     {/if}
                   </td>
                 {/each}
@@ -196,7 +225,7 @@
             { key: 'purchasable', label: 'ui-eligma-remaining', min: 0, max: undefined },
             { key: 'farm_nodes', label: 'ui-farm-runs', min: 0, max: undefined }
           ] as field}
-            <label>{t(field.label)}<input type="number" min={field.min} max={field.max} step="1" required bind:value={draft.eleph[field.key]} /></label>
+            <label>{t(field.label)}<input use:sanitizeIntegerInput type="number" min={field.min} max={field.max} step="1" required bind:value={draft.eleph[field.key]} /></label>
           {/each}
         </div>
         <label><input type="checkbox" bind:checked={draft.eleph.unlocked} />{t('ui-unlocked')}</label>
@@ -242,6 +271,7 @@
   .editor-header h2 { flex: 1; min-width: 0; margin: 0; font-size: 1.25rem; }
   .editor-navigation { display: flex; gap: 0.35rem; }
   .editor-navigation button { min-width: 2.25rem; padding: 0.25rem 0.5rem; font-size: 1.25rem; line-height: 1; }
+  .editor-navigation button.boundary-hidden { visibility: hidden; }
   .header-actions { display: flex; align-items: center; gap: 0.5rem; }
   .header-actions button { white-space: nowrap; }
   .editor-content { padding: 0.75rem 1rem 1rem; }

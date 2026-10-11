@@ -1,7 +1,11 @@
 <script lang="ts">
+  import { sanitizeIntegerInput } from '$lib/actions/sanitize-integer-input';
   import type { FormattedSkill, SkillKey } from '$lib/domain/planner/skills';
-  import type { CharacterInfo, PlannerCharacter, PlannerMetadata } from '$lib/domain/planner/types';
+  import type { CharacterInfo, InvestmentKey, PlannerCharacter, PlannerMetadata } from '$lib/domain/planner/types';
   import CharacterCard from './CharacterCard.svelte';
+
+  const equipmentKeys = ['gear1', 'gear2', 'gear3'] as const;
+  type EquipmentInvestmentKey = (typeof equipmentKeys)[number];
 
   let { skills, character, info, name, metadata, scribble, included, t, onInvestmentChange }: {
     skills: Array<{ key: SkillKey; label: string; description: FormattedSkill; fallback: boolean }>;
@@ -12,7 +16,7 @@
     scribble: boolean;
     included: boolean;
     t: (id: string) => string;
-    onInvestmentChange: (key: SkillKey, side: 'current' | 'target', value: string) => void;
+    onInvestmentChange: (key: InvestmentKey, side: 'current' | 'target', value: string) => void;
   } = $props();
 
   let pointerKey = $state<SkillKey | null>(null);
@@ -21,6 +25,7 @@
   let suppressedFocusKey: SkillKey | null = null;
   let touchPinnedKey: SkillKey | null = null;
   let skillButtons: Partial<Record<SkillKey, HTMLButtonElement | undefined>> = {};
+  let bondGearRule = $derived(metadata.fields.find((field) => field.key === 'bond_gear'));
 
   let selected = $derived.by(() => {
     const key = pinnedKey ?? pointerKey ?? focusKey;
@@ -80,6 +85,17 @@
     pointerKey = null;
     focusKey = null;
   }
+
+  function equipmentLabel(equipment: string): string {
+    const translated = t(`gear-${equipment.toLowerCase()}`);
+    return translated === 'Undefined' ? equipment : translated;
+  }
+
+  function equipmentTier(key: EquipmentInvestmentKey): number {
+    const max = metadata.fields.find((field) => field.key === key)?.max ?? 10;
+    const value = Number(character.current[key]);
+    return Number.isInteger(value) ? Math.max(1, Math.min(max, value)) : 1;
+  }
 </script>
 
 <div
@@ -102,7 +118,7 @@
         {@const rule = metadata.fields.find((field) => field.key === skill.key)}
         <div class="skill-tile" class:active={selected?.key === skill.key}>
           {#if rule}
-            <input class="skill-level-input current" type="number" min={rule.min} max={rule.max} step="1"
+            <input use:sanitizeIntegerInput class="skill-level-input current" type="number" min={rule.min} max={rule.max} step="1"
               aria-label={`${skill.label} ${t('label-current')}`} value={String(character.current[skill.key] ?? '')}
               onpointerenter={() => pointerKey = skill.key}
               onpointerdown={(event) => activateInput(skill.key, event)}
@@ -127,7 +143,7 @@
             <span class="skill-label">{skill.label}</span>
           </button>
           {#if rule}
-            <input class="skill-level-input target" type="number" min={Math.max(rule.min, Number(character.current[skill.key]) || 0)} max={rule.max} step="1"
+            <input use:sanitizeIntegerInput class="skill-level-input target" type="number" min={Math.max(rule.min, Number(character.current[skill.key]) || 0)} max={rule.max} step="1"
               aria-label={`${skill.label} ${t('label-target')}`} value={String(character.target[skill.key] ?? '')}
               onpointerenter={() => pointerKey = skill.key}
               onpointerdown={(event) => activateInput(skill.key, event)}
@@ -137,6 +153,38 @@
           {/if}
         </div>
       {/each}
+    </div>
+    <div class="gear-strip" role="group" aria-label={t('ui-overlay-gear')}>
+      {#each equipmentKeys as key, index (key)}
+        {@const equipment = info.Equipment?.[index]}
+        {@const rule = metadata.fields.find((field) => field.key === key)}
+        {#if equipment && rule}
+          <div class="skill-tile gear-tile">
+            <input use:sanitizeIntegerInput class="skill-level-input current" type="number" min={rule.min} max={rule.max} step="1"
+              aria-label={`${equipmentLabel(equipment)} ${t('label-current')}`} value={String(character.current[key] ?? '')}
+              oninput={(event) => onInvestmentChange(key, 'current', event.currentTarget.value)} />
+            <img class="gear-image" src={`/planner/icons/Gear/T${equipmentTier(key)}_${equipment}.webp`} alt="" aria-hidden="true" draggable="false" />
+            <input use:sanitizeIntegerInput class="skill-level-input target" type="number" min={Math.max(rule.min, Number(character.current[key]) || 0)} max={rule.max} step="1"
+              aria-label={`${equipmentLabel(equipment)} ${t('label-target')}`} value={String(character.target[key] ?? '')}
+              oninput={(event) => onInvestmentChange(key, 'target', event.currentTarget.value)} />
+            <span class="skill-label gear-label">{equipmentLabel(equipment)}</span>
+          </div>
+        {/if}
+      {/each}
+      {#if bondGearRule}
+        <div class="skill-tile gear-tile" class:hidden={!character.hasBondGear} aria-hidden={!character.hasBondGear}>
+          <input use:sanitizeIntegerInput class="skill-level-input current" type="number" min={bondGearRule.min} max={bondGearRule.max} step="1"
+            aria-label={`Bond Gear ${t('label-current')}`} value={String(character.current.bond_gear ?? '')}
+            disabled={!character.hasBondGear}
+            oninput={(event) => onInvestmentChange('bond_gear', 'current', event.currentTarget.value)} />
+          <img class="gear-image" src={`/planner/icons/BondGear/${info.Id}.webp`} alt="" aria-hidden="true" draggable="false" />
+          <input use:sanitizeIntegerInput class="skill-level-input target" type="number" min={Math.max(bondGearRule.min, Number(character.current.bond_gear) || 0)} max={bondGearRule.max} step="1"
+            aria-label={`Bond Gear ${t('label-target')}`} value={String(character.target.bond_gear ?? '')}
+            disabled={!character.hasBondGear}
+            oninput={(event) => onInvestmentChange('bond_gear', 'target', event.currentTarget.value)} />
+          <span class="skill-label gear-label">Bond Gear</span>
+        </div>
+      {/if}
     </div>
   </div>
 
@@ -204,8 +252,8 @@
   .skill-details { min-width: 0; max-width: 100%; display: grid; gap: 0.5rem; }
   .skill-overview { display: grid; grid-template-columns: minmax(6rem, 10rem) minmax(0, 1fr); align-items: start; gap: 0.75rem; }
   .portrait-frame { width: 100%; max-width: 10rem; justify-self: start; container-type: inline-size; }
-  .skill-strip { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.4rem; }
-  .skill-tile { display: grid; min-width: 0; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 0.2rem; padding: 0.3rem; border: 1px solid #7c5b7d; border-radius: 0.5rem; background: var(--surface); }
+  .skill-strip { grid-column: 1 / -1; display: flex; justify-content: center; gap: 0.4rem; }
+  .skill-tile { display: grid; min-width: 0; flex: 0 1 6rem; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 0.2rem; padding: 0.1rem; border: 1px solid #7c5b7d; border-radius: 0.5rem; background: var(--surface); }
   .skill-tile:hover, .skill-tile.active { background: #7c5b7d22; }
   .skill-button { display: flex; min-width: 0; flex-direction: column; align-items: center; justify-content: center; gap: 0.2rem; padding: 0.15rem 0; border: 0; background: transparent; color: var(--text); cursor: pointer; }
   .skill-button:focus-visible, .close-button:focus-visible { outline: 2px solid #7c5b7d; outline-offset: 2px; }
@@ -216,7 +264,11 @@
   .skill-level-input.target { justify-self: end; color: #ffffa6; }
   .skill-level-input[type="number"] { appearance: textfield; -moz-appearance: textfield; }
   .skill-level-input::-webkit-inner-spin-button, .skill-level-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-  @media (min-width: 601px) { .skill-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .gear-strip { grid-column: 1 / -1; display: flex; justify-content: center; gap: 0.4rem; }
+  .gear-tile { grid-template-columns: minmax(0, 1fr) 2.1rem minmax(0, 1fr); grid-template-rows: auto auto; }
+  .gear-tile.hidden { visibility: hidden; }
+  .gear-image { grid-column: 2; justify-self: center; width: 2.1rem; height: 2.1rem; margin: 0.15rem 0; object-fit: contain; }
+  .gear-label { grid-column: 1 / -1; grid-row: 2; justify-self: stretch; min-width: 0; }
   .skill-description { min-width: 0; max-width: 100%; padding: 0.65rem 0.75rem; border: 1px solid #7c5b7d; border-radius: 0.5rem; background: #7c5b7d12; overflow-wrap: anywhere; }
   .skill-description.preview { border-style: dashed; }
   .description-header { display: flex; min-width: 0; align-items: flex-start; justify-content: space-between; gap: 0.5rem; }

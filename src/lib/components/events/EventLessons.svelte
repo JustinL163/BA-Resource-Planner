@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { sanitizeIntegerInput } from '$lib/actions/sanitize-integer-input';
   import { formatAmount } from '$lib/domain/planner/catalog';
   import { lessonProgress } from '$lib/domain/events/lessons';
   import type { EventActions, EventPlan, EventReward, LessonDefinition } from '$lib/domain/events/standard-types';
@@ -117,7 +118,7 @@
           {@const currentRuns = postRunCount(index)}
           <label class="post-runs">
             <span class="sr-only">{location.name1}: {t('ui-event-lesson-runs')}</span>
-            <input type="number" min="0" step="1" value={currentRuns}
+            <input use:sanitizeIntegerInput type="number" min="0" step="1" value={currentRuns}
               max={progress.remainingRuns + currentRuns}
               aria-label={`${location.name1}: ${t('ui-event-lesson-runs')}`}
               data-event-lesson-post-runs={index}

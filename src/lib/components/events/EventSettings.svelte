@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { sanitizeIntegerInput } from '$lib/actions/sanitize-integer-input';
   import CharacterPortrait from '$lib/components/planner/CharacterPortrait.svelte';
   import { formatAmount } from '$lib/domain/planner/catalog';
   import type { EventEnergySettings } from '$lib/domain/events/types';
@@ -104,22 +105,22 @@
       <div class="energy-inputs">
         <label>
           <span>{t('ui-event-cafe')}</span>
-          <input type="number" min="1" max="10" step="1" value={plan.cafe_rank ?? 10} data-event-energy="cafe_rank"
+          <input use:sanitizeIntegerInput type="number" min="1" max="10" step="1" value={plan.cafe_rank ?? 10} data-event-energy="cafe_rank"
             onchange={(event) => updateEnergyNumber('cafe_rank', event.currentTarget)} />
         </label>
         <label>
           <span>{t('ui-event-pyro')}</span>
-          <input type="number" min="0" max="20" step="1" value={plan.pyro_refreshes ?? 0} data-event-energy="pyro_refreshes"
+          <input use:sanitizeIntegerInput type="number" min="0" max="20" step="1" value={plan.pyro_refreshes ?? 0} data-event-energy="pyro_refreshes"
             onchange={(event) => updateEnergyNumber('pyro_refreshes', event.currentTarget)} />
         </label>
         <label>
           <span>{t('ui-event-pvp')}</span>
-          <input type="number" min="0" max="4" step="1" value={plan.pvp_refreshes ?? 0} data-event-energy="pvp_refreshes"
+          <input use:sanitizeIntegerInput type="number" min="0" max="4" step="1" value={plan.pvp_refreshes ?? 0} data-event-energy="pvp_refreshes"
             onchange={(event) => updateEnergyNumber('pvp_refreshes', event.currentTarget)} />
         </label>
         <label>
           <span>{t('ui-event-carryover')}</span>
-          <input type="number" min="0" max="3000" step="1" value={plan.energy_carryover ?? 0} data-event-energy="energy_carryover"
+          <input use:sanitizeIntegerInput type="number" min="0" max="3000" step="1" value={plan.energy_carryover ?? 0} data-event-energy="energy_carryover"
             onchange={(event) => updateEnergyNumber('energy_carryover', event.currentTarget)} />
         </label>
         <label class="pack">
@@ -198,6 +199,7 @@
               <span>{t('label-tabowned')} {currency.shortname}</span>
             </span>
             <input
+              use:sanitizeIntegerInput
               type="number"
               min="0"
               max="200000"

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { untrack } from 'svelte';
+  import { sanitizeIntegerInput } from '$lib/actions/sanitize-integer-input';
   import type { InvestmentKey, PlannerCharacter, PlannerDataset, PlannerMetadata } from '$lib/domain/planner/types';
   import { characterFingerprint } from '$lib/domain/planner/defaults';
   import { applyBulkPatch, validateBulkPatch, type BulkPatch } from '$lib/domain/planner/bulk';
@@ -55,9 +56,9 @@
       <thead><tr><th>{t('ui-investment')}</th><th>{t('label-current')}</th><th>{t('label-target')}</th></tr></thead>
       <tbody>{#each metadata.fields as field}
         <tr><th scope="row">{field.label}</th>
-          <td><input type="number" min={field.min} max={field.max} step="1" aria-label={`Bulk ${field.label} ${t('label-current')}`}
+          <td><input use:sanitizeIntegerInput type="number" min={field.min} max={field.max} step="1" data-allow-blank aria-label={`Bulk ${field.label} ${t('label-current')}`}
             bind:value={current[field.key]} onchange={() => stars('current', field.key)} /></td>
-          <td><input type="number" min={field.min} max={field.max} step="1" aria-label={`Bulk ${field.label} ${t('label-target')}`}
+          <td><input use:sanitizeIntegerInput type="number" min={field.min} max={field.max} step="1" data-allow-blank aria-label={`Bulk ${field.label} ${t('label-target')}`}
             bind:value={target[field.key]} onchange={() => stars('target', field.key)} /></td>
         </tr>
       {/each}</tbody>

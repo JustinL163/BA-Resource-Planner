@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { sanitizeIntegerInput } from '$lib/actions/sanitize-integer-input';
   import { formatAmount } from '$lib/domain/planner/catalog';
   import { isRecord } from '$lib/domain/planner/save';
   import type { EventAmounts } from '$lib/domain/events/types';
@@ -81,7 +82,7 @@
             <span class="product-name">{product.name}</span>
             {#if purchase.amount !== undefined}<span class="amount-multiplier">×{formatAmount(purchase.amount)}</span>{/if}
             <label class="quantity">
-              <input type="number" min="0" max={purchase.overflow
+              <input use:sanitizeIntegerInput type="number" min="0" max={purchase.overflow
                 ? purchase.overflow_cap ?? (event.eventId === 'ive-alive-rerun' ? 200000 : undefined)
                 : purchase.count} step="1"
                 value={purchase.overflow && plan.optimisation_type === 'Currency'
@@ -122,7 +123,7 @@
             <tr data-event-stage={stage.number}>
               <th scope="row">{stage.label ?? `Q${stage.number}`}</th>
               <td>{formatAmount(stage.cost)} AP</td>
-              <td><input type="number" min="0" max="2000" step="1"
+              <td><input use:sanitizeIntegerInput type="number" min="0" max="2000" step="1"
                 value={stageRun(stage.number) ?? ''}
                 aria-label={`${t('label-headerruns')} Q${stage.number}`}
                 disabled={plan.optimisation_type !== 'Manual'}

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { sanitizeIntegerInput } from '$lib/actions/sanitize-integer-input';
   import { onMount, tick } from 'svelte';
   import { metadata } from '$content/planner';
   import aliases from '$content/search-aliases.json';
@@ -838,8 +839,8 @@
           <input type="url" maxlength="100" autocomplete="off" bind:value={editorLink} placeholder="https://www.youtube.com/watch?v=..." />
         </label>
         <div class="form-two-col">
-          <label>{t('text-score')}<input type="number" min="1" max="40348000" step="1" bind:value={editorScore} /></label>
-          <label>{t('text-levelhighestnonborrow')}<input type="number" min="1" max="87" step="1" bind:value={editorLevel} /></label>
+          <label>{t('text-score')}<input use:sanitizeIntegerInput type="number" min="1" max="40348000" step="1" bind:value={editorScore} /></label>
+          <label>{t('text-levelhighestnonborrow')}<input use:sanitizeIntegerInput type="number" min="1" max="87" step="1" bind:value={editorLevel} /></label>
         </div>
       </div>
       <div class="editor-team-heading"><h3>{t('text-teams')}</h3><button class="quiet-button" type="button" onclick={addTeam} disabled={editorTeams.length >= 25}>Add team</button></div>

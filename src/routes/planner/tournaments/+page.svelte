@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { sanitizeIntegerInput } from '$lib/actions/sanitize-integer-input';
   import { onDestroy, onMount, tick } from 'svelte';
   import { metadata } from '$content/planner';
   import aliases from '$content/search-aliases.json';
@@ -473,8 +474,8 @@
   </section>
 
   <section class="scores" aria-label="Match scores">
-    <label>Player 1 score<input type="number" autocomplete="off" value={form.Player1Score} oninput={(event) => form = { ...form, Player1Score: event.currentTarget.value } } disabled={!pageReady} /></label>
-    <label>Player 2 score<input type="number" autocomplete="off" value={form.Player2Score} oninput={(event) => form = { ...form, Player2Score: event.currentTarget.value } } disabled={!pageReady} /></label>
+    <label>Player 1 score<input use:sanitizeIntegerInput type="number" autocomplete="off" value={form.Player1Score} oninput={(event) => form = { ...form, Player1Score: event.currentTarget.value } } disabled={!pageReady} /></label>
+    <label>Player 2 score<input use:sanitizeIntegerInput type="number" autocomplete="off" value={form.Player2Score} oninput={(event) => form = { ...form, Player2Score: event.currentTarget.value } } disabled={!pageReady} /></label>
   </section>
 
   <section class="account-actions" aria-label="Tournament data account">

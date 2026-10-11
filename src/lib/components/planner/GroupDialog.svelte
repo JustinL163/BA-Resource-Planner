@@ -1,5 +1,6 @@
 <script lang="ts">
   import { untrack } from 'svelte';
+  import { sanitizeIntegerInput } from '$lib/actions/sanitize-integer-input';
   import { groupFingerprint } from '$lib/domain/planner/groups';
   import type { GroupCommand } from '$lib/services/planner-groups';
   import PlannerDialog from './PlannerDialog.svelte';
@@ -26,7 +27,7 @@
     {#if action === 'create' || action === 'rename'}
       <label>{t('ui-group-name')}<input type="text" required maxlength="35" bind:value={name} /></label>
     {:else if action === 'order'}
-      <label>{t('ui-group-position')}<input type="number" required min="1" max={Object.keys(groups).length} step="1" bind:value={position} /></label>
+      <label>{t('ui-group-position')}<input use:sanitizeIntegerInput type="number" required min="1" max={Object.keys(groups).length} step="1" bind:value={position} /></label>
     {:else}
       <p>{t('ui-group-delete-warning')} {snapshot.name}</p>
       <label class="confirm"><input type="checkbox" bind:checked={confirmed} />{t('ui-group-delete-confirm')}</label>
