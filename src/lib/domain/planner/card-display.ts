@@ -1,7 +1,7 @@
 import type { InvestmentValue } from '../resources/types';
 import type { PlannerCharacter } from './types';
 
-export type CardMode = 'edit' | 'disable' | 'move' | 'bulk';
+export type CardMode = 'edit' | 'bulk';
 
 export function formatInvestment(type: string, value: InvestmentValue): string {
   if (type === 'Ex' && Number(value) === 5) return 'M';

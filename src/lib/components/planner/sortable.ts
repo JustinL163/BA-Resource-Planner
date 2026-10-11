@@ -50,9 +50,8 @@ export const sortable: Action<HTMLElement, SortableOptions> = (node, initial) =>
     if (event.button === 0 && event.isPrimary) suppressUntil = 0;
     const card = (event.target instanceof Element ? event.target : null)?.closest<HTMLElement>('[data-sort-id]');
     if (!card || !node.contains(card) || event.button !== 0 || !event.isPrimary ||
-      options.mode === 'disable' || options.mode === 'bulk' || event.ctrlKey || event.metaKey) return;
+      options.mode === 'bulk' || event.ctrlKey || event.metaKey) return;
     if (options.canStart && !options.canStart(card.dataset.sortId!)) return;
-    if (event.pointerType !== 'mouse' && options.mode !== 'move' && !event.shiftKey) return;
     pointer = { id: event.pointerId, source: card.dataset.sortId!, x: event.clientX, y: event.clientY };
   }
 
@@ -146,14 +145,12 @@ export const sortableReorder: Action<HTMLElement, SortableOptions> = (node, init
   }
 
   function filtered(event: Event | TouchEvent, target: HTMLElement) {
-    if (options.mode === 'disable' || options.mode === 'bulk') return true;
+    if (options.mode === 'bulk') return true;
     const input = event as MouseEvent & { pointerType?: string };
     if (input.ctrlKey || input.metaKey) return true;
     const id = target.dataset.sortId ?? '';
     if (options.canStart && !options.canStart(id)) return true;
-    const touch = event.type.startsWith('touch') || input.pointerType === 'touch';
-    const shift = input.shiftKey ?? false;
-    return touch && options.mode !== 'move' && !shift;
+    return false;
   }
 
   function restoreOriginalOrder() {
@@ -184,7 +181,7 @@ export const sortableReorder: Action<HTMLElement, SortableOptions> = (node, init
       scroll: true,
       scrollSensitivity: 60,
       scrollSpeed: 12,
-      disabled: options.mode === 'disable' || options.mode === 'bulk',
+      disabled: options.mode === 'bulk',
       filter: filtered,
       onStart(event) {
         dragSource = event.item.dataset.sortId ?? '';
@@ -251,7 +248,7 @@ export const sortableReorder: Action<HTMLElement, SortableOptions> = (node, init
       const changedMode = options.mode !== next.mode;
       options = next;
       if (changedMode && started) cancelDrag();
-      else instance.option('disabled', next.mode === 'disable' || next.mode === 'bulk');
+      else instance.option('disabled', next.mode === 'bulk');
     },
     destroy() {
       const wasDragging = started;

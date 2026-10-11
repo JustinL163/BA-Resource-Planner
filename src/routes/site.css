@@ -1,9 +1,38 @@
 :root {
   font-family: Arial, sans-serif;
   color-scheme: light dark;
+  --site-scrollbar-thumb: #fff;
 }
 
-* { box-sizing: border-box; }
+:root:has(.site[data-theme="light"]),
+:root:has(.site.game-shell) {
+  --site-scrollbar-thumb: rgb(54, 54, 54);
+}
+
+* {
+  box-sizing: border-box;
+}
+@supports not selector(::-webkit-scrollbar) {
+  :root,
+  * {
+    scrollbar-color: var(--site-scrollbar-thumb) transparent;
+    scrollbar-width: auto;
+  }
+}
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--site-scrollbar-thumb); border-radius: 10px; }
+::-webkit-scrollbar-button { display: none !important; width: 0; height: 0; }
+::-webkit-scrollbar-button:vertical:decrement,
+::-webkit-scrollbar-button:vertical:increment,
+::-webkit-scrollbar-button:horizontal:decrement,
+::-webkit-scrollbar-button:horizontal:increment {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+::-webkit-scrollbar-corner { background: transparent; }
 body { margin: 0; }
 button, select { font: inherit; }
 button, select, a { touch-action: manipulation; }

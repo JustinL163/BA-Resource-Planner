@@ -921,7 +921,7 @@
   .timeline-heading h2 { margin: 0; font-size: 1.1rem; }
   .timeline-section.collapsed .timeline-controls { display: none; }
   .timeline-section.collapsed .raid-card.timeline-padding { display: none; }
-  .timeline-scroll { max-width: 100%; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scroll-behavior: smooth; scrollbar-color: #fff8 transparent; }
+  .timeline-scroll { max-width: 100%; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scroll-behavior: smooth; }
   .timeline-board { display: grid; width: max-content; min-width: 100%; gap: 0.65rem; }
   .server-row { display: grid; grid-template-columns: 6rem max-content; min-height: 9.3rem; gap: 0.5rem; }
   .server-label { position: sticky; z-index: 4; left: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 0.1rem; border: 1px solid #ffffff20; border-radius: 0.55rem; background: #282a35ed; color: white; }
@@ -973,7 +973,7 @@
   .raid-score { font-size: 1.25rem; }
   .player-level { white-space: nowrap; opacity: 0.85; }
   .raid-teams, .viewer-teams { display: grid; gap: 0.3rem; }
-  .raid-teams { --team-row-size: clamp(2.25rem, 3vw, 3rem); grid-auto-rows: var(--team-row-size); max-height: calc(3.5 * var(--team-row-size) + 3 * 0.3rem); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+  .raid-teams { --team-row-size: clamp(2.25rem, 3vw, 3rem); grid-auto-rows: var(--team-row-size); max-height: calc(3.5 * var(--team-row-size) + 3 * 0.3rem); overflow-y: auto; overscroll-behavior: contain; }
   .raid-team { display: grid; grid-template-columns: 1.2rem minmax(0, 1fr) 5rem; align-items: center; gap: 0.3rem; min-width: 0; }
   .raid-teams .raid-team { height: 100%; min-height: 0; }
   .team-num { display: grid; place-items: center; width: 1.1rem; height: 1.1rem; border-radius: 50%; background: #ffffff20; font-size: 0.7rem; }

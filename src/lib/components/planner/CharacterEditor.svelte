@@ -18,6 +18,8 @@
   } = $props();
   let draft = $state(untrack(() => structuredClone(character)));
   const expected = untrack(() => characterFingerprint(character));
+  let dirty = $derived(characterFingerprint(draft) !== expected);
+  let discardPrompt = $state(false);
   let deleting = $state(false);
   let mounted = $state(false);
   let skillData = $state<SkillData | null>(null);
@@ -25,7 +27,22 @@
   let skillLoading = $state(false);
   let skillRetry = $state(0);
   const skillFields: SkillKey[] = ['ex', 'basic', 'passive', 'sub'];
-  onMount(() => { mounted = true; });
+  function requestClose() {
+    if (!dirty) { close(); return; }
+    discardPrompt = true;
+  }
+  function interceptDirtyEscape(event: KeyboardEvent) {
+    if (event.key !== 'Escape' || !dirty) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if (event.repeat) return;
+    discardPrompt = !discardPrompt;
+  }
+  onMount(() => {
+    mounted = true;
+    window.addEventListener('keydown', interceptDirtyEscape, true);
+    return () => window.removeEventListener('keydown', interceptDirtyEscape, true);
+  });
   $effect(() => {
     if (!mounted) return;
     const selectedLanguage = language;
@@ -71,7 +88,13 @@
   });
 </script>
 
-<dialog use:modal aria-labelledby="editor-title" oncancel={(event) => { event.preventDefault(); close(); }}>
+<dialog use:modal={{ focusDialog: true }} tabindex="-1" aria-labelledby="editor-title"
+  oncancel={(event) => { event.preventDefault(); requestClose(); }}
+  onclick={(event) => {
+    if (event.target !== event.currentTarget) return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) requestClose();
+  }}>
   <form onsubmit={(event) => { event.preventDefault(); if (!validation.error && save(draft, expected)) close(); }}>
     <h2 id="editor-title">{t('ui-edit-character')} {name}</h2>
     {#if error || validation.error}<p class="error" role="alert">{error || validation.error}</p>{/if}
@@ -138,14 +161,28 @@
     {/if}
     <footer>
       <button type="button" class="danger" onclick={() => deleting = true}>{t('ui-remove-character')}</button>
-      <button type="button" onclick={close}>{t('label-cancel')}</button>
+      <button type="button" onclick={requestClose}>{t('label-cancel')}</button>
       <button type="submit" disabled={Boolean(validation.error)}>{t('ui-save-character')}</button>
     </footer>
   </form>
+  {#if discardPrompt}
+    <dialog use:modal={{ blurPreviousOnClose: false }} class="discard-confirmation" role="alertdialog" aria-labelledby="discard-title"
+      oncancel={(event) => { event.preventDefault(); event.stopPropagation(); discardPrompt = false; }}>
+      <h2 id="discard-title">{t('text-unsavedchanges')}</h2>
+      <div class="discard-actions">
+        <button type="button" onclick={() => discardPrompt = false}>{t('button-goback')}</button>
+        <button type="button" class="discard-button" onclick={close}>{t('button-discardchanges')}</button>
+      </div>
+    </dialog>
+  {/if}
 </dialog>
 
 <style>
   dialog { width: min(700px, calc(100vw - 1.5rem)); max-height: 90vh; padding: 1.25rem; background: var(--surface); color: var(--text); border-radius: 0.75rem; border: 1px solid #7c5b7d; }
+  dialog.discard-confirmation { width: min(27rem, calc(100vw - 2rem)); max-height: none; padding: 1.25rem; box-shadow: 0 1rem 3rem #0008; }
+  .discard-confirmation h2 { margin: 0; font-size: 1.15rem; }
+  .discard-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.2rem; }
+  .discard-button { background: #a32f3d; color: white; }
   dialog::backdrop { background: #000a; }
   table { width: 100%; border-collapse: collapse; }
   th, td { text-align: left; padding: 0.4rem; }
@@ -161,5 +198,8 @@
   .error { color: var(--error); }
   dl div { display: flex; justify-content: space-between; gap: 1rem; padding: 0.25rem; }
   dd { margin: 0; }
+  @media (max-width: 600px) {
+    dialog:not(.discard-confirmation) { width: 100vw; max-width: 100vw; margin-inline: 0; }
+  }
   @media (max-width: 480px) { dialog { padding: 0.75rem; } th, td { padding: 0.3rem; } }
 </style>

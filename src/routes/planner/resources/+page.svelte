@@ -38,10 +38,16 @@
   let groupFilter = $state('');
   let upToGroup = $state(false);
   let bulkIds = $state<string[]>([]);
+  let selectionAnchor = $state('');
+  let lastSelectionWasAdd = $state(true);
   let bulkOpen = $state(false);
-  let mode = $state<CardMode>('edit');
-  const modes: CardMode[] = ['edit', 'disable', 'move', 'bulk'];
+  let mode = $derived<CardMode>(bulkIds.length ? 'bulk' : 'edit');
   let drag = $state<DragState | null>(null);
+  type SelectionBox = { pointerId: number; startX: number; startY: number; x: number; y: number; moved: boolean; deselect: boolean };
+  type SelectionSnapshot = { ids: string[]; anchor: string; adds: boolean };
+  let selectionBox = $state<SelectionBox | null>(null);
+  let boxPreviewIds = $state<string[]>([]);
+  let selectionCaptureElement: HTMLElement | null = null;
   let dialog = $state<'' | 'resources' | 'gear' | 'transfer'>('');
   let cardSize = $state(5);
   let uiError = $state('');
@@ -112,12 +118,169 @@
     };
     window.addEventListener(saveChangedEvent, refresh);
     window.addEventListener('storage', storage);
+    window.addEventListener('pointerdown', beginSelectionBox, true);
+    window.addEventListener('pointermove', moveSelectionBox, { passive: false });
+    window.addEventListener('pointerup', finishSelectionBox);
+    window.addEventListener('pointercancel', cancelSelectionBox);
+    window.addEventListener('click', clearBulkOnBlankClick, true);
+    window.addEventListener('keydown', plannerShortcuts);
     return () => {
       controller.abort();
       window.removeEventListener(saveChangedEvent, refresh);
       window.removeEventListener('storage', storage);
+      window.removeEventListener('pointerdown', beginSelectionBox, true);
+      window.removeEventListener('pointermove', moveSelectionBox);
+      window.removeEventListener('pointerup', finishSelectionBox);
+      window.removeEventListener('pointercancel', cancelSelectionBox);
+      window.removeEventListener('click', clearBulkOnBlankClick, true);
+      window.removeEventListener('keydown', plannerShortcuts);
     };
   });
+
+  function selectionSnapshot(): SelectionSnapshot {
+    return { ids: [...bulkIds], anchor: selectionAnchor, adds: lastSelectionWasAdd };
+  }
+
+  function restoreSelection(snapshot: SelectionSnapshot) {
+    bulkIds = [...snapshot.ids];
+    selectionAnchor = snapshot.anchor;
+    lastSelectionWasAdd = snapshot.adds;
+  }
+
+  function setBulkSelection(ids: string[], anchor: string, adds: boolean) {
+    const before = selectionSnapshot();
+    bulkIds = [...new Set(ids)];
+    selectionAnchor = anchor;
+    lastSelectionWasAdd = adds;
+    const after = selectionSnapshot();
+    if (JSON.stringify(before) !== JSON.stringify(after)) {
+      planner.recordUiHistory(() => restoreSelection(before), () => restoreSelection(after));
+    }
+  }
+
+  function clearSelection() {
+    if (bulkIds.length) setBulkSelection([], '', true);
+  }
+
+  function clearBulkOnBlankClick(event: MouseEvent) {
+    if (event.button !== 0 || !bulkIds.length) return;
+    const target = event.target instanceof Element ? event.target : null;
+    const main = document.getElementById('main-content');
+    if (!target || !main?.contains(target) || target.closest(
+      'header, footer, .planner-actions, dialog, [data-sort-id], button, a, label, input, select, textarea, summary, [contenteditable="true"], [role="button"], p, h1, h2, h3, h4, h5, h6, span, img'
+    )) return;
+    clearSelection();
+  }
+
+  function selectCard(event: MouseEvent, id: string) {
+    const modified = event.ctrlKey || event.metaKey;
+    if (!modified && mode !== 'bulk') return;
+    event.preventDefault();
+    if (modified && event.shiftKey && bulkIds.length) {
+      const start = visible.findIndex((character) => character.id === selectionAnchor);
+      const end = visible.findIndex((character) => character.id === id);
+      if (start >= 0 && end >= 0) {
+        const range = visible.slice(Math.min(start, end), Math.max(start, end) + 1).map((character) => character.id);
+        const selected = new Set(bulkIds);
+        if (lastSelectionWasAdd) range.forEach((value) => selected.add(value));
+        else range.forEach((value) => selected.delete(value));
+        setBulkSelection([...selected], id, lastSelectionWasAdd);
+        return;
+      }
+    }
+    const selecting = !bulkIds.includes(id);
+    setBulkSelection(selecting ? [...bulkIds, id] : bulkIds.filter((value) => value !== id), id, selecting);
+  }
+
+  function selectVisible() {
+    const ids = [...new Set([...bulkIds, ...visible.map((character) => character.id)])];
+    setBulkSelection(ids, visible.at(-1)?.id ?? selectionAnchor, true);
+  }
+
+  function cardsInSelectionBox(box: SelectionBox): string[] {
+    if (!grid) return [];
+    const cards = new Map(Array.from(grid.querySelectorAll<HTMLElement>('[data-sort-id]'))
+      .map((card) => [card.dataset.sortId ?? '', card] as const));
+    const left = Math.min(box.startX, box.x);
+    const right = Math.max(box.startX, box.x);
+    const top = Math.min(box.startY, box.y);
+    const bottom = Math.max(box.startY, box.y);
+    return visible.filter((character) => {
+      const rect = cards.get(character.id)?.getBoundingClientRect();
+      return rect && rect.left <= right && rect.right >= left && rect.top <= bottom && rect.bottom >= top;
+    }).map((character) => character.id);
+  }
+
+  function beginSelectionBox(event: PointerEvent) {
+    const target = event.target instanceof Element ? event.target : null;
+    const main = document.getElementById('main-content');
+    if (event.button !== 0 || event.pointerType !== 'mouse' || !event.isPrimary || !target || !grid || !main?.contains(target) ||
+      target.closest('header, footer, .planner-actions, dialog, [data-sort-id]') ||
+      target.closest('button, a, label, input, select, textarea, summary, [contenteditable="true"], [role="button"]')) return;
+    event.preventDefault();
+    selectionBox = { pointerId: event.pointerId, startX: event.clientX, startY: event.clientY,
+      x: event.clientX, y: event.clientY, moved: false, deselect: event.altKey };
+    boxPreviewIds = [];
+    selectionCaptureElement = document.body;
+    selectionCaptureElement.setPointerCapture(event.pointerId);
+  }
+
+  function moveSelectionBox(event: PointerEvent) {
+    const box = selectionBox;
+    if (!box || event.pointerId !== box.pointerId) return;
+    const moved = box.moved || Math.hypot(event.clientX - box.startX, event.clientY - box.startY) >= 5;
+    if (!moved) return;
+    event.preventDefault();
+    selectionBox = { ...box, x: event.clientX, y: event.clientY, moved, deselect: event.altKey };
+    boxPreviewIds = cardsInSelectionBox(selectionBox);
+  }
+
+  function finishSelectionBox(event: PointerEvent) {
+    const box = selectionBox;
+    if (!box || event.pointerId !== box.pointerId) return;
+    const completed = { ...box, x: event.clientX, y: event.clientY,
+      moved: box.moved || Math.hypot(event.clientX - box.startX, event.clientY - box.startY) >= 5,
+      deselect: event.altKey };
+    const ids = completed.moved ? cardsInSelectionBox(completed) : [];
+    selectionBox = null;
+    boxPreviewIds = [];
+    selectionCaptureElement = null;
+    if (!completed.moved) { clearSelection(); return; }
+    if (!ids.length || (completed.deselect && !bulkIds.length)) return;
+    const next = new Set(bulkIds);
+    if (completed.deselect) ids.forEach((id) => next.delete(id));
+    else ids.forEach((id) => next.add(id));
+    setBulkSelection([...next], ids.at(-1) ?? selectionAnchor, !completed.deselect);
+  }
+
+  function cancelSelectionBox(event?: PointerEvent) {
+    if (event && selectionBox?.pointerId !== event.pointerId) return;
+    const pointerId = selectionBox?.pointerId;
+    selectionBox = null;
+    boxPreviewIds = [];
+    if (pointerId !== undefined && selectionCaptureElement?.hasPointerCapture(pointerId)) selectionCaptureElement.releasePointerCapture(pointerId);
+    selectionCaptureElement = null;
+  }
+
+  function plannerShortcuts(event: KeyboardEvent) {
+    const target = event.target instanceof Element ? event.target : null;
+    if (target?.closest('input, textarea, select, [contenteditable="true"], [role="textbox"]')) return;
+    if (event.key === 'Escape') {
+      if (selectionBox) { cancelSelectionBox(); return; }
+      if (bulkIds.length) { event.preventDefault(); clearSelection(); }
+      return;
+    }
+    if (!(event.ctrlKey || event.metaKey) || event.altKey) return;
+    const key = event.key.toLowerCase();
+    if (key === 'z') {
+      event.preventDefault();
+      if (event.shiftKey) planner.redo();
+      else planner.undo();
+    } else if (key === 'y') {
+      event.preventDefault();
+      planner.redo();
+    }
+  }
 
   function resize(value: number) {
     try {
@@ -144,7 +307,7 @@
 
   function keyboardMove(event: KeyboardEvent, id: string) {
     if (mode === 'bulk') return;
-    if (!(event.altKey || mode === 'move') || !['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) return;
+    if (!event.altKey || !['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) return;
     event.preventDefault();
     const ids = visible.map((character) => character.id);
     const forward = event.key === 'ArrowRight' || event.key === 'ArrowDown';
@@ -152,16 +315,11 @@
     if (target) void reorder({ source: id, target, after: forward });
   }
 
-  function chooseMode(value: CardMode) {
-    mode = value;
-    if (value !== 'bulk') bulkIds = [];
-  }
-  function toggleBulk(id: string) { bulkIds = bulkIds.includes(id) ? bulkIds.filter((value) => value !== id) : [...bulkIds, id]; }
 </script>
 
 <svelte:head><title>{t('page-resource-planner')} - Svelte</title></svelte:head>
 
-<h1>{t('page-resource-planner')}</h1>
+<h1 class="visually-hidden">{t('page-resource-planner')}</h1>
 <noscript><p>{t('ui-javascript-required')}</p></noscript>
 <details class="migration-note"><summary>{t('ui-migration-status')} &middot; <a href="/planner/index.html" data-sveltekit-reload>{t('ui-legacy-tools')}</a></summary>
   <p>{t('ui-modern-boundary')}</p>
@@ -182,25 +340,13 @@
     actions={planner} error={$planner.error} bind:selected={selectedGroup} {t} />
  {:else}
   <section aria-labelledby="characters-title">
-    <div class="section-heading">
-      <h2 id="characters-title">{t('footer-characters')} ({$planner.data.characters.length})</h2>
-    </div>
+    <h2 class="visually-hidden" id="characters-title">{t('footer-characters')}</h2>
     <div class="toolbar">
-      <div class="modes" role="group" aria-label={t('ui-character-mode')}>
-        {#each modes as item}
-          <button class:active={mode === item} aria-pressed={mode === item} onclick={() => chooseMode(item)}
-            onpointerup={(event) => {
-              if (event.pointerType === 'mouse') return;
-              const rect = event.currentTarget.getBoundingClientRect();
-              if (event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom) chooseMode(item);
-            }}>{t(item === 'bulk' ? 'ui-bulk-mode' : `label-${item}mode`)}</button>
-        {/each}
-      </div>
-      {#if mode === 'bulk'}
-        <div class="toolbar">
+      {#if bulkIds.length}
+        <div class="selection-tools" aria-live="polite">
           <span>{bulkCharacters.length} {t('ui-selected')}</span>
-          <button onclick={() => bulkIds = [...new Set([...bulkIds, ...visible.map((character) => character.id)])]}>{t('ui-select-visible')}</button>
-          <button onclick={() => bulkIds = []}>{t('ui-clear-selection')}</button>
+          <button onclick={selectVisible}>{t('ui-select-visible')}</button>
+          <button onclick={clearSelection}>{t('ui-clear-selection')}</button>
           <button disabled={!bulkCharacters.length} onclick={() => bulkOpen = true}>{t('ui-bulk-edit')}</button>
         </div>
       {/if}
@@ -258,20 +404,32 @@
       </div>
     </details>
     <div class="characters" bind:this={grid} style:--card-size={`${sizes[cardSize - 1]}px`}
-      use:sortableReorder={{ mode, change: showDrag, drop: reorder }} aria-label={t('footer-characters')}>
+      use:sortableReorder={{ mode: 'edit', change: showDrag, drop: reorder }} aria-label={t('footer-characters')}>
       {#each visible as character (character.id)}
         <CharacterCard {character} info={$planner.dataset.students[character.id]}
           name={$planner.names[character.id] ?? character.name} {metadata} scribble={$planner.scribble}
           included={!$planner.data.disabled_characters.includes(character.id)} {t}
           {mode} dragging={drag?.source === character.id}
-          bulkSelected={mode === 'bulk' && bulkIds.includes(character.id)} selectBulk={() => toggleBulk(character.id)}
+          bulkSelected={bulkIds.includes(character.id)}
+          selectionPreview={selectionBox && boxPreviewIds.includes(character.id)
+            ? selectionBox.deselect ? (bulkIds.includes(character.id) ? 'deselect' : '')
+              : (bulkIds.includes(character.id) ? '' : 'select') : ''}
+          selectBulk={(event) => selectCard(event, character.id)}
           edit={() => editing = character.id} include={(value) => planner.include(character.id, value)}
           keyboard={(event) => keyboardMove(event, character.id)} />
       {/each}
-      <button class="add-card" disabled={mode === 'bulk'} onclick={() => adding = true} aria-label={t('ui-add-characters')}>
+      <button class="add-card" onclick={() => adding = true} aria-label={t('ui-add-characters')}>
         <span aria-hidden="true">+</span><span>{t('ui-add-characters')}</span>
       </button>
     </div>
+    {#if selectionBox?.moved}
+      <div class="selection-box" class:deselect={selectionBox.deselect} aria-hidden="true"
+        style:left={`${Math.min(selectionBox.startX, selectionBox.x)}px`}
+        style:top={`${Math.min(selectionBox.startY, selectionBox.y)}px`}
+        style:width={`${Math.abs(selectionBox.x - selectionBox.startX)}px`}
+        style:height={`${Math.abs(selectionBox.y - selectionBox.startY)}px`}>
+      </div>
+    {/if}
     {#if visible.length === 0}<p>{t('ui-no-characters')}</p>{/if}
   </section>
  {/if}
@@ -280,7 +438,7 @@
 <nav class="planner-actions" aria-label={t('ui-planner-tools')}>
   <button disabled={!totals} onclick={() => dialog = 'resources'}><img src="/planner/icons/Misc/Credit.png" alt="" /><span>{t('footer-resources')}</span></button>
   <button disabled={!totals} onclick={() => dialog = 'gear'}><img src="/planner/icons/Gear/T10_Hat_small.webp" alt="" /><span>{t('footer-gear')}</span></button>
-  <button disabled={!$planner.data} onclick={() => { mainView = mainView === 'teams' ? 'characters' : 'teams'; chooseMode('edit'); }}>
+  <button disabled={!$planner.data} onclick={() => { mainView = mainView === 'teams' ? 'characters' : 'teams'; }}>
     <span>{t(mainView === 'teams' ? 'footer-characters' : 'footer-teamseditor')}</span>
   </button>
   <button onclick={() => dialog = 'transfer'}><span>{t('footer-transfer')}</span></button>
@@ -330,15 +488,14 @@
 <style>
   section { margin: 1.25rem 0; }
   .migration-note { font-size: 0.85rem; padding: 0.5rem; border-left: 3px solid #7c5b7d; background: var(--surface); line-height: 1.5; }
-  .section-heading { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
   .filters, .toolbar { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1rem 0; align-items: flex-end; }
+  .selection-tools { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
   label { display: flex; flex-direction: column; gap: 0.35rem; }
   .group-range { flex-direction: row; align-items: center; }
   input[type="search"] { padding: 0.6rem; min-width: 0; }
   .characters { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 0.9rem 0.75rem; padding: 1rem 0.5rem 5rem; }
-  .modes { display: flex; gap: 0.35rem; }
-  .modes button { font-size: 0.9rem; }
-  .modes .active { background: #7c5b7d; color: white; }
+  .selection-box { position: fixed; z-index: 30; border: 1px solid #82dafb; background: #82dafb33; pointer-events: none; }
+  .selection-box.deselect { border-color: #ed7b7b; background: #ed7b7b33; }
   .shortcut-help { font-size: 0.82rem; margin: 0.5rem 0 0.75rem; line-height: 1.5; }
   .legend { font-size: 0.82rem; margin-bottom: 0.6rem; }
   .legend p { line-height: 1.5; }
@@ -353,12 +510,11 @@
   .error { color: var(--error); }
   @media (max-width: 480px) {
     .filters label { flex: 1 1 140px; }
-    .section-heading { align-items: flex-start; }
     .planner-actions { width: calc(100vw - 0.5rem); max-width: calc(100vw - 0.5rem); flex-wrap: nowrap; gap: 0.1rem; padding: 0.2rem; }
     .planner-actions button { flex: 1 1 auto; min-width: 0; padding: 0.2rem 0.15rem; justify-content: center; gap: 0.12rem; font-size: clamp(0.6rem, 2.6vw, 0.72rem); white-space: nowrap; }
     .planner-actions button span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .planner-actions button[aria-pressed] { flex: 0 0 auto; padding: 0.2rem; }
     .planner-actions img { width: 16px; height: 16px; flex: 0 0 auto; }
-    .modes { flex-wrap: wrap; }
+    .selection-tools { width: 100%; }
   }
 </style>

@@ -389,26 +389,54 @@ label {
     /*transition: all 0.5s;*/
 }
 
-.modal-content-wrapper::-webkit-scrollbar,
-.scrollbar-styling::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+:root {
+    --site-scrollbar-thumb: rgb(54, 54, 54);
 }
 
-.modal-content-wrapper::-webkit-scrollbar-track,
-.scrollbar-styling::-webkit-scrollbar-track {
-    background-color: transparent;
+:root:has(.dark-theme) {
+    --site-scrollbar-thumb: white;
 }
 
-.modal-content-wrapper::-webkit-scrollbar-thumb,
-.scrollbar-styling::-webkit-scrollbar-thumb {
-    background-color: rgb(54, 54, 54);
+@supports not selector(::-webkit-scrollbar) {
+    :root,
+    * {
+        scrollbar-color: var(--site-scrollbar-thumb) transparent;
+        scrollbar-width: auto;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--site-scrollbar-thumb);
     border-radius: 10px;
 }
 
-.dark-theme .modal-content-wrapper::-webkit-scrollbar-thumb,
-.dark-theme .scrollbar-styling::-webkit-scrollbar-thumb {
-    background-color: white;
+::-webkit-scrollbar-button {
+    display: none !important;
+    width: 0;
+    height: 0;
+}
+
+::-webkit-scrollbar-button:vertical:decrement,
+::-webkit-scrollbar-button:vertical:increment,
+::-webkit-scrollbar-button:horizontal:decrement,
+::-webkit-scrollbar-button:horizontal:increment {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    background: transparent !important;
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent;
 }
 
 .modal-content-group {

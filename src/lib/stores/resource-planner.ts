@@ -34,6 +34,69 @@ export function createResourcePlanner(metadata: PlannerMetadata, storageProvider
   let generation = 0;
   let writing = false;
   let signal: AbortSignal | undefined;
+  type HistoryEntry = { undo: () => boolean; redo: () => boolean };
+  const undoHistory: HistoryEntry[] = [];
+  const redoHistory: HistoryEntry[] = [];
+  const historyLimit = 100;
+
+  function cloneSave(data: PlannerSave): PlannerSave {
+    return JSON.parse(JSON.stringify(data)) as PlannerSave;
+  }
+
+  function pushHistory(entry: HistoryEntry) {
+    undoHistory.push(entry);
+    if (undoHistory.length > historyLimit) undoHistory.shift();
+    redoHistory.length = 0;
+  }
+
+  function restoreSave(expected: PlannerSave, target: PlannerSave): boolean {
+    const current = get(state);
+    if (!current.dataset || !current.data) return false;
+    try {
+      const storage = storageProvider();
+      const latest = parsePlannerSave(storage.getItem('save-data'), current.dataset.students, metadata, current.names);
+      if (JSON.stringify(latest) !== JSON.stringify(expected)) {
+        undoHistory.length = 0;
+        redoHistory.length = 0;
+        void reload();
+        throw new Error('The saved plan changed elsewhere. Its local undo history was cleared.');
+      }
+      const restored = cloneSave(target);
+      aggregateResources(current.dataset, restored.characters, restored.disabled_characters, restored.owned_materials, metadata.maxLevel);
+      writing = true;
+      storage.setItem('save-data', JSON.stringify(restored));
+      state.update((value) => ({ ...value, data: restored, saved: true, error: '' }));
+      announceSaveChange();
+      return true;
+    } catch (error) {
+      report(error);
+      return false;
+    } finally {
+      writing = false;
+    }
+  }
+
+  function recordSaveChange(before: PlannerSave, after: PlannerSave) {
+    pushHistory({
+      undo: () => restoreSave(after, before),
+      redo: () => restoreSave(before, after)
+    });
+  }
+
+  function replayHistory(from: HistoryEntry[], to: HistoryEntry[], direction: 'undo' | 'redo'): boolean {
+    const entry = from.pop();
+    if (!entry) return false;
+    try {
+      const succeeded = entry[direction]();
+      if (!succeeded) { from.push(entry); return false; }
+      to.push(entry);
+      return true;
+    } catch (error) {
+      from.push(entry);
+      report(error);
+      return false;
+    }
+  }
 
   function report(error: unknown) {
     console.error('Resource planner operation failed.', error);
@@ -77,6 +140,8 @@ export function createResourcePlanner(metadata: PlannerMetadata, storageProvider
           announceSaveChange();
         } finally { writing = false; }
       }
+      undoHistory.length = 0;
+      redoHistory.length = 0;
       state.set({ ...current, data, names, scribble: storage.getItem('image-style') === 'true', loading: false, error: '', saved: false, migrated });
     } catch (error) {
       if (error instanceof DOMException && error.name === 'AbortError') return;
@@ -90,12 +155,14 @@ export function createResourcePlanner(metadata: PlannerMetadata, storageProvider
     try {
       const storage = storageProvider();
       const latest = parsePlannerSave(storage.getItem('save-data'), current.dataset.students, metadata, current.names);
+      const before = cloneSave(latest);
       change(latest, current.dataset);
       // Validate calculations before touching the persisted save.
       aggregateResources(current.dataset, latest.characters, latest.disabled_characters, latest.owned_materials, metadata.maxLevel);
       writing = true;
       storage.setItem('save-data', JSON.stringify(latest));
       state.update((value) => ({ ...value, data: latest, saved: true, error: '' }));
+      if (JSON.stringify(before) !== JSON.stringify(latest)) recordSaveChange(before, cloneSave(latest));
       announceSaveChange();
       return true;
     } catch (error) {
@@ -109,6 +176,11 @@ export function createResourcePlanner(metadata: PlannerMetadata, storageProvider
   return {
     subscribe: state.subscribe,
     ...createGroupActions(commit),
+    recordUiHistory(undo: () => void, redo: () => void) {
+      pushHistory({ undo: () => { undo(); return true; }, redo: () => { redo(); return true; } });
+    },
+    undo() { return replayHistory(undoHistory, redoHistory, 'undo'); },
+    redo() { return replayHistory(redoHistory, undoHistory, 'redo'); },
     async initialise(abortSignal: AbortSignal | undefined = signal) {
       signal = abortSignal;
       state.update((value) => ({ ...value, loading: true, error: '' }));
@@ -286,11 +358,13 @@ export function createResourcePlanner(metadata: PlannerMetadata, storageProvider
           writes.authkey = options.credentials.authkey;
         }
         writes['save-data'] = JSON.stringify(data);
+        const before = parsePlannerSave(previous, current.dataset.students, metadata, current.names);
         writing = true;
         writeStorageTransaction(storage, writes);
         generation++;
         costsCache.clear();
         state.set({ ...current, data, names, error: '', loading: false, saved: true, migrated: false });
+        recordSaveChange(cloneSave(before), cloneSave(data));
         announceSaveChange();
         return true;
       } catch (error) { report(error); return false; }

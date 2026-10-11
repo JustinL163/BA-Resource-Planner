@@ -40,7 +40,8 @@
   let summaryTiles = $derived(layout.extra.filter((item) => inlineAmount(item.key) && show(item.key, item.name)));
   let extras = $derived(layout.extra.filter((item) => !inlineAmount(item.key) && show(item.key, item.name)));
   let groups = $derived([...new Set(extras.map((item) => item.group))]);
-  let pairedGroups = $derived(['XP items', 'Limit break books'].filter((group) => groups.includes(group)));
+  let pairedGroups = $derived(['XP items', 'Limit break books'].filter((group) =>
+    groups.includes(group) && !(group === 'XP items' && mode === 'leftover')));
   let otherGroups = $derived(groups.filter((group) => !pairedExtraGroupNames.has(group)));
   let weapons = $derived(weaponXpSummary(totals));
   let usersByResource = $derived.by(() => {

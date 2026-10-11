@@ -23,4 +23,5 @@
   h2 { margin: 0; font-size: 1.25rem; }
   .content { padding: 0.75rem 1rem 1rem; }
   @media (max-width: 480px) { .content { padding: 0.6rem; } header { padding: 0.6rem; } }
+  @media (max-width: 600px) { dialog { width: 100vw; max-width: 100vw; margin-inline: 0; } }
 </style>
