@@ -32,7 +32,7 @@
   let skillRetry = $state(0);
   const skillFields: SkillKey[] = ['ex', 'basic', 'passive', 'sub'];
   const fieldsShownInDetails = new Set<InvestmentKey>([
-    ...skillFields, 'gear1', 'gear2', 'gear3', 'bond_gear'
+    'level', 'bond', ...skillFields, 'gear1', 'gear2', 'gear3', 'bond_gear'
   ]);
   function requestClose() {
     if (!dirty) { close(); return; }

@@ -175,7 +175,7 @@ export function createChoices(
 
 export function imageFor(question: GuesserQuestion, settings: GuesserSettings): string {
   switch (settings.category) {
-    case 'Halos': return `/game/halo/${question.id}.webp`;
+    case 'Halos': return `/planner/icons/Halo/${question.id}.webp`;
     case 'Weapons': return `/planner/icons/UE/weapon_icon_${question.weapon}.webp`;
     case 'Chocolates': return `/game/chocolate/${question.id}.webp`;
     case 'Silhouettes': return settings.conscious === 'Sleeping'

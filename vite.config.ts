@@ -30,5 +30,9 @@ const legacyPageUrls: Plugin = {
 };
 
 export default defineConfig({
+  resolve: {
+    // Native realpath can fail with EPERM for files in restricted Windows worktrees.
+    preserveSymlinks: process.platform === 'win32'
+  },
   plugins: [legacyPageUrls, sveltekit()]
 });

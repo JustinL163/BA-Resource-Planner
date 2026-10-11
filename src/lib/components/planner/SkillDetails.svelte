@@ -1,4 +1,5 @@
 <script lang="ts">
+  import haloCharacterMapping from '$lib/domain/planner/halo-character-map.json';
   import { sanitizeIntegerInput } from '$lib/actions/sanitize-integer-input';
   import type { FormattedSkill, SkillKey } from '$lib/domain/planner/skills';
   import type { CharacterInfo, InvestmentKey, PlannerCharacter, PlannerMetadata } from '$lib/domain/planner/types';
@@ -26,6 +27,38 @@
   let touchPinnedKey: SkillKey | null = null;
   let skillButtons: Partial<Record<SkillKey, HTMLButtonElement | undefined>> = {};
   let bondGearRule = $derived(metadata.fields.find((field) => field.key === 'bond_gear'));
+  let bondRule = $derived(metadata.fields.find((field) => field.key === 'bond') ?? null);
+  let levelRule = $derived(metadata.fields.find((field) => field.key === 'level') ?? null);
+  const haloIdsByCharacter = haloCharacterMapping.characterToHalo as Record<string, number>;
+  const haloIdsWithoutArtwork = new Set<number>(haloCharacterMapping.haloIdsWithoutArtwork);
+  const fallbackHaloId = haloCharacterMapping.fallbackHaloId;
+  let haloId = $derived.by(() => {
+    const mappedHaloId = haloIdsByCharacter[character.id];
+    return mappedHaloId !== undefined && !haloIdsWithoutArtwork.has(mappedHaloId) ? mappedHaloId : fallbackHaloId;
+  });
+  let levelRevealAngles = $derived.by(() => {
+    const maxLevel = Math.max(1, Number(metadata.maxLevel) || 1);
+    const angleFor = (value: unknown) => {
+      const level = Number(value);
+      const progress = Number.isFinite(level) ? Math.max(0, Math.min(maxLevel, level)) / maxLevel : 0;
+      return `${progress * 360}deg`;
+    };
+    return {
+      current: angleFor(character.current.level),
+      target: angleFor(character.target.level)
+    };
+  });
+  let bondReveal = $derived.by(() => {
+    const bond = Math.max(0, Math.min(100, Number(character.current.bond) || 0));
+    const revealForBand = (value: number, start: number, end: number) =>
+      `${Math.max(0, Math.min(1, (value - start) / (end - start))) * 360}deg`;
+    return {
+      bond,
+      pinkReveal: revealForBand(bond, 0, 20),
+      purpleReveal: revealForBand(bond, 20, 50),
+      goldReveal: revealForBand(bond, 50, 100)
+    };
+  });
 
   let selected = $derived.by(() => {
     const key = pinnedKey ?? pointerKey ?? focusKey;
@@ -113,6 +146,50 @@
       <CharacterCard {character} {info} {name} {metadata} {scribble} {included}
         edit={() => {}} include={() => {}} mode="edit" dragging={false} keyboard={() => {}} preview={true} {t} />
     </div>
+    <div class="level-strip" role="group" aria-label={levelRule?.label ?? t('label-level')}>
+      <div class="skill-tile level-tile" style={`--current-reveal: ${levelRevealAngles.current}; --target-reveal: ${levelRevealAngles.target};`}>
+        {#if levelRule}
+          <input use:sanitizeIntegerInput class="skill-level-input current" type="number" min={levelRule.min} max={metadata.maxLevel} step="1"
+            aria-label={`${levelRule.label} ${t('label-current')}`} value={String(character.current.level ?? '')}
+            oninput={(event) => onInvestmentChange('level', 'current', event.currentTarget.value)} />
+        {/if}
+        <span class="halo-image-stack" aria-hidden="true">
+          <img class="halo-image halo-image-target" src={`/planner/icons/Halo/${haloId}.webp`} alt="" draggable="false" />
+          <img class="halo-image halo-image-current" src={`/planner/icons/Halo/${haloId}.webp`} alt="" draggable="false" />
+        </span>
+        {#if levelRule}
+          <input use:sanitizeIntegerInput class="skill-level-input target" type="number" min={Math.max(levelRule.min, Number(character.current.level) || 0)} max={metadata.maxLevel} step="1"
+            aria-label={`${levelRule.label} ${t('label-target')}`} value={String(character.target.level ?? '')}
+            oninput={(event) => onInvestmentChange('level', 'target', event.currentTarget.value)} />
+          <span class="skill-label level-label">{levelRule.label}</span>
+        {/if}
+      </div>
+    </div>
+    {#if bondRule}
+      <div class="bond-strip" role="group" aria-label={bondRule.label}>
+        <div class="skill-tile bond-tile" style={`--pink-reveal: ${bondReveal.pinkReveal}; --purple-reveal: ${bondReveal.purpleReveal}; --gold-reveal: ${bondReveal.goldReveal};`}>
+          <input use:sanitizeIntegerInput class="skill-level-input current" type="number" min={bondRule.min} max={bondRule.max} step="1"
+            aria-label={`${bondRule.label} ${t('label-current')}`} value={String(character.current.bond ?? '')}
+            oninput={(event) => onInvestmentChange('bond', 'current', event.currentTarget.value)} />
+          <span class="bond-image-stack" aria-hidden="true">
+            <img class="bond-image bond-image-base" src="/planner/icons/Misc/bondheart.png" alt="" draggable="false" />
+            {#if bondReveal.bond > 0}
+              <img class="bond-image bond-image-pink" src="/planner/icons/Misc/bondheart.png" alt="" draggable="false" />
+            {/if}
+            {#if bondReveal.bond > 20}
+              <img class="bond-image bond-image-purple" src="/planner/icons/Misc/bondheart.png" alt="" draggable="false" />
+            {/if}
+            {#if bondReveal.bond > 50}
+              <img class="bond-image bond-image-gold" src="/planner/icons/Misc/bondheart.png" alt="" draggable="false" />
+            {/if}
+          </span>
+          <input use:sanitizeIntegerInput class="skill-level-input target" type="number" min={Math.max(bondRule.min, Number(character.current.bond) || 0)} max={bondRule.max} step="1"
+            aria-label={`${bondRule.label} ${t('label-target')}`} value={String(character.target.bond ?? '')}
+            oninput={(event) => onInvestmentChange('bond', 'target', event.currentTarget.value)} />
+          <span class="skill-label bond-label">{bondRule.label}</span>
+        </div>
+      </div>
+    {/if}
     <div class="skill-strip" data-skill-details>
       {#each skills as skill (skill.key)}
         {@const rule = metadata.fields.find((field) => field.key === skill.key)}
@@ -252,7 +329,8 @@
   .skill-details { min-width: 0; max-width: 100%; display: grid; gap: 0.5rem; }
   .skill-overview { display: grid; grid-template-columns: minmax(6rem, 10rem) minmax(0, 1fr); align-items: start; gap: 0.75rem; }
   .portrait-frame { width: 100%; max-width: 10rem; justify-self: start; container-type: inline-size; }
-  .skill-strip { grid-column: 1 / -1; display: flex; justify-content: center; gap: 0.4rem; }
+  .level-strip, .bond-strip { grid-column: 1 / -1; display: flex; width: min(100%, 25.2rem); justify-self: center; justify-content: flex-start; gap: 0.4rem; }
+  .skill-strip { grid-column: 1 / -1; display: flex; width: min(100%, 25.2rem); justify-self: center; justify-content: center; gap: 0.4rem; }
   .skill-tile { display: grid; min-width: 0; flex: 0 1 6rem; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 0.2rem; padding: 0.1rem; border: 1px solid #7c5b7d; border-radius: 0.5rem; background: var(--surface); }
   .skill-tile:hover, .skill-tile.active { background: #7c5b7d22; }
   .skill-button { display: flex; min-width: 0; flex-direction: column; align-items: center; justify-content: center; gap: 0.2rem; padding: 0.15rem 0; border: 0; background: transparent; color: var(--text); cursor: pointer; }
@@ -264,6 +342,20 @@
   .skill-level-input.target { justify-self: end; color: #ffffa6; }
   .skill-level-input[type="number"] { appearance: textfield; -moz-appearance: textfield; }
   .skill-level-input::-webkit-inner-spin-button, .skill-level-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  .level-tile { flex: 0 1 9rem; grid-template-rows: 5rem auto; }
+  .halo-image-stack { position: relative; grid-column: 2; justify-self: center; align-self: center; width: 5rem; height: 5rem; }
+  .halo-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+  .halo-image-target { opacity: 0.7; filter: grayscale(1); mask-image: conic-gradient(from 0deg, #000 0deg var(--target-reveal), transparent var(--target-reveal) 360deg); -webkit-mask-image: conic-gradient(from 0deg, #000 0deg var(--target-reveal), transparent var(--target-reveal) 360deg); }
+  .halo-image-current { mask-image: conic-gradient(from 0deg, #000 0deg var(--current-reveal), transparent var(--current-reveal) 360deg); -webkit-mask-image: conic-gradient(from 0deg, #000 0deg var(--current-reveal), transparent var(--current-reveal) 360deg); }
+  .bond-tile { grid-template-rows: 2.1rem auto; }
+  .bond-tile .skill-level-input { width: 3.2ch; min-width: 3.2ch; }
+  .bond-image-stack { position: relative; grid-column: 2; justify-self: center; align-self: center; width: 1.6rem; height: 1.6rem; }
+  .bond-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+  .bond-image-base { opacity: 0.25; filter: grayscale(1); }
+  .bond-image-pink { mask-image: conic-gradient(from 0deg, #000 0deg var(--pink-reveal), transparent var(--pink-reveal) 360deg); -webkit-mask-image: conic-gradient(from 0deg, #000 0deg var(--pink-reveal), transparent var(--pink-reveal) 360deg); }
+  .bond-image-purple { filter: hue-rotate(295deg) saturate(1.6); mask-image: conic-gradient(from 0deg, #000 0deg var(--purple-reveal), transparent var(--purple-reveal) 360deg); -webkit-mask-image: conic-gradient(from 0deg, #000 0deg var(--purple-reveal), transparent var(--purple-reveal) 360deg); }
+  .bond-image-gold { filter: hue-rotate(70deg) saturate(1.6); mask-image: conic-gradient(from 0deg, #000 0deg var(--gold-reveal), transparent var(--gold-reveal) 360deg); -webkit-mask-image: conic-gradient(from 0deg, #000 0deg var(--gold-reveal), transparent var(--gold-reveal) 360deg); }
+  .level-label, .bond-label { grid-column: 1 / -1; grid-row: 2; }
   .gear-strip { grid-column: 1 / -1; display: flex; justify-content: center; gap: 0.4rem; }
   .gear-tile { grid-template-columns: minmax(0, 1fr) 2.1rem minmax(0, 1fr); grid-template-rows: auto auto; }
   .gear-tile.hidden { visibility: hidden; }
