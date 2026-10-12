@@ -9,7 +9,7 @@ export interface ResourceItem {
 
 export function resourceItem(key: string, metadata: PlannerMetadata): ResourceItem {
   const name = metadata.materialNames[key] ?? key;
-  const imageKey = key === 'RaidTokenCost' ? 'RaidToken' : key;
+  const imageKey = key.endsWith('Cost') ? key.slice(0, -4) : key;
   let group = 'Other';
   if (metadata.equipment.includes(key)) group = 'Equipment';
   else if (key.startsWith('XP_') || key.startsWith('GXP_')) group = 'XP items';

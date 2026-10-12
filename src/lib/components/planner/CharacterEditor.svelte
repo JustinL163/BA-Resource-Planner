@@ -3,6 +3,7 @@
   import { sanitizeIntegerInput } from '$lib/actions/sanitize-integer-input';
   import type { Language } from '$lib/domain/localisation';
   import type { CharacterInfo, PlannerCharacter, PlannerDataset, PlannerMetadata, ResourceTotals } from '$lib/domain/planner/types';
+  import { farmServer, farmServers, type FarmServer } from '$lib/domain/planner/gear-farm';
   import { formatSkill, type SkillKey } from '$lib/domain/planner/skills';
   import { loadSkillData, studentSkills, type SkillData } from '$lib/services/planner-skills';
   import { characterFingerprint } from '$lib/domain/planner/defaults';
@@ -15,9 +16,10 @@
 
   type CostPreviewEntry = { item: ResourceItem; amount: number; rarityTier: number; sortTier: number; sortType: string };
 
-  let { character, info, name, dataset, metadata, language, scribble, included, hasPrevious, hasNext, navigate, save, remove, close, error, t }: {
+  let { character, info, name, dataset, metadata, language, scribble, included, hasPrevious, hasNext, savedServer, setServer, navigate, save, remove, close, error, t }: {
     character: PlannerCharacter; info: CharacterInfo; name: string; dataset: PlannerDataset;
     metadata: PlannerMetadata; language: Language; scribble: boolean; included: boolean; hasPrevious: boolean; hasNext: boolean;
+    savedServer: unknown; setServer: (server: FarmServer) => boolean;
     navigate: (direction: -1 | 1) => void; save: (character: PlannerCharacter, expected: string) => boolean;
     remove: () => boolean; close: () => void; error: string; t: (id: string) => string;
   } = $props();
@@ -34,6 +36,38 @@
   let skillLoading = $state(false);
   let skillRetry = $state(0);
   const skillFields: SkillKey[] = ['ex', 'basic', 'passive', 'sub'];
+  const hardModeStages = (() => {
+    const stages = dataset.context.data.hard_modes[character.id];
+    return Array.isArray(stages) ? stages.filter((stage): stage is string => typeof stage === 'string') : [];
+  })();
+  const purchase = dataset.context.data.shop_characters[character.id];
+  const shopCurrency = typeof purchase === 'string' ? purchase : purchase?.currency;
+  const shopCurrencyLabels: Record<string, string> = {
+    RaidToken: 'label-raidtokens',
+    RareRaidToken: 'label-rareraidtokens',
+    EliminationRaidToken: 'label-eliminationraidtokens',
+    RareEliminationRaidToken: 'label-rareeliminationraidtokens',
+    ArenaCoin: 'label-arenacoins',
+    JECoin: 'label-jecoins',
+    MasteryCertificate: 'label-expertpermits'
+  };
+  const raidCurrencies = new Set(['RaidToken', 'RareRaidToken', 'EliminationRaidToken', 'RareEliminationRaidToken']);
+  let activeServer = $derived.by(() => {
+    try { return farmServer(savedServer); }
+    catch { return 'Global'; }
+  });
+  function countAvailableStages(server: FarmServer): number {
+    const cap = metadata.worldCaps[server];
+    return hardModeStages.filter((stage) => cap === null || Number.parseInt(stage.split('-')[0], 10) <= cap).length;
+  }
+  let availableHardModeStages = $derived.by(() => {
+    return countAvailableStages(activeServer);
+  });
+  let dailySweepLimit = $derived(availableHardModeStages * (draft.eleph.node_refresh ? 6 : 3));
+  let shopCurrencyName = $derived(shopCurrency
+    ? (shopCurrencyLabels[shopCurrency] ? t(shopCurrencyLabels[shopCurrency]) : shopCurrency.replace(/([a-z])([A-Z])/g, '$1 $2'))
+    : '');
+  let shopUseLabel = $derived(shopCurrency ? `${t('ui-use-currency')} ${shopCurrencyName}` : '');
   function requestClose() {
     if (!dirty) { close(); return; }
     pendingNavigation = null;
@@ -62,6 +96,37 @@
   function trackNumberInputFocus(event: FocusEvent) {
     const target = event.type === 'focusout' ? event.relatedTarget : event.target;
     numberInputFocused = target instanceof HTMLInputElement && target.type === 'number';
+  }
+  function updateFarmRunsForServer(event: Event) {
+    const select = event.currentTarget;
+    if (!(select instanceof HTMLSelectElement)) return;
+    const selected = farmServers.find((server) => server === select.value);
+    if (!selected) return;
+    if (!setServer(selected)) {
+      select.value = activeServer;
+      return;
+    }
+    const nextLimit = countAvailableStages(selected) * (draft.eleph.node_refresh ? 6 : 3);
+    if (Number(draft.eleph.farm_nodes) > nextLimit) draft.eleph.farm_nodes = nextLimit;
+  }
+  function updateNodeRefresh(event: Event) {
+    const checkbox = event.currentTarget;
+    if (!(checkbox instanceof HTMLInputElement)) return;
+    draft.eleph.node_refresh = checkbox.checked;
+    const nextLimit = availableHardModeStages * (checkbox.checked ? 6 : 3);
+    if (Number(draft.eleph.farm_nodes) > nextLimit) draft.eleph.farm_nodes = nextLimit;
+  }
+  function updateUseEligma(event: Event) {
+    const checkbox = event.currentTarget;
+    if (!(checkbox instanceof HTMLInputElement)) return;
+    draft.eleph.use_eligma = checkbox.checked;
+    if (checkbox.checked) draft.eleph.use_shop = false;
+  }
+  function updateUseShop(event: Event) {
+    const checkbox = event.currentTarget;
+    if (!(checkbox instanceof HTMLInputElement)) return;
+    draft.eleph.use_shop = checkbox.checked;
+    if (checkbox.checked) draft.eleph.use_eligma = false;
   }
   function skillLevelForPreview(value: unknown, key: SkillKey): number {
     const level = typeof value === 'number' ? value : typeof value === 'string' && value.trim() ? Number(value) : NaN;
@@ -148,6 +213,36 @@
       return { resources: null, error: problem instanceof Error ? problem.message : t('ui-invalid-input') };
     }
   });
+  let elephSummary = $derived.by(() => {
+    const resets = Number(validation.resources?.ShopResets ?? 0);
+    if (!Number.isFinite(resets) || resets <= 0) return null;
+    if (hardModeStages.length) {
+      return { image: `/planner/icons/Eleph/Eleph_${character.id}.webp`, label: t('label-avgdays'), value: resets };
+    }
+    if (shopCurrency) {
+      return {
+        image: `/planner/icons/Misc/${shopCurrency}.png`,
+        label: t(raidCurrencies.has(shopCurrency) ? 'label-minraids' : 'label-shopresets'),
+        value: resets
+      };
+    }
+    return null;
+  });
+  let elephCostDisplay = $derived.by(() => {
+    const resources = validation.resources;
+    if (!resources) return null;
+    if (draft.eleph.use_eligma) {
+      return { image: metadata.images.Eligma ?? '/planner/icons/Misc/Eligma.png', value: Number(resources.Eligma ?? 0), label: t('label-eligma') };
+    }
+    if (draft.eleph.use_shop && shopCurrency) {
+      return {
+        image: metadata.images[shopCurrency] ?? `/planner/icons/Misc/${shopCurrency}.png`,
+        value: Number(resources[`${shopCurrency}Cost`] ?? 0),
+        label: shopCurrencyName
+      };
+    }
+    return null;
+  });
   let previewTotals = $derived({
     required: {}, needed: validation.resources ?? {}, leftover: {}, owned: {}, perCharacter: {}
   } satisfies ResourceTotals);
@@ -205,7 +300,7 @@
       return { ...definition, items, types };
     }).filter((row) => row.items.length > 0);
     const materialGroups = new Set(definitions.flatMap((definition) => definition.groups));
-    return { rows, summary: entries.filter((entry) => !materialGroups.has(entry.item.group)) };
+    return { rows, summary: entries.filter((entry) => !materialGroups.has(entry.item.group) && entry.item.key !== 'ShopResets') };
   });
   function ignoreOwnedResource(_key: string, _amount: number): boolean {
     return false;
@@ -244,22 +339,72 @@
           {#if skillError}<button type="button" onclick={() => skillRetry++}>{t('ui-retry')}</button>{/if}
         </p>
       {/if}
-      <fieldset>
+      <fieldset class="eleph-panel">
         <legend>{t('ui-eleph-settings')}</legend>
-        <div class="eleph-fields">
-          {#each [
-            { key: 'owned', label: 'ui-eleph-owned', min: 0, max: undefined },
-            { key: 'cost', label: 'ui-eligma-price', min: 1, max: 5 },
-            { key: 'purchasable', label: 'ui-eligma-remaining', min: 0, max: undefined },
-            { key: 'farm_nodes', label: 'ui-farm-runs', min: 0, max: undefined }
-          ] as field}
-            <label>{t(field.label)}<input use:sanitizeIntegerInput type="number" min={field.min} max={field.max} step="1" required bind:value={draft.eleph[field.key]} /></label>
-          {/each}
+        <div class="eleph-layout">
+          <div class="eleph-group">
+            <img class="eleph-icon" src={`/planner/icons/Eleph/Eleph_${character.id}.webp`} alt="" draggable="false" />
+            <div class="eleph-fields">
+              <label>{t('ui-eleph-owned')}<input use:sanitizeIntegerInput class="eleph-number-input owned-eleph-input" type="number" min="0" max="9999" step="1" required bind:value={draft.eleph.owned} /></label>
+              <label class="eleph-check"><input type="checkbox" bind:checked={draft.eleph.unlocked} />{t('ui-unlocked')}</label>
+            </div>
+          </div>
+          <div class="eleph-group">
+            <img class="eleph-icon" src="/planner/icons/Misc/Eligma.png" alt="" draggable="false" />
+            <div class="eleph-fields">
+              <label>{t('label-eligmacost')}<input use:sanitizeIntegerInput class="eleph-number-input" type="number" min="1" max="5" step="1" required bind:value={draft.eleph.cost} /></label>
+              {#if Number(draft.eleph.cost) < 5}
+                <label>{t('ui-eligma-remaining')}<input use:sanitizeIntegerInput class="eleph-number-input" type="number" min="0" max="20" step="1" required bind:value={draft.eleph.purchasable} /></label>
+              {/if}
+            </div>
+          </div>
+          <div class="eleph-options">
+            <label class="eleph-check"><input type="checkbox" checked={draft.eleph.use_eligma} onchange={updateUseEligma} />{t('ui-use-eligma')}</label>
+            {#if shopCurrency && !hardModeStages.length}
+              <label class="eleph-check"><input type="checkbox" checked={draft.eleph.use_shop} onchange={updateUseShop} />{shopUseLabel}</label>
+            {/if}
+          </div>
+          {#if hardModeStages.length}
+            <div class="eleph-farming">
+              <div class="farm-missions">
+                <strong class="hardmode-label">{t('ui-hard-missions')}</strong>
+                <select class="farm-server-select" aria-label={t('ui-server')} value={activeServer} onchange={updateFarmRunsForServer}>
+                  {#each farmServers as server}<option value={server}>{server}</option>{/each}
+                </select>
+              </div>
+              <div class="farm-daily">
+                <label>{t('ui-daily-sweeps')}
+                  <span class="sweep-input"><input use:sanitizeIntegerInput class="eleph-number-input" type="number" min="0" max={dailySweepLimit} step="1" required bind:value={draft.eleph.farm_nodes} /><span>/ {dailySweepLimit}</span></span>
+                </label>
+                <label class="eleph-check"><input type="checkbox" checked={draft.eleph.node_refresh} onchange={updateNodeRefresh} />{t('label-noderefreshing')}</label>
+              </div>
+              {#if elephSummary}
+                <div class="eleph-summary">
+                  <img class="eleph-icon" src={elephSummary.image} alt="" draggable="false" />
+                  <div><span>{elephSummary.label}</span><strong>{formatAmount(elephSummary.value)}</strong></div>
+                </div>
+              {/if}
+              {#if elephCostDisplay}
+                <div class="eleph-cost-display" role="img" aria-label={`${elephCostDisplay.label}: ${formatAmount(elephCostDisplay.value)}`} title={`${elephCostDisplay.label}: ${formatAmount(elephCostDisplay.value)}`}>
+                  <img src={elephCostDisplay.image} alt="" draggable="false" />
+                  <strong>{formatAmount(elephCostDisplay.value)}</strong>
+                </div>
+              {/if}
+            </div>
+          {/if}
+          {#if elephSummary && !hardModeStages.length}
+            <div class="eleph-summary standalone-eleph-summary">
+              <img class="eleph-icon" src={elephSummary.image} alt="" draggable="false" />
+              <div><span>{elephSummary.label}</span><strong>{formatAmount(elephSummary.value)}</strong></div>
+            </div>
+          {/if}
+          {#if elephCostDisplay && !hardModeStages.length}
+            <div class="eleph-cost-display" role="img" aria-label={`${elephCostDisplay.label}: ${formatAmount(elephCostDisplay.value)}`} title={`${elephCostDisplay.label}: ${formatAmount(elephCostDisplay.value)}`}>
+              <img src={elephCostDisplay.image} alt="" draggable="false" />
+              <strong>{formatAmount(elephCostDisplay.value)}</strong>
+            </div>
+          {/if}
         </div>
-        <label><input type="checkbox" bind:checked={draft.eleph.unlocked} />{t('ui-unlocked')}</label>
-        <label><input type="checkbox" bind:checked={draft.eleph.use_eligma} />{t('ui-use-eligma')}</label>
-        <label><input type="checkbox" bind:checked={draft.eleph.use_shop} />{t('ui-use-shop')}</label>
-        <label><input type="checkbox" bind:checked={draft.eleph.node_refresh} />{t('ui-node-refresh')}</label>
       </fieldset>
       <section class="live-cost-preview" aria-label={t('ui-cost-preview')}>
         {#if validation.resources}
@@ -357,10 +502,33 @@
   .discard-button { background: #a32f3d; color: white; }
   dialog::backdrop { background: #000a; }
   input[type="number"] { width: 100%; min-width: 0; padding: 0.4rem; }
+  .eleph-number-input[type="number"] { box-sizing: content-box; width: 2.4ch; min-width: 2.4ch; max-width: 100%; padding: 0.1rem 0; border: 0; border-bottom: 1px solid #7c5b7d66; border-radius: 0; background: transparent; color: var(--text); font: 600 0.9rem/1 monospace; text-align: center; appearance: textfield; -moz-appearance: textfield; }
+  .eleph-number-input[type="number"]::-webkit-inner-spin-button, .eleph-number-input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  .eleph-number-input.owned-eleph-input[type="number"] { width: 4.4ch; min-width: 4.4ch; }
   fieldset { margin: 1rem 0; border: 1px solid #7c5b7d; border-radius: 0.5rem; }
   fieldset > label { display: block; margin: 0.5rem 0; }
-  .eleph-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-  .eleph-fields label { display: flex; flex-direction: column; gap: 0.3rem; }
+  .eleph-layout { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem 0.8rem; align-items: center; }
+  .eleph-group, .eleph-summary { display: flex; align-items: center; gap: 0.55rem; min-width: 0; }
+  .eleph-icon { width: 3.1rem; height: 3.1rem; flex: 0 0 3.1rem; object-fit: contain; }
+  .eleph-fields { display: grid; flex: 1; gap: 0.35rem; min-width: 0; }
+  .eleph-fields label, .farm-daily > label:not(.eleph-check) { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; font-size: 0.82rem; }
+  .eleph-options { display: grid; align-content: center; gap: 0.65rem; min-width: 0; }
+  .eleph-check { display: flex !important; flex-direction: row !important; align-items: center; gap: 0.35rem !important; margin: 0 !important; font-size: 0.82rem; line-height: 1.2; }
+  .eleph-check input { width: auto; flex: 0 0 auto; margin: 0; }
+  .eleph-farming { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 0.55rem; min-width: 0; }
+  .farm-missions, .farm-daily { display: grid; flex: 0 0 auto; align-content: start; justify-items: start; gap: 0.35rem; min-width: 0; }
+  .hardmode-label { padding: 0.2rem 0.75rem; border-radius: 0.15rem; background: #c63b45; color: #fff; font-size: 0.75rem; }
+  .sweep-input { display: flex; align-items: center; gap: 0.4rem; }
+  .sweep-input input { width: 2.4ch; }
+  .sweep-input > span { white-space: nowrap; font-size: 0.82rem; }
+  .farm-server-select { width: 6rem; max-width: 100%; padding-inline: 0.45rem; }
+  .eleph-summary { flex: 0 0 auto; align-self: center; }
+  .eleph-summary > div { display: grid; gap: 0.15rem; min-width: 0; }
+  .eleph-summary span { font-size: 0.82rem; }
+  .eleph-summary strong { font-size: 1rem; }
+  .eleph-cost-display { display: flex; flex: 0 0 auto; align-items: center; align-self: center; gap: 0.4rem; min-width: 0; justify-self: start; white-space: nowrap; }
+  .eleph-cost-display img { width: 2.2rem; height: 2.2rem; flex: 0 0 2.2rem; object-fit: contain; }
+  .eleph-cost-display strong { font-size: 1rem; font-variant-numeric: tabular-nums; }
   footer { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: flex-end; margin-top: 1rem; }
   .danger { margin-right: auto; }
   .error { color: var(--error); }
@@ -386,6 +554,17 @@
   @media (max-width: 600px) {
     dialog:not(.discard-confirmation) { width: 100vw; max-width: 100vw; margin-inline: 0; }
     .editor-header, .editor-content { padding: 0.6rem; }
+    .eleph-layout { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.8rem 0.55rem; }
+    .eleph-icon { width: 2.55rem; height: 2.55rem; flex-basis: 2.55rem; }
+    .eleph-options { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 0.8rem; }
+    .eleph-farming { grid-column: 1 / -1; gap: 0.35rem; }
+    .hardmode-label { padding-inline: 0.4rem; font-size: 0.68rem; }
+    .farm-server-select { width: 5rem; padding-inline: 0.3rem; }
+    .farm-daily { max-width: 6rem; }
+    .eleph-summary { gap: 0.3rem; }
+    .eleph-summary .eleph-icon { width: 2rem; height: 2rem; flex-basis: 2rem; }
+    .eleph-summary span { font-size: 0.72rem; }
+    .eleph-cost-display img { width: 2rem; height: 2rem; flex-basis: 2rem; }
     .cost-summary-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow: visible; }
     .cost-summary-tiles :global(.resource-cell) { flex: initial; width: 100%; min-width: 0; }
   }

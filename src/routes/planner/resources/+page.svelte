@@ -486,6 +486,7 @@
   {#key selected.id}
     <CharacterEditor character={selected} info={$planner.dataset.students[selected.id]} name={$planner.names[selected.id] ?? selected.name}
       dataset={$planner.dataset} {metadata} language={$preferences.language} scribble={$planner.scribble}
+      savedServer={$planner.data?.server} setServer={planner.setServer}
       included={!$planner.data?.disabled_characters.includes(selected.id)} save={planner.edit} remove={() => planner.remove(selected.id)}
       hasPrevious={hasPreviousCharacter} hasNext={hasNextCharacter} navigate={navigateCharacter}
       close={() => editing = ''} error={$planner.error} {t} />

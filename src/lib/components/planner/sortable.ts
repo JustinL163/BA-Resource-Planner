@@ -178,6 +178,8 @@ export const sortableReorder: Action<HTMLElement, SortableOptions> = (node, init
       fallbackTolerance: 8,
       preventOnFilter: false,
       animation: 150,
+      delay: 100,
+      delayOnTouchOnly: true,
       scroll: true,
       scrollSensitivity: 60,
       scrollSpeed: 12,
