@@ -378,16 +378,14 @@
   .cost-material-cell.rarity-4 { background-image: url('/planner/icons/Misc/background_ssr.png'); }
   .cost-material-cell.type-end::after { position: absolute; z-index: 2; top: -0.05rem; right: -0.16rem; height: calc(100% + 0.1rem); border-right: 2px dashed #fff; content: ''; transform: skewX(-10deg); pointer-events: none; }
   .cost-material-cell > img { box-sizing: border-box; width: 74%; height: 74%; aspect-ratio: 1 / 1; object-fit: contain; }
-  .cost-material-amount { position: absolute; inset: 50% 0 auto; transform: translateY(-50%); color: #17151a; font: 700 0.78rem/1 sans-serif; font-variant-numeric: tabular-nums; text-align: center; text-shadow: -1px -1px 0 #fff, 0 -1px 0 #fff, 1px -1px 0 #fff, -1px 0 0 #fff, 1px 0 0 #fff, -1px 1px 0 #fff, 0 1px 0 #fff, 1px 1px 0 #fff; pointer-events: none; }
+  .cost-material-amount { position: absolute; inset: 50% 0 auto; transform: translateY(-50%); color: #17151a; font: 700 1.3rem/1 sans-serif; font-variant-numeric: tabular-nums; text-align: center; text-shadow: -1px -1px 0 #fff, 0 -1px 0 #fff, 1px -1px 0 #fff, -1px 0 0 #fff, 1px 0 0 #fff, -1px 1px 0 #fff, 0 1px 0 #fff, 1px 1px 0 #fff; pointer-events: none; }
   .cost-material-name { max-width: 100%; padding: 0.2rem; overflow-wrap: anywhere; color: var(--text); font-size: 0.65rem; text-align: center; }
   .cost-summary-tiles { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0.2rem 0.1rem 0.5rem; overflow: visible; }
   .cost-summary-tiles :global(.resource-cell) { flex: 0 0 180px; width: 180px; min-width: 120px; min-height: 54px; height: 54px; border: 1px solid #7c5b7d; border-radius: 0.4rem; }
   :global(.site[data-theme="dark"]) .cost-material-cell > img { filter: brightness(0.9); }
   @media (max-width: 600px) {
     dialog:not(.discard-confirmation) { width: 100vw; max-width: 100vw; margin-inline: 0; }
-  }
-  @media (max-width: 480px) { .editor-header { padding: 0.6rem; } .editor-content { padding: 0.6rem; } }
-  @media (max-width: 600px) {
+    .editor-header, .editor-content { padding: 0.6rem; }
     .cost-summary-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow: visible; }
     .cost-summary-tiles :global(.resource-cell) { flex: initial; width: 100%; min-width: 0; }
   }

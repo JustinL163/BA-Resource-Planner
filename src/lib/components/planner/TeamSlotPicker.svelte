@@ -62,5 +62,5 @@
   header div { display: flex; gap: 0.25rem; }
   header button { padding: 0.05rem 0.35rem; font-size: 0.75rem; }
   .error { color: var(--error); font-size: 0.8rem; margin: 0.3rem 0; }
-  @media (max-width: 620px) { .team-picker { width: min(280px, calc(100vw - 12px)); } }
+  @media (max-width: 600px) { .team-picker { width: min(280px, calc(100vw - 12px)); } }
 </style>

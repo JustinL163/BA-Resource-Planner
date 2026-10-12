@@ -312,7 +312,7 @@
   .reward-group { display: flex; flex-wrap: wrap; gap: .4rem; margin: .7rem 0; }
   .reward-group > span { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 58px; max-width: 95px; font-size: .8rem; text-align: center; }
   .reward-group img { width: 48px; height: 48px; object-fit: contain; }
-  @media (max-width: 700px) {
+  @media (max-width: 800px) {
     .event-layout { grid-template-columns: minmax(0, 1fr); }
     .event-list-toggle { display: block; margin-top: .75rem; }
     aside:not(.open) { display: none; }

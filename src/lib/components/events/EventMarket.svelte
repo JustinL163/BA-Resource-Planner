@@ -233,5 +233,5 @@
   .point-tier span { min-width: 0; overflow-wrap: anywhere; }
   .point-tier.selected { background: #7c5b7d44; border-color: #7c5b7d; }
   .point-tier.obtained { background: #00c9ff35; border-color: #00a6d2; }
-  @media (max-width: 560px) { .point-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 600px) { .point-grid { grid-template-columns: 1fr; } }
 </style>

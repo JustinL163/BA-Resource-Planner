@@ -622,13 +622,13 @@
   .record-card code { display: block; color: #565b68; overflow-wrap: anywhere; font-size: 0.72rem; }
   .empty-records { padding: 0.75rem; border-radius: 0.7rem; background: #ffffffc7; }
   progress { width: 100%; }
-  @media (max-width: 980px) {
+  @media (max-width: 1200px) {
     .game-layout { max-width: 46rem; grid-template-columns: minmax(0, 1fr); }
     .game-card { min-height: auto; }
     .records-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .records-panel h2, .empty-records { grid-column: 1 / -1; }
   }
-  @media (max-width: 620px) {
+  @media (max-width: 600px) {
     .guesser-page { padding: 0.7rem; }
     .game-layout { gap: 0.75rem; }
     .game-card { padding: 0.8rem; }

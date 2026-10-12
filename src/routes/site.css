@@ -131,7 +131,8 @@ main a { color: var(--link); overflow-wrap: anywhere; }
 .skip-link:focus { top: 0; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 
-@media (max-width: 1000px) {
+/* Shared responsive cutoffs: 600px, 800px, and 1200px. Use 601/801/1201px for min-width counterparts. */
+@media (max-width: 1200px) {
   .site-header { flex-wrap: nowrap; gap: 0.45rem; padding: 0.4rem 0.75rem; }
   .site-header .menu-button { display: flex; }
   .logo { flex: 0 0 auto; white-space: nowrap; }
@@ -155,7 +156,7 @@ main a { color: var(--link); overflow-wrap: anywhere; }
   }
   .site-header nav.open a { padding: 0.65rem 0.75rem; }
 }
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .site-header { gap: 0.25rem; padding: 0.25rem 0.4rem; min-height: 42px; }
   .site-header .menu-button { width: 2rem; height: 2rem; padding: 0.25rem; }
   .menu-button img { width: 19px; height: 19px; }

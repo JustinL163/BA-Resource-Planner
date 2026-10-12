@@ -151,7 +151,7 @@
   .fallback { display: grid; flex: 0 0 24px; place-items: center; border-radius: 50%; background: #7c5b7d22; }
   .reward strong, .special strong { white-space: nowrap; }
   .special { flex-wrap: wrap; justify-content: flex-start; overflow-wrap: anywhere; }
-  @media (max-width: 480px) {
+  @media (max-width: 600px) {
     .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
 </style>

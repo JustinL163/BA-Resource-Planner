@@ -225,5 +225,5 @@
   .drop, .swap-selected, .picker-active { outline: 3px solid #82dafb; outline-offset: 2px; }
   .exports textarea { display: block; width: 100%; margin: 0.6rem 0; padding: 0.5rem; font-family: monospace; }
   .error { color: var(--error); }
-  @media (max-width: 620px) { .capture { --card-size: 65px; padding: 0.25rem; } .team { padding: 0.25rem; } .roles { gap: 0.75rem; } .slots { gap: 0.3rem; } }
+  @media (max-width: 600px) { .capture { --card-size: 65px; padding: 0.25rem; } .team { padding: 0.25rem; } .roles { gap: 0.75rem; } .slots { gap: 0.3rem; } }
 </style>

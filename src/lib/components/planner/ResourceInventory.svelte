@@ -348,7 +348,7 @@
   .tiles :global(.resource-cell) { flex: 0 0 68px; width: 68px; min-width: 68px; min-height: 68px; border: 1px solid #7c5b7d44; border-radius: 0.4rem; }
   .weapon-material-grid { display: grid; width: 100%; max-width: 284px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .weapon-material-grid :global(.resource-cell) { flex: initial; width: 100%; min-width: 0; min-height: 0; aspect-ratio: 1; }
-  .summary-tiles { display: flex; flex-wrap: nowrap; gap: 0.5rem; margin: 0.5rem 0 0.75rem; padding: 0.2rem 0.1rem 0.5rem; overflow-x: auto; }
+  .summary-tiles { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.5rem 0 0.75rem; padding: 0.2rem 0.1rem 0.5rem; overflow: visible; }
   .summary-tiles :global(.resource-cell) { flex: 0 0 180px; width: 180px; min-width: 120px; min-height: 54px; height: 54px; border: 1px solid #7c5b7d; border-radius: 0.4rem; }
   .summary-tiles :global(.resource-cell.zero .resource-image) { opacity: 1; }
   .summary-tiles :global(.resource-cell.zero .amount) { visibility: visible; }
@@ -360,12 +360,8 @@
   @media (max-width: 800px) {
     .gear td :global(.amount) { font-size: 0.9rem; }
     .matrices:not(.gear) td :global(.amount) { font-size: 0.9rem; }
-  }
-  @media (max-width: 840px) {
     .gear-header-name { display: none; }
     .gear-header-image { display: block; }
-  }
-  @media (max-width: 840px) {
     .inventory-sections:not(.gear-layout) { min-width: 0; width: 100%; }
     .matrices:not(.gear) { width: 100%; }
     .matrices:not(.gear) table { width: 100%; max-width: 100%; table-layout: fixed; }
@@ -373,14 +369,18 @@
     .school-matrices th:first-child { width: clamp(105px, 32%, 130px); }
     .artifact-pair th:first-child { width: clamp(90px, 45%, 120px); }
     .school-matrices tbody th, .artifact-pair tbody th { font-size: 0.55rem; line-height: 1.05; }
+    .xp-book-groups { grid-template-columns: minmax(0, 1fr); }
   }
   @media (max-width: 600px) {
-    .inventory-sections:not(.gear-layout) { width: calc(100% + 2rem); margin-inline: -1rem; }
+    .inventory-sections:not(.gear-layout) {
+      --section-inline-bleed: clamp(0.6rem, calc(-1rem + 5.333vw), 1rem);
+      width: calc(100% + var(--section-inline-bleed) + var(--section-inline-bleed));
+      margin-inline: calc(0rem - var(--section-inline-bleed));
+    }
+    .summary-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow: visible; }
+    .summary-tiles :global(.resource-cell) { flex: initial; width: 100%; min-width: 0; }
   }
-  @media (max-width: 480px) {
-    .inventory-sections:not(.gear-layout) { width: calc(100% + 1.2rem); margin-inline: -0.6rem; }
-  }
-  @media (min-width: 1200px) {
+  @media (min-width: 1201px) {
     .matrices:not(.gear) {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -405,12 +405,5 @@
     .gear-layout > .inventory-side { grid-area: side; display: flex; flex-direction: column; gap: 0.5rem; }
     .gear-layout .xp-book-groups { grid-template-columns: minmax(0, 1fr); margin-bottom: 0; }
     .gear-layout .extra-groups { grid-template-columns: minmax(0, 1fr); }
-  }
-  @media (max-width: 600px) {
-    .summary-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow: visible; }
-    .summary-tiles :global(.resource-cell) { flex: initial; width: 100%; min-width: 0; }
-  }
-  @media (max-width: 700px) {
-    .xp-book-groups { grid-template-columns: minmax(0, 1fr); }
   }
 </style>

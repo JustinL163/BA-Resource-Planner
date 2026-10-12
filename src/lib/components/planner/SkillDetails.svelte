@@ -423,7 +423,9 @@
             aria-label={`Bond Gear ${t('label-current')}`} value={String(character.current.bond_gear ?? '')}
             disabled={!character.hasBondGear}
             oninput={(event) => onInvestmentChange('bond_gear', 'current', event.currentTarget.value)} />
-          <img class="gear-image" src={`/planner/icons/BondGear/${info.Id}.webp`} alt="" aria-hidden="true" draggable="false" />
+          {#if character.hasBondGear}
+            <img class="gear-image" src={`/planner/icons/BondGear/${info.Id}.webp`} alt="" aria-hidden="true" draggable="false" />
+          {/if}
           <input use:sanitizeIntegerInput class="skill-level-input target" type="number" min={Math.max(bondGearRule.min, Number(character.current.bond_gear) || 0)} max={bondGearRule.max} step="1"
             aria-label={`Bond Gear ${t('label-target')}`} value={String(character.target.bond_gear ?? '')}
             disabled={!character.hasBondGear}
@@ -558,20 +560,20 @@
   .halo-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
   .halo-image-target { opacity: 0.7; filter: grayscale(1); mask-image: conic-gradient(from 0deg, #000 0deg var(--target-reveal), transparent var(--target-reveal) 360deg); -webkit-mask-image: conic-gradient(from 0deg, #000 0deg var(--target-reveal), transparent var(--target-reveal) 360deg); }
   .halo-image-current { mask-image: conic-gradient(from 0deg, #000 0deg var(--current-reveal), transparent var(--current-reveal) 360deg); -webkit-mask-image: conic-gradient(from 0deg, #000 0deg var(--current-reveal), transparent var(--current-reveal) 360deg); }
-  .star-ue-tile { flex: 1 1 0; min-width: 0; grid-template-columns: minmax(0, 1fr); grid-template-rows: 1fr 1fr; gap: 0.15rem; padding: 0.25rem 0.35rem; }
-  .star-set { display: grid; min-width: 0; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 0.3rem; }
+  .star-ue-tile { flex: 1 1 0; min-width: 0; grid-template-columns: minmax(0, 1fr); grid-template-rows: 1fr 1fr; gap: 0.15rem; padding: 0.25rem clamp(0.2rem, 1vw, 0.35rem); }
+  .star-set { display: grid; min-width: 0; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: clamp(0.2rem, calc(0.05rem + 0.667vw), 0.3rem); }
   .star-set-content { display: grid; min-width: 0; gap: 0.05rem; }
   .star-set-label { font-size: 0.55rem; line-height: 1; white-space: nowrap; }
   .star-set-label.target { color: #ffffa6; }
   .star-line { display: flex; min-width: 0; align-items: center; }
-  .star-choice { display: grid; flex: 0 0 1.5rem; width: 1.5rem; height: 1.5rem; place-items: center; padding: 0; border: 0; background: transparent; cursor: pointer; }
+  .star-choice { display: grid; flex: 0 0 clamp(0.95rem, calc(0.125rem + 3.67vw), 1.5rem); width: clamp(0.95rem, calc(0.125rem + 3.67vw), 1.5rem); height: clamp(0.9rem, 4vw, 1.5rem); place-items: center; padding: 0; border: 0; background: transparent; cursor: pointer; }
   .first-ue-star { margin-left: 0.3rem; }
   .star-choice:disabled { cursor: default; opacity: 1; }
   .star-choice img { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
   .star-choice.unselected img { filter: grayscale(1); }
   .star-choice.preview-increase img { filter: grayscale(0.4) brightness(0.7); }
   .star-choice.preview-decrease img { filter: grayscale(1); }
-  .ue-level-input { width: 2.7ch; min-width: 2.7ch; justify-self: center; }
+  .ue-level-input { width: clamp(2.4ch, calc(1.95ch + 1.2vw), 2.7ch); min-width: clamp(2.4ch, calc(1.95ch + 1.2vw), 2.7ch); justify-self: center; }
   .bond-tile { grid-template-rows: 2.1rem auto; }
   .bond-tile .skill-level-input.current, .limit-break-tile .skill-level-input.current { grid-column: 1; grid-row: 1 / -1; }
   .bond-tile .skill-level-input.target, .limit-break-tile .skill-level-input.target { grid-column: 3; grid-row: 1 / -1; }
@@ -612,7 +614,7 @@
     .skill-tile { min-height: 4.5rem; flex: 1 1 7.25rem; padding-inline: 0.7rem; }
     .first-ue-star { margin-left: 0.7rem; }
     .level-tile { flex: 0 1 10rem; }
-    .star-ue-tile { flex: 1 1 0; }
+    .star-ue-tile { flex: 0 0 max-content; }
     .gear-strip { margin-inline: 0; }
     .bond-tile { grid-template-rows: 3.5rem auto; }
     .bond-image-stack { grid-column: 2; grid-row: 1; width: 2.5rem; height: 2.5rem; }
@@ -620,11 +622,5 @@
     .gear-tile { grid-template-columns: minmax(0, 1fr) 3.5rem minmax(0, 1fr); }
     .skill-button img, .limit-break-image, .gear-image { width: 3.5rem; height: 3.5rem; }
     .skill-level-input { font-size: 1rem; }
-  }
-  @media (max-width: 360px) {
-    .star-choice { flex-basis: 0.95rem; width: 0.95rem; height: 0.9rem; }
-    .star-ue-tile { padding-inline: 0.2rem; }
-    .star-set { gap: 0.2rem; }
-    .ue-level-input { width: 2.4ch; min-width: 2.4ch; }
   }
 </style>

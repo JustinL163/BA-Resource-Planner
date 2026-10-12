@@ -164,7 +164,7 @@
   .reward-name { overflow-wrap: anywhere; }
   .reward-copy strong { white-space: nowrap; }
 
-  @media (max-width: 40rem) {
+  @media (max-width: 600px) {
     .reference-grid { grid-template-columns: minmax(0, 1fr); }
     .slip-stats { grid-template-columns: minmax(0, 1fr); }
   }

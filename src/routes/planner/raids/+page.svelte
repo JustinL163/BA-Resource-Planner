@@ -1048,7 +1048,7 @@
     .viewer-info { grid-template-columns: 1fr; gap: 0.15rem; }
     .viewer-info > strong, .viewer-info > a { margin-bottom: 0.45rem; }
   }
-  @media (max-width: 420px) {
+  @media (max-width: 600px) {
     .timeline-section, .submissions { padding: 0.55rem; }
     .editor-slots { gap: 0.25rem; }
     .student-filter-slot { width: 2.8rem; }

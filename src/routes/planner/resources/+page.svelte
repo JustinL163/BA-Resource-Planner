@@ -519,7 +519,7 @@
   .planner-actions button { display: flex; align-items: center; gap: 0.4rem; }
   .planner-actions img { width: 26px; height: 26px; object-fit: contain; }
   .error { color: var(--error); }
-  @media (max-width: 480px) {
+  @media (max-width: 600px) {
     .filters label { flex: 1 1 140px; }
     .planner-actions { width: calc(100vw - 0.5rem); max-width: calc(100vw - 0.5rem); flex-wrap: nowrap; gap: 0.1rem; padding: 0.2rem; }
     .planner-actions button { flex: 1 1 auto; min-width: 0; padding: 0.2rem 0.15rem; justify-content: center; gap: 0.12rem; font-size: clamp(0.6rem, 2.6vw, 0.72rem); white-space: nowrap; }

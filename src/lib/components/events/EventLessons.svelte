@@ -171,7 +171,7 @@
   input { width: 5rem; min-height: 2rem; padding: .2rem .35rem; border: 1px solid rgba(124, 91, 125, .65); border-radius: .3rem; background: var(--surface); }
   button:focus-visible, input:focus-visible { outline: 3px solid #7c5b7d; outline-offset: 2px; }
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
-  @media (max-width: 400px) {
+  @media (max-width: 600px) {
     .overview { align-items: flex-start; }
     .lesson { padding: .5rem; }
     .reward { gap: .2rem; padding: .15rem .25rem; font-size: .75rem; }

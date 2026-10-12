@@ -562,12 +562,12 @@
   .clear-pick { margin-bottom: 0.35rem; padding: 0.05rem 0.35rem; font-size: 0.75rem; }
   .confirm-actions { justify-content: flex-end; margin-top: 1rem; }
   .primary { background: #7c5b7d; color: white; border: 0; }
-  @media (max-width: 900px) {
+  @media (max-width: 800px) {
     .match-settings { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .team-lists { grid-template-columns: 1fr; }
     .team-list { max-height: none; }
   }
-  @media (max-width: 560px) {
+  @media (max-width: 600px) {
     .page-heading { align-items: flex-start; }
     .filters { grid-template-columns: 1fr; }
     .match-settings, .scores { grid-template-columns: 1fr; }
@@ -577,6 +577,6 @@
     .team-slot { width: 2.75rem; height: 3.1rem; }
     .team-number { min-width: 1rem; }
     .team-actions { flex-direction: column; }
+    .character-picker { width: min(280px, calc(100vw - 12px)); }
   }
-  @media (max-width: 620px) { .character-picker { width: min(280px, calc(100vw - 12px)); } }
 </style>

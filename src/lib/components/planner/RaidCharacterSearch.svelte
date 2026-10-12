@@ -94,5 +94,5 @@
   .compact .search-footer { margin-top: 0.25rem; gap: 0.25rem; }
   .compact input[type="search"] { padding: 0.25rem; font-size: 16px; }
   .compact .borrow { padding: 0.2rem; font-size: 0.8rem; }
-  @media (max-width: 480px) { .name { font-size: 0.7rem; } .results { gap: 0.2rem; } }
+  @media (max-width: 600px) { .name { font-size: 0.7rem; } .results { gap: 0.2rem; } }
 </style>
