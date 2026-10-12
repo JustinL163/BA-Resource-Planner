@@ -5,8 +5,19 @@
   import type { CharacterInfo, InvestmentKey, PlannerCharacter, PlannerMetadata } from '$lib/domain/planner/types';
   import CharacterCard from './CharacterCard.svelte';
 
+  type StarAction = { type: 'star' | 'ue'; side: 'current' | 'target'; position: number };
+  type StarState = { currentStar: number; targetStar: number; currentUe: number; targetUe: number };
+
   const equipmentKeys = ['gear1', 'gear2', 'gear3'] as const;
+  const starPositions = [1, 2, 3, 4, 5] as const;
+  const uePositions = [1, 2, 3, 4] as const;
+  const starSides = ['current', 'target'] as const;
   type EquipmentInvestmentKey = (typeof equipmentKeys)[number];
+  const limitBreaks = [
+    { key: 'book_hp', label: 'label-bookhp', image: 'Book_HP' },
+    { key: 'book_atk', label: 'label-bookatk', image: 'Book_ATK' },
+    { key: 'book_heal', label: 'label-bookheal', image: 'Book_Heal' }
+  ] as const;
 
   let { skills, character, info, name, metadata, scribble, included, t, onInvestmentChange }: {
     skills: Array<{ key: SkillKey; label: string; description: FormattedSkill; fallback: boolean }>;
@@ -29,6 +40,27 @@
   let bondGearRule = $derived(metadata.fields.find((field) => field.key === 'bond_gear'));
   let bondRule = $derived(metadata.fields.find((field) => field.key === 'bond') ?? null);
   let levelRule = $derived(metadata.fields.find((field) => field.key === 'level') ?? null);
+  let ueLevelRule = $derived(metadata.fields.find((field) => field.key === 'ue_level') ?? null);
+  let hoveredStarAction = $state<StarAction | null>(null);
+  let starState = $derived.by(() => {
+    const currentStar = Math.max(info.StarGrade, Number(character.current.star) || info.StarGrade);
+    const currentUe = Math.max(0, Math.min(4, Number(character.current.ue) || 0));
+    const targetUe = Math.max(currentUe, Math.min(4, Number(character.target.ue) || 0));
+    const targetStar = Math.max(currentStar, targetUe > 0 ? 5 : Number(character.target.star) || currentStar);
+    return {
+      currentStar: currentUe > 0 ? 5 : currentStar,
+      targetStar: targetUe > 0 ? 5 : targetStar,
+      currentUe,
+      targetUe
+    };
+  });
+  let previewStarState = $derived.by(() => {
+    if (!hoveredStarAction) return starState;
+    const next = nextStarState(starState, hoveredStarAction);
+    return hoveredStarAction.side === 'target'
+      ? { ...starState, targetStar: next.targetStar, targetUe: next.targetUe }
+      : next;
+  });
   const haloIdsByCharacter = haloCharacterMapping.characterToHalo as Record<string, number>;
   const haloIdsWithoutArtwork = new Set<number>(haloCharacterMapping.haloIdsWithoutArtwork);
   const fallbackHaloId = haloCharacterMapping.fallbackHaloId;
@@ -72,6 +104,122 @@
       focusKey = null;
     } else {
       pinnedKey = key;
+    }
+  }
+
+  function clearHoverPreview() {
+    pointerKey = null;
+    if (pinnedKey === null) focusKey = null;
+  }
+
+  function ueLevelMaximum(ue: number): number {
+    return [0, 30, 40, 50, 60][Math.max(0, Math.min(4, Math.floor(ue)))] ?? 0;
+  }
+
+  function clampUeLevel(value: unknown, maximum: number, minimum = 0): number {
+    const number = Number(value);
+    const integer = Number.isFinite(number) ? Math.trunc(number) : 0;
+    return Math.max(minimum, Math.min(maximum, integer));
+  }
+
+  function nextStarState(state: StarState, action: StarAction): StarState {
+    const next = { ...state };
+    const position = action.position;
+
+    if (action.side === 'current' && action.type === 'star') {
+      if (position < info.StarGrade || position > 5 || (position === state.currentStar && (position !== 5 || state.currentUe === 1))) return state;
+      next.currentStar = position;
+      if (position > next.targetStar) next.targetStar = position;
+      next.currentUe = position === 5 ? 1 : 0;
+      if (next.currentUe > next.targetUe) next.targetUe = next.currentUe;
+    } else if (action.side === 'current' && action.type === 'ue') {
+      if (position < 1 || position > 4) return state;
+      next.currentUe = position === 1 && state.currentUe === 1 ? 0 : position;
+      if (next.currentUe > next.targetUe) next.targetUe = next.currentUe;
+      next.currentStar = 5;
+      next.targetStar = 5;
+    } else if (action.side === 'target' && action.type === 'star') {
+      if (position < Math.max(info.StarGrade, state.currentStar) || position > 5 ||
+        (position === state.targetStar && (position !== 5 || state.targetUe === Math.max(state.currentUe, 1)))) return state;
+      next.targetStar = position;
+      if (position === 5) {
+        next.targetUe = Math.max(state.currentUe, 1);
+      } else {
+        next.currentUe = 0;
+        next.targetUe = 0;
+      }
+    } else if (action.side === 'target' && action.type === 'ue') {
+      if (position < state.currentUe || position < 1 || position > 4) return state;
+      if (position === 1 && state.targetUe === 1 && state.currentUe === 0) next.targetUe = 0;
+      else next.targetUe = position;
+      if (next.targetUe > 0) next.targetStar = 5;
+    }
+
+    next.targetStar = Math.max(next.currentStar, next.targetStar);
+    next.targetUe = Math.max(next.currentUe, next.targetUe);
+    return next;
+  }
+
+  function canSelectStar(action: StarAction): boolean {
+    if (action.side === 'current' && !character.eleph.unlocked) return false;
+    const next = nextStarState(starState, action);
+    return next.currentStar !== starState.currentStar || next.targetStar !== starState.targetStar ||
+      next.currentUe !== starState.currentUe || next.targetUe !== starState.targetUe;
+  }
+
+  function previewStar(action: StarAction) {
+    hoveredStarAction = canSelectStar(action) ? action : null;
+  }
+
+  function starAction(type: StarAction['type'], side: StarAction['side'], position: number): StarAction {
+    return { type, side, position };
+  }
+
+  function starImage(type: StarAction['type']): string {
+    const base = type === 'star' ? 'mysticstar' : 'mysticstar-blue';
+    return `/planner/icons/Misc/${base}.png`;
+  }
+
+  function starIsSelected(type: StarAction['type'], side: StarAction['side'], position: number, state: StarState): boolean {
+    const count = type === 'star'
+      ? (side === 'current' ? state.currentStar : state.targetStar)
+      : (side === 'current' ? state.currentUe : state.targetUe);
+    return position <= count;
+  }
+
+  function starPreviewStyle(type: StarAction['type'], side: StarAction['side'], position: number): 'preview-increase' | 'preview-decrease' | '' {
+    if (!hoveredStarAction) return '';
+    const actual = type === 'star'
+      ? (side === 'current' ? starState.currentStar : starState.targetStar)
+      : (side === 'current' ? starState.currentUe : starState.targetUe);
+    const preview = type === 'star'
+      ? (side === 'current' ? previewStarState.currentStar : previewStarState.targetStar)
+      : (side === 'current' ? previewStarState.currentUe : previewStarState.targetUe);
+    if (preview > actual && position > actual && position <= preview) return 'preview-increase';
+    if (preview < actual && position > preview && position <= actual) return 'preview-decrease';
+    return '';
+  }
+
+  function selectStar(action: StarAction) {
+    if (!canSelectStar(action)) return;
+    const next = nextStarState(starState, action);
+    const currentUeLevel = clampUeLevel(character.current.ue_level, ueLevelMaximum(next.currentUe));
+    const targetUeLevel = clampUeLevel(character.target.ue_level, ueLevelMaximum(next.targetUe), currentUeLevel);
+    hoveredStarAction = null;
+
+    const updates: Array<[InvestmentKey, 'current' | 'target', number]> = [
+      ['star', 'current', next.currentStar], ['star', 'target', next.targetStar],
+      ['ue', 'current', next.currentUe], ['ue', 'target', next.targetUe],
+      ['ue_level', 'current', currentUeLevel], ['ue_level', 'target', targetUeLevel]
+    ];
+    if (next.currentUe === 0) {
+      for (const limitBreak of limitBreaks) updates.push([limitBreak.key, 'current', 0]);
+    }
+    if (next.targetUe === 0) {
+      for (const limitBreak of limitBreaks) updates.push([limitBreak.key, 'target', 0]);
+    }
+    for (const [key, side, value] of updates) {
+      if (String(character[side][key] ?? '') !== String(value)) onInvestmentChange(key, side, String(value));
     }
   }
 
@@ -135,18 +283,18 @@
   class="skill-details"
   role="group"
   aria-label={t('ui-skill-details')}
-  onpointerleave={() => pointerKey = null}
+  onpointerleave={clearHoverPreview}
   onfocusout={(event) => {
     const next = event.relatedTarget;
     if (!(next instanceof Node) || !event.currentTarget.contains(next)) focusKey = null;
   }}
 >
   <div class="skill-overview">
-    <div class="portrait-frame">
+    <div class="portrait-frame" onpointerenter={clearHoverPreview}>
       <CharacterCard {character} {info} {name} {metadata} {scribble} {included}
         edit={() => {}} include={() => {}} mode="edit" dragging={false} keyboard={() => {}} preview={true} {t} />
     </div>
-    <div class="level-strip" role="group" aria-label={levelRule?.label ?? t('label-level')}>
+    <div class="level-strip" role="group" aria-label={`${levelRule?.label ?? t('label-level')} ${t('label-stars')}`} onpointerenter={clearHoverPreview}>
       <div class="skill-tile level-tile" style={`--current-reveal: ${levelRevealAngles.current}; --target-reveal: ${levelRevealAngles.target};`}>
         {#if levelRule}
           <input use:sanitizeIntegerInput class="skill-level-input current" type="number" min={levelRule.min} max={metadata.maxLevel} step="1"
@@ -164,9 +312,56 @@
           <span class="skill-label level-label">{levelRule.label}</span>
         {/if}
       </div>
+      <div class="skill-tile star-ue-tile" role="group" aria-label={t('label-stars')}
+        onpointerleave={() => hoveredStarAction = null}>
+        {#each starSides as side (side)}
+          <div class="star-set" role="group" aria-label={t(side === 'current' ? 'label-current' : 'label-target')}>
+            <div class="star-set-content">
+              <span class="star-set-label" class:target={side === 'target'}>{t(side === 'current' ? 'label-current' : 'label-target')}</span>
+              <div class="star-line" role="group" aria-label={`${t('label-stars')} ${t('label-ue')}`}>
+                {#each starPositions as position (position)}
+                  {@const action = starAction('star', side, position)}
+                  <button type="button" class="star-choice"
+                    class:unselected={!starIsSelected('star', side, position, previewStarState)}
+                    class:preview-increase={starPreviewStyle('star', side, position) === 'preview-increase'}
+                    class:preview-decrease={starPreviewStyle('star', side, position) === 'preview-decrease'}
+                    aria-label={`${t('label-stars')} ${position} ${t(side === 'current' ? 'label-current' : 'label-target')}`}
+                    aria-pressed={starIsSelected('star', side, position, previewStarState)} disabled={!canSelectStar(action)}
+                    onclick={() => selectStar(action)} onpointerenter={() => previewStar(action)} onfocus={() => previewStar(action)}
+                    onblur={() => hoveredStarAction = null}>
+                    <img src={starImage('star')} alt="" draggable="false" />
+                  </button>
+                {/each}
+                {#each uePositions as position (position)}
+                  {@const action = starAction('ue', side, position)}
+                  <button type="button" class="star-choice"
+                    class:first-ue-star={position === 1}
+                    class:unselected={!starIsSelected('ue', side, position, previewStarState)}
+                    class:preview-increase={starPreviewStyle('ue', side, position) === 'preview-increase'}
+                    class:preview-decrease={starPreviewStyle('ue', side, position) === 'preview-decrease'}
+                    aria-label={`${t('label-ue')} ${position} ${t(side === 'current' ? 'label-current' : 'label-target')}`}
+                    aria-pressed={starIsSelected('ue', side, position, previewStarState)} disabled={!canSelectStar(action)}
+                    onclick={() => selectStar(action)} onpointerenter={() => previewStar(action)} onfocus={() => previewStar(action)}
+                    onblur={() => hoveredStarAction = null}>
+                    <img src={starImage('ue')} alt="" draggable="false" />
+                  </button>
+                {/each}
+              </div>
+            </div>
+            {#if ueLevelRule}
+              <input use:sanitizeIntegerInput class="skill-level-input ue-level-input" class:current={side === 'current'} class:target={side === 'target'}
+                type="number" min={side === 'current' ? ueLevelRule.min : Math.max(ueLevelRule.min, Number(character.current.ue_level) || 0)}
+                max={ueLevelMaximum(side === 'current' ? starState.currentUe : starState.targetUe)} step="1"
+                aria-label={`${ueLevelRule.label} ${t(side === 'current' ? 'label-current' : 'label-target')}`}
+                value={String(character[side].ue_level ?? '')}
+                oninput={(event) => onInvestmentChange('ue_level', side, event.currentTarget.value)} />
+            {/if}
+          </div>
+        {/each}
+      </div>
     </div>
-    {#if bondRule}
-      <div class="bond-strip" role="group" aria-label={bondRule.label}>
+    <div class="bond-strip" role="group" aria-label={`${bondRule?.label ?? ''} ${t('ui-overlay-books')}`.trim()} onpointerenter={clearHoverPreview}>
+      {#if bondRule}
         <div class="skill-tile bond-tile" style={`--pink-reveal: ${bondReveal.pinkReveal}; --purple-reveal: ${bondReveal.purpleReveal}; --gold-reveal: ${bondReveal.goldReveal};`}>
           <input use:sanitizeIntegerInput class="skill-level-input current" type="number" min={bondRule.min} max={bondRule.max} step="1"
             aria-label={`${bondRule.label} ${t('label-current')}`} value={String(character.current.bond ?? '')}
@@ -188,8 +383,55 @@
             oninput={(event) => onInvestmentChange('bond', 'target', event.currentTarget.value)} />
           <span class="skill-label bond-label">{bondRule.label}</span>
         </div>
-      </div>
-    {/if}
+      {/if}
+      {#each limitBreaks as limitBreak (limitBreak.key)}
+        {@const rule = metadata.fields.find((field) => field.key === limitBreak.key)}
+        {#if rule}
+          <div class="skill-tile limit-break-tile">
+            <input use:sanitizeIntegerInput class="skill-level-input current" type="number" min={rule.min} max={Number(character.current.ue) > 0 ? rule.max : 0} step="1"
+              aria-label={`${t(limitBreak.label)} ${t('label-current')}`} value={String(character.current[limitBreak.key] ?? '')}
+              oninput={(event) => onInvestmentChange(limitBreak.key, 'current', event.currentTarget.value)} />
+            <img class="limit-break-image" src={`/planner/icons/Books/${limitBreak.image}.webp`} alt="" aria-hidden="true" draggable="false" />
+            <input use:sanitizeIntegerInput class="skill-level-input target" type="number" min={Math.max(rule.min, Number(character.current[limitBreak.key]) || 0)} max={Number(character.target.ue) > 0 ? rule.max : 0} step="1"
+              aria-label={`${t(limitBreak.label)} ${t('label-target')}`} value={String(character.target[limitBreak.key] ?? '')}
+              oninput={(event) => onInvestmentChange(limitBreak.key, 'target', event.currentTarget.value)} />
+            <span class="skill-label limit-break-label">{t(limitBreak.label)}</span>
+          </div>
+        {/if}
+      {/each}
+    </div>
+    <div class="gear-strip" role="group" aria-label={t('ui-overlay-gear')} onpointerenter={clearHoverPreview}>
+      {#each equipmentKeys as key, index (key)}
+        {@const equipment = info.Equipment?.[index]}
+        {@const rule = metadata.fields.find((field) => field.key === key)}
+        {#if equipment && rule}
+          <div class="skill-tile gear-tile">
+            <input use:sanitizeIntegerInput class="skill-level-input current" type="number" min={rule.min} max={rule.max} step="1"
+              aria-label={`${equipmentLabel(equipment)} ${t('label-current')}`} value={String(character.current[key] ?? '')}
+              oninput={(event) => onInvestmentChange(key, 'current', event.currentTarget.value)} />
+            <img class="gear-image" src={`/planner/icons/Gear/T${equipmentTier(key)}_${equipment}.webp`} alt="" aria-hidden="true" draggable="false" />
+            <input use:sanitizeIntegerInput class="skill-level-input target" type="number" min={Math.max(rule.min, Number(character.current[key]) || 0)} max={rule.max} step="1"
+              aria-label={`${equipmentLabel(equipment)} ${t('label-target')}`} value={String(character.target[key] ?? '')}
+              oninput={(event) => onInvestmentChange(key, 'target', event.currentTarget.value)} />
+            <span class="skill-label gear-label">{equipmentLabel(equipment)}</span>
+          </div>
+        {/if}
+      {/each}
+      {#if bondGearRule}
+        <div class="skill-tile gear-tile" class:hidden={!character.hasBondGear} aria-hidden={!character.hasBondGear}>
+          <input use:sanitizeIntegerInput class="skill-level-input current" type="number" min={bondGearRule.min} max={bondGearRule.max} step="1"
+            aria-label={`Bond Gear ${t('label-current')}`} value={String(character.current.bond_gear ?? '')}
+            disabled={!character.hasBondGear}
+            oninput={(event) => onInvestmentChange('bond_gear', 'current', event.currentTarget.value)} />
+          <img class="gear-image" src={`/planner/icons/BondGear/${info.Id}.webp`} alt="" aria-hidden="true" draggable="false" />
+          <input use:sanitizeIntegerInput class="skill-level-input target" type="number" min={Math.max(bondGearRule.min, Number(character.current.bond_gear) || 0)} max={bondGearRule.max} step="1"
+            aria-label={`Bond Gear ${t('label-target')}`} value={String(character.target.bond_gear ?? '')}
+            disabled={!character.hasBondGear}
+            oninput={(event) => onInvestmentChange('bond_gear', 'target', event.currentTarget.value)} />
+          <span class="skill-label gear-label">Bond Gear</span>
+        </div>
+      {/if}
+    </div>
     <div class="skill-strip" data-skill-details>
       {#each skills as skill (skill.key)}
         {@const rule = metadata.fields.find((field) => field.key === skill.key)}
@@ -230,38 +472,6 @@
           {/if}
         </div>
       {/each}
-    </div>
-    <div class="gear-strip" role="group" aria-label={t('ui-overlay-gear')}>
-      {#each equipmentKeys as key, index (key)}
-        {@const equipment = info.Equipment?.[index]}
-        {@const rule = metadata.fields.find((field) => field.key === key)}
-        {#if equipment && rule}
-          <div class="skill-tile gear-tile">
-            <input use:sanitizeIntegerInput class="skill-level-input current" type="number" min={rule.min} max={rule.max} step="1"
-              aria-label={`${equipmentLabel(equipment)} ${t('label-current')}`} value={String(character.current[key] ?? '')}
-              oninput={(event) => onInvestmentChange(key, 'current', event.currentTarget.value)} />
-            <img class="gear-image" src={`/planner/icons/Gear/T${equipmentTier(key)}_${equipment}.webp`} alt="" aria-hidden="true" draggable="false" />
-            <input use:sanitizeIntegerInput class="skill-level-input target" type="number" min={Math.max(rule.min, Number(character.current[key]) || 0)} max={rule.max} step="1"
-              aria-label={`${equipmentLabel(equipment)} ${t('label-target')}`} value={String(character.target[key] ?? '')}
-              oninput={(event) => onInvestmentChange(key, 'target', event.currentTarget.value)} />
-            <span class="skill-label gear-label">{equipmentLabel(equipment)}</span>
-          </div>
-        {/if}
-      {/each}
-      {#if bondGearRule}
-        <div class="skill-tile gear-tile" class:hidden={!character.hasBondGear} aria-hidden={!character.hasBondGear}>
-          <input use:sanitizeIntegerInput class="skill-level-input current" type="number" min={bondGearRule.min} max={bondGearRule.max} step="1"
-            aria-label={`Bond Gear ${t('label-current')}`} value={String(character.current.bond_gear ?? '')}
-            disabled={!character.hasBondGear}
-            oninput={(event) => onInvestmentChange('bond_gear', 'current', event.currentTarget.value)} />
-          <img class="gear-image" src={`/planner/icons/BondGear/${info.Id}.webp`} alt="" aria-hidden="true" draggable="false" />
-          <input use:sanitizeIntegerInput class="skill-level-input target" type="number" min={Math.max(bondGearRule.min, Number(character.current.bond_gear) || 0)} max={bondGearRule.max} step="1"
-            aria-label={`Bond Gear ${t('label-target')}`} value={String(character.target.bond_gear ?? '')}
-            disabled={!character.hasBondGear}
-            oninput={(event) => onInvestmentChange('bond_gear', 'target', event.currentTarget.value)} />
-          <span class="skill-label gear-label">Bond Gear</span>
-        </div>
-      {/if}
     </div>
   </div>
 
@@ -330,6 +540,7 @@
   .skill-overview { display: grid; grid-template-columns: minmax(6rem, 10rem) minmax(0, 1fr); align-items: start; gap: 0.75rem; }
   .portrait-frame { width: 100%; max-width: 10rem; justify-self: start; container-type: inline-size; }
   .level-strip, .bond-strip { grid-column: 1 / -1; display: flex; width: min(100%, 25.2rem); justify-self: center; justify-content: flex-start; gap: 0.4rem; }
+  .level-strip { min-width: 0; }
   .skill-strip { grid-column: 1 / -1; display: flex; width: min(100%, 25.2rem); justify-self: center; justify-content: center; gap: 0.4rem; }
   .skill-tile { display: grid; min-width: 0; flex: 0 1 6rem; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 0.2rem; padding: 0.1rem; border: 1px solid #7c5b7d; border-radius: 0.5rem; background: var(--surface); }
   .skill-tile:hover, .skill-tile.active { background: #7c5b7d22; }
@@ -347,7 +558,23 @@
   .halo-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
   .halo-image-target { opacity: 0.7; filter: grayscale(1); mask-image: conic-gradient(from 0deg, #000 0deg var(--target-reveal), transparent var(--target-reveal) 360deg); -webkit-mask-image: conic-gradient(from 0deg, #000 0deg var(--target-reveal), transparent var(--target-reveal) 360deg); }
   .halo-image-current { mask-image: conic-gradient(from 0deg, #000 0deg var(--current-reveal), transparent var(--current-reveal) 360deg); -webkit-mask-image: conic-gradient(from 0deg, #000 0deg var(--current-reveal), transparent var(--current-reveal) 360deg); }
+  .star-ue-tile { flex: 1 1 0; min-width: 0; grid-template-columns: minmax(0, 1fr); grid-template-rows: 1fr 1fr; gap: 0.15rem; padding: 0.25rem 0.35rem; }
+  .star-set { display: grid; min-width: 0; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 0.3rem; }
+  .star-set-content { display: grid; min-width: 0; gap: 0.05rem; }
+  .star-set-label { font-size: 0.55rem; line-height: 1; white-space: nowrap; }
+  .star-set-label.target { color: #ffffa6; }
+  .star-line { display: flex; min-width: 0; align-items: center; }
+  .star-choice { display: grid; flex: 0 0 1.5rem; width: 1.5rem; height: 1.5rem; place-items: center; padding: 0; border: 0; background: transparent; cursor: pointer; }
+  .first-ue-star { margin-left: 0.3rem; }
+  .star-choice:disabled { cursor: default; opacity: 1; }
+  .star-choice img { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+  .star-choice.unselected img { filter: grayscale(1); }
+  .star-choice.preview-increase img { filter: grayscale(0.4) brightness(0.7); }
+  .star-choice.preview-decrease img { filter: grayscale(1); }
+  .ue-level-input { width: 2.7ch; min-width: 2.7ch; justify-self: center; }
   .bond-tile { grid-template-rows: 2.1rem auto; }
+  .bond-tile .skill-level-input.current, .limit-break-tile .skill-level-input.current { grid-column: 1; grid-row: 1 / -1; }
+  .bond-tile .skill-level-input.target, .limit-break-tile .skill-level-input.target { grid-column: 3; grid-row: 1 / -1; }
   .bond-tile .skill-level-input { width: 3.2ch; min-width: 3.2ch; }
   .bond-image-stack { position: relative; grid-column: 2; justify-self: center; align-self: center; width: 1.6rem; height: 1.6rem; }
   .bond-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
@@ -356,6 +583,9 @@
   .bond-image-purple { filter: hue-rotate(295deg) saturate(1.6); mask-image: conic-gradient(from 0deg, #000 0deg var(--purple-reveal), transparent var(--purple-reveal) 360deg); -webkit-mask-image: conic-gradient(from 0deg, #000 0deg var(--purple-reveal), transparent var(--purple-reveal) 360deg); }
   .bond-image-gold { filter: hue-rotate(70deg) saturate(1.6); mask-image: conic-gradient(from 0deg, #000 0deg var(--gold-reveal), transparent var(--gold-reveal) 360deg); -webkit-mask-image: conic-gradient(from 0deg, #000 0deg var(--gold-reveal), transparent var(--gold-reveal) 360deg); }
   .level-label, .bond-label { grid-column: 1 / -1; grid-row: 2; }
+  .limit-break-tile { grid-template-rows: 2.1rem auto; }
+  .limit-break-image { grid-column: 2; justify-self: center; width: 2.1rem; height: 2.1rem; object-fit: contain; }
+  .limit-break-label { grid-column: 1 / -1; grid-row: 2; white-space: nowrap; }
   .gear-strip { grid-column: 1 / -1; display: flex; justify-content: center; gap: 0.4rem; }
   .gear-tile { grid-template-columns: minmax(0, 1fr) 2.1rem minmax(0, 1fr); grid-template-rows: auto auto; }
   .gear-tile.hidden { visibility: hidden; }
@@ -377,4 +607,24 @@
   .value-current { color: #008c9b; }
   .value-target { color: #588f00; }
   .fallback-message { margin: 0.5rem 0 0; font-size: 0.8rem; }
+  @media (min-width: 601px) {
+    .level-strip, .bond-strip, .gear-strip, .skill-strip { width: min(100%, 38rem); justify-self: start; justify-content: flex-start; }
+    .skill-tile { min-height: 4.5rem; flex: 1 1 7.25rem; padding-inline: 0.7rem; }
+    .first-ue-star { margin-left: 0.7rem; }
+    .level-tile { flex: 0 1 10rem; }
+    .star-ue-tile { flex: 1 1 0; }
+    .gear-strip { margin-inline: 0; }
+    .bond-tile { grid-template-rows: 3.5rem auto; }
+    .bond-image-stack { grid-column: 2; grid-row: 1; width: 2.5rem; height: 2.5rem; }
+    .limit-break-tile { grid-template-rows: 3.5rem auto; }
+    .gear-tile { grid-template-columns: minmax(0, 1fr) 3.5rem minmax(0, 1fr); }
+    .skill-button img, .limit-break-image, .gear-image { width: 3.5rem; height: 3.5rem; }
+    .skill-level-input { font-size: 1rem; }
+  }
+  @media (max-width: 360px) {
+    .star-choice { flex-basis: 0.95rem; width: 0.95rem; height: 0.9rem; }
+    .star-ue-tile { padding-inline: 0.2rem; }
+    .star-set { gap: 0.2rem; }
+    .ue-level-input { width: 2.4ch; min-width: 2.4ch; }
+  }
 </style>

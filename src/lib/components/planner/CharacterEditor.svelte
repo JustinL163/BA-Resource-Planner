@@ -2,15 +2,18 @@
   import { onMount, untrack } from 'svelte';
   import { sanitizeIntegerInput } from '$lib/actions/sanitize-integer-input';
   import type { Language } from '$lib/domain/localisation';
-  import type { CharacterInfo, InvestmentKey, PlannerCharacter, PlannerDataset, PlannerMetadata } from '$lib/domain/planner/types';
+  import type { CharacterInfo, PlannerCharacter, PlannerDataset, PlannerMetadata, ResourceTotals } from '$lib/domain/planner/types';
   import { formatSkill, type SkillKey } from '$lib/domain/planner/skills';
   import { loadSkillData, studentSkills, type SkillData } from '$lib/services/planner-skills';
   import { characterFingerprint } from '$lib/domain/planner/defaults';
   import { validateCharacterEdit } from '$lib/domain/planner/save';
   import { calculateStudentResources } from '$lib/domain/resources/calculator';
-  import { formatAmount, resourceItem } from '$lib/domain/planner/catalog';
+  import { formatAmount, resourceItem, type ResourceItem } from '$lib/domain/planner/catalog';
   import { modal } from './dialog';
   import SkillDetails from './SkillDetails.svelte';
+  import ResourceCell from './ResourceCell.svelte';
+
+  type CostPreviewEntry = { item: ResourceItem; amount: number; rarityTier: number; sortTier: number; sortType: string };
 
   let { character, info, name, dataset, metadata, language, scribble, included, hasPrevious, hasNext, navigate, save, remove, close, error, t }: {
     character: PlannerCharacter; info: CharacterInfo; name: string; dataset: PlannerDataset;
@@ -19,7 +22,7 @@
     remove: () => boolean; close: () => void; error: string; t: (id: string) => string;
   } = $props();
   let draft = $state(untrack(() => structuredClone(character)));
-  const expected = untrack(() => characterFingerprint(character));
+  let expected = $state(untrack(() => characterFingerprint(character)));
   let dirty = $derived(characterFingerprint(draft) !== expected);
   let numberInputFocused = $state(false);
   let discardPrompt = $state(false);
@@ -31,13 +34,13 @@
   let skillLoading = $state(false);
   let skillRetry = $state(0);
   const skillFields: SkillKey[] = ['ex', 'basic', 'passive', 'sub'];
-  const fieldsShownInDetails = new Set<InvestmentKey>([
-    'level', 'bond', ...skillFields, 'gear1', 'gear2', 'gear3', 'bond_gear'
-  ]);
   function requestClose() {
     if (!dirty) { close(); return; }
     pendingNavigation = null;
     discardPrompt = true;
+  }
+  function saveDraft() {
+    if (!validation.error && save(draft, expected)) expected = characterFingerprint(draft);
   }
   function requestNavigation(direction: -1 | 1) {
     if (direction < 0 ? !hasPrevious : !hasNext) return;
@@ -59,22 +62,6 @@
   function trackNumberInputFocus(event: FocusEvent) {
     const target = event.type === 'focusout' ? event.relatedTarget : event.target;
     numberInputFocused = target instanceof HTMLInputElement && target.type === 'number';
-  }
-  function fieldMinimum(key: string, side: 'current' | 'target', minimum: number): number {
-    let result = minimum;
-    if (side === 'target') result = Math.max(result, Number(draft.current[key]) || 0);
-    if (key === 'star') {
-      if (side === 'current') result = Math.max(result, info.StarGrade);
-      if (Number(draft[side].ue) > 0) result = Math.max(result, 5);
-    }
-    return result;
-  }
-  function fieldMaximum(key: string, side: 'current' | 'target', maximum: number): number {
-    if (key === 'ue' && Number(draft[side].star) < 5) return 0;
-    if (key === 'ue_level') return [0, 30, 40, 50, 60][Number(draft[side].ue)] ?? 0;
-    if (key === 'bond_gear' && !draft.hasBondGear) return 0;
-    if (key.startsWith('book_') && !Number(draft[side].ue)) return 0;
-    return maximum;
   }
   function skillLevelForPreview(value: unknown, key: SkillKey): number {
     const level = typeof value === 'number' ? value : typeof value === 'string' && value.trim() ? Number(value) : NaN;
@@ -161,6 +148,68 @@
       return { resources: null, error: problem instanceof Error ? problem.message : t('ui-invalid-input') };
     }
   });
+  let previewTotals = $derived({
+    required: {}, needed: validation.resources ?? {}, leftover: {}, owned: {}, perCharacter: {}
+  } satisfies ResourceTotals);
+  function previewItem(key: string): ResourceItem {
+    const item = resourceItem(key, metadata);
+    if (key === 'Eleph') return { ...item, image: `/planner/icons/Eleph/Eleph_${character.id}.webp` };
+    if (key.endsWith('_Xp')) return { ...item, image: '/planner/icons/Misc/uexp.png' };
+    if (key.endsWith('Cost')) return { ...item, image: metadata.images[key.slice(0, -4)] ?? item.image };
+    return item;
+  }
+  function materialTier(key: string, item: ResourceItem): { rarityTier: number; sortTier: number } {
+    if (item.group === 'Equipment') {
+      const tier = Number(key.match(/^T(\d+)_/)?.[1]) || 1;
+      return { rarityTier: 1, sortTier: tier };
+    }
+    if (item.group === 'Limit break books' || item.group === 'Gifts') return { rarityTier: 3, sortTier: 3 };
+    const name = metadata.materialNames[key] ?? key;
+    const tier = item.group === 'School materials'
+      ? Number(name.match(/^(?:BD|TN)_(\d+)_/)?.[1]) || 1
+      : Number(name.match(/(?:^|_)(?:T)?([1-4])$/)?.[1]) || 1;
+    return { rarityTier: tier, sortTier: tier };
+  }
+  function materialSortType(key: string, item: ResourceItem): string {
+    const name = metadata.materialNames[key] ?? key;
+    if (item.group === 'Equipment') return key.replace(/^T\d+_/, '');
+    if (item.group === 'School materials') return name.replace(/^(BD|TN)_\d+_/, '$1_');
+    if (item.group === 'Artifacts') return name.replace(/_(?:T)?[1-4]$/, '');
+    if (item.group === 'Limit break books') return '0-limit-break-books';
+    if (item.group === 'Gifts') return `1-${name}`;
+    return name;
+  }
+  let costPreview = $derived.by(() => {
+    const entries: CostPreviewEntry[] = Object.entries(validation.resources ?? {}).flatMap(([key, rawAmount]) => {
+      const amount = Number(rawAmount);
+      if (amount === 0) return [];
+      const item = previewItem(key);
+      return [{ item, amount, ...materialTier(key, item), sortType: materialSortType(key, item) }];
+    });
+    const definitions = [
+      { key: 'school', title: 'ui-group-school-materials', groups: ['School materials'] },
+      { key: 'artifacts', title: 'ui-artifacts', groups: ['Artifacts'] },
+      { key: 'limit-break-gifts', title: 'ui-group-limit-break-books', groups: ['Limit break books', 'Gifts'] },
+      { key: 'equipment', title: 'footer-gear', groups: ['Equipment'] }
+    ];
+    const rows = definitions.map((definition) => {
+      const items = entries.filter((entry) => definition.groups.includes(entry.item.group))
+        .sort((first, second) => first.sortType.localeCompare(second.sortType)
+          || second.sortTier - first.sortTier || first.item.name.localeCompare(second.item.name));
+      const types: Array<{ sortType: string; items: CostPreviewEntry[] }> = [];
+      for (const entry of items) {
+        const lastType = types.at(-1);
+        if (lastType?.sortType === entry.sortType) lastType.items.push(entry);
+        else types.push({ sortType: entry.sortType, items: [entry] });
+      }
+      return { ...definition, items, types };
+    }).filter((row) => row.items.length > 0);
+    const materialGroups = new Set(definitions.flatMap((definition) => definition.groups));
+    return { rows, summary: entries.filter((entry) => !materialGroups.has(entry.item.group)) };
+  });
+  function ignoreOwnedResource(_key: string, _amount: number): boolean {
+    return false;
+  }
 </script>
 
 <dialog use:modal={{ focusDialog: true }} tabindex="-1" aria-labelledby="editor-title"
@@ -170,7 +219,7 @@
     const bounds = event.currentTarget.getBoundingClientRect();
     if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) requestClose();
   }}>
-  <form onsubmit={(event) => { event.preventDefault(); if (!validation.error && save(draft, expected)) close(); }}
+  <form onsubmit={(event) => { event.preventDefault(); saveDraft(); }}
     onfocusin={trackNumberInputFocus} onfocusout={trackNumberInputFocus}>
     <header class="editor-header">
       <h2 id="editor-title">{t('ui-edit-character')}</h2>
@@ -195,27 +244,6 @@
           {#if skillError}<button type="button" onclick={() => skillRetry++}>{t('ui-retry')}</button>{/if}
         </p>
       {/if}
-      <div class="table-scroll">
-        <table>
-          <thead><tr><th>{t('ui-investment')}</th><th>{t('label-current')}</th><th>{t('label-target')}</th></tr></thead>
-          <tbody>
-            {#each metadata.fields.filter((field) => !fieldsShownInDetails.has(field.key)) as field (field.key)}
-              <tr>
-                <th scope="row">{field.label}</th>
-                {#each ['current', 'target'] as side}
-                  <td>
-                    {#if side === 'current'}
-                      <input use:sanitizeIntegerInput type="number" aria-label={`${field.label} ${t('label-current')}`} min={fieldMinimum(field.key, 'current', field.min)} max={fieldMaximum(field.key, 'current', field.max)} step="1" required bind:value={draft.current[field.key]} />
-                    {:else}
-                      <input use:sanitizeIntegerInput type="number" aria-label={`${field.label} ${t('label-target')}`} min={fieldMinimum(field.key, 'target', field.min)} max={fieldMaximum(field.key, 'target', field.max)} step="1" required bind:value={draft.target[field.key]} />
-                    {/if}
-                  </td>
-                {/each}
-              </tr>
-            {/each}
-          </tbody>
-        </table>
-      </div>
       <fieldset>
         <legend>{t('ui-eleph-settings')}</legend>
         <div class="eleph-fields">
@@ -233,15 +261,63 @@
         <label><input type="checkbox" bind:checked={draft.eleph.use_shop} />{t('ui-use-shop')}</label>
         <label><input type="checkbox" bind:checked={draft.eleph.node_refresh} />{t('ui-node-refresh')}</label>
       </fieldset>
-      <details>
-        <summary>{t('ui-cost-preview')}</summary>
+      <section class="live-cost-preview" aria-label={t('ui-cost-preview')}>
         {#if validation.resources}
-          <dl>{#each Object.entries(validation.resources) as [key, amount]}
-            <div><dt>{resourceItem(key, metadata).name}</dt><dd>{formatAmount(amount)}</dd></div>
-          {/each}</dl>
+          <div class="cost-preview-content">
+            {#if costPreview.rows.length}
+              <div class="cost-preview-materials">
+                {#each costPreview.rows as row (row.key)}
+                  {#if row.key === 'equipment'}
+                    <details class="cost-preview-row">
+                      <summary>{t(row.title)}</summary>
+                      <div class="cost-material-items">
+                        {#each row.types as type, typeIndex (`${row.key}-${type.sortType}`)}
+                          <div class="cost-material-type-group">
+                            {#each type.items as entry, index (`${row.key}-${entry.item.key}`)}
+                              <div class={`cost-material-cell rarity-${entry.rarityTier}${typeIndex < row.types.length - 1 && index === type.items.length - 1 ? ' type-end' : ''}`} role="img" title={`${entry.item.name}: ${formatAmount(entry.amount)}`}
+                                aria-label={`${entry.item.name}: ${formatAmount(entry.amount)}`}>
+                                {#if entry.item.image}<img src={entry.item.image} alt="" loading="lazy" draggable="false" />
+                                {:else}<span class="cost-material-name">{entry.item.name}</span>{/if}
+                                <span class="cost-material-amount">{formatAmount(entry.amount)}</span>
+                              </div>
+                            {/each}
+                        </div>
+                        {/each}
+                      </div>
+                    </details>
+                  {:else}
+                    <section class="cost-preview-row">
+                      <h4>{t(row.title)}{#if row.key === 'limit-break-gifts'} + {t('ui-group-gifts')}{/if}</h4>
+                      <div class={`cost-material-items${row.key === 'school' || row.key === 'artifacts' ? ' atomic-groups' : ''}`}>
+                        {#each row.types as type, typeIndex (`${row.key}-${type.sortType}`)}
+                          <div class="cost-material-type-group">
+                            {#each type.items as entry, index (`${row.key}-${entry.item.key}`)}
+                              <div class={`cost-material-cell rarity-${entry.rarityTier}${typeIndex < row.types.length - 1 && index === type.items.length - 1 ? ' type-end' : ''}`} role="img" title={`${entry.item.name}: ${formatAmount(entry.amount)}`}
+                                aria-label={`${entry.item.name}: ${formatAmount(entry.amount)}`}>
+                                {#if entry.item.image}<img src={entry.item.image} alt="" loading="lazy" draggable="false" />
+                                {:else}<span class="cost-material-name">{entry.item.name}</span>{/if}
+                                <span class="cost-material-amount">{formatAmount(entry.amount)}</span>
+                              </div>
+                            {/each}
+                          </div>
+                        {/each}
+                      </div>
+                    </section>
+                  {/if}
+                {/each}
+              </div>
+            {/if}
+            {#if costPreview.summary.length}
+              <div class="cost-summary-tiles" role="group" aria-label={t('ui-resource')}>
+                {#each costPreview.summary as entry (entry.item.key)}
+                  <ResourceCell item={entry.item} totals={previewTotals} mode="needed" setOwned={ignoreOwnedResource} {t} inlineAmount={true} />
+                {/each}
+              </div>
+            {/if}
+          </div>
           {#if !Number.isFinite(validation.resources.ShopResets ?? 0)}<p>{t('ui-farm-warning')}</p>{/if}
         {/if}
-      </details>
+      </section>
       {#if deleting}
         <p role="alert">{t('ui-confirm-remove')} {name}?</p>
         <button type="button" onclick={() => { if (remove()) close(); }}>{t('ui-confirm-remove')}</button>
@@ -280,11 +356,7 @@
   .discard-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.2rem; }
   .discard-button { background: #a32f3d; color: white; }
   dialog::backdrop { background: #000a; }
-  table { width: 100%; border-collapse: collapse; }
-  th, td { text-align: left; padding: 0.4rem; }
-  tbody tr:nth-child(odd) { background: #7c5b7d22; }
   input[type="number"] { width: 100%; min-width: 0; padding: 0.4rem; }
-  td { width: 30%; }
   fieldset { margin: 1rem 0; border: 1px solid #7c5b7d; border-radius: 0.5rem; }
   fieldset > label { display: block; margin: 0.5rem 0; }
   .eleph-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
@@ -292,10 +364,31 @@
   footer { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: flex-end; margin-top: 1rem; }
   .danger { margin-right: auto; }
   .error { color: var(--error); }
-  dl div { display: flex; justify-content: space-between; gap: 1rem; padding: 0.25rem; }
-  dd { margin: 0; }
+  .cost-preview-content { display: grid; gap: 0.65rem; }
+  .cost-preview-materials { display: grid; gap: 0.45rem; padding: 0.2rem; }
+  .cost-preview-row h4, .cost-preview-row > summary { margin: 0 0 0.2rem; font-size: 0.8rem; font-weight: 700; }
+  .cost-preview-row > summary { cursor: pointer; }
+  .cost-material-items { display: flex; flex-wrap: wrap; align-items: center; gap: 0.15rem; }
+  .cost-material-type-group { display: contents; }
+  .cost-material-items.atomic-groups .cost-material-type-group { display: flex; flex: 0 0 auto; flex-wrap: nowrap; align-items: center; gap: 0.15rem; }
+  .cost-material-cell { position: relative; display: grid; box-sizing: border-box; width: 4.5rem; height: 4.5rem; aspect-ratio: 1 / 1; flex: 0 0 4.5rem; place-items: center; background-position: center; background-repeat: no-repeat; background-size: contain; }
+  .cost-material-cell.rarity-1 { background-image: url('/planner/icons/Misc/background_n.png'); }
+  .cost-material-cell.rarity-2 { background-image: url('/planner/icons/Misc/background_r.png'); }
+  .cost-material-cell.rarity-3 { background-image: url('/planner/icons/Misc/background_sr.png'); }
+  .cost-material-cell.rarity-4 { background-image: url('/planner/icons/Misc/background_ssr.png'); }
+  .cost-material-cell.type-end::after { position: absolute; z-index: 2; top: -0.05rem; right: -0.16rem; height: calc(100% + 0.1rem); border-right: 2px dashed #fff; content: ''; transform: skewX(-10deg); pointer-events: none; }
+  .cost-material-cell > img { box-sizing: border-box; width: 74%; height: 74%; aspect-ratio: 1 / 1; object-fit: contain; }
+  .cost-material-amount { position: absolute; inset: 50% 0 auto; transform: translateY(-50%); color: #17151a; font: 700 0.78rem/1 sans-serif; font-variant-numeric: tabular-nums; text-align: center; text-shadow: -1px -1px 0 #fff, 0 -1px 0 #fff, 1px -1px 0 #fff, -1px 0 0 #fff, 1px 0 0 #fff, -1px 1px 0 #fff, 0 1px 0 #fff, 1px 1px 0 #fff; pointer-events: none; }
+  .cost-material-name { max-width: 100%; padding: 0.2rem; overflow-wrap: anywhere; color: var(--text); font-size: 0.65rem; text-align: center; }
+  .cost-summary-tiles { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0.2rem 0.1rem 0.5rem; overflow: visible; }
+  .cost-summary-tiles :global(.resource-cell) { flex: 0 0 180px; width: 180px; min-width: 120px; min-height: 54px; height: 54px; border: 1px solid #7c5b7d; border-radius: 0.4rem; }
+  :global(.site[data-theme="dark"]) .cost-material-cell > img { filter: brightness(0.9); }
   @media (max-width: 600px) {
     dialog:not(.discard-confirmation) { width: 100vw; max-width: 100vw; margin-inline: 0; }
   }
-  @media (max-width: 480px) { .editor-header { padding: 0.6rem; } .editor-content { padding: 0.6rem; } th, td { padding: 0.3rem; } }
+  @media (max-width: 480px) { .editor-header { padding: 0.6rem; } .editor-content { padding: 0.6rem; } }
+  @media (max-width: 600px) {
+    .cost-summary-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow: visible; }
+    .cost-summary-tiles :global(.resource-cell) { flex: initial; width: 100%; min-width: 0; }
+  }
 </style>
