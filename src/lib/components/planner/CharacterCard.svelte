@@ -22,7 +22,7 @@
 </script>
 
 {#if preview}
-  <div class="character preview" style:--accent={metadata.colours[info.School]} style:--card-size="100cqw" role="img" aria-label={summary}>
+  <div class="character preview" style:--accent={metadata.colours[info.School]} role="img" aria-label={summary}>
     <CharacterPortrait id={character.id} {character} {name} {metadata} {scribble} {preview} radius="22%" />
   </div>
 {:else}
@@ -44,9 +44,12 @@
 
 <style>
   .character { position: relative; display: block; width: var(--card-size, 160px); flex: 0 0 var(--card-size, 160px); padding: 0; border: 2px solid var(--accent, #7c5b7d); border-radius: 16%; background: var(--surface); color: white; text-align: center; user-select: none; }
-  .character.preview { width: min(100%, 10rem); flex: 0 1 10rem; border-radius: 22%; }
+  .character.preview { --card-size: 100cqw; width: min(100%, 10rem); flex: 0 1 10rem; border-radius: 22%; }
   .dragging { opacity: 0.45; cursor: grabbing; }
   .bulk-selected { outline: 3px solid #82dafb; outline-offset: 3px; }
   .selection-preview-select { outline: 3px solid #82dafb; outline-offset: 3px; }
   .selection-preview-deselect { outline: 3px solid #ed7b7b; outline-offset: 3px; }
+  @media (max-width: 600px) {
+    .character.preview { --card-size: 60cqw; width: min(100%, 7rem); flex: 0 1 7rem; }
+  }
 </style>

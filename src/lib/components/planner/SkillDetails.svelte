@@ -18,6 +18,12 @@
     { key: 'book_atk', label: 'label-bookatk', image: 'Book_ATK' },
     { key: 'book_heal', label: 'label-bookheal', image: 'Book_Heal' }
   ] as const;
+  const terrainDefinitions = [
+    { key: 'urban', label: 'terrain-urban', adaptationKey: 'StreetBattleAdaptation', weaponTerrain: 'Street', icon: 'Terrain_Street.png' },
+    { key: 'outdoors', label: 'terrain-outdoors', adaptationKey: 'OutdoorBattleAdaptation', weaponTerrain: 'Outdoor', icon: 'Terrain_Outdoor.png' },
+    { key: 'indoors', label: 'terrain-indoors', adaptationKey: 'IndoorBattleAdaptation', weaponTerrain: 'Indoor', icon: 'Terrain_Indoor.png' }
+  ] as const;
+  const moodGrades = ['D', 'C', 'B', 'A', 'S', 'SS'] as const;
 
   let { skills, character, info, name, metadata, scribble, included, t, onInvestmentChange }: {
     skills: Array<{ key: SkillKey; label: string; description: FormattedSkill; fallback: boolean }>;
@@ -30,6 +36,35 @@
     t: (id: string) => string;
     onInvestmentChange: (key: InvestmentKey, side: 'current' | 'target', value: string) => void;
   } = $props();
+
+  let terrainMoods = $derived.by(() => terrainDefinitions.flatMap((terrain) => {
+    const baseMood = info[terrain.adaptationKey];
+    if (typeof baseMood !== 'number' || !Number.isFinite(baseMood)) return [];
+    const weapon = info.Weapon;
+    const weaponBoost = Number(character.current.ue) >= 3 && weapon?.AdaptationType === terrain.weaponTerrain &&
+      typeof weapon.AdaptationValue === 'number' && Number.isFinite(weapon.AdaptationValue)
+      ? weapon.AdaptationValue : 0;
+    const moodIndex = Math.max(0, Math.min(moodGrades.length - 1, Math.trunc(baseMood + weaponBoost)));
+    const mood = moodGrades[moodIndex] ?? moodGrades[0];
+    return [{
+      key: terrain.key,
+      label: t(terrain.label),
+      mood,
+      terrainImage: `/planner/icons/Mood/${terrain.icon}`,
+      moodImage: `/planner/icons/Mood/Mood_${mood}.png`
+    }];
+  }));
+  let squadLabel = $derived(info.SquadType === 'Main' ? t('type-striker') : info.SquadType === 'Support' ? t('type-special') : '');
+  let roleLabel = $derived(info.TacticRole ? t(`role-${info.TacticRole.toLowerCase()}`) : '');
+  let roleImage = $derived(info.TacticRole ? metadata.roleImages?.[info.TacticRole] : undefined);
+  let attackLabel = $derived(t(`atktype-${info.BulletType.toLowerCase()}`));
+  let defenseLabel = $derived(t(`deftype-${info.ArmorType.toLowerCase()}`));
+  let weaponLabel = $derived([
+    info.WeaponType ? t(`gun-${info.WeaponType.toLowerCase()}`) : '',
+    info.Position ? t(`position-${info.Position.toLowerCase()}`) : ''
+  ].filter(Boolean).join(' / '));
+  let weaponImage = $derived(metadata.weaponImages?.[String(info.Id)]);
+  let squadColor = $derived(metadata.colours[info.SquadType === 'Main' ? 'Striker' : 'Special']);
 
   let pointerKey = $state<SkillKey | null>(null);
   let focusKey = $state<SkillKey | null>(null);
@@ -294,6 +329,47 @@
       <CharacterCard {character} {info} {name} {metadata} {scribble} {included}
         edit={() => {}} include={() => {}} mode="edit" dragging={false} keyboard={() => {}} preview={true} {t} />
     </div>
+    <div class="character-info-panel" role="group" aria-label={name}>
+      <div class="character-info-top">
+        {#if squadLabel}<span class="squad-type" style:background={squadColor ?? 'var(--background)'}>{squadLabel}</span>{/if}
+        <div class="terrain-moods">
+          {#each terrainMoods as terrain (terrain.key)}
+            <div class="terrain-mood" role="img" aria-label={`${terrain.label}: ${terrain.mood}`} title={`${terrain.label}: ${terrain.mood}`}>
+              <img src={terrain.terrainImage} alt="" draggable="false" />
+              <img src={terrain.moodImage} alt="" draggable="false" />
+            </div>
+          {/each}
+        </div>
+      </div>
+      <div class="character-info-details">
+        <div class="combat-facts">
+          <div class="info-chip split-info-chip" title={attackLabel}>
+            <span class="info-chip-icon-section" style:background={metadata.colours[info.BulletType] ?? 'var(--background)'}>
+              <img src="/planner/icons/Misc/Type_Attack.png" alt="" draggable="false" />
+            </span>
+            <span class="info-chip-name-section">{attackLabel}</span>
+          </div>
+          <div class="info-chip split-info-chip" title={defenseLabel}>
+            <span class="info-chip-icon-section" style:background={metadata.colours[info.ArmorType] ?? 'var(--background)'}>
+              <img src="/planner/icons/Misc/Type_Defense.png" alt="" draggable="false" />
+            </span>
+            <span class="info-chip-name-section">{defenseLabel}</span>
+          </div>
+          {#if roleLabel}
+            <div class="info-chip split-info-chip" title={roleLabel}>
+              <span class="info-chip-icon-section">
+                {#if roleImage}<img src={roleImage} alt="" draggable="false" />{/if}
+              </span>
+              <span class="info-chip-name-section">{roleLabel}</span>
+            </div>
+          {/if}
+        </div>
+        <div class="weapon-info">
+          {#if weaponLabel}<strong>{weaponLabel}</strong>{/if}
+          {#if weaponImage}<img src={weaponImage} alt={info.Weapon?.Name ?? ''} draggable="false" />{/if}
+        </div>
+      </div>
+    </div>
     <div class="level-strip" role="group" aria-label={`${levelRule?.label ?? t('label-level')} ${t('label-stars')}`} onpointerenter={clearHoverPreview}>
       <div class="skill-tile level-tile" style={`--current-reveal: ${levelRevealAngles.current}; --target-reveal: ${levelRevealAngles.target};`}>
         {#if levelRule}
@@ -456,7 +532,7 @@
             aria-expanded={selected?.key === skill.key}
             aria-controls="skill-description"
             aria-pressed={pinnedKey === skill.key}
-            onpointerenter={() => pointerKey = skill.key}
+            onpointerenter={(event) => { if (event.pointerType !== 'touch') pointerKey = skill.key; }}
             onfocus={() => previewOnFocus(skill.key)}
             onclick={() => togglePinned(skill.key)}
           >
@@ -541,6 +617,24 @@
   .skill-details { min-width: 0; max-width: 100%; display: grid; gap: 0.5rem; }
   .skill-overview { display: grid; grid-template-columns: minmax(6rem, 10rem) minmax(0, 1fr); align-items: start; gap: 0.75rem; }
   .portrait-frame { width: 100%; max-width: 10rem; justify-self: start; container-type: inline-size; }
+  .character-info-panel { display: flex; min-width: 0; min-height: 0; flex-direction: column; align-self: stretch; gap: 0; padding: 0.35rem; border: 1px solid #7c5b7d88; border-radius: 0.6rem; background: var(--surface); color: var(--text); }
+  .character-info-top { display: grid; min-width: 0; min-height: 3.5rem; grid-template-columns: auto minmax(0, 1fr); align-items: stretch; gap: 0.3rem; }
+  .squad-type { height: fit-content; max-width: 100%; padding: 0.2rem 0.45rem; border: 1px solid #7c5b7d88; border-radius: 999px; background: var(--background); font-size: 0.75rem; font-weight: 750; line-height: 1.1; text-align: center; white-space: nowrap; align-self: anchor-center; }
+  .terrain-moods { display: flex; min-width: 0; align-items: stretch; justify-content: flex-end; gap: 0.2rem; }
+  .terrain-mood { display: grid; box-sizing: border-box; width: 3.4rem; height: 3rem; flex: 0 0 5.5rem; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr); place-items: center; gap: 0.05rem; padding: 0.1rem; border: 1px solid #7c5b7d66; border-radius: 0.35rem; background: var(--background); }
+  .terrain-mood img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .character-info-details { display: grid; min-width: 0; flex: 1; grid-template-columns: fit-content(52%) minmax(0, 1fr); align-items: stretch; gap: 0.3rem; }
+  .combat-facts { display: grid; width: fit-content; max-width: 100%; min-width: 0; align-content: start; gap: 0.25rem; }
+  .info-chip { display: flex; box-sizing: border-box; width: fit-content; max-width: 100%; min-width: 0; min-height: 1.65rem; align-items: center; gap: 0.25rem; padding: 0.15rem 0.5rem; border: 1px solid #7c5b7d55; border-radius: 0.4rem; background: var(--background); font-size: 0.68rem; font-weight: 650; line-height: 1.05; }
+  .split-info-chip { gap: 0; padding: 0; overflow: hidden; }
+  .info-chip > img { display: block; width: 1.15rem; height: 1.15rem; flex: 0 0 1.15rem; object-fit: contain; }
+  .info-chip-icon-section { display: grid; box-sizing: border-box; min-height: 1.65rem; flex: 0 0 auto; place-items: center; padding: 0.15rem 0.5rem; }
+  .info-chip-icon-section img { display: block; width: 1.15rem; height: 1.15rem; object-fit: contain; }
+  .info-chip-name-section { display: flex; min-width: 0; align-items: center; padding: 0.15rem 0.5rem; background: var(--background); overflow-wrap: anywhere; }
+  .info-chip span { min-width: 0; overflow-wrap: anywhere; }
+  .weapon-info { display: grid; box-sizing: border-box; width: 100%; min-width: 0; min-height: 0; align-self: stretch; grid-template-rows: auto minmax(0, 1fr); justify-items: center; align-items: center; gap: 0.15rem; padding: 0.2rem; border: 1px solid #7c5b7d55; border-radius: 0.4rem; background: var(--background); text-align: center; }
+  .weapon-info strong { max-width: 100%; font-size: 0.68rem; line-height: 1.05; overflow-wrap: anywhere; }
+  .weapon-info img { display: block; width: 100%; height: auto; object-fit: contain; }
   .level-strip, .bond-strip { grid-column: 1 / -1; display: flex; width: min(100%, 25.2rem); justify-self: center; justify-content: flex-start; gap: 0.4rem; }
   .level-strip { min-width: 0; }
   .skill-strip { grid-column: 1 / -1; display: flex; width: min(100%, 25.2rem); justify-self: center; justify-content: center; gap: 0.4rem; }
@@ -609,6 +703,23 @@
   .value-current { color: #008c9b; }
   .value-target { color: #588f00; }
   .fallback-message { margin: 0.5rem 0 0; font-size: 0.8rem; }
+  @media (max-width: 600px) {
+    .skill-overview { grid-template-columns: minmax(6rem, 7rem) minmax(0, 1fr); }
+    .portrait-frame { max-width: 7rem; }
+    .character-info-panel { gap: 0; padding: 0.25rem; }
+    .character-info-top { min-height: 2.1rem; gap: 0.2rem; }
+    .squad-type { padding: 0.15rem 0.35rem; font-size: 0.68rem; }
+    .terrain-moods { flex-wrap: wrap; gap: 0.12rem; }
+    .terrain-mood { width: 2.7rem; height: 1.95rem; flex-basis: 2.7rem; }
+    .character-info-details { grid-template-columns: fit-content(50%) minmax(0, 1fr); gap: 0.2rem; }
+    .combat-facts { gap: 0.2rem; }
+    .info-chip { min-height: 1.25rem; gap: 0.15rem; font-size: 0.6rem; }
+    .info-chip > img { width: 0.8rem; height: 0.8rem; flex-basis: 0.8rem; }
+    .info-chip-icon-section { min-height: 1.25rem; padding: 0.08rem 0.35rem; }
+    .info-chip-icon-section img { width: 0.8rem; height: 0.8rem; }
+    .info-chip-name-section { padding: 0.08rem 0.35rem; }
+    .weapon-info { padding: 0.15rem; }
+  }
   @media (min-width: 601px) {
     .level-strip, .bond-strip, .gear-strip, .skill-strip { width: min(100%, 38rem); justify-self: start; justify-content: flex-start; }
     .skill-tile { min-height: 4.5rem; flex: 1 1 7.25rem; padding-inline: 0.7rem; }

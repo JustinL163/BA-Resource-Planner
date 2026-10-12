@@ -330,6 +330,8 @@
       </div>
     </header>
     <div class="editor-content">
+      <div class="editor-layout">
+        <div class="editor-primary">
       <SkillDetails skills={skillViews.skills} character={draft} {info} {name} {metadata} {scribble} {included} {t}
         onInvestmentChange={(key, side, value) => { draft[side][key] = value; }} />
       {#if error || (validation.error && !numberInputFocused)}<p class="error" role="alert">{error || validation.error}</p>{/if}
@@ -406,6 +408,15 @@
           {/if}
         </div>
       </fieldset>
+      {#if deleting}
+        <p role="alert">{t('ui-confirm-remove')} {name}?</p>
+        <button type="button" onclick={() => { if (remove()) close(); }}>{t('ui-confirm-remove')}</button>
+        <button type="button" onclick={() => deleting = false}>{t('label-cancel')}</button>
+      {/if}
+      <footer>
+        <button type="button" class="danger" onclick={() => deleting = true}>{t('ui-remove-character')}</button>
+      </footer>
+        </div>
       <section class="live-cost-preview" aria-label={t('ui-cost-preview')}>
         {#if validation.resources}
           <div class="cost-preview-content">
@@ -463,14 +474,7 @@
           {#if !Number.isFinite(validation.resources.ShopResets ?? 0)}<p>{t('ui-farm-warning')}</p>{/if}
         {/if}
       </section>
-      {#if deleting}
-        <p role="alert">{t('ui-confirm-remove')} {name}?</p>
-        <button type="button" onclick={() => { if (remove()) close(); }}>{t('ui-confirm-remove')}</button>
-        <button type="button" onclick={() => deleting = false}>{t('label-cancel')}</button>
-      {/if}
-      <footer>
-        <button type="button" class="danger" onclick={() => deleting = true}>{t('ui-remove-character')}</button>
-      </footer>
+      </div>
     </div>
   </form>
   {#if discardPrompt}
@@ -486,7 +490,7 @@
 </dialog>
 
 <style>
-  dialog:not(.discard-confirmation) { width: min(700px, calc(100vw - 1.5rem)); max-height: 90dvh; padding: 0; background: var(--surface); color: var(--text); border-radius: 0.75rem; border: 1px solid #7c5b7d; overflow-y: auto; overscroll-behavior: contain; }
+  dialog:not(.discard-confirmation) { width: min(1400px, calc(100vw - 1.5rem)); max-height: 90dvh; padding: 0; background: var(--surface); color: var(--text); border-radius: 0.75rem; border: 1px solid #7c5b7d; overflow-y: auto; overscroll-behavior: contain; }
   form { margin: 0; }
   .editor-header { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.7rem 1rem; background: var(--surface); border-bottom: 1px solid #7c5b7d66; }
   .editor-header h2 { flex: 1; min-width: 0; margin: 0; font-size: 1.25rem; }
@@ -496,6 +500,9 @@
   .header-actions { display: flex; align-items: center; gap: 0.5rem; }
   .header-actions button { white-space: nowrap; }
   .editor-content { padding: 0.75rem 1rem 1rem; }
+  .editor-layout { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 1rem; }
+  .editor-primary { width: 100%; max-width: 700px; min-width: 0; }
+  .live-cost-preview { min-width: 0; }
   dialog.discard-confirmation { width: min(27rem, calc(100vw - 2rem)); max-height: none; padding: 1.25rem; background: var(--surface); color: var(--text); border: 1px solid #7c5b7d; border-radius: 0.75rem; box-shadow: 0 1rem 3rem #0008; }
   .discard-confirmation h2 { margin: 0; font-size: 1.15rem; }
   .discard-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.2rem; }
@@ -551,6 +558,9 @@
   .cost-summary-tiles { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0.2rem 0.1rem 0.5rem; overflow: visible; }
   .cost-summary-tiles :global(.resource-cell) { flex: 0 0 180px; width: 180px; min-width: 120px; min-height: 54px; height: 54px; border: 1px solid #7c5b7d; border-radius: 0.4rem; }
   :global(.site[data-theme="dark"]) .cost-material-cell > img { filter: brightness(0.9); }
+  @media (min-width: 1200px) {
+    .editor-layout { grid-template-columns: minmax(0, 700px) minmax(0, 1fr); }
+  }
   @media (max-width: 600px) {
     dialog:not(.discard-confirmation) { width: 100vw; max-width: 100vw; margin-inline: 0; }
     .editor-header, .editor-content { padding: 0.6rem; }

@@ -12,6 +12,8 @@ export async function generatePlannerMetadata(root, destination) {
     colours: propertyColours,
     rowColours,
     images: {},
+    roleImages: {},
+    weaponImages: {},
     portraits: {},
     scribblePortraits: {},
     maxLevel: Number(inputValidation.level.max),
@@ -51,6 +53,14 @@ export async function generatePlannerMetadata(root, destination) {
   }
   for (const name of ['Credit', 'Eligma', 'ArenaCoin', 'JECoin', 'MasteryCertificate', 'RaidToken', 'RareRaidToken', 'EliminationRaidToken', 'RareEliminationRaidToken']) {
     image(name, 'Misc', name);
+  }
+  for (const filename of await readdir(join(root, 'planner', 'icons', 'Roles'))) {
+    const match = filename.match(/^Role_(.+)\.(?:png|webp)$/i);
+    if (match) metadata.roleImages[match[1]] = `/planner/icons/Roles/${encodeURIComponent(filename)}`;
+  }
+  for (const filename of await readdir(join(root, 'planner', 'icons', 'UE'))) {
+    const match = filename.match(/^weapon_icon_(\d+)\.webp$/i);
+    if (match) metadata.weaponImages[match[1]] = `/planner/icons/UE/${encodeURIComponent(filename)}`;
   }
   image('Xp', 'Misc', 'exp');
   image('GearXp', 'Misc', 'gxp');

@@ -16,6 +16,16 @@ export interface CharacterInfo extends StudentInfo {
   SquadType: string;
   BulletType: string;
   ArmorType: string;
+  TacticRole?: string;
+  Position?: string;
+  StreetBattleAdaptation?: number;
+  OutdoorBattleAdaptation?: number;
+  IndoorBattleAdaptation?: number;
+  Weapon?: {
+    Name?: string;
+    AdaptationType?: string;
+    AdaptationValue?: number;
+  };
   Skills?: unknown;
 }
 
@@ -64,6 +74,8 @@ export interface PlannerMetadata {
   colours: Record<string, string>;
   rowColours: Record<string, string>;
   images: Record<string, string>;
+  roleImages?: Record<string, string>;
+  weaponImages?: Record<string, string>;
   portraits: Record<string, string>;
   scribblePortraits: Record<string, string>;
   fields: InvestmentField[];
