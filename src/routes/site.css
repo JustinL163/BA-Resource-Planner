@@ -33,6 +33,7 @@
   background: transparent !important;
 }
 ::-webkit-scrollbar-corner { background: transparent; }
+:root:has(.planner-actions) { scrollbar-gutter: stable; }
 body { margin: 0; }
 button, select { font: inherit; }
 button, select, a { touch-action: manipulation; }
@@ -44,7 +45,7 @@ dialog:focus-visible { outline: none; outline-offset: 0; }
 
 .site {
   --background: #242424;
-  --surface: #303039;
+  --surface: #3d3d3d;
   --text: #e1e1e1;
   --link: #c8e6f5;
   --error: #ffb4b4;

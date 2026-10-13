@@ -349,7 +349,7 @@
   .weapon-material-grid { display: grid; width: 100%; max-width: 284px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .weapon-material-grid :global(.resource-cell) { flex: initial; width: 100%; min-width: 0; min-height: 0; aspect-ratio: 1; }
   .summary-tiles { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.5rem 0 0.75rem; padding: 0.2rem 0.1rem 0.5rem; overflow: visible; }
-  .summary-tiles :global(.resource-cell) { flex: 0 0 180px; width: 180px; min-width: 120px; min-height: 54px; height: 54px; border: 1px solid #7c5b7d; border-radius: 0.4rem; }
+  .summary-tiles :global(.resource-cell) { flex: 0 0 180px; width: 180px; min-width: 120px; min-height: 54px; height: 54px; border: 1px solid #7c5b7d66; border-radius: 0.4rem; background: var(--background); }
   .summary-tiles :global(.resource-cell.zero .resource-image) { opacity: 1; }
   .summary-tiles :global(.resource-cell.zero .amount) { visibility: visible; }
   .weapon-table th, .weapon-table td { padding: 0.4rem; text-align: right; }

@@ -617,7 +617,7 @@
   .skill-details { min-width: 0; max-width: 100%; display: grid; gap: 0.5rem; }
   .skill-overview { display: grid; grid-template-columns: minmax(6rem, 10rem) minmax(0, 1fr); align-items: start; gap: 0.75rem; }
   .portrait-frame { width: 100%; max-width: 10rem; justify-self: start; container-type: inline-size; }
-  .character-info-panel { display: flex; min-width: 0; min-height: 0; flex-direction: column; align-self: stretch; gap: 0; padding: 0.35rem; border: 1px solid #7c5b7d88; border-radius: 0.6rem; background: var(--surface); color: var(--text); }
+  .character-info-panel { display: flex; min-width: 0; min-height: 0; flex-direction: column; align-self: stretch; gap: 0; padding: 0.35rem; border-radius: 0.6rem; background: var(--surface); color: var(--text); }
   .character-info-top { display: grid; min-width: 0; min-height: 3.5rem; grid-template-columns: auto minmax(0, 1fr); align-items: stretch; gap: 0.3rem; }
   .squad-type { height: fit-content; max-width: 100%; padding: 0.2rem 0.45rem; border: 1px solid #7c5b7d88; border-radius: 999px; background: var(--background); font-size: 0.75rem; font-weight: 750; line-height: 1.1; text-align: center; white-space: nowrap; align-self: anchor-center; }
   .terrain-moods { display: flex; min-width: 0; align-items: stretch; justify-content: flex-end; gap: 0.2rem; }
@@ -638,15 +638,17 @@
   .level-strip, .bond-strip { grid-column: 1 / -1; display: flex; width: min(100%, 25.2rem); justify-self: center; justify-content: flex-start; gap: 0.4rem; }
   .level-strip { min-width: 0; }
   .skill-strip { grid-column: 1 / -1; display: flex; width: min(100%, 25.2rem); justify-self: center; justify-content: center; gap: 0.4rem; }
-  .skill-tile { display: grid; min-width: 0; flex: 0 1 6rem; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 0.2rem; padding: 0.1rem; border: 1px solid #7c5b7d; border-radius: 0.5rem; background: var(--surface); }
-  .skill-tile:hover, .skill-tile.active { background: #7c5b7d22; }
+  .skill-tile { display: grid; min-width: 0; flex: 0 1 6rem; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 0.2rem; padding: 0.1rem; border: 1px solid #7c5b7d66; border-radius: 0.5rem; background: var(--background); }
+  .skill-tile:hover, .skill-tile.active { background: var(--background); }
   .skill-button { display: flex; min-width: 0; flex-direction: column; align-items: center; justify-content: center; gap: 0.2rem; padding: 0.15rem 0; border: 0; background: transparent; color: var(--text); cursor: pointer; }
   .skill-button:focus-visible, .close-button:focus-visible { outline: 2px solid #7c5b7d; outline-offset: 2px; }
   .skill-button img { width: 2.1rem; height: 2.1rem; object-fit: contain; }
+  :global(.site[data-theme="light"]) .skill-button img { filter: invert(1); }
   .skill-label { max-width: 100%; overflow-wrap: anywhere; text-align: center; font-size: 0.7rem; line-height: 1.1; }
-  .skill-level-input { width: 2.4ch; min-width: 2.4ch; max-width: 100%; padding: 0.1rem 0; border: 0; border-bottom: 1px solid #7c5b7d66; border-radius: 0; background: transparent; font: 600 0.9rem/1 monospace; text-align: center; }
+  .skill-level-input { width: 2.4ch; min-width: 2.4ch; max-width: 100%; padding: 0.1rem 0; border: 0; border-bottom: 1px solid #ab65ad; border-radius: 0; background: transparent; font: 0.9rem/1 monospace; text-align: center; }
   .skill-level-input.current { justify-self: start; color: white; }
   .skill-level-input.target { justify-self: end; color: #ffffa6; }
+  :global(.site[data-theme="light"]) .skill-level-input.current { color: black; }
   .skill-level-input[type="number"] { appearance: textfield; -moz-appearance: textfield; }
   .skill-level-input::-webkit-inner-spin-button, .skill-level-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
   .level-tile { flex: 0 1 9rem; grid-template-rows: 5rem auto; }
@@ -722,7 +724,7 @@
   }
   @media (min-width: 601px) {
     .level-strip, .bond-strip, .gear-strip, .skill-strip { width: min(100%, 38rem); justify-self: start; justify-content: flex-start; }
-    .skill-tile { min-height: 4.5rem; flex: 1 1 7.25rem; padding-inline: 0.7rem; }
+    .skill-tile { min-height: 4.5rem; flex: 1 1 7.25rem; padding-inline: 1.1rem; }
     .first-ue-star { margin-left: 0.7rem; }
     .level-tile { flex: 0 1 10rem; }
     .star-ue-tile { flex: 0 0 max-content; }
