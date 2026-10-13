@@ -1,6 +1,6 @@
 {
     "event_order": [
-        "lore-pursuit-s2"
+        "calm-after-the-storm"
     ],
     "events": {
         "magical-girl-trinity": {
@@ -31855,7 +31855,9 @@
                 "Currency",
                 "Manual"
             ],
-            "currency_targets": ["Event_Point"],
+            "currency_targets": [
+                "Event_Point"
+            ],
             "event_point_target": 15000,
             "currencies": {
                 "Event_Point": {
@@ -32953,6 +32955,1040 @@
                     "type": "XpReport",
                     "id": "XP_4",
                     "count": 25
+                }
+            ]
+        },
+        "calm-after-the-storm": {
+            "icon": "Event_859_Jp.png",
+            "display_name": "The Calm After the Storm",
+            "reset_time": 1791831600,
+            "start_time": 1791856800,
+            "end_time": 1793066400,
+            "maint_hours": 6,
+            "available_targets": [
+                "Shop",
+                "Materials",
+                "Currency",
+                "Manual"
+            ],
+            "currency_targets": ["Photocard_Collection"],
+            "event_point_target": 0,
+            "currencies": {
+                "Photocard_Collection": {
+                    "icon": "Photocard_Collection.png",
+                    "shortname": "Photocard Collection",
+                    "source": "StageDrop",
+                    "clear": 0,
+                    "bonus_units": [
+                        {
+                            "id": "10145",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "10143",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "10069",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10070",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20039",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10011",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10025",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20006",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20038",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10037",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16005",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "26007",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16006",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16007",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "10103",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "20016",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "26008",
+                            "bonus": 0.1
+                        }
+                    ]
+                },
+                "Inspection_Plan": {
+                    "icon": "Inspection_Plan.png",
+                    "shortname": "Inspection Plan",
+                    "source": "StageDrop",
+                    "clear": 16090,
+                    "bonus_units": [
+                        {
+                            "id": "10145",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "10069",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10050",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20039",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10011",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20002",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10104",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10017",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10103",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20033",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20016",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "26010",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20009",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "10037",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "16014",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "26007",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "16006",
+                            "bonus": 0.1
+                        }
+                    ]
+                },
+                "Facility_Admission_Ticket": {
+                    "icon": "Facility_Admission_Ticket.png",
+                    "shortname": "Facility Admission Ticket",
+                    "source": "StageDrop",
+                    "clear": 17464,
+                    "bonus_units": [
+                        {
+                            "id": "10143",
+                            "bonus": 0.25
+                        },
+                        {
+                            "id": "10070",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10050",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10025",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20002",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20006",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10104",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "20009",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16007",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "16014",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "26008",
+                            "bonus": 0.15
+                        },
+                        {
+                            "id": "10017",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "20038",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "20033",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "16005",
+                            "bonus": 0.1
+                        },
+                        {
+                            "id": "26010",
+                            "bonus": 0.1
+                        }
+                    ]
+                },
+                "Local_Specialty_Sweets": {
+                    "icon": "Local_Specialty_Sweets.png",
+                    "shortname": "Local Specialty Sweets",
+                    "source": "CardPull",
+                    "pull_currency": "Photocard_Collection",
+                    "clear": 180,
+                    "bonus_units": []
+                }
+            },
+            "shops": {
+                "Inspection_Plan": [
+                    {
+                        "type": "XpReport",
+                        "id": "XP_1",
+                        "count": 90,
+                        "cost": 1,
+                        "amount": 5
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_2",
+                        "count": 70,
+                        "cost": 4,
+                        "amount": 2
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_3",
+                        "count": 45,
+                        "cost": 8
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "XP_4",
+                        "count": 18,
+                        "cost": 40
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3070",
+                        "count": 30,
+                        "cost": 10
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3071",
+                        "count": 18,
+                        "cost": 30
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3072",
+                        "count": 12,
+                        "cost": 100
+                    },
+                    {
+                        "type": "Material",
+                        "id": "3073",
+                        "count": 4,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Material",
+                        "id": "160",
+                        "count": 60,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "161",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "162",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "163",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "280",
+                        "count": 60,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "281",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "282",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "283",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Embroidered_Handkerchief",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Buried_Treasure_Map",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Retro_Jewelled_Egg",
+                        "count": 1,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "My_Event093_Fancypond",
+                        "count": 1,
+                        "cost": 2000,
+                        "limited": true
+                    }
+                ],
+                "Facility_Admission_Ticket": [
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_1",
+                        "count": 180,
+                        "cost": 1,
+                        "amount": 2
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_2",
+                        "count": 95,
+                        "cost": 2
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_3",
+                        "count": 30,
+                        "cost": 8
+                    },
+                    {
+                        "type": "XpReport",
+                        "id": "GXP_4",
+                        "count": 12,
+                        "cost": 32
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4070",
+                        "count": 50,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4071",
+                        "count": 38,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4072",
+                        "count": 25,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "4073",
+                        "count": 15,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "230",
+                        "count": 60,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "231",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "232",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "233",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Material",
+                        "id": "150",
+                        "count": 60,
+                        "cost": 5
+                    },
+                    {
+                        "type": "Material",
+                        "id": "151",
+                        "count": 30,
+                        "cost": 15
+                    },
+                    {
+                        "type": "Material",
+                        "id": "152",
+                        "count": 12,
+                        "cost": 50
+                    },
+                    {
+                        "type": "Material",
+                        "id": "153",
+                        "count": 6,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Brain_Teaser_Puzzle_Cube",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Glassy_Glow_BB_Cream",
+                        "count": 10,
+                        "cost": 200
+                    },
+                    {
+                        "type": "Gift",
+                        "id": "Nutrient-rich_Multivitamin_Jellies",
+                        "count": 1,
+                        "cost": 300
+                    },
+                    {
+                        "type": "Furniture",
+                        "id": "My_Event093_Dioramapool",
+                        "count": 1,
+                        "cost": 2000,
+                        "limited": true
+                    }
+                ],
+                "Local_Specialty_Sweets": [
+                    {
+                        "type": "Pyroxene",
+                        "id": "Pyroxene-1200",
+                        "count": 1,
+                        "cost": 40,
+                        "amount": 1200
+                    },
+                    {
+                        "type": "Eligma",
+                        "id": "Eligma-5",
+                        "count": 20,
+                        "cost": 2,
+                        "amount": 5
+                    },
+                    {
+                        "type": "SecretTech",
+                        "id": "SecretTech",
+                        "count": 1,
+                        "cost": 20
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-1000000",
+                        "count": 5,
+                        "cost": 5,
+                        "amount": 1000000
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-500000",
+                        "count": 10,
+                        "cost": 3,
+                        "amount": 500000
+                    },
+                    {
+                        "type": "Credit",
+                        "id": "Credit-150000",
+                        "count": 25,
+                        "cost": 1,
+                        "amount": 150000
+                    }
+                ]
+            },
+            "stage_groups": [
+                "1-4",
+                "5-8",
+                "9-12"
+            ],
+            "stages": [
+                {
+                    "type": "Story",
+                    "level": 10,
+                    "number": 1,
+                    "cost": 10,
+                    "initial": {
+                        "Photocard_Collection": 10,
+                        "Inspection_Plan": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 11,
+                    "number": 2,
+                    "cost": 10,
+                    "initial": {
+                        "Photocard_Collection": 10,
+                        "Facility_Admission_Ticket": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 12,
+                    "number": 3,
+                    "cost": 10,
+                    "initial": {
+                        "Photocard_Collection": 10,
+                        "Inspection_Plan": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 13,
+                    "number": 4,
+                    "cost": 10,
+                    "initial": {
+                        "Photocard_Collection": 10,
+                        "Facility_Admission_Ticket": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 14,
+                    "number": 5,
+                    "cost": 10,
+                    "initial": {
+                        "Photocard_Collection": 10,
+                        "Inspection_Plan": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 15,
+                    "number": 6,
+                    "cost": 10,
+                    "initial": {
+                        "Photocard_Collection": 10,
+                        "Facility_Admission_Ticket": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 16,
+                    "number": 7,
+                    "cost": 10,
+                    "initial": {
+                        "Photocard_Collection": 10,
+                        "Inspection_Plan": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 17,
+                    "number": 8,
+                    "cost": 10,
+                    "initial": {
+                        "Photocard_Collection": 10,
+                        "Facility_Admission_Ticket": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 18,
+                    "number": 9,
+                    "cost": 10,
+                    "initial": {
+                        "Photocard_Collection": 10,
+                        "Inspection_Plan": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 19,
+                    "number": 10,
+                    "cost": 10,
+                    "initial": {
+                        "Photocard_Collection": 10,
+                        "Facility_Admission_Ticket": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 20,
+                    "number": 11,
+                    "cost": 10,
+                    "initial": {
+                        "Photocard_Collection": 10,
+                        "Inspection_Plan": 20
+                    }
+                },
+                {
+                    "type": "Story",
+                    "level": 21,
+                    "number": 12,
+                    "cost": 10,
+                    "initial": {
+                        "Photocard_Collection": 10,
+                        "Facility_Admission_Ticket": 20
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 1,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Photocard_Collection": 200,
+                        "Inspection_Plan": 50,
+                        "Facility_Admission_Ticket": 50
+                    },
+                    "drops": {
+                        "Photocard_Collection": 8,
+                        "Inspection_Plan": 5,
+                        "Facility_Admission_Ticket": 5,
+                        "Fleece_1": 0.25,
+                        "Fleece_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 2,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Inspection_Plan": 200,
+                        "Facility_Admission_Ticket": 100
+                    },
+                    "drops": {
+                        "Photocard_Collection": 5,
+                        "Inspection_Plan": 8,
+                        "Facility_Admission_Ticket": 5,
+                        "Baghdad_1": 0.25,
+                        "Baghdad_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 3,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Inspection_Plan": 100,
+                        "Facility_Admission_Ticket": 200
+                    },
+                    "drops": {
+                        "Photocard_Collection": 5,
+                        "Inspection_Plan": 5,
+                        "Facility_Admission_Ticket": 8,
+                        "Phaistos_1": 0.25,
+                        "Phaistos_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 23,
+                    "number": 4,
+                    "cost": 10,
+                    "group": 1,
+                    "initial": {
+                        "Photocard_Collection": 300
+                    },
+                    "drops": {
+                        "Photocard_Collection": 12,
+                        "Inspection_Plan": 3,
+                        "Facility_Admission_Ticket": 3,
+                        "Nimrud_1": 0.25,
+                        "Nimrud_2": 0.15
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 5,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Photocard_Collection": 200,
+                        "Inspection_Plan": 100,
+                        "Facility_Admission_Ticket": 100
+                    },
+                    "drops": {
+                        "Photocard_Collection": 15,
+                        "Inspection_Plan": 6,
+                        "Facility_Admission_Ticket": 6,
+                        "Fleece_2": 0.25,
+                        "Fleece_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 6,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Inspection_Plan": 250,
+                        "Facility_Admission_Ticket": 150
+                    },
+                    "drops": {
+                        "Photocard_Collection": 6,
+                        "Inspection_Plan": 15,
+                        "Facility_Admission_Ticket": 6,
+                        "Baghdad_2": 0.25,
+                        "Baghdad_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 7,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Inspection_Plan": 150,
+                        "Facility_Admission_Ticket": 250
+                    },
+                    "drops": {
+                        "Photocard_Collection": 6,
+                        "Inspection_Plan": 6,
+                        "Facility_Admission_Ticket": 15,
+                        "Phaistos_2": 0.25,
+                        "Phaistos_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 45,
+                    "number": 8,
+                    "cost": 15,
+                    "group": 2,
+                    "initial": {
+                        "Photocard_Collection": 400
+                    },
+                    "drops": {
+                        "Photocard_Collection": 23,
+                        "Inspection_Plan": 2,
+                        "Facility_Admission_Ticket": 2,
+                        "Nimrud_2": 0.25,
+                        "Nimrud_3": 0.08
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 65,
+                    "number": 9,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Photocard_Collection": 300,
+                        "Inspection_Plan": 100,
+                        "Facility_Admission_Ticket": 100
+                    },
+                    "drops": {
+                        "Photocard_Collection": 28,
+                        "Inspection_Plan": 4,
+                        "Facility_Admission_Ticket": 4,
+                        "Fleece_2": 0.25,
+                        "Fleece_3": 0.12,
+                        "Fleece_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 65,
+                    "number": 10,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Inspection_Plan": 500
+                    },
+                    "drops": {
+                        "Inspection_Plan": 36,
+                        "Baghdad_2": 0.25,
+                        "Baghdad_3": 0.12,
+                        "Baghdad_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 65,
+                    "number": 11,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Facility_Admission_Ticket": 500
+                    },
+                    "drops": {
+                        "Facility_Admission_Ticket": 36,
+                        "Phaistos_2": 0.25,
+                        "Phaistos_3": 0.12,
+                        "Phaistos_4": 0.021
+                    }
+                },
+                {
+                    "type": "Quest",
+                    "level": 65,
+                    "number": 12,
+                    "cost": 20,
+                    "group": 3,
+                    "initial": {
+                        "Photocard_Collection": 500
+                    },
+                    "drops": {
+                        "Photocard_Collection": 36,
+                        "Nimrud_2": 0.25,
+                        "Nimrud_3": 0.12,
+                        "Nimrud_4": 0.021
+                    }
+                },
+                {
+                    "type": "Challenge",
+                    "level": 50,
+                    "number": 1,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "level": 85,
+                    "number": 2,
+                    "cost": 5
+                },
+                {
+                    "type": "Challenge",
+                    "level": 90,
+                    "number": 3,
+                    "cost": 5
+                }
+            ],
+            "card_drops": [
+                {
+                    "icon": "UR_KisakiSwimsuit",
+                    "chance": 0.0267,
+                    "chance4": 0.0334,
+                    "drops": {
+                        "Credit": 1100000,
+                        "Local_Specialty_Sweets": 4,
+                        "Okiku_3": 2,
+                        "Okiku_4": 2,
+                        "GXP_4": 1,
+                        "XP_4": 2
+                    }
+                },
+                {
+                    "icon": "UR_ShunSwimsuit",
+                    "chance": 0.0267,
+                    "chance4": 0.0333,
+                    "drops": {
+                        "Credit": 1100000,
+                        "Local_Specialty_Sweets": 4,
+                        "Aether_3": 2,
+                        "Aether_4": 2,
+                        "GXP_4": 2,
+                        "XP_4": 1
+                    }
+                },
+                {
+                    "icon": "UR_ShunnySwimsuit",
+                    "chance": 0.0266,
+                    "chance4": 0.0333,
+                    "drops": {
+                        "Credit": 1100000,
+                        "Local_Specialty_Sweets": 4,
+                        "Okiku_3": 1,
+                        "Okiku_4": 1,
+                        "Aether_3": 1,
+                        "Aether_4": 1,
+                        "GXP_4": 2,
+                        "XP_4": 2
+                    }
+                },
+                {
+                    "icon": "SR_RumiSwimsuit",
+                    "chance": 0.0975,
+                    "chance4": 0.45,
+                    "drops": {
+                        "Credit": 250000,
+                        "Local_Specialty_Sweets": 2,
+                        "Aether_2": 1,
+                        "Okiku_2": 1,
+                        "Okiku_3": 2,
+                        "GXP_2": 2,
+                        "GXP_3": 2,
+                        "XP_2": 2,
+                        "XP_3": 3
+                    }
+                },
+                {
+                    "icon": "SR_KokonaSwimsuit",
+                    "chance": 0.0975,
+                    "chance4": 0.45,
+                    "drops": {
+                        "Credit": 250000,
+                        "Local_Specialty_Sweets": 2,
+                        "Aether_2": 1,
+                        "Aether_3": 2,
+                        "Okiku_2": 1,
+                        "GXP_2": 2,
+                        "GXP_3": 3,
+                        "XP_2": 2,
+                        "XP_3": 2
+                    }
+                },
+                {
+                    "icon": "R_Kanae",
+                    "chance": 0.16,
+                    "drops": {
+                        "Credit": 50000,
+                        "Local_Specialty_Sweets": 2,
+                        "Aether_1": 2,
+                        "Aether_2": 1,
+                        "Okiku_1": 2,
+                        "Okiku_2": 2,
+                        "XP_2": 15
+                    }
+                },
+                {
+                    "icon": "R_SayaCasual",
+                    "chance": 0.16,
+                    "drops": {
+                        "Credit": 50000,
+                        "Local_Specialty_Sweets": 2,
+                        "Aether_1": 2,
+                        "Aether_2": 2,
+                        "Okiku_1": 2,
+                        "Okiku_2": 1,
+                        "GXP_2": 15
+                    }
+                },
+                {
+                    "icon": "N_Suiko",
+                    "chance": 0.135,
+                    "drops": {
+                        "Credit": 20000,
+                        "Local_Specialty_Sweets": 1,
+                        "Okiku_1": 6,
+                        "XP_2": 8
+                    }
+                },
+                {
+                    "icon": "N_Nagomi",
+                    "chance": 0.135,
+                    "drops": {
+                        "Credit": 20000,
+                        "Local_Specialty_Sweets": 1,
+                        "Aether_1": 6,
+                        "GXP_2": 8
+                    }
+                },
+                {
+                    "icon": "N_Youko",
+                    "chance": 0.135,
+                    "drops": {
+                        "Credit": 20000,
+                        "Local_Specialty_Sweets": 1,
+                        "Aether_1": 3,
+                        "Okiku_1": 3,
+                        "XP_2": 4,
+                        "GXP_2": 4
+                    }
                 }
             ]
         }
