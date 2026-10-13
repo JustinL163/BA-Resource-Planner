@@ -307,7 +307,7 @@
   }
 </script>
 
-<dialog use:modal={{ focusDialog: true }} tabindex="-1" aria-labelledby="editor-title"
+<dialog use:modal={{ focusDialog: true }} tabindex="-1" aria-labelledby="editor-title" data-character-editor-dialog
   oncancel={(event) => { event.preventDefault(); requestClose(); }}
   onclick={(event) => {
     if (event.target !== event.currentTarget) return;

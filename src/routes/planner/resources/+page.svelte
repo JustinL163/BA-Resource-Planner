@@ -57,6 +57,7 @@
   let gearMode = $state<ResourceMode>('needed');
   let campaignMultiplier = $state(1);
   const sizes = [80, 100, 120, 140, 160];
+  const characterTransitionFilter = 'grayscale(1) sepia(50%) hue-rotate(260deg) saturate(200%) opacity(0.3)';
   let levelCap = $state(metadata.maxLevel);
   const t = (id: string) => getLanguageString(strings, id, $preferences.language);
   let totals = $derived($planner.data ? planner.totals(levelCap) : null);
@@ -105,10 +106,90 @@
   let hasPreviousCharacter = $derived(selectedVisibleIndex > 0);
   let hasNextCharacter = $derived(selectedVisibleIndex >= 0 && selectedVisibleIndex < visible.length - 1);
 
-  function navigateCharacter(direction: -1 | 1) {
+  function listCharacterCard(characterId: string): HTMLElement | null {
+    return Array.from(grid?.querySelectorAll<HTMLElement>('[data-sort-id]') ?? [])
+      .find((card) => card.dataset.sortId === characterId) ?? null;
+  }
+
+  function keepCharacterCardOnscreen(card: HTMLElement): DOMRect {
+    let bounds = card.getBoundingClientRect();
+    if (bounds.top < 0 || bounds.left < 0 || bounds.bottom > window.innerHeight || bounds.right > window.innerWidth) {
+      card.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'nearest' });
+      bounds = card.getBoundingClientRect();
+    }
+    return bounds;
+  }
+
+  function characterCardFlash(characterId: string): HTMLElement | null {
+    const source = listCharacterCard(characterId);
+    if (!source) return null;
+
+    const bounds = keepCharacterCardOnscreen(source);
+    if (!bounds.width || !bounds.height) return null;
+
+    const flash = source.cloneNode(true) as HTMLElement;
+    flash.removeAttribute('data-sort-id');
+    flash.removeAttribute('aria-label');
+    flash.removeAttribute('aria-describedby');
+    flash.removeAttribute('title');
+    flash.setAttribute('aria-hidden', 'true');
+    flash.tabIndex = -1;
+    flash.querySelectorAll('[id]').forEach((element) => element.removeAttribute('id'));
+
+    const style = flash.style;
+    style.setProperty('position', 'fixed', 'important');
+    style.setProperty('left', `${bounds.left}px`, 'important');
+    style.setProperty('top', `${bounds.top}px`, 'important');
+    style.setProperty('width', `${bounds.width}px`, 'important');
+    style.setProperty('height', `${bounds.height}px`, 'important');
+    style.setProperty('--card-size', `${bounds.width}px`, 'important');
+    style.setProperty('max-width', 'none', 'important');
+    style.setProperty('margin', '0', 'important');
+    style.setProperty('flex', 'none', 'important');
+    style.setProperty('transform', 'none', 'important');
+    style.setProperty('z-index', '10000', 'important');
+    style.setProperty('pointer-events', 'none', 'important');
+    style.setProperty('filter', characterTransitionFilter, 'important');
+    return flash;
+  }
+
+  async function navigateCharacter(direction: -1 | 1) {
     if (selectedVisibleIndex < 0) return;
     const adjacent = visible[selectedVisibleIndex + direction];
-    if (adjacent) editing = adjacent.id;
+    if (!adjacent) return;
+
+    const flash = characterCardFlash(adjacent.id);
+    editing = adjacent.id;
+    if (!flash) return;
+
+    await tick();
+    const editorDialog = document.querySelector<HTMLDialogElement>('[data-character-editor-dialog]');
+    if (!editorDialog?.open) return;
+
+    editorDialog.append(flash);
+    const animation = flash.animate([{ opacity: 1 }, { opacity: 0 }], {
+      delay: 300,
+      duration: 280,
+      easing: 'ease-out',
+      fill: 'forwards'
+    });
+    animation.onfinish = () => flash.remove();
+  }
+
+  async function closeCharacterEditor() {
+    const card = listCharacterCard(editing);
+    if (card) keepCharacterCardOnscreen(card);
+    editing = '';
+    if (!card) return;
+
+    await tick();
+    if (!card.isConnected) return;
+
+    const animation = card.animate(
+      [{ filter: characterTransitionFilter }, { filter: 'none' }],
+      { delay: 300, duration: 280, easing: 'ease-out', fill: 'both' }
+    );
+    animation.onfinish = () => animation.cancel();
   }
 
   onMount(() => {
@@ -489,7 +570,7 @@
       savedServer={$planner.data?.server} setServer={planner.setServer}
       included={!$planner.data?.disabled_characters.includes(selected.id)} save={planner.edit} remove={() => planner.remove(selected.id)}
       hasPrevious={hasPreviousCharacter} hasNext={hasNextCharacter} navigate={navigateCharacter}
-      close={() => editing = ''} error={$planner.error} {t} />
+      close={closeCharacterEditor} error={$planner.error} {t} />
   {/key}
 {/if}
 {#if bulkOpen && $planner.dataset}
