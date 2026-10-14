@@ -1,9 +1,9 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import { modal } from './dialog';
-  let { title, close, children, titleContent, headerAccessory, width = '1300px', busy = false, t }: {
+  let { title, close, children, titleContent, headerAccessory, width = '1300px', busy = false, showClose = true, t }: {
     title: string; close: () => void; children: Snippet; titleContent?: Snippet; headerAccessory?: Snippet;
-    width?: string; busy?: boolean; t: (id: string) => string;
+    width?: string; busy?: boolean; showClose?: boolean; t: (id: string) => string;
   } = $props();
 </script>
 
@@ -16,7 +16,7 @@
   <header>
     <h2>{#if titleContent}{@render titleContent()}{:else}{title}{/if}</h2>
     {#if headerAccessory}{@render headerAccessory()}{/if}
-    <button disabled={busy} onclick={close} aria-label={`${t('ui-close')} ${title}`}>{t('ui-close')}</button>
+    {#if showClose}<button disabled={busy} onclick={close} aria-label={`${t('ui-close')} ${title}`}>{t('ui-close')}</button>{/if}
   </header>
   <div class="content">{@render children()}</div>
 </dialog>

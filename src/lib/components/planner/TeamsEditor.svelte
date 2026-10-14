@@ -6,7 +6,7 @@
   import { sortable, sortableTeams, type DragState } from './sortable';
   import CharacterPortrait from './CharacterPortrait.svelte';
   import TeamSlotPicker from './TeamSlotPicker.svelte';
-  import GroupDialog from './GroupDialog.svelte';
+  import GroupPickerDialog from './GroupPickerDialog.svelte';
   import { downloadBlob, downloadTeamImage } from '$lib/services/team-screenshot';
 
   let { data, dataset, metadata, names, scribble, actions, error, selected = $bindable(''), t }: {
@@ -14,7 +14,7 @@
     scribble: boolean; actions: ReturnType<typeof createResourcePlanner>; error: string;
     selected?: string; t: (id: string) => string;
   } = $props();
-  let management = $state<'' | 'create' | 'rename' | 'order' | 'delete'>('');
+  let groupPickerOpen = $state(false);
   let picking = $state<{ name: string; expected: string; location: SlotLocation } | null>(null);
   let drag = $state<DragState | null>(null);
   let teamDrag = $state<number | null>(null);
@@ -73,6 +73,12 @@
     if (removeTimer !== null) clearTimeout(removeTimer);
     removeTimer = null;
     removing = null;
+  }
+  function renameGroup(previous: string, next: string) {
+    if (selected === previous) selected = next;
+  }
+  function deleteGroup(name: string, fallback: string) {
+    if (selected === name) selected = fallback;
   }
   function removeTeam(index: number) {
     const isEmpty = view.teams[index]?.every((slot) => !slotId(slot)) ?? false;
@@ -163,13 +169,13 @@
 <section aria-labelledby="team-editor-heading">
   <h2 id="team-editor-heading">{t('footer-teamseditor')}</h2>
   <div class="toolbar">
-    <label>{t('label-group')}<select bind:value={selected}><option value="">{t('ui-select-group')}</option>
-      {#each Object.keys(data.groups) as name, index}<option value={name}>{index + 1}. {name}</option>{/each}
-    </select></label>
-    <button onclick={() => management = 'create'}>{t('ui-group-create')}</button>
-    <button disabled={!selected} onclick={() => management = 'rename'}>{t('ui-group-rename')}</button>
-    <button disabled={!selected} onclick={() => management = 'order'}>{t('ui-group-order')}</button>
-    <button disabled={!selected} onclick={() => management = 'delete'}>{t('ui-group-delete')}</button>
+    <div class="group-picker-control">
+      <span>{t('label-group')}</span>
+      <button class="group-picker-trigger" aria-haspopup="dialog" aria-expanded={groupPickerOpen}
+        onclick={() => groupPickerOpen = true}>
+        <span>{selected || t('ui-select-group')}</span><span class="group-picker-caret" aria-hidden="true">▾</span>
+      </button>
+    </div>
   </div>
   {#if error || localError || view.error}<p class="error" role="alert">{error || localError || view.error}</p>{/if}
   {#if selected && !view.error}
@@ -243,9 +249,11 @@
   {:else if !selected}<p>{t('ui-select-group')}</p>{/if}
 </section>
 
-{#if management}
-  <GroupDialog action={management} {selected} groups={data.groups} save={actions.group} changed={(name) => selected = name}
-    close={() => management = ''} {error} {t} />
+{#if groupPickerOpen}
+  <GroupPickerDialog groups={data.groups} {selected} save={actions.group}
+    choose={(name) => { selected = name; groupPickerOpen = false; }}
+    renamed={renameGroup} deleted={deleteGroup} created={(name) => selected = name}
+    close={() => groupPickerOpen = false} {error} {t} />
 {/if}
 {#if picking && pickerAnchor && capture}
   <TeamSlotPicker teams={view.teams} location={picking.location} {dataset} {names} {metadata}
@@ -259,6 +267,10 @@
   section { justify-self: anchor-center; padding-bottom: 5rem; }
   .toolbar { display: flex; flex-wrap: wrap; align-items: end; gap: 0.5rem; margin: 0.75rem 0; }
   .toolbar label { display: flex; flex-direction: column; gap: 0.3rem; max-width: 100%; min-width: 0; }
+  .group-picker-control { display: flex; flex-direction: column; gap: 0.3rem; min-width: min(18rem, 100%); max-width: 100%; }
+  .group-picker-trigger { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-width: 12rem; max-width: 100%; text-align: left; }
+  .group-picker-trigger > span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .group-picker-caret { flex: none; }
   select { max-width: 100%; min-width: 0; }
   h3 { overflow-wrap: anywhere; }
   button[aria-pressed="true"] { background: #7c5b7d; color: white; }

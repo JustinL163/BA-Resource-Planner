@@ -15,6 +15,7 @@ interface SortableOptions {
   drop: (state: DragState) => void;
   canStart?: (id: string) => boolean;
   canDrop?: (source: string, target: string) => boolean;
+  handle?: string;
 }
 
 type TeamSortableOptions = Omit<SortableOptions, 'mode'> & { mode: CardMode | 'move' | 'disable' };
@@ -326,6 +327,7 @@ export const sortableReorder: Action<HTMLElement, SortableOptions> = (node, init
   function createSortable() {
     return Sortable.create(node, {
       draggable: '[data-sort-id]',
+      handle: options.handle,
       forceFallback: false,
       fallbackOnBody: true,
       fallbackTolerance: 8,

@@ -22,7 +22,7 @@
   }
 </script>
 
-<PlannerDialog title={t(`ui-group-${action}`)} {close} {t}>
+<PlannerDialog title={t(`ui-group-${action}`)} {close} {t} showClose={action !== 'create'}>
   <form onsubmit={(event) => { event.preventDefault(); submit(); }}>
     {#if action === 'create' || action === 'rename'}
       <label>{t('ui-group-name')}<input type="text" required maxlength="35" bind:value={name} /></label>
