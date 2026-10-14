@@ -777,13 +777,13 @@
   .cost-material-items { display: flex; flex-wrap: wrap; align-items: center; gap: 0.15rem; }
   .cost-material-type-group { display: contents; }
   .cost-material-items.atomic-groups .cost-material-type-group { display: flex; flex: 0 0 auto; flex-wrap: nowrap; align-items: center; gap: 0.15rem; }
-  .cost-material-cell { position: relative; display: grid; box-sizing: border-box; width: 4.5rem; height: 4.5rem; aspect-ratio: 1 / 1; flex: 0 0 4.5rem; place-items: center; background-position: center; background-repeat: no-repeat; background-size: contain; }
+  .cost-material-cell { position: relative; display: grid; box-sizing: border-box; width: 4.5rem; height: 3.5rem; aspect-ratio: 1 / 1; flex: 0 0 4.5rem; place-items: center; background-position: center; background-repeat: no-repeat; background-size: contain; }
   .cost-material-cell.rarity-1 { background-image: url('/planner/icons/Misc/background_n.png'); }
   .cost-material-cell.rarity-2 { background-image: url('/planner/icons/Misc/background_r.png'); }
   .cost-material-cell.rarity-3 { background-image: url('/planner/icons/Misc/background_sr.png'); }
   .cost-material-cell.rarity-4 { background-image: url('/planner/icons/Misc/background_ssr.png'); }
   .cost-material-cell.type-end::after { position: absolute; z-index: 2; top: -0.05rem; right: -0.16rem; height: calc(100% + 0.1rem); border-right: 2px dashed #fff; content: ''; transform: skewX(-10deg); pointer-events: none; }
-  .cost-material-cell > img { box-sizing: border-box; width: 74%; height: 74%; aspect-ratio: 1 / 1; object-fit: contain; }
+  .cost-material-cell > img { box-sizing: border-box; width: 74%; aspect-ratio: 1 / 1; object-fit: contain; }
   .cost-material-amount { position: absolute; inset: 50% 0 auto; transform: translateY(-50%); color: #17151a; font: 700 1.3rem/1 sans-serif; font-variant-numeric: tabular-nums; text-align: center; text-shadow: -1px -1px 0 #fff, 0 -1px 0 #fff, 1px -1px 0 #fff, -1px 0 0 #fff, 1px 0 0 #fff, -1px 1px 0 #fff, 0 1px 0 #fff, 1px 1px 0 #fff; pointer-events: none; }
   .cost-material-name { max-width: 100%; padding: 0.2rem; overflow-wrap: anywhere; color: var(--text); font-size: 0.65rem; text-align: center; }
   .cost-summary-tiles { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0.2rem 0.1rem 0.5rem; overflow: visible; }

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { untrack } from 'svelte';
+  import { onMount, untrack } from 'svelte';
   import { farmServer, farmServers, leftoverBlueprintXp, type FarmServer, type GearFarmResult } from '$lib/domain/planner/gear-farm';
   import { recommendGear } from '$lib/services/gear-farm';
   import { formatAmount, resourceItem } from '$lib/domain/planner/catalog';
@@ -10,6 +10,13 @@
     setServer: (server: FarmServer) => boolean; multiplier?: number; t: (id: string) => string;
   } = $props();
   let open = $state(false);
+  onMount(() => {
+    const rightColumnLayout = window.matchMedia('(min-width: 1201px)');
+    const openForRightColumn = () => { if (rightColumnLayout.matches) open = true; };
+    openForRightColumn();
+    rightColumnLayout.addEventListener('change', openForRightColumn);
+    return () => rightColumnLayout.removeEventListener('change', openForRightColumn);
+  });
   let retry = $state(0);
   let result = $state<GearFarmResult | null>(null);
   let resultKey = $state('');
@@ -44,7 +51,7 @@
   });
 </script>
 
-<details ontoggle={(event) => open = event.currentTarget.open}>
+<details {open} ontoggle={(event) => open = event.currentTarget.open}>
   <summary>{t('ui-farming-recommendations')}{#if result} &middot; {formatAmount(result.energy)} AP{/if}</summary>
   <div class="controls">
     <label>{t('ui-server')}<select value={settings.server ?? ''} onchange={(event) => {

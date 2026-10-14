@@ -136,10 +136,14 @@
   .resource-input { position: absolute; z-index: 2; top: 50%; left: 50%; width: 82%; min-width: 40px; max-width: calc(100% - 4px); height: 52%; min-height: 1.5rem; box-sizing: border-box; padding: 0.1rem; transform: translate(-50%, -50%); border: 1px solid #5e5263; border-radius: 0.2rem; background: var(--surface); color: var(--text); text-align: center; font: 600 0.85rem/1 monospace; opacity: 0; }
   .resource-input[type="number"] { appearance: textfield; -moz-appearance: textfield; }
   .resource-input::-webkit-inner-spin-button, .resource-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-  .editable:hover .resource-input, .editable:focus-within .resource-input { opacity: 1; }
-  .editable:hover .amount, .editable:focus-within .amount { visibility: hidden; }
+  .editable:focus-within .resource-input { opacity: 1; }
+  .editable:focus-within .amount { visibility: hidden; }
+  @media (hover: hover) and (pointer: fine) {
+    .editable:hover .resource-input { opacity: 1; }
+    .editable:hover .amount { visibility: hidden; }
+  }
   .resource-input:focus-visible { outline: 2px solid #7c5b7d; outline-offset: 1px; }
-  .inline-amount { display: flex; align-items: center; justify-content: center; gap: 0.5rem; aspect-ratio: auto; padding: 0 0.4rem; }
+  .inline-amount { display: flex; align-items: center; justify-content: center; gap: 0.1rem; aspect-ratio: auto; }
   .inline-amount .resource-image { position: static; flex: 0 0 40px; width: 40px; height: 40px; }
   .inline-amount .resource-name { position: static; flex: 0 1 auto; text-align: left; }
   .inline-amount .amount { position: static; flex: 0 1 auto; min-width: 0; max-width: 100%; margin-left: 0; transform: none; }
