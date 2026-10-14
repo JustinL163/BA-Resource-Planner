@@ -1,33 +1,36 @@
 <script lang="ts">
   import type { PlannerCharacter, PlannerMetadata } from '$lib/domain/planner/types';
   import { cardInvestments } from '$lib/domain/planner/card-display';
-  let { id, name, character, metadata, scribble, borrowed = false, borrowedLabel = 'Borrowed', excluded = false, preview = false, radius = '15%' }: {
+  type DisplayedInfo = 'all' | 'current' | 'none';
+  let { id, name, character, metadata, scribble, borrowed = false, borrowedLabel = 'Borrowed', excluded = false,
+    preview = false, radius = '15%', displayedInfo = 'all' }: {
     id: string; name: string; character?: PlannerCharacter; metadata: PlannerMetadata;
     scribble: boolean; borrowed?: boolean; borrowedLabel?: string; excluded?: boolean; preview?: boolean; radius?: string;
+    displayedInfo?: DisplayedInfo;
   } = $props();
   let portrait = $derived((scribble && metadata.scribblePortraits[id]) || metadata.portraits[id]);
-  let lines = $derived(character && !borrowed ? cardInvestments(character, preview) : []);
+  let lines = $derived(character && !borrowed && displayedInfo !== 'none' ? cardInvestments(character, preview) : []);
 </script>
 
 <span class="portrait" class:excluded style:--portrait-radius={radius}>
   <span class="portrait-content">
     {#if portrait}<img class="portrait-image character-image" src={portrait} alt="" loading="lazy" draggable="false" width="160" height="180" />{/if}
-    {#if character && !borrowed}
+    {#if character && !borrowed && displayedInfo !== 'none'}
     <span class="ue-stars" aria-hidden="true">
       {#each Array(4) as _, index}
-        {#if index < Number(character.target.ue) || index < Number(character.current.ue)}
+        {#if displayedInfo === 'all' ? index < Number(character.target.ue) || index < Number(character.current.ue) : index < Number(character.current.ue)}
           <img src={`/planner/icons/Misc/mysticstar-blue${index < Number(character.current.ue) ? '' : '-greyed'}.png`} alt="" draggable="false" />
         {/if}
       {/each}
     </span>
     <span class="bond" aria-hidden="true">
       <img src="/planner/icons/Misc/bondheart.png" alt="" draggable="false" />
-      <span>{character.current.bond}{#if Number(character.target.bond) !== Number(character.current.bond)}<span class="target">{character.target.bond}</span>{/if}</span>
+      <span>{character.current.bond}{#if displayedInfo === 'all' && Number(character.target.bond) !== Number(character.current.bond)}<span class="target">{character.target.bond}</span>{/if}</span>
     </span>
     {#each lines as line}
-      {#if line.current || line.target}
+      {#if line.current || (displayedInfo === 'all' && line.target)}
         <span class="investment {line.kind}" data-investment={line.kind} aria-hidden="true">
-          <span>{line.current}</span>{#if line.target}<span class="target">{line.target}</span>{/if}
+          <span>{line.current}</span>{#if displayedInfo === 'all' && line.target}<span class="target">{line.target}</span>{/if}
         </span>
       {/if}
     {/each}
@@ -36,10 +39,10 @@
   {#if borrowed}<span class="borrowed" aria-hidden="true">{borrowedLabel}</span>{/if}
   {#if excluded}<span class="excluded-mark" aria-hidden="true"></span>{/if}
   </span>
-  {#if character && !borrowed}
+  {#if character && !borrowed && displayedInfo !== 'none'}
     <span class="stars" aria-hidden="true">
       {#each Array(5) as _, index}
-        {#if index < Number(character.target.star) || index < Number(character.current.star)}
+        {#if displayedInfo === 'all' ? index < Number(character.target.star) || index < Number(character.current.star) : index < Number(character.current.star)}
           <img src={`/planner/icons/Misc/mysticstar${index < Number(character.current.star) ? '' : '-greyed'}.png`} alt="" draggable="false" />
         {/if}
       {/each}

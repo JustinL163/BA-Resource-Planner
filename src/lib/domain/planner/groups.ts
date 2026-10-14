@@ -10,6 +10,17 @@ export const slotId = (slot: TeamSlot): string => slot === null ? '' : typeof sl
 export const isBorrowed = (slot: TeamSlot): boolean => slot !== null && typeof slot === 'object';
 export const groupFingerprint = (value: unknown): string => JSON.stringify(value) ?? 'undefined';
 
+export function teamHasDuplicateMembers(team: readonly TeamSlot[]): boolean {
+  const members = new Set<string>();
+  for (const slot of team) {
+    if (slot === null) continue;
+    const id = slotId(slot);
+    if (members.has(id)) return true;
+    members.add(id);
+  }
+  return false;
+}
+
 export function readTeams(value: unknown): Team[] {
   if (value === null) return [];
   if (!Array.isArray(value)) throw new Error('This group has an unsupported format. Other groups and saved data have not been changed.');
@@ -32,10 +43,13 @@ export function validateTeams(teams: Team[], students: Record<string, CharacterI
   const members = new Set<string>();
   let borrowed = 0;
   for (const team of teams) {
+    const teamMembers = new Set<string>();
     for (let index = 0; index < team.length; index++) {
       const slot = team[index];
       if (slot === null) continue;
       const id = slotId(slot);
+      if (teamMembers.has(id)) throw new Error('The same character cannot appear twice in one team, including as a borrowed copy.');
+      teamMembers.add(id);
       const info = students[id];
       if (!info) throw new Error(`Student data is missing for team member ${id}.`);
       if (info.SquadType !== (index < 4 ? 'Main' : 'Support')) throw new Error('Strikers and Specials must stay in their respective slots.');
@@ -77,7 +91,25 @@ export function nextEmptySlot(teams: Team[], from: SlotLocation): SlotLocation |
 export function swapSlots(teams: Team[], from: SlotLocation, to: SlotLocation): void {
   checkLocation(teams, from); checkLocation(teams, to);
   if ((from.slot < 4) !== (to.slot < 4)) throw new Error('Only slots with the same role can be swapped.');
+  if (!canSwapSlots(teams, from, to)) {
+    throw new Error('The same character cannot appear twice in one team, including as a borrowed copy.');
+  }
   [teams[from.team][from.slot], teams[to.team][to.slot]] = [teams[to.team][to.slot], teams[from.team][from.slot]];
+}
+
+export function canSwapSlots(teams: Team[], from: SlotLocation, to: SlotLocation): boolean {
+  checkLocation(teams, from); checkLocation(teams, to);
+  if ((from.slot < 4) !== (to.slot < 4)) return false;
+
+  const sourceTeam = teams[from.team].slice();
+  const targetTeam = from.team === to.team ? sourceTeam : teams[to.team].slice();
+  const sourceSlot = sourceTeam[from.slot];
+  const targetSlot = targetTeam[to.slot];
+  sourceTeam[from.slot] = targetSlot;
+  targetTeam[to.slot] = sourceSlot;
+
+  return !teamHasDuplicateMembers(sourceTeam) &&
+    (sourceTeam === targetTeam || !teamHasDuplicateMembers(targetTeam));
 }
 
 export function validateGroupName(groups: Record<string, unknown>, name: string, previous?: string): void {

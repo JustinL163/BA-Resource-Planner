@@ -1,6 +1,12 @@
 import type { Action } from 'svelte/action';
-import Sortable from 'sortablejs';
+import Sortable, { Swap } from 'sortablejs/modular/sortable.esm.js';
 import type { CardMode } from '$lib/domain/planner/card-display';
+
+const sortableWithPlugins = Sortable as typeof Sortable & { teamSwapPluginMounted?: boolean };
+if (!sortableWithPlugins.teamSwapPluginMounted) {
+  Sortable.mount(new Swap());
+  sortableWithPlugins.teamSwapPluginMounted = true;
+}
 
 export interface DragState { source: string; target: string; after: boolean }
 interface SortableOptions {
@@ -11,120 +17,267 @@ interface SortableOptions {
   canDrop?: (source: string, target: string) => boolean;
 }
 
-export const sortable: Action<HTMLElement, SortableOptions> = (node, initial) => {
+type TeamSortableOptions = Omit<SortableOptions, 'mode'> & { mode: CardMode | 'move' | 'disable' };
+
+export const sortable: Action<HTMLElement, TeamSortableOptions> = (node, initial) => {
   let options = initial;
-  let pointer: { id: number; source: string; x: number; y: number } | null = null;
-  let dragging: DragState | null = null;
+  let instances = new Map<HTMLElement, Sortable>();
+  let snapshots = new Map<HTMLElement, Node[]>();
+  let dragState: DragState | null = null;
+  let dragSource = '';
+  let started = false;
   let suppressUntil = 0;
-  let frame = 0;
-  let pointerY = 0;
-  let pointerX = 0;
 
-  function cardAt(x: number, y: number) {
-    const card = document.elementFromPoint(x, y)?.closest<HTMLElement>('[data-sort-id]');
-    return card && node.contains(card) ? card : null;
-  }
-
-  function locate() {
-    const card = cardAt(pointerX, pointerY);
-    if (!card || !pointer || !dragging) return;
-    const rect = card.getBoundingClientRect();
-    if (options.canDrop && !options.canDrop(pointer.source, card.dataset.sortId!)) {
-      dragging = { source: pointer.source, target: '', after: false };
-      options.change(dragging);
-      return;
+  function restoreOriginalSlots() {
+    for (const [list, children] of snapshots) {
+      for (let index = children.length - 1; index >= 0; index--) {
+        const child = children[index];
+        const next = children[index + 1] ?? null;
+        if (child.parentNode !== list || child.nextSibling !== next) list.insertBefore(child, next);
+      }
     }
-    dragging = { source: pointer.source, target: card.dataset.sortId!, after: pointerX > rect.left + rect.width / 2 };
-    options.change(dragging);
+    snapshots.clear();
   }
 
-  function scroll() {
-    if (!dragging) return;
-    const margin = 60;
-    const amount = pointerY < margin ? -12 : pointerY > window.innerHeight - margin ? 12 : 0;
-    if (amount) { window.scrollBy(0, amount); locate(); }
-    frame = requestAnimationFrame(scroll);
-  }
+  function finishDrag(event?: Sortable.SortableEvent) {
+    const result = dragState;
+    const source = event?.item.dataset.sortId ?? dragSource;
+    const swappedTarget = event?.swapItem;
+    const targetId = swappedTarget?.dataset.sortId ?? '';
+    const originalEvent = (event as (Sortable.SortableEvent & { originalEvent?: Event }) | undefined)?.originalEvent;
+    const cancelled = originalEvent?.type === 'pointercancel' || originalEvent?.type === 'touchcancel';
+    const dropResult = started && !cancelled && result && swappedTarget && swappedTarget !== event?.item &&
+      result.source === source && targetId && targetId !== source &&
+      (!options.canDrop || options.canDrop(source, targetId)) ? { ...result, target: targetId } : null;
 
-  function down(event: PointerEvent) {
-    if (event.button === 0 && event.isPrimary) suppressUntil = 0;
-    const card = (event.target instanceof Element ? event.target : null)?.closest<HTMLElement>('[data-sort-id]');
-    if (!card || !node.contains(card) || event.button !== 0 || !event.isPrimary ||
-      options.mode === 'bulk' || event.ctrlKey || event.metaKey) return;
-    if (options.canStart && !options.canStart(card.dataset.sortId!)) return;
-    pointer = { id: event.pointerId, source: card.dataset.sortId!, x: event.clientX, y: event.clientY };
-  }
-
-  function move(event: PointerEvent) {
-    if (!pointer || event.pointerId !== pointer.id) return;
-    if (!dragging && Math.hypot(event.clientX - pointer.x, event.clientY - pointer.y) < 8) return;
-    if (!dragging) {
-      dragging = { source: pointer.source, target: pointer.source, after: false };
-      node.setPointerCapture(pointer.id);
-      frame = requestAnimationFrame(scroll);
-    }
-    event.preventDefault();
-    pointerX = event.clientX;
-    pointerY = event.clientY;
-    locate();
-  }
-
-  function finish(event: PointerEvent) {
-    if (!pointer || pointer.id !== event.pointerId) return;
-    const result = dragging;
-    if (result) suppressUntil = Date.now() + 350;
-    const id = pointer.id;
-    pointer = null;
-    dragging = null;
-    cancelAnimationFrame(frame);
-    if (node.hasPointerCapture(id)) node.releasePointerCapture(id);
+    if (started) suppressUntil = Date.now() + 300;
+    started = false;
+    dragState = null;
+    dragSource = '';
+    restoreOriginalSlots();
     options.change(null);
-    if (result && event.type === 'pointerup' && cardAt(event.clientX, event.clientY)?.dataset.sortId === result.target &&
-      result.source !== result.target) options.drop(result);
+    if (dropResult) options.drop(dropResult);
+  }
+
+  function createList(list: HTMLElement) {
+    return Sortable.create(list, {
+      draggable: '[data-sort-id]',
+      group: { name: 'team-slots', pull: true, put: true },
+      swap: true,
+      swapClass: 'sortable-swap-highlight',
+      forceFallback: true,
+      fallbackOnBody: true,
+      fallbackClass: 'team-sortable-fallback',
+      fallbackTolerance: 8,
+      preventOnFilter: false,
+      // Svelte owns slot order; avoid animating Sortable's temporary DOM swap before restoration.
+      animation: 0,
+      delay: 100,
+      delayOnTouchOnly: true,
+      scroll: true,
+      scrollSensitivity: 60,
+      scrollSpeed: 12,
+      disabled: options.mode === 'disable' || options.mode === 'bulk',
+      filter(event, target) {
+        const input = event as MouseEvent & { pointerType?: string };
+        const id = target.dataset.sortId ?? '';
+        return options.mode === 'disable' || options.mode === 'bulk' || input.ctrlKey || input.metaKey ||
+          Boolean(options.canStart && !options.canStart(id));
+      },
+      onStart(event) {
+        dragSource = event.item.dataset.sortId ?? '';
+        if (!dragSource) return;
+        snapshots = new Map([...node.querySelectorAll<HTMLElement>('.slots')]
+          .map((slotList) => [slotList, [...slotList.childNodes]]));
+        started = true;
+        dragState = { source: dragSource, target: dragSource, after: false };
+        options.change(dragState);
+      },
+      onMove(event) {
+        const source = event.dragged.dataset.sortId ?? dragSource;
+        const target = event.related.dataset.sortId ?? '';
+        if (!source || !target || (options.canDrop && !options.canDrop(source, target))) {
+          dragState = { source, target: '', after: false };
+          options.change(dragState);
+          return false;
+        }
+        dragState = { source, target, after: event.willInsertAfter ?? false };
+        options.change(dragState);
+      },
+      onEnd(event) { finishDrag(event); }
+    });
+  }
+
+  function syncLists() {
+    const lists = new Set(node.querySelectorAll<HTMLElement>('.slots'));
+    for (const [list, instance] of instances) {
+      if (!lists.has(list)) { instance.destroy(); instances.delete(list); }
+    }
+    for (const list of lists) {
+      if (!instances.has(list)) instances.set(list, createList(list));
+      else instances.get(list)!.option('disabled', options.mode === 'disable' || options.mode === 'bulk');
+    }
+  }
+
+  function cancelDrag() {
+    if (!started) return;
+    suppressUntil = Date.now() + 300;
+    started = false;
+    dragState = null;
+    dragSource = '';
+    for (const instance of instances.values()) instance.destroy();
+    instances.clear();
+    restoreOriginalSlots();
+    options.change(null);
+    syncLists();
   }
 
   function click(event: MouseEvent) {
     if (Date.now() < suppressUntil) { event.preventDefault(); event.stopImmediatePropagation(); }
   }
+  function keydown(event: KeyboardEvent) { if (event.key === 'Escape') cancelDrag(); }
 
-  function cancel() {
-    if (!pointer) return;
-    const id = pointer.id;
-    if (dragging) suppressUntil = Date.now() + 350;
-    pointer = null;
-    dragging = null;
-    cancelAnimationFrame(frame);
-    if (node.hasPointerCapture(id)) node.releasePointerCapture(id);
-    options.change(null);
-  }
-
-  function keydown(event: KeyboardEvent) { if (event.key === 'Escape') cancel(); }
-  function lostCapture(event: PointerEvent) { if (event.target === node) cancel(); }
-
-  node.addEventListener('pointerdown', down);
-  window.addEventListener('pointermove', move, { passive: false });
-  window.addEventListener('pointerup', finish);
-  window.addEventListener('pointercancel', finish);
+  syncLists();
+  const observer = new MutationObserver(syncLists);
+  observer.observe(node, { childList: true, subtree: true });
   node.addEventListener('click', click, true);
-  node.addEventListener('lostpointercapture', lostCapture);
   window.addEventListener('keydown', keydown);
-  window.addEventListener('blur', cancel);
+  window.addEventListener('blur', cancelDrag);
   return {
     update(next) {
       const changedMode = options.mode !== next.mode;
       options = next;
-      if (changedMode) cancel();
+      if (changedMode && started) cancelDrag();
+      syncLists();
     },
     destroy() {
-      cancelAnimationFrame(frame);
-      node.removeEventListener('pointerdown', down);
-      window.removeEventListener('pointermove', move);
-      window.removeEventListener('pointerup', finish);
-      window.removeEventListener('pointercancel', finish);
-      node.removeEventListener('click', click, true);
-      node.removeEventListener('lostpointercapture', lostCapture);
+      observer.disconnect();
       window.removeEventListener('keydown', keydown);
-      window.removeEventListener('blur', cancel);
+      window.removeEventListener('blur', cancelDrag);
+      node.removeEventListener('click', click, true);
+      const wasStarted = started;
+      started = false;
+      dragState = null;
+      dragSource = '';
+      for (const instance of instances.values()) instance.destroy();
+      instances.clear();
+      if (wasStarted) {
+        restoreOriginalSlots();
+        options.change(null);
+      }
+    }
+  };
+};
+
+interface TeamOrderOptions {
+  change: (source: number | null) => void;
+  drop: (source: number, target: number) => void;
+}
+
+export const sortableTeams: Action<HTMLElement, TeamOrderOptions> = (node, initial) => {
+  let options = initial;
+  let originalChildren: Node[] = [];
+  let originalTeams: HTMLElement[] = [];
+  let started = false;
+  let suppressUntil = 0;
+
+  function restoreOriginalOrder() {
+    for (let index = originalChildren.length - 1; index >= 0; index--) {
+      const child = originalChildren[index];
+      const next = originalChildren[index + 1] ?? null;
+      if (child.parentNode !== node || child.nextSibling !== next) node.insertBefore(child, next);
+    }
+    originalChildren = [];
+    originalTeams = [];
+  }
+
+  function createInstance() {
+    return Sortable.create(node, {
+      draggable: '.team',
+      handle: '.team-drag-handle',
+      forceFallback: true,
+      fallbackOnBody: true,
+      fallbackClass: 'team-order-fallback',
+      fallbackTolerance: 8,
+      preventOnFilter: false,
+      // Restore the original DOM order before the state update, so avoid animating the temporary order.
+      animation: 0,
+      delay: 100,
+      delayOnTouchOnly: true,
+      scroll: true,
+      scrollSensitivity: 60,
+      scrollSpeed: 12,
+      onMove(event, originalEvent) {
+        // The outer sorter treats each whole team as one item. Resolve nested
+        // slot targets back to their containing team so they can be drop areas
+        // without becoming individual team-sort items.
+        const pointer = originalEvent as MouseEvent & { touches?: TouchList; changedTouches?: TouchList };
+        const touch = pointer.changedTouches?.[0] ?? pointer.touches?.[0];
+        const x = touch?.clientX ?? pointer.clientX;
+        const y = touch?.clientY ?? pointer.clientY;
+        const target = Number.isFinite(x) && Number.isFinite(y)
+          ? document.elementFromPoint(x, y)
+          : originalEvent.target instanceof Element ? originalEvent.target : null;
+        const team = target?.closest('.team');
+        return team === event.related ? undefined : false;
+      },
+      onStart(event) {
+        // The visible fallback ghost is appended to <body>, so it no longer
+        // inherits --card-size from the capture container that sizes its slots.
+        const cardSize = getComputedStyle(event.item).getPropertyValue('--card-size').trim();
+        if (cardSize) Sortable.ghost?.style.setProperty('--card-size', cardSize);
+        originalChildren = [...node.childNodes];
+        originalTeams = [...node.children] as HTMLElement[];
+        const source = originalTeams.indexOf(event.item);
+        started = source >= 0;
+        if (started) options.change(source);
+      },
+      onEnd(event) {
+        const source = originalTeams.indexOf(event.item);
+        const target = [...node.children].indexOf(event.item);
+        const originalEvent = (event as (Sortable.SortableEvent & { originalEvent?: Event })).originalEvent;
+        const cancelled = originalEvent?.type === 'pointercancel' || originalEvent?.type === 'touchcancel';
+        if (started) suppressUntil = Date.now() + 300;
+        started = false;
+        restoreOriginalOrder();
+        options.change(null);
+        if (!cancelled && source >= 0 && target >= 0 && source !== target) options.drop(source, target);
+      }
+    });
+  }
+  let instance = createInstance();
+
+  function cancelDrag() {
+    if (!started) return;
+    started = false;
+    suppressUntil = Date.now() + 300;
+    instance.destroy();
+    restoreOriginalOrder();
+    options.change(null);
+    instance = createInstance();
+  }
+
+  function click(event: MouseEvent) {
+    if (Date.now() < suppressUntil) { event.preventDefault(); event.stopImmediatePropagation(); }
+  }
+  function keydown(event: KeyboardEvent) { if (event.key === 'Escape') cancelDrag(); }
+
+  node.addEventListener('click', click, true);
+  window.addEventListener('keydown', keydown);
+  window.addEventListener('blur', cancelDrag);
+  return {
+    update(next) { options = next; },
+    destroy() {
+      const wasStarted = started;
+      started = false;
+      instance.destroy();
+      node.removeEventListener('click', click, true);
+      window.removeEventListener('keydown', keydown);
+      window.removeEventListener('blur', cancelDrag);
+      if (wasStarted) {
+        restoreOriginalOrder();
+        options.change(null);
+      }
     }
   };
 };

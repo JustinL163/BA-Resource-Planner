@@ -19,13 +19,16 @@
   let restoreFocus = true;
   let other = $derived(teams.flatMap((team, index) => team.filter((_slot, slot) => index !== location.team || slot !== location.slot)));
   let used = $derived(new Set(other.filter((slot) => !isBorrowed(slot)).map(slotId)));
+  let usedInTeam = $derived(new Set(teams[location.team]
+    .filter((_slot, slot) => slot !== location.slot)
+    .map(slotId)));
   let hasOtherBorrow = $derived(other.some(isBorrowed));
   let showBorrow = $derived(!teams.some((team) => team.some(isBorrowed)));
   let effectiveBorrow = $derived(borrowed && !hasOtherBorrow);
   let index = $derived(createStudentSearchIndex(dataset.students, names, aliases, $preferences.language));
   let allowed = $derived(new Set(Object.entries(dataset.students).filter(([id, info]) =>
     info.SquadType === (location.slot < 4 ? 'Main' : 'Support') &&
-    (effectiveBorrow || !used.has(id))
+    (effectiveBorrow || !used.has(id)) && !usedInTeam.has(id)
   ).map(([id]) => id)));
   $effect(() => { borrowed = isBorrowed(teams[location.team]?.[location.slot] ?? null); });
   $effect(() => {

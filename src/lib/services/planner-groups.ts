@@ -70,6 +70,15 @@ export function createGroupActions(commit: PlannerCommit) {
         checkLocation(teams, { team: destination, slot: 0 });
         [teams[index], teams[destination]] = [teams[destination], teams[index]];
       });
+    },
+    moveTeamTo(name: string, expected: string, source: number, target: number) {
+      return changeTeams(name, expected, (teams) => {
+        checkLocation(teams, { team: source, slot: 0 });
+        checkLocation(teams, { team: target, slot: 0 });
+        const [team] = teams.splice(source, 1);
+        if (!team) throw new Error('This team no longer exists. Refresh the group before saving.');
+        teams.splice(target, 0, team);
+      });
     }
   };
 }
