@@ -1,4 +1,27 @@
-import type { CharacterInfo, ElephState, FullInvestment, PlannerCharacter, PlannerMetadata } from './types';
+import { investmentKeys, type CharacterInfo, type ElephState, type FullInvestment, type PlannerCharacter, type PlannerMetadata } from './types';
+
+const investmentNumberKeys = new Set<string>(investmentKeys);
+const elephNumberKeys = new Set(['owned', 'cost', 'purchasable', 'farm_nodes']);
+
+function normalizeFingerprintValue(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(normalizeFingerprintValue);
+  if (typeof value === 'object' && value !== null) {
+    const record = value as Record<string, unknown>;
+    return Object.fromEntries(Object.keys(record).sort().map((key) => [key, normalizeFingerprintValue(record[key])]));
+  }
+  return value;
+}
+
+function normalizeFingerprintRecord(record: Record<string, unknown>, numericKeys: Set<string>): Record<string, unknown> {
+  return Object.fromEntries(Object.keys(record).sort().map((key) => {
+    const value = record[key];
+    if (numericKeys.has(key) && (typeof value === 'number' || typeof value === 'string') &&
+      String(value).trim() !== '' && Number.isFinite(Number(value))) {
+      return [key, Number(value)];
+    }
+    return [key, normalizeFingerprintValue(value)];
+  }));
+}
 
 export function defaultInvestment(info: CharacterInfo): FullInvestment {
   return {
@@ -30,5 +53,9 @@ export function createCharacter(info: CharacterInfo, metadata: PlannerMetadata):
 }
 
 export function characterFingerprint(character: PlannerCharacter): string {
-  return JSON.stringify({ current: character.current, target: character.target, eleph: character.eleph });
+  return JSON.stringify({
+    current: normalizeFingerprintRecord(character.current, investmentNumberKeys),
+    target: normalizeFingerprintRecord(character.target, investmentNumberKeys),
+    eleph: normalizeFingerprintRecord(character.eleph, elephNumberKeys)
+  });
 }

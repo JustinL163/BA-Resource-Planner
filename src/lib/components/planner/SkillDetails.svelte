@@ -24,6 +24,11 @@
     { key: 'indoors', label: 'terrain-indoors', adaptationKey: 'IndoorBattleAdaptation', weaponTerrain: 'Indoor', icon: 'Terrain_Indoor.png' }
   ] as const;
   const moodGrades = ['D', 'C', 'B', 'A', 'S', 'SS'] as const;
+  const academyIconFiles: Record<string, string> = {
+    Abydos: 'Abydos', Arius: 'Arius', ETC: 'ETC', Gehenna: 'Gehenna', Highlander: 'Highlander',
+    Hyakkiyako: 'Hyakkiyako', Millennium: 'Millennium', Odyssey: 'Odyssey', RedWinter: 'RedWinter',
+    Shanhaijing: 'Shanhaijing', SRT: 'SRT', Tokiwadai: 'ETC', Trinity: 'Trinity', Valkyrie: 'Valkyrie', WildHunt: 'Wildhunt'
+  };
 
   let { skills, character, info, name, metadata, scribble, included, t, onInvestmentChange }: {
     skills: Array<{ key: SkillKey; label: string; description: FormattedSkill; fallback: boolean }>;
@@ -57,6 +62,13 @@
   let squadLabel = $derived(info.SquadType === 'Main' ? t('type-striker') : info.SquadType === 'Support' ? t('type-special') : '');
   let roleLabel = $derived(info.TacticRole ? t(`role-${info.TacticRole.toLowerCase()}`) : '');
   let roleImage = $derived(info.TacticRole ? metadata.roleImages?.[info.TacticRole] : undefined);
+  let schoolLabel = $derived.by(() => {
+    if (!info.School) return '';
+    const translated = t(`school-${info.School.toLowerCase()}`);
+    return translated === 'Undefined' ? info.School : translated;
+  });
+  let schoolImage = $derived(`/planner/icons/Academies/${academyIconFiles[info.School] ?? 'ETC'}.png`);
+  let schoolColor = $derived(metadata.colours[info.School] ?? 'var(--background)');
   let attackLabel = $derived(t(`atktype-${info.BulletType.toLowerCase()}`));
   let defenseLabel = $derived(t(`deftype-${info.ArmorType.toLowerCase()}`));
   let weaponLabel = $derived([
@@ -363,6 +375,14 @@
               <span class="info-chip-name-section">{roleLabel}</span>
             </div>
           {/if}
+          {#if schoolLabel}
+            <div class="info-chip split-info-chip school-info-chip" title={schoolLabel}>
+              <span class="info-chip-icon-section" style:background={schoolColor}>
+                <img src={schoolImage} alt="" draggable="false" />
+              </span>
+              <span class="info-chip-name-section">{schoolLabel}</span>
+            </div>
+          {/if}
         </div>
         <div class="weapon-info">
           {#if weaponLabel}<strong>{weaponLabel}</strong>{/if}
@@ -630,6 +650,8 @@
   .info-chip > img { display: block; width: 1.15rem; height: 1.15rem; flex: 0 0 1.15rem; object-fit: contain; }
   .info-chip-icon-section { display: grid; box-sizing: border-box; min-height: 1.65rem; flex: 0 0 auto; place-items: center; padding: 0.15rem 0.5rem; }
   .info-chip-icon-section img { display: block; width: 1.15rem; height: 1.15rem; object-fit: contain; }
+  .school-info-chip .info-chip-icon-section { width: 2.15rem; height: 1.65rem; padding: 0; }
+  .school-info-chip .info-chip-icon-section img { box-sizing: border-box; width: 100%; height: calc(1.65rem - 2px); min-height: 0; }
   .info-chip-name-section { display: flex; min-width: 0; align-items: center; padding: 0.15rem 0.5rem; background: var(--background); overflow-wrap: anywhere; }
   .info-chip span { min-width: 0; overflow-wrap: anywhere; }
   .weapon-info { display: grid; box-sizing: border-box; width: 100%; min-width: 0; min-height: 0; align-self: stretch; grid-template-rows: auto minmax(0, 1fr); justify-items: center; align-items: center; gap: 0.15rem; padding: 0.2rem; border: 1px solid #7c5b7d55; border-radius: 0.4rem; background: var(--background); text-align: center; }
@@ -706,9 +728,9 @@
   .value-target { color: #588f00; }
   .fallback-message { margin: 0.5rem 0 0; font-size: 0.8rem; }
   @media (max-width: 600px) {
-    .skill-overview { grid-template-columns: minmax(6rem, 7rem) minmax(0, 1fr); }
+    .skill-overview { grid-template-columns: minmax(6rem, 7rem) minmax(0, 1fr); gap: 0.15rem }
     .portrait-frame { max-width: 7rem; }
-    .character-info-panel { gap: 0; padding: 0.25rem; }
+    .character-info-panel { gap: 0; padding: 0; padding-left: 0.1rem }
     .character-info-top { min-height: 2.1rem; gap: 0.2rem; }
     .squad-type { padding: 0.15rem 0.35rem; font-size: 0.68rem; }
     .terrain-moods { flex-wrap: wrap; gap: 0.12rem; }
@@ -719,6 +741,8 @@
     .info-chip > img { width: 0.8rem; height: 0.8rem; flex-basis: 0.8rem; }
     .info-chip-icon-section { min-height: 1.25rem; padding: 0.08rem 0.35rem; }
     .info-chip-icon-section img { width: 0.8rem; height: 0.8rem; }
+    .school-info-chip .info-chip-icon-section { width: 1.5rem; height: 1.25rem; padding: 0; }
+    .school-info-chip .info-chip-icon-section img { height: calc(1.25rem - 2px); }
     .info-chip-name-section { padding: 0.08rem 0.35rem; }
     .weapon-info { padding: 0.15rem; }
   }

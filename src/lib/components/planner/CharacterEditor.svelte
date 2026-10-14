@@ -25,23 +25,33 @@
   } = $props();
   let draft = $state(untrack(() => structuredClone(character)));
   let expected = $state(untrack(() => characterFingerprint(character)));
+  let editorCharacterId = untrack(() => character.id);
   let dirty = $derived(characterFingerprint(draft) !== expected);
   let numberInputFocused = $state(false);
   let discardPrompt = $state(false);
   let pendingNavigation = $state<-1 | 1 | null>(null);
+  let swipeStart: { pointerId: number; x: number; y: number; time: number } | null = null;
   let deleting = $state(false);
+  let presetOpen = $state(false);
+  let presetServer = $state<FarmServer>('Global');
   let mounted = $state(false);
+  let touchDebugEnabled = $state(false);
+  let touchDebugVisible = $state(true);
+  let touchDebugEntries = $state<string[]>([]);
+  let touchDebugCopyText = $state(JSON.stringify({ events: [] }, null, 2));
+  let touchDebugCopyTextarea: HTMLTextAreaElement | null = null;
   let skillData = $state<SkillData | null>(null);
   let skillError = $state('');
   let skillLoading = $state(false);
   let skillRetry = $state(0);
   const skillFields: SkillKey[] = ['ex', 'basic', 'passive', 'sub'];
-  const hardModeStages = (() => {
+  let hardModeStages = $derived.by(() => {
     const stages = dataset.context.data.hard_modes[character.id];
     return Array.isArray(stages) ? stages.filter((stage): stage is string => typeof stage === 'string') : [];
-  })();
-  const purchase = dataset.context.data.shop_characters[character.id];
-  const shopCurrency = typeof purchase === 'string' ? purchase : purchase?.currency;
+  });
+  const presetServerPreferenceKey = 'planner-character-preset-server';
+  let purchase = $derived(dataset.context.data.shop_characters[character.id]);
+  let shopCurrency = $derived(typeof purchase === 'string' ? purchase : purchase?.currency);
   const shopCurrencyLabels: Record<string, string> = {
     RaidToken: 'label-raidtokens',
     RareRaidToken: 'label-rareraidtokens',
@@ -52,6 +62,20 @@
     MasteryCertificate: 'label-expertpermits'
   };
   const raidCurrencies = new Set(['RaidToken', 'RareRaidToken', 'EliminationRaidToken', 'RareEliminationRaidToken']);
+  $effect(() => {
+    const nextCharacterId = character.id;
+    if (nextCharacterId === editorCharacterId) return;
+    const nextDraft = untrack(() => structuredClone(character));
+    const nextExpected = untrack(() => characterFingerprint(character));
+    editorCharacterId = nextCharacterId;
+    draft = nextDraft;
+    expected = nextExpected;
+    numberInputFocused = false;
+    discardPrompt = false;
+    pendingNavigation = null;
+    deleting = false;
+    presetOpen = false;
+  });
   let activeServer = $derived.by(() => {
     try { return farmServer(savedServer); }
     catch { return 'Global'; }
@@ -82,6 +106,80 @@
     pendingNavigation = direction;
     discardPrompt = true;
   }
+  function startCharacterSwipe(event: PointerEvent) {
+    swipeStart = null;
+    if (event.pointerType !== 'touch' || !event.isPrimary || !(event.currentTarget instanceof HTMLDialogElement) || !(event.target instanceof Element)) return;
+    if (event.target.closest('[data-touch-debug-panel]')) return;
+    const dialog = event.currentTarget;
+    const bounds = dialog.getBoundingClientRect();
+    if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) return;
+    if (event.target.closest('dialog') !== dialog) return;
+    swipeStart = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, time: Date.now() };
+  }
+  function finishCharacterSwipe(event: PointerEvent) {
+    const start = swipeStart;
+    swipeStart = null;
+    if (!start || start.pointerId !== event.pointerId || Date.now() - start.time > 1000) return;
+    const deltaX = event.clientX - start.x;
+    const deltaY = event.clientY - start.y;
+    if (Math.abs(deltaX) < 55 || Math.abs(deltaX) < Math.abs(deltaY) * 1.25) {
+      const isStationaryTap = Math.hypot(deltaX, deltaY) <= 10;
+      const target = event.target;
+      if (isStationaryTap && event.pointerType === 'touch' && target instanceof HTMLInputElement &&
+        target.type === 'number' && !target.disabled && !target.readOnly) {
+        target.focus({ preventScroll: true });
+      }
+      return;
+    }
+    if (dirty) return;
+    requestNavigation(deltaX < 0 ? 1 : -1);
+  }
+  function cancelCharacterSwipe(event: PointerEvent) {
+    if (swipeStart?.pointerId === event.pointerId) swipeStart = null;
+  }
+  function describeTouchDebugElement(element: Element | null) {
+    if (!element) return null;
+    return {
+      tag: element.tagName.toLowerCase(),
+      class: element.getAttribute('class'),
+      label: element.getAttribute('aria-label'),
+      name: element.getAttribute('name'),
+      type: element.getAttribute('type')
+    };
+  }
+  function formatTouchDebugElement(element: Element | null) {
+    const details = describeTouchDebugElement(element);
+    if (!details) return 'none';
+    const attrs = [details.class, details.label && `label=${details.label}`, details.name && `name=${details.name}`, details.type && `type=${details.type}`]
+      .filter(Boolean)
+      .join(' ');
+    return `${details.tag}${attrs ? `.${attrs}` : ''}`;
+  }
+  function logCharacterEditorTouchEvent(event: Event) {
+    const target = event.target instanceof Element ? event.target : null;
+    if (!target?.closest('[data-character-editor-dialog]') || target.closest('[data-touch-debug-panel]')) return;
+    const pointer = event instanceof PointerEvent ? {
+      id: event.pointerId,
+      type: event.pointerType,
+      primary: event.isPrimary,
+      x: event.clientX,
+      y: event.clientY
+    } : null;
+    const point = event instanceof MouseEvent ? { x: event.clientX, y: event.clientY } : null;
+    const hitTarget = point ? document.elementFromPoint(point.x, point.y) : null;
+    const activeElement = document.activeElement instanceof Element ? document.activeElement : null;
+    const pointerLabel = pointer ? ` ${pointer.type}#${pointer.id} (${pointer.x},${pointer.y})` : '';
+    const pointLabel = point ? ` hit=${formatTouchDebugElement(hitTarget)} hitInput=${formatTouchDebugElement(hitTarget?.closest('input') ?? null)}` : '';
+    const inputLabel = ` input=${formatTouchDebugElement(target.closest('input'))}`;
+    const activeLabel = ` active=${formatTouchDebugElement(activeElement)}`;
+    const statusLabel = ` trusted=${event.isTrusted} prevented=${event.defaultPrevented}`;
+    touchDebugEntries = [...touchDebugEntries.slice(-29), `${event.type}${pointerLabel} target=${formatTouchDebugElement(target)}${inputLabel}${pointLabel}${activeLabel}${statusLabel}`];
+    touchDebugCopyText = JSON.stringify({ events: touchDebugEntries }, null, 2);
+  }
+  function selectTouchDebugJson() {
+    touchDebugCopyTextarea?.focus({ preventScroll: true });
+    touchDebugCopyTextarea?.select();
+  }
   function cancelDiscard() {
     discardPrompt = false;
     pendingNavigation = null;
@@ -109,6 +207,37 @@
     const nextLimit = countAvailableStages(selected) * (draft.eleph.node_refresh ? 6 : 3);
     if (Number(draft.eleph.farm_nodes) > nextLimit) draft.eleph.farm_nodes = nextLimit;
   }
+  function updatePresetServer(event: Event) {
+    const select = event.currentTarget;
+    if (!(select instanceof HTMLSelectElement)) return;
+    const selected = farmServers.find((server) => server === select.value);
+    if (!selected) return;
+    presetServer = selected;
+    try { window.localStorage.setItem(presetServerPreferenceKey, selected); }
+    catch { /* Keep the preset selection usable if storage is unavailable. */ }
+  }
+  function applyPreset(kind: 'character' | 'targets' | 'min-character' | 'min-targets') {
+    const minimum = kind.startsWith('min-');
+    const updateCharacter = kind === 'character' || kind === 'min-character' || kind === 'min-targets';
+    const updateTargets = kind !== 'min-character';
+    for (const field of metadata.fields) {
+      const value = minimum
+        ? (field.key === 'star' ? Math.max(field.min, info.StarGrade) : field.min)
+        : (field.key === 'bond_gear' && !draft.hasBondGear ? field.min : field.max);
+      if (updateCharacter) draft.current[field.key] = value;
+      if (updateTargets) draft.target[field.key] = value;
+    }
+    presetOpen = false;
+  }
+  function confirmRemoval() {
+    if (remove()) close();
+  }
+  function closeOnBackdrop(event: MouseEvent, dismiss: () => void) {
+    const dialog = event.currentTarget;
+    if (!(dialog instanceof HTMLDialogElement) || event.target !== dialog) return;
+    const bounds = dialog.getBoundingClientRect();
+    if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) dismiss();
+  }
   function updateNodeRefresh(event: Event) {
     const checkbox = event.currentTarget;
     if (!(checkbox instanceof HTMLInputElement)) return;
@@ -133,6 +262,7 @@
     return Number.isInteger(level) && level >= 0 && level <= (key === 'ex' ? 5 : 10) ? level : 0;
   }
   function interceptEditorKeys(event: KeyboardEvent) {
+    if (event.key === 'Escape' && (deleting || presetOpen)) return;
     if (event.key === 'Escape' && dirty) {
       event.preventDefault();
       event.stopImmediatePropagation();
@@ -165,9 +295,32 @@
     }
   }
   onMount(() => {
+    try {
+      const lastPresetServer = window.localStorage.getItem(presetServerPreferenceKey);
+      if (lastPresetServer !== null) presetServer = farmServer(lastPresetServer);
+      else {
+        try { presetServer = farmServer(savedServer); }
+        catch { presetServer = 'Global'; }
+        window.localStorage.setItem(presetServerPreferenceKey, presetServer);
+      }
+    } catch {
+      try { presetServer = farmServer(savedServer); }
+      catch { presetServer = 'Global'; }
+    }
     mounted = true;
     window.addEventListener('keydown', interceptEditorKeys, true);
-    return () => window.removeEventListener('keydown', interceptEditorKeys, true);
+    touchDebugEnabled = [...new URLSearchParams(window.location.search).keys()]
+      .some((key) => key.toLowerCase() === 'touchdebug');
+    const touchDebugEvents = ['pointerdown', 'pointerup', 'pointercancel', 'click', 'focusin', 'focusout'];
+    if (touchDebugEnabled) {
+      for (const type of touchDebugEvents) window.addEventListener(type, logCharacterEditorTouchEvent, true);
+    }
+    return () => {
+      window.removeEventListener('keydown', interceptEditorKeys, true);
+      if (touchDebugEnabled) {
+        for (const type of touchDebugEvents) window.removeEventListener(type, logCharacterEditorTouchEvent, true);
+      }
+    };
   });
   $effect(() => {
     if (!mounted) return;
@@ -307,8 +460,11 @@
   }
 </script>
 
-<dialog use:modal={{ focusDialog: true }} tabindex="-1" aria-labelledby="editor-title" data-character-editor-dialog
+<dialog use:modal={{ focusDialog: true }} tabindex="-1" aria-labelledby="editor-title" data-character-editor-dialog class:form-dirty={dirty}
   oncancel={(event) => { event.preventDefault(); requestClose(); }}
+  onpointerdown={startCharacterSwipe}
+  onpointerup={finishCharacterSwipe}
+  onpointercancel={cancelCharacterSwipe}
   onclick={(event) => {
     if (event.target !== event.currentTarget) return;
     const bounds = event.currentTarget.getBoundingClientRect();
@@ -325,8 +481,8 @@
           aria-label={t('ui-next-character')} onclick={() => requestNavigation(1)}>&rarr;</button>
       </div>
       <div class="header-actions">
-        <button type="button" onclick={requestClose}>{t('label-cancel')}</button>
-        <button type="submit" disabled={Boolean(validation.error)}>{t('label-save').trim()}</button>
+        <button type="button" class="cancel-button" onclick={requestClose}>{t('label-cancel')}</button>
+        <button type="submit" class="save-button" disabled={Boolean(validation.error)}>{t('label-save').trim()}</button>
       </div>
     </header>
     <div class="editor-content">
@@ -408,13 +564,9 @@
           {/if}
         </div>
       </fieldset>
-      {#if deleting}
-        <p role="alert">{t('ui-confirm-remove')} {name}?</p>
-        <button type="button" onclick={() => { if (remove()) close(); }}>{t('ui-confirm-remove')}</button>
-        <button type="button" onclick={() => deleting = false}>{t('label-cancel')}</button>
-      {/if}
       <footer>
         <button type="button" class="danger" onclick={() => deleting = true}>{t('ui-remove-character')}</button>
+        <button type="button" onclick={() => presetOpen = true}>{t('ui-preset')}</button>
       </footer>
         </div>
       <section class="live-cost-preview" aria-label={t('ui-cost-preview')}>
@@ -477,6 +629,69 @@
       </div>
     </div>
   </form>
+  {#if touchDebugEnabled}
+    <aside class="touch-debug-popup" data-touch-debug-panel aria-label="Touch event debug information" aria-live="polite">
+      {#if touchDebugVisible}
+        <header class="touch-debug-header">
+          <strong>Touch debug · {touchDebugEntries.length} events</strong>
+          <div>
+            <button type="button" onclick={selectTouchDebugJson}>Select JSON</button>
+            <button type="button" onclick={() => { touchDebugEntries = []; touchDebugCopyText = JSON.stringify({ events: [] }, null, 2); }}>Clear</button>
+            <button type="button" onclick={() => touchDebugVisible = false}>Hide</button>
+          </div>
+        </header>
+        <label class="touch-debug-copy-label">
+          Tap Select JSON, then choose Copy:
+          <textarea readonly bind:this={touchDebugCopyTextarea} bind:value={touchDebugCopyText}></textarea>
+        </label>
+        <div class="touch-debug-log">
+          {#if touchDebugEntries.length}
+            {#each touchDebugEntries as entry}
+              <div>{entry}</div>
+            {/each}
+          {:else}
+            <div>Waiting for pointer, click, and focus events…</div>
+          {/if}
+        </div>
+      {:else}
+        <button type="button" class="touch-debug-reopen" onclick={() => touchDebugVisible = true}>Show touch debug ({touchDebugEntries.length})</button>
+      {/if}
+    </aside>
+  {/if}
+  {#if deleting}
+    <dialog use:modal={{ focusDialog: true, blurPreviousOnClose: false }} class="editor-confirmation" role="alertdialog"
+      aria-labelledby="remove-confirmation-title"
+      onclick={(event) => closeOnBackdrop(event, () => { deleting = false; })}
+      oncancel={(event) => { event.preventDefault(); event.stopPropagation(); deleting = false; }}>
+      <h2 id="remove-confirmation-title">{t('label-areyousure')}</h2>
+      <p>{t('ui-confirm-remove')} {name}?</p>
+      <div class="dialog-actions">
+        <button type="button" onclick={() => deleting = false}>{t('label-cancel')}</button>
+        <button type="button" class="discard-button" onclick={confirmRemoval}>{t('confirmdeletion')}</button>
+      </div>
+    </dialog>
+  {/if}
+  {#if presetOpen}
+    <dialog use:modal={{ focusDialog: true, blurPreviousOnClose: false }} class="preset-dialog" aria-labelledby="preset-dialog-title"
+      onclick={(event) => closeOnBackdrop(event, () => { presetOpen = false; })}
+      oncancel={(event) => { event.preventDefault(); event.stopPropagation(); presetOpen = false; }}>
+      <h2 id="preset-dialog-title">{t('ui-preset')}</h2>
+      <label class="preset-server-label">{t('ui-server')}
+        <select value={presetServer} onchange={updatePresetServer}>
+          {#each farmServers as server}<option value={server}>{server}</option>{/each}
+        </select>
+      </label>
+      <div class="preset-options">
+        <button type="button" onclick={() => applyPreset('character')}>{t('ui-preset-max-character')}</button>
+        <button type="button" onclick={() => applyPreset('targets')}>{t('ui-preset-max-targets')}</button>
+        <button type="button" onclick={() => applyPreset('min-character')}>{t('ui-preset-min-character')}</button>
+        <button type="button" onclick={() => applyPreset('min-targets')}>{t('ui-preset-min-targets')}</button>
+      </div>
+      <div class="dialog-actions">
+        <button type="button" onclick={() => presetOpen = false}>{t('label-cancel')}</button>
+      </div>
+    </dialog>
+  {/if}
   {#if discardPrompt}
     <dialog use:modal={{ blurPreviousOnClose: false }} class="discard-confirmation" role="alertdialog" aria-labelledby="discard-title"
       oncancel={(event) => { event.preventDefault(); event.stopPropagation(); cancelDiscard(); }}>
@@ -490,7 +705,18 @@
 </dialog>
 
 <style>
-  dialog:not(.discard-confirmation) { width: min(1400px, calc(100vw - 1.5rem)); max-height: 90dvh; padding: 0; background: var(--surface); color: var(--text); border-radius: 0.75rem; border: 1px solid #7c5b7d; overflow-y: auto; overscroll-behavior: contain; }
+  dialog:not(.discard-confirmation):not(.editor-confirmation):not(.preset-dialog) { width: min(1400px, calc(100vw - 1.5rem)); max-height: 90dvh; padding: 0; background: var(--surface); color: var(--text); border-radius: 0.75rem; border: 1px solid #7c5b7d; overflow-y: auto; overscroll-behavior: contain; }
+  [data-character-editor-dialog] { touch-action: pan-y; }
+  [data-character-editor-dialog].form-dirty { touch-action: auto; }
+  .touch-debug-popup { position: fixed; z-index: 2147483647; right: 0.5rem; bottom: 0.5rem; display: flex; box-sizing: border-box; width: min(95vw, 34rem); max-height: 36dvh; flex-direction: column; overflow: hidden; border: 1px solid #ab65ad; border-radius: 0.45rem; background: #17151aee; color: #fff; font: 0.65rem/1.3 monospace; pointer-events: none; }
+  .touch-debug-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.3rem 0.5rem; padding: 0.3rem 0.4rem; border-bottom: 1px solid #ab65ad; }
+  .touch-debug-header > div { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 0.25rem; pointer-events: auto; }
+  .touch-debug-header button, .touch-debug-reopen { padding: 0.15rem 0.35rem; font: inherit; pointer-events: auto; }
+  .touch-debug-copy-label { display: grid; flex: 0 0 auto; gap: 0.2rem; padding: 0.3rem 0.4rem; pointer-events: auto; }
+  .touch-debug-copy-label textarea { box-sizing: border-box; width: 100%; height: 5rem; resize: vertical; user-select: text; -webkit-user-select: text; touch-action: pan-y; }
+  .touch-debug-log { min-height: 0; flex: 1 1 auto; overflow: auto; padding: 0.3rem 0.4rem; overflow-wrap: anywhere; pointer-events: auto; touch-action: pan-y; }
+  .touch-debug-log > div { padding: 0.08rem 0; border-bottom: 1px solid #ffffff22; }
+  .touch-debug-reopen { display: block; margin-left: auto; }
   form { margin: 0; }
   .editor-header { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.7rem 1rem; background: var(--surface); border-bottom: 1px solid #7c5b7d66; }
   .editor-header h2 { flex: 1; min-width: 0; margin: 0; font-size: 1.25rem; }
@@ -499,13 +725,19 @@
   .editor-navigation button.boundary-hidden { visibility: hidden; }
   .header-actions { display: flex; align-items: center; gap: 0.5rem; }
   .header-actions button { white-space: nowrap; }
+  .header-actions .cancel-button { background: #dd33334f; }
+  .header-actions .save-button { background: #42a4f84d; }
   .editor-content { padding: 0.75rem 1rem 1rem; }
   .editor-layout { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 1rem; }
   .editor-primary { width: 100%; max-width: 700px; min-width: 0; }
   .live-cost-preview { min-width: 0; }
-  dialog.discard-confirmation { width: min(27rem, calc(100vw - 2rem)); max-height: none; padding: 1.25rem; background: var(--surface); color: var(--text); border: 1px solid #7c5b7d; border-radius: 0.75rem; box-shadow: 0 1rem 3rem #0008; }
-  .discard-confirmation h2 { margin: 0; font-size: 1.15rem; }
-  .discard-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.2rem; }
+  dialog.discard-confirmation, dialog.editor-confirmation, dialog.preset-dialog { width: min(27rem, calc(100vw - 2rem)); max-height: none; padding: 1.25rem; background: var(--surface); color: var(--text); border: 1px solid #7c5b7d; border-radius: 0.75rem; box-shadow: 0 1rem 3rem #0008; }
+  .discard-confirmation h2, .editor-confirmation h2, .preset-dialog h2 { margin: 0; font-size: 1.15rem; }
+  .editor-confirmation p { margin: 0.75rem 0 0; }
+  .discard-actions, .dialog-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.2rem; }
+  .preset-server-label { display: grid; gap: 0.3rem; margin-top: 1rem; }
+  .preset-server-label select { width: 100%; }
+  .preset-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; margin-top: 1rem; }
   .discard-button { background: #a32f3d; color: white; }
   dialog::backdrop { background: #000a; }
   input[type="number"] { width: 100%; min-width: 0; padding: 0.4rem; }
@@ -536,8 +768,7 @@
   .eleph-cost-display { display: flex; flex: 0 0 auto; align-items: center; align-self: center; gap: 0.4rem; min-width: 0; justify-self: start; white-space: nowrap; }
   .eleph-cost-display img { width: 2.2rem; height: 2.2rem; flex: 0 0 2.2rem; object-fit: contain; }
   .eleph-cost-display strong { font-size: 1rem; font-variant-numeric: tabular-nums; }
-  footer { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: flex-end; margin-top: 1rem; }
-  .danger { margin-right: auto; }
+  footer { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: flex-start; margin-top: 1rem; }
   .error { color: var(--error); }
   .cost-preview-content { display: grid; gap: 0.65rem; }
   .cost-preview-materials { display: grid; gap: 0.45rem; padding: 0.2rem; }
@@ -566,7 +797,7 @@
     .live-cost-preview { padding-left: 1rem; }
   }
   @media (max-width: 600px) {
-    dialog:not(.discard-confirmation) { width: 100vw; max-width: 100vw; margin-inline: 0; }
+    dialog:not(.discard-confirmation):not(.editor-confirmation):not(.preset-dialog) { width: 100vw; max-width: 100vw; margin-inline: 0; }
     .editor-header, .editor-content { padding: 0.6rem; }
     .eleph-layout { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.8rem 0.55rem; }
     .eleph-icon { width: 2.55rem; height: 2.55rem; flex-basis: 2.55rem; }

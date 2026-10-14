@@ -564,14 +564,12 @@
     {metadata} save={planner.add} close={() => adding = false} error={$planner.error} {t} />
 {/if}
 {#if selected && $planner.dataset}
-  {#key selected.id}
-    <CharacterEditor character={selected} info={$planner.dataset.students[selected.id]} name={$planner.names[selected.id] ?? selected.name}
-      dataset={$planner.dataset} {metadata} language={$preferences.language} scribble={$planner.scribble}
-      savedServer={$planner.data?.server} setServer={planner.setServer}
-      included={!$planner.data?.disabled_characters.includes(selected.id)} save={planner.edit} remove={() => planner.remove(selected.id)}
-      hasPrevious={hasPreviousCharacter} hasNext={hasNextCharacter} navigate={navigateCharacter}
-      close={closeCharacterEditor} error={$planner.error} {t} />
-  {/key}
+  <CharacterEditor character={selected} info={$planner.dataset.students[selected.id]} name={$planner.names[selected.id] ?? selected.name}
+    dataset={$planner.dataset} {metadata} language={$preferences.language} scribble={$planner.scribble}
+    savedServer={$planner.data?.server} setServer={planner.setServer}
+    included={!$planner.data?.disabled_characters.includes(selected.id)} save={planner.edit} remove={() => planner.remove(selected.id)}
+    hasPrevious={hasPreviousCharacter} hasNext={hasNextCharacter} navigate={navigateCharacter}
+    close={closeCharacterEditor} error={$planner.error} {t} />
 {/if}
 {#if bulkOpen && $planner.dataset}
   <BulkEditor characters={bulkCharacters} dataset={$planner.dataset} {metadata} names={$planner.names} save={planner.bulkEdit}
