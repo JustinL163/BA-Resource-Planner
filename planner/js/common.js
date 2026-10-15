@@ -4,7 +4,7 @@ let keyPressed = {};
 let inputMap = new Map();
 let preInput;
 let lvlMAX = 90;
-const defaultGroups = { "Binah": [], "Chesed": [], "Hod": [], "ShiroKuro": [], "Perorodzilla": [], "Goz": [], "Hieronymous": [], "Kaiten": [] }
+const defaultGroups = { "Binah": [], "Chesed": [], "Hod": [], "ShiroKuro": [], "Perorodzilla": [], "Goz": [], "Hieronymous": [], "Kaiten": [], "Gregorius": [], "Wakamo": [], "Kurokage": [], "Geburah": [], "Yesod": [], "Drumbarka": [] }
 const languages = ["En", "Kr", "Jp", "Tw", "Cn", "Th", "Id"];
 const languagesLabel = ["English", "한국어", "日本語", "繁體中文", "简体中文(社区)", "ภาษาไทย", "Indonesian"]
 let language = "En";
