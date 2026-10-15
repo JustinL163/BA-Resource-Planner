@@ -226,7 +226,7 @@
     }
     if (outcome === 'half-correct') {
       correct++;
-      revealQuestion(String(answerFor(currentQuestion, settings)), choice ?? null, 'half-correct');
+      void revealQuestion(String(answerFor(currentQuestion, settings)), choice ?? null, 'half-correct');
       return 'accepted';
     }
     if (isChoice) selectedWrongChoice = choice ?? null;
@@ -237,18 +237,23 @@
     return 'accepted';
   }
 
-  function revealQuestion(answer: string, wrongChoice: string | number | null, kind: 'wrong' | 'half-correct') {
+  async function revealQuestion(answer: string, wrongChoice: string | number | null, kind: 'wrong' | 'half-correct') {
     if (!currentQuestion) return;
     if (kind === 'wrong') {
       wrong++;
       failedItems.push(currentQuestion);
       failureTimeBonus = true;
+      if (settings.input === 'Freeform') answerInput = answer;
     }
     revealedAnswer = answer;
     revealKind = kind;
     selectedWrongChoice = wrongChoice;
     questionIndex++;
     showingAnswer = true;
+    if (kind === 'wrong' && settings.input === 'Freeform') {
+      await tick();
+      document.querySelector<HTMLInputElement>('#guesser-answer')?.focus({ preventScroll: true });
+    }
     window.clearTimeout(revealTimeout);
     revealTimeout = window.setTimeout(() => {
       revealTimeout = undefined;
@@ -262,7 +267,7 @@
   function failQuestion(choice: string | number | null = null) {
     if (!currentQuestion || showingAnswer) return;
     const answer = String(answerFor(currentQuestion, settings));
-    revealQuestion(answer, choice, 'wrong');
+    void revealQuestion(answer, choice, 'wrong');
   }
 
   function finish(completed: boolean) {
@@ -471,7 +476,8 @@
               <label for="guesser-answer">Your guess</label>
               <input id="guesser-answer" type="text" autocomplete="off" spellcheck="false" bind:value={answerInput}
                 class:failed={showingAnswer && revealKind === 'wrong'} class:halfcorrect={showingAnswer && revealKind === 'half-correct'}
-                disabled={showingAnswer} onkeydown={(event) => { if (event.key === 'Enter') { event.preventDefault(); submitAnswer(); } else if (!allowKey(event)) event.preventDefault(); }} />
+                readonly={showingAnswer && revealKind === 'wrong'} disabled={showingAnswer && revealKind !== 'wrong'}
+                onkeydown={(event) => { if (event.key === 'Enter') { event.preventDefault(); submitAnswer(); } else if (!allowKey(event)) event.preventDefault(); }} />
               <button class="primary" type="submit" disabled={showingAnswer}>Submit</button>
             </form>
           {:else}
@@ -484,7 +490,7 @@
               {/each}
             </div>
           {/if}
-          {#if showingAnswer}<p class="answer-reveal" class:half={revealKind === 'half-correct'} role="status">{revealKind === 'wrong' ? 'Answer:' : 'Close!'} {revealedAnswer}</p>{/if}
+          {#if showingAnswer && revealKind !== 'wrong'}<p class="answer-reveal" class:half={revealKind === 'half-correct'} role="status">Close! {revealedAnswer}</p>{/if}
           {#if !showingAnswer && settings.input === 'Freeform'}<p class="attempts">Guesses: {currentGuesses} / {settings.maxGuesses}</p>{/if}
           <button type="button" class="restart-button" aria-label="Return to menu" onclick={() => confirmQuit = true}><img src="/planner/icons/UI/rotate-left-solid.svg" alt="" /> Return to menu</button>
         {:else if result}
@@ -492,9 +498,9 @@
             <div class="final-counts"><span class="correct-count">{result.correct}</span><span class="wrong-count">{result.wrong}</span></div>
             <p class="elapsed">Time: {result.elapsed}</p>
             {#if result.score !== null}
+              <code class="result-score-code">{result.hash}</code>
               <p class="final-score">Score: {formatNumber(result.score)}</p>
               <p class="modifier-title">{result.title}</p>
-              <p class="score-hash">Record code: {result.hash}</p>
             {:else}<p class="retry-note">Retry round complete. Retry rounds do not affect saved records.</p>{/if}
           </div>
           <div class="result-actions">
@@ -511,9 +517,11 @@
         {#each validRecords as entry}
           <article class="record-card">
             <h3>{entry.record.title || entry.category}</h3>
-            <div class="record-stats"><strong>{formatNumber(Number(entry.record.score))}</strong><span>{entry.record.time}</span></div>
+            <div class="record-stats">
+              <span class="record-score"><strong>{formatNumber(Number(entry.record.score))}</strong><code>{entry.record.string}</code></span>
+              <span>{entry.record.time}</span>
+            </div>
             <p><span class="correct-count">{entry.record.correct}</span> correct · <span class="wrong-count">{entry.record.wrong}</span> failed</p>
-            <code>{entry.record.string}</code>
           </article>
         {/each}
       {:else if recordsReady}<p class="empty-records">Your best scores will appear here.</p>{/if}
@@ -583,11 +591,10 @@
   .remaining-count { color: #222; }
   .timer { color: #bd1e2a; font-size: 1.4rem; font-weight: 700; }
   .question-position { margin: 0 0 0.5rem; text-align: center; color: #555b68; }
-  .question-image { display: grid; place-items: center; width: min(20rem, 72vw); height: min(20rem, 48vh); margin: 0 auto 1rem; }
-  .question-image.weapon { width: 100%; max-width: 58rem; height: auto; min-height: 10rem; }
+  .question-image { display: grid; min-width: 0; place-items: center; width: min(20rem, 72vw); height: min(20rem, 48vh); margin: 0 auto 1rem; }
+  .question-image.weapon { width: 100%; max-width: 58rem; height: min(20rem, 48vh); min-height: 0; }
   .question-image.splashart { width: auto; max-width: 100%; height: min(30rem, 48vh); }
-  .question-image img { display: block; max-width: 100%; max-height: 100%; object-fit: contain; }
-  .question-image:not(.weapon):not(.splashart) img { width: 100%; height: 100%; }
+  .question-image img { display: block; min-width: 0; min-height: 0; width: 100%; height: 100%; object-fit: contain; }
   .question-image img.silhouette { filter: brightness(0); }
   .question-image img.grayscale { filter: grayscale(1); }
   .question-image img.silhouette.grayscale { filter: brightness(0); }
@@ -605,21 +612,22 @@
   .answer-reveal.half { color: #cf7a00; }
   .restart-button { display: flex; align-items: center; gap: 0.4rem; margin: 1.3rem auto 0; background: transparent; border: 0; }
   .restart-button img { width: 1.2rem; height: 1.2rem; filter: brightness(0.2); }
-  .result-summary { padding: 1.3rem; border-radius: 0.9rem; background: #ffffffdf; text-align: center; }
+  .result-summary { padding: 1.3rem; border-radius: 0.9rem; background: #ffffff; text-align: center; }
   .final-counts { display: flex; justify-content: center; gap: 2rem; font: 700 2.5rem monospace; }
   .elapsed { margin: 0.3rem 0; }
   .final-score { margin: 0.7rem 0 0; font-size: 1.8rem; font-weight: 700; }
   .modifier-title { margin: 0.4rem 0; }
-  .score-hash { margin: 0.6rem 0 0; color: #666; overflow-wrap: anywhere; font-size: 0.8rem; }
   .retry-note { max-width: 26rem; margin: 1rem auto 0; }
   .records-panel { display: grid; gap: 0.6rem; }
   .records-panel h2 { padding: 0.65rem 0.85rem; margin: 0; border-radius: 0.7rem; background: #ffffffdf; }
-  .record-card { padding: 0.75rem; border-radius: 0.8rem; background: #ffffffd9; box-shadow: 0 4px 14px #1417251c; }
+  .record-card { padding: 0.75rem; border-radius: 0.8rem; background: #ffffff; box-shadow: 0 4px 14px #1417251c; }
   .record-card h3 { margin: 0 0 0.4rem; font-size: 0.95rem; }
   .record-stats { display: flex; justify-content: space-between; gap: 0.6rem; }
+  .record-score { display: flex; min-width: 0; align-items: baseline; gap: 0.3rem; }
   .record-stats strong { font-size: 1.25rem; }
+  .record-score code, .result-score-code { color: rgb(253 253 253); font-size: 0.62rem; white-space: nowrap; }
+  .result-score-code { display: block; margin-top: 0.3rem; }
   .record-card p { margin: 0.4rem 0; font-size: 0.88rem; }
-  .record-card code { display: block; color: #565b68; overflow-wrap: anywhere; font-size: 0.72rem; }
   .empty-records { padding: 0.75rem; border-radius: 0.7rem; background: #ffffffc7; }
   progress { width: 100%; }
   @media (max-width: 1200px) {
