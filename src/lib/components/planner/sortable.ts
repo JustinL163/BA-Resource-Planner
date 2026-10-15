@@ -40,18 +40,66 @@ export const sortable: Action<HTMLElement, TeamSortableOptions> = (node, initial
     snapshots.clear();
   }
 
+  function slotAtDropPoint(event?: Event): string | null {
+    if (!event) return null;
+    const pointer = event as MouseEvent & { changedTouches?: TouchList; touches?: TouchList };
+    const touch = pointer.changedTouches?.[0] ?? pointer.touches?.[0];
+    const x = touch?.clientX ?? pointer.clientX;
+    const y = touch?.clientY ?? pointer.clientY;
+    if (!Number.isFinite(x) || !Number.isFinite(y)) return null;
+
+    const hit = document.elementFromPoint(x, y)?.closest<HTMLElement>('[data-sort-id]');
+    const list = hit?.parentElement;
+    const originalChildren = list && snapshots.get(list);
+    if (!hit || !list || !originalChildren) return '';
+
+    const currentSlots = [...list.children].filter((child): child is HTMLElement =>
+      child instanceof HTMLElement && child.hasAttribute('data-sort-id'));
+    const originalSlots = originalChildren.filter((child): child is HTMLElement =>
+      child instanceof HTMLElement && child.hasAttribute('data-sort-id'));
+    const index = currentSlots.indexOf(hit);
+    return index >= 0 ? originalSlots[index]?.dataset.sortId ?? '' : '';
+  }
+
+  function trackDropPreview(event: Event) {
+    if (!started) return;
+    const hovered = slotAtDropPoint(event);
+    if (hovered === null) return;
+    const valid = hovered && hovered !== dragSource && (!options.canDrop || options.canDrop(dragSource, hovered));
+    const target = valid ? hovered : hovered === dragSource ? dragSource : '';
+    if (!dragState || dragState.source !== dragSource || dragState.target !== target || dragState.after) {
+      dragState = { source: dragSource, target, after: false };
+      options.change(dragState);
+    }
+    if (!valid) {
+      node.querySelectorAll('.sortable-swap-highlight').forEach((element) => element.classList.remove('sortable-swap-highlight'));
+    }
+  }
+
+  function startDropPreview() {
+    document.addEventListener('pointermove', trackDropPreview, true);
+    document.addEventListener('touchmove', trackDropPreview, { capture: true, passive: true });
+  }
+
+  function stopDropPreview() {
+    document.removeEventListener('pointermove', trackDropPreview, true);
+    document.removeEventListener('touchmove', trackDropPreview, true);
+  }
+
   function finishDrag(event?: Sortable.SortableEvent) {
     const result = dragState;
     const source = event?.item.dataset.sortId ?? dragSource;
     const swappedTarget = event?.swapItem;
-    const targetId = swappedTarget?.dataset.sortId ?? '';
     const originalEvent = (event as (Sortable.SortableEvent & { originalEvent?: Event }) | undefined)?.originalEvent;
+    const pointerTarget = slotAtDropPoint(originalEvent);
+    const targetId = pointerTarget ?? swappedTarget?.dataset.sortId ?? '';
     const cancelled = originalEvent?.type === 'pointercancel' || originalEvent?.type === 'touchcancel';
-    const dropResult = started && !cancelled && result && swappedTarget && swappedTarget !== event?.item &&
+    const dropResult = started && !cancelled && result &&
       result.source === source && targetId && targetId !== source &&
       (!options.canDrop || options.canDrop(source, targetId)) ? { ...result, target: targetId } : null;
 
     if (started) suppressUntil = Date.now() + 300;
+    stopDropPreview();
     started = false;
     dragState = null;
     dragSource = '';
@@ -92,11 +140,13 @@ export const sortable: Action<HTMLElement, TeamSortableOptions> = (node, initial
           .map((slotList) => [slotList, [...slotList.childNodes]]));
         started = true;
         dragState = { source: dragSource, target: dragSource, after: false };
+        startDropPreview();
         options.change(dragState);
       },
       onMove(event) {
         const source = event.dragged.dataset.sortId ?? dragSource;
-        const target = event.related.dataset.sortId ?? '';
+        const originalEvent = (event as Sortable.SortableEvent & { originalEvent?: Event }).originalEvent;
+        const target = slotAtDropPoint(originalEvent) ?? event.related.dataset.sortId ?? '';
         if (!source || !target || (options.canDrop && !options.canDrop(source, target))) {
           dragState = { source, target: '', after: false };
           options.change(dragState);
@@ -123,6 +173,7 @@ export const sortable: Action<HTMLElement, TeamSortableOptions> = (node, initial
   function cancelDrag() {
     if (!started) return;
     suppressUntil = Date.now() + 300;
+    stopDropPreview();
     started = false;
     dragState = null;
     dragSource = '';
@@ -156,6 +207,7 @@ export const sortable: Action<HTMLElement, TeamSortableOptions> = (node, initial
       window.removeEventListener('keydown', keydown);
       window.removeEventListener('blur', cancelDrag);
       node.removeEventListener('click', click, true);
+      stopDropPreview();
       const wasStarted = started;
       started = false;
       dragState = null;

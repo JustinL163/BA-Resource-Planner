@@ -195,8 +195,11 @@
   onMount(() => {
     const controller = new AbortController();
     void planner.initialise(controller.signal);
+    const defaultSize = window.matchMedia('(max-width: 600px)').matches ? 1 : 5;
+    cardSize = defaultSize;
     try {
-      const savedSize = Number(localStorage.getItem('character_box_size') ?? 5);
+      const savedSizeValue = localStorage.getItem('character_box_size');
+      const savedSize = savedSizeValue === null ? NaN : Number(savedSizeValue);
       if (Number.isInteger(savedSize) && savedSize >= 1 && savedSize <= 5) cardSize = savedSize;
     } catch (error) {
       console.error('Could not read character size.', error);
@@ -601,7 +604,8 @@
   .error { color: var(--error); }
   @media (max-width: 600px) {
     .filters label { flex: 1 1 140px; }
-    .planner-actions { width: calc(100vw - 0.5rem); max-width: calc(100vw - 0.5rem); flex-wrap: nowrap; gap: 0.1rem; padding: 0.2rem; }
+    .characters { margin-inline: -0.75rem; gap: 0.9rem 0.4rem;}
+    .planner-actions { width: calc(100vw - 0.5rem); max-width: calc(100vw - 0.5rem); flex-wrap: nowrap; gap: 0.1rem; padding: 0.2rem; bottom: 0; }
     .planner-actions button { flex: 1 1 auto; min-width: 0; padding: 0.2rem 0.15rem; justify-content: center; gap: 0.12rem; font-size: clamp(0.6rem, 2.6vw, 0.72rem); white-space: nowrap; }
     .planner-actions button span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .planner-actions button[aria-pressed] { flex: 0 0 auto; padding: 0.2rem; }

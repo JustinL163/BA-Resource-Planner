@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { tick, onDestroy } from 'svelte';
+  import { tick, onDestroy, onMount } from 'svelte';
   import type { PlannerDataset, PlannerMetadata, PlannerSave } from '$lib/domain/planner/types';
   import type { createResourcePlanner } from '$lib/stores/resource-planner';
   import { canSwapSlots, emptyTeam, groupFingerprint, groupText, isBorrowed, nextEmptySlot, readTeams, slotId, type SlotLocation } from '$lib/domain/planner/groups';
@@ -20,6 +20,8 @@
   let teamDrag = $state<number | null>(null);
   let removing = $state<number | null>(null);
   let displayedInfo = $state<'all' | 'current' | 'none'>('all');
+  let displayedInfoReady = $state(false);
+  const displayedInfoStorageKey = 'teams-editor-displayed-info';
   let removeTimer: ReturnType<typeof setTimeout> | null = null;
   let localError = $state('');
   let copied = $state(false);
@@ -29,6 +31,15 @@
   let exportTextArea = $state<HTMLTextAreaElement>();
   let pickerAnchor = $state<HTMLButtonElement>();
   let active = true;
+  onMount(() => {
+    try {
+      const saved = window.localStorage.getItem(displayedInfoStorageKey);
+      if (saved === 'all' || saved === 'current' || saved === 'none') displayedInfo = saved;
+    } catch {
+      // Keep the default if local storage is unavailable.
+    }
+    displayedInfoReady = true;
+  });
   onDestroy(() => {
     active = false;
     if (removeTimer !== null) clearTimeout(removeTimer);
@@ -47,8 +58,17 @@
   let textColumns = $derived(Math.max(1, ...text.split('\n').map((line) => line.length)) + 2);
   $effect(() => {
     if (selected && !Object.hasOwn(data.groups, selected)) selected = '';
+    if (!selected) groupPickerOpen = true;
   });
   $effect(() => { selected; expected; clearRemoveConfirmation(); teamDrag = null; copied = false; });
+  $effect(() => {
+    if (!displayedInfoReady) return;
+    try {
+      window.localStorage.setItem(displayedInfoStorageKey, displayedInfo);
+    } catch {
+      // The selection remains usable for this session if persistence is unavailable.
+    }
+  });
   $effect(() => {
     const at = picking?.location;
     const anchor = at && capture?.querySelector<HTMLButtonElement>(`[data-sort-id="${at.team}:${at.slot}"]`);
@@ -176,18 +196,17 @@
         <span>{selected || t('ui-select-group')}</span><span class="group-picker-caret" aria-hidden="true">▾</span>
       </button>
     </div>
-  </div>
-  {#if error || localError || view.error}<p class="error" role="alert">{error || localError || view.error}</p>{/if}
-  {#if selected && !view.error}
-    <div class="toolbar">
-      <button disabled={view.teams.length >= 50} onclick={() => actions.addTeam(selected, expected)}>{t('ui-add-team')}</button>
-      <button disabled={capturing} onclick={image}>{t(capturing ? 'ui-team-exporting' : 'ui-team-image')}</button>
+    {#if selected && !view.error}
       <label>{t('ui-displayed-info')}<select bind:value={displayedInfo}>
         <option value="all">{t('label-all')}</option>
         <option value="current">{t('label-current')}</option>
         <option value="none">{t('label-none')}</option>
       </select></label>
-    </div>
+      <button disabled={capturing} onclick={image}>{t(capturing ? 'ui-team-exporting' : 'ui-team-image')}</button>
+    {/if}
+  </div>
+  {#if error || localError || view.error}<p class="error" role="alert">{error || localError || view.error}</p>{/if}
+  {#if selected && !view.error}
     <p class="help">{t('ui-team-move-help')}</p>
     <div id="team-capture" class="capture" bind:this={capture}
       use:sortable={{ mode: 'edit', change: showDrag, drop: swap, canStart, canDrop }}>
@@ -202,6 +221,9 @@
               <span class="team-grip" aria-hidden="true" data-html2canvas-ignore></span>
             </span>
             <span data-html2canvas-ignore>
+              <button disabled={view.teams.length >= 50}
+                aria-label={`${t('ui-add-team-below')} ${t('ui-team')} ${teamIndex + 1}`}
+                title={t('ui-add-team-below')} onclick={() => actions.addTeamAfter(selected, expected, teamIndex)}>+</button>
               <button class:boundary-hidden={teamIndex === 0} disabled={teamIndex === 0}
                 aria-label={`${t('ui-move-up')} ${t('ui-team')} ${teamIndex + 1}`} onclick={() => actions.moveTeam(selected, expected, teamIndex, -1)}>&uarr;</button>
               <button class:boundary-hidden={teamIndex === view.teams.length - 1} disabled={teamIndex === view.teams.length - 1}
@@ -219,6 +241,7 @@
                   <button class="slot" class:dragging={drag?.source === `${teamIndex}:${index}`}
                     class:picker-active={picking?.location.team === teamIndex && picking.location.slot === index}
                     aria-expanded={picking?.location.team === teamIndex && picking.location.slot === index}
+                    class:valid-drop-target={drag !== null && drag.source !== `${teamIndex}:${index}` && drag.target !== `${teamIndex}:${index}` && canDrop(drag.source, `${teamIndex}:${index}`)}
                     class:drop={drag?.target === `${teamIndex}:${index}` && drag.source !== drag.target}
                     data-sort-id={`${teamIndex}:${index}`}
                     aria-label={`${t('ui-team')} ${teamIndex + 1}, ${role.label} ${local + 1}, ${id ? names[id] ?? id : t('ui-empty-slot')}${isBorrowed(slot) ? ', ' + t('label-borrowed') : ''}`}
@@ -246,7 +269,7 @@
       <button onclick={copyText}>{t('ui-copy-text')}</button>
       {#if copied}<span role="status">{t('ui-text-copied')}</span>{/if}
     </details>
-  {:else if !selected}<p>{t('ui-select-group')}</p>{/if}
+  {/if}
 </section>
 
 {#if groupPickerOpen}
@@ -272,24 +295,25 @@
   .group-picker-trigger > span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .group-picker-caret { flex: none; }
   select { max-width: 100%; min-width: 0; }
-  h3 { overflow-wrap: anywhere; }
+  h3 { overflow-wrap: anywhere; margin: 0;}
   button[aria-pressed="true"] { background: #7c5b7d; color: white; }
   .help { font-size: 0.85rem; line-height: 1.5; }
-  .capture { --card-size: 130px; padding: 0.75rem; background: var(--background); }
-  .team { margin: 1rem 0; padding: 0.5rem; border-bottom: 1px solid #7c5b7d; width: fit-content; }
+  .capture { --card-size: 130px; padding: 0.75rem; background: var(--background); width: fit-content;}
+  .team { padding: 0.5rem; border-bottom: 1px solid #7c5b7d; width: fit-content; }
   .team-dragging { opacity: 0.5; }
   .team-drag-handle { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.2rem 0.35rem; border-radius: 0.3rem; cursor: grab; touch-action: none; user-select: none; }
   .team-drag-handle:hover { background: #82dafb22; }
   .team-drag-handle:active { cursor: grabbing; }
   .team-grip { width: 2rem; height: 2rem; background-color: currentColor; -webkit-mask: url('/planner/icons/UI/grip-solid-full.svg') center / contain no-repeat; mask: url('/planner/icons/UI/grip-solid-full.svg') center / contain no-repeat; }
-  .team-label { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.5rem; }
+  .team-label { display: flex; align-items: center; justify-content: space-between; }
   .team-drop-target { background: #82dafb2e; outline: 2px dashed #82dafb; outline-offset: 3px; box-shadow: 0 0 0 3px #82dafb24; border-radius: 0.5rem; }
   .team-label button { padding: 0.2rem 0.45rem; font-size: 0.8rem; }
   .team-label button.boundary-hidden { visibility: hidden; }
-  .roles { display: flex; flex-wrap: wrap; gap: 1.25rem; }
+  .roles { display: flex; flex-wrap: wrap; gap: 1.25rem; justify-content: center; }
   .role-label { display: block; font-size: 0.8rem; margin-bottom: 0.45rem; opacity: 0.8; }
   .slots { display: flex; gap: 0.5rem; }
   .slot { width: var(--card-size); aspect-ratio: 8 / 9; padding: 0; border: 2px solid #7c5b7d; border-radius: 16%; background: var(--surface); color: inherit; touch-action: none; cursor: grab; user-select: none; }
+  .slot.valid-drop-target { border: 2px dashed #82dafb; }
   .plus { font-size: 2rem; }
   .slot:active { cursor: grabbing; }
   .dragging { opacity: 0.5; }
@@ -299,5 +323,13 @@
   :global(.sortable-swap-highlight) { outline: 3px solid #82dafb; outline-offset: 2px; }
   .exports textarea { display: block; width: auto; max-width: 100%; box-sizing: border-box; resize: vertical; margin: 0.6rem 0; padding: 0.5rem; font-family: monospace; -webkit-user-select: text; user-select: text; }
   .error { color: var(--error); }
-  @media (max-width: 600px) { .capture { --card-size: 65px; padding: 0.25rem; } .team { padding: 0.25rem; } .roles { gap: 0.75rem; } .slots { gap: 0.3rem; } }
+  @media (max-width: 600px) {
+    .capture { --card-size: 80px; padding: 0.25rem; }
+    .team { padding: 0.25rem; }
+    .roles { gap: 0.25rem; }
+    .role-label { margin-bottom: 0.25rem; }
+    .slots { gap: 0.3rem; }
+    .slot, .team-drag-handle { touch-action: pan-y; }
+    .exports textarea { max-width: min(90vw, 32rem); }
+  }
 </style>

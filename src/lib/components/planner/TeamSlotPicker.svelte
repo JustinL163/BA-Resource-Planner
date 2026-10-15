@@ -50,7 +50,7 @@
   <header>
     <span>{t('ui-team')} {location.team + 1} &middot; {location.slot < 4 ? 'Striker' : 'Special'} {(location.slot < 4 ? location.slot : location.slot - 4) + 1}</span>
     <div>
-      <button aria-label={t('ui-clear-slot')} onclick={() => { if (assign(null, false)) dismiss(); }}>{t('ui-clear')}</button>
+      <button aria-label={t('ui-remove')} onclick={() => { if (assign(null, false)) dismiss(); }}>{t('ui-remove')}</button>
       <button aria-label={`${t('ui-close')} ${t('ui-pick-team-character')}`} onclick={() => dismiss()}>&times;</button>
     </div>
   </header>

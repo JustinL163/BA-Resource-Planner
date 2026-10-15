@@ -90,7 +90,7 @@
 
   function handleMatrixKeydown(event: KeyboardEvent) {
     if (
-      gear || event.key !== 'Enter' || !(event.target instanceof HTMLInputElement) || !event.target.matches('.resource-input')
+      event.key !== 'Enter' || !(event.target instanceof HTMLInputElement) || !event.target.matches('.resource-input')
     ) return;
 
     const matrixRoot = event.currentTarget as HTMLElement;

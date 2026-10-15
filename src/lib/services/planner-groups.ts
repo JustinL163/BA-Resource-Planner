@@ -57,6 +57,13 @@ export function createGroupActions(commit: PlannerCommit) {
     addTeam(name: string, expected: string) {
       return changeTeams(name, expected, (teams) => { teams.push(emptyTeam()); });
     },
+    addTeamAfter(name: string, expected: string, index: number) {
+      return changeTeams(name, expected, (teams) => {
+        checkLocation(teams, { team: index, slot: 0 });
+        if (teams.length >= 50) throw new Error('A group can contain at most 50 teams.');
+        teams.splice(index + 1, 0, emptyTeam());
+      });
+    },
     removeTeam(name: string, expected: string, index: number) {
       return changeTeams(name, expected, (teams) => {
         checkLocation(teams, { team: index, slot: 0 });
