@@ -5,7 +5,7 @@ import { fetchJson, loadCharacterNames, loadPlannerDataset, savedLanguage } from
 import { isRecord } from '../domain/planner/save';
 import type { PlannerDataset, PlannerMetadata } from '../domain/planner/types';
 import { decodeEventCatalog, decodeEventPlan, eventInteger, validateEventEnergy, type EventEntry } from '../domain/events/standard-save';
-import type { EventActions, EventPlan } from '../domain/events/standard-types';
+import type { EventActions, EventPlan, StandardEvent } from '../domain/events/standard-types';
 import { materialDropOptions } from '../domain/events/models';
 import { boxPullCurrencyNeeded } from '../domain/events/boxes';
 import { decodeCardStatistics, simulationInputFingerprint, validateStandardDeviation } from '../domain/events/card-statistics';
@@ -14,7 +14,7 @@ import type { SimulationKind } from '../services/simulations/types';
 
 interface EventState {
   loading: boolean; error: string; saved: boolean; catalog: EventEntry[]; dataset: PlannerDataset | null;
-  names: Record<string, string>; cafeEnergy: Record<string, number>; selected: string; plan: EventPlan | null;
+  names: Record<string, string>; cafeEnergy: Record<string, number>; plannerUnlockedIds: string[]; selected: string; plan: EventPlan | null;
 }
 
 function rootSave(source: string | null): Record<string, unknown> {
@@ -28,12 +28,31 @@ function eventSource(root: Record<string, unknown>, id: string): unknown {
   return isRecord(root.events_data) ? root.events_data[id] : undefined;
 }
 
+function plannerUnlockedCharacterIds(root: Record<string, unknown>): string[] {
+  if (!Array.isArray(root.characters)) return [];
+  const ids = new Set<string>();
+  for (const character of root.characters) {
+    if (!isRecord(character) || (typeof character.id !== 'string' && typeof character.id !== 'number')) continue;
+    const eleph = character.eleph;
+    if (eleph !== undefined && !isRecord(eleph)) continue;
+    if (isRecord(eleph) && eleph.unlocked !== undefined && eleph.unlocked !== true) continue;
+    ids.add(String(character.id));
+  }
+  return [...ids];
+}
+
+function defaultBonusIds(event: StandardEvent, plannerUnlockedIds: string[]): string[] {
+  const unlocked = new Set(plannerUnlockedIds);
+  const eventBonusIds = new Set(Object.values(event.currencies).flatMap((currency) => currency.bonus_units.map(({ id }) => id)));
+  return [...eventBonusIds].filter((id) => unlocked.has(id));
+}
+
 export function createEventPlanner(
   metadata: PlannerMetadata,
   storageProvider: () => Storage = () => window.localStorage,
   reviewedArchive?: unknown
 ) {
-  const state = writable<EventState>({ loading: false, error: '', saved: false, catalog: [], dataset: null, names: {}, cafeEnergy: {}, selected: '', plan: null });
+  const state = writable<EventState>({ loading: false, error: '', saved: false, catalog: [], dataset: null, names: {}, cafeEnergy: {}, plannerUnlockedIds: [], selected: '', plan: null });
   const namesCache = new Map<string, Record<string, string>>();
   let fingerprint = '';
   let generation = 0;
@@ -54,6 +73,7 @@ export function createEventPlanner(
     try {
       const source = storageProvider().getItem('save-data');
       const root = rootSave(source);
+      const plannerUnlockedIds = plannerUnlockedCharacterIds(root);
       const language = savedLanguage(source);
       const names = namesCache.get(language) ?? await loadCharacterNames(language, current.dataset, signal);
       if (token !== generation || signal?.aborted) return;
@@ -62,13 +82,14 @@ export function createEventPlanner(
       const raw = eventSource(root, current.selected);
       const nextFingerprint = JSON.stringify(raw ?? null);
       if (!force && current.plan && nextFingerprint !== fingerprint) {
-        state.update((value) => ({ ...value, names, loading: false, saved: false, error: 'This event changed in another window. Reload event settings before editing.' }));
+        state.update((value) => ({ ...value, names, plannerUnlockedIds, loading: false, saved: false, error: 'This event changed in another window. Reload event settings before editing.' }));
         return;
       }
       const event = current.catalog.find((entry) => entry.id === current.selected)?.event;
       const plan = event ? decodeEventPlan(raw, event) : null;
+      if (event && plan && (raw === undefined || raw === null)) plan.enabled_bonus_units = defaultBonusIds(event, plannerUnlockedIds);
       fingerprint = nextFingerprint;
-      state.update((value) => ({ ...value, names, plan, loading: false, error: '' }));
+      state.update((value) => ({ ...value, names, plannerUnlockedIds, plan, loading: false, error: '' }));
     } catch (problem) {
       if (signal?.aborted) return;
       report(problem);
@@ -80,11 +101,14 @@ export function createEventPlanner(
     try {
       const entry = current.catalog.find((entry) => entry.id === id && !entry.comingSoon);
       if (!entry) throw new Error('Choose an available event.');
-      const raw = eventSource(rootSave(storageProvider().getItem('save-data')), id);
+      const root = rootSave(storageProvider().getItem('save-data'));
+      const plannerUnlockedIds = plannerUnlockedCharacterIds(root);
+      const raw = eventSource(root, id);
       const plan = entry.event ? decodeEventPlan(raw, entry.event) : null;
+      if (entry.event && plan && (raw === undefined || raw === null)) plan.enabled_bonus_units = defaultBonusIds(entry.event, plannerUnlockedIds);
       fingerprint = JSON.stringify(raw ?? null);
       generation++;
-      state.update((value) => ({ ...value, selected: id, plan, error: '', saved: false }));
+      state.update((value) => ({ ...value, plannerUnlockedIds, selected: id, plan, error: '', saved: false }));
       return true;
     } catch (problem) { return report(problem); }
   }
@@ -98,7 +122,7 @@ export function createEventPlanner(
       const root = rootSave(storage.getItem('save-data'));
       const raw = eventSource(root, current.selected);
       if (JSON.stringify(raw ?? null) !== fingerprint) throw new Error('This event changed in another window. Reload event settings before editing.');
-      const plan = decodeEventPlan(raw, entry.event);
+      const plan = decodeEventPlan(raw ?? current.plan ?? undefined, entry.event);
       change(plan, entry);
       const checked = decodeEventPlan(plan, entry.event);
       const events = isRecord(root.events_data) ? { ...root.events_data } : {};

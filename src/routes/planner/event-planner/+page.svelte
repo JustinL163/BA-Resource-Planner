@@ -39,20 +39,25 @@
   let solving = $state(false);
   let solveError = $state('');
   let retry = $state(0);
-  let includeShop = $state(false);
-  let includePoints = $state(false);
-  let includeBoxes = $state(false);
-  let includeCards = $state(false);
-  let includeDice = $state(false);
-  let includeOmikuji = $state(false);
-  let includeLessons = $state(false);
-  let includeInvasion = $state(false);
+  let includeShop = $state(true);
+  let includePoints = $state(true);
+  let includeBoxes = $state(true);
+  let includeCards = $state(true);
+  let includeDice = $state(true);
+  let includeOmikuji = $state(true);
+  let includeLessons = $state(true);
+  let includeInvasion = $state(true);
   let showArchives = $state(false);
   let eventListOpen = $state(false);
   let entry = $derived($planner.catalog.find((entry) => entry.id === $planner.selected));
   let event = $derived(entry?.event ?? null);
   let tabs = $derived((['Targets', 'Energy', 'Bonus', 'Shop', 'Stages', ...(event?.point_rewards ? ['Points'] : []), ...(event?.boxes ? ['Boxes'] : []), ...(event?.card_drops ? ['Cards'] : []), ...(event?.dice_race ? ['Dice'] : []), ...(event?.omikuji ? ['Omikuji'] : []), ...(event?.lessons ? ['Lessons'] : []), ...(event?.active ? ['Owned'] : [])]).filter((key): key is EventTab =>
     ['Targets', 'Energy', 'Bonus', 'Shop', 'Stages', 'Points', 'Boxes', 'Cards', 'Dice', 'Omikuji', 'Lessons', 'Owned'].includes(key)));
+  let tabNav = $state<HTMLElement | undefined>(undefined);
+  let tabRows = $state<EventTab[][]>([]);
+  let tabRowsReady = $derived(tabRows.flat().length === tabs.length && tabs.every((item) => tabRows.some((row) => row.includes(item))));
+  let renderedTabRows = $derived(tabRowsReady ? tabRows : [tabs]);
+  let tabLayoutFrame: number | undefined;
   let calculation = $derived.by(() => {
     if (!event || !$planner.plan || !$planner.dataset || !now) return null;
     try {
@@ -148,16 +153,197 @@
   });
 
   let rewardGroups = $derived(result?.value ? Object.entries({
-    currencies: result.value.currencies, artifacts: result.value.artifacts, schoolMats: result.value.schoolMats,
-    eleph: result.value.eleph, xps: result.value.xps, gear: result.value.gear,
-    other: { Credit: result.value.credit, Eligma: result.value.eligma, SecretTech: result.value.secretTech,
-      ...(result.value.gearBoxes ? { Random_Equipment_Box_0: result.value.gearBoxes } : {}) }
+    currencies: result.value.currencies,
+    other: { ...result.value.eleph, Credit: result.value.credit, Eligma: result.value.eligma, SecretTech: result.value.secretTech,
+      ...(result.value.gearBoxes ? { Random_Equipment_Box_0: result.value.gearBoxes } : {}) },
+    schoolMats: result.value.schoolMats, xps: result.value.xps, gear: result.value.gear,
+    artifacts: result.value.artifacts
   }) : []);
+
+  function rewardRarityClass(group: string, id: string): string {
+    const tier = group === 'schoolMats'
+      ? id.match(/^(?:BD|TN)_([1-4])(?:_|$)/)?.[1]
+      : group === 'artifacts' ? id.match(/_([1-4])$/)?.[1] : undefined;
+    return tier ? `rarity-${tier}` : '';
+  }
+
+  function sortedRewardEntries(group: string, rewards: Record<string, number>): [string, number][] {
+    const entries = Object.entries(rewards).filter(([, count]) => count !== 0);
+    if (!['artifacts', 'schoolMats', 'xps'].includes(group)) return entries;
+    return entries.sort(([firstId], [secondId]) => {
+      const parts = (id: string): { type: string; tier: number } => {
+        if (group === 'artifacts') {
+          const match = id.match(/^(.*)_([1-4])$/);
+          return { type: match?.[1] ?? id, tier: Number(match?.[2] ?? 0) };
+        }
+        if (group === 'schoolMats') {
+          const match = id.match(/^(BD|TN)_([1-4])_(.+)$/);
+          return { type: match ? `${match[1]}_${match[3]}` : id, tier: Number(match?.[2] ?? 0) };
+        }
+        if (group === 'xps') {
+          const match = id.match(/^(XP|GXP)_([1-4])$/);
+          return { type: match?.[1] === 'XP' ? '0-XP' : match?.[1] === 'GXP' ? '1-GXP' : id, tier: Number(match?.[2] ?? 0) };
+        }
+        return { type: id, tier: 0 };
+      };
+      const first = parts(firstId);
+      const second = parts(secondId);
+      return first.type.localeCompare(second.type) || second.tier - first.tier || firstId.localeCompare(secondId);
+    });
+  }
+
+  function groupedRewardEntries(group: string, rewards: Record<string, number>) {
+    const entriesByType = new Map<string, [string, number][]>();
+    for (const entry of sortedRewardEntries(group, rewards)) {
+      const id = entry[0];
+      const schoolMat = group === 'schoolMats' ? id.match(/^(BD|TN)_([1-4])_(.+)$/) : null;
+      const xp = group === 'xps' ? id.match(/^(XP|GXP)_[1-4]$/) : null;
+      const type = schoolMat ? `${schoolMat[1]}_${schoolMat[3]}` : xp?.[1] ?? id;
+      const entries = entriesByType.get(type) ?? [];
+      entries.push(entry);
+      entriesByType.set(type, entries);
+    }
+    return [...entriesByType].map(([type, entries]) => ({ type, entries }));
+  }
+
+  function formatRewardAmount(amount: number): string {
+    return formatAmount(Number(amount.toFixed(1)));
+  }
+
+  function fitRewardAmount(node: HTMLElement, _amount: string) {
+    const container = node.parentElement;
+    const range = document.createRange();
+    let frame = 0;
+    let observer: ResizeObserver | undefined;
+
+    function fit() {
+      if (!container) return;
+      node.style.removeProperty('font-size');
+      const style = getComputedStyle(container);
+      const padding = Number.parseFloat(style.paddingLeft) + Number.parseFloat(style.paddingRight);
+      const configuredRatio = Number.parseFloat(style.getPropertyValue('--overlay-number-fit-ratio'));
+      const fitRatio = Number.isFinite(configuredRatio) ? Math.min(1, Math.max(0, configuredRatio)) : 1;
+      const availableWidth = Math.max(0, (container.clientWidth - padding - 2) * fitRatio);
+      range.selectNodeContents(node);
+      const fits = () => range.getBoundingClientRect().width <= availableWidth;
+      if (fits()) return;
+
+      let low = 0;
+      let high = Number.parseFloat(getComputedStyle(node).fontSize) || 18;
+      for (let attempt = 0; attempt < 12; attempt += 1) {
+        const size = (low + high) / 2;
+        node.style.fontSize = `${size}px`;
+        if (fits()) low = size;
+        else high = size;
+      }
+      node.style.fontSize = `${low}px`;
+    }
+
+    function scheduleFit() {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(fit);
+    }
+
+    if (container && typeof ResizeObserver !== 'undefined') {
+      observer = new ResizeObserver(scheduleFit);
+      observer.observe(container);
+    }
+    scheduleFit();
+    return {
+      update: scheduleFit,
+      destroy() {
+        observer?.disconnect();
+        cancelAnimationFrame(frame);
+        node.style.removeProperty('font-size');
+      }
+    };
+  }
+
   const actions: EventActions = { ...planner, setMode(mode: Exclude<EventMode, ''>) {
     const saved = planner.setMode(mode);
     if (saved && mode === 'Manual') tab = 'Stages';
     return saved;
   } };
+
+  function arrangeTabRows() {
+    if (!tabNav) return;
+    const buttons = new Map([...tabNav.querySelectorAll<HTMLButtonElement>('[data-event-tab]')]
+      .map((button) => [button.dataset.eventTab as EventTab, button]));
+    const availableWidth = tabNav.clientWidth;
+    if (!availableWidth || buttons.size !== tabs.length) return;
+
+    const savedButtonStyles = [...buttons.values()].map((button) => ({
+      button,
+      flex: button.style.flex,
+      width: button.style.width,
+      minWidth: button.style.minWidth
+    }));
+    for (const { button } of savedButtonStyles) {
+      button.style.flex = '0 0 auto';
+      button.style.width = 'max-content';
+      button.style.minWidth = 'max-content';
+    }
+    const naturalWidths = new Map(savedButtonStyles.map(({ button }) =>
+      [button.dataset.eventTab as EventTab, button.getBoundingClientRect().width]));
+    for (const { button, flex, width, minWidth } of savedButtonStyles) {
+      button.style.flex = flex;
+      button.style.width = width;
+      button.style.minWidth = minWidth;
+    }
+
+    const row = tabNav.querySelector<HTMLElement>('.tab-row');
+    const gap = row ? Number.parseFloat(getComputedStyle(row).columnGap) || 0 : 0;
+    const rows: EventTab[][] = [];
+    let currentRow: EventTab[] = [];
+    let currentWidth = 0;
+    for (const item of tabs) {
+      const width = naturalWidths.get(item);
+      if (width === undefined) return;
+      if (currentRow.length && currentWidth + gap + width > availableWidth) {
+        rows.push(currentRow);
+        currentRow = [];
+        currentWidth = 0;
+      }
+      if (currentRow.length) currentWidth += gap;
+      currentRow.push(item);
+      currentWidth += width;
+    }
+    if (currentRow.length) rows.push(currentRow);
+
+    const selectedRow = rows.findIndex((items) => items.includes(tab));
+    if (selectedRow >= 0 && selectedRow < rows.length - 1) {
+      const [selectedItems] = rows.splice(selectedRow, 1);
+      if (selectedItems) rows.push(selectedItems);
+    }
+    const unchanged = rows.length === tabRows.length && rows.every((items, index) =>
+      items.length === tabRows[index]?.length && items.every((item, itemIndex) => item === tabRows[index][itemIndex]));
+    if (!unchanged) tabRows = rows;
+  }
+
+  function scheduleTabRows() {
+    if (tabLayoutFrame !== undefined) cancelAnimationFrame(tabLayoutFrame);
+    tabLayoutFrame = requestAnimationFrame(() => {
+      tabLayoutFrame = undefined;
+      arrangeTabRows();
+    });
+  }
+
+  $effect(() => {
+    const nav = tabNav;
+    const currentTabs = tabs;
+    const selectedTab = tab;
+    if (nav && currentTabs.length && selectedTab) scheduleTabRows();
+  });
+
+  $effect(() => {
+    const nav = tabNav;
+    const currentTabs = tabs;
+    if (!nav || !currentTabs.length) return;
+    const observer = new ResizeObserver(scheduleTabRows);
+    observer.observe(nav);
+    for (const button of nav.querySelectorAll('[data-event-tab]')) observer.observe(button);
+    return () => observer.disconnect();
+  });
 
   onMount(() => {
     now = Date.now();
@@ -176,18 +362,13 @@
 </script>
 
 <svelte:head><title>{t('page-event-planner')} - Svelte</title></svelte:head>
-<h1>{t('page-event-planner')}</h1>
 <details class="migration"><summary>{t('ui-migration-status')} &middot; <a href="/planner/events.html" data-sveltekit-reload>{t('ui-legacy-tools')}</a></summary><p>{t('ui-event-boundary')}</p></details>
 <noscript><p>{t('ui-javascript-required')}</p></noscript>
 {#if $planner.loading}<p role="status">{t('ui-loading-planner')}</p>{/if}
 {#if $planner.error}<p class="error" role="alert">{$planner.error}
   <button onclick={() => { if ($planner.dataset) void planner.reload(true); else void planner.initialise(); }}>{t('ui-event-reload')}</button>
 </p>{/if}
-{#if entry}
-  <button class="event-list-toggle" data-event-list-control aria-expanded={eventListOpen} aria-controls="event-list"
-    onclick={() => eventListOpen = !eventListOpen}>{t('label-eventlist')}</button>
-{/if}
-<div class="event-layout">
+<div class="event-layout" class:event-selection={!entry || eventListOpen}>
   <aside id="event-list" aria-label={t('label-eventlist')} class:open={!entry || eventListOpen}>
     {#if $planner.catalog.some((item) => item.archived)}
       <label class="archives"><input type="checkbox" bind:checked={showArchives} />{t('ui-event-supported-archives')}</label>
@@ -201,18 +382,31 @@
     {/each}
   </aside>
   <section class="event-content">
+    {#if entry}
+      <div class="event-heading">
+        <button class="event-list-toggle" data-event-list-control aria-expanded={eventListOpen} aria-controls="event-list"
+          onclick={() => eventListOpen = !eventListOpen}>{t('label-eventlist')}</button>
+        <h2>{event?.display_name || (t(`event-${entry.id}`) === 'Undefined' ? entry.name : t(`event-${entry.id}`))}</h2>
+      </div>
+    {/if}
     {#if !entry}<p>{t('label-selectevent')}</p>
-    {:else if !event}<h2>{entry.name || t(`event-${entry.id}`)}</h2><p>{t('ui-event-special-legacy')}</p><a href="/planner/events.html" data-sveltekit-reload>{t('ui-legacy-tools')}</a>
+    {:else if !event}<p>{t('ui-event-special-legacy')}</p><a href="/planner/events.html" data-sveltekit-reload>{t('ui-legacy-tools')}</a>
     {:else if $planner.plan && $planner.dataset}
-      <h2>{event.display_name || (t(`event-${entry.id}`) === 'Undefined' ? entry.name : t(`event-${entry.id}`))}</h2>
-      <nav class="tabs" aria-label={t('page-event-planner')}>
-        {#each tabs as item}<button aria-pressed={tab === item} data-event-tab={item} class:selected={tab === item} onclick={() => tab = item}>{t(item === 'Points' ? 'label-tabpointrewards' : `label-tab${item.toLowerCase()}`)}</button>{/each}
+      <nav class="tabs" bind:this={tabNav} aria-label={t('page-event-planner')}>
+        {#each renderedTabRows as row (row[0])}
+          <div class="tab-row">
+            {#each row as item, index (item)}<button aria-pressed={tab === item} data-event-tab={item} class:selected={tab === item} class:before-selected={row[index + 1] === tab} class:after-selected={row[index - 1] === tab} onclick={() => tab = item}>{t(item === 'Points' ? 'label-tabpointrewards' : `label-tab${item.toLowerCase()}`)}</button>{/each}
+          </div>
+        {/each}
       </nav>
-      <p class="saved" role="status">{$planner.saved ? t('ui-saved-locally') : ''}</p>
-      {#if calculation?.error}<p class="error" role="alert">{calculation.error}</p>{/if}
-      {#if simulation.kind && simulation.error}<p class="error" role="alert">{simulation.error}</p>{/if}
-      {#if simulation.kind && simulation.notice}<p role="status">{simulation.notice}</p>{/if}
-      {#key entry.id}
+      <div class="tab-panel">
+        <p class="saved" role="status">{$planner.saved ? t('ui-saved-locally') : ''}</p>
+        {#if calculation?.error}<p class="error" role="alert">{calculation.error}</p>{/if}
+        {#if simulation.kind && simulation.error}<p class="error" role="alert">{simulation.error}</p>{/if}
+        {#if simulation.kind && simulation.notice}<p role="status">{simulation.notice}</p>{/if}
+        <div class="tab-panel-body">
+        <div class="tab-content">
+        {#key entry.id}
         {#if tab === 'Cards' && event.card_drops}
           <EventCards draws={event.card_drops} currency={simulationFunds ?? 0} currencyName={cardCurrency ? event.currencies[cardCurrency].shortname : ''}
             standardDeviation={$planner.plan.standard_deviation ?? 0} processing={simulation.processing} ready={simulation.ready}
@@ -238,7 +432,8 @@
           <EventBoxes boxes={event.boxes} item={(reward) => eventItem(reward, event, metadata, $planner.names)} {t} />
         {:else if ['Targets', 'Energy', 'Bonus', 'Owned'].includes(tab)}
           <EventSettings {tab} {event} plan={$planner.plan} budget={calculation?.budget ?? null} bonuses={calculation?.bonuses ?? {}}
-            materials={calculation?.materials ?? []} students={$planner.dataset.students} names={$planner.names} {metadata} {actions} {t} />
+            materials={calculation?.materials ?? []} students={$planner.dataset.students} plannerUnlockedIds={$planner.plannerUnlockedIds}
+            names={$planner.names} {metadata} {actions} {t} />
         {:else}
           <EventMarket {tab} {event} plan={$planner.plan} runs={result?.value?.feasible ? result.value.runs : {}} variables={calculation?.variables ?? {}}
             initial={calculation?.requirements?.initial ?? { rewards: {}, cost: 0 }} midEvent={calculation?.requirements?.midEvent ?? false}
@@ -246,8 +441,9 @@
             overflowPurchases={result?.value?.overflowPurchases ?? {}} {actions}
             item={(reward) => eventItem(reward, event, metadata, $planner.names)} {t} />
         {/if}
-      {/key}
-      <section class="results" aria-labelledby="results-title">
+        {/key}
+        </div>
+        <section class="results" aria-labelledby="results-title">
         <h3 id="results-title">{t('ui-event-summary')}</h3>
         <div class="display-options">
           <label><input type="checkbox" bind:checked={includeShop} />{t('label-includeshop')}</label>
@@ -278,14 +474,25 @@
           <div class="run-tiles">{#each Object.entries(result.value.runs) as [stage, count]}<span data-event-run={stage}>Q{stage}: <strong>{formatAmount(count)}</strong></span>{/each}</div>
           {#each (includeSimulation && simulation.ready && !simulation.rounded ? [] : rewardGroups) as [group, rewards]}
             <div class="reward-group" data-event-rewards={group}>
-              {#each Object.entries(rewards).filter(([, count]) => count !== 0) as [id, count]}
-                {@const item = eventItem({ id, count, type: 'StageDrop' }, event, metadata, $planner.names)}
-                <span title={item.name} data-event-reward={id}>{#if item.image}<img src={item.image} alt={item.name} />{:else}<span>{item.name}</span>{/if}<strong>{formatAmount(count)}</strong></span>
+              {#each groupedRewardEntries(group, rewards) as typeGroup}
+                <div class="reward-type-group" data-event-reward-group={group} data-event-reward-type={typeGroup.type}>
+                  {#each typeGroup.entries as [id, count]}
+                    {@const item = eventItem({ id, count, type: 'StageDrop' }, event, metadata, $planner.names)}
+                    {@const amount = formatRewardAmount(count)}
+                    <span class={`reward-item ${rewardRarityClass(group, id)}`} class:without-image={!item.image} title={item.name}
+                      aria-label={`${item.name}: ${amount}`} data-event-reward={id}>
+                      {#if item.image}<img src={item.image} alt="" />{:else}<span class="reward-fallback">{item.name}</span>{/if}
+                      <strong use:fitRewardAmount={amount}>{amount}</strong>
+                    </span>
+                  {/each}
+                </div>
               {/each}
             </div>
           {/each}
         {:else}<p>{t('ui-event-choose-target')}</p>{/if}
-      </section>
+        </section>
+        </div>
+      </div>
     {/if}
   </section>
 </div>
@@ -293,7 +500,7 @@
 <style>
   .migration { padding: .5rem; background: var(--surface); border-left: 3px solid #7c5b7d; font-size: .85rem; }
   .event-layout { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 1rem; margin-top: 1rem; }
-  aside { display: flex; flex-direction: column; gap: .5rem; }
+  aside { box-sizing: border-box; align-self: start; display: flex; flex-direction: column; gap: .5rem; max-height: 70vh; max-height: 70dvh; padding-right: .25rem; overflow-y: auto; overscroll-behavior: contain; }
   aside button { display: flex; align-items: center; gap: .5rem; text-align: left; padding: .5rem; }
   aside img { width: 58px; height: 58px; object-fit: contain; }
   .archives { display: flex; align-items: center; gap: .4rem; font-size: .85rem; }
@@ -301,22 +508,57 @@
   .selected { background: #7c5b7d55; border-color: #c89fca; }
   .event-content { min-width: 0; }
   h2 { font-size: 1.2rem; }
-  .tabs, .display-options, .run-tiles { display: flex; flex-wrap: wrap; gap: .4rem; }
-  .tabs button { padding: .45rem .65rem; }
-  .saved { min-height: 1em; margin: .3rem 0; font-size: .8rem; }
+  .tabs { display: flex; flex-direction: column; max-width: 100%; margin: .25rem 0 0; }
+  .tab-row { display: flex; flex-wrap: nowrap; align-items: flex-end; gap: 0; width: 100%; max-width: 800px }
+  .tabs button { flex: 1 1 auto; min-width: max-content; padding: .55rem .8rem; border: 1px solid #888; border-bottom-color: transparent; border-radius: 0; background: transparent; color: var(--text); white-space: nowrap; }
+  .tabs button:hover { background: var(--surface); }
+  .tabs button.selected { position: relative; z-index: 1; border-color: #7c5b7d; border-bottom-color: var(--background); background: var(--background); color: var(--text); font-weight: 600; }
+  .tabs button.before-selected { border-right-color: transparent; }
+  .tabs button.after-selected { border-left-color: transparent; }
+  .tab-panel { position: relative; min-width: 0; max-width: 800px; margin-top: -1px; padding: .75rem; border: 1px solid #7c5b7d; border-radius: 0 0 .45rem .45rem; }
+  .tab-panel-body { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 1rem; min-width: 0; }
+  .tab-content { flex: 1 1 36rem; min-width: min(100%, 22rem); max-width: 770px; }
+  .display-options, .run-tiles { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .saved { margin: .3rem 0; font-size: .8rem; }
   .error { color: var(--error); overflow-wrap: anywhere; }
-  .results { margin-top: 1rem; border-top: 1px solid #7c5b7d; }
+  .results { flex: 1 1 22rem; min-width: min(100%, 18rem); margin: 0; border-top: 1px solid #7c5b7d; max-width: 700px }
+  @media (min-width: 1300px) {
+    .tab-panel { max-width: 1500px; }
+    .results { padding-left: 1rem; border-top: 0; border-left: 1px solid #7c5b7d; }
+  }
+  @media (max-width: 1299px) {
+    .tab-panel-body { flex-direction: column; }
+    .tab-content, .results { box-sizing: border-box; flex: 0 1 auto; width: 100%; max-width: none; }
+  }
   .display-options { gap: 1rem; }
   .display-options label { display: flex; align-items: center; gap: .35rem; }
   .run-tiles span { padding: .3rem .6rem; background: #7c5b7d33; border-radius: .4rem; }
-  .reward-group { display: flex; flex-wrap: wrap; gap: .4rem; margin: .7rem 0; }
-  .reward-group > span { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 58px; max-width: 95px; font-size: .8rem; text-align: center; }
-  .reward-group img { width: 48px; height: 48px; object-fit: contain; }
+  .reward-group { display: flex; flex-wrap: wrap; }
+  .reward-type-group { display: contents; }
+  .reward-type-group[data-event-reward-group="schoolMats"], .reward-type-group[data-event-reward-group="xps"] {
+    display: flex; flex: 0 0 auto; flex-wrap: nowrap; gap: .2rem .35rem;
+  }
+  .reward-item { --overlay-number-fit-ratio: 0.9; position: relative; display: inline-grid; flex: 0 0 4.5rem; place-items: center; width: 4.5rem; height: 4.5rem; background-position: center; background-size: contain; background-repeat: no-repeat; }
+  .reward-item.rarity-1 { background-image: url('/planner/icons/Misc/background_n.png'); }
+  .reward-item.rarity-2 { background-image: url('/planner/icons/Misc/background_r.png'); }
+  .reward-item.rarity-3 { background-image: url('/planner/icons/Misc/background_sr.png'); }
+  .reward-item.rarity-4 { background-image: url('/planner/icons/Misc/background_ssr.png'); }
+  .reward-item img { display: block; width: 74%; max-width: 70px; aspect-ratio: 1 / 1; object-fit: contain; }
+  .reward-fallback { max-width: 100%; padding: 0.15rem; font-size: 0.65rem; line-height: 1; text-align: center; overflow-wrap: anywhere; }
+  .reward-item.without-image strong { top: auto; bottom: 0.15rem; font-size: 0.9rem; }
+  .reward-item strong { position: absolute; top: 50%; left: 50%; max-width: 100%; transform: translate(-50%, -50%); color: #111; font-size: 1.5rem; line-height: 1; text-align: center; white-space: nowrap; text-shadow: -1px -1px 0 #fff, 0 -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 0 1px 0 #fff, 1px 1px 0 #fff; pointer-events: none; }
   @media (max-width: 800px) {
     .event-layout { grid-template-columns: minmax(0, 1fr); }
-    .event-list-toggle { display: block; margin-top: .75rem; }
+    .event-layout.event-selection .event-content { display: none; }
+    .event-list-toggle { display: block; flex: 0 0 auto; margin: 0; }
+    .event-heading { display: flex; align-items: center; gap: .6rem; }
+    .event-heading h2 { min-width: 0; margin: 0; }
     aside:not(.open) { display: none; }
     aside { flex-direction: row; flex-wrap: wrap; }
     aside button { flex: 1 1 200px; }
+  }
+  @media (max-width: 600px) {
+    .event-layout { margin-inline: -.55rem; }
+    .reward-item { position: relative; display: inline-grid; flex: 0 0 3.5rem; place-items: center; width: 3.5rem; height: 3.5rem; background-position: center; background-size: contain; background-repeat: no-repeat; }
   }
 </style>

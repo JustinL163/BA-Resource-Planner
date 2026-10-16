@@ -47,6 +47,24 @@ function convertNode(node) {
   };
 }
 
+async function disableImageDraggingInHtml(directory) {
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    const path = join(directory, entry.name);
+    if (entry.isDirectory()) {
+      await disableImageDraggingInHtml(path);
+      continue;
+    }
+    if (!entry.isFile() || !entry.name.toLowerCase().endsWith('.html')) continue;
+
+    const html = await readFile(path, 'utf8');
+    if (html.includes('/planner/js/no-image-drag.js')) continue;
+    const script = '  <script src="/planner/js/no-image-drag.js" defer></script>\n';
+    const withScript = html.replace(/<\/head>/i, `${script}</head>`);
+    if (withScript === html) throw new Error(`Could not add image drag handling to ${path}: missing </head>.`);
+    await writeFile(path, withScript);
+  }
+}
+
 function compatibilityPage(name) {
   const destination = `/planner/${name}/`;
   return `<!doctype html>
@@ -113,6 +131,7 @@ for (const name of documentNames) {
 for (const name of migratedNames) {
   await writeFile(join(assets, 'planner', `${name}.html`), compatibilityPage(name));
 }
+await disableImageDraggingInHtml(assets);
 const redirects = await readFile(join(root, '_redirects'), 'utf8');
 await writeFile(
   join(assets, '_redirects'),

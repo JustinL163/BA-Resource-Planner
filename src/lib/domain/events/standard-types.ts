@@ -183,6 +183,7 @@ export interface EventSettingsProps {
   bonuses: EventAmounts;
   materials: string[];
   students: Record<string, CharacterInfo>;
+  plannerUnlockedIds: string[];
   names: Record<string, string>;
   metadata: PlannerMetadata;
   actions: EventActions;

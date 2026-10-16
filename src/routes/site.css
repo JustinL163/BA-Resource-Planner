@@ -12,6 +12,9 @@
 * {
   box-sizing: border-box;
 }
+img {
+  -webkit-user-drag: none;
+}
 @supports not selector(::-webkit-scrollbar) {
   :root,
   * {
