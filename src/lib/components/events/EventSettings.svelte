@@ -256,7 +256,7 @@
                   <span class="bonus-pill" class:top-left={index === 0} class:top-right={index === 1}
                     class:bottom-left={index === 2} class:bottom-right={index === 3}
                     title={`${currency.shortname} ${Math.round(unit.bonus * 100)}%`}>
-                    <img src={`/planner/icons/EventIcon/CurrencyIcon/${currency.icon}`} alt="" draggable="false" />
+                    <img src={`/planner/icons/EventIcon/BonusCurrencyIcon/${currency.icon}`} alt="" draggable="false" />
                     <span>{Math.round(unit.bonus * 100)}%</span>
                   </span>
                 {/if}
@@ -349,17 +349,19 @@
   .bonus-overlays { position: absolute; inset: 0; pointer-events: none; }
   .bonus-pill {
     position: absolute; display: grid; width: 1.75rem; height: 1.75rem; place-items: center; padding: 0; color: black; white-space: nowrap;
-    filter: drop-shadow(1px 0px 0px #ffffff) drop-shadow(-1px 0px 0px #FFFFFF)
-    drop-shadow(0px 1px 0px #FFFFFF) drop-shadow(0px -1px 0px #ffffff)
-    drop-shadow(1px 0px 0px #000) drop-shadow(-1px 0px 0px #000)
-    drop-shadow(0px 1px 0px #000) drop-shadow(0px -1px 0px #000);
   }
   .bonus-pill.top-left { top: 0.1rem; left: 0.1rem; }
   .bonus-pill.top-right { top: 0.1rem; right: 0.1rem; }
   .bonus-pill.bottom-left { bottom: 22%; left: 0.1rem; }
   .bonus-pill.bottom-right { right: 0.1rem; bottom: 22%; }
-  .bonus-pill img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
-  .bonus-pill > span { position: relative; z-index: 1; font: 700 0.68rem/1 sans-serif; text-shadow: -1px -1px 0 #fff, 0 -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 0 1px 0 #fff, 1px 1px 0 #fff; }
+  /* Generated images include 2px of outline padding around a 28px icon. */
+  .bonus-pill img { position: absolute; inset: -7.142857%; width: 114.285714%; height: 114.285714%; object-fit: contain; }
+  .bonus-pill > span {
+    position: relative; z-index: 1; font: 700 0.68rem/1 sans-serif;
+    text-shadow: -1px -1px 0 #fff, 0 -1px 0 #fff, 1px -1px 0 #fff, -1px 0 0 #fff, 1px 0 0 #fff,
+      -1px 1px 0 #fff, 0 1px 0 #fff, 1px 1px 0 #fff, -2px -2px 0 #000, 0 -2px 0 #000, 2px -2px 0 #000,
+      -2px 0 0 #000, 2px 0 0 #000, -2px 2px 0 #000, 0 2px 0 #000, 2px 2px 0 #000;
+  }
   @media (max-width: 600px) {
     .mode-grid { width: 100%; flex-wrap: nowrap; gap: 0.25rem; }
     .mode-button { flex: 1 1 0; padding: 0.35rem 0.2rem; font-size: 0.75rem; line-height: 1.15; white-space: normal; text-align: center; }

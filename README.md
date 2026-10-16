@@ -46,7 +46,9 @@ It starts and stops its own Vite server on port 5174.
 - `scripts/prepare-site.mjs`: copies unmigrated features and assets without
   changing their paths; converts static document content to typed nodes for
   declarative Svelte rendering; builds the temporary legacy bridges under
-  `planner/js/shared`. Original documentation remains its source of truth.
+  `planner/js/shared`. It also generates small currency-icon variants with
+  baked white/black outlines for the event bonus cards, avoiding live filter
+  stacks on every badge. Original documentation remains its source of truth.
   Svelte imports localization JSON from the private generated-content directory,
   while legacy pages keep fetching `/planner/json/strings.json`. Keeping these
   paths distinct prevents static JSON assets from shadowing Vite's JavaScript

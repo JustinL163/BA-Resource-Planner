@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { parse } from 'parse5';
 import { build } from 'vite';
 import { generatePlannerMetadata } from './planner-metadata.mjs';
+import { generateBonusCurrencyIcons } from './bonus-currency-icons.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const assets = join(root, '.generated-static');
@@ -111,6 +112,10 @@ for (const entry of await readdir(join(root, 'planner'), { withFileTypes: true }
   if (migratedNames.some((name) => entry.name === `${name}.html`)) continue;
   await cp(join(root, 'planner', entry.name), join(assets, 'planner', entry.name), { recursive: true });
 }
+await generateBonusCurrencyIcons(
+  join(root, 'planner', 'icons', 'EventIcon', 'CurrencyIcon'),
+  join(assets, 'planner', 'icons', 'EventIcon', 'BonusCurrencyIcon')
+);
 
 const titles = { credit: 'Credits', privacy: 'Privacy Policy', changelog: 'Changelog' };
 for (const name of documentNames) {
