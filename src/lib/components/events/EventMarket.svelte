@@ -57,7 +57,7 @@
   }
 
   function formatStageDrop(amount: number): string {
-    return Number.isInteger(amount) ? formatAmount(amount) : `${Number((amount * 100).toFixed(2))}%`;
+    return Number.isInteger(amount) || amount > 1 ? formatAmount(amount) : `${Number((amount * 100).toFixed(2))}%`;
   }
 
   function amountFontSize(amount: number): string {
@@ -220,7 +220,7 @@
         <h3>{t('label-initialclearinfo')}</h3>
         <div class="drops">
           <span class="drop" title={`${t('label-headerenergy')} ${formatAmount(initial.cost)}`} aria-label={`${t('label-headerenergy')}: ${formatAmount(initial.cost)}`}>
-            <img src="/planner/icons/EventIcon/EnergyIcon/EnergyPadded.png" alt="" />
+            <img src="/planner/icons/EventIcon/EnergyIcon/Energy.png" alt="" />
             <strong use:fitOverlayAmount={formatAmount(initial.cost)}>{formatAmount(initial.cost)}</strong>
           </span>
           {#each Object.entries(initial.rewards) as [rewardId, amount] (rewardId)}
@@ -312,10 +312,11 @@
   .drop.rarity-4 { background-image: url('/planner/icons/Misc/background_ssr.png'); }
   .drop img { display: block; max-width: 70px; width: 74%; aspect-ratio: 1 / 1; object-fit: contain; }
   .drop strong { position: absolute; top: 50%; left: 50%; max-width: 100%; transform: translate(-50%, -50%); color: #111; font-size: 1.15rem; line-height: 1; text-align: center; white-space: nowrap; text-shadow: -1px -1px 0 #fff, 0 -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 0 1px 0 #fff, 1px 1px 0 #fff; pointer-events: none; }
-  .initial-clear { margin-top: 0.5rem; padding: 0.35rem; border: 1px solid #7c5b7d44; border-radius: 0.35rem; }
+  .initial-clear { margin-top: 0.5rem; padding: 0.35rem; border: 1px solid #7c5b7d44; border-radius: 0.35rem; padding-inline: 1rem; width: fit-content; }
   .initial-clear h3 { margin: 0 0 0.25rem; font-size: 0.82rem; }
   .initial-clear .drops { min-width: 0; }
-  .initial-clear .drop { min-width: 0; white-space: normal; overflow-wrap: anywhere; }
+  .initial-clear .drop { flex: 0 0 4.5rem; width: 4.5rem; height: 4.5rem; min-width: 0; white-space: normal; overflow-wrap: anywhere; }
+  .initial-clear .drop strong { font-size: 1.5rem; }
   .point-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.35rem; }
   .point-tier { display: grid; grid-template-columns: auto 30px minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 0.35rem; min-width: 0; padding: 0.4rem; text-align: left; font-size: 0.75rem; }
   .point-tier:not(.with-image):not(.untyped) { grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr); }
@@ -335,6 +336,8 @@
     .currency-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .currency-tab { width: 100%; height: auto; aspect-ratio: 1; }
     .currency-tab img { width: 90%; height: auto; aspect-ratio: 1; }
+    .drop { flex: 0 0 2.5rem; width: 2.5rem; height: 2.5rem; }
+    .initial-clear .drop { flex-basis: 3.5rem; width: 3.5rem; height: 3.5rem; }
     .point-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .drop img { max-width: 50px; }
     .product-visual { width: 3rem; height: 3rem; }

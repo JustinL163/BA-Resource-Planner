@@ -193,7 +193,8 @@ export function materialDropOptions(event: CoreEvent): string[] {
     const quest = questStageData(stage, index);
     if (!quest) return;
     for (const name of Object.keys(quest.drops)) {
-      if (!currencyNames.has(name)) materials.add(name);
+      // The Universal Blueprint Raffle Box is a stage reward, not a material target.
+      if (!currencyNames.has(name) && name !== '90001') materials.add(name);
     }
   });
   return [...materials].sort();

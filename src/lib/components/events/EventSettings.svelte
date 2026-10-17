@@ -34,9 +34,11 @@
       Object.values(value).every((item) => typeof item === 'boolean');
   }
 
-  let selectedMaterials = $derived(
-    isBooleanRecord(plan.optimisation_options) ? plan.optimisation_options : {}
-  );
+  let selectedMaterials = $derived.by(() => {
+    if (!isBooleanRecord(plan.optimisation_options)) return {};
+    const available = new Set(materials);
+    return Object.fromEntries(Object.entries(plan.optimisation_options).filter(([id]) => available.has(id)));
+  });
   let currencies = $derived(Object.entries(event.currencies));
   let stageCurrencies = $derived(currencies.filter(([id, currency]) => currency.source === 'StageDrop' ||
     ((event.lessons || event.invasion) && id === 'Event_Point')));
@@ -186,17 +188,17 @@
           </select>
         </label>
         <label>
-          <span>{t('ui-event-carryover')}</span>
-          <input use:sanitizeIntegerInput type="number" min="0" max="3000" step="1" value={plan.energy_carryover ?? 0} data-event-energy="energy_carryover"
-            onchange={(event) => updateEnergyNumber('energy_carryover', event.currentTarget)} />
-        </label>
-        <label>
           <span>{t('ui-event-pack')}</span>
           <select value={plan.energy_pack ? 'true' : 'false'} data-event-energy="energy_pack"
             onchange={(event) => actions.setEnergy('energy_pack', event.currentTarget.value === 'true')}>
             <option value="false">No</option>
             <option value="true">Yes</option>
           </select>
+        </label>
+        <label>
+          <span>{t('ui-event-carryover')}</span>
+          <input use:sanitizeIntegerInput type="number" min="0" max="3000" step="1" value={plan.energy_carryover ?? 0} data-event-energy="energy_carryover"
+            onchange={(event) => updateEnergyNumber('energy_carryover', event.currentTarget)} />
         </label>
       </div>
       {#if budget}
@@ -270,11 +272,8 @@
     <section class="owned">
       <div class="owned-grid">
         {#each currencies.filter(([id, currency]) => currency.source === 'StageDrop' || id === 'Event_Point') as [currencyId, currency] (currencyId)}
-          <label>
-            <span class="owned-label">
-              <img src={`/planner/icons/EventIcon/CurrencyIcon/${currency.icon}`} alt="" draggable="false" />
-              <span>{t('label-tabowned')} {currency.shortname}</span>
-            </span>
+          <label class="owned-item">
+            <img src={`/planner/icons/EventIcon/CurrencyIcon/${currency.icon}`} alt="" draggable="false" />
             <input
               use:sanitizeIntegerInput
               type="number"
@@ -317,17 +316,18 @@
   .help { margin: 0; padding: 0.55rem 0.7rem; border-left: 3px solid #7c5b7d; background: var(--surface); overflow-wrap: anywhere; }
   .energy-inputs, .owned-grid { display: grid; gap: 0.5rem; }
   .energy-inputs { grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr)); }
-  .owned-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr)); }
+  .owned-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .energy-inputs label, .owned-grid label { display: grid; gap: 0.25rem; min-width: 0; font-size: 0.88rem; }
   .energy-inputs label { display: flex; flex-direction: column; }
   .energy-inputs label > span { margin-top: auto; }
-  .owned-label { display: flex; align-items: center; gap: 0.35rem; min-width: 0; }
-  .owned-label img { width: 1.35rem; height: 1.35rem; flex: 0 0 auto; object-fit: contain; }
-  .owned-label > span { overflow-wrap: anywhere; }
+  .owned-item { justify-items: center; }
+  .owned-item img { width: min(4rem, 100%); aspect-ratio: 1; object-fit: contain; }
+  .owned-item input { width: 100%; }
   input[type="number"] { width: 100%; min-width: 0; padding: 0.38rem 0.45rem; border: 1px solid var(--surface); border-radius: 0.35rem; background: var(--surface); color: var(--text); }
   input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button { margin: 0; -webkit-appearance: none; }
+  .owned-item input[type="number"] { padding: 0.38rem 0.2rem; font-size: 0.8rem; text-align: center; }
   .energy-inputs select, .energy-inputs input[type="number"] { flex: 0 0 2.35rem; width: 100%; min-width: 0; height: 2.35rem; padding: 0.38rem 0.45rem; border: 1px solid var(--surface); border-radius: 0.35rem; background: var(--surface); color: var(--text); }
   .source-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 7rem), 1fr)); gap: 0.5rem; }
   .source { display: grid; grid-template-columns: 2.35rem minmax(0, 1fr); grid-template-rows: auto auto; align-items: center; column-gap: 0.45rem; row-gap: 0.2rem; min-width: 0; min-height: 4rem; padding: 0.5rem 0.6rem; border-radius: 0.35rem; background: var(--surface); font-size: 0.82rem; }

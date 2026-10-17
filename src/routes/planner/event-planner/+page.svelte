@@ -32,12 +32,16 @@
 
   const planner = createEventPlanner(metadata, undefined, reviewedArchive);
   const t = (id: string) => getLanguageString(strings, id, $preferences.language);
+  function solverReportsInfeasible(value: unknown): boolean {
+    return isRecord(value) && (value.feasible === false || (isRecord(value.midpoint) && value.midpoint.feasible === false));
+  }
   let tab = $state<EventTab>('Targets');
   let now = $state(0);
   let solution = $state<unknown>(null);
   let solutionKey = $state('');
   let solving = $state(false);
   let solveError = $state('');
+  let minimumRequiredAp = $state<number | null>(null);
   let retry = $state(0);
   let includeShop = $state(true);
   let includePoints = $state(true);
@@ -79,9 +83,10 @@
       else if (plan.optimisation_type === 'Currency' && typeof plan.optimisation_options === 'string') model = buildStageModel(event, inputs, plan.optimisation_options, 'max', true);
       else if (plan.optimisation_type === 'Materials' && isRecord(plan.optimisation_options)) {
         const selected: Record<string, boolean> = {};
+        const availableMaterials = new Set(materialDropOptions(event));
         for (const [key, value] of Object.entries(plan.optimisation_options)) {
           if (typeof value !== 'boolean') throw new Error('Invalid material target.');
-          selected[key] = value;
+          if (availableMaterials.has(key)) selected[key] = value;
         }
         if (Object.values(selected).some(Boolean)) model = buildMaterialTargetModel(event, inputs, selected);
       }
@@ -102,20 +107,50 @@
     const key = solveKey;
     const model = untrack(() => calculation?.model);
     const plan = untrack(() => $planner.plan);
+    const active = untrack(() => ({ event, eventId: entry?.id ?? '', calculation }));
     const controller = new AbortController();
-    solution = null; solutionKey = ''; solveError = ''; solving = false;
+    solution = null; solutionKey = ''; solveError = ''; minimumRequiredAp = null; solving = false;
     if (untrack(() => Boolean($planner.error))) return () => controller.abort();
     if (plan?.optimisation_type === 'Manual') {
       solution = plan.optimisation_options ?? {}; solutionKey = key;
     } else if (model) {
       solving = true;
-      void solveEventPlan(model, { signal: controller.signal }).then((result) => {
-        if (!controller.signal.aborted) { solution = result; solutionKey = key; }
-      }).catch((problem: unknown) => {
-        if (controller.signal.aborted) return;
-        console.error('Event optimization failed.', problem);
-        solveError = problem instanceof Error ? problem.message : t('ui-event-calculation-failed');
-      }).finally(() => { if (!controller.signal.aborted) solving = false; });
+      void (async () => {
+        try {
+          const result = await solveEventPlan(model, { signal: controller.signal });
+          if (controller.signal.aborted) return;
+          if (solverReportsInfeasible(result) && plan && active.event && active.calculation?.requirements && active.calculation.budget &&
+            (plan.optimisation_type === 'Materials' || plan.optimisation_type === 'Currency')) {
+            try {
+              const requirements = active.calculation.requirements;
+              const bonuses = active.calculation.bonuses;
+              const minimumModel = buildStageModel(active.event, {
+                eventId: active.eventId,
+                bonuses,
+                needed: requirements.needed,
+                energyAvailable: active.calculation.budget.available,
+                pointTarget: requirements.pointTarget,
+                enabledGroups: plan.enabled_stage_groups,
+                upgradeBases: false
+              }, 'Energy_Cost', 'min', false);
+              const minimumSolution = await solveEventPlan(minimumModel, { signal: controller.signal });
+              if (controller.signal.aborted) return;
+              const minimumSummary = summarizeEventRuns(active.event, plan, requirements, bonuses,
+                Number.MAX_SAFE_INTEGER, minimumSolution, false, false, metadata);
+              if (minimumSummary.feasible) minimumRequiredAp = minimumSummary.energy;
+            } catch (problem) {
+              if (!controller.signal.aborted) console.error('Could not calculate minimum event energy.', problem);
+            }
+          }
+          if (!controller.signal.aborted) { solution = result; solutionKey = key; }
+        } catch (problem: unknown) {
+          if (controller.signal.aborted) return;
+          console.error('Event optimization failed.', problem);
+          solveError = problem instanceof Error ? problem.message : t('ui-event-calculation-failed');
+        } finally {
+          if (!controller.signal.aborted) solving = false;
+        }
+      })();
     }
     return () => controller.abort();
   });
@@ -443,8 +478,10 @@
         {/if}
         {/key}
         </div>
-        <section class="results" aria-labelledby="results-title">
-        <h3 id="results-title">{t('ui-event-summary')}</h3>
+        <section class="results" aria-label={t('ui-event-summary')}>
+        {#if !solving && !solveError && !result?.error && result?.value?.feasible}
+          <div class="run-tiles">{#each Object.entries(result.value.runs) as [stage, count]}<span data-event-run={stage}>Q{stage}: <strong>{formatAmount(count)}</strong></span>{/each}</div>
+        {/if}
         <div class="display-options">
           <label><input type="checkbox" bind:checked={includeShop} />{t('label-includeshop')}</label>
           {#if event.point_rewards}<label><input type="checkbox" bind:checked={includePoints} />{t('label-includepointrewards')}</label>{/if}
@@ -461,33 +498,45 @@
           {:else if !simulation.ready}<p role="status">{t(`ui-event-${simulation.kind}-simulate-first`)}</p>{/if}
         {/if}
         {#if solving}<p role="status">{t('ui-event-solving')}</p>
-        {:else if solveError || result?.error}<p class="error" role="alert">{solveError || result?.error} <button onclick={() => retry++}>{t('ui-retry')}</button></p>
         {:else if result?.value && !result.value.feasible}<p class="error" role="alert">{t('ui-event-infeasible')} ({t('ui-event-total-ap')}: {formatAmount(result.value.energy)})</p>
+        {:else if solutionKey === solveKey && solverReportsInfeasible(solution) &&
+          ($planner.plan?.optimisation_type === 'Materials' || $planner.plan?.optimisation_type === 'Currency')}
+          <p class="error" role="alert">{t('ui-event-infeasible')}{#if minimumRequiredAp !== null} ({t('ui-event-total-ap')}: {formatAmount(minimumRequiredAp)}){/if}</p>
+        {:else if solveError || result?.error}<p class="error" role="alert">{solveError || result?.error} <button onclick={() => retry++}>{t('ui-retry')}</button></p>
         {:else if result?.value}
-          <p data-event-ap>{t('ui-event-total-ap')}: <strong>{formatAmount(result.value.energy)}</strong></p>
           {#if result.value.boxes}
             <p class="box-progress" data-event-box-progress>
               {t('ui-event-box-cleared')}: <strong>{formatAmount(result.value.boxes.clears)}</strong>.
               {t('ui-event-box-leftover')}: <strong>{result.value.boxes.leftoverPercent}%</strong> {t('ui-event-box-not-included')}
             </p>
           {/if}
-          <div class="run-tiles">{#each Object.entries(result.value.runs) as [stage, count]}<span data-event-run={stage}>Q{stage}: <strong>{formatAmount(count)}</strong></span>{/each}</div>
-          {#each (includeSimulation && simulation.ready && !simulation.rounded ? [] : rewardGroups) as [group, rewards]}
-            <div class="reward-group" data-event-rewards={group}>
-              {#each groupedRewardEntries(group, rewards) as typeGroup}
-                <div class="reward-type-group" data-event-reward-group={group} data-event-reward-type={typeGroup.type}>
-                  {#each typeGroup.entries as [id, count]}
-                    {@const item = eventItem({ id, count, type: 'StageDrop' }, event, metadata, $planner.names)}
-                    {@const amount = formatRewardAmount(count)}
-                    <span class={`reward-item ${rewardRarityClass(group, id)}`} class:without-image={!item.image} title={item.name}
-                      aria-label={`${item.name}: ${amount}`} data-event-reward={id}>
-                      {#if item.image}<img src={item.image} alt="" />{:else}<span class="reward-fallback">{item.name}</span>{/if}
-                      <strong use:fitRewardAmount={amount}>{amount}</strong>
-                    </span>
+          {#each rewardGroups as [group, rewards]}
+            {#if group === 'currencies' || !(includeSimulation && simulation.ready && !simulation.rounded)}
+              <div class="reward-group" data-event-rewards={group}>
+                {#if group === 'currencies'}
+                  {@const amount = formatAmount(result.value.energy)}
+                  <span class="reward-item" role="img" title={`${t('ui-event-total-ap')}: ${amount}`} aria-label={`${t('ui-event-total-ap')}: ${amount}`} data-event-ap>
+                    <img src="/planner/icons/EventIcon/EnergyIcon/Energy.png" alt="" draggable="false" />
+                    <strong use:fitRewardAmount={amount}>{amount}</strong>
+                  </span>
+                {/if}
+                {#if !(includeSimulation && simulation.ready && !simulation.rounded)}
+                  {#each groupedRewardEntries(group, rewards) as typeGroup}
+                    <div class="reward-type-group" data-event-reward-group={group} data-event-reward-type={typeGroup.type}>
+                      {#each typeGroup.entries as [id, count]}
+                        {@const item = eventItem({ id, count, type: 'StageDrop' }, event, metadata, $planner.names)}
+                        {@const amount = formatRewardAmount(count)}
+                        <span class={`reward-item ${rewardRarityClass(group, id)}`} class:without-image={!item.image} title={item.name}
+                          aria-label={`${item.name}: ${amount}`} data-event-reward={id}>
+                          {#if item.image}<img src={item.image} alt="" />{:else}<span class="reward-fallback">{item.name}</span>{/if}
+                          <strong use:fitRewardAmount={amount}>{amount}</strong>
+                        </span>
+                      {/each}
+                    </div>
                   {/each}
-                </div>
-              {/each}
-            </div>
+                {/if}
+              </div>
+            {/if}
           {/each}
         {:else}<p>{t('ui-event-choose-target')}</p>{/if}
         </section>
@@ -519,6 +568,7 @@
   .tab-panel-body { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 1rem; min-width: 0; }
   .tab-content { flex: 1 1 36rem; min-width: min(100%, 22rem); max-width: 770px; }
   .display-options, .run-tiles { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .run-tiles { margin-bottom: 1rem; }
   .saved { margin: .3rem 0; font-size: .8rem; }
   .error { color: var(--error); overflow-wrap: anywhere; }
   .results { flex: 1 1 22rem; min-width: min(100%, 18rem); margin: 0; border-top: 1px solid #7c5b7d; max-width: 700px }

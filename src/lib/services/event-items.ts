@@ -7,6 +7,7 @@ export function eventItem(reward: EventReward, event: StandardEvent, metadata: P
   if (event.currencies[id]) return { name: event.currencies[id].shortname, image: `/planner/icons/EventIcon/CurrencyIcon/${event.currencies[id].icon}` };
   if (id === '1') return { name: 'Credit', image: '/planner/icons/Misc/Credit.png' };
   if (id === '23') return { name: 'Eligma', image: '/planner/icons/Misc/Eligma.png' };
+  if (id === '90001') return { name: 'Universal Blueprint Raffle Box', image: '/planner/icons/Misc/UniversalBlueprintRaffleBox.png' };
   const materialId = Object.keys(metadata.materialNames).find((key) => metadata.materialNames[key] === id) ?? id;
   const resource = resourceItem(materialId, metadata);
   if (Number(id) >= 10000 && Number(id) < 30000) return { name: `${names[id] ?? id} Eleph`, image: `/planner/icons/Eleph/Eleph_${id}.webp` };
