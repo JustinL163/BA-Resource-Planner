@@ -295,9 +295,11 @@ export function summarizeEventRuns(
 ): EventSummary {
   finite(energyAvailable, 'Available event energy');
   if (!isRecord(solution)) throw new Error('Event solver result must be a record.');
-  const ignoreInfeasibleStatus = event.eventId === 'ive-alive-rerun';
-  // The legacy page ignores solver feasibility markers for this event and
-  // evaluates the rounded midpoint runs itself.
+  const materialMidpoint = plan.optimisation_type === 'Materials' && isRecord(solution.midpoint);
+  const ignoreInfeasibleStatus = event.eventId === 'ive-alive-rerun' || materialMidpoint;
+  // The multi-objective solver can mark its midpoint infeasible because of tiny
+  // rounding errors. Like the legacy page, validate the rounded material runs
+  // against the requirements and AP budget below; keep rejecting unbounded data.
   checkSolverStatus(solution, ignoreInfeasibleStatus);
   const rawRuns = Object.prototype.hasOwnProperty.call(solution, 'midpoint') ? solution.midpoint : solution;
   if (!isRecord(rawRuns)) throw new Error('Event solver midpoint must be a record.');
@@ -393,9 +395,12 @@ export function summarizeEventRuns(
   }
   if (!manual) {
     for (const [name, required] of Object.entries(requirements.needed)) {
-      if (currencies[name] < required) feasible = false;
+      const farmed = materialMidpoint && event.currencies[name]?.source === 'StageDrop'
+        ? currencies[name] ?? 0 : currencies[name];
+      if (farmed < required) feasible = false;
     }
-    if (currencies.Event_Point < requirements.pointTarget) feasible = false;
+    const farmedPoints = materialMidpoint ? currencies.Event_Point ?? 0 : currencies.Event_Point;
+    if (farmedPoints < requirements.pointTarget) feasible = false;
   }
   if (farmEnergy > energyAvailable + 100) feasible = false;
 

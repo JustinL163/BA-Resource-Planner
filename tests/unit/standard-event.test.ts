@@ -719,6 +719,61 @@ describe('standard event compatibility and frozen reward outputs', () => {
     }, event)).toThrow('Invalid event purchase count');
   });
 
+  it.each(['Antikythera_4', 'Mandragora_4', 'Nimrud_4', 'Mystery_4'])(
+    'preserves the legacy rounded Lore Pursuit S2 plan for %s', (material) => {
+      const id = 'lore-pursuit-s2';
+      const event = decodeStandardEvent(rawEvents[id], id);
+      const plan = decodeEventPlan(undefined, event);
+      plan.optimisation_type = 'Materials';
+      plan.optimisation_options = { [material]: true };
+      plan.enabled_bonus_units = [...new Set(Object.values(event.currencies)
+        .flatMap((currency) => currency.bonus_units.map((unit) => unit.id)))];
+      const old = reference(id, plan, false, false, 'solve');
+      expect(old.infeasible).toBe(false);
+      const bonuses: Record<string, number> = runInContext('currencyBonuses', old.context);
+
+      const summary = summarizeEventRuns(event, plan, eventRequirements(event, plan),
+        bonuses, old.energy, old.solution, false, false, metadata);
+      const { runs, feasible, overflowPurchases, ...rewards } = summary;
+      void overflowPurchases;
+      expect(feasible).toBe(true);
+      expect(runs).toEqual(old.runs);
+      expect(rewards).toEqual(old.summary);
+    }
+  );
+
+  it('rejects invalid material midpoints even when numerical feasibility flags are deferred', () => {
+    const id = 'lore-pursuit-s2';
+    const event = decodeStandardEvent(rawEvents[id], id);
+    const plan = decodeEventPlan(undefined, event);
+    plan.optimisation_type = 'Materials';
+    plan.optimisation_options = { Antikythera_4: true };
+    plan.enabled_bonus_units = [...new Set(Object.values(event.currencies)
+      .flatMap((currency) => currency.bonus_units.map((unit) => unit.id)))];
+    const old = reference(id, plan, false, false, 'solve');
+    const solution = old.solution as { midpoint: Record<string, number | boolean> };
+    const bonuses: Record<string, number> = runInContext('currencyBonuses', old.context);
+    const summarize = (midpoint: Record<string, number | boolean>, energy = old.energy) => summarizeEventRuns(
+      event, plan, eventRequirements(event, plan), bonuses, energy, { midpoint }, false, false, metadata
+    );
+
+    const missingCurrency = { ...solution.midpoint };
+    delete missingCurrency['10'];
+    expect(summarize(missingCurrency).feasible).toBe(false);
+    const missingPoints = { ...solution.midpoint };
+    delete missingPoints['12'];
+    expect(summarize(missingPoints).feasible).toBe(false);
+    expect(summarize({ feasible: false, bounded: true }).feasible).toBe(false);
+    expect(summarize(solution.midpoint, 100).feasible).toBe(false);
+    expect(summarize({ ...solution.midpoint, '9': -1 }).feasible).toBe(false);
+    expect(() => summarize({ ...solution.midpoint, bounded: false })).toThrow('unbounded');
+
+    const infeasible = reference(id, { ...plan, enabled_bonus_units: [] }, false, false, 'solve');
+    expect(infeasible.infeasible).toBe(true);
+    expect(summarizeEventRuns(event, plan, eventRequirements(event, plan), {},
+      infeasible.energy, infeasible.solution, false, false, metadata).feasible).toBe(false);
+  });
+
   it('accepts legacy numeric-string Manual runs and does not fabricate solver success', () => {
     const event = decodeStandardEvent(rawEvents['lore-pursuit-s2']);
     const plan = decodeEventPlan(undefined, event);

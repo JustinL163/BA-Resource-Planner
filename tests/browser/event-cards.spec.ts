@@ -23,6 +23,42 @@ function savedPlan(id: string) {
   };
 }
 
+for (const { id, mode, cafeRank, minimumAp, material } of [
+  { id: 'get-hyped-and-march-on-rerun', mode: 'Currency', cafeRank: 10, minimumAp: 14640, material: '' },
+  { id: 'lore-pursuit-s2', mode: 'Materials', cafeRank: 1, minimumAp: 15950, material: 'Antikythera_4' }
+] as const) {
+  test(`${mode} minimum AP stays consistent as the refresh budget increases below the target`, async ({ page, context }) => {
+    const event = decodeStandardEvent(events[id], id);
+    const plan = decodeEventPlan(undefined, event);
+    plan.cafe_rank = cafeRank;
+    plan.enabled_bonus_units = [...new Set(Object.values(event.currencies)
+      .flatMap((currency) => currency.bonus_units.map((unit) => unit.id)))];
+    await context.route('**/json/events.json*', (route) => route.fulfill({
+      contentType: 'application/json', body: JSON.stringify({ ...config, event_order: [id] })
+    }));
+    await page.clock.setFixedTime((event.reset_time + 3 * 86400 + 3600) * 1000);
+    await page.addInitScript(({ id, plan }) => {
+      localStorage.setItem('save-data', JSON.stringify({ exportVersion: 2, events_data: { [id]: plan } }));
+    }, { id, plan });
+    await page.goto('/planner/event-planner/');
+    await page.locator(`[data-event-id="${id}"]`).click();
+    await page.locator('[data-event-mode="Shop"]').click();
+    const alert = page.getByRole('alert');
+    await expect(alert).toContainText(`Total AP: ${minimumAp.toLocaleString('en-US')}`);
+
+    await page.locator(`[data-event-mode="${mode}"]`).click();
+    if (mode === 'Materials') await page.locator(`[data-event-material="${material}"]`).click();
+    await page.locator('[data-event-tab="Energy"]').click();
+    for (const refreshes of [0, 1, 2]) {
+      await page.locator('[data-event-energy="pyro_refreshes"]').selectOption(String(refreshes));
+      await expect(alert).toContainText(`Total AP: ${minimumAp.toLocaleString('en-US')}`);
+      const available = Number((await page.locator('.total-source strong').innerText()).replaceAll(',', ''));
+      expect(available).toBeLessThan(minimumAp);
+      await expect(page.getByRole('button', { name: 'Retry', exact: true })).toHaveCount(0);
+    }
+  });
+}
+
 for (const id of cardEventIds) {
   test(`${id} runs the original four workers, preserves statistics, updates RNG without resimulating, and reloads compatibly`, async ({ page, context }) => {
     const event = decodeStandardEvent(events[id]);

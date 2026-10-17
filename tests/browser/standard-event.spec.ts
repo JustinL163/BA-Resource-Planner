@@ -150,6 +150,25 @@ test('standard event tabs use a real solver worker and preserve legacy-compatibl
   expect(failedImages).toEqual([]);
 });
 
+test('Lore Pursuit S2 renders a valid Antikythera target despite the solver midpoint rounding flag', async ({ page }) => {
+  const plan = decodeEventPlan(undefined, event);
+  plan.enabled_bonus_units = [...new Set(Object.values(event.currencies)
+    .flatMap((currency) => currency.bonus_units.map((unit) => unit.id)))];
+  await page.clock.setFixedTime(eventTime);
+  await page.addInitScript((plan) => {
+    localStorage.setItem('save-data', JSON.stringify({ exportVersion: 2, events_data: { 'lore-pursuit-s2': plan } }));
+  }, plan);
+  await page.goto('/planner/event-planner/');
+  await page.locator('[data-event-id="lore-pursuit-s2"]').click();
+  await page.locator('[data-event-mode="Materials"]').click();
+  await page.locator('[data-event-material="Antikythera_4"]').click();
+
+  await expect(page.locator('[data-event-ap]')).toBeVisible();
+  await expect(page.locator('[data-event-run="9"]')).toHaveText('Q9: 235');
+  await expect(page.locator('[data-event-reward="Antikythera_4"]')).toBeVisible();
+  await expect(page.getByRole('alert')).toHaveCount(0);
+});
+
 test('worker failures are visible, retry works, and invalid edits never change saved data', async ({ page, context }) => {
   await page.clock.setFixedTime(eventTime);
   await page.addInitScript((data) => localStorage.setItem('save-data', JSON.stringify(data)), savedPlan());

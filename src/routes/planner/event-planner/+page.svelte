@@ -119,7 +119,19 @@
         try {
           const result = await solveEventPlan(model, { signal: controller.signal });
           if (controller.signal.aborted) return;
-          if (solverReportsInfeasible(result) && plan && active.event && active.calculation?.requirements && active.calculation.budget &&
+          let infeasible = solverReportsInfeasible(result);
+          // Currency maximization can satisfy its model while still falling short
+          // of the selected purchases. Check the complete rounded plan as well.
+          if (plan && (plan.optimisation_type === 'Materials' || plan.optimisation_type === 'Currency') && active.event &&
+            active.calculation?.requirements && active.calculation.budget) {
+            try {
+              infeasible = !summarizeEventRuns(active.event, plan, active.calculation.requirements,
+                active.calculation.bonuses, active.calculation.budget.available, result, false, false, metadata).feasible;
+            } catch {
+              // Invalid solver data still takes the minimum-AP error path.
+            }
+          }
+          if (infeasible && plan && active.event && active.calculation?.requirements && active.calculation.budget &&
             (plan.optimisation_type === 'Materials' || plan.optimisation_type === 'Currency')) {
             try {
               const requirements = active.calculation.requirements;
@@ -498,8 +510,12 @@
           {:else if !simulation.ready}<p role="status">{t(`ui-event-${simulation.kind}-simulate-first`)}</p>{/if}
         {/if}
         {#if solving}<p role="status">{t('ui-event-solving')}</p>
-        {:else if result?.value && !result.value.feasible}<p class="error" role="alert">{t('ui-event-infeasible')} ({t('ui-event-total-ap')}: {formatAmount(result.value.energy)})</p>
-        {:else if solutionKey === solveKey && solverReportsInfeasible(solution) &&
+        {:else if result?.value && !result.value.feasible}
+          <p class="error" role="alert">{t('ui-event-infeasible')}
+            {#if minimumRequiredAp !== null} ({t('ui-event-total-ap')}: {formatAmount(minimumRequiredAp)})
+            {:else if $planner.plan?.optimisation_type === 'Shop' || $planner.plan?.optimisation_type === 'Manual'} ({t('ui-event-total-ap')}: {formatAmount(result.value.energy)}){/if}
+          </p>
+        {:else if !result?.value && solutionKey === solveKey && solverReportsInfeasible(solution) &&
           ($planner.plan?.optimisation_type === 'Materials' || $planner.plan?.optimisation_type === 'Currency')}
           <p class="error" role="alert">{t('ui-event-infeasible')}{#if minimumRequiredAp !== null} ({t('ui-event-total-ap')}: {formatAmount(minimumRequiredAp)}){/if}</p>
         {:else if solveError || result?.error}<p class="error" role="alert">{solveError || result?.error} <button onclick={() => retry++}>{t('ui-retry')}</button></p>
