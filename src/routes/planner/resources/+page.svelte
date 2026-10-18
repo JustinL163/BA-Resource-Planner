@@ -490,21 +490,6 @@
  {:else}
   <section aria-labelledby="characters-title">
     <h2 class="visually-hidden" id="characters-title">{t('footer-characters')}</h2>
-    <div class="toolbar">
-      {#if bulkIds.length}
-        <div class="selection-tools" aria-live="polite">
-          <span>{bulkCharacters.length} {t('ui-selected')}</span>
-          <button onclick={selectVisible}>{t('ui-select-visible')}</button>
-          <button onclick={clearSelection}>{t('ui-clear-selection')}</button>
-          <button disabled={!bulkCharacters.length} onclick={() => bulkOpen = true}>{t('ui-bulk-edit')}</button>
-        </div>
-      {/if}
-      <label class="character-search">{t('ui-search-characters')}<input type="search" class:is-filtered={search.trim().length > 0} bind:value={search} onclick={() => search = ''} /></label>
-      <button class="filter-action" onclick={() => planner.includeMany(visible.map((character) => character.id), true)}>{t('button-enableall')}</button>
-      <button class="filter-action" onclick={() => planner.includeMany(visible.map((character) => character.id), false)}>{t('button-disableall')}</button>
-      <label class="card-size-control">{t('ui-card-size')}<input type="range" min="1" max="5" step="1" value={cardSize}
-        oninput={(event) => resize(event.currentTarget.valueAsNumber)} /></label>
-    </div>
     <details class="filter-panel" bind:this={filterPanel} class:has-active-filters={hasActiveFilters} bind:open={filtersOpen}>
       <summary onclick={preventDesktopFilterToggle} onkeydown={preventDesktopFilterToggleKey}>{t('ui-filters-sort')}</summary>
       <div class="filters">
@@ -550,6 +535,21 @@
       <button class="reset-filter-button" onclick={() => { search = ''; school = ''; role = ''; attack = ''; armour = ''; weapon = ''; rarity = ''; exMaterial = ''; included = ''; groupFilter = ''; upToGroup = false; sort = 'custom'; }}>{t('button-resetfilters')}</button>
       </div>
     </details>
+    <div class="toolbar">
+      {#if bulkIds.length}
+        <div class="selection-tools" aria-live="polite">
+          <span>{bulkCharacters.length} {t('ui-selected')}</span>
+          <button onclick={selectVisible}>{t('ui-select-visible')}</button>
+          <button onclick={clearSelection}>{t('ui-clear-selection')}</button>
+          <button disabled={!bulkCharacters.length} onclick={() => bulkOpen = true}>{t('ui-bulk-edit')}</button>
+        </div>
+      {/if}
+      <label class="character-search">{t('ui-search-characters')}<input type="search" class:is-filtered={search.trim().length > 0} bind:value={search} onclick={() => search = ''} /></label>
+      <button class="filter-action" onclick={() => planner.includeMany(visible.map((character) => character.id), true)}>{t('button-enableall')}</button>
+      <button class="filter-action" onclick={() => planner.includeMany(visible.map((character) => character.id), false)}>{t('button-disableall')}</button>
+      <label class="card-size-control">{t('ui-card-size')}<input type="range" min="1" max="5" step="1" value={cardSize}
+        oninput={(event) => resize(event.currentTarget.valueAsNumber)} /></label>
+    </div>
     {#if visible.length === 0}<p class="empty-state">{t('ui-no-characters')}</p>{/if}
     <div class="characters" bind:this={grid} style:--card-size={`${sizes[cardSize - 1]}px`}
       use:sortableReorder={{ mode: 'edit', change: showDrag, drop: reorder,
@@ -645,7 +645,7 @@
   .card-size-control { flex: 0 1 9rem; min-width: 7rem; }
   .card-size-control input { width: 100%; }
   .toolbar > .filter-action { white-space: nowrap; }
-  .group-filter { display: flex; flex: 0 1 14rem; max-width: 100%; min-width: 0; flex-direction: column; gap: 0.35rem; }
+  .group-filter { display: flex; max-width: 100%; min-width: 0; flex-direction: column; gap: 0.35rem; }
   .group-filter-heading { display: flex; min-width: 0; align-items: center; justify-content: space-between; gap: 0.35rem; }
   .group-filter-heading > label:first-child { flex: 0 0 auto; }
   .group-filter select { min-width: 0; }
@@ -672,6 +672,9 @@
   .filter-panel { padding: 0.5rem; border: 1px solid #7c5b7d66; border-radius: 0.4rem; }
   summary { cursor: pointer; }
   @media (min-width: 801px) {
+    .filters, .toolbar { justify-content: center; }
+    .filter-panel { width: max-content; max-width: 100%; margin-inline: auto; }
+    .filter-panel > .filters { width: max-content; max-width: 100%; }
     .filter-panel > summary { cursor: default; list-style: none; }
     .filter-panel > summary::marker { content: ''; }
   }
