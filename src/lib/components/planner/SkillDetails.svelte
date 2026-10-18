@@ -1,6 +1,7 @@
 <script lang="ts">
   import haloCharacterMapping from '$lib/domain/planner/halo-character-map.json';
   import { sanitizeIntegerInput } from '$lib/actions/sanitize-integer-input';
+  import { localizedAttackTypeName, localizedDefenseTypeName, localizedSchoolName } from '$lib/domain/planner/localized-labels';
   import type { FormattedSkill, SkillKey } from '$lib/domain/planner/skills';
   import type { CharacterInfo, InvestmentKey, PlannerCharacter, PlannerMetadata } from '$lib/domain/planner/types';
   import CharacterCard from './CharacterCard.svelte';
@@ -91,13 +92,12 @@
   let roleImage = $derived(info.TacticRole ? metadata.roleImages?.[info.TacticRole] : undefined);
   let schoolLabel = $derived.by(() => {
     if (!info.School) return '';
-    const translated = t(`school-${info.School.toLowerCase()}`);
-    return translated === 'Undefined' ? info.School : translated;
+    return localizedSchoolName(info.School, t);
   });
   let schoolImage = $derived(`/planner/icons/Academies/${academyIconFiles[info.School] ?? 'ETC'}.png`);
   let schoolColor = $derived(metadata.colours[info.School] ?? 'var(--background)');
-  let attackLabel = $derived(t(`atktype-${info.BulletType.toLowerCase()}`));
-  let defenseLabel = $derived(t(`deftype-${info.ArmorType.toLowerCase()}`));
+  let attackLabel = $derived(localizedAttackTypeName(info.BulletType, t));
+  let defenseLabel = $derived(localizedDefenseTypeName(info.ArmorType, t));
   let weaponLabel = $derived([
     info.WeaponType ? t(`gun-${info.WeaponType.toLowerCase()}`) : '',
     info.Position ? t(`position-${info.Position.toLowerCase()}`) : ''

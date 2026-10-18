@@ -1,58 +1,43 @@
-/**
- * Yoinked from Schale DB because it's 11pm and the documentation for service workers 
- * looks like a pain to read through and I want to play Genshin
- */
+const cacheVersion = 3;
+const cachePrefix = 'baplanner-static-v';
+const cacheName = `${cachePrefix}${cacheVersion}`;
 
-const staticCacheVer = 2;
-const staticCacheName = `baplanner-static-v${staticCacheVer}`;
-const currentCacheList = [];
-
-
-self.addEventListener('install', (e) => {
-    console.log('[SW] Installed');
-    e.waitUntil((async () => {
-        self.skipWaiting();
-        const staticCache = await caches.open(staticCacheName);
-        currentCacheList.push(staticCacheName);
-    })());
+self.addEventListener('install', (event) => {
+  event.waitUntil((async () => {
+    await self.skipWaiting();
+    await caches.open(cacheName);
+  })());
 });
 
-self.addEventListener('activate', (e) => {
-    console.log('[SW] Activated');
-    e.waitUntil(
-        //remove old caches
-        caches.keys().then((keys) => {
-            return Promise.all(keys.map((key) => {
-                if (!currentCacheList.includes(key)) {
-                    console.log(`[SW] Purging outdated cache ${key}`);
-                    return caches.delete(key);
-                }
-            }));
-        })
-    )
-})
+self.addEventListener('activate', (event) => {
+  event.waitUntil((async () => {
+    await self.clients.claim();
+    const oldCaches = (await caches.keys()).filter((name) =>
+      name.startsWith(cachePrefix) && name !== cacheName
+    );
+    await Promise.all(oldCaches.map((name) => caches.delete(name)));
+  })());
+});
 
-self.addEventListener('fetch', (e) => {
-    e.respondWith((async () => {
+self.addEventListener('fetch', (event) => {
+  event.respondWith((async () => {
+    if (event.request.method !== 'GET') return fetch(event.request);
 
-        if (e.request.method != 'GET') {return await fetch(e.request);}
-        
-        const r = await caches.match(e.request);
-        if (r) {return r;}
+    const cache = await caches.open(cacheName);
+    const cached = await cache.match(event.request);
+    if (cached) return cached;
 
-        const response = await fetch(e.request);
-        if (response.ok && response.type == 'basic') {
-            const requestURL = new URL(e.request.url);
-            if (requestURL.pathname.includes('/icons/') || requestURL.pathname.includes('/packages/')) {
-                const staticCache = await caches.open(staticCacheName);
-                try {
-                    staticCache.put(e.request, response.clone());
-                }
-                catch (error) {
-                    console.log(error)
-                }
-            }
+    const response = await fetch(event.request);
+    if (response.ok && response.type === 'basic') {
+      const requestURL = new URL(event.request.url);
+      if (requestURL.pathname.includes('/icons/') || requestURL.pathname.includes('/packages/')) {
+        try {
+          await cache.put(event.request, response.clone());
+        } catch (error) {
+          console.warn('[SW] Could not cache planner asset.', error);
         }
-        return response;
-    })());
+      }
+    }
+    return response;
+  })());
 });

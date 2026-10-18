@@ -1,8 +1,8 @@
 # Blue Archive Resource Planner
 
 A Blue Archive resource/event planner, raid-video browser, tournament tracker, and
-guessing game. The site is being migrated incrementally to Svelte 5 and SvelteKit
-with `adapter-static`; deployment requires only static files.
+guessing game. The feature pages use Svelte 5 and SvelteKit with `adapter-static`;
+deployment requires only static files.
 
 ## Development
 
@@ -36,47 +36,43 @@ It starts and stops its own Vite server on port 5174.
 
 - `src`: prerendered Svelte routes, shared layout, typed preferences/localisation,
   browser-independent resource calculations, and simulation coordination.
-- `planner` and `game`: original feature sources, datasets, assets, and reference
-  implementations. Resource/event planners and Raid Videos have Svelte screens;
-  their legacy sources remain available as references or fallbacks. The
-  tournament tracker also has a Svelte screen with its old HTML page retained as
-  a fallback. The Guessing Game has a Svelte screen at `/game/`, and its original
-  HTML page remains available. Resource calculations and normal event simulation
-  coordination delegate to shared TypeScript modules.
-- `scripts/prepare-site.mjs`: copies unmigrated features and assets without
-  changing their paths; converts static document content to typed nodes for
-  declarative Svelte rendering; builds the temporary legacy bridges under
-  `planner/js/shared`. It also generates small currency-icon variants with
-  baked white/black outlines for the event bonus cards, avoiding live filter
-  stacks on every badge. Original documentation remains its source of truth.
-  Svelte imports localization JSON from the private generated-content directory,
-  while legacy pages keep fetching `/planner/json/strings.json`. Keeping these
-  paths distinct prevents static JSON assets from shadowing Vite's JavaScript
-  module transforms in development.
+- `planner` and `game`: datasets, assets, worker sources, and retained reference
+  implementations. The user-facing planner, raid, tournament, and game pages use
+  Svelte routes. Retired feature HTML pages are removed; their former addresses
+  redirect to the current routes. Resource calculations and event simulation
+  coordination use shared TypeScript modules.
+- `scripts/prepare-site.mjs`: copies static assets and worker sources while
+  excluding retired feature HTML pages; converts static document content to
+  typed nodes for declarative Svelte rendering; and builds shared worker assets
+  under `planner/js/shared`. It also generates small currency-icon variants with
+  baked white/black outlines for event bonus cards. Original documentation
+  remains its source of truth. Svelte imports localization JSON from the private
+  generated-content directory so static JSON assets do not shadow Vite's
+  JavaScript module transforms in development.
 - `tests/unit`: legacy calculation/worker characterization and shared-service checks.
 - `tests/browser`: static deployment and browser workflow checks.
 
 Credits, privacy, changelog, and translation tools are Svelte routes. Their old
 `.html` addresses redirect to the new routes, with query strings preserved.
-The new core resource planner is available at `/planner/resources/` through the
-**Svelte Planner** navigation link. It supports character selection/editing,
+The resource planner is available at `/planner/resources/` through the
+**Resource Planner** navigation link. It supports character selection/editing,
 inclusion filters, custom ordering, inventory, aggregate totals, weapon XP,
 team/group editing, bulk investment changes, team text/PNG exports,
 and local JSON backup/import. It uses the same `save-data` as the legacy planner.
 The compact character cards retain the original shorthand overlays (`M` for
 maximum skills, `X` for T10 equipment), stars, bond and current/target colouring.
-Drag cards to reorder them; use Move Mode for touch dragging, or Alt+arrow keys
-for keyboard reordering. Ctrl/Cmd+click or right-click toggles inclusion, and
-Disable Mode provides the same operation by tapping. Shift+drag remains available.
-These shortcuts are displayed beside the explicit mode controls.
+Drag cards to reorder them while Custom order is selected. Ctrl/Cmd+click enters
+bulk selection; clicks toggle selection, Ctrl/Cmd+Shift+click selects a range,
+and dragging on blank space box-selects cards. Hold Alt while box-selecting to
+deselect. Ctrl/Cmd+Z and Ctrl/Cmd+Y undo and redo bulk actions.
 
 Resources, gear and local transfers open from the floating tool bar in separate
 dialogs. Resource matrices retain tier/category alignment and show only the
 selected Owned/Remaining/Total/Leftover quantity; Owned mode edits inventory.
 Card size uses the existing `character_box_size` preference.
 
-The standard Svelte event planner is available at `/planner/event-planner/`
-through **Svelte Events**. Its compact Targets, Energy, Bonus, Shop, Stages,
+The event planner is available at `/planner/event-planner/` through
+**Event Planner**. Its compact Targets, Energy, Bonus, Shop, Stages,
 Points and Owned tabs support the current Lore Pursuit (Season 2) event.
 Box Shadow Looming rerun and the original BOX Shadow Looming event are supported
 as separate event IDs; the original's point-to-Eleph rule is characterized
@@ -114,9 +110,8 @@ source-less Fine Tea farming requirement retains the legacy NaN behavior and
 stays out of solver and Owned controls. The Sheside Outside rerun uses Game
 Corner Ticket as its only stage target; Tournament Water Gun remains an
 unconstrained MinigameDrop with an editable shop and no Owned control.
-The `/planner/events.html` fallback remains available.
-Unreviewed special events are explicitly gated to the legacy planner until their
-complete mechanics are migrated;
+Unreviewed special event mechanics remain on the deferred event backlog and show
+an unavailable notice in the event planner until they are implemented;
 `standardEventIds`,
 `boxEventIds`, `cardEventIds`, `diceEventIds`, `omikujiEventIds`,
 `lessonEventIds`, and `invasionEventIds` are reviewed allowlists rather than
@@ -165,8 +160,8 @@ their display unless the currency still matches. RNG-only changes reuse the
 statistics without repeating simulations and may be made during a running job.
 Changed inputs, event switches and Cancel terminate pending work; conflicting
 asynchronous results never overwrite a newer event save. Failures remain visible
-and allow retry without saving partial or fabricated statistics. Other simulation
-mechanics remain in the legacy planner.
+and allow retry without saving partial or fabricated statistics. Other event
+simulation mechanics remain on the deferred event backlog.
 
 **Occult Research Society** is available through the earlier-event list with a
 compact **Dice** tab. Its simulation retains the original 18-tile race,
@@ -194,7 +189,7 @@ and sigma adjustment run in the shared statistics worker. Rewards remain a
 session-only display option and use the existing `omikuji_pull_rewards`,
 `omikuji_pull_currency_owned` and `standard_deviation` save fields. Changing
 farming inputs cancels pending work, while RNG-only changes reuse saved
-statistics. Unreviewed special mechanics remain legacy-only.
+statistics. Unreviewed special mechanics remain on the deferred event backlog.
 
 The reviewed **Lessons** tab is also available for On Your Mark, Hot Springs
 Resort Daily Logs, Restoration Project, and the On Your Mark rerun. Pre-rank
@@ -204,7 +199,7 @@ Event Point add/max limits, per-location material substitutions, and the
 legacy expected-reward classification. **Lesson Rewards** is a session-only
 summary toggle; over-spending farmed Event Points keeps the plan infeasible.
 Only those four curated lesson definitions are loaded from `old_events.json`;
-other special event definitions remain on the legacy planner.
+other special event definitions remain on the deferred event backlog.
 
 The archived **Schale's Happy Valentine Patrol rerun** includes its fixed
 Invasion schedule. The original maximum-stage first-day attempt rule,
@@ -255,8 +250,7 @@ four-Striker/two-Special slot order and `[studentId]` encoding for borrowed pick
 Tournament records still load from `GET /loadtourneydata` and save to
 `POST /settourneydata` on the existing API host. The existing
 `TournamentPassword` localStorage key is sent only in the request header. The
-legacy `/planner/tournaments.html` page remains available as a fallback; CSV
-export uses English student names and the legacy column layout.
+CSV export uses English student names and the legacy column layout.
 
 ## Guessing Game
 
@@ -269,10 +263,11 @@ score format, failed-question retry flow and high scores in
 `localStorage["records"]`; unrelated record fields are retained. The image
 preload action remains available for the selected category.
 
-The old `/game/guesser.html` page and its assets remain available while the
-replacement is reviewed. The Svelte route uses the existing game manifest. The
-game service worker is retained for the legacy page; cache namespace and
-activation cleanup still need a coordinated PWA migration.
+The Svelte route uses the existing game manifest. Both planner and game service
+workers now use cache version 3 and the shared `baplanner-static-v3` cache;
+activation removes only older caches in that namespace. The workers cache
+selected images and icons, while the Svelte app shell and route chunks are not
+pre-cached for offline use.
 
 ## Character selection and search aliases
 
@@ -310,10 +305,9 @@ Add aliases to the appropriate character ID; canonical names are always included
 automatically, and duplicate aliases are deduplicated. Existing full-name entries
 may remain but are no longer required. English aliases and aliases under the
 selected language code (e.g. `KR` or `JP`) are searched alongside canonical names.
-Restart `npm run dev` or rebuild after editing the file. Legacy raid/tournament
-selectors use the same matching engine and automatic name coverage.
-The original `/planner/` and `/planner/index.html` remain available; the modern
-page links explicitly to advanced tools that have not yet been converted.
+Restart `npm run dev` or rebuild after editing the file. Raid and tournament
+selectors use the same matching engine and automatic name coverage. The root
+and retired feature addresses route to the Svelte pages.
 Generated assets/content are ignored and regenerated before development,
 type-checking, and builds.
 
@@ -380,12 +374,9 @@ reported explicitly, without writing a replacement save or fabricating a result.
 `tests/fixtures/event-core.legacy.js` is the independent frozen reference, covering
 the current and archived event definitions.
 
-The original event page remains available with all special-event tabs and
-simulation workers. Its core calculations share this verified foundation with
-the standard Svelte event interface; the reviewed box, card, dice, Omikuji, and
-Lessons flows have also moved. The reviewed Valentine Patrol rerun Invasion
-schedule is supported in the Svelte event planner; unreviewed special mechanics
-remain legacy-only.
+The original event page has been removed. The standard Svelte event interface
+supports the reviewed box, card, dice, Omikuji, Lessons, and Invasion flows;
+unreviewed special mechanics remain on the deferred backlog.
 
 Upgrade-cost formulas live in `src/lib/domain/resources`, without DOM access,
 storage, or mutable global state. The legacy planner delegates through a generated
@@ -426,9 +417,7 @@ mode; character filters include EX materials; sorting includes the legacy preset
 with current-level values and UE terrain adaptation bonuses; and the bottom tool
 bar toggles the saved alternate portrait style. The floating control panel is
 replaced by inline actions, the team screenshot preview by direct PNG download,
-and the stage-run popup by inline gear-farming results. `/planner/index.html`
-remains available through the route/PWA transition. The broader event catalog and
-mechanics audit also remains. Raid Videos uses `/planner/raids/`; the original
-`/planner/raids.html` page remains available as a fallback.
-PWA cache replacement must include a deliberate transition for installed clients;
-the original service workers are retained in this layer.
+and the stage-run popup by inline gear-farming results. The broader event catalog
+and mechanics backlog remains. Raid Videos uses `/planner/raids/`. Retired HTML
+entry pages have been removed; compatibility redirects lead to their Svelte
+routes. Both service-worker registrations use the shared version 3 cache namespace.

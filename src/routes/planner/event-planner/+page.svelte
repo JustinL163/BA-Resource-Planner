@@ -408,8 +408,7 @@
   });
 </script>
 
-<svelte:head><title>{t('page-event-planner')} - Svelte</title></svelte:head>
-<details class="migration"><summary>{t('ui-migration-status')} &middot; <a href="/planner/events.html" data-sveltekit-reload>{t('ui-legacy-tools')}</a></summary><p>{t('ui-event-boundary')}</p></details>
+<svelte:head><title>{t('page-event-planner')}</title></svelte:head>
 <noscript><p>{t('ui-javascript-required')}</p></noscript>
 {#if $planner.loading}<p role="status">{t('ui-loading-planner')}</p>{/if}
 {#if $planner.error}<p class="error" role="alert">{$planner.error}
@@ -437,7 +436,7 @@
       </div>
     {/if}
     {#if !entry}<p>{t('label-selectevent')}</p>
-    {:else if !event}<p>{t('ui-event-special-legacy')}</p><a href="/planner/events.html" data-sveltekit-reload>{t('ui-legacy-tools')}</a>
+    {:else if !event}<p>{t('ui-event-special-unavailable')}</p>
     {:else if $planner.plan && $planner.dataset}
       <nav class="tabs" bind:this={tabNav} aria-label={t('page-event-planner')}>
         {#each renderedTabRows as row (row[0])}
@@ -562,7 +561,6 @@
 </div>
 
 <style>
-  .migration { padding: .5rem; background: var(--surface); border-left: 3px solid #7c5b7d; font-size: .85rem; }
   .event-layout { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 1rem; margin-top: 1rem; }
   aside { box-sizing: border-box; align-self: start; display: flex; flex-direction: column; gap: .5rem; max-height: 70vh; max-height: 70dvh; padding-right: .25rem; overflow-y: auto; overscroll-behavior: contain; }
   aside button { display: flex; align-items: center; gap: .5rem; text-align: left; padding: .5rem; }

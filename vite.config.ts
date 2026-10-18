@@ -1,18 +1,21 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig, type Plugin } from 'vite';
 
-const legacyPageUrls: Plugin = {
-  name: 'legacy-page-urls',
+const migratedPageUrls: Plugin = {
+  name: 'migrated-page-urls',
   configureServer(server) {
     const aliases: Record<string, string> = {
-      '/': '/planner/index.html',
-      '/planner': '/planner/index.html',
-      '/planner/': '/planner/index.html'
+      '/': '/planner/resources/',
+      '/planner': '/planner/resources/',
+      '/planner/': '/planner/resources/',
+      '/planner/index.html': '/planner/resources/',
+      '/planner/events': '/planner/event-planner/',
+      '/planner/events/': '/planner/event-planner/',
+      '/planner/events.html': '/planner/event-planner/',
+      '/planner/raids.html': '/planner/raids/',
+      '/planner/tournaments.html': '/planner/tournaments/',
+      '/game/guesser.html': '/game/'
     };
-    for (const name of ['events']) {
-      aliases[`/planner/${name}`] = `/planner/${name}.html`;
-      aliases[`/planner/${name}/`] = `/planner/${name}.html`;
-    }
     for (const name of ['credit', 'privacy', 'changelog', 'debug']) {
       aliases[`/planner/${name}.html`] = `/planner/${name}/`;
     }
@@ -34,5 +37,5 @@ export default defineConfig({
     // Native realpath can fail with EPERM for files in restricted Windows worktrees.
     preserveSymlinks: process.platform === 'win32'
   },
-  plugins: [legacyPageUrls, sveltekit()]
+  plugins: [migratedPageUrls, sveltekit()]
 });

@@ -144,10 +144,9 @@ for (const id of cardEventIds) {
     await expect(page.locator('.cards .status')).not.toContainText('Simulation ready');
     expect(errors).toEqual([]);
     expect(missingImages).toEqual([]);
-    await page.getByRole('link', { name: 'Open legacy tools', exact: true }).click();
-    await page.locator(`#${id}`).click();
-    expect(await page.evaluate('event_data.standard_deviation')).toBe(-1.5);
-    expect(await page.evaluate('stage_runs[12]')).toBe(6);
+    const persisted = await page.evaluate((id) => JSON.parse(localStorage.getItem('save-data')!).events_data[id], id);
+    expect(persisted.standard_deviation).toBe(-1.5);
+    expect(persisted.optimisation_options['12']).toBe(6);
   });
 }
 

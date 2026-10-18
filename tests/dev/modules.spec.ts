@@ -44,43 +44,35 @@ test('development preserves legacy JSON assets and hydrates all shared-layout ro
   expect(errors).toEqual([]);
 });
 
-test('development uses the Svelte raid route while retaining the legacy HTML address', async ({ page }) => {
+test('development routes the retired raid URL to the Svelte page', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto('/planner/raids/');
   await expect(page.getByRole('heading', { level: 1, name: 'Raid Videos' })).toBeVisible();
   await expect(page.locator('.server-row')).toHaveCount(3);
   await page.goto('/planner/raids.html');
-  await expect(page.locator('#raid-timeline')).toBeAttached();
+  await expect(page).toHaveURL(/\/planner\/raids\/$/);
+  await expect(page.locator('.server-row')).toHaveCount(3);
   expect(errors).toEqual([]);
 });
 
-test('development uses the Svelte tournament route and still serves the original HTML fallback', async ({ page, request }) => {
+test('development routes the retired tournament URL to the Svelte page', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
   const response = await page.goto('/planner/tournaments/');
   expect(response?.status()).toBe(200);
   await expect(page.getByRole('heading', { level: 1, name: 'Tournaments' })).toBeVisible();
   await expect(page.getByRole('combobox', { name: 'Tournament', exact: true })).toHaveValue('tournament-7');
-  const legacy = await request.get('/planner/tournaments.html');
-  expect(legacy.status()).toBe(200);
-  expect(await legacy.text()).toContain('id="tournament-container"');
+  await page.goto('/planner/tournaments.html');
+  await expect(page).toHaveURL(/\/planner\/tournaments\/$/);
+  await expect(page.getByRole('heading', { level: 1, name: 'Tournaments' })).toBeVisible();
   expect(errors).toEqual([]);
 });
 
-test('development serves the event calculation bridge as JavaScript and the existing event page uses it', async ({ page, request }) => {
+test('development serves the event calculation bridge as JavaScript', async ({ request }) => {
   const response = await request.get('/planner/js/shared/events.js');
   expect(response.status()).toBe(200);
   expect(response.headers()['content-type']).toMatch(/(?:java|ecma)script/);
-  const errors: string[] = [];
-  page.on('pageerror', (error) => errors.push(error.message));
-  await page.goto('/planner/events.html');
-  await page.locator('#lore-pursuit-s2').click();
-  await page.locator('#tab-Targets').click();
-  await page.locator('#tab-opti-Shop').click();
-  expect(await page.evaluate('typeof BAEventEngine.calculateEventEnergy')).toBe('function');
-  expect(await page.evaluate('GetStagesLinearModel("Energy_Cost", "min", false).optimize')).toBe('Energy_Cost');
-  expect(errors).toEqual([]);
 });
 
 test('development hydrates the standard event planner and runs its classic solver worker', async ({ page }) => {

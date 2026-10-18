@@ -82,6 +82,7 @@ test('mobile navigation is keyboard accessible without horizontal overflow', asy
   await page.keyboard.press('Enter');
   await expect(button).toHaveAttribute('aria-expanded', 'true');
   await expect(page.getByRole('link', { name: 'Resource Planner', exact: true })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Tournaments', exact: true })).toHaveCount(0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 });
 
@@ -96,10 +97,23 @@ test('denied browser storage is reported without breaking the page', async ({ pa
   await expect(page.getByRole('alert')).toContainText('Unable to read or save preferences');
 });
 
-test('all unmigrated feature pages and worker scripts remain byte-identical', async ({ request }) => {
+test('retired feature URLs redirect to their Svelte routes', async ({ page }) => {
+  const redirects: Array<[string, string]> = [
+    ['/planner/index.html', '/planner/resources/'],
+    ['/planner/events.html', '/planner/event-planner/'],
+    ['/planner/raids.html', '/planner/raids/'],
+    ['/planner/tournaments.html', '/planner/tournaments/'],
+    ['/game/guesser.html', '/game/']
+  ];
+  for (const [source, destination] of redirects) {
+    await page.goto(`${source}?from=legacy`);
+    expect(new URL(page.url()).pathname).toBe(destination);
+    expect(new URL(page.url()).search).toBe('?from=legacy');
+  }
+});
+
+test('retained simulation worker scripts remain byte-identical', async ({ request }) => {
   for (const file of [
-    ['planner', 'index.html'], ['planner', 'events.html'], ['planner', 'raids.html'],
-    ['planner', 'tournaments.html'], ['game', 'guesser.html'],
     ['planner', 'js', 'cardGachaWorker.js'], ['planner', 'js', 'omikujiGachaWorker.js'],
     ['planner', 'js', 'diceGachaWorker.js'], ['planner', 'js', 'lzma_worker.js']
   ]) {
@@ -109,13 +123,12 @@ test('all unmigrated feature pages and worker scripts remain byte-identical', as
   }
 });
 
-test('the root redirect still loads the original resource planner', async ({ page }) => {
+test('the root redirect opens the Svelte resource planner', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto('/');
-  await expect(page).toHaveURL(/\/planner\/$/);
-  await expect(page).toHaveTitle('Blue Archive Resource Planner');
-  await expect(page.locator('#languages')).toHaveValue('En');
+  await expect(page).toHaveURL(/\/planner\/resources\/$/);
+  await expect(page.getByRole('button', { name: 'Add characters', exact: true })).toBeEnabled();
   expect(errors).toEqual([]);
 });
 

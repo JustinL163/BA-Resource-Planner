@@ -93,7 +93,7 @@ for (const id of boxEventIds) {
   });
 }
 
-test('box-currency shop edits preserve converted targets, work in real solver workers, and remain readable by legacy', async ({ page, context }) => {
+test('box-currency shop edits preserve converted targets and work in real solver workers', async ({ page, context }) => {
   const id = 'moonlight-dream';
   const event = decodeStandardEvent(events[id]);
   await context.route('**/json/events.json*', (route) => route.fulfill({
@@ -122,11 +122,10 @@ test('box-currency shop edits preserve converted targets, work in real solver wo
   await expect(page.locator('[data-event-ap]')).toBeVisible();
   await page.getByRole('checkbox', { name: 'Box Rewards', exact: true }).check();
   await expect(page.locator('[data-event-reward="Lucky_Keychain"]')).toBeVisible();
-  await page.getByRole('link', { name: 'Open legacy tools', exact: true }).click();
-  await page.locator(`#${id}`).click();
-  expect(await page.evaluate('event_data.currency_needed.Lucky_Keychain')).toBe(expectedCurrency);
-  expect(await page.evaluate('event_data.currency_needed.Souvenir_Doll')).toBe(saved.currency_needed.Souvenir_Doll);
-  expect(await page.evaluate(`event_data.shop_purchases.Lucky_Keychain[${JSON.stringify(String(firstItem.id))}]`)).toBe(1);
+  const persisted = await page.evaluate((id) => JSON.parse(localStorage.getItem('save-data')!).events_data[id], id);
+  expect(persisted.currency_needed.Lucky_Keychain).toBe(expectedCurrency);
+  expect(persisted.currency_needed.Souvenir_Doll).toBe(saved.currency_needed.Souvenir_Doll);
+  expect(persisted.shop_purchases.Lucky_Keychain[String(firstItem.id)]).toBe(1);
 });
 
 test('box events fit mobile screens and keyboard cycle changes do not touch saved settings', async ({ page }) => {

@@ -3,6 +3,7 @@
   import type { PlannerCharacter, PlannerMetadata, ResourceTotals } from '$lib/domain/planner/types';
   import { formatAmount, type ResourceItem } from '$lib/domain/planner/catalog';
   import { inventoryLayout } from '$lib/domain/planner/inventory-layout';
+  import { localizedSchoolName } from '$lib/domain/planner/localized-labels';
   import { weaponXpSummary } from '$lib/domain/planner/aggregates';
   import ResourceCell, { type ResourceMode } from './ResourceCell.svelte';
   import PlannerDialog from './PlannerDialog.svelte';
@@ -37,10 +38,7 @@
     WildHunt: 'Wildhunt', Wildhunt: 'Wildhunt'
   };
   const inlineAmount = (key: string) => inlineAmountKeys.has(key) || key.endsWith('Cost');
-  const schoolName = (name: string) => {
-    const translated = t(`school-${name.toLowerCase()}`);
-    return translated === 'Undefined' ? name.replaceAll('_', ' ') : translated;
-  };
+  const schoolName = (name: string) => localizedSchoolName(name, t).replaceAll('_', ' ');
   let panels = $derived(layout.panels);
   let summaryTiles = $derived(layout.extra.filter((item) => inlineAmount(item.key)));
   const leadingSummaryKeys = ['Credit', 'Xp', '9999'];

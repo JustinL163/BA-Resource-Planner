@@ -91,10 +91,9 @@ test('dice simulations preserve original requests, exact statistics/rewards and 
   await page.locator('[data-event-tab="Dice"]').click();
   await expect(page.locator('[data-event-dice-simulate]')).toBeEnabled();
   expect(errors).toEqual([]); expect(missingImages).toEqual([]);
-  await page.getByRole('link', { name: 'Open legacy tools', exact: true }).click();
-  await page.locator(`#${id}`).click();
-  expect(await page.evaluate('event_data.standard_deviation')).toBe(-1);
-  expect(await page.evaluate('stage_runs[12]')).toBe(6);
+  const persisted = await page.evaluate((id) => JSON.parse(localStorage.getItem('save-data')!).events_data[id], id);
+  expect(persisted.standard_deviation).toBe(-1);
+  expect(persisted.optimisation_options['12']).toBe(6);
 });
 
 test('dice cancellation, changed farming inputs and event switches terminate pending pools without saving stale rewards', async ({ page }) => {

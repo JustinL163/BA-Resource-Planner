@@ -1,5 +1,4 @@
 import { test, expect } from './fixtures';
-import { readJson, readSource } from '../unit/legacy-harness';
 import type { Page } from '@playwright/test';
 
 async function emptyPlan(page: Page) {
@@ -126,36 +125,6 @@ test('an existing borrowed slot can be replaced but borrowing stays hidden until
   await dialog.getByRole('button', { name: 'Clear slot', exact: true }).click();
   await page.locator('[data-sort-id="0:0"]').click();
   await expect(dialog.getByRole('checkbox', { name: 'Borrowed', exact: true })).toBeVisible();
-});
-
-test('legacy raids and tournaments automatically index canonical names missing from the alias file', async ({ page, context }) => {
-  await context.route('https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js', (route) => route.fulfill({
-    contentType: 'text/javascript', body: readSource('planner', 'packages', 'jquery', 'jquery.min.js')
-  }));
-  await context.route('https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js', (route) => route.fulfill({
-    contentType: 'text/javascript', body: readSource('planner', 'packages', 'sweetalert2', 'sweetalert2.min.js')
-  }));
-  const errors: string[] = [];
-  page.on('pageerror', (error) => errors.push(error.message));
-  for (const route of ['/planner/raids.html', '/planner/tournaments.html']) {
-    await page.goto(route);
-    await page.waitForFunction('typeof studentSearchIndex !== "undefined" && Boolean(studentSearchIndex)');
-    expect(await page.evaluate('SearchStudent("Kirara", 5)[0]')).toBe('10093');
-    expect(await page.evaluate('SearchStudent("broko", 5)[0]')).toBe('10024');
-  }
-  expect(errors).toEqual([]);
-});
-
-test('manual alias changes are additive rather than replacing canonical names', async ({ page, context }) => {
-  const raw = readJson('planner', 'json', 'student_info.json');
-  if (typeof raw !== 'object' || raw === null) throw new Error('Invalid alias fixture.');
-  await context.route('**/json/student_info.json*', (route) => route.fulfill({
-    contentType: 'application/json', body: JSON.stringify({ ...raw, '10093': { EN: ['manual-kirara-name'] } })
-  }));
-  await page.goto('/planner/raids.html');
-  await page.waitForFunction('typeof studentSearchIndex !== "undefined" && Boolean(studentSearchIndex)');
-  expect(await page.evaluate('SearchStudent("manual-kirara-name", 5)[0]')).toBe('10093');
-  expect(await page.evaluate('SearchStudent("Kirara", 5)[0]')).toBe('10093');
 });
 
 test.describe('touch selector', () => {

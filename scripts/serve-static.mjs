@@ -21,22 +21,9 @@ const redirects = (await readFile(join(root, '_redirects'), 'utf8'))
   .split(/\r?\n/)
   .filter((line) => line.trim() && !line.startsWith('#'))
   .map((line) => line.trim().split(/\s+/));
-const legacyAliases = new Map(
-  ['events'].flatMap((name) => [
-    [`/planner/${name}`, `/planner/${name}.html`],
-    [`/planner/${name}/`, `/planner/${name}.html`]
-  ])
-);
-
 const server = createServer(async (request, response) => {
   try {
     const url = new URL(request.url, 'http://localhost');
-    const alias = legacyAliases.get(url.pathname);
-    if (alias) {
-      response.writeHead(302, { Location: alias + url.search });
-      response.end();
-      return;
-    }
     const redirect = redirects.find(([from]) => from === url.pathname);
     if (redirect) {
       response.writeHead(Number(redirect[2]), { Location: redirect[1] + url.search });

@@ -63,12 +63,8 @@ test('group management preserves empty groups, order, unrelated fields and legac
   expect(save.groups['Raid Renamed']).toEqual([['10000', { id: '10001' }, null, null, '20000', null]]);
   expect(save.events_data).toEqual(saved().events_data);
   expect(save.futureField).toEqual(saved().futureField);
-  await page.getByRole('link', { name: 'Open legacy tools', exact: true }).click();
-  await page.waitForFunction('typeof loaded !== "undefined" && loaded');
-  await page.locator('#button-teamstoggle').click();
-  await page.locator('#select-groups').selectOption('Raid Renamed');
-  await expect(page.locator('#teamsContainer .team-wrapper')).toHaveCount(1);
-  await expect(page.locator('#char_borrow_10001')).toBeVisible();
+  await expect(page.getByRole('combobox', { name: 'Group', exact: true })).toHaveValue('Raid Renamed');
+  await expect(page.locator('[data-sort-id="0:1"]')).toBeVisible();
   expect(errors).toEqual([]);
 });
 

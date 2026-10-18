@@ -12,22 +12,28 @@
 
   let { children }: { children: Snippet } = $props();
   let menuOpen = $state(false);
-  const standaloneGame = $derived(page.url.pathname === '/game/');
+  const standaloneGame = $derived(page.url.pathname.startsWith('/game/'));
   const links = [
-    { href: '/planner/index.html', label: 'page-resource-planner', legacy: true },
-    { href: '/planner/resources/', label: 'page-modernplanner', legacy: false },
-    { href: '/planner/events.html', label: 'page-event-planner', legacy: true },
-    { href: '/planner/event-planner/', label: 'page-modernevents', legacy: false },
-    { href: '/planner/raids/', label: 'page-raids', legacy: false },
-    { href: '/planner/tournaments/', label: 'page-tournaments', legacy: false },
-    { href: '/game/', label: 'page-guesser', legacy: false },
-    { href: '/planner/changelog/', label: 'page-changelog', legacy: false },
-    { href: '/planner/privacy/', label: 'page-privacy', legacy: false },
-    { href: '/planner/credit/', label: 'page-credit', legacy: false }
+    { href: '/planner/resources/', label: 'page-resource-planner' },
+    { href: '/planner/event-planner/', label: 'page-event-planner' },
+    { href: '/planner/raids/', label: 'page-raids' },
+    { href: '/game/', label: 'page-guesser' },
+    { href: '/planner/changelog/', label: 'page-changelog' },
+    { href: '/planner/privacy/', label: 'page-privacy' },
+    { href: '/planner/credit/', label: 'page-credit' }
   ];
+
+  function registerPageServiceWorker(pathname = page.url.pathname) {
+    if (!('serviceWorker' in navigator)) return;
+    const scriptUrl = pathname.startsWith('/game/') ? '/game/sw-game.js' : '/planner/sw.js';
+    void navigator.serviceWorker.register(scriptUrl).catch((error: unknown) => {
+      console.warn('Service worker registration failed.', error);
+    });
+  }
 
   onMount(() => {
     preferences.initialise();
+    registerPageServiceWorker();
     const refreshPreferences = (event: StorageEvent) => {
       if (event.key === 'save-data' || event.key === null) preferences.initialise();
     };
@@ -42,7 +48,10 @@
     };
   });
 
-  afterNavigate(() => { menuOpen = false; });
+  afterNavigate(() => {
+    menuOpen = false;
+    registerPageServiceWorker();
+  });
 
   $effect(() => {
     const path = page.url.pathname;
@@ -72,12 +81,11 @@
       aria-controls="site-navigation"
       onclick={() => menuOpen = !menuOpen}
     ><img src="/planner/icons/UI/hamburger.svg" alt="" /></button>
-    <a class="logo" href="/planner/index.html" data-sveltekit-reload>Justin163</a>
+    <a class="logo" href="/planner/resources/">Justin163</a>
     <nav id="site-navigation" aria-label="Main navigation" class:open={menuOpen}>
       {#each links as link}
         <a
           href={link.href}
-          data-sveltekit-reload={link.legacy}
           aria-current={page.url.pathname === link.href ? 'page' : undefined}
         >{getLanguageString(strings, link.label, $preferences.language)}</a>
       {/each}

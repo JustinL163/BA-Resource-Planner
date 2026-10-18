@@ -18,7 +18,7 @@ function save() {
   };
 }
 
-test('adds and edits characters, persists costs, and remains readable by the legacy planner', async ({ page }) => {
+test('adds and edits characters and persists calculated costs', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto('/planner/resources/');
@@ -41,10 +41,7 @@ test('adds and edits characters, persists costs, and remains readable by the leg
   await page.getByRole('button', { name: 'Edit Aru', exact: true }).click();
   await expect(page.getByRole('spinbutton', { name: 'Level Target', exact: true })).toHaveValue('90');
   await page.keyboard.press('Escape');
-  await page.getByRole('link', { name: 'Open legacy tools', exact: true }).click();
-  await expect(page).toHaveURL(/\/planner\/index.html$/);
-  await expect(page.locator('#char_10000')).toBeVisible();
-  expect(await page.evaluate('data.characters[0].target.level')).toBe(90);
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('save-data')!).characters[0].target.level)).toBe(90);
   expect(errors).toEqual([]);
 });
 

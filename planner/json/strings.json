@@ -61,9 +61,7 @@
     "ui-event-box-cleared": { "EN": "Boxes cleared" },
     "ui-event-box-leftover": { "EN": "Currency for an additional box" },
     "ui-event-box-not-included": { "EN": "(partial rewards not included)" },
-    "page-modernevents": { "EN": "Svelte Events" },
-    "ui-event-boundary": { "EN": "Standard stage-and-shop, box-draw, card-draw, reviewed dice-race, Omikuji, Lessons, and Invasion events are available here. Other special reward mechanics still use the legacy planner. Simulation engines and saved plans remain compatible." },
-    "ui-event-special-legacy": { "EN": "This event has special mechanics that have not been migrated yet. Use the legacy event planner for its complete calculations." },
+    "ui-event-special-unavailable": { "EN": "This event has special mechanics that are not available in the event planner yet." },
     "ui-event-reload": { "EN": "Reload event settings" },
     "ui-event-summary": { "EN": "Farming plan and rewards" },
     "ui-event-solving": { "EN": "Optimizing stages in a worker..." },
@@ -200,7 +198,6 @@
     "ui-overlay-books": { "EN": "Limit break" },
     "ui-preference-failed": { "EN": "Could not save display preferences." },
     "ui-moved-character": { "EN": "Moved" },
-    "ui-migration-status": { "EN": "Migration in progress" },
     "ui-filters-sort": { "EN": "Filters and sorting" },
     "ui-planner-tools": { "EN": "Planner tools" },
     "ui-artifacts": { "EN": "Artifacts" },
@@ -215,9 +212,6 @@
     "ui-group-weapon-items": { "EN": "Weapon materials" },
     "ui-group-gifts": { "EN": "Gifts" },
     "ui-group-school-materials": { "EN": "School materials" },
-    "page-modernplanner": { "EN": "Svelte Planner" },
-    "ui-modern-boundary": { "EN": "The new planner includes teams, groups, bulk editing, farming recommendations, team exports, cloud transfers and character skill details. Remaining legacy-only display controls are still available in the legacy planner." },
-    "ui-legacy-tools": { "EN": "Open legacy tools" },
     "ui-loading-planner": { "EN": "Loading planner data..." },
     "ui-javascript-required": { "EN": "JavaScript is required to load your local saved plan and run the calculators. No personal data is rendered during the static build." },
     "ui-retry": { "EN": "Retry" },
@@ -1039,7 +1033,8 @@
         "TH": "เฮียกคิยาโค",
         "ID": "Hyakkiyako",
         "JP": "百鬼夜行",
-        "CN": "百鬼夜行"
+        "CN": "百鬼夜行",
+        "TW": "百鬼夜行"
     },
     "school-redwinter": {
         "EN": "Red Winter",
@@ -1047,7 +1042,8 @@
         "TH": "เรดวินเทอร์",
         "ID": "Red Winter",
         "JP": "レッドウインター",
-        "CN": "红冬"
+        "CN": "红冬",
+        "TW": "赤冬"
     },
     "school-trinity": {
         "EN": "Trinity",
@@ -1055,7 +1051,8 @@
         "TH": "ทรีนิตี้",
         "ID": "Trinity",
         "JP": "トリニティ",
-        "CN": "三一"
+        "CN": "三一",
+        "TW": "三一"
     },
     "school-gehenna": {
         "EN": "Gehenna",
@@ -1063,7 +1060,8 @@
         "TH": "เกเฮนน่า",
         "ID": "Gehenna",
         "JP": "ゲヘナ",
-        "CN": "格黑娜"
+        "CN": "格黑娜",
+        "TW": "格黑娜"
     },
     "school-abydos": {
         "EN": "Abydos",
@@ -1071,7 +1069,8 @@
         "TH": "อบิดอส",
         "ID": "Abydos",
         "JP": "アビドス",
-        "CN": "阿拜多斯"
+        "CN": "阿拜多斯",
+        "TW": "阿拜多斯"
     },
     "school-millennium": {
         "EN": "Millennium",
@@ -1079,7 +1078,8 @@
         "TH": "มิลเลเนียม",
         "ID": "Millennium",
         "JP": "ミレニアム",
-        "CN": "千年"
+        "CN": "千年",
+        "TW": "千年"
     },
     "school-arius": {
         "EN": "Arius",
@@ -1087,7 +1087,8 @@
         "TH": "อาเรียส",
         "ID": "Arius",
         "JP": "アリウス",
-        "CN": "阿里乌斯"
+        "CN": "阿里乌斯",
+        "TW": "奧利斯"
     },
     "school-shanhaijing": {
         "EN": "Shanhaijing",
@@ -1095,7 +1096,8 @@
         "TH": "ซานไห่จิง",
         "ID": "Shanhaijing",
         "JP": "山海経",
-        "CN": "山海经"
+        "CN": "山海经",
+        "TW": "山海經"
     },
     "school-valkyrie": {
         "EN": "Valkyrie",
@@ -1103,7 +1105,8 @@
         "TH": "วัลคีรี่",
         "ID": "Valkyrie",
         "JP": "ヴァルキューレ",
-        "CN": "瓦尔基里"
+        "CN": "瓦尔基里",
+        "TW": "女武神"
     },
     "school-srt": {
         "EN": "SRT",
@@ -1111,7 +1114,8 @@
         "TH": "SRT",
         "ID": "SRT",
         "JP": "SRT",
-        "CN": "SRT"
+        "CN": "SRT",
+        "TW": "SRT"
     },
     "school-etc": {
         "EN": "ETC",
@@ -1119,21 +1123,24 @@
         "TH": "อื่นๆ",
         "ID": "Lain-lain",
         "JP": "その他",
-        "CN": "其他"
+        "CN": "其他",
+        "TW": "其他"
     },
     "school-highlander": {
         "EN": "Highlander",
         "KR": "하이랜더",
         "TH": "ไฮแลนเดอร์",
         "JP": "ハイランダー",
-        "CN": "高原众"
+        "CN": "高原众",
+        "TW": "高地人"
     },
     "school-wildhunt": {
         "EN": "Wild Hunt",
         "KR": "와일드헌트",
         "TH": "ไวลด์ฮันต์",
         "JP": "ワイルドハント",
-        "CN": "狂猎"
+        "CN": "狂猎",
+        "TW": "狂獵"
     },
     "artifact-nebra": {
         "EN": "Nebra",
@@ -1558,7 +1565,8 @@
         "TH": "ระเบิด",
         "ID": "Explosive",
         "JP": "爆発",
-        "CN": "爆炸"
+        "CN": "爆炸",
+        "TW": "爆炸"
     },
     "atktype-pierce": {
         "EN": "Piercing",
@@ -1566,7 +1574,8 @@
         "TH": "เจาะเกราะ",
         "ID": "Piercing",
         "JP": "貫通",
-        "CN": "贯通"
+        "CN": "贯通",
+        "TW": "貫穿"
     },
     "atktype-mystic": {
         "EN": "Mystic",
@@ -1574,7 +1583,8 @@
         "TH": "ลึกลับ",
         "ID": "Mystic",
         "JP": "神秘",
-        "CN": "神秘"
+        "CN": "神秘",
+        "TW": "神秘"
     },
     "atktype-sonic": {
         "EN": "Sonic",
@@ -1587,7 +1597,8 @@
         "TH": "เกราะเบา",
         "ID": "Light",
         "JP": "軽装備",
-        "CN": "轻型护甲"
+        "CN": "轻型护甲",
+        "TW": "輕裝甲"
     },
     "deftype-heavyarmor": {
         "EN": "Heavy",
@@ -1595,7 +1606,8 @@
         "TH": "เกราะหนัก",
         "ID": "Heavy",
         "JP": "重装甲",
-        "CN": "重型装甲"
+        "CN": "重型装甲",
+        "TW": "重裝甲"
     },
     "deftype-unarmed": {
         "EN": "Special",
@@ -1603,7 +1615,8 @@
         "TH": "เกราะพิเศษ",
         "ID": "Special",
         "JP": "特殊装甲",
-        "CN": "特殊装甲"
+        "CN": "特殊装甲",
+        "TW": "特殊裝甲"
     },
     "deftype-elasticarmor": {
         "EN": "Elastic",
@@ -1611,7 +1624,8 @@
         "TH": "เกราะยืดหยุ่น",
         "ID": "Elastis",
         "JP": "弾力装甲",
-        "CN": "弹性装甲"
+        "CN": "弹性装甲",
+        "TW": "弹性装甲"
     },
     "deftype-compositearmor": {
         "EN": "Composite"

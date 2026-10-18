@@ -142,10 +142,9 @@ test('standard event tabs use a real solver worker and preserve legacy-compatibl
   await page.locator('[data-event-id="lore-pursuit-s2"]').click();
   await page.locator('[data-event-tab="Stages"]').click();
   await expect(page.getByRole('spinbutton', { name: 'Runs Q9', exact: true })).toHaveValue('12');
-  await page.getByRole('link', { name: 'Open legacy tools', exact: true }).click();
-  await page.locator('#lore-pursuit-s2').click();
-  expect(await page.evaluate('event_data.shop_purchases.Cooling_Pack.XP_1')).toBe(10);
-  expect(await page.evaluate('stage_runs[9]')).toBe(12);
+  const persisted = await page.evaluate(() => JSON.parse(localStorage.getItem('save-data')!).events_data['lore-pursuit-s2']);
+  expect(persisted.shop_purchases.Cooling_Pack.XP_1).toBe(10);
+  expect(persisted.optimisation_options['9']).toBe(12);
   expect(errors).toEqual([]);
   expect(failedImages).toEqual([]);
 });
@@ -264,7 +263,7 @@ test('Secret Midnight Party keeps its BOOM input and converted Youkai target in 
   expect(stored.currency_owned.Youkai_MAX_Umeboshi_Flavor).toBe(501);
 });
 
-test('Honorable Sea Showdown converts Renge shop costs to Yukari currency and leaves the legacy event planner available', async ({ page }) => {
+test('Honorable Sea Showdown converts Renge shop costs to Yukari currency and preserves saved ownership', async ({ page }) => {
   const plan = decodeEventPlan(undefined, honorableEvent);
   const save = { exportVersion: 2, events_data: { [honorableId]: plan } };
   await page.clock.setFixedTime(honorableTime);
@@ -297,13 +296,9 @@ test('Honorable Sea Showdown converts Renge shop costs to Yukari currency and le
   stored = await page.evaluate(() => JSON.parse(localStorage.getItem('save-data')!).events_data['honorable-sea-showdown']);
   expect(stored.currency_owned['Wooden_Doll_(Yukari)']).toBe(500);
   expect(stored.currency_needed['Wooden_Doll_(Yukari)']).toBe(10800);
-
-  await page.getByRole('link', { name: 'Open legacy tools', exact: true }).click();
-  await page.locator('#lore-pursuit-s2').click();
-  expect(await page.evaluate('current_event')).toBe('lore-pursuit-s2');
 });
 
-test('Serenade Promenade rerun calculates capped overflow Eleph and keeps legacy planner available', async ({ page }) => {
+test('Serenade Promenade rerun calculates capped overflow Eleph', async ({ page }) => {
   const plan = decodeEventPlan(undefined, serenadeEvent);
   plan.optimisation_type = 'Currency';
   plan.optimisation_options = 'Event_Point';
@@ -325,7 +320,6 @@ test('Serenade Promenade rerun calculates capped overflow Eleph and keeps legacy
   expect(overflowCount).toBeLessThanOrEqual(999);
   await expect(overflowPurchase).toHaveAttribute('max', '999');
   await expect(overflowPurchase).toBeDisabled();
-  await expect(page.getByRole('link', { name: 'Open legacy tools', exact: true })).toHaveAttribute('href', '/planner/events.html');
 });
 
 test('Winter Skies preserves point thresholds and derives Event Points from its shop', async ({ page }) => {
@@ -367,7 +361,6 @@ test('Winter Skies preserves point thresholds and derives Event Points from its 
   await owned.fill('1000');
   await owned.press('Tab');
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('save-data')!).events_data['winter-skies-renaissance'].currency_owned.Event_Point)).toBe(1000);
-  await expect(page.getByRole('link', { name: 'Open legacy tools', exact: true })).toHaveAttribute('href', '/planner/events.html');
 });
 
 test('Descent rerun derives its Voucher target from Firecracker purchases and keeps Firecrackers out of Owned', async ({ page }) => {
@@ -396,7 +389,6 @@ test('Descent rerun derives its Voucher target from Firecracker purchases and ke
 
   await page.locator('[data-event-tab="Owned"]').click();
   await expect(page.locator('input[data-event-currency="Moonlight_Festival_Firecrackers"]')).toHaveCount(0);
-  await expect(page.getByRole('link', { name: 'Open legacy tools', exact: true })).toHaveAttribute('href', '/planner/events.html');
 
   await page.reload();
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
@@ -405,7 +397,7 @@ test('Descent rerun derives its Voucher target from Firecracker purchases and ke
   expect(stored.currency_needed.Moonlight_Festival_Voucher).toBe(10800);
 });
 
-test('Railroad Runaway is available in the supported archive and keeps the legacy page available', async ({ page }) => {
+test('Railroad Runaway is available in the supported archive', async ({ page }) => {
   const plan = decodeEventPlan(undefined, railroadEvent);
   const save = { exportVersion: 2, events_data: { [railroadId]: plan } };
   await page.clock.setFixedTime(railroadTime);
@@ -421,10 +413,6 @@ test('Railroad Runaway is available in the supported archive and keeps the legac
   await page.locator('[data-event-tab="Owned"]').click();
   await expect(page.locator('input[data-event-currency="Iron_Pipe"]')).toHaveCount(0);
   await expect(page.locator('input[data-event-currency="Highlander_Commemorative_Sticker"]')).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Open legacy tools', exact: true })).toHaveAttribute('href', '/planner/events.html');
-  await page.getByRole('link', { name: 'Open legacy tools', exact: true }).click();
-  await expect(page.locator('#events-list')).toBeVisible();
-  expect(await page.evaluate('location.pathname')).toBe('/planner/events.html');
 });
 
 test('I\u2019ve aLIVE rerun exposes its points, Owned currencies, and safe unlimited Eleph purchase', async ({ page }) => {
@@ -437,7 +425,6 @@ test('I\u2019ve aLIVE rerun exposes its points, Owned currencies, and safe unlim
   await page.locator(`[data-event-id="${iveAliveId}"]`).click();
   await expect(page.getByRole('heading', { name: '-ive aLIVE!', exact: true })).toBeVisible();
   await expect(page.locator('[data-event-tab]')).toHaveCount(7);
-  await expect(page.getByRole('link', { name: 'Open legacy tools', exact: true })).toHaveAttribute('href', '/planner/events.html');
 
   await page.locator('[data-event-tab="Points"]').click();
   await expect(page.locator('[data-event-point="15000"]')).toBeVisible();
@@ -465,7 +452,6 @@ test("Summer Sky's Promise keeps its milestone currency out of solver and Owned 
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator(`[data-event-id="${summerSkyId}"]`).click();
   await expect(page.getByRole('heading', { name: "Summer Sky's Promise", exact: true })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Open legacy tools', exact: true })).toHaveAttribute('href', '/planner/events.html');
 
   await page.locator('[data-event-tab="Targets"]').click();
   await page.locator('[data-event-mode="Currency"]').click();
@@ -489,7 +475,6 @@ test("Summer Sky's Promise keeps its milestone currency out of solver and Owned 
   await page.locator(`[data-event-id="${summerSkyId}"]`).click();
   stored = await page.evaluate(() => JSON.parse(localStorage.getItem('save-data')!).events_data["summer-sky's-promise"]);
   expect(stored.currency_needed["Shanhaijing_Tea_Garden's_Fine_Tea"]).toBe(141);
-  await expect(page.getByRole('link', { name: 'Open legacy tools', exact: true })).toHaveAttribute('href', '/planner/events.html');
 });
 
 test('SheSide Outside keeps Tournament Water Gun outside solver and Owned controls while saving shop edits', async ({ page }) => {
@@ -521,14 +506,12 @@ test('SheSide Outside keeps Tournament Water Gun outside solver and Owned contro
   await pyroxene.press('Tab');
   let stored = await page.evaluate(() => JSON.parse(localStorage.getItem('save-data')!).events_data['sheside-outside-rerun']);
   expect(stored.currency_needed.Tournament_Water_Gun).toBe(132);
-  await expect(page.getByRole('link', { name: 'Open legacy tools', exact: true })).toHaveAttribute('href', '/planner/events.html');
 
   await page.reload();
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator(`[data-event-id="${sheSideId}"]`).click();
   stored = await page.evaluate(() => JSON.parse(localStorage.getItem('save-data')!).events_data['sheside-outside-rerun']);
   expect(stored.currency_needed.Tournament_Water_Gun).toBe(132);
-  await expect(page.getByRole('link', { name: 'Open legacy tools', exact: true })).toHaveAttribute('href', '/planner/events.html');
 });
 
 test('cross-tab event changes block stale edits but unrelated save changes are retained', async ({ context }) => {

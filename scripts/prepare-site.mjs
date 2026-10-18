@@ -11,6 +11,7 @@ const assets = join(root, '.generated-static');
 const content = join(root, '.generated-content');
 const documentNames = ['credit', 'privacy', 'changelog'];
 const migratedNames = [...documentNames, 'debug'];
+const retiredPlannerPages = new Set(['index.html', 'events.html', 'raids.html', 'tournaments.html']);
 const reviewedOldEventIds = ['on-your-mark', 'hot-spring-rerun', 'restoration-project', 'on-your-mark-rerun', 'valentine-rerun'];
 const supportedTags = new Set([
   'div', 'h2', 'h3', 'h4', 'p', 'ul', 'ol', 'li', 'br', 'a',
@@ -108,11 +109,14 @@ for (const [id, languages] of Object.entries(aliases)) {
 await cp(join(root, 'planner', 'json', 'student_info.json'), join(content, 'search-aliases.json'));
 
 for (const name of ['favicon.ico', 'index.html', 'game']) {
-  await cp(join(root, name), join(assets, name), { recursive: true });
+  await cp(join(root, name), join(assets, name), {
+    recursive: true,
+    filter: (source) => source !== join(root, 'game', 'guesser.html')
+  });
 }
 await mkdir(join(assets, 'planner'), { recursive: true });
 for (const entry of await readdir(join(root, 'planner'), { withFileTypes: true })) {
-  if (migratedNames.some((name) => entry.name === `${name}.html`)) continue;
+  if (retiredPlannerPages.has(entry.name) || migratedNames.some((name) => entry.name === `${name}.html`)) continue;
   await cp(join(root, 'planner', entry.name), join(assets, 'planner', entry.name), { recursive: true });
 }
 await generateBonusCurrencyIcons(
@@ -176,4 +180,4 @@ for (const name of ['gear-farm', 'event-plan', 'card-statistics']) {
     }
   });
 }
-console.log('Prepared legacy assets and prerendered documentation content.');
+console.log('Prepared static assets and prerendered documentation content.');

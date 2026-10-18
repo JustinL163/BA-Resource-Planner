@@ -586,10 +586,6 @@
 <div class="raid-page">
   <div class="raid-background" aria-hidden="true"></div>
   <h1>{t('page-raids')}</h1>
-  <details class="migration-note">
-    <summary>{t('ui-migration-status')} &middot; <a href="/planner/raids.html" data-sveltekit-reload>{t('ui-legacy-tools')}</a></summary>
-    <p>The original raid video page remains available at <a href="/planner/raids.html" data-sveltekit-reload>/planner/raids.html</a>.</p>
-  </details>
 
   {#if pageLoading}<p role="status">Loading raid history and character search...</p>{/if}
   {#if pageError}
@@ -774,7 +770,7 @@
       </header>
       <p role="alert">{credentialError || t('text-goregisteraccount')}</p>
       <footer class="modal-footer">
-        <a class="submit-button" href="/planner/index.html" data-sveltekit-reload>Open the account page</a>
+        <a class="submit-button" href="/planner/resources/">Open the account page</a>
         <button class="quiet-button" type="button" onclick={() => credentialPrompt = false}>Close</button>
       </footer>
     </dialog>
@@ -870,8 +866,8 @@
           </section>
         {/each}
       </div>
-      {#if credentialError && !cloudCredentials}<p class="error" role="alert">{credentialError} <a href="/planner/index.html" data-sveltekit-reload>Open the account page</a></p>{/if}
-      {#if editorError}<p class="error" role="alert">{editorError} {#if editorError === t('text-goregisteraccount')}<a href="/planner/index.html" data-sveltekit-reload>Open the account page</a>{/if}</p>{/if}
+      {#if credentialError && !cloudCredentials}<p class="error" role="alert">{credentialError} <a href="/planner/resources/">Open the account page</a></p>{/if}
+      {#if editorError}<p class="error" role="alert">{editorError} {#if editorError === t('text-goregisteraccount')}<a href="/planner/resources/">Open the account page</a>{/if}</p>{/if}
       <footer class="modal-footer">
         <button class="quiet-button" type="button" disabled={submitting} onclick={closeEditor}>{t('label-cancel')}</button>
         <button class="submit-button" type="button" disabled={submitting} onclick={() => void saveSubmission()}>{submitting ? 'Saving...' : 'Save video'}</button>
@@ -904,9 +900,6 @@
   .raid-page { position: relative; isolation: isolate; min-height: 70vh; padding-bottom: 3rem; }
   .raid-background { position: fixed; inset: 0; z-index: -1; pointer-events: none; background: center / cover no-repeat url('/planner/icons/Backgrounds/chesed-indoor.jpg'); filter: blur(45px); opacity: 0.22; transform: scale(1.05); }
   .raid-page h1 { margin-top: 0; }
-  .migration-note { margin: 0.75rem 0 1.25rem; padding: 0.65rem 0.85rem; border: 1px solid #7c5b7d80; border-radius: 0.6rem; background: color-mix(in srgb, Canvas 85%, transparent); }
-  .migration-note summary { cursor: pointer; }
-  .migration-note p { margin-bottom: 0; }
   button, select, input { font: inherit; }
   button { cursor: pointer; color: inherit; }
   button:disabled { cursor: not-allowed; opacity: 0.55; }

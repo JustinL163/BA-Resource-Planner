@@ -145,10 +145,9 @@ test('owned remote videos keep the authenticated edit action and append the edit
   });
 });
 
-test('the legacy raid URL remains a directly available fallback', async ({ page, request }) => {
-  const response = await request.get('/planner/raids.html');
-  expect(response.status()).toBe(200);
+test('the retired raid URL redirects to the Svelte page', async ({ page }) => {
   await page.goto('/planner/raids.html');
-  await expect(page.locator('#raid-timeline')).toBeAttached();
-  await expect(page.locator('#raid-submissions')).toBeAttached();
+  await expect(page).toHaveURL(/\/planner\/raids\/$/);
+  await expect(page.getByRole('heading', { level: 1, name: 'Raid Videos' })).toBeVisible();
+  await expect(page.locator('.server-row')).toHaveCount(3);
 });

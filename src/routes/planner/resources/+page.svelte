@@ -14,6 +14,7 @@
   import { sortableReorder, type DragState } from '$lib/components/planner/sortable';
   import type { CardMode } from '$lib/domain/planner/card-display';
   import { availableExMaterialFilterOptions, matchesExMaterialFilter } from '$lib/domain/planner/ex-material-filter';
+  import { localizedAttackTypeName, localizedDefenseTypeName, localizedSchoolName } from '$lib/domain/planner/localized-labels';
   import { legacySortPresetKeys, sortPlannerCharacters, type LegacySortPresetKey } from '$lib/domain/planner/legacy-sort';
   import TeamsEditor from '$lib/components/planner/TeamsEditor.svelte';
   import BulkEditor from '$lib/components/planner/BulkEditor.svelte';
@@ -461,7 +462,7 @@
 
 </script>
 
-<svelte:head><title>{t('page-resource-planner')} - Svelte</title></svelte:head>
+<svelte:head><title>{t('page-resource-planner')}</title></svelte:head>
 
 {#if moveWarningVisible}
   {#key moveWarningAnimation}
@@ -470,9 +471,6 @@
 {/if}
 <h1 class="visually-hidden">{t('page-resource-planner')}</h1>
 <noscript><p>{t('ui-javascript-required')}</p></noscript>
-<details class="migration-note"><summary>{t('ui-migration-status')} &middot; <a href="/planner/index.html" data-sveltekit-reload>{t('ui-legacy-tools')}</a></summary>
-  <p>{t('ui-modern-boundary')}</p>
-</details>
 {#if $planner.loading}<p role="status">{t('ui-loading-planner')}</p>{/if}
 {#if $planner.error}
   <div class="error-banner" role="alert">{$planner.error}
@@ -502,13 +500,13 @@
           {#each Object.keys($planner.data.groups) as name}<option>{name}</option>{/each}</select>
       </div>
       <label>{t('label-school')}<select class:is-filtered={school !== ''} bind:value={school}><option value="">{t('label-all')}</option>
-        {#each schools as name}<option>{name}</option>{/each}</select></label>
+        {#each schools as name}<option value={name}>{localizedSchoolName(name, t)}</option>{/each}</select></label>
       <label>{t('ui-role')}<select class:is-filtered={role !== ''} bind:value={role}><option value="">{t('label-all')}</option>
         <option value="Main">Striker</option><option value="Support">Special</option></select></label>
       <label>{t('label-attacktype')}<select class:is-filtered={attack !== ''} bind:value={attack}><option value="">{t('label-all')}</option>
-        {#each attacks as name}<option>{name}</option>{/each}</select></label>
+        {#each attacks as name}<option value={name}>{localizedAttackTypeName(name, t)}</option>{/each}</select></label>
       <label>{t('label-defensetype')}<select class:is-filtered={armour !== ''} bind:value={armour}><option value="">{t('label-all')}</option>
-        {#each armours as name}<option value={name}>{t(`deftype-${name.toLowerCase()}`)}</option>{/each}</select></label>
+        {#each armours as name}<option value={name}>{localizedDefenseTypeName(name, t)}</option>{/each}</select></label>
       <label>{t('ui-weapon-type')}<select class:is-filtered={weapon !== ''} bind:value={weapon}><option value="">{t('label-all')}</option>
         {#each weapons as name}<option>{name}</option>{/each}</select></label>
       <label>{t('ui-base-rarity')}<select class:is-filtered={rarity !== ''} bind:value={rarity}><option value="">{t('label-all')}</option>
@@ -636,7 +634,6 @@
 
 <style>
   section { margin: 1.25rem 0; }
-  .migration-note { font-size: 0.85rem; padding: 0.5rem; border-left: 3px solid #7c5b7d; background: var(--surface); line-height: 1.5; }
   .filters, .toolbar { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1rem 0; align-items: flex-end; }
   .selection-tools { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
   label { display: flex; flex-direction: column; gap: 0.35rem; }

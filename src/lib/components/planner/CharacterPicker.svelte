@@ -2,6 +2,7 @@
   import { tick } from 'svelte';
   import type { CharacterInfo, PlannerMetadata } from '$lib/domain/planner/types';
   import { createStudentSearchIndex, matchesSearchText } from '$lib/domain/planner/student-search';
+  import { localizedSchoolName } from '$lib/domain/planner/localized-labels';
   import { preferences } from '$lib/stores/preferences';
   import aliases from '$content/search-aliases.json';
   import PlannerDialog from './PlannerDialog.svelte';
@@ -18,9 +19,11 @@
   let gridSearch = $state<HTMLInputElement>();
   let message = $state('');
   let index = $derived(createStudentSearchIndex(students, names, aliases, $preferences.language));
+  const searchSchoolName = (name: string) => localizedSchoolName(name, t);
   let allowed = $derived(new Set(Object.keys(students).filter((id) => !added.includes(id) && !['10099', '10144'].includes(id))));
   let available = $derived(Object.entries(students).filter(([id, info]) =>
-    allowed.has(id) && (matchesSearchText(index, id, query) || `${info.School} ${id}`.toLowerCase().includes(query.toLowerCase().trim()))
+    allowed.has(id) && (matchesSearchText(index, id, query) ||
+      `${info.School} ${searchSchoolName(info.School)} ${id}`.toLowerCase().includes(query.toLowerCase().trim()))
   ).sort(([a, first], [b, second]) => (names[a] ?? first.Name).localeCompare(names[b] ?? second.Name)));
   let pending = $derived(selected.filter((id) => allowed.has(id)));
   async function switchView() {
@@ -49,7 +52,7 @@
               selected = event.currentTarget.checked ? [...selected, id] : selected.filter((value) => value !== id);
             }} />
             {#if metadata.portraits[id]}<img class="character-image" src={metadata.portraits[id]} alt="" loading="lazy" width="50" height="56" />{/if}
-            <span>{names[id] ?? info.Name}<small>{info.School}</small></span>
+            <span>{names[id] ?? info.Name}<small>{localizedSchoolName(info.School, t)}</small></span>
           </label>
         {/each}
       </div>
