@@ -491,12 +491,15 @@
     const materialGroups = new Set(definitions.flatMap((definition) => definition.groups));
     return { rows, summary: entries.filter((entry) => !materialGroups.has(entry.item.group) && entry.item.key !== 'ShopResets') };
   });
+  let hasCostPreview = $derived(Boolean(validation.resources && (
+    costPreview.rows.length || costPreview.summary.length || !Number.isFinite(validation.resources.ShopResets ?? 0)
+  )));
   function ignoreOwnedResource(_key: string, _amount: number): boolean {
     return false;
   }
 </script>
 
-<dialog use:modal={{ focusDialog: true }} tabindex="-1" aria-labelledby="editor-title" data-character-editor-dialog class:form-dirty={dirty}
+<dialog use:modal={{ focusDialog: true }} tabindex="-1" aria-labelledby="editor-title" data-character-editor-dialog class:form-dirty={dirty} class:has-cost-preview={hasCostPreview}
   oncancel={(event) => { event.preventDefault(); requestClose(); }}
   onpointerdown={startCharacterSwipe}
   onpointerup={finishCharacterSwipe}
@@ -508,8 +511,8 @@
   }}>
   <form onsubmit={(event) => { event.preventDefault(); saveDraft(); }}
     onfocusin={trackNumberInputFocus} onfocusout={trackNumberInputFocus}>
-    <div class="editor-content">
-      <div class="editor-layout">
+    <div class="editor-content" class:has-cost-preview={hasCostPreview}>
+      <div class="editor-layout" class:has-cost-preview={hasCostPreview}>
         <div class="editor-main-column">
         <header class="editor-header">
           <div class="editor-header-main">
@@ -609,6 +612,7 @@
       </footer>
         </div>
         </div>
+      {#if hasCostPreview}
       <section class="live-cost-preview" aria-label={t('ui-cost-preview')}>
         {#if validation.resources}
           <div class="cost-preview-content">
@@ -666,6 +670,7 @@
           {#if !Number.isFinite(validation.resources.ShopResets ?? 0)}<p>{t('ui-farm-warning')}</p>{/if}
         {/if}
       </section>
+      {/if}
       </div>
     </div>
   </form>
@@ -792,7 +797,7 @@
   .eleph-number-input.owned-eleph-input[type="number"] { width: 4.4ch; min-width: 4.4ch; }
   fieldset { margin: 1rem 0; border: 1px solid #7c5b7d66; border-radius: 0.5rem; background: var(--background); }
   fieldset > label { display: block; margin: 0.5rem 0; }
-  .eleph-layout { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem 0.8rem; align-items: center; }
+  .eleph-layout { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: minmax(3.1rem, auto) minmax(4.2rem, auto); gap: 1rem 0.8rem; align-items: center; }
   .eleph-group, .eleph-summary { display: flex; align-items: center; gap: 0.55rem; min-width: 0; }
   .eleph-icon { width: 3.1rem; height: 3.1rem; flex: 0 0 3.1rem; object-fit: contain; }
   .eleph-fields { display: grid; flex: 1; gap: 0.35rem; min-width: 0; }
@@ -836,9 +841,15 @@
   .cost-summary-tiles :global(.resource-cell) { flex: 0 0 180px; width: 180px; min-width: 120px; min-height: 54px; height: 54px; border: 1px solid #7c5b7d66; border-radius: 0.4rem; background: var(--background); }
   :global(.site[data-theme="dark"]) .cost-material-cell > img { filter: brightness(0.9); }
   @media (min-width: 1200px) {
+    dialog[data-character-editor-dialog]:not(.has-cost-preview):not(.discard-confirmation):not(.editor-confirmation):not(.preset-dialog) {
+      width: min(732px, calc(100vw - 1.5rem));
+      margin-right: auto;
+      margin-left: max(1.1875rem, calc((100% - 1400px) / 2));
+    }
     .editor-content { position: relative; }
-    .editor-content::after { position: absolute; top: 0; bottom: 0; left: calc(1rem + 700px); border-left: 1px solid #7c5b7d66; content: ''; pointer-events: none; }
-    .editor-layout { grid-template-columns: minmax(0, 700px) minmax(0, 1fr); column-gap: 0; }
+    .editor-content.has-cost-preview::after { position: absolute; top: 0; bottom: 0; left: calc(1rem + 700px); border-left: 1px solid #7c5b7d66; content: ''; pointer-events: none; }
+    .editor-layout.has-cost-preview { grid-template-columns: minmax(0, 700px) minmax(0, 1fr); column-gap: 0; }
+    .editor-layout:not(.has-cost-preview) { grid-template-columns: minmax(0, 700px); }
     .editor-main-column { min-width: 0; }
     .editor-header { width: calc(100% + 1rem); margin-left: -1rem; padding-left: 1rem; }
     .editor-header-main { box-sizing: border-box; padding-right: 1rem; }
@@ -848,7 +859,7 @@
   @media (max-width: 600px) {
     dialog:not(.discard-confirmation):not(.editor-confirmation):not(.preset-dialog) { width: 100vw; max-width: 100vw; margin-inline: 0; }
     .editor-content { padding: 0 0.6rem 0.6rem; }
-    .eleph-layout { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.8rem 0.55rem; }
+    .eleph-layout { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: minmax(2.55rem, auto) minmax(1.8rem, auto) minmax(7.5rem, auto); gap: 0.8rem 0.55rem; }
     .eleph-icon { width: 2.55rem; height: 2.55rem; flex-basis: 2.55rem; }
     .eleph-options { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 0.8rem; }
     .eleph-farming { grid-column: 1 / -1; gap: 0.35rem; }

@@ -110,8 +110,11 @@
   let pinnedKey = $state<SkillKey | null>(null);
   let suppressedFocusKey: SkillKey | null = null;
   let touchPinnedKey: SkillKey | null = null;
-  let skillButtons: Partial<Record<SkillKey, HTMLButtonElement | undefined>> = {};
+  let skillButtons = $state<Partial<Record<SkillKey, HTMLButtonElement | undefined>>>({});
   let bondGearRule = $derived(metadata.fields.find((field) => field.key === 'bond_gear'));
+  let hasBondGear = $derived(
+    String(character.id) === String(info.Id) && Boolean(info.Gear && Object.keys(info.Gear).length)
+  );
   let bondRule = $derived(metadata.fields.find((field) => field.key === 'bond') ?? null);
   let levelRule = $derived(metadata.fields.find((field) => field.key === 'level') ?? null);
   let ueLevelRule = $derived(metadata.fields.find((field) => field.key === 'ue_level') ?? null);
@@ -550,19 +553,19 @@
         {/if}
       {/each}
       {#if bondGearRule}
-        <div class="skill-tile gear-tile" class:hidden={!character.hasBondGear} aria-hidden={!character.hasBondGear}>
+        <div class="skill-tile gear-tile" class:hidden={!hasBondGear} aria-hidden={!hasBondGear}>
           <input use:sanitizeIntegerInput class="skill-level-input current" type="number" min={bondGearRule.min} max={bondGearRule.max} step="1"
             data-investment-tab-order={investmentTabOrder('bond_gear', 'current')} data-investment-enter-order={investmentEnterIndex('bond_gear', 'current')}
             aria-label={`Bond Gear ${t('label-current')}`} value={String(character.current.bond_gear ?? '')}
-            disabled={!character.hasBondGear}
+            disabled={!hasBondGear}
             oninput={(event) => onInvestmentChange('bond_gear', 'current', event.currentTarget.value)} />
-          {#if character.hasBondGear}
+          {#if hasBondGear}
             <img class="gear-image" src={`/planner/icons/BondGear/${info.Id}.webp`} alt="" aria-hidden="true" draggable="false" />
           {/if}
           <input use:sanitizeIntegerInput class="skill-level-input target" type="number" min={Math.max(bondGearRule.min, Number(character.current.bond_gear) || 0)} max={bondGearRule.max} step="1"
             data-investment-tab-order={investmentTabOrder('bond_gear', 'target')} data-investment-enter-order={investmentEnterIndex('bond_gear', 'target')}
             aria-label={`Bond Gear ${t('label-target')}`} value={String(character.target.bond_gear ?? '')}
-            disabled={!character.hasBondGear}
+            disabled={!hasBondGear}
             oninput={(event) => onInvestmentChange('bond_gear', 'target', event.currentTarget.value)} />
           <span class="skill-label gear-label">Bond Gear</span>
         </div>
@@ -795,6 +798,7 @@
     .first-ue-star { margin-left: 0.7rem; }
     .level-tile { flex: 0 1 10rem; }
     .star-ue-tile { flex: 0 0 max-content; }
+    .ue-level-input { margin-left: 0.3rem; }
     .gear-strip { margin-inline: 0; }
     .bond-tile { grid-template-rows: 3.5rem auto; }
     .bond-image-stack { grid-column: 2; grid-row: 1; width: 2.5rem; height: 2.5rem; }

@@ -47,9 +47,14 @@
   let leadingSummaryTiles = $derived(leadingSummaryKeys.flatMap((key) => summaryTiles.filter((item) => item.key === key)));
   let remainingSummaryTiles = $derived(summaryTiles.filter((item) =>
     !leadingSummaryKeys.includes(item.key) && (
+      item.key === 'GearXp' ||
       (mode === 'owned' && !['Xp', 'GearXp', 'Eleph', 'ShopResets'].includes(item.key) && !item.key.endsWith('Cost')) ||
       Number(totals[mode][item.key] ?? 0) !== 0
     )));
+  let gearXpSummaryItem: ResourceItem = $derived(
+    remainingSummaryTiles.find((item) => item.key === 'GearXp') ?? layout.extra.find((item) => item.key === 'GearXp')!
+  );
+  let remainingCurrencyTiles = $derived(remainingSummaryTiles.filter((item) => item.key !== 'GearXp'));
   let allExtras = $derived(layout.extra.filter((item) => !inlineAmount(item.key)));
   let extras = $derived(allExtras.filter((item) => {
     if (mode === 'owned') return true;
@@ -65,6 +70,17 @@
   let hasWeaponItems = $derived(groups.includes('Weapon items'));
   let otherGroups = $derived(groups.filter((group) => !pairedExtraGroupNames.has(group) && group !== 'Weapon items'));
   let weapons = $derived(weaponXpSummary(totals));
+  const weaponXpBalanceKey = 'WeaponXpBalance';
+  let weaponXpBalanceItem: ResourceItem = $derived({
+    key: weaponXpBalanceKey, name: t('ui-weapon-xp'), group: 'Currency', image: '/planner/icons/LevelPart/All_All.png'
+  });
+  let weaponXpBalanceTotals: ResourceTotals = $derived({
+    ...totals,
+    needed: { ...totals.needed, [weaponXpBalanceKey]: weapons.remaining },
+    required: { ...totals.required, [weaponXpBalanceKey]: weapons.remainingNeeded },
+    leftover: { ...totals.leftover, [weaponXpBalanceKey]: Math.max(weapons.remainingOwned - weapons.remainingNeeded, 0) }
+  });
+  let showWeaponXpBalance = $derived(mode !== 'owned');
   let usersByResource = $derived.by(() => {
     const users: Record<string, ResourceUserRow[]> = {};
     const excluded = new Set(disabledCharacters);
@@ -182,14 +198,20 @@
           else { capError = t('ui-invalid-input'); event.currentTarget.value = String(levelCap); }
         }} /></label>
     {/if}
-    {#if leadingSummaryTiles.length}
-      <div class="summary-tiles controls-summary" role="group" aria-label={t('ui-resource')}>
+    {#if leadingSummaryTiles.length || gear}
+      <div class="summary-tiles controls-summary" class:gear-controls-summary={gear} role="group" aria-label={t('ui-resource')}>
         {#each leadingSummaryTiles as item (item.key)}
           <ResourceCell {item} {totals} {mode} {setOwned} {t}
             userCount={usersByResource[item.key]?.length ?? 0}
             inlineAmount={inlineAmount(item.key)}
             showUsers={mode === 'owned' ? undefined : () => openUsers(item)} />
         {/each}
+        {#if gear}
+          <ResourceCell item={gearXpSummaryItem} {totals} {mode} {setOwned} {t} inlineAmount />
+          {#if showWeaponXpBalance}
+            <ResourceCell item={weaponXpBalanceItem} totals={weaponXpBalanceTotals} {mode} {setOwned} {t} inlineAmount />
+          {/if}
+        {/if}
       </div>
     {/if}
   </div>
@@ -291,10 +313,9 @@
         {/if}
       {/each}
     {/if}
-    {#if gear && remainingSummaryTiles.length}
-      <h3>{t('ui-group-currencies')}</h3>
+    {#if gear && remainingCurrencyTiles.length}
       <div class="summary-tiles" role="group" aria-label={t('ui-group-currencies')}>
-        {#each remainingSummaryTiles as item (item.key)}
+        {#each remainingCurrencyTiles as item (item.key)}
           <ResourceCell {item} {totals} {mode} {setOwned} {t}
             userCount={usersByResource[item.key]?.length ?? 0}
             inlineAmount={inlineAmount(item.key)}
@@ -306,12 +327,13 @@
       <details>
         <summary>{t('ui-weapon-xp')}</summary>
         <div class="table-scroll"><table class="weapon-table">
-          <thead><tr><th>{t('ui-resource')}</th><th>{t('label-owned')}</th><th>{t('label-totalneeded')}</th><th>{t('label-remainingneeded')}</th></tr></thead>
+          <thead><tr><th scope="col" aria-label={t('ui-weapon-xp')}></th><th scope="col">{t('label-owned')}</th><th scope="col">{t('label-totalneeded')}</th><th scope="col">{t('label-remainingneeded')}</th></tr></thead>
           <tbody>{#each weapons.rows as row}
-            <tr><th>{row.type}</th><td>{formatAmount(row.owned)}</td><td>{formatAmount(row.required)}</td><td>{formatAmount(row.remaining)}</td></tr>
-          {/each}</tbody>
+            <tr><th scope="row"><img class="weapon-xp-icon" src={`/planner/icons/LevelPart/${row.type}_All.png`} alt={row.type} draggable="false" /></th>
+              <td>{formatAmount(row.owned)}</td><td>{formatAmount(row.required)}</td><td>{formatAmount(row.remaining)}</td></tr>
+          {/each}
+          </tbody>
         </table></div>
-        <p>{t('label-remainingneeded')}: {formatAmount(weapons.remaining)} XP</p>
         <p class="note">{t('ui-weapon-xp-help')}</p>
       </details>
     {/if}
@@ -388,6 +410,7 @@
 <style>
   .controls { display: flex; flex-wrap: wrap; align-items: end; gap: 0.4rem 0.75rem; margin-bottom: 0.2rem; align-items: center; }
   .controls-summary { flex-wrap: nowrap !important; }
+  .controls-summary.gear-controls-summary { flex: 1 1 36rem; flex-wrap: wrap !important; }
   .controls label[hidden] { display: none; }
   .display-modes { display: flex; flex-wrap: wrap; gap: 0.3rem; }
   .display-modes button { color: #252530; padding: 0.45rem 0.6rem; border: 2px solid transparent; }
@@ -448,8 +471,10 @@
   .summary-tiles :global(.resource-cell) { flex: 0 0 180px; width: 180px; min-width: 120px; min-height: 44px; height: 44px; border: 1px solid #7c5b7d66; border-radius: 0.4rem; background: var(--background); padding-right: 0.3rem; }
   .summary-tiles :global(.resource-cell.zero .resource-image) { opacity: 1; }
   .summary-tiles :global(.resource-cell.zero .amount) { visibility: visible; }
+  .weapon-table { width: fit-content; max-width: 100%; table-layout: auto; }
   .weapon-table th, .weapon-table td { padding: 0.4rem; text-align: right; }
-  .weapon-table th:first-child { text-align: left; }
+  .weapon-table th:first-child { width: 2.75rem; text-align: center; }
+  .weapon-xp-icon { display: block; width: 2.4rem; height: 2.4rem; margin: auto; object-fit: contain; }
   details { margin-top: 1rem; } summary { cursor: pointer; }
   .note { font-size: 0.8rem; line-height: 1.4; opacity: 0.85; }
   .error { color: var(--error); }
