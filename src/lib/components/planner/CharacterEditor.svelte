@@ -13,6 +13,7 @@
   import { modal } from './dialog';
   import SkillDetails from './SkillDetails.svelte';
   import ResourceCell from './ResourceCell.svelte';
+  import KeyboardShortcutLabel from './KeyboardShortcutLabel.svelte';
 
   type CostPreviewEntry = { item: ResourceItem; amount: number; rarityTier: number; sortTier: number; sortType: string };
 
@@ -524,8 +525,13 @@
                 aria-label={t('ui-next-character')} onclick={() => requestNavigation(1)}>&rarr;</button>
             </div>
             <div class="header-actions">
-              <button type="button" class="cancel-button" onclick={requestClose}>{t('label-cancel')}</button>
-              <button type="submit" class="save-button" disabled={Boolean(validation.error)}>{t('label-save').trim()}</button>
+              <button type="button" class="cancel-button" aria-keyshortcuts="Escape" onclick={requestClose}>
+                <KeyboardShortcutLabel label={t('label-cancel')} shortcut="Esc" />
+              </button>
+              <button type="submit" class="save-button" data-key-shortcut="s" data-key-shortcut-allow-number-input
+                aria-keyshortcuts="S" disabled={Boolean(validation.error)}>
+                <KeyboardShortcutLabel label={t('label-save').trim()} shortcut="s" />
+              </button>
             </div>
           </div>
         </header>
@@ -607,8 +613,12 @@
         </div>
       </fieldset>
       <footer>
-        <button type="button" class="danger" onclick={() => deleting = true}>{t('ui-remove-character')}</button>
-        <button type="button" class="preset-button" onclick={() => presetOpen = true}>{t('ui-preset')}</button>
+        <button type="button" class="danger" data-key-shortcut="r" aria-keyshortcuts="R" onclick={() => deleting = true}>
+          <KeyboardShortcutLabel label={t('ui-remove')} shortcut="r" />
+        </button>
+        <button type="button" class="preset-button" data-key-shortcut="p" aria-keyshortcuts="P" onclick={() => presetOpen = true}>
+          <KeyboardShortcutLabel label={t('ui-preset')} shortcut="p" />
+        </button>
       </footer>
         </div>
         </div>
@@ -621,7 +631,9 @@
                 {#each costPreview.rows as row (row.key)}
                   {#if row.key === 'equipment'}
                     <details class="cost-preview-row">
-                      <summary>{t(row.title)}</summary>
+                      <summary data-key-shortcut="g" aria-keyshortcuts="G">
+                        <KeyboardShortcutLabel label={t(row.title)} shortcut="g" />
+                      </summary>
                       <div class="cost-material-items">
                         {#each row.types as type, typeIndex (`${row.key}-${type.sortType}`)}
                           <div class="cost-material-type-group">

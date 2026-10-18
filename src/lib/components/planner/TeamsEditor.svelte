@@ -7,6 +7,7 @@
   import CharacterPortrait from './CharacterPortrait.svelte';
   import TeamSlotPicker from './TeamSlotPicker.svelte';
   import GroupPickerDialog from './GroupPickerDialog.svelte';
+  import KeyboardShortcutLabel from './KeyboardShortcutLabel.svelte';
   import { downloadBlob, downloadTeamImage } from '$lib/services/team-screenshot';
 
   let { data, dataset, metadata, names, scribble, actions, error, selected = $bindable(''), t }: {
@@ -190,10 +191,12 @@
   <h2 id="team-editor-heading">{t('footer-teamseditor')}</h2>
   <div class="toolbar">
     <div class="group-picker-control">
-      <span>{t('label-group')}</span>
-      <button class="group-picker-trigger" aria-haspopup="dialog" aria-expanded={groupPickerOpen}
+      <KeyboardShortcutLabel label={t('label-group')} shortcut="g" />
+      <button class="group-picker-trigger" data-key-shortcut="g" aria-keyshortcuts="G"
+        aria-haspopup="dialog" aria-expanded={groupPickerOpen}
         onclick={() => groupPickerOpen = true}>
-        <span>{selected || t('ui-select-group')}</span><span class="group-picker-caret" aria-hidden="true">▾</span>
+        <span>{selected || t('ui-select-group')}</span>
+        <span class="group-picker-caret" aria-hidden="true">▾</span>
       </button>
     </div>
     {#if selected && !view.error}

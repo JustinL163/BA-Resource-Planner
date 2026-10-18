@@ -7,6 +7,7 @@
   import { weaponXpSummary } from '$lib/domain/planner/aggregates';
   import ResourceCell, { type ResourceMode } from './ResourceCell.svelte';
   import PlannerDialog from './PlannerDialog.svelte';
+  import KeyboardShortcutLabel from './KeyboardShortcutLabel.svelte';
   import GearFarming from './GearFarming.svelte';
   import type { PlannerDataset } from '$lib/domain/planner/types';
   import type { FarmServer } from '$lib/domain/planner/gear-farm';
@@ -26,8 +27,8 @@
   let selectedResource = $state<ResourceItem | null>(null);
   let layout = $derived(inventoryLayout(metadata, totals, gear));
   const modes = [
-    { key: 'needed', label: 'label-remainingneeded' }, { key: 'owned', label: 'label-owned' },
-    { key: 'required', label: 'label-totalneeded' }, { key: 'leftover', label: 'label-leftover' }
+    { key: 'needed', label: 'label-remainingneeded', shortcut: 'r' }, { key: 'owned', label: 'label-owned', shortcut: 'o' },
+    { key: 'required', label: 'label-totalneeded', shortcut: 't' }, { key: 'leftover', label: 'label-leftover', shortcut: 'l' }
   ] as const;
   const inlineAmountKeys = new Set(['9999', 'Xp', 'GearXp', 'Credit', 'Eligma']);
   const pairedExtraGroupNames = new Set(['XP items', 'Limit break books', 'Gifts']);
@@ -185,7 +186,10 @@
   <div class="controls">
     <div class="display-modes" role="group" aria-label={t('ui-display')}>
       {#each modes as option}
-        <button class={option.key} aria-pressed={mode === option.key} onclick={() => mode = option.key}>{t(option.label)}</button>
+        <button class={option.key} data-key-shortcut={option.shortcut} data-key-shortcut-allow-number-input
+          aria-keyshortcuts={option.shortcut.toUpperCase()} aria-pressed={mode === option.key} onclick={() => mode = option.key}>
+          <KeyboardShortcutLabel label={t(option.label)} shortcut={option.shortcut} wrap={true} />
+        </button>
       {/each}
     </div>
     {#if !gear}

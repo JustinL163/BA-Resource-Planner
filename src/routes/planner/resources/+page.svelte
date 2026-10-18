@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
+  import { activateLetterShortcut } from '$lib/actions/keyboard-shortcuts';
   import { metadata } from '$content/planner';
   import { getLanguageString } from '$lib/domain/localisation';
   import { preferences } from '$lib/stores/preferences';
@@ -18,6 +19,7 @@
   import { legacySortPresetKeys, sortPlannerCharacters, type LegacySortPresetKey } from '$lib/domain/planner/legacy-sort';
   import TeamsEditor from '$lib/components/planner/TeamsEditor.svelte';
   import BulkEditor from '$lib/components/planner/BulkEditor.svelte';
+  import KeyboardShortcutLabel from '$lib/components/planner/KeyboardShortcutLabel.svelte';
   import { memberIds } from '$lib/domain/planner/groups';
   import strings from '$content/strings.json';
 
@@ -58,6 +60,7 @@
   let moveWarningAnimation = $state(0);
   let moveWarningTimeout: ReturnType<typeof setTimeout> | undefined;
   let grid = $state<HTMLDivElement>();
+  let searchInput = $state<HTMLInputElement>();
   let filterPanel = $state<HTMLDetailsElement>();
   let resourceMode = $state<ResourceMode>('needed');
   let gearMode = $state<ResourceMode>('needed');
@@ -344,7 +347,6 @@
     if (event.button !== 0 || event.pointerType !== 'mouse' || !event.isPrimary || !target || !grid || !main?.contains(target) ||
       target.closest('header, footer, .planner-actions, dialog, [data-sort-id]') ||
       target.closest('button, a, label, input, select, textarea, summary, [contenteditable="true"], [role="button"]')) return;
-    event.preventDefault();
     selectionBox = { pointerId: event.pointerId, startX: event.clientX, startY: event.clientY,
       x: event.clientX, y: event.clientY, moved: false, deselect: event.altKey };
     boxPreviewIds = [];
@@ -390,6 +392,17 @@
   }
 
   function plannerShortcuts(event: KeyboardEvent) {
+    const key = event.key.toLowerCase();
+    if ((event.ctrlKey || event.metaKey) && !event.altKey && key === 'f' && mainView === 'characters') {
+      event.preventDefault();
+      if (!editing && !adding && !dialog && !bulkOpen) {
+        searchInput?.focus({ preventScroll: true });
+        searchInput?.select();
+      }
+      return;
+    }
+    if (activateLetterShortcut(event)) return;
+
     const target = event.target instanceof Element ? event.target : null;
     if (target?.closest('input, textarea, select, [contenteditable="true"], [role="textbox"]')) return;
     if (event.key === 'Escape') {
@@ -398,7 +411,6 @@
       return;
     }
     if (!(event.ctrlKey || event.metaKey) || event.altKey) return;
-    const key = event.key.toLowerCase();
     if (key === 'z') {
       event.preventDefault();
       if (event.shiftKey) planner.redo();
@@ -542,9 +554,14 @@
           <button disabled={!bulkCharacters.length} onclick={() => bulkOpen = true}>{t('ui-bulk-edit')}</button>
         </div>
       {/if}
-      <label class="character-search">{t('ui-search-characters')}<input type="search" class:is-filtered={search.trim().length > 0} bind:value={search} onclick={() => search = ''} /></label>
+      <label class="character-search"><KeyboardShortcutLabel label={t('ui-search-characters')} shortcut="Ctrl+F" />
+        <input type="search" bind:this={searchInput} aria-keyshortcuts="Control+F Meta+F"
+        class:is-filtered={search.trim().length > 0} bind:value={search} onclick={() => search = ''} /></label>
       <button class="filter-action" onclick={() => planner.includeMany(visible.map((character) => character.id), true)}>{t('button-enableall')}</button>
       <button class="filter-action" onclick={() => planner.includeMany(visible.map((character) => character.id), false)}>{t('button-disableall')}</button>
+      <button class="filter-action toolbar-add-character" data-key-shortcut="a" aria-keyshortcuts="A" onclick={() => adding = true}>
+        <KeyboardShortcutLabel label={t('ui-add-characters')} shortcut="a" />
+      </button>
       <label class="card-size-control">{t('ui-card-size')}<input type="range" min="1" max="5" step="1" value={cardSize}
         oninput={(event) => resize(event.currentTarget.valueAsNumber)} /></label>
     </div>
@@ -582,10 +599,21 @@
 {/if}
 
 <nav class="planner-actions" aria-label={t('ui-planner-tools')}>
-  <button disabled={!totals} onclick={() => dialog = 'resources'}><img src="/planner/icons/Misc/Credit.png" alt="" /><span>{t('footer-resources')}</span></button>
-  <button disabled={!totals} onclick={() => dialog = 'gear'}><img src="/planner/icons/Gear/T10_Hat_small.webp" alt="" /><span>{t('footer-gear')}</span></button>
-  <button disabled={!$planner.data} onclick={() => { mainView = mainView === 'teams' ? 'characters' : 'teams'; }}>
-    <span>{t(mainView === 'teams' ? 'footer-characters' : 'footer-teamseditor')}</span>
+  <button disabled={!totals} data-key-shortcut={mainView === 'teams' ? undefined : 'r'}
+    aria-keyshortcuts={mainView === 'teams' ? undefined : 'R'} onclick={() => dialog = 'resources'}>
+    <img src="/planner/icons/Misc/Credit.png" alt="" />
+    {#if mainView === 'teams'}<span>{t('footer-resources')}</span>
+    {:else}<KeyboardShortcutLabel label={t('footer-resources')} shortcut="r" />{/if}
+  </button>
+  <button disabled={!totals} data-key-shortcut={mainView === 'teams' ? undefined : 'g'}
+    aria-keyshortcuts={mainView === 'teams' ? undefined : 'G'} onclick={() => dialog = 'gear'}>
+    <img src="/planner/icons/Gear/T10_Hat_small.webp" alt="" />
+    {#if mainView === 'teams'}<span>{t('footer-gear')}</span>
+    {:else}<KeyboardShortcutLabel label={t('footer-gear')} shortcut="g" />{/if}
+  </button>
+  <button disabled={!$planner.data} data-key-shortcut="t" aria-keyshortcuts="T"
+    onclick={() => { mainView = mainView === 'teams' ? 'characters' : 'teams'; }}>
+    <KeyboardShortcutLabel label={t(mainView === 'teams' ? 'footer-characters' : 'footer-teamseditor')} shortcut="t" />
   </button>
   <button onclick={() => dialog = 'transfer'}><span>{t('footer-transfer')}</span></button>
   <button aria-label={t($planner.scribble ? 'ui-use-original-portraits' : 'ui-use-scribble-portraits')}
@@ -642,6 +670,7 @@
   .card-size-control { flex: 0 1 9rem; min-width: 7rem; }
   .card-size-control input { width: 100%; }
   .toolbar > .filter-action { white-space: nowrap; }
+  .toolbar-add-character { white-space: nowrap; }
   .group-filter { display: flex; max-width: 100%; min-width: 0; flex-direction: column; gap: 0.35rem; }
   .group-filter-heading { display: flex; min-width: 0; align-items: center; justify-content: space-between; gap: 0.35rem; }
   .group-filter-heading > label:first-child { flex: 0 0 auto; }
@@ -682,6 +711,7 @@
   .planner-actions img { width: 26px; height: 26px; object-fit: contain; }
   .error { color: var(--error); }
   @media (max-width: 800px) {
+    .toolbar-add-character { display: none; }
     .filter-panel { position: fixed; z-index: 11; top: 3rem; left: 0.25rem; width: fit-content; max-width: calc(100vw - 0.5rem); padding: 0.4rem; background-color: color-mix(in srgb, var(--background) 80%, transparent); }
     .filter-panel[open] { width: calc(100vw - 0.5rem); }
     .filter-panel.has-active-filters:not([open]) { background-color: color-mix(in srgb, #c8a0ef 80%, transparent); }
