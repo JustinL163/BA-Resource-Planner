@@ -53,7 +53,7 @@
   let includeLessons = $state(true);
   let includeInvasion = $state(true);
   let showArchives = $state(false);
-  let showArchiveControl = $derived(page.url.searchParams.get('show-earlier-events') === '1');
+  let showArchiveControl = $state(false);
   let eventListOpen = $state(false);
   let entry = $derived($planner.catalog.find((entry) => entry.id === $planner.selected));
   let event = $derived(entry?.event ?? null);
@@ -395,6 +395,7 @@
   });
 
   onMount(() => {
+    showArchiveControl = page.url.searchParams.get('show-earlier-events') === '1';
     now = Date.now();
     const controller = new AbortController();
     void planner.initialise(controller.signal);

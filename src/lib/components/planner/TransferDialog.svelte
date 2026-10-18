@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { tick } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import { page } from '$app/state';
   import PlannerDialog from './PlannerDialog.svelte';
   import CloudTransfer from './CloudTransfer.svelte';
@@ -15,7 +15,11 @@
   let importing = $state(false);
   let localError = $state('');
   let cloudBusy = $state(false);
-  let showCloudTransfer = $derived(page.url.searchParams.get('show-cloud-save') === '1');
+  let showCloudTransfer = $state(false);
+
+  onMount(() => {
+    showCloudTransfer = page.url.searchParams.get('show-cloud-save') === '1';
+  });
 
   function download() {
     try {
