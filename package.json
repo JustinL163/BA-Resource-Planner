@@ -7,12 +7,12 @@
     "node": "^20.19.0 || >=22.12.0"
   },
   "scripts": {
-    "prepare:site": "node scripts/prepare-site.mjs",
+    "prepare:site": "svelte-kit sync && node scripts/prepare-site.mjs",
     "prepare:metadata": "node scripts/prepare-planner-metadata.mjs",
     "dev": "npm run prepare:site && vite",
     "build": "npm run prepare:site && vite build",
     "preview": "node scripts/serve-static.mjs",
-    "check": "npm run prepare:site && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check": "npm run prepare:site && svelte-check --tsconfig ./tsconfig.json",
     "test": "npm run prepare:metadata && vitest run",
     "test:browser": "playwright test",
     "test:dev": "playwright test --config=playwright.dev.config.ts"
