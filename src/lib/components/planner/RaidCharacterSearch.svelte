@@ -55,7 +55,11 @@
   <div class="results" role="group" aria-label={t('ui-search-results')}>
     {#each matches as id, position (id)}
       <button type="button" disabled={selecting} aria-label={`${t('ui-pick')} ${names[id] ?? id}`} title={names[id] ?? id} onclick={() => { void select(id); }}>
-        {#if metadata.portraits[id]}<img class="character-image" src={metadata.portraits[id]} alt="" draggable="false" width="100" height="112" />{/if}
+        {#if metadata.portraits[id]}
+          <span class="character-image-frame" aria-hidden="true">
+            <img class="character-image" src={metadata.portraits[id]} alt="" draggable="false" width="100" height="112" />
+          </span>
+        {/if}
         <span class="number" aria-hidden="true">{position + 1}</span>
         <span class="name" class:visually-hidden={compact}>{names[id] ?? id}</span>
       </button>
@@ -76,10 +80,12 @@
 <style>
   .raid-search { margin: 0.5rem 0; }
   .results { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.35rem; min-height: 100px; }
-  .results button { position: relative; padding: 0; border: 2px solid #7c5b7d; border-radius: 0.5rem; background: transparent; color: inherit; overflow: hidden; min-width: 0; }
+  .results button { position: relative; display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; padding: 0; border: 2px solid #7c5b7d; border-radius: 0.5rem; background: transparent; color: inherit; overflow: hidden; min-width: 0; }
   img { width: 100%; height: auto; display: block; }
+  .character-image-frame { position: relative; display: block; width: 100%; aspect-ratio: 25 / 28; flex: 0 0 auto; overflow: hidden; }
+  .character-image-frame > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .number { position: absolute; top: 0; left: 0; background: #282a35e8; color: white; padding: 0.15rem 0.35rem; font: bold 1rem monospace; border-radius: 0 0 0.3rem 0; }
-  .name { display: block; padding: 0.3rem 0.15rem; font-size: 0.8rem; overflow-wrap: anywhere; line-height: 1.2; }
+  .name { display: -webkit-box; min-height: 2.4em; flex: 0 0 auto; padding: 0.3rem 0.15rem; overflow: hidden; font-size: 0.8rem; overflow-wrap: anywhere; line-height: 1.2; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
   .search-footer { display: flex; gap: 0.5rem; align-items: stretch; margin-top: 0.6rem; }
   .search-footer > label:first-child { flex: 1; min-width: 0; }
   input[type="search"] { width: 100%; padding: 0.6rem; font: inherit; }

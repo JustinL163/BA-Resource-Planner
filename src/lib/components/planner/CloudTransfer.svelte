@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import PlannerDialog from './PlannerDialog.svelte';
   import { cloudTransfers } from '$lib/services/cloud-transfers';
   import { readCloudCredentials, validateCredentials, type CloudCredentials } from '$lib/services/cloud-credentials';
   import { writeStorageTransaction } from '$lib/services/storage-transaction';
@@ -12,7 +13,7 @@
   let username = $state('');
   let authkey = $state('');
   let reveal = $state(false);
-  let overwrite = $state(false);
+  let confirmingLoad = $state(false);
   let stored = $state<CloudCredentials | null>(null);
   let created = $state(false);
   let message = $state('');
@@ -70,11 +71,10 @@
           message = currentSource() === source ? t('ui-cloud-saved') : t('ui-cloud-snapshot-saved');
           remember(credentials);
         } else {
-          if (!overwrite) throw new Error(t('ui-cloud-confirm-required'));
           const expected = localStorage.getItem('save-data');
           const source = await cloudTransfers.load(credentials, controller.signal);
           if (await importCloud(source, expected, credentials)) {
-            stored = credentials; overwrite = false; message = t('ui-cloud-loaded');
+            stored = credentials; confirmingLoad = false; message = t('ui-cloud-loaded');
           }
         }
       }
@@ -83,6 +83,10 @@
     } finally {
       busy = false; operation = ''; now = Date.now();
     }
+  }
+  async function confirmLoad() {
+    confirmingLoad = false;
+    await transfer('load');
   }
 </script>
 
@@ -99,9 +103,8 @@
     <div class="buttons">
       <button disabled={!ready || !validUsername || Boolean(authkey) || Boolean(stored) || created} onclick={() => { void transfer('register'); }}>{t('ui-cloud-register')}</button>
       <button disabled={!ready || !matchesAccount || saveWait > 0} onclick={() => { void transfer('save'); }}>{t('ui-cloud-save')}</button>
-      <button disabled={!canImport || !validCredentials || !overwrite || loadWait > 0} onclick={() => { void transfer('load'); }}>{t('ui-cloud-load')}</button>
+      <button disabled={!canImport || !validCredentials || loadWait > 0} onclick={() => confirmingLoad = true}>{t('ui-cloud-load')}</button>
     </div>
-    <label class="confirm"><input type="checkbox" bind:checked={overwrite} />{t('ui-cloud-overwrite-confirm')}</label>
   </fieldset>
   {#if busy}<p role="status">{t(`ui-cloud-${operation}-pending`)}</p>{/if}
   {#if message}<p role="status">{message}</p>{/if}
@@ -109,6 +112,18 @@
   {#if saveWait || loadWait}<p class="note">{t('ui-cloud-cooldown')}: {t('ui-cloud-save')} {Math.ceil(saveWait / 1000)}s,
     {t('ui-cloud-load')} {Math.ceil(loadWait / 1000)}s</p>{/if}
 </section>
+
+{#if confirmingLoad}
+  <PlannerDialog title={t('label-areyousure')} close={() => confirmingLoad = false} {t} width="440px" showClose={false}>
+    <div class="confirmation">
+      <p>{t('ui-cloud-overwrite-confirm')}</p>
+      <footer>
+        <button onclick={() => confirmingLoad = false}>{t('label-cancel')}</button>
+        <button onclick={() => void confirmLoad()}>{t('ui-cloud-load')}</button>
+      </footer>
+    </div>
+  </PlannerDialog>
+{/if}
 
 <style>
   section { margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #7c5b7d66; }
@@ -118,6 +133,10 @@
   input:not([type="checkbox"]) { padding: 0.5rem; min-width: 0; }
   .confirm { flex-direction: row; align-items: center; gap: 0.5rem; margin: 0.8rem 0; }
   .buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .confirmation { min-width: min(22rem, calc(100vw - 3rem)); }
+  .confirmation p { margin: 0; line-height: 1.5; }
+  .confirmation footer { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem; }
   .note { font-size: 0.85rem; line-height: 1.5; }
   .error { color: var(--error); }
+  @media (max-width: 600px) { .confirmation { min-width: 0; } }
 </style>

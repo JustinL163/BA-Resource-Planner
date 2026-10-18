@@ -35,11 +35,11 @@
   }
 </script>
 
-<PlannerDialog title={t('ui-add-characters')} width="680px" {close} {t}>
+<PlannerDialog title={t('ui-add-characters')} width={grid ? '1100px' : '680px'} {close} {t}>
   <div class="view-switch"><button type="button" onclick={switchView}>{t(grid ? 'ui-search-picker' : 'ui-grid-picker')}</button></div>
   {#if error}<p class="error" role="alert">{error}</p>{/if}
   {#if grid}
-    <form onsubmit={(event) => { event.preventDefault(); if (pending.length && save(pending)) close(); }}>
+    <form class="grid-picker-form" onsubmit={(event) => { event.preventDefault(); if (pending.length && save(pending)) close(); }}>
       <label class="search">{t('ui-search-characters')}<input type="search" bind:this={gridSearch} bind:value={query} /></label>
       <p>{pending.length} {t('ui-selected')}</p>
       <div class="choices">
@@ -68,13 +68,24 @@
 
 <style>
   .view-switch { display: flex; justify-content: flex-end; margin-bottom: 0.5rem; }
+  .grid-picker-form { width: min(66.625rem, calc(100vw - 3.125rem)); }
   .search { display: flex; gap: 0.75rem; align-items: center; }
   input[type="search"] { flex: 1; min-width: 0; padding: 0.65rem; }
   .choices { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.5rem; max-height: 50vh; overflow: auto; padding: 0.25rem; }
-  .choice { display: flex; gap: 0.5rem; align-items: center; padding: 0.4rem; border: 1px solid #7c5b7d66; border-radius: 0.5rem; }
+  .choice { display: flex; min-width: 0; gap: 0.5rem; align-items: center; padding: 0.4rem; border: 1px solid #7c5b7d66; border-radius: 0.5rem; }
+  .choice > img { flex: 0 0 50px; width: 50px; height: 56px; }
+  .choice > span { min-width: 0; overflow-wrap: anywhere; }
   img { object-fit: cover; border-radius: 0.25rem; }
   small { display: block; opacity: 0.75; }
   footer { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem; }
   .note { font-size: 0.85rem; }
   .error { color: var(--error); }
+
+  @media (max-width: 600px) {
+    .grid-picker-form { width: calc(100vw - 1.325rem); }
+    .choices { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.35rem; }
+    .choice { gap: 0.35rem; padding: 0.3rem; font-size: 0.8rem; }
+    .choice > img { flex-basis: 40px; width: 40px; height: 48px; }
+    small { font-size: 0.7rem; }
+  }
 </style>

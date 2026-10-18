@@ -344,6 +344,16 @@
     focusKey = null;
   }
 
+  function dismissDescriptionOnClick(node: HTMLElement) {
+    const handleClick = (event: MouseEvent) => {
+      if (event.target instanceof Element && event.target.closest('button')) return;
+      const key = node.dataset.skillDescription as SkillKey | undefined;
+      if (key) closeDescription(key);
+    };
+    node.addEventListener('click', handleClick);
+    return { destroy: () => node.removeEventListener('click', handleClick) };
+  }
+
   function equipmentLabel(equipment: string): string {
     const translated = t(`gear-${equipment.toLowerCase()}`);
     return translated === 'Undefined' ? equipment : translated;
@@ -622,6 +632,7 @@
           aria-labelledby="skill-description-heading"
           data-skill-description={selected.key}
           data-skill-variant={selected.description.variant}
+          use:dismissDescriptionOnClick
         >
           <header class="description-header">
             <div>

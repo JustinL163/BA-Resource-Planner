@@ -763,7 +763,7 @@
   .touch-debug-log > div { padding: 0.08rem 0; border-bottom: 1px solid #ffffff22; }
   .touch-debug-reopen { display: block; margin-left: auto; }
   form { margin: 0; }
-  .editor-header { position: sticky; top: 0; z-index: 2; display: flex; box-sizing: border-box; width: 100%; align-items: center; padding: 0.7rem 0; background: var(--surface); border-bottom: 1px solid #7c5b7d66; }
+  .editor-header { position: sticky; top: 0; z-index: 21; display: flex; box-sizing: border-box; width: 100%; align-items: center; padding: 0.7rem 0; background: var(--surface); border-bottom: 1px solid #7c5b7d66; }
   .editor-header-main { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 1rem; }
   .editor-header h2 { flex: 1; min-width: 0; margin: 0; font-size: 1.25rem; }
   .editor-navigation { display: flex; gap: 0.35rem; }
@@ -859,6 +859,7 @@
   @media (max-width: 600px) {
     dialog:not(.discard-confirmation):not(.editor-confirmation):not(.preset-dialog) { width: 100vw; max-width: 100vw; margin-inline: 0; }
     .editor-content { padding: 0 0.6rem 0.6rem; }
+    .editor-main-column { display: contents; }
     .eleph-layout { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: minmax(2.55rem, auto) minmax(1.8rem, auto) minmax(7.5rem, auto); gap: 0.8rem 0.55rem; }
     .eleph-icon { width: 2.55rem; height: 2.55rem; flex-basis: 2.55rem; }
     .eleph-options { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 0.8rem; }

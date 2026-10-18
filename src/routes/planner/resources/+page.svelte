@@ -50,6 +50,7 @@
   let selectionCaptureElement: HTMLElement | null = null;
   let dialog = $state<'' | 'resources' | 'gear' | 'transfer'>('');
   let cardSize = $state(5);
+  let filtersOpen = $state(false);
   let uiError = $state('');
   let announcement = $state('');
   let grid = $state<HTMLDivElement>();
@@ -195,6 +196,10 @@
   onMount(() => {
     const controller = new AbortController();
     void planner.initialise(controller.signal);
+    const rightColumnLayout = window.matchMedia('(min-width: 1201px)');
+    const openFiltersForLargeLayout = () => { if (rightColumnLayout.matches) filtersOpen = true; };
+    openFiltersForLargeLayout();
+    rightColumnLayout.addEventListener('change', openFiltersForLargeLayout);
     const defaultSize = window.matchMedia('(max-width: 600px)').matches ? 1 : 5;
     cardSize = defaultSize;
     try {
@@ -219,6 +224,7 @@
     window.addEventListener('keydown', plannerShortcuts);
     return () => {
       controller.abort();
+      rightColumnLayout.removeEventListener('change', openFiltersForLargeLayout);
       window.removeEventListener(saveChangedEvent, refresh);
       window.removeEventListener('storage', storage);
       window.removeEventListener('pointerdown', beginSelectionBox, true);
@@ -446,11 +452,7 @@
       <label>{t('ui-card-size')}<input type="range" min="1" max="5" step="1" value={cardSize}
         oninput={(event) => resize(event.currentTarget.valueAsNumber)} /></label>
     </div>
-    <p class="shortcut-help">{t('ui-card-shortcuts-summary')}</p>
-    <details class="legend"><summary>{t('ui-overlay-help')}</summary>
-      <p id="card-shortcuts">{t('ui-card-shortcuts')}</p><p>{t('ui-overlay-legend')}</p>
-    </details>
-    <details class="filter-panel">
+    <details class="filter-panel" bind:open={filtersOpen}>
       <summary>{t('ui-filters-sort')}</summary>
       <div class="filters">
       <label>{t('ui-search-characters')}<input type="search" bind:value={search} /></label>
@@ -589,9 +591,6 @@
   .characters { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 0.9rem 0.75rem; padding: 1rem 0.5rem 5rem; }
   .selection-box { position: fixed; z-index: 30; border: 1px solid #82dafb; background: #82dafb33; pointer-events: none; }
   .selection-box.deselect { border-color: #ed7b7b; background: #ed7b7b33; }
-  .shortcut-help { font-size: 0.82rem; margin: 0.5rem 0 0.75rem; line-height: 1.5; }
-  .legend { font-size: 0.82rem; margin-bottom: 0.6rem; }
-  .legend p { line-height: 1.5; }
   .filter-panel { padding: 0.5rem; border: 1px solid #7c5b7d66; border-radius: 0.4rem; }
   summary { cursor: pointer; }
   .add-card { flex: 0 0 var(--card-size); width: var(--card-size); aspect-ratio: 8 / 9; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 0.5rem; color: inherit; background: transparent; border: 2px dashed #7c5b7d; border-radius: 16%; font-size: max(11px, calc(var(--card-size) * 0.085)); }

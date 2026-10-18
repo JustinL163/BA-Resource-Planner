@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { tick } from 'svelte';
   import PlannerDialog from './PlannerDialog.svelte';
   import CloudTransfer from './CloudTransfer.svelte';
   import type { CloudCredentials } from '$lib/services/cloud-credentials';
@@ -9,7 +10,7 @@
     t: (id: string) => string;
   } = $props();
   let source = $state('');
-  let confirmed = $state(false);
+  let confirmingImport = $state(false);
   let importing = $state(false);
   let localError = $state('');
   let cloudBusy = $state(false);
@@ -28,15 +29,25 @@
       localError = problem instanceof Error ? problem.message : t('ui-transfer-failed');
     }
   }
+
+  async function confirmImport() {
+    importing = true;
+    confirmingImport = false;
+    await tick();
+    try { if (await importData(source)) close(); }
+    finally { importing = false; }
+  }
 </script>
 
-<PlannerDialog title={t('footer-transfer')} {close} {t} busy={cloudBusy || importing}>
+<PlannerDialog title={t('footer-transfer')} {close} {t} busy={cloudBusy || importing} width="640px">
   {#if localError || error}<p class="error" role="alert">{localError || error}</p>{/if}
   <CloudTransfer {ready} {canImport} {currentSource} {importCloud} bind:busy={cloudBusy} {t} />
   <fieldset disabled={cloudBusy || importing}>
   <h3>{t('ui-local-transfer')}</h3>
-  <button disabled={!ready} onclick={download}>{t('ui-export-save')}</button>
-  <p>{t('ui-import-warning')}</p>
+  <div class="local-transfer-actions">
+    <button disabled={!ready} onclick={download}>{t('ui-export-save')}</button>
+    <button disabled={!canImport || !source.trim() || importing} onclick={() => confirmingImport = true}>{t('ui-import-save')}</button>
+  </div>
   <label>{t('ui-import-file')}<input type="file" accept=".json,application/json" onchange={async (event) => {
     try {
       const file = event.currentTarget.files?.[0];
@@ -48,20 +59,32 @@
     }
   }} /></label>
   <label>{t('ui-import-json')}<textarea rows="6" bind:value={source}></textarea></label>
-  <label class="confirm"><input type="checkbox" bind:checked={confirmed} />{t('ui-confirm-import')}</label>
-  <button disabled={!canImport || !source.trim() || !confirmed || importing} onclick={async () => {
-    importing = true;
-    try { if (await importData(source)) close(); }
-    finally { importing = false; }
-  }}>{t('ui-import-save')}</button>
   </fieldset>
 </PlannerDialog>
 
+{#if confirmingImport}
+  <PlannerDialog title={t('label-areyousure')} close={() => confirmingImport = false} {t} width="440px" showClose={false}>
+    <div class="confirmation">
+      <p>{t('ui-import-warning')}</p>
+      <footer>
+        <button onclick={() => confirmingImport = false}>{t('label-cancel')}</button>
+        <button class="import-button" onclick={() => void confirmImport()}>{t('ui-import-save')}</button>
+      </footer>
+    </div>
+  </PlannerDialog>
+{/if}
+
 <style>
-  label { display: flex; flex-direction: column; gap: 0.4rem; margin: 1rem 0; }
+  h3 { margin: 0.25rem 0 0.6rem; }
+  .local-transfer-actions { display: flex; gap: 0.75rem; margin-bottom: 0.75rem; }
+  .local-transfer-actions > button { flex: 1 1 0; min-width: 0; }
+  label { display: flex; flex-direction: column; gap: 0.4rem; margin: 0.75rem 0; }
   textarea { width: 100%; min-width: 0; padding: 0.5rem; }
-  .confirm { flex-direction: row; align-items: center; }
   p { line-height: 1.5; }
   .error { color: var(--error); }
   fieldset { padding: 0; border: 0; min-width: 0; }
+  .confirmation { min-width: min(22rem, calc(100vw - 3rem)); }
+  .confirmation p { margin: 0; }
+  .confirmation footer { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem; }
+  @media (max-width: 600px) { .confirmation { min-width: 0; } }
 </style>
