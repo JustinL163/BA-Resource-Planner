@@ -125,6 +125,24 @@ main { /* max-width: 1200px;*/ margin: 0 auto; padding: 2rem 1.25rem 4rem; }
 h1 { margin: 0 0 1.5rem; font-size: clamp(1.7rem, 4vw, 2.3rem); }
 main a { color: var(--link); overflow-wrap: anywhere; }
 .document .changelog-section { padding: 1.25rem; background: var(--surface); border-radius: 0.65rem; }
+.document.changelog .changelog-section {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto 0.75rem;
+  padding: 1rem 1.25rem 0.5rem;
+}
+main > h1.changelog-title { max-width: 1100px; margin: 0 auto 1.5rem; }
+.document.changelog > br { display: none; }
+.document.changelog .changelog-section h2 { margin-bottom: 0.5rem; }
+.document.changelog .changelog-section h2 + br { display: none; }
+.document.changelog .changelog-section h3:first-of-type { margin-top: 0.35rem; }
+.document.changelog .changelog-section ul + h3,
+.document.changelog .changelog-section ol + h3 { margin-top: 0.45rem; }
+.document.changelog .changelog-section > br:last-of-type { display: none; }
+.document.credits .changelog-section { box-sizing: border-box; width: 100%; max-width: 600px; margin-inline: auto; }
+main > h1.credits-title { max-width: 600px; margin-inline: auto; }
+.document.credits .changelog-section:first-child h3 + br { display: none; }
 .document h2 { margin-top: 0; }
 .document h3 { margin: 1rem 0 0.5rem; }
 .document p, .document li { line-height: 1.6; overflow-wrap: anywhere; }
@@ -172,4 +190,5 @@ main a { color: var(--link); overflow-wrap: anywhere; }
   .theme-button img { width: 18px; height: 18px; }
   main { padding: 1.25rem 0.75rem 3rem; }
   .document .changelog-section { padding: 1rem; }
+  .document.changelog .changelog-section { padding: 0.85rem 1rem 0.4rem; }
 }

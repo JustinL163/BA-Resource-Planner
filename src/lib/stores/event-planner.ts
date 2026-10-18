@@ -1,6 +1,6 @@
 import { get, writable } from 'svelte/store';
 import { createDefaultSave } from '../services/preferences';
-import { announceSaveChange } from '../services/save-events';
+import { announceLocalSave, announceSaveChange } from '../services/save-events';
 import { fetchJson, loadCharacterNames, loadPlannerDataset, savedLanguage } from '../services/planner-data';
 import { isRecord } from '../domain/planner/save';
 import type { PlannerDataset, PlannerMetadata } from '../domain/planner/types';
@@ -132,6 +132,7 @@ export function createEventPlanner(
       storage.setItem('save-data', JSON.stringify(root));
       fingerprint = JSON.stringify(checked);
       state.update((value) => ({ ...value, plan: checked, saved: true, error: '' }));
+      announceLocalSave();
       announceSaveChange();
       return true;
     } catch (problem) { return report(problem); }

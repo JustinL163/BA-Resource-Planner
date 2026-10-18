@@ -447,7 +447,6 @@
         {/each}
       </nav>
       <div class="tab-panel">
-        <p class="saved" role="status">{$planner.saved ? t('ui-saved-locally') : ''}</p>
         {#if calculation?.error}<p class="error" role="alert">{calculation.error}</p>{/if}
         {#if simulation.kind && simulation.error}<p class="error" role="alert">{simulation.error}</p>{/if}
         {#if simulation.kind && simulation.notice}<p role="status">{simulation.notice}</p>{/if}
@@ -585,9 +584,8 @@
   .tab-content { flex: 1 1 36rem; min-width: min(100%, 22rem); max-width: 770px; }
   .display-options, .run-tiles { display: flex; flex-wrap: wrap; gap: .4rem; }
   .run-tiles { margin-bottom: 1rem; }
-  .saved { margin: .3rem 0; font-size: .8rem; }
   .error { color: var(--error); overflow-wrap: anywhere; }
-  .results { flex: 1 1 22rem; min-width: min(100%, 18rem); margin: 0; border-top: 1px solid #7c5b7d; max-width: 700px }
+  .results { flex: 1 1 22rem; min-width: min(100%, 18rem); margin: 0; border-top: 1px solid #7c5b7d; max-width: 700px; padding-top: 0.5rem }
   @media (min-width: 1300px) {
     .tab-panel { max-width: 1500px; }
     .results { padding-left: 1rem; border-top: 0; border-left: 1px solid #7c5b7d; }

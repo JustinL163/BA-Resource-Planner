@@ -445,7 +445,6 @@
       {/if}
       <label>{t('ui-card-size')}<input type="range" min="1" max="5" step="1" value={cardSize}
         oninput={(event) => resize(event.currentTarget.valueAsNumber)} /></label>
-      <span class="saved" role="status">{$planner.saved ? t('ui-saved-locally') : ''}</span>
     </div>
     <p class="shortcut-help">{t('ui-card-shortcuts-summary')}</p>
     <details class="legend"><summary>{t('ui-overlay-help')}</summary>
@@ -597,7 +596,6 @@
   summary { cursor: pointer; }
   .add-card { flex: 0 0 var(--card-size); width: var(--card-size); aspect-ratio: 8 / 9; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 0.5rem; color: inherit; background: transparent; border: 2px dashed #7c5b7d; border-radius: 16%; font-size: max(11px, calc(var(--card-size) * 0.085)); }
   .add-card span:first-child { font-size: 2.5rem; line-height: 1; }
-  .saved { color: var(--success); margin-left: auto; font-size: 0.85rem; }
   .planner-actions { position: fixed; bottom: max(0.75rem, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; padding: 0.5rem; max-width: calc(100vw - 1rem); width: max-content; border: 1px solid #7c5b7d; border-radius: 0.75rem; background: var(--surface); box-shadow: 0 2px 10px #0005; z-index: 9; }
   .planner-actions button { display: flex; align-items: center; gap: 0.4rem; }
   .planner-actions img { width: 26px; height: 26px; object-fit: contain; }

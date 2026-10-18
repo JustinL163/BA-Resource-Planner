@@ -261,6 +261,34 @@
     const level = typeof value === 'number' ? value : typeof value === 'string' && value.trim() ? Number(value) : NaN;
     return Number.isInteger(level) && level >= 0 && level <= (key === 'ex' ? 5 : 10) ? level : 0;
   }
+  function moveCharacterInvestmentFocus(target: HTMLInputElement, reverse: boolean) {
+    const dialog = target.closest('dialog[aria-labelledby="editor-title"]');
+    if (!(dialog instanceof HTMLDialogElement)) return;
+    const inputs = Array.from(dialog.querySelectorAll<HTMLInputElement>('input[data-investment-enter-order]:not(:disabled)'))
+      .sort((left, right) => Number(left.dataset.investmentEnterOrder) - Number(right.dataset.investmentEnterOrder));
+    const currentIndex = inputs.indexOf(target);
+    const nextInput = inputs[currentIndex + (reverse ? -1 : 1)];
+    if (nextInput) nextInput.focus();
+    else target.blur();
+  }
+  function moveCharacterInvestmentTab(target: HTMLInputElement, event: KeyboardEvent) {
+    const dialog = target.closest('dialog[aria-labelledby="editor-title"]');
+    if (!(dialog instanceof HTMLDialogElement)) return;
+    const inputs = Array.from(dialog.querySelectorAll<HTMLInputElement>('input[data-investment-tab-order]:not(:disabled)'))
+      .sort((left, right) => Number(left.dataset.investmentTabOrder) - Number(right.dataset.investmentTabOrder));
+    const currentIndex = inputs.indexOf(target);
+    const nextInput = inputs[currentIndex + (event.shiftKey ? -1 : 1)];
+    if (nextInput) {
+      event.preventDefault();
+      nextInput.focus();
+    } else if (!event.shiftKey) {
+      const ownedElephInput = dialog.querySelector<HTMLInputElement>('.owned-eleph-input:not(:disabled)');
+      if (ownedElephInput) {
+        event.preventDefault();
+        ownedElephInput.focus();
+      }
+    }
+  }
   function interceptEditorKeys(event: KeyboardEvent) {
     if (event.key === 'Escape' && (deleting || presetOpen)) return;
     if (event.key === 'Escape' && dirty) {
@@ -275,10 +303,18 @@
       return;
     }
     const target = event.target;
+    if (event.key === 'Tab' && target instanceof HTMLInputElement && target.hasAttribute('data-investment-tab-order') &&
+      !event.ctrlKey && !event.altKey && !event.metaKey) {
+      moveCharacterInvestmentTab(target, event);
+      return;
+    }
     if (event.key === 'Enter' && target instanceof HTMLInputElement && target.closest('dialog[aria-labelledby="editor-title"]')) {
       event.preventDefault();
       if (discardPrompt || event.repeat) return;
       if (event.ctrlKey && !event.metaKey && !event.altKey && !event.shiftKey) target.form?.requestSubmit();
+      else if (!event.ctrlKey && !event.metaKey && !event.altKey && target.hasAttribute('data-investment-enter-order')) {
+        moveCharacterInvestmentFocus(target, event.shiftKey);
+      }
       else target.blur();
       return;
     }
@@ -472,21 +508,24 @@
   }}>
   <form onsubmit={(event) => { event.preventDefault(); saveDraft(); }}
     onfocusin={trackNumberInputFocus} onfocusout={trackNumberInputFocus}>
-    <header class="editor-header">
-      <h2 id="editor-title">{t('ui-edit-character')}</h2>
-      <div class="editor-navigation">
-        <button type="button" class:boundary-hidden={!hasPrevious} aria-hidden={!hasPrevious} disabled={!hasPrevious}
-          aria-label={t('ui-previous-character')} onclick={() => requestNavigation(-1)}>&larr;</button>
-        <button type="button" class:boundary-hidden={!hasNext} aria-hidden={!hasNext} disabled={!hasNext}
-          aria-label={t('ui-next-character')} onclick={() => requestNavigation(1)}>&rarr;</button>
-      </div>
-      <div class="header-actions">
-        <button type="button" class="cancel-button" onclick={requestClose}>{t('label-cancel')}</button>
-        <button type="submit" class="save-button" disabled={Boolean(validation.error)}>{t('label-save').trim()}</button>
-      </div>
-    </header>
     <div class="editor-content">
       <div class="editor-layout">
+        <div class="editor-main-column">
+        <header class="editor-header">
+          <div class="editor-header-main">
+            <h2 id="editor-title">{t('ui-edit-character')}</h2>
+            <div class="editor-navigation">
+              <button type="button" class:boundary-hidden={!hasPrevious} aria-hidden={!hasPrevious} disabled={!hasPrevious}
+                aria-label={t('ui-previous-character')} onclick={() => requestNavigation(-1)}>&larr;</button>
+              <button type="button" class:boundary-hidden={!hasNext} aria-hidden={!hasNext} disabled={!hasNext}
+                aria-label={t('ui-next-character')} onclick={() => requestNavigation(1)}>&rarr;</button>
+            </div>
+            <div class="header-actions">
+              <button type="button" class="cancel-button" onclick={requestClose}>{t('label-cancel')}</button>
+              <button type="submit" class="save-button" disabled={Boolean(validation.error)}>{t('label-save').trim()}</button>
+            </div>
+          </div>
+        </header>
         <div class="editor-primary">
       <SkillDetails skills={skillViews.skills} character={draft} {info} {name} {metadata} {scribble} {included} {t}
         onInvestmentChange={(key, side, value) => { draft[side][key] = value; }} />
@@ -566,8 +605,9 @@
       </fieldset>
       <footer>
         <button type="button" class="danger" onclick={() => deleting = true}>{t('ui-remove-character')}</button>
-        <button type="button" onclick={() => presetOpen = true}>{t('ui-preset')}</button>
+        <button type="button" class="preset-button" onclick={() => presetOpen = true}>{t('ui-preset')}</button>
       </footer>
+        </div>
         </div>
       <section class="live-cost-preview" aria-label={t('ui-cost-preview')}>
         {#if validation.resources}
@@ -718,18 +758,24 @@
   .touch-debug-log > div { padding: 0.08rem 0; border-bottom: 1px solid #ffffff22; }
   .touch-debug-reopen { display: block; margin-left: auto; }
   form { margin: 0; }
-  .editor-header { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.7rem 1rem; background: var(--surface); border-bottom: 1px solid #7c5b7d66; }
+  .editor-header { position: sticky; top: 0; z-index: 2; display: flex; box-sizing: border-box; width: 100%; align-items: center; padding: 0.7rem 0; background: var(--surface); border-bottom: 1px solid #7c5b7d66; }
+  .editor-header-main { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 1rem; }
   .editor-header h2 { flex: 1; min-width: 0; margin: 0; font-size: 1.25rem; }
   .editor-navigation { display: flex; gap: 0.35rem; }
   .editor-navigation button { min-width: 2.25rem; padding: 0.25rem 0.5rem; font-size: 1.25rem; line-height: 1; }
   .editor-navigation button.boundary-hidden { visibility: hidden; }
   .header-actions { display: flex; align-items: center; gap: 0.5rem; }
   .header-actions button { white-space: nowrap; }
-  .header-actions .cancel-button { background: #dd33334f; }
+  .header-actions .cancel-button { background: #333333d9; }
   .header-actions .save-button { background: #42a4f84d; }
-  .editor-content { padding: 0.75rem 1rem 1rem; }
+  :global(.site[data-theme="light"]) .header-actions .cancel-button { color: white; }
+  .danger { background: #dd33334f; }
+  .preset-button { background: #837f67; color: white; }
+  :global(.site[data-theme="light"]) .preset-button { background: #f5efc8de; color: #292929; }
+  .editor-content { padding: 0 1rem 1rem; }
   .editor-layout { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 1rem; }
-  .editor-primary { width: 100%; max-width: 700px; min-width: 0; }
+  .editor-main-column { min-width: 0; }
+  .editor-primary { width: 100%; max-width: 700px; min-width: 0; padding-top: 0.75rem; }
   .live-cost-preview { min-width: 0; }
   dialog.discard-confirmation, dialog.editor-confirmation, dialog.preset-dialog { width: min(27rem, calc(100vw - 2rem)); max-height: none; padding: 1.25rem; background: var(--surface); color: var(--text); border: 1px solid #7c5b7d; border-radius: 0.75rem; box-shadow: 0 1rem 3rem #0008; }
   .discard-confirmation h2, .editor-confirmation h2, .preset-dialog h2 { margin: 0; font-size: 1.15rem; }
@@ -793,12 +839,15 @@
     .editor-content { position: relative; }
     .editor-content::after { position: absolute; top: 0; bottom: 0; left: calc(1rem + 700px); border-left: 1px solid #7c5b7d66; content: ''; pointer-events: none; }
     .editor-layout { grid-template-columns: minmax(0, 700px) minmax(0, 1fr); column-gap: 0; }
+    .editor-main-column { min-width: 0; }
+    .editor-header { width: calc(100% + 1rem); margin-left: -1rem; padding-left: 1rem; }
+    .editor-header-main { box-sizing: border-box; padding-right: 1rem; }
     .editor-primary { box-sizing: border-box; padding-right: 1rem; }
-    .live-cost-preview { padding-left: 1rem; }
+    .live-cost-preview { padding: 1rem 0 0 1rem; }
   }
   @media (max-width: 600px) {
     dialog:not(.discard-confirmation):not(.editor-confirmation):not(.preset-dialog) { width: 100vw; max-width: 100vw; margin-inline: 0; }
-    .editor-header, .editor-content { padding: 0.6rem; }
+    .editor-content { padding: 0 0.6rem 0.6rem; }
     .eleph-layout { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.8rem 0.55rem; }
     .eleph-icon { width: 2.55rem; height: 2.55rem; flex-basis: 2.55rem; }
     .eleph-options { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 0.8rem; }

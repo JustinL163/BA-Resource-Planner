@@ -78,8 +78,11 @@ function compatibilityPage(name) {
 }
 
 await rm(assets, { recursive: true, force: true });
-await rm(content, { recursive: true, force: true });
 await mkdir(assets, { recursive: true });
+// Keep generated modules in place while refreshing them. `prepare:site` is also
+// used by `check` and `build`, and deleting this directory first can make a
+// concurrently running Vite dev server fail to resolve imports such as
+// `$content/changelog`.
 await mkdir(content, { recursive: true });
 await generatePlannerMetadata(root, join(content, 'planner.ts'));
 await cp(join(root, 'planner', 'json', 'strings.json'), join(content, 'strings.json'));

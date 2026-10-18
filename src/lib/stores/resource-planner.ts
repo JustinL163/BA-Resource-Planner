@@ -7,7 +7,7 @@ import { isRecord, parsePlannerSave, validateCharacterEdit } from '../domain/pla
 import type { PlannerCharacter, PlannerDataset, PlannerMetadata, PlannerSave, ResourceTotals } from '../domain/planner/types';
 import type { Resources } from '../domain/resources/types';
 import { loadCharacterNames, loadPlannerDataset, savedLanguage } from '../services/planner-data';
-import { announceSaveChange } from '../services/save-events';
+import { announceLocalSave, announceSaveChange } from '../services/save-events';
 import { createGroupActions } from '../services/planner-groups';
 import { applyBulkPatch, validateBulkPatch, type BulkPatch } from '../domain/planner/bulk';
 import { farmServer, type FarmServer } from '../domain/planner/gear-farm';
@@ -66,6 +66,7 @@ export function createResourcePlanner(metadata: PlannerMetadata, storageProvider
       writing = true;
       storage.setItem('save-data', JSON.stringify(restored));
       state.update((value) => ({ ...value, data: restored, saved: true, error: '' }));
+      announceLocalSave();
       announceSaveChange();
       return true;
     } catch (error) {
@@ -149,7 +150,7 @@ export function createResourcePlanner(metadata: PlannerMetadata, storageProvider
     }
   }
 
-  function commit(change: (data: PlannerSave, dataset: PlannerDataset) => void): boolean {
+  function commit(change: (data: PlannerSave, dataset: PlannerDataset) => void, immediateToast = false): boolean {
     const current = get(state);
     if (!current.dataset || !current.data) { report(new Error('Planner data is not ready.')); return false; }
     try {
@@ -163,6 +164,7 @@ export function createResourcePlanner(metadata: PlannerMetadata, storageProvider
       storage.setItem('save-data', JSON.stringify(latest));
       state.update((value) => ({ ...value, data: latest, saved: true, error: '' }));
       if (JSON.stringify(before) !== JSON.stringify(latest)) recordSaveChange(before, cloneSave(latest));
+      announceLocalSave(immediateToast);
       announceSaveChange();
       return true;
     } catch (error) {
@@ -220,7 +222,7 @@ export function createResourcePlanner(metadata: PlannerMetadata, storageProvider
           target: { ...data.characters[index].target, ...detached.target },
           eleph: { ...data.characters[index].eleph, ...detached.eleph }
         };
-      });
+      }, true);
     },
     remove(id: string) {
       return commit((data) => {
@@ -365,6 +367,7 @@ export function createResourcePlanner(metadata: PlannerMetadata, storageProvider
         costsCache.clear();
         state.set({ ...current, data, names, error: '', loading: false, saved: true, migrated: false });
         recordSaveChange(cloneSave(before), cloneSave(data));
+        announceLocalSave();
         announceSaveChange();
         return true;
       } catch (error) { report(error); return false; }

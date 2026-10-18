@@ -13,6 +13,33 @@
   const uePositions = [1, 2, 3, 4] as const;
   const starSides = ['current', 'target'] as const;
   type EquipmentInvestmentKey = (typeof equipmentKeys)[number];
+  type InvestmentSide = 'current' | 'target';
+  const investmentTabSequence: Array<[InvestmentKey, InvestmentSide]> = [
+    ['level', 'current'], ['level', 'target'], ['ue_level', 'current'], ['ue_level', 'target'],
+    ['bond', 'current'], ['bond', 'target'], ['book_hp', 'current'], ['book_hp', 'target'],
+    ['book_atk', 'current'], ['book_atk', 'target'], ['book_heal', 'current'], ['book_heal', 'target'],
+    ['gear1', 'current'], ['gear1', 'target'], ['gear2', 'current'], ['gear2', 'target'],
+    ['gear3', 'current'], ['gear3', 'target'], ['bond_gear', 'current'], ['bond_gear', 'target'],
+    ['ex', 'current'], ['ex', 'target'], ['basic', 'current'], ['basic', 'target'],
+    ['passive', 'current'], ['passive', 'target'], ['sub', 'current'], ['sub', 'target']
+  ];
+  const investmentEnterSequence: Array<[InvestmentKey, InvestmentSide]> = [
+    ['level', 'current'], ['level', 'target'], ['ue_level', 'current'], ['ue_level', 'target'],
+    ['bond', 'current'], ['bond', 'target'],
+    ['book_hp', 'current'], ['book_atk', 'current'], ['book_heal', 'current'],
+    ['book_hp', 'target'], ['book_atk', 'target'], ['book_heal', 'target'],
+    ['gear1', 'current'], ['gear2', 'current'], ['gear3', 'current'],
+    ['gear1', 'target'], ['gear2', 'target'], ['gear3', 'target'],
+    ['bond_gear', 'current'], ['bond_gear', 'target'],
+    ['ex', 'current'], ['basic', 'current'], ['passive', 'current'], ['sub', 'current'],
+    ['ex', 'target'], ['basic', 'target'], ['passive', 'target'], ['sub', 'target']
+  ];
+  function investmentTabOrder(key: InvestmentKey, side: InvestmentSide): number {
+    return investmentTabSequence.findIndex(([candidateKey, candidateSide]) => candidateKey === key && candidateSide === side) + 1;
+  }
+  function investmentEnterIndex(key: InvestmentKey, side: InvestmentSide): number {
+    return investmentEnterSequence.findIndex(([candidateKey, candidateSide]) => candidateKey === key && candidateSide === side) + 1;
+  }
   const limitBreaks = [
     { key: 'book_hp', label: 'label-bookhp', image: 'Book_HP' },
     { key: 'book_atk', label: 'label-bookatk', image: 'Book_ATK' },
@@ -394,6 +421,7 @@
       <div class="skill-tile level-tile" style={`--current-reveal: ${levelRevealAngles.current}; --target-reveal: ${levelRevealAngles.target};`}>
         {#if levelRule}
           <input use:sanitizeIntegerInput class="skill-level-input current" type="number" min={levelRule.min} max={metadata.maxLevel} step="1"
+            data-investment-tab-order={investmentTabOrder('level', 'current')} data-investment-enter-order={investmentEnterIndex('level', 'current')}
             aria-label={`${levelRule.label} ${t('label-current')}`} value={String(character.current.level ?? '')}
             oninput={(event) => onInvestmentChange('level', 'current', event.currentTarget.value)} />
         {/if}
@@ -403,6 +431,7 @@
         </span>
         {#if levelRule}
           <input use:sanitizeIntegerInput class="skill-level-input target" type="number" min={Math.max(levelRule.min, Number(character.current.level) || 0)} max={metadata.maxLevel} step="1"
+            data-investment-tab-order={investmentTabOrder('level', 'target')} data-investment-enter-order={investmentEnterIndex('level', 'target')}
             aria-label={`${levelRule.label} ${t('label-target')}`} value={String(character.target.level ?? '')}
             oninput={(event) => onInvestmentChange('level', 'target', event.currentTarget.value)} />
           <span class="skill-label level-label">{levelRule.label}</span>
@@ -448,6 +477,7 @@
               <input use:sanitizeIntegerInput class="skill-level-input ue-level-input" class:current={side === 'current'} class:target={side === 'target'}
                 type="number" min={side === 'current' ? ueLevelRule.min : Math.max(ueLevelRule.min, Number(character.current.ue_level) || 0)}
                 max={ueLevelMaximum(side === 'current' ? starState.currentUe : starState.targetUe)} step="1"
+                data-investment-tab-order={investmentTabOrder('ue_level', side)} data-investment-enter-order={investmentEnterIndex('ue_level', side)}
                 aria-label={`${ueLevelRule.label} ${t(side === 'current' ? 'label-current' : 'label-target')}`}
                 value={String(character[side].ue_level ?? '')}
                 oninput={(event) => onInvestmentChange('ue_level', side, event.currentTarget.value)} />
@@ -460,6 +490,7 @@
       {#if bondRule}
         <div class="skill-tile bond-tile" style={`--pink-reveal: ${bondReveal.pinkReveal}; --purple-reveal: ${bondReveal.purpleReveal}; --gold-reveal: ${bondReveal.goldReveal};`}>
           <input use:sanitizeIntegerInput class="skill-level-input current" type="number" min={bondRule.min} max={bondRule.max} step="1"
+            data-investment-tab-order={investmentTabOrder('bond', 'current')} data-investment-enter-order={investmentEnterIndex('bond', 'current')}
             aria-label={`${bondRule.label} ${t('label-current')}`} value={String(character.current.bond ?? '')}
             oninput={(event) => onInvestmentChange('bond', 'current', event.currentTarget.value)} />
           <span class="bond-image-stack" aria-hidden="true">
@@ -475,6 +506,7 @@
             {/if}
           </span>
           <input use:sanitizeIntegerInput class="skill-level-input target" type="number" min={Math.max(bondRule.min, Number(character.current.bond) || 0)} max={bondRule.max} step="1"
+            data-investment-tab-order={investmentTabOrder('bond', 'target')} data-investment-enter-order={investmentEnterIndex('bond', 'target')}
             aria-label={`${bondRule.label} ${t('label-target')}`} value={String(character.target.bond ?? '')}
             oninput={(event) => onInvestmentChange('bond', 'target', event.currentTarget.value)} />
           <span class="skill-label bond-label">{bondRule.label}</span>
@@ -485,10 +517,12 @@
         {#if rule}
           <div class="skill-tile limit-break-tile">
             <input use:sanitizeIntegerInput class="skill-level-input current" type="number" min={rule.min} max={Number(character.current.ue) > 0 ? rule.max : 0} step="1"
+              data-investment-tab-order={investmentTabOrder(limitBreak.key, 'current')} data-investment-enter-order={investmentEnterIndex(limitBreak.key, 'current')}
               aria-label={`${t(limitBreak.label)} ${t('label-current')}`} value={String(character.current[limitBreak.key] ?? '')}
               oninput={(event) => onInvestmentChange(limitBreak.key, 'current', event.currentTarget.value)} />
             <img class="limit-break-image" src={`/planner/icons/Books/${limitBreak.image}.webp`} alt="" aria-hidden="true" draggable="false" />
             <input use:sanitizeIntegerInput class="skill-level-input target" type="number" min={Math.max(rule.min, Number(character.current[limitBreak.key]) || 0)} max={Number(character.target.ue) > 0 ? rule.max : 0} step="1"
+              data-investment-tab-order={investmentTabOrder(limitBreak.key, 'target')} data-investment-enter-order={investmentEnterIndex(limitBreak.key, 'target')}
               aria-label={`${t(limitBreak.label)} ${t('label-target')}`} value={String(character.target[limitBreak.key] ?? '')}
               oninput={(event) => onInvestmentChange(limitBreak.key, 'target', event.currentTarget.value)} />
             <span class="skill-label limit-break-label">{t(limitBreak.label)}</span>
@@ -503,10 +537,12 @@
         {#if equipment && rule}
           <div class="skill-tile gear-tile">
             <input use:sanitizeIntegerInput class="skill-level-input current" type="number" min={rule.min} max={rule.max} step="1"
+              data-investment-tab-order={investmentTabOrder(key, 'current')} data-investment-enter-order={investmentEnterIndex(key, 'current')}
               aria-label={`${equipmentLabel(equipment)} ${t('label-current')}`} value={String(character.current[key] ?? '')}
               oninput={(event) => onInvestmentChange(key, 'current', event.currentTarget.value)} />
             <img class="gear-image" src={`/planner/icons/Gear/T${equipmentTier(key)}_${equipment}.webp`} alt="" aria-hidden="true" draggable="false" />
             <input use:sanitizeIntegerInput class="skill-level-input target" type="number" min={Math.max(rule.min, Number(character.current[key]) || 0)} max={rule.max} step="1"
+              data-investment-tab-order={investmentTabOrder(key, 'target')} data-investment-enter-order={investmentEnterIndex(key, 'target')}
               aria-label={`${equipmentLabel(equipment)} ${t('label-target')}`} value={String(character.target[key] ?? '')}
               oninput={(event) => onInvestmentChange(key, 'target', event.currentTarget.value)} />
             <span class="skill-label gear-label">{equipmentLabel(equipment)}</span>
@@ -516,6 +552,7 @@
       {#if bondGearRule}
         <div class="skill-tile gear-tile" class:hidden={!character.hasBondGear} aria-hidden={!character.hasBondGear}>
           <input use:sanitizeIntegerInput class="skill-level-input current" type="number" min={bondGearRule.min} max={bondGearRule.max} step="1"
+            data-investment-tab-order={investmentTabOrder('bond_gear', 'current')} data-investment-enter-order={investmentEnterIndex('bond_gear', 'current')}
             aria-label={`Bond Gear ${t('label-current')}`} value={String(character.current.bond_gear ?? '')}
             disabled={!character.hasBondGear}
             oninput={(event) => onInvestmentChange('bond_gear', 'current', event.currentTarget.value)} />
@@ -523,6 +560,7 @@
             <img class="gear-image" src={`/planner/icons/BondGear/${info.Id}.webp`} alt="" aria-hidden="true" draggable="false" />
           {/if}
           <input use:sanitizeIntegerInput class="skill-level-input target" type="number" min={Math.max(bondGearRule.min, Number(character.current.bond_gear) || 0)} max={bondGearRule.max} step="1"
+            data-investment-tab-order={investmentTabOrder('bond_gear', 'target')} data-investment-enter-order={investmentEnterIndex('bond_gear', 'target')}
             aria-label={`Bond Gear ${t('label-target')}`} value={String(character.target.bond_gear ?? '')}
             disabled={!character.hasBondGear}
             oninput={(event) => onInvestmentChange('bond_gear', 'target', event.currentTarget.value)} />
@@ -536,6 +574,7 @@
         <div class="skill-tile" class:active={selected?.key === skill.key}>
           {#if rule}
             <input use:sanitizeIntegerInput class="skill-level-input current" type="number" min={rule.min} max={rule.max} step="1"
+              data-investment-tab-order={investmentTabOrder(skill.key, 'current')} data-investment-enter-order={investmentEnterIndex(skill.key, 'current')}
               aria-label={`${skill.label} ${t('label-current')}`} value={String(character.current[skill.key] ?? '')}
               onpointerenter={() => pointerKey = skill.key}
               onpointerdown={(event) => activateInput(skill.key, event)}
@@ -546,6 +585,7 @@
           <button
             type="button"
             class="skill-button"
+            tabindex="-1"
             bind:this={skillButtons[skill.key]}
             data-skill-key={skill.key}
             aria-label={`${skill.label}: ${t('ui-skill-details')}`}
@@ -561,6 +601,7 @@
           </button>
           {#if rule}
             <input use:sanitizeIntegerInput class="skill-level-input target" type="number" min={Math.max(rule.min, Number(character.current[skill.key]) || 0)} max={rule.max} step="1"
+              data-investment-tab-order={investmentTabOrder(skill.key, 'target')} data-investment-enter-order={investmentEnterIndex(skill.key, 'target')}
               aria-label={`${skill.label} ${t('label-target')}`} value={String(character.target[skill.key] ?? '')}
               onpointerenter={() => pointerKey = skill.key}
               onpointerdown={(event) => activateInput(skill.key, event)}
@@ -570,67 +611,66 @@
           {/if}
         </div>
       {/each}
+      {#if selected}
+        <section
+          id="skill-description"
+          class="skill-description"
+          class:preview={pinnedKey !== selected.key}
+          aria-labelledby="skill-description-heading"
+          data-skill-description={selected.key}
+          data-skill-variant={selected.description.variant}
+        >
+          <header class="description-header">
+            <div>
+              <h3 id="skill-description-heading">{selected.description.name}</h3>
+              <div class="skill-levels">
+                <span>{t('label-current')}: <strong class="skill-current-level">{selected.description.level}</strong></span>
+                <span>{t('label-target')}: <strong class="skill-target-level">{selected.description.targetLevel}</strong></span>
+              </div>
+            </div>
+            {#if pinnedKey === selected.key}
+              <button type="button" class="close-button" onclick={() => closeDescription(selected.key)}>{t('ui-close')}</button>
+            {/if}
+          </header>
+
+          {#if selected.description.cost}
+            <p class="skill-cost" data-skill-cost>
+              <span class="meta-label">{t('ui-skill-cost')}</span>
+              <span class="value-current" data-skill-value="current" aria-label={`${t('label-current')}: ${selected.description.cost.current}`}>{selected.description.cost.current}</span>
+              {#if selected.description.cost.target !== null}
+                <span aria-hidden="true">/</span>
+                <span class="value-target" data-skill-value="target" aria-label={`${t('label-target')}: ${selected.description.cost.target}`}>{selected.description.cost.target}</span>
+              {/if}
+            </p>
+          {/if}
+
+          <div class="skill-description-text">
+            {#each selected.description.tokens as token}
+              {#if token.kind === 'break'}
+                <br />
+              {:else}
+                <span class={`token tone-${token.tone}`} class:token-bold={token.bold}>
+                  {#if token.kind === 'text'}
+                    {token.text}
+                  {:else}
+                    <span class="value-current" data-skill-value="current" aria-label={`${t('label-current')}: ${token.current}`}>{token.current}</span>
+                    {#if token.target !== null}
+                      <span aria-hidden="true">/</span>
+                      <span class="value-target" data-skill-value="target" aria-label={`${t('label-target')}: ${token.target}`}>{token.target}</span>
+                    {/if}
+                  {/if}
+                </span>
+              {/if}
+            {/each}
+          </div>
+
+          {#if selected.fallback}
+            <p class="fallback-message">{t('ui-skill-english-fallback')}</p>
+          {/if}
+        </section>
+      {/if}
     </div>
   </div>
-
-  {#if selected}
-    <section
-      id="skill-description"
-      class="skill-description"
-      class:preview={pinnedKey !== selected.key}
-      aria-labelledby="skill-description-heading"
-      data-skill-description={selected.key}
-      data-skill-variant={selected.description.variant}
-    >
-      <header class="description-header">
-        <div>
-          <h3 id="skill-description-heading">{selected.description.name}</h3>
-          <div class="skill-levels">
-            <span>{t('label-current')}: <strong>{selected.description.level}</strong></span>
-            <span>{t('label-target')}: <strong>{selected.description.targetLevel}</strong></span>
-          </div>
-        </div>
-        {#if pinnedKey === selected.key}
-          <button type="button" class="close-button" onclick={() => closeDescription(selected.key)}>{t('ui-close')}</button>
-        {/if}
-      </header>
-
-      {#if selected.description.cost}
-        <p class="skill-cost" data-skill-cost>
-          <span class="meta-label">{t('ui-skill-cost')}</span>
-          <span class="value-current" data-skill-value="current" aria-label={`${t('label-current')}: ${selected.description.cost.current}`}>{selected.description.cost.current}</span>
-          {#if selected.description.cost.target !== null}
-            <span aria-hidden="true">/</span>
-            <span class="value-target" data-skill-value="target" aria-label={`${t('label-target')}: ${selected.description.cost.target}`}>{selected.description.cost.target}</span>
-          {/if}
-        </p>
-      {/if}
-
-      <div class="skill-description-text">
-        {#each selected.description.tokens as token}
-          {#if token.kind === 'break'}
-            <br />
-          {:else}
-            <span class={`token tone-${token.tone}`} class:token-bold={token.bold}>
-              {#if token.kind === 'text'}
-                {token.text}
-              {:else}
-                <span class="value-current" data-skill-value="current" aria-label={`${t('label-current')}: ${token.current}`}>{token.current}</span>
-                {#if token.target !== null}
-                  <span aria-hidden="true">/</span>
-                  <span class="value-target" data-skill-value="target" aria-label={`${t('label-target')}: ${token.target}`}>{token.target}</span>
-                {/if}
-              {/if}
-            </span>
-          {/if}
-        {/each}
-      </div>
-
-      {#if selected.fallback}
-        <p class="fallback-message">{t('ui-skill-english-fallback')}</p>
-      {/if}
-    </section>
-  {/if}
 </div>
 
 <style>
@@ -659,7 +699,7 @@
   .weapon-info img { display: block; width: 100%; height: auto; object-fit: contain; }
   .level-strip, .bond-strip { grid-column: 1 / -1; display: flex; width: min(100%, 25.2rem); justify-self: center; justify-content: flex-start; gap: 0.4rem; }
   .level-strip { min-width: 0; }
-  .skill-strip { grid-column: 1 / -1; display: flex; width: min(100%, 25.2rem); justify-self: center; justify-content: center; gap: 0.4rem; }
+  .skill-strip { position: relative; grid-column: 1 / -1; display: flex; width: min(100%, 25.2rem); justify-self: center; justify-content: center; gap: 0.4rem; }
   .skill-tile { display: grid; min-width: 0; flex: 0 1 6rem; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 0.2rem; padding: 0.1rem; border: 1px solid #7c5b7d66; border-radius: 0.5rem; background: var(--background); }
   .skill-tile:hover, .skill-tile.active { background: var(--background); }
   .skill-button { display: flex; min-width: 0; flex-direction: column; align-items: center; justify-content: center; gap: 0.2rem; padding: 0.15rem 0; border: 0; background: transparent; color: var(--text); cursor: pointer; }
@@ -711,11 +751,13 @@
   .gear-tile.hidden { visibility: hidden; }
   .gear-image { grid-column: 2; justify-self: center; width: 2.1rem; height: 2.1rem; margin: 0.15rem 0; object-fit: contain; }
   .gear-label { grid-column: 1 / -1; grid-row: 2; justify-self: stretch; min-width: 0; }
-  .skill-description { min-width: 0; max-width: 100%; padding: 0.65rem 0.75rem; border: 1px solid #7c5b7d; border-radius: 0.5rem; background: #7c5b7d12; overflow-wrap: anywhere; }
+  .skill-description { position: absolute; z-index: 20; right: 0; bottom: calc(100% + 0.4rem); left: 0; box-sizing: border-box; min-width: 0; max-width: 100%; max-height: min(50dvh, 24rem); padding: 0.65rem 0.75rem; border: 1px solid #7c5b7d; border-radius: 0.5rem; background: var(--surface); box-shadow: 0 0.4rem 1rem #0007; overflow: auto; overflow-wrap: anywhere; }
   .skill-description.preview { border-style: dashed; }
   .description-header { display: flex; min-width: 0; align-items: flex-start; justify-content: space-between; gap: 0.5rem; }
   h3 { min-width: 0; margin: 0; font-size: 1rem; }
   .skill-levels { display: flex; flex-wrap: wrap; gap: 0.25rem 0.75rem; margin-top: 0.2rem; font-size: 0.8rem; }
+  .skill-current-level { color: white; }
+  :global(.site[data-theme="light"]) .skill-current-level { color: black; }
   .close-button { flex: 0 0 auto; padding: 0.25rem 0.5rem; border: 1px solid #7c5b7d; border-radius: 0.35rem; background: var(--surface); color: var(--text); cursor: pointer; }
   .skill-cost { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem; margin: 0.55rem 0 0; }
   .meta-label { margin-right: 0.15rem; font-weight: 600; }
@@ -726,6 +768,7 @@
   .tone-pierce { color: #b08b35; }
   .value-current { color: #008c9b; }
   .value-target { color: #588f00; }
+  .skill-target-level { color: #ffffa6; }
   .fallback-message { margin: 0.5rem 0 0; font-size: 0.8rem; }
   @media (max-width: 600px) {
     .skill-overview { grid-template-columns: minmax(6rem, 7rem) minmax(0, 1fr); gap: 0.15rem }

@@ -6,6 +6,7 @@
   import { languageOptions, getLanguageString } from '$lib/domain/localisation';
   import { preferences } from '$lib/stores/preferences';
   import { saveChangedEvent } from '$lib/services/save-events';
+  import SavedToast from '$lib/components/planner/SavedToast.svelte';
   import strings from '$content/strings.json';
   import './site.css';
 
@@ -57,6 +58,7 @@
 </svelte:head>
 
 <div class="site" class:game-shell={standaloneGame} data-theme={$preferences.theme}>
+  {#if !standaloneGame}<SavedToast message={getLanguageString(strings, 'ui-saved-locally', $preferences.language)} />{/if}
   {#if !standaloneGame}
     <a class="skip-link" href="#main-content">Skip to content</a>
   {/if}

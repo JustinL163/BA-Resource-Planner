@@ -431,7 +431,7 @@
   .matrices:not(.gear) .school-pair table { width: 100%; max-width: 100%; table-layout: fixed; margin: 0; }
   .school-row-header { box-sizing: border-box; width: auto; min-width: 0; max-width: none; padding: 0 !important; }
   .school-row-icon { display: block; width: 100%; aspect-ratio: 1; object-fit: contain; padding: 0.45rem; box-sizing: border-box; }
-  .row-name { display: block; width: 100%; min-width: 0; overflow: hidden; white-space: nowrap; }
+  .row-name { display: block; width: 100%; min-width: 0; overflow: hidden; white-space: nowrap; text-align: center; }
   .matrices:not(.gear) td { width: 75px; min-width: 0; padding: 0; }
   .matrices:not(.gear) td :global(.resource-cell) { min-width: 0; min-height: 0; aspect-ratio: 1; }
   .artifact-pair { display: grid; width: 100%; max-width: 800px; margin-inline: auto; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; }
