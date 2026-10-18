@@ -38,7 +38,7 @@ test('dice simulations preserve original requests, exact statistics/rewards and 
   const errors: string[] = [], missingImages: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
   page.on('response', (response) => { if (response.status() === 404 && response.request().resourceType() === 'image') missingImages.push(response.url()); });
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.locator(`[data-event-id="${id}"]`).click();
   await expect(page.locator('[data-event-ap]')).toBeVisible();
   await page.locator('[data-event-tab="Dice"]').click();
@@ -98,7 +98,7 @@ test('dice simulations preserve original requests, exact statistics/rewards and 
 
 test('dice cancellation, changed farming inputs and event switches terminate pending pools without saving stale rewards', async ({ page }) => {
   await page.addInitScript((save) => localStorage.setItem('save-data', JSON.stringify(save)), savedPlan());
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator(`[data-event-id="${id}"]`).click();
   await page.locator('[data-event-tab="Dice"]').click();
@@ -133,7 +133,7 @@ test('dice cancellation, changed farming inputs and event switches terminate pen
 test('dice/statistics worker failures stay visible and can be retried without partial statistics', async ({ page, context }) => {
   await page.addInitScript((save) => localStorage.setItem('save-data', JSON.stringify(save)), savedPlan());
   await context.route('**/diceGachaWorker.js*', (route) => route.abort());
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator(`[data-event-id="${id}"]`).click();
   await page.locator('[data-event-tab="Dice"]').click();
@@ -155,7 +155,7 @@ test('dice/statistics worker failures stay visible and can be retried without pa
 test('RNG changes during dice simulation reuse the pool and compact references fit a 375px screen', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.addInitScript((save) => localStorage.setItem('save-data', JSON.stringify(save)), savedPlan());
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator(`[data-event-id="${id}"]`).click();
   await page.locator('[data-event-tab="Dice"]').click();
@@ -188,7 +188,7 @@ test('zero roll currency still simulates initial fixed tickets rather than retur
   save.events_data[id].currency_owned = { "Kanoe's_Hot_Chocolate": 1 };
   await page.clock.setFixedTime(eventTime);
   await page.addInitScript((save) => localStorage.setItem('save-data', JSON.stringify(save)), save);
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator(`[data-event-id="${id}"]`).click();
   await page.locator('[data-event-tab="Dice"]').click();
@@ -202,11 +202,11 @@ test('zero roll currency still simulates initial fixed tickets rather than retur
 
 test('a competing event edit cancels dice workers and cannot be overwritten by late results', async ({ context }) => {
   const first = await context.newPage();
-  await first.goto('/planner/event-planner/');
+  await first.goto('/planner/event-planner/?show-earlier-events=1');
   await first.evaluate((save) => localStorage.setItem('save-data', JSON.stringify(save)), savedPlan());
   await first.reload();
   const second = await context.newPage();
-  await second.goto('/planner/event-planner/');
+  await second.goto('/planner/event-planner/?show-earlier-events=1');
   for (const page of [first, second]) {
     await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
     await page.locator(`[data-event-id="${id}"]`).click();

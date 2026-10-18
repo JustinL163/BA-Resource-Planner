@@ -40,7 +40,7 @@ for (const { id, mode, cafeRank, minimumAp, material } of [
     await page.addInitScript(({ id, plan }) => {
       localStorage.setItem('save-data', JSON.stringify({ exportVersion: 2, events_data: { [id]: plan } }));
     }, { id, plan });
-    await page.goto('/planner/event-planner/');
+    await page.goto('/planner/event-planner/?show-earlier-events=1');
     await page.locator(`[data-event-id="${id}"]`).click();
     await page.locator('[data-event-mode="Shop"]').click();
     const alert = page.getByRole('alert');
@@ -84,7 +84,7 @@ for (const id of cardEventIds) {
         terminate(){window.cardWorkerStops.push(this.path);super.terminate()}
       };
     })()`);
-    await page.goto('/planner/event-planner/');
+    await page.goto('/planner/event-planner/?show-earlier-events=1');
     await page.locator(`[data-event-id="${id}"]`).click();
     await expect(page.locator('[data-event-ap]')).toBeVisible();
     await page.locator('[data-event-tab="Cards"]').click();
@@ -153,7 +153,7 @@ for (const id of cardEventIds) {
 test('card simulation cancellation and changed inputs release workers without persisting stale results', async ({ page }) => {
   const id = 'art-for-whom';
   await page.addInitScript((save) => localStorage.setItem('save-data', JSON.stringify(save)), savedPlan(id));
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator(`[data-event-id="${id}"]`).click();
   await page.locator('[data-event-tab="Cards"]').click();
@@ -184,7 +184,7 @@ test('failed card workers report errors, allow retry, and never save partial sta
   const id = 'art-for-whom';
   await page.addInitScript((save) => localStorage.setItem('save-data', JSON.stringify(save)), savedPlan(id));
   await context.route('**/cardGachaWorker.js', (route) => route.abort());
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator(`[data-event-id="${id}"]`).click();
   await page.locator('[data-event-tab="Cards"]').click();
@@ -205,7 +205,7 @@ test('switching events cancels card simulations and compact rarity tables fit mo
   const drawCurrency = Object.values(event.currencies).find((currency) => currency.source === 'CardPull')?.pull_currency;
   if (!drawCurrency) throw new Error('Missing currency.');
   await page.addInitScript((save) => localStorage.setItem('save-data', JSON.stringify(save)), save);
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator(`[data-event-id="${id}"]`).click();
   await page.locator('[data-event-tab="Cards"]').click();
@@ -235,7 +235,7 @@ test('switching events cancels card simulations and compact rarity tables fit mo
 test('RNG-only edits during card processing keep the four-worker simulation valid', async ({ page }) => {
   const id = 'art-for-whom';
   await page.addInitScript((save) => localStorage.setItem('save-data', JSON.stringify(save)), savedPlan(id));
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator(`[data-event-id="${id}"]`).click();
   await page.locator('[data-event-tab="Cards"]').click();
@@ -263,7 +263,7 @@ test('statistics-worker failure is explicit and does not persist a successful si
   const id = 'art-for-whom';
   await page.addInitScript((save) => localStorage.setItem('save-data', JSON.stringify(save)), savedPlan(id));
   await context.route('**/card-statistics-worker.js', (route) => route.abort());
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator(`[data-event-id="${id}"]`).click();
   await page.locator('[data-event-tab="Cards"]').click();

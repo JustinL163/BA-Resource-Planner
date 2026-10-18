@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount, untrack } from 'svelte';
+  import { page } from '$app/state';
   import { metadata } from '$content/planner';
   import reviewedArchive from '$content/reviewed-event-archive.json';
   import strings from '$content/strings.json';
@@ -52,6 +53,7 @@
   let includeLessons = $state(true);
   let includeInvasion = $state(true);
   let showArchives = $state(false);
+  let showArchiveControl = $derived(page.url.searchParams.get('show-earlier-events') === '1');
   let eventListOpen = $state(false);
   let entry = $derived($planner.catalog.find((entry) => entry.id === $planner.selected));
   let event = $derived(entry?.event ?? null);
@@ -416,7 +418,7 @@
 </p>{/if}
 <div class="event-layout" class:event-selection={!entry || eventListOpen}>
   <aside id="event-list" aria-label={t('label-eventlist')} class:open={!entry || eventListOpen}>
-    {#if $planner.catalog.some((item) => item.archived)}
+    {#if showArchiveControl && $planner.catalog.some((item) => item.archived)}
       <label class="archives"><input type="checkbox" bind:checked={showArchives} />{t('ui-event-supported-archives')}</label>
     {/if}
     {#each $planner.catalog.filter((item) => !item.archived || showArchives || item.id === $planner.selected) as item (item.id)}

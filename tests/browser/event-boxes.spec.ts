@@ -29,7 +29,7 @@ for (const id of boxEventIds) {
     page.on('response', (response) => { if (response.status() === 404 && response.request().resourceType() === 'image') missingImages.push(response.url()); });
     await page.clock.setFixedTime((event.reset_time + 3 * 86400 + 3600) * 1000);
     await page.addInitScript((save) => { if (!localStorage.getItem('save-data')) localStorage.setItem('save-data', JSON.stringify(save)); }, sourceSave(id));
-    await page.goto('/planner/event-planner/');
+    await page.goto('/planner/event-planner/?show-earlier-events=1');
     await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
     await page.locator(`[data-event-id="${id}"]`).click();
     await expect(page.locator('[data-event-tab="Boxes"]')).toBeVisible();
@@ -101,7 +101,7 @@ test('box-currency shop edits preserve converted targets and work in real solver
   }));
   await page.clock.setFixedTime((event.reset_time + 3 * 86400 + 3600) * 1000);
   await page.addInitScript((save) => { if (!localStorage.getItem('save-data')) localStorage.setItem('save-data', JSON.stringify(save)); }, sourceSave(id));
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.locator(`[data-event-id="${id}"]`).click();
   await page.locator('[data-event-tab="Bonus"]').click();
   await page.getByRole('button', { name: 'Enable All', exact: true }).click();
@@ -131,7 +131,7 @@ test('box-currency shop edits preserve converted targets and work in real solver
 test('box events fit mobile screens and keyboard cycle changes do not touch saved settings', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.addInitScript((save) => localStorage.setItem('save-data', JSON.stringify(save)), sourceSave('say-bing-rerun'));
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator('[data-event-id="say-bing-rerun"]').click();
   await page.locator('[data-event-tab="Boxes"]').click();

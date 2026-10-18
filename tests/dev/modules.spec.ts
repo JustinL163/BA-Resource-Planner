@@ -78,7 +78,7 @@ test('development serves the event calculation bridge as JavaScript', async ({ r
 test('development hydrates the standard event planner and runs its classic solver worker', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  const response = await page.goto('/planner/event-planner/');
+  const response = await page.goto('/planner/event-planner/?show-earlier-events=1');
   expect(response?.status()).toBe(200);
   await page.locator('[data-event-id="lore-pursuit-s2"]').click();
   await page.locator('[data-event-mode="Manual"]').click();
@@ -96,7 +96,7 @@ test('development hydrates the standard event planner and runs its classic solve
 test('development renders reviewed box archives without JSON/module collisions', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator('[data-event-id="moonlight-dream"]').click();
   await page.locator('[data-event-tab="Boxes"]').click();
@@ -113,7 +113,7 @@ test('development serves card statistics as a classic worker and renders migrate
   expect(response.headers()['content-type']).toMatch(/(?:java|ecma)script/);
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator('[data-event-id="art-for-whom"]').click();
   await page.locator('[data-event-tab="Cards"]').click();
@@ -126,7 +126,7 @@ test('development serves card statistics as a classic worker and renders migrate
 test('development renders migrated dice controls and the full race reference without module errors', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator('[data-event-id="occult-research-society"]').click();
   await page.locator('[data-event-tab="Dice"]').click();
@@ -143,7 +143,7 @@ test('development serves the original Omikuji worker and renders the reviewed sl
   expect(response.headers()['content-type']).toMatch(/(?:java|ecma)script/);
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator('[data-event-id="pray-ball-rerun"]').click();
   await page.locator('[data-event-tab="Omikuji"]').click();
@@ -157,7 +157,7 @@ test('development serves the original Omikuji worker and renders the reviewed sl
 test('development hydrates only the generated Lessons archive and hides inapplicable stage-group filters', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator('[data-event-id="on-your-mark"]').click();
   await page.locator('[data-event-tab="Lessons"]').click();
@@ -169,7 +169,7 @@ test('development hydrates only the generated Lessons archive and hides inapplic
 test('development hydrates the reviewed Invasion archive and shows its session-only reward toggle', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator('[data-event-id="valentine-rerun"]').click();
   await expect(page.getByRole('checkbox', { name: 'Invasion Rewards', exact: true })).toBeVisible();
@@ -180,7 +180,7 @@ test('development hydrates the reviewed Invasion archive and shows its session-o
 test('development keeps the Invasion overflow shop rule and preserves the legacy Event Point definition', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator('[data-event-id="valentine-rerun"]').click();
   await page.locator('[data-event-tab="Shop"]').click();

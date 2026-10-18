@@ -33,7 +33,7 @@ test('archived Lessons tab preserves manual run/reward fields, exact rank contro
     if (response.status() === 404 && response.request().resourceType() === 'image') missingImages.push(response.url());
   });
 
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator(`[data-event-id="${id}"]`).click();
   await page.locator('[data-event-tab="Lessons"]').click();
@@ -72,7 +72,7 @@ test('archived Lessons tab preserves manual run/reward fields, exact rank contro
 });
 
 test('the generated archive remains scoped to the four reviewed Lessons events', async ({ page }) => {
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   for (const eventId of ['on-your-mark', 'hot-spring-rerun', 'restoration-project', 'on-your-mark-rerun']) {
     await expect(page.locator(`[data-event-id="${eventId}"]`)).toBeVisible();

@@ -13,7 +13,7 @@ import type { BoxCycle, DerivedCurrencyRule, EventMode, EventPlan, PointReward, 
 export interface EventEntry { id: string; name: string; icon: string; comingSoon: boolean; event: StandardEvent | null; archived?: boolean }
 export const standardEventIds = ['lore-pursuit-s2', 'lore-pursuit', 'box-shadow-looming-rerun', 'box-shadow-looming', 'secret-midnight-party', 'secret-midnight-party-rerun', 'honorable-sea-showdown', 'serenade-promenade-rerun', 'winter-skies-renaissance', 'descent-of-five-senses-rerun', 'railroad-runaway', 'ive-alive-rerun', "summer-sky's-promise", 'sheside-outside-rerun'];
 export const boxEventIds = ['moonlight-dream', 'pandemic-hazard', '0068-opera-with-love-rerun', 'say-bing-rerun', 'kivotos-unsolved-mysteries'];
-export const cardEventIds = ['get-hyped-and-march-on-rerun', 'art-for-whom'];
+export const cardEventIds = ['get-hyped-and-march-on-rerun', 'art-for-whom', 'calm-after-the-storm'];
 export const diceEventIds = ['occult-research-society'];
 export const omikujiEventIds = ['magical-girl-trinity', 'new-year-march-rerun', 'pray-ball', 'an-unconcealed-path', 'pray-ball-rerun'];
 export const lessonEventIds = ['on-your-mark', 'hot-spring-rerun', 'restoration-project', 'on-your-mark-rerun'];

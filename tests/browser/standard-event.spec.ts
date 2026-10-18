@@ -68,7 +68,7 @@ function savedLorePursuitPlan() {
 test('archived Lore Pursuit exposes Route Map rewards and saves finite Currency overflow across reload', async ({ page }) => {
   await page.clock.setFixedTime(lorePursuitTime);
   await page.addInitScript((data) => { if (!localStorage.getItem('save-data')) localStorage.setItem('save-data', JSON.stringify(data)); }, savedLorePursuitPlan());
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   const archivedEvent = page.locator(`[data-event-id="${lorePursuitId}"]`);
   await expect(archivedEvent).toBeVisible();
@@ -96,7 +96,7 @@ test('standard event tabs use a real solver worker and preserve legacy-compatibl
   page.on('response', (response) => { if (response.status() === 404 && response.request().resourceType() === 'image') failedImages.push(response.url()); });
   await page.clock.setFixedTime(eventTime);
   await page.addInitScript((data) => { if (!localStorage.getItem('save-data')) localStorage.setItem('save-data', JSON.stringify(data)); }, savedPlan());
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.evaluate(`(() => {
     const NativeWorker = window.Worker;
     window.eventWorkers = 0; window.eventWorkerStops = 0;
@@ -157,7 +157,7 @@ test('Lore Pursuit S2 renders a valid Antikythera target despite the solver midp
   await page.addInitScript((plan) => {
     localStorage.setItem('save-data', JSON.stringify({ exportVersion: 2, events_data: { 'lore-pursuit-s2': plan } }));
   }, plan);
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.locator('[data-event-id="lore-pursuit-s2"]').click();
   await page.locator('[data-event-mode="Materials"]').click();
   await page.locator('[data-event-material="Antikythera_4"]').click();
@@ -172,7 +172,7 @@ test('worker failures are visible, retry works, and invalid edits never change s
   await page.clock.setFixedTime(eventTime);
   await page.addInitScript((data) => localStorage.setItem('save-data', JSON.stringify(data)), savedPlan());
   await context.route('**/event-plan-worker.js', (route) => route.abort());
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.locator('[data-event-id="lore-pursuit-s2"]').click();
   await page.locator('[data-event-mode="Shop"]').click();
   await expect(page.getByRole('alert')).toBeVisible();
@@ -201,7 +201,7 @@ test('original BOX Shadow Looming is available in supported archives and display
   const save = { exportVersion: 2, futureField: { keep: true }, events_data: { [shadowId]: plan } };
   await page.clock.setFixedTime(shadowTime);
   await page.addInitScript((data) => localStorage.setItem('save-data', JSON.stringify(data)), save);
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator(`[data-event-id="${shadowId}"]`).click();
   await expect(page.getByRole('heading', { name: 'BOX Shadow Looming Over Millennium', exact: true })).toBeVisible();
@@ -219,7 +219,7 @@ test('Secret Midnight Party keeps its BOOM input and converted Youkai target in 
   await page.addInitScript((data) => {
     if (!localStorage.getItem('save-data')) localStorage.setItem('save-data', JSON.stringify(data));
   }, save);
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator(`[data-event-id="${secretId}"]`).click();
   await expect(page.locator('[data-event-tab]')).toHaveCount(6);
@@ -268,7 +268,7 @@ test('Honorable Sea Showdown converts Renge shop costs to Yukari currency and pr
   const save = { exportVersion: 2, events_data: { [honorableId]: plan } };
   await page.clock.setFixedTime(honorableTime);
   await page.addInitScript((data) => localStorage.setItem('save-data', JSON.stringify(data)), save);
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator(`[data-event-id="${honorableId}"]`).click();
   await expect(page.getByRole('heading', { name: 'Fair and Square Aquatic Showdown', exact: true })).toBeVisible();
@@ -308,7 +308,7 @@ test('Serenade Promenade rerun calculates capped overflow Eleph', async ({ page 
   const save = { exportVersion: 2, events_data: { [serenadeId]: plan } };
   await page.clock.setFixedTime(serenadeTime);
   await page.addInitScript((data) => localStorage.setItem('save-data', JSON.stringify(data)), save);
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator(`[data-event-id="${serenadeId}"]`).click();
   await expect(page.getByRole('heading', { name: 'Serenade Promenade', exact: true })).toBeVisible();
@@ -327,7 +327,7 @@ test('Winter Skies preserves point thresholds and derives Event Points from its 
   const save = { exportVersion: 2, futureField: { keep: true }, events_data: { [winterId]: plan } };
   await page.clock.setFixedTime(winterTime);
   await page.addInitScript((data) => localStorage.setItem('save-data', JSON.stringify(data)), save);
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator(`[data-event-id="${winterId}"]`).click();
   await expect(page.getByRole('heading', { name: 'Winter Skies Renaissance', exact: true })).toBeVisible();
@@ -370,7 +370,7 @@ test('Descent rerun derives its Voucher target from Firecracker purchases and ke
   await page.addInitScript((data) => {
     if (!localStorage.getItem('save-data')) localStorage.setItem('save-data', JSON.stringify(data));
   }, save);
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator(`[data-event-id="${descentId}"]`).click();
   await expect(page.getByRole('heading', { name: 'Descent of the Five Senses', exact: true })).toBeVisible();
@@ -402,7 +402,7 @@ test('Railroad Runaway is available in the supported archive', async ({ page }) 
   const save = { exportVersion: 2, events_data: { [railroadId]: plan } };
   await page.clock.setFixedTime(railroadTime);
   await page.addInitScript((data) => localStorage.setItem('save-data', JSON.stringify(data)), save);
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator(`[data-event-id="${railroadId}"]`).click();
   await expect(page.getByRole('heading', { name: 'Highlander Railroad Runaway', exact: true })).toBeVisible();
@@ -420,7 +420,7 @@ test('I\u2019ve aLIVE rerun exposes its points, Owned currencies, and safe unlim
   const save = { exportVersion: 2, events_data: { [iveAliveId]: plan } };
   await page.clock.setFixedTime(iveAliveTime);
   await page.addInitScript((data) => localStorage.setItem('save-data', JSON.stringify(data)), save);
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator(`[data-event-id="${iveAliveId}"]`).click();
   await expect(page.getByRole('heading', { name: '-ive aLIVE!', exact: true })).toBeVisible();
@@ -448,7 +448,7 @@ test("Summer Sky's Promise keeps its milestone currency out of solver and Owned 
   const save = { exportVersion: 2, events_data: { [summerSkyId]: plan } };
   await page.clock.setFixedTime(summerSkyTime);
   await page.addInitScript((data) => { if (!localStorage.getItem('save-data')) localStorage.setItem('save-data', JSON.stringify(data)); }, save);
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator(`[data-event-id="${summerSkyId}"]`).click();
   await expect(page.getByRole('heading', { name: "Summer Sky's Promise", exact: true })).toBeVisible();
@@ -484,7 +484,7 @@ test('SheSide Outside keeps Tournament Water Gun outside solver and Owned contro
   await page.addInitScript((data) => {
     if (!localStorage.getItem('save-data')) localStorage.setItem('save-data', JSON.stringify(data));
   }, save);
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator(`[data-event-id="${sheSideId}"]`).click();
   await expect(page.getByRole('heading', { name: 'Sheside Outside', exact: true })).toBeVisible();
@@ -517,12 +517,12 @@ test('SheSide Outside keeps Tournament Water Gun outside solver and Owned contro
 test('cross-tab event changes block stale edits but unrelated save changes are retained', async ({ context }) => {
   const first = await context.newPage();
   await first.clock.setFixedTime(eventTime);
-  await first.goto('/planner/event-planner/');
+  await first.goto('/planner/event-planner/?show-earlier-events=1');
   await first.evaluate((data) => localStorage.setItem('save-data', JSON.stringify(data)), savedPlan());
   await first.reload();
   const second = await context.newPage();
   await second.clock.setFixedTime(eventTime);
-  await second.goto('/planner/event-planner/');
+  await second.goto('/planner/event-planner/?show-earlier-events=1');
   for (const page of [first, second]) {
     await page.locator('[data-event-id="lore-pursuit-s2"]').click();
     await page.locator('[data-event-tab="Energy"]').click();
@@ -548,7 +548,7 @@ test('cross-tab event changes block stale edits but unrelated save changes are r
 test('changing to Manual mode cancels a pending worker and cannot receive stale optimization output', async ({ page }) => {
   await page.clock.setFixedTime(eventTime);
   await page.addInitScript((data) => localStorage.setItem('save-data', JSON.stringify(data)), savedPlan());
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.evaluate(`(() => {
     const NativeWorker = window.Worker; window.stoppedEventWorkers = 0;
     window.Worker = class extends NativeWorker {
@@ -579,7 +579,7 @@ test('unreviewed archived events remain gated and mobile standard tabs stay with
   }));
   await page.addInitScript((data) => localStorage.setItem('save-data', JSON.stringify(data)), savedPlan());
   await page.setViewportSize({ width: 375, height: 812 });
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   const before = await page.evaluate(() => localStorage.getItem('save-data'));
   await page.locator('[data-event-id="after-school-sweets"]').click();
   await expect(page.getByText('This event has special mechanics', { exact: false })).toBeVisible();

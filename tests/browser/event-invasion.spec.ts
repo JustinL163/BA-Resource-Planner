@@ -45,7 +45,7 @@ test('archived Invasion adds currencies automatically and exposes optional Eleph
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
 
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator(`[data-event-id="${id}"]`).click();
   await expect(page.locator('[data-event-tab="Invasion"]')).toHaveCount(0);
@@ -75,7 +75,7 @@ test('archived Invasion adds currencies automatically and exposes optional Eleph
 });
 
 test('only the reviewed archived Invasion event is exposed in the event selector', async ({ page }) => {
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await expect(page.locator(`[data-event-id="${id}"]`)).toBeVisible();
   await expect(page.locator('[data-event-id="valentine-rerun"]')).toHaveCount(1);
@@ -84,7 +84,7 @@ test('only the reviewed archived Invasion event is exposed in the event selector
 test('the Invasion Eleph overflow shop item preserves its capped manual and Currency-mode behavior', async ({ page }) => {
   await page.clock.setFixedTime(eventTime);
   await page.addInitScript((save) => localStorage.setItem('save-data', JSON.stringify(save)), savedPlan());
-  await page.goto('/planner/event-planner/');
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
   await page.locator(`[data-event-id="${id}"]`).click();
   await page.locator('[data-event-tab="Shop"]').click();
