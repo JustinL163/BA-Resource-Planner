@@ -14,6 +14,7 @@ interface SortableOptions {
   change: (state: DragState | null) => void;
   drop: (state: DragState) => void;
   canStart?: (id: string) => boolean;
+  onStartRejected?: (id: string) => void;
   canDrop?: (source: string, target: string) => boolean;
   handle?: string;
 }
@@ -343,6 +344,74 @@ export const sortableReorder: Action<HTMLElement, SortableOptions> = (node, init
   let dragSource = '';
   let started = false;
   let suppressUntil = 0;
+  let cancelRejectedGesture: (() => void) | undefined;
+
+  function rejectedGesturePoint(event: Event, touchId?: number) {
+    const input = event as Event & {
+      clientX?: number;
+      clientY?: number;
+      touches?: TouchList;
+      changedTouches?: TouchList;
+    };
+    const touch = [...Array.from(input.touches ?? []), ...Array.from(input.changedTouches ?? [])]
+      .find((candidate) => touchId === undefined || candidate.identifier === touchId);
+    const x = touch?.clientX ?? input.clientX;
+    const y = touch?.clientY ?? input.clientY;
+    return typeof x === 'number' && typeof y === 'number' ? { x, y } : null;
+  }
+
+  function watchRejectedGesture(event: Event, id: string) {
+    cancelRejectedGesture?.();
+    const input = event as Event & { button?: number; pointerId?: number; pointerType?: string; touches?: TouchList };
+    if (input.button !== undefined && input.button !== 0) return;
+    const start = rejectedGesturePoint(event);
+    if (!start) return;
+
+    const isTouch = event.type === 'touchstart' || input.pointerType === 'touch';
+    const touchId = event.type === 'touchstart' ? input.touches?.[0]?.identifier : undefined;
+    const pointerId = event.type === 'pointerdown' ? input.pointerId : undefined;
+    const moveType = event.type === 'touchstart' ? 'touchmove' : event.type === 'pointerdown' ? 'pointermove' : 'mousemove';
+    const endTypes = event.type === 'touchstart' ? ['touchend', 'touchcancel']
+      : event.type === 'pointerdown' ? ['pointerup', 'pointercancel'] : ['mouseup'];
+    let touchDragReady = !isTouch;
+    let delay: ReturnType<typeof setTimeout> | undefined;
+    let finished = false;
+    let rejected = false;
+
+    const cleanup = () => {
+      if (finished) return;
+      finished = true;
+      document.removeEventListener(moveType, onMove, true);
+      endTypes.forEach((type) => document.removeEventListener(type, finish, true));
+      if (delay) clearTimeout(delay);
+      if (cancelRejectedGesture === cleanup) cancelRejectedGesture = undefined;
+    };
+
+    const finish = () => {
+      if (rejected) suppressUntil = Date.now() + clickSuppressionMs;
+      cleanup();
+    };
+
+    const onMove = (moveEvent: Event) => {
+      if (rejected) return;
+      const movedInput = moveEvent as Event & { pointerId?: number };
+      if (pointerId !== undefined && movedInput.pointerId !== pointerId) return;
+      const point = rejectedGesturePoint(moveEvent, touchId);
+      if (!point || Math.hypot(point.x - start.x, point.y - start.y) < 8) return;
+      // Sortable waits 100ms before allowing touch drags; earlier movement is usually page scrolling.
+      if (isTouch && !touchDragReady) {
+        cleanup();
+        return;
+      }
+      rejected = true;
+      options.onStartRejected?.(id);
+    };
+
+    cancelRejectedGesture = cleanup;
+    document.addEventListener(moveType, onMove, true);
+    endTypes.forEach((type) => document.addEventListener(type, finish, true));
+    if (isTouch) delay = setTimeout(() => { touchDragReady = true; }, 100);
+  }
 
   function ids() {
     return Array.from(node.children)
@@ -355,7 +424,10 @@ export const sortableReorder: Action<HTMLElement, SortableOptions> = (node, init
     const input = event as MouseEvent & { pointerType?: string };
     if (input.ctrlKey || input.metaKey) return true;
     const id = target.dataset.sortId ?? '';
-    if (options.canStart && !options.canStart(id)) return true;
+    if (options.canStart && !options.canStart(id)) {
+      watchRejectedGesture(event, id);
+      return true;
+    }
     return false;
   }
 
@@ -431,6 +503,7 @@ export const sortableReorder: Action<HTMLElement, SortableOptions> = (node, init
   let instance = createSortable();
 
   function cancelDrag() {
+    cancelRejectedGesture?.();
     if (!started) return;
     suppressUntil = Date.now() + clickSuppressionMs;
     instance.destroy();
@@ -462,6 +535,7 @@ export const sortableReorder: Action<HTMLElement, SortableOptions> = (node, init
     destroy() {
       const wasDragging = started;
       instance.destroy();
+      cancelRejectedGesture?.();
       node.removeEventListener('click', click, true);
       window.removeEventListener('keydown', keydown);
       window.removeEventListener('blur', cancelDrag);
