@@ -5,6 +5,7 @@
   import type { Snippet } from 'svelte';
   import { languageOptions, getLanguageString } from '$lib/domain/localisation';
   import { preferences } from '$lib/stores/preferences';
+  import { styleEditorActive, styleEditorAvailable } from '$lib/stores/style-editor';
   import { saveChangedEvent } from '$lib/services/save-events';
   import SavedToast from '$lib/components/planner/SavedToast.svelte';
   import strings from '$content/strings.json';
@@ -13,6 +14,7 @@
   let { children }: { children: Snippet } = $props();
   let menuOpen = $state(false);
   const standaloneGame = $derived(page.url.pathname.startsWith('/game/'));
+  const canStyleCharacterCards = $derived(page.url.pathname.startsWith('/planner/resources') && $styleEditorAvailable);
   const links = [
     { href: '/planner/resources/', label: 'page-resource-planner' },
     { href: '/planner/event-planner/', label: 'page-event-planner' },
@@ -50,6 +52,10 @@
 
   afterNavigate(() => {
     menuOpen = false;
+    if (!page.url.pathname.startsWith('/planner/resources')) {
+      styleEditorActive.set(false);
+      styleEditorAvailable.set(false);
+    }
     registerPageServiceWorker();
   });
 
@@ -107,6 +113,17 @@
           {/each}
         </select>
       </label>
+      {#if canStyleCharacterCards}
+        <button
+          class="style-button"
+          data-style-editor-toggle
+          disabled={!$preferences.ready}
+          aria-label={getLanguageString(strings, 'ui-customize-character-cards', $preferences.language)}
+          title={getLanguageString(strings, 'ui-customize-character-cards', $preferences.language)}
+          aria-pressed={$styleEditorActive}
+          onclick={() => styleEditorActive.update((active) => !active)}
+        ><img src="/planner/icons/UI/brush-solid-full.svg" alt="" draggable="false" /></button>
+      {/if}
       <button
         class="theme-button"
         disabled={!$preferences.ready}

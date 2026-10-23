@@ -108,8 +108,8 @@ dialog:focus-visible { outline: none; outline-offset: 0; }
 }
 .site-header nav a[aria-current="page"] { background: #454858; color: #fafa87; }
 .site-header nav a:hover { background: #454858; }
-.preferences { display: flex; gap: 0.5rem; margin-left: auto; }
-.menu-button, .theme-button {
+.preferences { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.menu-button, .theme-button, .style-button {
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
@@ -118,9 +118,10 @@ dialog:focus-visible { outline: none; outline-offset: 0; }
   background: transparent;
 }
 .menu-button { display: none; }
-.theme-button { display: flex; }
+.theme-button, .style-button { display: flex; }
 .menu-button img { width: 20px; height: 20px; filter: invert(1); }
-.theme-button img { width: 18px; height: 18px; filter: invert(1); }
+.theme-button img, .style-button img { width: 30px; height: 30px; filter: invert(1); }
+.style-button[aria-pressed="true"] { background: #82dafb40; box-shadow: inset 0 0 0 1px #82dafb; }
 main { /* max-width: 1200px;*/ margin: 0 auto; padding: 2rem 1.25rem 4rem; }
 .site.game-shell main.game-main { width: 100%; max-width: none; min-height: 100vh; margin: 0; padding: 0; }
 h1 { margin: 0 0 1.5rem; font-size: clamp(1.7rem, 4vw, 2.3rem); }
@@ -187,8 +188,8 @@ main > h1.credits-title { max-width: 600px; margin-inline: auto; }
   .preferences { gap: 0.2rem; }
   .preferences label { min-width: 0; }
   .preferences select { width: min(7.5rem, 32vw); max-width: 32vw; padding: 0.25rem 0.3rem; font-size: 0.75rem; }
-  .theme-button { width: 2rem; height: 2rem; padding: 0.25rem; }
-  .theme-button img { width: 18px; height: 18px; }
+  .theme-button, .style-button { width: 2rem; height: 2rem; padding: 0.25rem; }
+  .theme-button img, .style-button img { width: 18px; height: 18px; }
   main { padding: 1.25rem 0.75rem 3rem; }
   .document .changelog-section { padding: 1rem; }
   .document.changelog .changelog-section { padding: 0.85rem 1rem 0.4rem; }

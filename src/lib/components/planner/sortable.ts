@@ -14,6 +14,7 @@ interface SortableOptions {
   change: (state: DragState | null) => void;
   drop: (state: DragState) => void;
   canStart?: (id: string) => boolean;
+  onStart?: (id: string, item: HTMLElement, clone: HTMLElement, floatingClone: HTMLElement | null) => void;
   onStartRejected?: (id: string) => void;
   canDrop?: (source: string, target: string) => boolean;
   handle?: string;
@@ -470,7 +471,10 @@ export const sortableReorder: Action<HTMLElement, SortableOptions> = (node, init
         originalChildren = Array.from(node.childNodes);
         originalIds = ids();
         started = Boolean(dragSource);
-        if (started) options.change({ source: dragSource, target: dragSource, after: false });
+        if (started) {
+          options.change({ source: dragSource, target: dragSource, after: false });
+          options.onStart?.(dragSource, event.item, event.clone, Sortable.ghost);
+        }
       },
       onMove(event) {
         const source = event.dragged.dataset.sortId ?? dragSource;

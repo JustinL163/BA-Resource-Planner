@@ -1,21 +1,31 @@
 <script lang="ts">
   import type { PlannerCharacter, PlannerMetadata } from '$lib/domain/planner/types';
-  import { cardInvestments } from '$lib/domain/planner/card-display';
+  import { cardInvestments, defaultCharacterCardDisplaySettings, type CharacterCardDisplaySettings } from '$lib/domain/planner/card-display';
   type DisplayedInfo = 'all' | 'current' | 'none';
   let { id, name, character, metadata, scribble, borrowed = false, borrowedLabel = 'Borrowed', excluded = false,
-    preview = false, radius = '15%', displayedInfo = 'all' }: {
+    preview = false, radius = '15%', displayedInfo = 'all', displaySettings = defaultCharacterCardDisplaySettings }: {
     id: string; name: string; character?: PlannerCharacter; metadata: PlannerMetadata;
     scribble: boolean; borrowed?: boolean; borrowedLabel?: string; excluded?: boolean; preview?: boolean; radius?: string;
-    displayedInfo?: DisplayedInfo;
+    displayedInfo?: DisplayedInfo; displaySettings?: CharacterCardDisplaySettings;
   } = $props();
   let portrait = $derived((scribble && metadata.scribblePortraits[id]) || metadata.portraits[id]);
   let lines = $derived(character && !borrowed && displayedInfo !== 'none' ? cardInvestments(character, preview) : []);
+
+  function showInfo(kind: string): boolean {
+    if (displayedInfo === 'none') return false;
+    if (kind === 'books') return displaySettings.limitBreak;
+    if (kind === 'level' || kind === 'skills' || kind === 'gear' || kind === 'bond' || kind === 'stars') {
+      return displaySettings[kind];
+    }
+    return true;
+  }
 </script>
 
 <span class="portrait" class:excluded style:--portrait-radius={radius}>
   <span class="portrait-content">
     {#if portrait}<img class="portrait-image character-image" src={portrait} alt="" loading="lazy" draggable="false" width="160" height="180" />{/if}
-    {#if character && !borrowed && displayedInfo !== 'none'}
+    {#if character && !borrowed}
+    {#if showInfo('stars')}
     <span class="ue-stars" aria-hidden="true">
       {#each Array(4) as _, index}
         {#if displayedInfo === 'all' ? index < Number(character.target.ue) || index < Number(character.current.ue) : index < Number(character.current.ue)}
@@ -23,23 +33,26 @@
         {/if}
       {/each}
     </span>
+    {/if}
+    {#if showInfo('bond')}
     <span class="bond" aria-hidden="true">
       <img src="/planner/icons/Misc/bondheart.png" alt="" draggable="false" />
       <span>{character.current.bond}{#if displayedInfo === 'all' && Number(character.target.bond) !== Number(character.current.bond)}<span class="target">{character.target.bond}</span>{/if}</span>
     </span>
+    {/if}
     {#each lines as line}
-      {#if line.current || (displayedInfo === 'all' && line.target)}
+      {#if showInfo(line.kind) && (line.current || (displayedInfo === 'all' && line.target))}
         <span class="investment {line.kind}" data-investment={line.kind} aria-hidden="true">
           <span>{line.current}</span>{#if displayedInfo === 'all' && line.target}<span class="target">{line.target}</span>{/if}
         </span>
       {/if}
     {/each}
   {/if}
-  <span class="name" aria-hidden="true">{name}</span>
+  {#if displaySettings.name}<span class="name" aria-hidden="true">{name}</span>{/if}
   {#if borrowed}<span class="borrowed" aria-hidden="true">{borrowedLabel}</span>{/if}
   {#if excluded}<span class="excluded-mark" aria-hidden="true"></span>{/if}
   </span>
-  {#if character && !borrowed && displayedInfo !== 'none'}
+  {#if character && !borrowed && showInfo('stars')}
     <span class="stars" aria-hidden="true">
       {#each Array(5) as _, index}
         {#if displayedInfo === 'all' ? index < Number(character.target.star) || index < Number(character.current.star) : index < Number(character.current.star)}

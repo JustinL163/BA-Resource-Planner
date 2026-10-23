@@ -3,6 +3,28 @@ import type { PlannerCharacter } from './types';
 
 export type CardMode = 'edit' | 'bulk';
 
+export interface CharacterCardDisplaySettings {
+  name: boolean;
+  level: boolean;
+  limitBreak: boolean;
+  skills: boolean;
+  gear: boolean;
+  bond: boolean;
+  stars: boolean;
+  schoolBorder: boolean;
+}
+
+export const defaultCharacterCardDisplaySettings: CharacterCardDisplaySettings = {
+  name: true,
+  level: true,
+  limitBreak: true,
+  skills: true,
+  gear: true,
+  bond: true,
+  stars: true,
+  schoolBorder: true
+};
+
 export function formatInvestment(type: string, value: InvestmentValue): string {
   if (type === 'Ex' && Number(value) === 5) return 'M';
   if (type === 'Other' && Number(value) === 10) return 'M';

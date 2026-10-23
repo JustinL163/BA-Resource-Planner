@@ -13,7 +13,9 @@
   import TransferDialog from '$lib/components/planner/TransferDialog.svelte';
   import type { ResourceMode } from '$lib/components/planner/ResourceCell.svelte';
   import { sortableReorder, type DragState } from '$lib/components/planner/sortable';
-  import type { CardMode } from '$lib/domain/planner/card-display';
+  import {
+    defaultCharacterCardDisplaySettings, type CardMode, type CharacterCardDisplaySettings
+  } from '$lib/domain/planner/card-display';
   import { availableExMaterialFilterOptions, matchesExMaterialFilter } from '$lib/domain/planner/ex-material-filter';
   import { localizedAttackTypeName, localizedDefenseTypeName, localizedSchoolName } from '$lib/domain/planner/localized-labels';
   import { legacySortPresetKeys, sortPlannerCharacters, type LegacySortPresetKey } from '$lib/domain/planner/legacy-sort';
@@ -22,6 +24,7 @@
   import KeyboardShortcutLabel from '$lib/components/planner/KeyboardShortcutLabel.svelte';
   import { memberIds } from '$lib/domain/planner/groups';
   import strings from '$content/strings.json';
+  import { styleEditorActive, styleEditorAvailable } from '$lib/stores/style-editor';
 
   const planner = createResourcePlanner(metadata);
   let adding = $state(false);
@@ -53,6 +56,20 @@
   let selectionCaptureElement: HTMLElement | null = null;
   let dialog = $state<'' | 'resources' | 'gear' | 'transfer'>('');
   let cardSize = $state(5);
+  let cardDisplaySettings = $state<CharacterCardDisplaySettings>({ ...defaultCharacterCardDisplaySettings });
+  let shiftCardInfoPreview = $state(false);
+  const cardDisplaySettingsStorageKey = 'planner-character-card-display';
+  const cardDisplaySettingKeys = ['name', 'level', 'limitBreak', 'skills', 'gear', 'bond', 'stars', 'schoolBorder'] as const;
+  const allCharacterCardDisplaySettings: CharacterCardDisplaySettings = {
+    name: true, level: true, limitBreak: true, skills: true, gear: true,
+    bond: true, stars: true, schoolBorder: true
+  };
+  let effectiveCardDisplaySettings = $derived(shiftCardInfoPreview && mainView === 'characters' &&
+    !editing && !adding && !dialog && !bulkOpen ? allCharacterCardDisplaySettings : cardDisplaySettings);
+  let selectedStyleCardId = $state('');
+  let stylePanel = $state<HTMLDivElement>();
+  let styleAnchor: HTMLElement | null = null;
+  let stylePanelPosition = $state({ left: 8, top: 8 });
   let filtersOpen = $state(false);
   let uiError = $state('');
   let announcement = $state('');
@@ -116,9 +133,78 @@
   let hasNextCharacter = $derived(selectedVisibleIndex >= 0 && selectedVisibleIndex < visible.length - 1);
   let hasActiveFilters = $derived(Boolean(search.trim() || groupFilter || upToGroup || school || role || attack || armour || weapon || rarity || exMaterial || included || sort !== 'custom'));
 
+  $effect(() => {
+    const available = mainView === 'characters';
+    styleEditorAvailable.set(available);
+    if (!available) styleEditorActive.set(false);
+  });
+
+  $effect(() => {
+    if (!$styleEditorActive) {
+      selectedStyleCardId = '';
+      styleAnchor = null;
+    }
+  });
+
+  function readCardDisplaySettings(raw: string | null): CharacterCardDisplaySettings {
+    const settings = { ...defaultCharacterCardDisplaySettings };
+    if (!raw) return settings;
+    try {
+      const saved = JSON.parse(raw) as Record<string, unknown>;
+      for (const key of cardDisplaySettingKeys) {
+        if (typeof saved[key] === 'boolean') settings[key] = saved[key] as boolean;
+      }
+    } catch { /* Ignore malformed style settings and use defaults. */ }
+    return settings;
+  }
+
+  function updateCardDisplaySetting(key: keyof CharacterCardDisplaySettings, value: boolean) {
+    cardDisplaySettings = { ...cardDisplaySettings, [key]: value };
+    try {
+      localStorage.setItem(cardDisplaySettingsStorageKey, JSON.stringify(cardDisplaySettings));
+      uiError = '';
+    } catch (error) {
+      console.error('Could not save character card display settings.', error);
+      uiError = error instanceof Error ? error.message : t('ui-preference-failed');
+    }
+  }
+
   function listCharacterCard(characterId: string): HTMLElement | null {
     return Array.from(grid?.querySelectorAll<HTMLElement>('[data-sort-id]') ?? [])
       .find((card) => card.dataset.sortId === characterId) ?? null;
+  }
+
+  function positionStylePanel(card: HTMLElement | null = styleAnchor) {
+    if (!card?.isConnected) return;
+    const bounds = card.getBoundingClientRect();
+    const width = Math.min(208, window.innerWidth - 16);
+    const height = Math.min(stylePanel?.getBoundingClientRect().height ?? 164, window.innerHeight - 16);
+    const rightSpace = window.innerWidth - bounds.right;
+    const useRight = rightSpace >= width + 8 || rightSpace >= bounds.left;
+    const preferredLeft = useRight ? bounds.right + 8 : bounds.left - width - 8;
+    stylePanelPosition = {
+      left: Math.max(8, Math.min(preferredLeft, window.innerWidth - width - 8)),
+      top: Math.max(8, Math.min(bounds.top, window.innerHeight - height - 8))
+    };
+  }
+
+  async function openCardStyleOptions(id: string, card: HTMLElement) {
+    selectedStyleCardId = id;
+    styleAnchor = card;
+    positionStylePanel(card);
+    await tick();
+    positionStylePanel(card);
+  }
+
+  function closeStyleModeOnOutsideClick(event: MouseEvent) {
+    if (!$styleEditorActive) return;
+    const target = event.target instanceof Element ? event.target : null;
+    if (!target || target.closest('[data-style-editor-toggle], .card-style-options, [data-sort-id]')) return;
+    styleEditorActive.set(false);
+  }
+
+  function repositionStylePanel() {
+    if (selectedStyleCardId) positionStylePanel(listCharacterCard(selectedStyleCardId));
   }
 
   function keepCharacterCardOnscreen(card: HTMLElement): DOMRect {
@@ -238,10 +324,20 @@
       console.error('Could not read character size.', error);
       uiError = error instanceof Error ? error.message : t('ui-preference-failed');
     }
+    try {
+      cardDisplaySettings = readCardDisplaySettings(localStorage.getItem(cardDisplaySettingsStorageKey));
+    } catch (error) {
+      console.error('Could not read character card display settings.', error);
+      uiError = error instanceof Error ? error.message : t('ui-preference-failed');
+    }
     const refresh = () => { void planner.reload(); };
     const storage = (event: StorageEvent) => {
+      if (event.key === cardDisplaySettingsStorageKey || event.key === null) {
+        cardDisplaySettings = readCardDisplaySettings(event.key === null ? null : event.newValue);
+      }
       if (event.key === 'save-data' || event.key === 'image-style' || event.key === null) refresh();
     };
+    const repositionStylePanelOnScroll = () => repositionStylePanel();
     window.addEventListener(saveChangedEvent, refresh);
     window.addEventListener('storage', storage);
     window.addEventListener('pointerdown', beginSelectionBox, true);
@@ -250,7 +346,13 @@
     window.addEventListener('pointercancel', cancelSelectionBox);
     window.addEventListener('click', collapseFiltersOnOutsideClick, true);
     window.addEventListener('click', clearBulkOnBlankClick, true);
+    window.addEventListener('pointerdown', closeStyleModeOnOutsideClick, true);
+    window.addEventListener('click', closeStyleModeOnOutsideClick, true);
+    window.addEventListener('scroll', repositionStylePanelOnScroll, true);
+    window.addEventListener('resize', repositionStylePanelOnScroll);
     window.addEventListener('keydown', plannerShortcuts);
+    window.addEventListener('keyup', syncShiftCardInfoPreview);
+    window.addEventListener('blur', clearShiftCardInfoPreview);
     return () => {
       controller.abort();
       if (moveWarningTimeout) clearTimeout(moveWarningTimeout);
@@ -263,7 +365,13 @@
       window.removeEventListener('pointercancel', cancelSelectionBox);
       window.removeEventListener('click', collapseFiltersOnOutsideClick, true);
       window.removeEventListener('click', clearBulkOnBlankClick, true);
+      window.removeEventListener('pointerdown', closeStyleModeOnOutsideClick, true);
+      window.removeEventListener('click', closeStyleModeOnOutsideClick, true);
+      window.removeEventListener('scroll', repositionStylePanelOnScroll, true);
+      window.removeEventListener('resize', repositionStylePanelOnScroll);
       window.removeEventListener('keydown', plannerShortcuts);
+      window.removeEventListener('keyup', syncShiftCardInfoPreview);
+      window.removeEventListener('blur', clearShiftCardInfoPreview);
     };
   });
 
@@ -344,7 +452,7 @@
   function beginSelectionBox(event: PointerEvent) {
     const target = event.target instanceof Element ? event.target : null;
     const main = document.getElementById('main-content');
-    if (event.button !== 0 || event.pointerType !== 'mouse' || !event.isPrimary || !target || !grid || !main?.contains(target) ||
+    if ($styleEditorActive || event.button !== 0 || event.pointerType !== 'mouse' || !event.isPrimary || !target || !grid || !main?.contains(target) ||
       target.closest('header, footer, .planner-actions, dialog, [data-sort-id]') ||
       target.closest('button, a, label, input, select, textarea, summary, [contenteditable="true"], [role="button"]')) return;
     selectionBox = { pointerId: event.pointerId, startX: event.clientX, startY: event.clientY,
@@ -391,8 +499,22 @@
     selectionCaptureElement = null;
   }
 
+  function syncShiftCardInfoPreview(event: KeyboardEvent) {
+    const target = event.target instanceof Element ? event.target : null;
+    const isEditable = target?.closest('input, textarea, select, [contenteditable="true"], [role="textbox"]');
+    shiftCardInfoPreview = mainView === 'characters' && event.shiftKey &&
+      !event.ctrlKey && !event.metaKey && !event.altKey && !isEditable;
+  }
+
+  function clearShiftCardInfoPreview() {
+    shiftCardInfoPreview = false;
+  }
+
   function plannerShortcuts(event: KeyboardEvent) {
+    syncShiftCardInfoPreview(event);
     const key = event.key.toLowerCase();
+    const target = event.target instanceof Element ? event.target : null;
+    const isEditable = target?.closest('input, textarea, select, [contenteditable="true"], [role="textbox"]');
     if ((event.ctrlKey || event.metaKey) && !event.altKey && key === 'f' && mainView === 'characters') {
       event.preventDefault();
       if (!editing && !adding && !dialog && !bulkOpen) {
@@ -403,8 +525,13 @@
     }
     if (activateLetterShortcut(event)) return;
 
-    const target = event.target instanceof Element ? event.target : null;
-    if (target?.closest('input, textarea, select, [contenteditable="true"], [role="textbox"]')) return;
+    if (isEditable) return;
+    if ((event.ctrlKey || event.metaKey) && !event.altKey && key === 'a' && mainView === 'characters' &&
+      !editing && !adding && !dialog && !bulkOpen) {
+      event.preventDefault();
+      if (visible.length) selectVisible();
+      return;
+    }
     if (event.key === 'Escape') {
       if (selectionBox) { cancelSelectionBox(); return; }
       if (bulkIds.length) { event.preventDefault(); clearSelection(); }
@@ -459,7 +586,7 @@
   }
 
   function keyboardMove(event: KeyboardEvent, id: string) {
-    if (mode === 'bulk') return;
+    if (mode === 'bulk' || $styleEditorActive) return;
     if (!event.altKey || !['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) return;
     event.preventDefault();
     if (sort !== 'custom') {
@@ -568,7 +695,11 @@
     {#if visible.length === 0}<p class="empty-state">{t('ui-no-characters')}</p>{/if}
     <div class="characters" bind:this={grid} style:--card-size={`${sizes[cardSize - 1]}px`}
       use:sortableReorder={{ mode: 'edit', change: showDrag, drop: reorder,
-        canStart: () => sort === 'custom', onStartRejected: showCustomSortWarning }} aria-label={t('footer-characters')}>
+        canStart: () => sort === 'custom' && !$styleEditorActive,
+        onStart: (_id, item, clone, floatingClone) => item.dispatchEvent(new CustomEvent('planner-card-drag-start', {
+          detail: { clone, floatingClone }
+        })),
+        onStartRejected: () => { if (sort !== 'custom') showCustomSortWarning(); } }} aria-label={t('footer-characters')}>
       {#each visible as character (character.id)}
         <CharacterCard {character} info={$planner.dataset.students[character.id]}
           name={$planner.names[character.id] ?? character.name} {metadata} scribble={$planner.scribble}
@@ -580,12 +711,36 @@
               : (bulkIds.includes(character.id) ? '' : 'select') : ''}
           selectBulk={(event) => selectCard(event, character.id)}
           edit={() => editing = character.id} include={(value) => planner.include(character.id, value)}
-          keyboard={(event) => keyboardMove(event, character.id)} />
+          keyboard={(event) => keyboardMove(event, character.id)}
+          displaySettings={effectiveCardDisplaySettings} styleEditActive={$styleEditorActive}
+          styleSelect={(card) => void openCardStyleOptions(character.id, card)} />
       {/each}
       <button class="add-card" onclick={() => adding = true} aria-label={t('ui-add-characters')}>
         <span aria-hidden="true">+</span><span>{t('ui-add-characters')}</span>
       </button>
     </div>
+    {#if $styleEditorActive && selectedStyleCardId}
+      <div class="card-style-options" bind:this={stylePanel} role="group"
+        aria-label={t('ui-customize-character-cards')}
+        style:left={`${stylePanelPosition.left}px`} style:top={`${stylePanelPosition.top}px`}>
+        <label><input type="checkbox" checked={cardDisplaySettings.name}
+          onchange={(event) => updateCardDisplaySetting('name', event.currentTarget.checked)} />{t('ui-name-order')}</label>
+        <label><input type="checkbox" checked={cardDisplaySettings.level}
+          onchange={(event) => updateCardDisplaySetting('level', event.currentTarget.checked)} />{t('label-level')}</label>
+        <label><input type="checkbox" checked={cardDisplaySettings.limitBreak}
+          onchange={(event) => updateCardDisplaySetting('limitBreak', event.currentTarget.checked)} />{t('ui-overlay-books')}</label>
+        <label><input type="checkbox" checked={cardDisplaySettings.skills}
+          onchange={(event) => updateCardDisplaySetting('skills', event.currentTarget.checked)} />{t('ui-overlay-skills')}</label>
+        <label><input type="checkbox" checked={cardDisplaySettings.gear}
+          onchange={(event) => updateCardDisplaySetting('gear', event.currentTarget.checked)} />{t('ui-overlay-gear')}</label>
+        <label><input type="checkbox" checked={cardDisplaySettings.bond}
+          onchange={(event) => updateCardDisplaySetting('bond', event.currentTarget.checked)} />{t('label-bond')}</label>
+        <label><input type="checkbox" checked={cardDisplaySettings.stars}
+          onchange={(event) => updateCardDisplaySetting('stars', event.currentTarget.checked)} />{t('label-stars')}</label>
+        <label><input type="checkbox" checked={cardDisplaySettings.schoolBorder}
+          onchange={(event) => updateCardDisplaySetting('schoolBorder', event.currentTarget.checked)} />{t('ui-school-border')}</label>
+      </div>
+    {/if}
     {#if selectionBox?.moved}
       <div class="selection-box" class:deselect={selectionBox.deselect} aria-hidden="true"
         style:left={`${Math.min(selectionBox.startX, selectionBox.x)}px`}
@@ -682,6 +837,14 @@
   .group-range input.is-filtered { accent-color: #ab65ad; }
   input[type="search"] { padding: 0.6rem; min-width: 0; }
   .characters { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 0.9rem 0.75rem; padding: 1rem 0.5rem 5rem; }
+  .card-style-options {
+    position: fixed; z-index: 12; display: grid; width: min(13rem, calc(100vw - 1rem));
+    grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.3rem 0.45rem; padding: 0.45rem;
+    border: 1px solid #82dafb; border-radius: 0.45rem; background: var(--surface); color: var(--text);
+    box-shadow: 0 3px 14px #0008;
+  }
+  .card-style-options label { display: flex; min-width: 0; flex-direction: row; align-items: center; gap: 0.3rem; margin: 0; font-size: 0.78rem; white-space: nowrap; }
+  .card-style-options input { flex: 0 0 auto; width: 0.9rem; height: 0.9rem; margin: 0; accent-color: #82dafb; }
   .empty-state { margin: 1rem 0 0; text-align: center; }
   .sort-warning-toast { position: fixed; z-index: 1001; top: max(0.75rem, env(safe-area-inset-top)); left: max(0.75rem, env(safe-area-inset-left)); max-width: min(24rem, calc(100vw - 1.5rem)); margin: 0; padding: 0.65rem 1rem; border: 1px solid #7c5b7d66; border-radius: 0.45rem; background: var(--background); color: var(--text); box-shadow: 0 2px 12px #0005; transform-origin: 12% 0; animation: sort-warning-shake 520ms ease-in-out; }
   @keyframes sort-warning-shake {
