@@ -59,7 +59,7 @@ export async function generatePlannerMetadata(root, destination) {
     if (match) metadata.roleImages[match[1]] = `/planner/icons/Roles/${encodeURIComponent(filename)}`;
   }
   for (const filename of await readdir(join(root, 'planner', 'icons', 'UE'))) {
-    const match = filename.match(/^weapon_icon_(\d+)\.webp$/i);
+    const match = filename.match(/^weapon_icon_([A-Za-z0-9_-]+)\.webp$/i);
     if (match) metadata.weaponImages[match[1]] = `/planner/icons/UE/${encodeURIComponent(filename)}`;
   }
   image('Xp', 'Misc', 'exp');

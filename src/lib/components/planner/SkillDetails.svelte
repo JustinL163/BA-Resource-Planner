@@ -1,5 +1,6 @@
 <script lang="ts">
   import haloCharacterMapping from '$lib/domain/planner/halo-character-map.json';
+  import weaponCharacterMapping from '$lib/domain/planner/weapon-character-map.json';
   import { sanitizeIntegerInput } from '$lib/actions/sanitize-integer-input';
   import { localizedAttackTypeName, localizedDefenseTypeName, localizedSchoolName } from '$lib/domain/planner/localized-labels';
   import type { FormattedSkill, SkillKey } from '$lib/domain/planner/skills';
@@ -57,6 +58,8 @@
     Hyakkiyako: 'Hyakkiyako', Millennium: 'Millennium', Odyssey: 'Odyssey', RedWinter: 'RedWinter',
     Shanhaijing: 'Shanhaijing', SRT: 'SRT', Tokiwadai: 'ETC', Trinity: 'Trinity', Valkyrie: 'Valkyrie', WildHunt: 'Wildhunt'
   };
+  // Missing entries use the character ID as the weapon icon ID; null explicitly hides an icon.
+  const characterToWeaponIcon = weaponCharacterMapping.characterToWeaponIcon as Record<string, number | string | null>;
 
   let { skills, character, info, name, metadata, scribble, included, t, onInvestmentChange }: {
     skills: Array<{ key: SkillKey; label: string; description: FormattedSkill; fallback: boolean }>;
@@ -102,7 +105,13 @@
     info.WeaponType ? t(`gun-${info.WeaponType.toLowerCase()}`) : '',
     info.Position ? t(`position-${info.Position.toLowerCase()}`) : ''
   ].filter(Boolean).join(' / '));
-  let weaponImage = $derived(metadata.weaponImages?.[String(info.Id)]);
+  let weaponImage = $derived.by(() => {
+    const characterId = String(info.Id);
+    const iconId = Object.hasOwn(characterToWeaponIcon, characterId)
+      ? characterToWeaponIcon[characterId]
+      : info.Id;
+    return iconId === null ? undefined : metadata.weaponImages?.[String(iconId)];
+  });
   let squadColor = $derived(metadata.colours[info.SquadType === 'Main' ? 'Striker' : 'Special']);
 
   let pointerKey = $state<SkillKey | null>(null);
