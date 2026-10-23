@@ -46,8 +46,11 @@
   let bulkIds = $state<string[]>([]);
   let selectionAnchor = $state('');
   let lastSelectionWasAdd = $state(true);
+  let mobileBulkLayout = $state(false);
+  let bulkPanelOpen = $state(false);
+  let bulkPanel = $state<HTMLDetailsElement>();
   let bulkOpen = $state(false);
-  let mode = $derived<CardMode>(bulkIds.length ? 'bulk' : 'edit');
+  let mode = $derived<CardMode>(bulkIds.length > 0 || (mobileBulkLayout && bulkPanelOpen) ? 'bulk' : 'edit');
   let drag = $state<DragState | null>(null);
   type SelectionBox = { pointerId: number; startX: number; startY: number; x: number; y: number; moved: boolean; deselect: boolean };
   type SelectionSnapshot = { ids: string[]; anchor: string; adds: boolean };
@@ -106,6 +109,9 @@
   });
   $effect(() => {
     if (groupFilter && $planner.data && !Object.hasOwn($planner.data.groups, groupFilter)) groupFilter = '';
+  });
+  $effect(() => {
+    if (mobileBulkLayout && bulkPanelOpen) filtersOpen = false;
   });
   let visible = $derived.by(() => {
     const data = $planner.data;
@@ -230,6 +236,13 @@
     }
   }
 
+  function collapseBulkPanelOnOutsideClick(event: MouseEvent) {
+    if (!mobileBulkLayout || !bulkPanelOpen || !bulkPanel) return;
+    const target = event.target instanceof Element ? event.target : null;
+    if (!target || bulkPanel.contains(target) || target.closest('[data-sort-id]')) return;
+    bulkPanelOpen = false;
+  }
+
   function characterCardFlash(characterId: string): HTMLElement | null {
     const source = listCharacterCard(characterId);
     if (!source) return null;
@@ -307,13 +320,21 @@
     void planner.initialise(controller.signal);
     const filterDesktopLayout = window.matchMedia('(min-width: 801px)');
     const filterOverlayLayout = window.matchMedia('(max-width: 800px)');
+    const bulkMobileLayout = window.matchMedia('(max-width: 600px)');
     const syncFiltersForLayout = () => { filtersOpen = filterDesktopLayout.matches; };
+    const syncBulkLayout = () => {
+      mobileBulkLayout = bulkMobileLayout.matches;
+      if (!mobileBulkLayout) bulkPanelOpen = false;
+      else if (bulkIds.length) bulkPanelOpen = true;
+    };
     const collapseFiltersOnOutsideClick = (event: MouseEvent) => {
       if (!filterOverlayLayout.matches || !filtersOpen || !filterPanel) return;
       if (event.target instanceof Node && !filterPanel.contains(event.target)) filtersOpen = false;
     };
     syncFiltersForLayout();
+    syncBulkLayout();
     filterDesktopLayout.addEventListener('change', syncFiltersForLayout);
+    bulkMobileLayout.addEventListener('change', syncBulkLayout);
     const defaultSize = window.matchMedia('(max-width: 600px)').matches ? 1 : 5;
     cardSize = defaultSize;
     try {
@@ -345,6 +366,7 @@
     window.addEventListener('pointerup', finishSelectionBox);
     window.addEventListener('pointercancel', cancelSelectionBox);
     window.addEventListener('click', collapseFiltersOnOutsideClick, true);
+    window.addEventListener('click', collapseBulkPanelOnOutsideClick, true);
     window.addEventListener('click', clearBulkOnBlankClick, true);
     window.addEventListener('pointerdown', closeStyleModeOnOutsideClick, true);
     window.addEventListener('click', closeStyleModeOnOutsideClick, true);
@@ -357,6 +379,7 @@
       controller.abort();
       if (moveWarningTimeout) clearTimeout(moveWarningTimeout);
       filterDesktopLayout.removeEventListener('change', syncFiltersForLayout);
+      bulkMobileLayout.removeEventListener('change', syncBulkLayout);
       window.removeEventListener(saveChangedEvent, refresh);
       window.removeEventListener('storage', storage);
       window.removeEventListener('pointerdown', beginSelectionBox, true);
@@ -364,6 +387,7 @@
       window.removeEventListener('pointerup', finishSelectionBox);
       window.removeEventListener('pointercancel', cancelSelectionBox);
       window.removeEventListener('click', collapseFiltersOnOutsideClick, true);
+      window.removeEventListener('click', collapseBulkPanelOnOutsideClick, true);
       window.removeEventListener('click', clearBulkOnBlankClick, true);
       window.removeEventListener('pointerdown', closeStyleModeOnOutsideClick, true);
       window.removeEventListener('click', closeStyleModeOnOutsideClick, true);
@@ -414,7 +438,7 @@
     const modified = event.ctrlKey || event.metaKey;
     if (!modified && mode !== 'bulk') return;
     event.preventDefault();
-    if (modified && event.shiftKey && bulkIds.length) {
+    if (modified && event.shiftKey && selectionAnchor) {
       const start = visible.findIndex((character) => character.id === selectionAnchor);
       const end = visible.findIndex((character) => character.id === id);
       if (start >= 0 && end >= 0) {
@@ -428,6 +452,22 @@
     }
     const selecting = !bulkIds.includes(id);
     setBulkSelection(selecting ? [...bulkIds, id] : bulkIds.filter((value) => value !== id), id, selecting);
+  }
+
+  function repeatSelectionAction(id: string) {
+    const start = visible.findIndex((character) => character.id === selectionAnchor);
+    const end = visible.findIndex((character) => character.id === id);
+    if (start < 0 || end < 0 || !selectionAnchor) {
+      const selecting = !bulkIds.includes(id);
+      setBulkSelection(selecting ? [...bulkIds, id] : bulkIds.filter((value) => value !== id), id, selecting);
+      return;
+    }
+
+    const range = visible.slice(Math.min(start, end), Math.max(start, end) + 1).map((character) => character.id);
+    const selected = new Set(bulkIds);
+    if (lastSelectionWasAdd) range.forEach((value) => selected.add(value));
+    else range.forEach((value) => selected.delete(value));
+    setBulkSelection([...selected], id, lastSelectionWasAdd);
   }
 
   function selectVisible() {
@@ -673,14 +713,6 @@
       </div>
     </details>
     <div class="toolbar">
-      {#if bulkIds.length}
-        <div class="selection-tools" aria-live="polite">
-          <span>{bulkCharacters.length} {t('ui-selected')}</span>
-          <button onclick={selectVisible}>{t('ui-select-visible')}</button>
-          <button onclick={clearSelection}>{t('ui-clear-selection')}</button>
-          <button disabled={!bulkCharacters.length} onclick={() => bulkOpen = true}>{t('ui-bulk-edit')}</button>
-        </div>
-      {/if}
       <label class="character-search"><KeyboardShortcutLabel label={t('ui-search-characters')} shortcut="Ctrl+F" />
         <input type="search" bind:this={searchInput} aria-keyshortcuts="Control+F Meta+F"
         class:is-filtered={search.trim().length > 0} bind:value={search} onclick={() => search = ''} /></label>
@@ -692,9 +724,27 @@
       <label class="card-size-control">{t('ui-card-size')}<input type="range" min="1" max="5" step="1" value={cardSize}
         oninput={(event) => resize(event.currentTarget.valueAsNumber)} /></label>
     </div>
+    {#if bulkIds.length}
+      <div class="bulk-selection-section">
+        <div class="selection-tools" aria-live="polite">
+          <span>{bulkCharacters.length} {t('ui-selected')}</span>
+          <button onclick={selectVisible}>{t('ui-select-visible')}</button>
+          <button onclick={clearSelection}>{t('ui-clear-selection')}</button>
+          <button disabled={!bulkCharacters.length} onclick={() => bulkOpen = true}>{t('ui-bulk-edit')}</button>
+        </div>
+      </div>
+    {/if}
+    <details class="bulk-selection-panel" bind:this={bulkPanel} bind:open={bulkPanelOpen}>
+      <summary>{t('ui-bulk-mode')}{bulkIds.length ? ` (${bulkIds.length})` : ''}</summary>
+      <div class="selection-tools" aria-live="polite">
+        <button onclick={selectVisible}>{t('ui-select-visible')}</button>
+        <button onclick={clearSelection}>{t('ui-clear-selection')}</button>
+        <button disabled={!bulkCharacters.length} onclick={() => bulkOpen = true}>{t('ui-bulk-edit')}</button>
+      </div>
+    </details>
     {#if visible.length === 0}<p class="empty-state">{t('ui-no-characters')}</p>{/if}
     <div class="characters" bind:this={grid} style:--card-size={`${sizes[cardSize - 1]}px`}
-      use:sortableReorder={{ mode: 'edit', change: showDrag, drop: reorder,
+      use:sortableReorder={{ mode, change: showDrag, drop: reorder,
         canStart: () => sort === 'custom' && !$styleEditorActive,
         onStart: (_id, item, clone, floatingClone) => item.dispatchEvent(new CustomEvent('planner-card-drag-start', {
           detail: { clone, floatingClone }
@@ -710,6 +760,7 @@
             ? selectionBox.deselect ? (bulkIds.includes(character.id) ? 'deselect' : '')
               : (bulkIds.includes(character.id) ? '' : 'select') : ''}
           selectBulk={(event) => selectCard(event, character.id)}
+          longPressBulk={() => repeatSelectionAction(character.id)}
           edit={() => editing = character.id} include={(value) => planner.include(character.id, value)}
           keyboard={(event) => keyboardMove(event, character.id)}
           displaySettings={effectiveCardDisplaySettings} styleEditActive={$styleEditorActive}
@@ -818,6 +869,8 @@
 <style>
   section { margin: 1.25rem 0; }
   .filters, .toolbar { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1rem 0; align-items: flex-end; }
+  .bulk-selection-section { display: flex; justify-content: center; margin: 0 0 1rem; }
+  .bulk-selection-panel { display: none; }
   .selection-tools { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
   label { display: flex; flex-direction: column; gap: 0.35rem; }
   .character-search { flex: 0 1 12rem; min-width: 8rem; }
@@ -886,17 +939,32 @@
     .filter-panel .filters > .reset-filter-button { min-width: 0; margin-top: 0.35rem; padding: 0.25rem 0.3rem; }
   }
   @media (max-width: 600px) {
+    .bulk-selection-section { display: none; }
+    .bulk-selection-panel {
+      position: fixed; z-index: 12; top: 3rem; right: 0.25rem; display: block;
+      width: fit-content; max-width: calc(100vw - 0.5rem); max-height: calc(100vh - 4rem); overflow: auto;
+      padding: 0.4rem; border: 1px solid #7c5b7d66; border-radius: 0.4rem;
+      background-color: color-mix(in srgb, var(--background) 88%, transparent); box-shadow: 0 2px 10px #0005;
+    }
+    .bulk-selection-panel[open] { width: calc(100vw - 0.5rem); }
+    .bulk-selection-panel > summary { padding: 0; white-space: nowrap; }
+    .bulk-selection-panel .selection-tools {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.35rem; margin-top: 0.35rem;
+    }
+    .bulk-selection-panel .selection-tools > span { grid-column: 1 / -1; }
+    .bulk-selection-panel .selection-tools button { min-width: 0; padding: 0.3rem 0.35rem; font-size: 0.75rem; }
+    .bulk-selection-panel .selection-tools button:last-child { grid-column: 1 / -1; }
     .filters label { flex: 1 1 140px; }
     .filter-panel .filters > label, .filter-panel .filters > .group-filter { font-size: 0.75rem; }
     .filter-panel .filters select { font-size: 0.75rem; }
     .group-filter-heading .group-range { font-size: 0.68rem; }
     .filter-panel .filters > .reset-filter-button { font-size: 0.75rem; }
-    .toolbar { gap: 0.25rem; }
+    .toolbar { gap: 0.25rem; margin: 1.5rem 0 0.25rem; }
     .character-search { flex: 0 0 7rem; min-width: 7rem; font-size: 0.75rem; }
     .character-search input { padding: 0.3rem; font-size: 0.8rem; }
     .card-size-control { flex: 0 0 4.5rem; min-width: 4.5rem; font-size: 0.72rem; }
     .toolbar > .filter-action { padding: 0.25rem 0.2rem; font-size: 0.65rem; }
-    .characters { margin-inline: -0.75rem; gap: 0.9rem 0.4rem;}
+    .characters { margin-inline: -0.75rem; padding-top: 0.5rem; gap: 0.9rem 0.4rem;}
     .planner-actions { width: calc(100vw - 0.5rem); max-width: calc(100vw - 0.5rem); flex-wrap: nowrap; gap: 0.1rem; padding: 0.2rem; bottom: 0; }
     .planner-actions button { flex: 1 1 auto; min-width: 0; padding: 0.2rem 0.15rem; justify-content: center; gap: 0.12rem; font-size: clamp(0.6rem, 2.6vw, 0.72rem); white-space: nowrap; }
     .planner-actions button span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

@@ -8,13 +8,14 @@
   import CharacterPortrait from './CharacterPortrait.svelte';
 
   let { character, info, name, included, metadata, scribble, edit, include, mode, dragging, keyboard,
-    bulkSelected = false, selectionPreview = '', selectBulk = () => {}, preview = false,
+    bulkSelected = false, selectionPreview = '', selectBulk = () => {}, longPressBulk = () => {}, preview = false,
     displaySettings = defaultCharacterCardDisplaySettings, styleEditActive = false, styleSelect = () => {}, t }: {
     character: PlannerCharacter; info: CharacterInfo; name: string; included: boolean;
     metadata: PlannerMetadata; scribble: boolean; edit: () => void; mode: CardMode;
     include: (included: boolean) => void; dragging: boolean;
     keyboard: (event: KeyboardEvent) => void; bulkSelected?: boolean;
-    selectionPreview?: '' | 'select' | 'deselect'; selectBulk?: (event: MouseEvent) => void; preview?: boolean;
+    selectionPreview?: '' | 'select' | 'deselect'; selectBulk?: (event: MouseEvent) => void;
+    longPressBulk?: () => void; preview?: boolean;
     displaySettings?: CharacterCardDisplaySettings; styleEditActive?: boolean; styleSelect?: (card: HTMLButtonElement) => void;
     t: (id: string) => string;
   } = $props();
@@ -22,9 +23,21 @@
   let activeTouchPointer: number | null = null;
   let pendingTouchToggle: { pointerId: number; previousIncluded: boolean } | null = null;
   let pointerEndCleanup: (() => void) | null = null;
+  let bulkLongPressTimer: ReturnType<typeof setTimeout> | undefined;
+  let bulkClickSuppressionTimer: ReturnType<typeof setTimeout> | undefined;
+  let bulkLongPressTriggered = false;
+  let suppressBulkClick = false;
   let summary = $derived(`${name}. ${t('label-current')}: ${t('label-level')} ${character.current.level}, ${t('label-stars')} ${character.current.star}, UE ${character.current.ue}, ${t('label-bond')} ${character.current.bond}. ${t('label-target')}: ${t('label-level')} ${character.target.level}, ${t('label-stars')} ${character.target.star}, UE ${character.target.ue}, ${t('label-bond')} ${character.target.bond}. ${lines.filter((line) => line.kind !== 'level' && line.current).map((line) => `${t(`ui-overlay-${line.kind}`)} ${line.current}${line.target ? ` ${t('label-target')} ${line.target}` : ''}`).join('. ')}.${preview ? '' : ` ${t(included ? 'ui-included' : 'ui-excluded')}.`}`);
 
   function activate(event: MouseEvent) {
+    if (suppressBulkClick) {
+      suppressBulkClick = false;
+      if (bulkClickSuppressionTimer) clearTimeout(bulkClickSuppressionTimer);
+      bulkClickSuppressionTimer = undefined;
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
     if (styleEditActive) {
       event.preventDefault();
       styleSelect(event.currentTarget);
@@ -37,6 +50,7 @@
   function contextMenu(event: MouseEvent) {
     event.preventDefault();
     if (styleEditActive) return;
+    if (mode === 'bulk') return;
     if (activeTouchPointer !== null) {
       pendingTouchToggle = { pointerId: activeTouchPointer, previousIncluded: included };
     }
@@ -46,12 +60,34 @@
   function trackPointerDown(event: PointerEvent) {
     pointerEndCleanup?.();
     pointerEndCleanup = null;
+    if (bulkLongPressTimer) clearTimeout(bulkLongPressTimer);
+    bulkLongPressTimer = undefined;
+    bulkLongPressTriggered = false;
     activeTouchPointer = event.pointerType === 'touch' ? event.pointerId : null;
     if (activeTouchPointer === null) return;
 
     const pointerId = activeTouchPointer;
+    const startX = event.clientX;
+    const startY = event.clientY;
+    const onMove = (moveEvent: PointerEvent) => {
+      if (moveEvent.pointerId !== pointerId || !bulkLongPressTimer) return;
+      if (Math.hypot(moveEvent.clientX - startX, moveEvent.clientY - startY) >= 12) {
+        clearTimeout(bulkLongPressTimer);
+        bulkLongPressTimer = undefined;
+      }
+    };
     const finish = (endEvent: PointerEvent) => {
       if (endEvent.pointerId !== pointerId) return;
+      if (bulkLongPressTimer) clearTimeout(bulkLongPressTimer);
+      bulkLongPressTimer = undefined;
+      if (bulkLongPressTriggered && endEvent.type === 'pointerup') {
+        suppressBulkClick = true;
+        if (bulkClickSuppressionTimer) clearTimeout(bulkClickSuppressionTimer);
+        bulkClickSuppressionTimer = setTimeout(() => {
+          suppressBulkClick = false;
+          bulkClickSuppressionTimer = undefined;
+        }, 500);
+      }
       if (pendingTouchToggle?.pointerId === pointerId) pendingTouchToggle = null;
       activeTouchPointer = null;
       pointerEndCleanup?.();
@@ -59,10 +95,21 @@
     };
     window.addEventListener('pointerup', finish, true);
     window.addEventListener('pointercancel', finish, true);
+    if (mode === 'bulk') window.addEventListener('pointermove', onMove, true);
     pointerEndCleanup = () => {
       window.removeEventListener('pointerup', finish, true);
       window.removeEventListener('pointercancel', finish, true);
+      window.removeEventListener('pointermove', onMove, true);
+      if (bulkLongPressTimer) clearTimeout(bulkLongPressTimer);
+      bulkLongPressTimer = undefined;
     };
+    if (mode === 'bulk') {
+      bulkLongPressTimer = setTimeout(() => {
+        bulkLongPressTimer = undefined;
+        bulkLongPressTriggered = true;
+        longPressBulk();
+      }, 500);
+    }
   }
 
   function syncExcludedAppearance(element: HTMLElement | null | undefined, excluded: boolean) {
@@ -102,6 +149,9 @@
         activeTouchPointer = null;
         pointerEndCleanup?.();
         pointerEndCleanup = null;
+        if (bulkClickSuppressionTimer) clearTimeout(bulkClickSuppressionTimer);
+        bulkClickSuppressionTimer = undefined;
+        suppressBulkClick = false;
       }
     };
   }
