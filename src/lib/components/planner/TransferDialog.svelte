@@ -36,6 +36,16 @@
     }
   }
 
+  function showJson() {
+    try {
+      source = exportData();
+      localError = '';
+    } catch (problem) {
+      console.error('Planner JSON display failed.', problem);
+      localError = problem instanceof Error ? problem.message : t('ui-transfer-failed');
+    }
+  }
+
   async function confirmImport() {
     importing = true;
     confirmingImport = false;
@@ -66,7 +76,13 @@
       localError = problem instanceof Error ? problem.message : t('ui-transfer-failed');
     }
   }} /></label>
-  <label>{t('ui-import-json')}<textarea rows="6" bind:value={source}></textarea></label>
+  <div class="json-field">
+    <div class="json-label-row">
+      <label for="transfer-json">{t('ui-import-json')}</label>
+      <button class="show-json-button" type="button" disabled={!ready} onclick={showJson}>{t('ui-show-json')}</button>
+    </div>
+    <textarea id="transfer-json" rows="6" bind:value={source}></textarea>
+  </div>
   </fieldset>
 </PlannerDialog>
 
@@ -87,6 +103,10 @@
   .local-transfer-actions { display: flex; gap: 0.75rem; margin-bottom: 0.75rem; }
   .local-transfer-actions > button { flex: 1 1 0; min-width: 0; }
   label { display: flex; flex-direction: column; gap: 0.4rem; margin: 0.75rem 0; }
+  .json-field { display: flex; flex-direction: column; gap: 0.4rem; margin: 0.75rem 0; }
+  .json-label-row { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+  .json-label-row label { display: block; margin: 0; }
+  .show-json-button { padding: 0.2rem 0.55rem; font-size: 0.8rem; }
   textarea { width: 100%; min-width: 0; padding: 0.5rem; }
   p { line-height: 1.5; }
   .error { color: var(--error); }

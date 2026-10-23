@@ -1,8 +1,9 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { sanitizeIntegerInput } from '$lib/actions/sanitize-integer-input';
   import type { PlannerCharacter, PlannerMetadata, ResourceTotals } from '$lib/domain/planner/types';
   import { formatAmount, type ResourceItem } from '$lib/domain/planner/catalog';
-  import { inventoryLayout } from '$lib/domain/planner/inventory-layout';
+  import { inventoryLayout, type MaterialPanel } from '$lib/domain/planner/inventory-layout';
   import { localizedSchoolName } from '$lib/domain/planner/localized-labels';
   import { weaponXpSummary } from '$lib/domain/planner/aggregates';
   import ResourceCell, { type ResourceMode } from './ResourceCell.svelte';
@@ -23,8 +24,10 @@
     characters: PlannerCharacter[]; disabledCharacters: string[]; names: Record<string, string>; scribble: boolean;
     campaignMultiplier?: number;
   } = $props();
+  const gearTransposePreferenceKey = 'planner-gear-table-transposed';
   let capError = $state('');
   let selectedResource = $state<ResourceItem | null>(null);
+  let transposeGearTable = $state(true);
   let layout = $derived(inventoryLayout(metadata, totals, gear));
   const modes = [
     { key: 'needed', label: 'label-remainingneeded', shortcut: 'r' }, { key: 'owned', label: 'label-owned', shortcut: 'o' },
@@ -40,7 +43,20 @@
   };
   const inlineAmount = (key: string) => inlineAmountKeys.has(key) || key.endsWith('Cost');
   const schoolName = (name: string) => localizedSchoolName(name, t).replaceAll('_', ' ');
-  let panels = $derived(layout.panels);
+  function transposeGearPanel(panel: MaterialPanel): MaterialPanel {
+    return {
+      ...panel,
+      columns: panel.rows.map((row) => row.name),
+      rows: panel.columns.map((name, columnIndex) => ({
+        name,
+        cells: panel.rows.map((row) => row.cells[columnIndex])
+      }))
+    };
+  }
+
+  let panels = $derived.by(() => gear && transposeGearTable
+    ? layout.panels.map(transposeGearPanel)
+    : layout.panels);
   let summaryTiles = $derived(layout.extra.filter((item) => inlineAmount(item.key)));
   const leadingSummaryKeys = ['Credit', 'Xp', '9999'];
   let leadingSummaryTiles = $derived(leadingSummaryKeys.flatMap((key) => summaryTiles.filter((item) => item.key === key)));
@@ -60,8 +76,13 @@
     if (item.group === 'XP items' || item.group === 'Weapon items') return false;
     return Number(totals[mode][item.key] ?? 0) !== 0;
   }));
-  let weaponRows = $derived(['T1', 'T2', 'T3', 'T4'].map((tier) => ({
-    items: allExtras.filter((item) => item.group === 'Weapon items' && item.key.startsWith(`${tier}_`))
+  const weaponMaterialTiers = ['T1', 'T2', 'T3', 'T4'];
+  const weaponMaterialTypes = ['Spring', 'Hammer', 'Barrel', 'Needle'];
+  let weaponMaterialRows = $derived(weaponMaterialTypes.map((type) => ({
+    type,
+    items: weaponMaterialTiers
+      .map((tier) => allExtras.find((item) => item.key === `${tier}_${type}`))
+      .filter((item): item is ResourceItem => item !== undefined)
   })).filter((row) => row.items.some((item) => extras.some((extra) => extra.key === item.key))));
   let groups = $derived([...new Set(extras.map((item) => item.group))]);
   let pairedGroups = $derived(['XP items', 'Limit break books', 'Gifts'].filter((group) =>
@@ -98,6 +119,21 @@
     return users;
   });
   let selectedUsers = $derived(selectedResource ? usersByResource[selectedResource.key] ?? [] : []);
+
+  onMount(() => {
+    if (!gear) return;
+    try {
+      const savedPreference = localStorage.getItem(gearTransposePreferenceKey);
+      if (savedPreference !== null) transposeGearTable = savedPreference === 'true';
+    }
+    catch { /* Keep the default orientation if storage is unavailable. */ }
+  });
+
+  function toggleGearTableTranspose() {
+    transposeGearTable = !transposeGearTable;
+    try { localStorage.setItem(gearTransposePreferenceKey, String(transposeGearTable)); }
+    catch { /* Keep the current orientation for this session if storage is unavailable. */ }
+  }
 
   function openUsers(item: ResourceItem) {
     if (mode !== 'owned' && usersByResource[item.key]?.length) selectedResource = item;
@@ -219,20 +255,36 @@
   </div>
   {#if error || capError}<p class="error" role="alert">{error || capError}</p>{/if}
   <div class="inventory-sections" class:gear-layout={gear}
-    style={gear ? `--gear-table-max-width: ${40 + (layout.panels[0]?.columns.length ?? 0) * 75}px` : undefined}>
+    style={gear ? `--gear-table-max-width: ${40 + (panels[0]?.columns.length ?? 0) * 75}px` : undefined}>
   <div class="matrices" class:gear role="group" aria-label={t(gear ? 'footer-gear' : 'footer-resources')} onkeydown={handleMatrixKeydown}>
     {#if gear}
       {#each panels as panel, index}
         <section>
           <div class="table-scroll">
             <table aria-label={`${t(panel.title)} ${index + 1} - ${t(modes.find((item) => item.key === mode)!.label)}`}>
-              <thead><tr><th></th>{#each panel.columns as column}<th scope="col">
-                <span class="gear-header-name">{column}</span>
-                <img class="gear-header-image" src={`/planner/icons/Gear/T1_${column}.webp`} alt={column} />
+              <thead><tr><th class="gear-transpose-cell">
+                <button class="gear-transpose-button" type="button" title={t('ui-transpose-gear-table')}
+                  aria-label={t('ui-transpose-gear-table')} aria-pressed={transposeGearTable} onclick={toggleGearTableTranspose}>
+                  <span class="gear-transpose-icon" aria-hidden="true"></span>
+                </button>
+              </th>{#each panel.columns as column}<th scope="col">
+                {#if transposeGearTable}
+                  <span class="gear-transposed-header">{column}</span>
+                {:else}
+                  <span class="gear-header-name">{column}</span>
+                  <img class="gear-header-image" src={`/planner/icons/Gear/T1_${column}.webp`} alt={column} draggable="false" />
+                {/if}
               </th>{/each}</tr></thead>
               <tbody>{#each panel.rows as row}
                 <tr style:background-color={row.colour}>
-                  <th scope="row">{row.name.replaceAll('_', ' ')}</th>
+                  <th scope="row">
+                    {#if transposeGearTable}
+                      <img class="gear-row-image" src={`/planner/icons/Gear/T1_${row.name}.webp`}
+                        alt={row.name.replaceAll('_', ' ')} draggable="false" />
+                    {:else}
+                      {row.name.replaceAll('_', ' ')}
+                    {/if}
+                  </th>
                   {#each row.cells as item}
                     <td>{#if item}<ResourceCell {item} {totals} {mode} {setOwned} {t}
                       userCount={usersByResource[item.key]?.length ?? 0}
@@ -362,7 +414,7 @@
         <section class="weapon-materials">
           <h3>{t('ui-group-weapon-items')}</h3>
           <div class="weapon-material-grid">
-            {#each weaponRows as row}
+            {#each weaponMaterialRows as row}
               {#each row.items as item (item.key)}
                 <ResourceCell {item} {totals} {mode} {setOwned} {t}
                   userCount={usersByResource[item.key]?.length ?? 0}
@@ -442,6 +494,12 @@
   .gear tbody tr:nth-child(even) { background-color: #84848436; }
   .gear thead th:first-child, .gear tbody th { width: 40px; }
   .gear thead th:not(:first-child) { overflow-wrap: anywhere; line-height: 1.1; }
+  .gear-transpose-button { display: grid; width: 1.5rem; height: 1.5rem; margin: auto; padding: 0.2rem; place-items: center; border: 0; border-radius: 0.25rem; background: transparent; color: inherit; cursor: pointer; }
+  .gear-transpose-button:hover { background: color-mix(in srgb, currentColor 12%, transparent); }
+  .gear-transpose-button:focus-visible { outline: 2px solid #ab65ad; outline-offset: 1px; }
+  .gear-transpose-icon { display: block; width: 100%; height: 100%; background: currentColor; -webkit-mask: url('/planner/icons/UI/transpose.svg') center / contain no-repeat; mask: url('/planner/icons/UI/transpose.svg') center / contain no-repeat; }
+  .gear-transposed-header { display: block; white-space: nowrap; text-align: center; }
+  .gear-row-image { display: block; width: 2rem; height: 2rem; margin: auto; object-fit: contain; }
   .gear-header-image { display: none; width: 100%; height: 2.25rem; object-fit: contain; }
   .gear tbody th { text-align: center; }
   .gear td { min-width: 0; padding: 0; }
@@ -493,6 +551,10 @@
     .school-matrices tbody th, .artifact-pair tbody th { font-size: 0.55rem; line-height: 1.05; }
     .summary-tiles { gap: 0.1rem;}
     .tiles :global(.resource-cell) { flex: 0 0 58px; width: 58px; min-width: 58px; min-height: 58px;}
+  }
+  @media (min-width: 801px) {
+    .gear thead th { padding-block: 0.45rem; }
+    .gear-transpose-button { width: 2rem; height: 2rem; }
   }
   @media (max-width: 600px) {
     .inventory-sections:not(.gear-layout) { width: 100%; }
