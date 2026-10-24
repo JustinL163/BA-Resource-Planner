@@ -14,6 +14,11 @@
   let { children }: { children: Snippet } = $props();
   let menuOpen = $state(false);
   const standaloneGame = $derived(page.url.pathname.startsWith('/game/'));
+  const themeColor = $derived(
+    page.url.pathname.startsWith('/planner/event-planner') ? '#4800ff' :
+      page.url.pathname.startsWith('/planner/resources') ? '#ff00bb' :
+        page.url.pathname.startsWith('/planner/raids') ? '#ffdd00' : '#7c5b7d'
+  );
   const canStyleCharacterCards = $derived(page.url.pathname.startsWith('/planner/resources') && $styleEditorAvailable);
   const links = [
     { href: '/planner/resources/', label: 'page-resource-planner' },
@@ -67,7 +72,7 @@
 
 <svelte:head>
   <link rel="manifest" href={standaloneGame ? '/game/manifest.json' : '/planner/manifest.json'} />
-  <meta name="theme-color" content="#7c5b7d" />
+  <meta name="theme-color" content={themeColor} />
   <script src="/planner/js/no-image-drag.js" defer></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3XZ18739WF"></script>
 </svelte:head>

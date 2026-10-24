@@ -579,8 +579,15 @@
 </script>
 
 <svelte:head>
-  <title>{t('page-raids')} - Svelte</title>
+  <title>Raid Videos</title>
   <meta name="description" content="Browse Blue Archive raid history and video submissions by server, boss, terrain, and difficulty." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://justin163.com/planner/raids/" />
+  <meta property="og:image" itemprop="image primaryImageOfPage" content="https://justin163.com/planner/icons/Misc/EmbedIcon.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:domain" content="justin163.com" />
+  <meta name="twitter:title" property="og:title" itemprop="name" content="Blue Archive Raid Videos" />
+  <meta name="twitter:description" property="og:description" itemprop="description" content="A page to more easily find raid videos" />
 </svelte:head>
 
 <div class="raid-page">

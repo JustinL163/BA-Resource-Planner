@@ -411,7 +411,17 @@
   });
 </script>
 
-<svelte:head><title>{t('page-event-planner')}</title></svelte:head>
+<svelte:head>
+  <title>Event Planner</title>
+  <meta name="description" content="A tool to optimise event resource income, plan energy spend and stage farming" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://justin163.com/planner/event-planner/" />
+  <meta property="og:image" itemprop="image primaryImageOfPage" content="https://justin163.com/planner/icons/Misc/EmbedIcon.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:domain" content="justin163.com" />
+  <meta name="twitter:title" property="og:title" itemprop="name" content="Blue Archive Event Planner" />
+  <meta name="twitter:description" property="og:description" itemprop="description" content="A tool to optimise event resource income, plan energy spend and stage farming" />
+</svelte:head>
 <noscript><p>{t('ui-javascript-required')}</p></noscript>
 {#if $planner.loading}<p role="status">{t('ui-loading-planner')}</p>{/if}
 {#if $planner.error}<p class="error" role="alert">{$planner.error}

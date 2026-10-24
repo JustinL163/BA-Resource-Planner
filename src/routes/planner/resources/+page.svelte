@@ -641,7 +641,17 @@
 
 </script>
 
-<svelte:head><title>{t('page-resource-planner')}</title></svelte:head>
+<svelte:head>
+  <title>Blue Archive Resource Planner</title>
+  <meta name="description" content="A tool to help easily keep track of resources needed to level students, or keep track of teams for various content." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://justin163.com/planner/resources/" />
+  <meta property="og:image" itemprop="image primaryImageOfPage" content="https://justin163.com/planner/icons/Misc/EmbedIcon.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:domain" content="justin163.com" />
+  <meta name="twitter:title" property="og:title" itemprop="name" content="Blue Archive Resource Planner" />
+  <meta name="twitter:description" property="og:description" itemprop="description" content="A tool to help easily keep track of resources needed to level students, or keep track of teams for various content." />
+</svelte:head>
 
 {#if moveWarningVisible}
   {#key moveWarningAnimation}
