@@ -7,6 +7,11 @@ export interface ResourceItem {
   image?: string;
 }
 
+export const shopCurrencyKeys = [
+  'RaidToken', 'RareRaidToken', 'EliminationRaidToken', 'RareEliminationRaidToken',
+  'ArenaCoin', 'JECoin', 'MasteryCertificate', 'BountyCoin'
+] as const;
+
 export function resourceItem(key: string, metadata: PlannerMetadata): ResourceItem {
   const name = metadata.materialNames[key] ?? key;
   const imageKey = key.endsWith('Cost') ? key.slice(0, -4) : key;
@@ -19,7 +24,8 @@ export function resourceItem(key: string, metadata: PlannerMetadata): ResourceIt
   else if (Number(key) >= 3000 && Number(key) < 5000) group = 'School materials';
   else if (Number(key) >= 5000 && Number(key) < 9999) group = 'Gifts';
   else if (Number(key) >= 2000 && Number(key) < 3000) group = 'Limit break books';
-  else if (['Credit', 'Eligma', 'BountyCoin'].includes(key) || key === 'BountyCoinCost') group = 'Currency';
+  else if (key === 'Credit' || key === 'Eligma' || shopCurrencyKeys.some((currency) =>
+    key === currency || key === `${currency}Cost`)) group = 'Currency';
   return { key, name: name.replaceAll('_', ' '), group, image: metadata.images[key] ?? metadata.images[imageKey] };
 }
 
@@ -33,7 +39,7 @@ export function inventoryCatalog(metadata: PlannerMetadata, totals: ResourceTota
   // Append owned-only keys last so changing a value cannot move an existing cell.
   const keys = new Set([
     ...Object.keys(metadata.materialNames).filter((key) => !generated.has(key)), ...metadata.equipment,
-    'Credit', 'Eligma', ...generatedKeys, ...Object.keys(totals.owned)
+    'Credit', 'Eligma', ...shopCurrencyKeys, ...generatedKeys, ...Object.keys(totals.owned)
   ]);
   return [...keys].filter((key) => !['Xp', 'GearXp', 'Eleph', 'ShopResets'].includes(key) && !key.endsWith('Cost'))
     .map((key) => resourceItem(key, metadata));

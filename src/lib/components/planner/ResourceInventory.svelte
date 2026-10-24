@@ -2,7 +2,7 @@
   import { onMount, untrack } from 'svelte';
   import { sanitizeIntegerInput } from '$lib/actions/sanitize-integer-input';
   import type { PlannerCharacter, PlannerMetadata, ResourceTotals } from '$lib/domain/planner/types';
-  import { formatAmount, type ResourceItem } from '$lib/domain/planner/catalog';
+  import { formatAmount, shopCurrencyKeys, type ResourceItem } from '$lib/domain/planner/catalog';
   import { inventoryLayout, type MaterialPanel } from '$lib/domain/planner/inventory-layout';
   import { localizedSchoolName } from '$lib/domain/planner/localized-labels';
   import { weaponXpSummary } from '$lib/domain/planner/aggregates';
@@ -38,7 +38,33 @@
   let lastGearPointerType = '';
   let gearFocusRedirectToken = 0;
   let redirectingGearFocus = false;
-  let layout = $derived(inventoryLayout(metadata, totals, gear));
+  const shopCurrencyLabelKeys: Record<string, string> = {
+    RaidToken: 'label-raidtokens',
+    RareRaidToken: 'label-rareraidtokens',
+    EliminationRaidToken: 'label-eliminationraidtokens',
+    RareEliminationRaidToken: 'label-rareeliminationraidtokens',
+    ArenaCoin: 'label-arenacoins',
+    JECoin: 'label-jecoins',
+    MasteryCertificate: 'label-expertpermits',
+    BountyCoin: 'label-bountycoins'
+  };
+  const currencyLabel = (key: string) => {
+    const currency = key.endsWith('Cost') ? key.slice(0, -4) : key;
+    const labelKey = shopCurrencyLabelKeys[currency];
+    if (!labelKey) return undefined;
+    const label = t(labelKey);
+    return label && label !== 'Undefined' ? label : currency;
+  };
+  let layout = $derived.by(() => {
+    const inventory = inventoryLayout(metadata, totals, gear);
+    return {
+      ...inventory,
+      extra: inventory.extra.map((item) => {
+        const name = currencyLabel(item.key);
+        return name ? { ...item, name } : item;
+      })
+    };
+  });
   let gearFarmCompleted = $state<{ key: string; plan: GearFarmPlan } | null>(null);
   let gearFarmFailure = $state<{ key: string; message: string } | null>(null);
   let gearFarmBusy = $state(false);
@@ -84,7 +110,7 @@
     { key: 'needed', label: 'label-remainingneeded', shortcut: 'r' }, { key: 'owned', label: 'label-owned', shortcut: 'o' },
     { key: 'required', label: 'label-totalneeded', shortcut: 't' }, { key: 'leftover', label: 'label-leftover', shortcut: 'l' }
   ] as const;
-  const inlineAmountKeys = new Set(['9999', 'Xp', 'GearXp', 'Credit', 'Eligma']);
+  const inlineAmountKeys = new Set(['9999', 'Xp', 'GearXp', 'Credit', 'Eligma', ...shopCurrencyKeys]);
   const pairedExtraGroupNames = new Set(['XP items', 'Limit break books', 'Gifts']);
   const academyIconFiles: Record<string, string> = {
     Abydos: 'Abydos', Arius: 'Arius', ETC: 'ETC', Gehenna: 'Gehenna', Highlander: 'Highlander',

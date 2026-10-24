@@ -1,6 +1,7 @@
 import { calculateStudentResources } from '../resources/calculator';
 import { xpCost } from '../resources/upgrade-costs';
 import { integer, type Resources } from '../resources/types';
+import { shopCurrencyKeys } from './catalog';
 import type { OwnedInventory, PlannerCharacter, PlannerDataset, ResourceTotals } from './types';
 
 export function aggregateResources(
@@ -43,6 +44,13 @@ export function aggregateResources(
     if (!excluded.has(character.id) && perCharacter[character.id].RaidTokenCost) {
       needed.RaidTokenCost += perCharacter[character.id].RaidTokenCost;
     }
+  }
+  for (const currency of shopCurrencyKeys) {
+    const costKey = `${currency}Cost`;
+    const totalCost = Number(currency === 'RaidToken' ? needed[costKey] ?? 0 : required[costKey] ?? 0);
+    const balance = Number(owned[currency] ?? 0);
+    needed[costKey] = Math.max(totalCost - balance, 0);
+    leftover[currency] = Math.max(balance - totalCost, 0);
   }
   for (const [key, prefix, values] of [
     ['Xp', 'XP', [50, 500, 2000, 10000]],
