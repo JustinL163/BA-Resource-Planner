@@ -7,6 +7,15 @@ export interface BulkPatch {
   stars: { star: number; star_target: number; ue: number; ue_target: number };
 }
 
+export type BulkValidationCode = 'invalid-value' | 'ue-requires-five-stars' | 'no-changes';
+
+export class BulkValidationError extends Error {
+  constructor(readonly code: BulkValidationCode, message: string) {
+    super(message);
+    this.name = 'BulkValidationError';
+  }
+}
+
 export function validateBulkPatch(patch: BulkPatch, metadata: PlannerMetadata): void {
   let changed = patch.stars.star > 0 || patch.stars.star_target > 0;
   for (const side of ['current', 'target'] as const) {
@@ -15,19 +24,23 @@ export function validateBulkPatch(patch: BulkPatch, metadata: PlannerMetadata): 
       const field = metadata.fields.find((item) => item.key === key);
       if (!value.trim() || !field || key === 'star' || key === 'ue' ||
           !Number.isInteger(Number(value)) || Number(value) < field.min || Number(value) > field.max) {
-        throw new Error(`Invalid bulk ${key} ${side}.`);
+        throw new BulkValidationError('invalid-value', `Invalid bulk ${key} ${side}.`);
       }
       changed = true;
     }
   }
   for (const [key, value] of Object.entries(patch.stars)) {
     const max = key.startsWith('ue') ? 4 : 5;
-    if (!Number.isInteger(value) || value < 0 || value > max) throw new Error(`Invalid bulk ${key}.`);
+    if (!Number.isInteger(value) || value < 0 || value > max) {
+      throw new BulkValidationError('invalid-value', `Invalid bulk ${key}.`);
+    }
   }
   if ((patch.stars.ue && patch.stars.star !== 5) || (patch.stars.ue_target && patch.stars.star_target !== 5)) {
-    throw new Error('Bulk UE changes require five stars.');
+    throw new BulkValidationError('ue-requires-five-stars', 'Bulk UE changes require five stars.');
   }
-  if (!changed) throw new Error('Enter at least one change. Blank fields keep their existing values.');
+  if (!changed) {
+    throw new BulkValidationError('no-changes', 'Enter at least one change. Blank fields keep their existing values.');
+  }
 }
 
 export function applyBulkPatch(character: PlannerCharacter, info: CharacterInfo, patch: BulkPatch): PlannerCharacter {

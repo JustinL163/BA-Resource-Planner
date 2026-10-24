@@ -3,7 +3,7 @@
   import { sanitizeIntegerInput } from '$lib/actions/sanitize-integer-input';
   import type { InvestmentKey, PlannerCharacter, PlannerDataset, PlannerMetadata } from '$lib/domain/planner/types';
   import { characterFingerprint } from '$lib/domain/planner/defaults';
-  import { applyBulkPatch, validateBulkPatch, type BulkPatch } from '$lib/domain/planner/bulk';
+  import { applyBulkPatch, BulkValidationError, validateBulkPatch, type BulkPatch } from '$lib/domain/planner/bulk';
   import { calculateStudentResources } from '$lib/domain/resources/calculator';
   import { formatAmount } from '$lib/domain/planner/catalog';
   import PlannerDialog from './PlannerDialog.svelte';
@@ -18,6 +18,29 @@
   let current = $state<Partial<Record<InvestmentKey, number>>>({});
   let target = $state<Partial<Record<InvestmentKey, number>>>({});
   let confirmed = $state(false);
+
+  const investmentLabelIds: Partial<Record<InvestmentKey, string>> = {
+    level: 'label-level', bond: 'label-bond', star: 'label-stars', ue: 'label-ue', ue_level: 'label-uelevel',
+    ex: 'label-skillex', basic: 'label-skillbasic', passive: 'label-skillpassive', sub: 'label-skillsub',
+    bond_gear: 'label-bondgear', book_hp: 'label-bookhp', book_atk: 'label-bookatk', book_heal: 'label-bookheal'
+  };
+
+  function investmentLabel(key: InvestmentKey): string {
+    if (key === 'gear1' || key === 'gear2' || key === 'gear3') {
+      return `${t('label-gear')} ${key.slice(-1)}`;
+    }
+    const labelId = investmentLabelIds[key];
+    return labelId ? t(labelId) : key;
+  }
+
+  function validationMessage(problem: unknown): string {
+    if (problem instanceof BulkValidationError) {
+      if (problem.code === 'no-changes') return t('ui-bulk-no-changes');
+      if (problem.code === 'ue-requires-five-stars') return t('ui-bulk-ue-five-stars');
+    }
+    return t('ui-invalid-input');
+  }
+
   let preview = $derived.by(() => {
     const patch: BulkPatch = {
       current: {}, target: {}, stars: {
@@ -38,7 +61,7 @@
         (calculateStudentResources(dataset.context, character, dataset.students[character.id]).Credit ?? 0), 0);
       return { patch, next, credit, error: '' };
     } catch (problem) {
-      return { patch, next: [], credit: 0, error: problem instanceof Error ? problem.message : t('ui-invalid-input') };
+      return { patch, next: [], credit: 0, error: validationMessage(problem) };
     }
   });
 
@@ -53,12 +76,13 @@
   <form onsubmit={(event) => { event.preventDefault(); if (confirmed && !preview.error && save(ids, expected, preview.patch)) close(); }}>
     <p>{t('ui-bulk-help')}</p>
     <div class="table-scroll"><table>
-      <thead><tr><th>{t('ui-investment')}</th><th>{t('label-current')}</th><th>{t('label-target')}</th></tr></thead>
+      <thead><tr><th>{t('ui-bulk-field')}</th><th>{t('label-current')}</th><th>{t('label-target')}</th></tr></thead>
       <tbody>{#each metadata.fields as field}
-        <tr><th scope="row">{field.label}</th>
-          <td><input use:sanitizeIntegerInput type="number" min={field.min} max={field.max} step="1" data-allow-blank aria-label={`Bulk ${field.label} ${t('label-current')}`}
+        {@const label = investmentLabel(field.key)}
+        <tr><th scope="row">{label}</th>
+          <td><input use:sanitizeIntegerInput type="number" min={field.min} max={field.max} step="1" data-allow-blank aria-label={`${label} ${t('label-current')}`}
             bind:value={current[field.key]} onchange={() => stars('current', field.key)} /></td>
-          <td><input use:sanitizeIntegerInput type="number" min={field.min} max={field.max} step="1" data-allow-blank aria-label={`Bulk ${field.label} ${t('label-target')}`}
+          <td><input use:sanitizeIntegerInput type="number" min={field.min} max={field.max} step="1" data-allow-blank aria-label={`${label} ${t('label-target')}`}
             bind:value={target[field.key]} onchange={() => stars('target', field.key)} /></td>
         </tr>
       {/each}</tbody>
@@ -67,7 +91,7 @@
     {#if preview.next.length}
       <details><summary>{t('ui-bulk-preview')}</summary>
         <ul>{#each preview.next as character}<li>{names[character.id] ?? character.name}: {character.current.level} &rarr; {character.target.level},
-          {t('label-stars')} {character.current.star} &rarr; {character.target.star}, UE {character.current.ue} &rarr; {character.target.ue}</li>{/each}</ul>
+          {t('label-stars')} {character.current.star} &rarr; {character.target.star}, {t('label-ue')} {character.current.ue} &rarr; {character.target.ue}</li>{/each}</ul>
         <p>{t('ui-bulk-credit')}: {formatAmount(preview.credit)}</p>
       </details>
     {/if}
