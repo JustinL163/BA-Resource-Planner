@@ -51,7 +51,7 @@ export async function generatePlannerMetadata(root, destination) {
     for (const prefix of ['XP', 'GXP']) image(`${prefix}_${tier}`, 'LevelPart', `${prefix}_${tier}`);
     for (const type of ['Spring', 'Hammer', 'Barrel', 'Needle']) image(`T${tier}_${type}`, 'LevelPart', `${type}_${tier}`);
   }
-  for (const name of ['Credit', 'Eligma', 'ArenaCoin', 'JECoin', 'MasteryCertificate', 'RaidToken', 'RareRaidToken', 'EliminationRaidToken', 'RareEliminationRaidToken']) {
+  for (const name of ['Credit', 'Eligma', 'ArenaCoin', 'JECoin', 'MasteryCertificate', 'BountyCoin', 'RaidToken', 'RareRaidToken', 'EliminationRaidToken', 'RareEliminationRaidToken']) {
     image(name, 'Misc', name);
   }
   for (const filename of await readdir(join(root, 'planner', 'icons', 'Roles'))) {

@@ -52,7 +52,14 @@
   });
   const presetServerPreferenceKey = 'planner-character-preset-server';
   let purchase = $derived(dataset.context.data.shop_characters[character.id]);
-  let shopCurrency = $derived(typeof purchase === 'string' ? purchase : purchase?.currency);
+  let defaultShopCurrency = $derived(typeof purchase === 'string' ? purchase : purchase?.currency);
+  let shopCurrencies = $derived([...new Set([
+    defaultShopCurrency,
+    ...(dataset.context.data.additional_shop_characters?.[character.id] ?? [])
+  ].filter((currency): currency is string => typeof currency === 'string' && currency.length > 0))]);
+  let selectedShopCurrency = $derived(shopCurrencies.includes(draft.eleph.shop_currency ?? '')
+    ? draft.eleph.shop_currency
+    : defaultShopCurrency);
   const shopCurrencyLabels: Record<string, string> = {
     RaidToken: 'label-raidtokens',
     RareRaidToken: 'label-rareraidtokens',
@@ -60,9 +67,14 @@
     RareEliminationRaidToken: 'label-rareeliminationraidtokens',
     ArenaCoin: 'label-arenacoins',
     JECoin: 'label-jecoins',
-    MasteryCertificate: 'label-expertpermits'
+    MasteryCertificate: 'label-expertpermits',
+    BountyCoin: 'label-bountycoins'
   };
   const raidCurrencies = new Set(['RaidToken', 'RareRaidToken', 'EliminationRaidToken', 'RareEliminationRaidToken']);
+  const shopCurrencyName = (currency: string) => shopCurrencyLabels[currency]
+    ? t(shopCurrencyLabels[currency])
+    : currency.replace(/([a-z])([A-Z])/g, '$1 $2');
+  const shopUseLabel = (currency: string) => `${t('ui-use-currency')} ${shopCurrencyName(currency)}`;
   $effect(() => {
     const nextCharacterId = character.id;
     if (nextCharacterId === editorCharacterId) return;
@@ -89,10 +101,6 @@
     return countAvailableStages(activeServer);
   });
   let dailySweepLimit = $derived(availableHardModeStages * (draft.eleph.node_refresh ? 6 : 3));
-  let shopCurrencyName = $derived(shopCurrency
-    ? (shopCurrencyLabels[shopCurrency] ? t(shopCurrencyLabels[shopCurrency]) : shopCurrency.replace(/([a-z])([A-Z])/g, '$1 $2'))
-    : '');
-  let shopUseLabel = $derived(shopCurrency ? `${t('ui-use-currency')} ${shopCurrencyName}` : '');
   function requestClose() {
     if (!dirty) { close(); return; }
     pendingNavigation = null;
@@ -252,9 +260,10 @@
     draft.eleph.use_eligma = checkbox.checked;
     if (checkbox.checked) draft.eleph.use_shop = false;
   }
-  function updateUseShop(event: Event) {
+  function updateUseShop(currency: string, event: Event) {
     const checkbox = event.currentTarget;
     if (!(checkbox instanceof HTMLInputElement)) return;
+    draft.eleph.shop_currency = currency;
     draft.eleph.use_shop = checkbox.checked;
     if (checkbox.checked) draft.eleph.use_eligma = false;
   }
@@ -409,10 +418,10 @@
     if (hardModeStages.length) {
       return { image: `/planner/icons/Eleph/Eleph_${character.id}.webp`, label: t('label-avgdays'), value: resets };
     }
-    if (shopCurrency) {
+    if (selectedShopCurrency) {
       return {
-        image: `/planner/icons/Misc/${shopCurrency}.png`,
-        label: t(raidCurrencies.has(shopCurrency) ? 'label-minraids' : 'label-shopresets'),
+        image: `/planner/icons/Misc/${selectedShopCurrency}.png`,
+        label: t(raidCurrencies.has(selectedShopCurrency) ? 'label-minraids' : 'label-shopresets'),
         value: resets
       };
     }
@@ -424,11 +433,11 @@
     if (draft.eleph.use_eligma) {
       return { image: metadata.images.Eligma ?? '/planner/icons/Misc/Eligma.png', value: Number(resources.Eligma ?? 0), label: t('label-eligma') };
     }
-    if (draft.eleph.use_shop && shopCurrency) {
+    if (draft.eleph.use_shop && selectedShopCurrency) {
       return {
-        image: metadata.images[shopCurrency] ?? `/planner/icons/Misc/${shopCurrency}.png`,
-        value: Number(resources[`${shopCurrency}Cost`] ?? 0),
-        label: shopCurrencyName
+        image: metadata.images[selectedShopCurrency] ?? `/planner/icons/Misc/${selectedShopCurrency}.png`,
+        value: Number(resources[`${selectedShopCurrency}Cost`] ?? 0),
+        label: shopCurrencyName(selectedShopCurrency)
       };
     }
     return null;
@@ -566,8 +575,10 @@
           </div>
           <div class="eleph-options">
             <label class="eleph-check"><input type="checkbox" checked={draft.eleph.use_eligma} onchange={updateUseEligma} />{t('ui-use-eligma')}</label>
-            {#if shopCurrency && !hardModeStages.length}
-              <label class="eleph-check"><input type="checkbox" checked={draft.eleph.use_shop} onchange={updateUseShop} />{shopUseLabel}</label>
+            {#if shopCurrencies.length && !hardModeStages.length}
+              {#each shopCurrencies as currency (currency)}
+                <label class="eleph-check"><input type="checkbox" checked={draft.eleph.use_shop && selectedShopCurrency === currency} onchange={(event) => updateUseShop(currency, event)} />{shopUseLabel(currency)}</label>
+              {/each}
             {/if}
           </div>
           {#if hardModeStages.length}

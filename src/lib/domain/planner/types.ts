@@ -38,6 +38,7 @@ export interface ElephState extends Record<string, unknown> {
   node_refresh: boolean;
   use_eligma: boolean;
   use_shop: boolean;
+  shop_currency?: string;
 }
 
 export interface PlannerCharacter extends StudentPlan, Record<string, unknown> {

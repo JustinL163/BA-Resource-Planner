@@ -40,6 +40,9 @@ function resourceData(value: unknown): value is ResourceData {
     isRecord(value.shop_eleph) && Object.values(value.shop_eleph).every(price) &&
     isRecord(value.shop_characters) && Object.values(value.shop_characters).every((row) =>
       typeof row === 'string' || (price(row) && isRecord(row) && typeof row.currency === 'string')) &&
+    (value.additional_shop_characters === undefined ||
+      (isRecord(value.additional_shop_characters) && Object.values(value.additional_shop_characters).every((row) =>
+        Array.isArray(row) && row.every((currency: unknown) => typeof currency === 'string')))) &&
     isRecord(value.gear_drops) && Object.values(value.gear_drops).every((row) =>
       Array.isArray(row) && row.length >= 3 && row.every((item: unknown) => typeof item === 'string')) &&
     isRecord(value.gear_rates) && Object.values(value.gear_rates).every((rows) =>

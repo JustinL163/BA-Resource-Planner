@@ -39,6 +39,9 @@ function eleph(value: unknown): ElephState {
     if (typeof item !== 'boolean') throw new Error(`Eleph ${key} is not a boolean.`);
     result[key] = item;
   }
+  if (value?.shop_currency !== undefined && typeof value.shop_currency !== 'string') {
+    throw new Error('Eleph shop currency is not a string.');
+  }
   return result;
 }
 

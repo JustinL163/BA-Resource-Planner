@@ -35,6 +35,7 @@ export interface StudentPlan {
     farm_nodes?: InvestmentValue;
     use_eligma?: boolean;
     use_shop?: boolean;
+    shop_currency?: string;
   };
 }
 
@@ -76,6 +77,7 @@ export interface ResourceData extends GearFarmData {
   bond_gear_credit_cost: number[];
   gun_ue_category: Record<string, string>;
   shop_characters: Record<string, string | (ShopPrice & { currency: string })>;
+  additional_shop_characters?: Record<string, string[]>;
   shop_eleph: Record<string, ShopPrice>;
   hard_modes: Record<string, unknown>;
   unlock_cost: Record<string, number>;

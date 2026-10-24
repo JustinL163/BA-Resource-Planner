@@ -19,7 +19,7 @@ export function resourceItem(key: string, metadata: PlannerMetadata): ResourceIt
   else if (Number(key) >= 3000 && Number(key) < 5000) group = 'School materials';
   else if (Number(key) >= 5000 && Number(key) < 9999) group = 'Gifts';
   else if (Number(key) >= 2000 && Number(key) < 3000) group = 'Limit break books';
-  else if (key === 'Credit' || key === 'Eligma') group = 'Currency';
+  else if (['Credit', 'Eligma', 'BountyCoin'].includes(key) || key === 'BountyCoinCost') group = 'Currency';
   return { key, name: name.replaceAll('_', ' '), group, image: metadata.images[key] ?? metadata.images[imageKey] };
 }
 

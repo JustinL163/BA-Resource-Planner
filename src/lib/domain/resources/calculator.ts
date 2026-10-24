@@ -27,11 +27,21 @@ export function calculateStudentResources(
   const id = String(student.id);
   const data = context.data;
   const purchase = data.shop_characters[id];
-  const price = typeof purchase === 'string' ? data.shop_eleph[purchase] : purchase;
-  const currency = typeof purchase === 'string' ? purchase : purchase?.currency;
+  const defaultCurrency = typeof purchase === 'string' ? purchase : purchase?.currency;
+  const additionalCurrencies = data.additional_shop_characters?.[id] ?? [];
+  const availableCurrencies = new Set([defaultCurrency, ...additionalCurrencies].filter((value): value is string => Boolean(value)));
   const eleph = student.eleph;
+  const selectedCurrency = eleph?.shop_currency;
+  const currency = typeof selectedCurrency === 'string' && availableCurrencies.has(selectedCurrency)
+    ? selectedCurrency
+    : defaultCurrency;
+  const price = currency
+    ? currency === defaultCurrency && typeof purchase === 'object'
+      ? purchase
+      : data.shop_eleph[currency]
+    : undefined;
   if (eleph?.unlocked === false && (
-    ['RaidToken', 'RareRaidToken', 'EliminationRaidToken', 'RareEliminationRaidToken', 'ArenaCoin', 'JECoin']
+    ['RaidToken', 'RareRaidToken', 'EliminationRaidToken', 'RareEliminationRaidToken', 'ArenaCoin', 'JECoin', 'BountyCoin']
       .includes(currency ?? '') || data.hard_modes[id]
   )) {
     addResource(resources, 'Eleph', data.unlock_cost[`${info.StarGrade}*`]);
@@ -42,7 +52,7 @@ export function calculateStudentResources(
   if (eleph?.use_eligma && resources.Eleph) {
     addResource(resources, 'Eligma', eligmaCost(resources.Eleph, eleph.cost, eleph.purchasable));
   }
-  if (eleph?.use_shop && resources.Eleph && purchase) {
+  if (eleph?.use_shop && resources.Eleph && currency) {
     if (!price) throw new Error(`Shop pricing is missing for ${id}.`);
     const purchases = Math.ceil(resources.Eleph / price.amount);
     resources[`${currency}Cost`] = purchases * price.cost;
