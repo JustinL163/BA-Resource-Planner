@@ -1,58 +1,22 @@
 <script lang="ts">
-  import { onMount, untrack } from 'svelte';
-  import { farmServer, farmServers, leftoverBlueprintXp, type FarmServer, type GearFarmResult } from '$lib/domain/planner/gear-farm';
-  import { recommendGear } from '$lib/services/gear-farm';
+  import { farmServer, farmServers, leftoverBlueprintXp, type FarmServer, type GearFarmPlan } from '$lib/domain/planner/gear-farm';
   import { formatAmount, resourceItem } from '$lib/domain/planner/catalog';
   import type { PlannerDataset, PlannerMetadata, ResourceTotals } from '$lib/domain/planner/types';
 
-  let { dataset, totals, metadata, savedServer, setServer, multiplier = $bindable(1), t }: {
+  let { dataset, totals, metadata, savedServer, setServer, multiplier = $bindable(1), result, busy, t }: {
     dataset: PlannerDataset; totals: ResourceTotals; metadata: PlannerMetadata; savedServer: unknown;
     setServer: (server: FarmServer) => boolean; multiplier?: number; t: (id: string) => string;
+    result: GearFarmPlan | null; busy: boolean;
   } = $props();
-  let open = $state(false);
-  onMount(() => {
-    const rightColumnLayout = window.matchMedia('(min-width: 1201px)');
-    const openForRightColumn = () => { if (rightColumnLayout.matches) open = true; };
-    openForRightColumn();
-    rightColumnLayout.addEventListener('change', openForRightColumn);
-    return () => rightColumnLayout.removeEventListener('change', openForRightColumn);
-  });
-  let retry = $state(0);
-  let result = $state<GearFarmResult | null>(null);
-  let resultKey = $state('');
-  let busy = $state(false);
-  let error = $state('');
   let settings = $derived.by(() => {
     try { return { server: farmServer(savedServer), error: '' }; }
     catch (problem) { return { server: null, error: problem instanceof Error ? problem.message : t('ui-farming-error') }; }
   });
   let blueprintXp = $derived(leftoverBlueprintXp(totals.leftover, dataset.context.data, metadata.equipment));
-  let inputKey = $derived(JSON.stringify([settings.server, multiplier, totals.needed]));
-  $effect(() => {
-    const key = inputKey;
-    retry;
-    if (!open) { if (resultKey !== key) result = null; return; }
-    const { server, campaign, needed, settingError } = untrack(() => ({
-      server: settings.server, campaign: multiplier, needed: totals.needed, settingError: settings.error
-    }));
-    result = null; error = settingError; busy = false;
-    if (!server) return;
-    const controller = new AbortController();
-    busy = true;
-    void recommendGear(dataset.context.data, needed, server, campaign, metadata.worldCaps, { signal: controller.signal })
-      .then((value) => { if (!controller.signal.aborted) { result = value; resultKey = key; } })
-      .catch((problem) => {
-        if (controller.signal.aborted) return;
-        console.error('Gear farming failed.', problem);
-        error = problem instanceof Error ? problem.message : t('ui-farming-error');
-      })
-      .finally(() => { if (!controller.signal.aborted) busy = false; });
-    return () => controller.abort();
-  });
 </script>
 
-<details {open} ontoggle={(event) => open = event.currentTarget.open}>
-  <summary>{t('ui-farming-recommendations')}{#if result} &middot; {formatAmount(result.energy)} AP{/if}</summary>
+<section class="farming-recommendations" aria-label={t('ui-farming-recommendations')}>
+  <h3>{t('ui-farming-recommendations')}{#if result}{' - '}{formatAmount(result.energy)} AP{/if}</h3>
   <div class="controls">
     <label>{t('ui-server')}<select value={settings.server ?? ''} onchange={(event) => {
       const selected = farmServers.find((value) => value === event.currentTarget.value);
@@ -66,9 +30,11 @@
     </select></label>
   </div>
   {#if busy}<p role="status">{t('ui-calculating-farming')}</p>{/if}
-  {#if error}<p class="error" role="alert">{error}<button onclick={() => retry++}>{t('ui-retry')}</button></p>{/if}
   {#if result}
-    <p data-farm-energy>{t('ui-farming-ap')}: {formatAmount(result.energy)} AP</p>
+    <p class="farm-energy" data-farm-energy>
+      <img src="/planner/icons/Misc/Energy.png" alt={t('ui-farming-ap')} draggable="false" />
+      <span>{formatAmount(result.energy)} AP</span>
+    </p>
     {#if result.unavailable.length}
       <p class="warning" role="status">{t('ui-gear-unavailable')}: {result.unavailable.map((key) => resourceItem(key, metadata).name).join(', ')}</p>
     {/if}
@@ -84,16 +50,18 @@
   {/if}
   <p>{t('ui-leftover-blueprint-xp')}: {formatAmount(blueprintXp)}</p>
   <p class="note">{t('ui-farming-rounding-help')}</p>
-</details>
+  <p class="note">{t('ui-farming-selector-allocation-help')}</p>
+</section>
 
 <style>
-  details { margin-top: 1rem; }
-  summary { cursor: pointer; }
+  .farming-recommendations { margin-top: 1rem; }
+  h3 { margin: 0; font-size: 0.9rem; }
   .controls { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.75rem; }
   label { display: flex; flex-direction: column; gap: 0.3rem; }
+  .farm-energy { display: flex; align-items: center; gap: 0.35rem; }
+  .farm-energy img { width: 2rem; height: 2rem; object-fit: contain; }
   .stage-runs { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 0.4rem; }
   .stage-runs > div { display: flex; flex-direction: column; align-items: center; padding: 0.35rem; border: 1px solid #7c5b7d66; border-radius: 0.4rem; background: #7c5b7d22; }
   .stage-runs span { font-size: 0.85rem; }
-  .error { color: var(--error); }
   .note, .warning { font-size: 0.85rem; line-height: 1.5; }
 </style>

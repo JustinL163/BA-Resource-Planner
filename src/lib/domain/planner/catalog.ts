@@ -11,7 +11,8 @@ export function resourceItem(key: string, metadata: PlannerMetadata): ResourceIt
   const name = metadata.materialNames[key] ?? key;
   const imageKey = key.endsWith('Cost') ? key.slice(0, -4) : key;
   let group = 'Other';
-  if (metadata.equipment.includes(key)) group = 'Equipment';
+  if (metadata.equipment.includes(key) || /^Choice_T(?:[2-9]|10)$/.test(key) ||
+    (key.startsWith('G_') && metadata.equipment.some((equipment) => equipment.endsWith(`_${key.slice(2)}`)))) group = 'Equipment';
   else if (key.startsWith('XP_') || key.startsWith('GXP_')) group = 'XP items';
   else if (/^T[1-4]_(Spring|Hammer|Barrel|Needle)$/.test(key)) group = 'Weapon items';
   else if (Number(key) >= 100 && Number(key) < 1000) group = 'Artifacts';

@@ -103,6 +103,7 @@
     {:else}<span class="resource-name" use:fitResourceText={{ text: item.name, layout: 'name' }}>{item.name}</span>{/if}
     <span class="amount" use:fitResourceText={{ text: amountLabel, layout: inlineAmount ? 'inline-amount' : 'cell-amount' }} aria-hidden="true">{amountLabel}</span>
     <input use:sanitizeIntegerInput class="resource-input" type="number" aria-label={`${t('label-owned')} ${item.name}`} min="0" step="1"
+      data-resource-key={item.key}
       value={amount}
       onchange={(event) => {
         const input = event.currentTarget;

@@ -46,7 +46,8 @@ function resourceData(value: unknown): value is ResourceData {
       Array.isArray(rows) && rows.every((row: unknown) => isRecord(row) &&
         (typeof row.Tier === 'number' || typeof row.Tier === 'string') &&
         numbers(row.Rates) && (row.OldRates === undefined || numbers(row.OldRates)))) &&
-    numberRecord(value.gear_bp_value);
+    numberRecord(value.gear_bp_value) &&
+    (value.universal_bp_cost === undefined || numberRecord(value.universal_bp_cost));
 }
 
 export async function fetchJson(url: string, signal?: AbortSignal): Promise<unknown> {

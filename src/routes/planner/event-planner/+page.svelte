@@ -575,9 +575,10 @@
 
 <style>
   .event-layout { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 1rem; margin-top: 1rem; }
-  aside { box-sizing: border-box; align-self: start; display: flex; flex-direction: column; gap: .5rem; max-height: 70vh; max-height: 70dvh; padding-right: .25rem; overflow-y: auto; overscroll-behavior: contain; }
-  aside button { display: flex; align-items: center; gap: .5rem; text-align: left; padding: .5rem; }
-  aside img { width: 58px; height: 58px; object-fit: contain; }
+  .event-layout > aside { box-sizing: border-box; align-self: start; display: flex; flex-direction: column; gap: .5rem; max-height: 70vh; max-height: 70dvh; padding-right: .25rem; overflow-y: auto; overscroll-behavior: contain; }
+  .event-layout > aside button { display: flex; flex-direction: column; align-items: center; gap: .35rem; text-align: center; padding: .5rem; }
+  .event-layout > aside button img { width: 10rem; object-fit: contain; }
+  .event-layout > aside button span { max-width: 100%; line-height: 1.2; }
   .archives { display: flex; align-items: center; gap: .4rem; font-size: .85rem; }
   .event-list-toggle { display: none; }
   .selected { background: #7c5b7d55; border-color: #c89fca; }
@@ -628,9 +629,10 @@
     .event-list-toggle { display: block; flex: 0 0 auto; margin: 0; }
     .event-heading { display: flex; align-items: center; gap: .6rem; }
     .event-heading h2 { min-width: 0; margin: 0; }
-    aside:not(.open) { display: none; }
-    aside { flex-direction: row; flex-wrap: wrap; }
-    aside button { flex: 1 1 200px; }
+    .event-layout > aside:not(.open) { display: none; }
+    .event-layout > aside { flex-direction: row; flex-wrap: wrap; }
+    .event-layout > aside .archives { flex: 1 1 100%; }
+    .event-layout > aside button { flex: 1 1 8rem; }
   }
   @media (max-width: 600px) {
     .event-layout { margin-inline: -.55rem; }

@@ -14,6 +14,8 @@ export function inventoryLayout(metadata: PlannerMetadata, totals: ResourceTotal
   if (gear) {
     const types = [...new Set(metadata.equipment.map((key) => key.split('_')[1]))];
     const tiers = [...new Set(metadata.equipment.map((key) => key.split('_')[0]))];
+    for (let tier = 2; tier <= 10; tier++) matrices.add(`Choice_T${tier}`);
+    for (const type of types) matrices.add(`G_${type}`);
     panels.push({
       title: 'footer-gear', columns: types,
       rows: tiers.map((tier) => ({

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, untrack } from 'svelte';
   import { sanitizeIntegerInput } from '$lib/actions/sanitize-integer-input';
   import type { PlannerCharacter, PlannerMetadata, ResourceTotals } from '$lib/domain/planner/types';
   import { formatAmount, type ResourceItem } from '$lib/domain/planner/catalog';
@@ -10,8 +10,10 @@
   import PlannerDialog from './PlannerDialog.svelte';
   import KeyboardShortcutLabel from './KeyboardShortcutLabel.svelte';
   import GearFarming from './GearFarming.svelte';
+  import GearBlueprintUsage from './GearBlueprintUsage.svelte';
   import type { PlannerDataset } from '$lib/domain/planner/types';
-  import type { FarmServer } from '$lib/domain/planner/gear-farm';
+  import { farmServer, type FarmServer, type GearFarmPlan } from '$lib/domain/planner/gear-farm';
+  import { recommendGear } from '$lib/services/gear-farm';
   import ResourceUsersDialog, { type ResourceUserRow } from './ResourceUsersDialog.svelte';
 
   let { totals, metadata, dataset, savedServer, setServer, setOwned, gear, close, error, levelCap, setCap,
@@ -28,7 +30,56 @@
   let capError = $state('');
   let selectedResource = $state<ResourceItem | null>(null);
   let transposeGearTable = $state(true);
+  let gearEnterDebugEnabled = $state(false);
+  let gearEnterDebugEvents = $state<string[]>([]);
+  let lastGearFocusedInput: HTMLInputElement | null = null;
+  let pendingGearPointerKey = '';
+  let pendingGearPointerAt = 0;
+  let lastGearPointerType = '';
+  let gearFocusRedirectToken = 0;
+  let redirectingGearFocus = false;
   let layout = $derived(inventoryLayout(metadata, totals, gear));
+  let gearFarmCompleted = $state<{ key: string; plan: GearFarmPlan } | null>(null);
+  let gearFarmFailure = $state<{ key: string; message: string } | null>(null);
+  let gearFarmBusy = $state(false);
+  let gearFarmRetry = $state(0);
+  let gearFarmNeeded = $derived(Object.fromEntries<number>(metadata.equipment.flatMap((key) => (totals.needed[key] ?? 0) > 0 ? [[key, totals.needed[key]]] : [])));
+  let gearFarmOwned = $derived(Object.fromEntries<number>(Object.entries(totals.owned)
+    .filter(([key]) => key.startsWith('G_') || key.startsWith('Choice_T')).map(([key, amount]) => [key, Number(amount)])));
+  let gearFarmKey = $derived(gear ? JSON.stringify([
+    savedServer, campaignMultiplier, gearFarmNeeded, gearFarmOwned,
+    dataset.context.data.gear_rates, dataset.context.data.gear_drops, dataset.context.data.universal_bp_cost, metadata.worldCaps
+  ]) : '');
+  let gearFarmResult = $derived(gearFarmCompleted?.key === gearFarmKey ? gearFarmCompleted.plan : null);
+  let gearFarmError = $derived(gearFarmFailure?.key === gearFarmKey ? gearFarmFailure.message : '');
+  $effect(() => {
+    const key = gearFarmKey;
+    gearFarmRetry;
+    if (!key) return;
+    const input = untrack(() => ({
+      data: dataset.context.data, needed: gearFarmNeeded, owned: gearFarmOwned,
+      server: savedServer, multiplier: campaignMultiplier, caps: metadata.worldCaps
+    }));
+    const controller = new AbortController();
+    gearFarmCompleted = null;
+    gearFarmFailure = null;
+    gearFarmBusy = true;
+    try {
+      const server = farmServer(input.server);
+      void recommendGear(input.data, input.needed, input.owned, server, input.multiplier, input.caps, { signal: controller.signal })
+        .then((plan) => { if (!controller.signal.aborted) gearFarmCompleted = { key, plan }; })
+        .catch((problem) => {
+          if (controller.signal.aborted) return;
+          console.error('Gear farming failed.', problem);
+          gearFarmFailure = { key, message: problem instanceof Error ? problem.message : t('ui-farming-error') };
+        })
+        .finally(() => { if (!controller.signal.aborted) gearFarmBusy = false; });
+    } catch (problem) {
+      gearFarmBusy = false;
+      gearFarmFailure = { key, message: problem instanceof Error ? problem.message : t('ui-farming-error') };
+    }
+    return () => controller.abort();
+  });
   const modes = [
     { key: 'needed', label: 'label-remainingneeded', shortcut: 'r' }, { key: 'owned', label: 'label-owned', shortcut: 'o' },
     { key: 'required', label: 'label-totalneeded', shortcut: 't' }, { key: 'leftover', label: 'label-leftover', shortcut: 'l' }
@@ -43,6 +94,19 @@
   };
   const inlineAmount = (key: string) => inlineAmountKeys.has(key) || key.endsWith('Cost');
   const schoolName = (name: string) => localizedSchoolName(name, t).replaceAll('_', ' ');
+  const gearTypeName = (name: string) => {
+    const translated = t(`gear-${name.toLowerCase()}`);
+    return translated === 'Undefined' ? name : translated;
+  };
+  const choiceTiers = Array.from({ length: 9 }, (_, index) => `T${index + 2}`);
+  const choiceItem = (tier: string): ResourceItem | undefined => choiceTiers.includes(tier) ? {
+    key: `Choice_${tier}`, name: `Choice ${tier}`, group: 'Equipment', image: `/planner/icons/Gear/Choice_${tier}.webp`
+  } : undefined;
+  const isUniversalGearItem = (item: ResourceItem | undefined) =>
+    !!item && (item.key.startsWith('Choice_') || item.key.startsWith('G_'));
+  const generalItem = (type: string): ResourceItem => ({
+    key: `G_${type}`, name: `${t('gear-general-blueprint')} (${gearTypeName(type)})`, group: 'Equipment', image: `/planner/icons/Gear/G_${type}.png`
+  });
   function transposeGearPanel(panel: MaterialPanel): MaterialPanel {
     return {
       ...panel,
@@ -54,9 +118,52 @@
     };
   }
 
-  let panels = $derived.by(() => gear && transposeGearTable
-    ? layout.panels.map(transposeGearPanel)
-    : layout.panels);
+  function focusOutsideMatrix(matrixRoot: HTMLElement, currentInput: HTMLInputElement, direction: -1 | 1) {
+    const dialog = matrixRoot.closest('dialog');
+    const scope: ParentNode = dialog ?? document;
+    const candidates = [...scope.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]'
+    )].filter((element) => element.tabIndex >= 0 && !element.closest('[inert]') &&
+      getComputedStyle(element).visibility !== 'hidden' && element.getClientRects().length > 0);
+    const currentIndex = candidates.indexOf(currentInput);
+    if (currentIndex < 0) return false;
+
+    for (let distance = 1; distance <= candidates.length; distance += 1) {
+      let index = currentIndex + direction * distance;
+      if (index < 0 || index >= candidates.length) {
+        if (!dialog) break;
+        index = (index + candidates.length) % candidates.length;
+      }
+      const candidate = candidates[index];
+      if (candidate && !matrixRoot.contains(candidate)) {
+        candidate.focus();
+        return true;
+      }
+    }
+    return false;
+  }
+
+  let gearUsage = $derived(gearFarmResult?.allocation ?? {
+    remainingByGear: {}, choiceUsedByGear: {}, generalUsedByGear: {}, specialLeftover: {}
+  });
+  let gearDisplayTotals: ResourceTotals = $derived({
+    ...totals,
+    needed: { ...totals.needed, ...gearUsage.remainingByGear },
+    leftover: { ...totals.leftover, ...gearUsage.specialLeftover }
+  });
+  let showUniversalInventory = $derived(mode === 'owned' || mode === 'leftover');
+  let panels = $derived.by(() => {
+    if (!gear) return layout.panels;
+    const source = layout.panels[0];
+    if (!source) return [];
+    const columns = [...source.columns, 'Choice'];
+    const rows = source.rows.map((row) => ({
+      ...row, cells: [...row.cells, choiceItem(row.name)]
+    }));
+    rows.push({ name: 'General', cells: [...source.columns.map(generalItem), undefined] });
+    const panel = { ...source, columns, rows };
+    return [transposeGearTable ? transposeGearPanel(panel) : panel];
+  });
   let summaryTiles = $derived(layout.extra.filter((item) => inlineAmount(item.key)));
   const leadingSummaryKeys = ['Credit', 'Xp', '9999'];
   let leadingSummaryTiles = $derived(leadingSummaryKeys.flatMap((key) => summaryTiles.filter((item) => item.key === key)));
@@ -120,6 +227,145 @@
   });
   let selectedUsers = $derived(selectedResource ? usersByResource[selectedResource.key] ?? [] : []);
 
+  function addGearEnterDebugEvent(message: string) {
+    gearEnterDebugEvents = [...gearEnterDebugEvents.slice(-119), message];
+  }
+
+  function describeInput(target: EventTarget | null): string {
+    if (target instanceof HTMLInputElement) return target.dataset.resourceKey ?? target.getAttribute('aria-label') ?? 'input';
+    return target instanceof Element ? target.tagName.toLowerCase() : 'unknown';
+  }
+
+  function recordGearEnterDebugEvent(event: Event) {
+    if (!gearEnterDebugEnabled || !(event.target instanceof Element) || !event.target.closest('.matrices.gear')) return;
+    const target = describeInput(event.target);
+    let details = '';
+    if (event instanceof KeyboardEvent) {
+      details = ` key=${JSON.stringify(event.key)} code=${event.code || '-'} location=${event.location} keyCode=${event.keyCode} prevented=${event.defaultPrevented}`;
+    } else if (event instanceof InputEvent) {
+      details = ` inputType=${event.inputType || '-'} data=${JSON.stringify(event.data)}`;
+    } else if (event instanceof PointerEvent) {
+      details = ` pointerType=${event.pointerType}`;
+    } else if (event instanceof FocusEvent) {
+      details = ` related=${describeInput(event.relatedTarget)}`;
+    }
+    addGearEnterDebugEvent(`${event.type} target=${target}${details}`);
+    if (event instanceof KeyboardEvent && event.type === 'keydown') {
+      queueMicrotask(() => addGearEnterDebugEvent(`after keydown prevented=${event.defaultPrevented} active=${describeInput(document.activeElement)}`));
+    }
+  }
+
+  function usesTouchInput() {
+    return navigator.maxTouchPoints > 0 || window.matchMedia('(pointer: coarse)').matches;
+  }
+
+  function matrixInputOrder(matrixRoot: HTMLElement, rowMajorOrder: boolean, isGearMatrix: boolean) {
+    const entries = [...matrixRoot.querySelectorAll('table')].flatMap((table, tableIndex) => {
+      const rows = [...table.tBodies].flatMap((body) => [...body.rows]);
+      return rows.flatMap((row, rowIndex) => {
+        const rowHeaderOffset = row.querySelector(':scope > th[scope="row"]') ? 1 : 0;
+        return [...row.cells].flatMap((cell) => {
+          if (!(cell instanceof HTMLTableCellElement) || cell.tagName !== 'TD') return [];
+          const input = cell.querySelector<HTMLInputElement>('input.resource-input');
+          if (!input) return [];
+          const key = input.dataset.resourceKey ?? input.closest<HTMLElement>('[data-resource]')?.dataset.resource ?? '';
+          const group = key.startsWith('G_') ? 1 : key.startsWith('Choice_') ? 2 : 0;
+          return [{ input, tableIndex, column: cell.cellIndex - rowHeaderOffset, rowIndex, group }];
+        });
+      });
+    });
+    const comparePosition = (first: typeof entries[number], second: typeof entries[number]) =>
+      first.tableIndex - second.tableIndex || (rowMajorOrder
+        ? first.rowIndex - second.rowIndex || first.column - second.column
+        : first.column - second.column || first.rowIndex - second.rowIndex);
+    return isGearMatrix
+      ? [0, 1, 2].flatMap((group) => entries.filter((entry) => entry.group === group).sort(comparePosition).map((entry) => entry.input))
+      : entries.sort(comparePosition).map((entry) => entry.input);
+  }
+
+  function handleGearPointerDown(event: PointerEvent) {
+    gearFocusRedirectToken += 1;
+    lastGearPointerType = event.pointerType;
+    if (!(event.target instanceof Element)) return;
+    const input = event.target.closest<HTMLInputElement>('input.resource-input') ??
+      event.target.closest<HTMLElement>('.resource-cell')?.querySelector<HTMLInputElement>('input.resource-input');
+    if (!input?.closest('.matrices.gear')) return;
+    pendingGearPointerKey = input.dataset.resourceKey ?? '';
+    pendingGearPointerAt = Date.now();
+  }
+
+  function handleGearFocusIn(event: FocusEvent) {
+    if (!(event.target instanceof HTMLInputElement) || !event.target.matches('.resource-input')) return;
+    const input = event.target;
+    const matrixRoot = input.closest<HTMLElement>('.matrices.gear');
+    if (!matrixRoot) return;
+
+    const previous = lastGearFocusedInput;
+    const pointerFocusedThisInput = Date.now() - pendingGearPointerAt < 1000 &&
+      pendingGearPointerKey === (input.dataset.resourceKey ?? '');
+    if (pendingGearPointerKey && Date.now() - pendingGearPointerAt >= 1000) pendingGearPointerKey = '';
+    else if (pointerFocusedThisInput) pendingGearPointerKey = '';
+
+    const touchNavigation = usesTouchInput() || lastGearPointerType === 'touch';
+    const sameGearMatrix = previous?.isConnected && previous.closest('.matrices.gear') === matrixRoot;
+    if (gearEnterDebugEnabled) {
+      addGearEnterDebugEvent(`focus-order check from=${describeInput(previous)} to=${describeInput(input)} touch=${touchNavigation} pointerFocus=${pointerFocusedThisInput} redirecting=${redirectingGearFocus} sameMatrix=${Boolean(sameGearMatrix)}`);
+    }
+    if (previous && previous !== input && sameGearMatrix &&
+      !pointerFocusedThisInput && !redirectingGearFocus && touchNavigation) {
+      const domInputs = [...matrixRoot.querySelectorAll<HTMLInputElement>('input.resource-input')];
+      const previousDomIndex = domInputs.indexOf(previous);
+      const incomingDomIndex = domInputs.indexOf(input);
+      const direction = incomingDomIndex > previousDomIndex ? 1 : -1;
+      const orderedInputs = matrixInputOrder(matrixRoot, true, true);
+      const previousOrderIndex = orderedInputs.indexOf(previous);
+      const desiredInput = orderedInputs[previousOrderIndex + direction];
+      if (desiredInput && desiredInput !== input) {
+        const redirectToken = ++gearFocusRedirectToken;
+        if (gearEnterDebugEnabled) {
+          addGearEnterDebugEvent(`focus-order deferred redirect from=${describeInput(previous)} native=${describeInput(input)} to=${describeInput(desiredInput)}`);
+        }
+        // The virtual keyboard's built-in Next action may keep running after
+        // focusin. Let it finish before applying our ordered destination.
+        window.setTimeout(() => {
+          if (redirectToken !== gearFocusRedirectToken || !desiredInput.isConnected || document.activeElement !== input) return;
+          if (gearEnterDebugEnabled) {
+            addGearEnterDebugEvent(`focus-order apply redirect from=${describeInput(input)} to=${describeInput(desiredInput)}`);
+          }
+          redirectingGearFocus = true;
+          desiredInput.focus();
+          redirectingGearFocus = false;
+          lastGearFocusedInput = desiredInput;
+        }, 0);
+        return;
+      }
+    }
+    lastGearFocusedInput = input;
+  }
+
+  function handleGearFocusOut(event: FocusEvent) {
+    if (!(event.target instanceof HTMLInputElement) || !event.target.matches('.resource-input')) return;
+    const matrixRoot = event.target.closest('.matrices.gear');
+    if (!matrixRoot) return;
+    if (event.relatedTarget instanceof Element && event.relatedTarget.closest('.matrices.gear') === matrixRoot) return;
+    window.setTimeout(() => {
+      if (lastGearFocusedInput === event.target &&
+        (!(document.activeElement instanceof HTMLInputElement) || document.activeElement.closest('.matrices.gear') !== matrixRoot)) {
+        lastGearFocusedInput = null;
+      }
+    }, 50);
+  }
+
+  function focusMatrixInput(input: HTMLInputElement) {
+    if (!input.closest('.matrices.gear')) {
+      input.focus();
+      return;
+    }
+    redirectingGearFocus = true;
+    input.focus();
+    redirectingGearFocus = false;
+  }
+
   onMount(() => {
     if (!gear) return;
     try {
@@ -127,6 +373,24 @@
       if (savedPreference !== null) transposeGearTable = savedPreference === 'true';
     }
     catch { /* Keep the default orientation if storage is unavailable. */ }
+
+    gearEnterDebugEnabled = new URLSearchParams(window.location.search).get('gearenterdebug') === '1';
+    const debugEventTypes = ['keydown', 'keyup', 'keypress', 'focusin', 'focusout', 'beforeinput', 'input', 'change', 'pointerdown', 'pointerup'] as const;
+    if (gearEnterDebugEnabled) {
+      addGearEnterDebugEvent(`device maxTouchPoints=${navigator.maxTouchPoints} coarse=${window.matchMedia('(pointer: coarse)').matches}`);
+      for (const type of debugEventTypes) document.addEventListener(type, recordGearEnterDebugEvent, true);
+    }
+    document.addEventListener('pointerdown', handleGearPointerDown, true);
+    document.addEventListener('focusin', handleGearFocusIn, true);
+    document.addEventListener('focusout', handleGearFocusOut, true);
+    return () => {
+      if (gearEnterDebugEnabled) {
+        for (const type of debugEventTypes) document.removeEventListener(type, recordGearEnterDebugEvent, true);
+      }
+      document.removeEventListener('pointerdown', handleGearPointerDown, true);
+      document.removeEventListener('focusin', handleGearFocusIn, true);
+      document.removeEventListener('focusout', handleGearFocusOut, true);
+    };
   });
 
   function toggleGearTableTranspose() {
@@ -140,30 +404,43 @@
   }
 
   function handleMatrixKeydown(event: KeyboardEvent) {
+    const isEnterNavigation = event.key === 'Enter' || ['Go', 'Next', 'Done'].includes(event.key) || event.keyCode === 13;
+    if (gearEnterDebugEnabled && event.target instanceof HTMLInputElement) {
+      addGearEnterDebugEvent(`matrix keydown key=${JSON.stringify(event.key)} target=${describeInput(event.target)} recognized=${isEnterNavigation || event.key === 'Tab'}`);
+    }
     if (
-      event.key !== 'Enter' || !(event.target instanceof HTMLInputElement) || !event.target.matches('.resource-input')
+      (!isEnterNavigation && event.key !== 'Tab') || !(event.target instanceof HTMLInputElement) || !event.target.matches('.resource-input')
     ) return;
 
     const matrixRoot = event.currentTarget as HTMLElement;
-    const inputs = [...matrixRoot.querySelectorAll('table')].flatMap((table, tableIndex) => {
-      const rows = [...table.tBodies].flatMap((body) => [...body.rows]);
-      return rows.flatMap((row, rowIndex) => {
-        const rowHeaderOffset = row.querySelector(':scope > th[scope="row"]') ? 1 : 0;
-        return [...row.cells].flatMap((cell) => {
-          if (!(cell instanceof HTMLTableCellElement) || cell.tagName !== 'TD') return [];
-          const input = cell.querySelector<HTMLInputElement>('input.resource-input');
-          return input ? [{ input, tableIndex, column: cell.cellIndex - rowHeaderOffset, rowIndex }] : [];
-        });
-      });
-    }).sort((first, second) =>
-      first.tableIndex - second.tableIndex || first.column - second.column || first.rowIndex - second.rowIndex
-    );
+    const isGearMatrix = matrixRoot.classList.contains('gear');
+    if (event.key === 'Tab' && !isGearMatrix) return;
+    const mobileEnterUsesTabOrder = isEnterNavigation && isGearMatrix &&
+      (event.location === KeyboardEvent.DOM_KEY_LOCATION_MOBILE || navigator.maxTouchPoints > 0 ||
+        window.matchMedia('(pointer: coarse)').matches);
+    const rowMajorOrder = event.key === 'Tab' || mobileEnterUsesTabOrder;
+    const inputs = matrixInputOrder(matrixRoot, rowMajorOrder, isGearMatrix);
 
-    const currentIndex = inputs.findIndex(({ input }) => input === event.target);
+    const currentIndex = inputs.findIndex((input) => input === event.target);
     if (currentIndex < 0) return;
 
+    const nextInput = inputs[currentIndex + (event.shiftKey ? -1 : 1)];
+    if (gearEnterDebugEnabled && isGearMatrix && isEnterNavigation) {
+      addGearEnterDebugEvent(`navigation order=${rowMajorOrder ? 'row' : 'column'} from=${describeInput(event.target)} to=${describeInput(nextInput ?? null)}`);
+    }
+    if (isEnterNavigation) {
+      event.preventDefault();
+      if (nextInput) focusMatrixInput(nextInput);
+      return;
+    }
+    if (!nextInput) {
+      if (event.key === 'Tab' && isGearMatrix && focusOutsideMatrix(matrixRoot, event.target, event.shiftKey ? -1 : 1)) {
+        event.preventDefault();
+      }
+      return;
+    }
     event.preventDefault();
-    inputs[currentIndex + (event.shiftKey ? -1 : 1)]?.input.focus();
+    focusMatrixInput(nextInput);
   }
 
   function fitRowName(node: HTMLElement, _initialValue: string) {
@@ -246,17 +523,24 @@
         {/each}
         {#if gear}
           <ResourceCell item={gearXpSummaryItem} {totals} {mode} {setOwned} {t} inlineAmount />
-          {#if showWeaponXpBalance}
+          <div class="gear-balance-summary-slot" aria-hidden={!showWeaponXpBalance} inert={!showWeaponXpBalance}>
+            {#if showWeaponXpBalance}
             <ResourceCell item={weaponXpBalanceItem} totals={weaponXpBalanceTotals} {mode} {setOwned} {t} inlineAmount />
-          {/if}
+            {/if}
+          </div>
         {/if}
       </div>
     {/if}
   </div>
-  {#if error || capError}<p class="error" role="alert">{error || capError}</p>{/if}
+  {#if error || capError || gearFarmError}
+    <p class="error" role="alert">{error || capError || gearFarmError}
+      {#if gearFarmError}<button onclick={() => gearFarmRetry++}>{t('ui-retry')}</button>{/if}
+    </p>
+  {/if}
   <div class="inventory-sections" class:gear-layout={gear}
     style={gear ? `--gear-table-max-width: ${40 + (panels[0]?.columns.length ?? 0) * 75}px` : undefined}>
-  <div class="matrices" class:gear role="group" aria-label={t(gear ? 'footer-gear' : 'footer-resources')} onkeydown={handleMatrixKeydown}>
+  <div class="matrices" class:gear class:show-universal={gear && showUniversalInventory} role="group" aria-label={t(gear ? 'footer-gear' : 'footer-resources')}
+    aria-busy={gear && gearFarmBusy} onkeydown={handleMatrixKeydown}>
     {#if gear}
       {#each panels as panel, index}
         <section>
@@ -267,28 +551,65 @@
                   aria-label={t('ui-transpose-gear-table')} aria-pressed={transposeGearTable} onclick={toggleGearTableTranspose}>
                   <span class="gear-transpose-icon" aria-hidden="true"></span>
                 </button>
-              </th>{#each panel.columns as column}<th scope="col">
+              </th>{#each panel.columns as column}<th scope="col"
+                class:gear-special-header={transposeGearTable ? column === 'General' : column === 'Choice'}>
                 {#if transposeGearTable}
-                  <span class="gear-transposed-header">{column}</span>
+                  <span class="gear-transposed-header" class:gear-general-header={column === 'General'}>
+                    {column === 'General' ? t('gear-general-blueprint') : column}
+                  </span>
+                {:else if column === 'Choice'}
+                  <span class="gear-header-name">Choice</span>
+                  <img class="gear-header-image" src="/planner/icons/Gear/Choice_T2.webp" alt="Choice" draggable="false" />
                 {:else}
                   <span class="gear-header-name">{column}</span>
                   <img class="gear-header-image" src={`/planner/icons/Gear/T1_${column}.webp`} alt={column} draggable="false" />
                 {/if}
               </th>{/each}</tr></thead>
               <tbody>{#each panel.rows as row}
-                <tr style:background-color={row.colour}>
-                  <th scope="row">
+                <tr style:background-color={row.colour}
+                  class:gear-special-row={transposeGearTable ? row.name === 'Choice' : row.name === 'General'}>
+                  <th scope="row" class:gear-special-header={transposeGearTable ? row.name === 'Choice' : row.name === 'General'}>
                     {#if transposeGearTable}
-                      <img class="gear-row-image" src={`/planner/icons/Gear/T1_${row.name}.webp`}
-                        alt={row.name.replaceAll('_', ' ')} draggable="false" />
+                      {#if row.name === 'Choice'}
+                        <img class="gear-row-image" src="/planner/icons/Gear/Choice_T2.webp" alt="Choice" draggable="false" />
+                      {:else}
+                        <img class="gear-row-image" src={`/planner/icons/Gear/T1_${row.name}.webp`}
+                          alt={row.name.replaceAll('_', ' ')} draggable="false" />
+                      {/if}
+                    {:else if row.name === 'General'}
+                      <span class="gear-special-name">{t('gear-general-blueprint')}</span>
                     {:else}
                       {row.name.replaceAll('_', ' ')}
                     {/if}
                   </th>
-                  {#each row.cells as item}
-                    <td>{#if item}<ResourceCell {item} {totals} {mode} {setOwned} {t}
-                      userCount={usersByResource[item.key]?.length ?? 0}
-                      showUsers={mode === 'owned' ? undefined : () => openUsers(item)} />{/if}</td>
+                  {#each row.cells as item, cellIndex}
+                    <td class:gear-special-cell={isUniversalGearItem(item) || (!transposeGearTable && cellIndex === panel.columns.length - 1)}>{#if item}
+                      <div class="gear-cell">
+                        {#if showUniversalInventory || !isUniversalGearItem(item)}
+                          <ResourceCell {item} totals={gearDisplayTotals} {mode} {setOwned} {t}
+                            userCount={usersByResource[item.key]?.length ?? 0}
+                            showUsers={mode === 'owned' ? undefined : () => openUsers(item)} />
+                        {/if}
+                        {#if mode === 'needed' && item.group === 'Equipment'}
+                          {@const choiceUsed = gearUsage.choiceUsedByGear[item.key] ?? 0}
+                          {@const generalUsed = gearUsage.generalUsedByGear[item.key] ?? 0}
+                          {@const itemTier = item.key.split('_')[0]}
+                          {@const itemType = item.key.split('_')[1]}
+                          {#if choiceUsed > 0}
+                            <span class={`gear-use-indicator choice ${transposeGearTable ? 'top-right' : 'bottom-left'}`} aria-label={`${choiceUsed} ${itemTier} choice blueprints used`}>
+                              <img src={`/planner/icons/Gear/Choice_${itemTier}.webp`} alt="" draggable="false" />
+                              <span>{formatAmount(choiceUsed)}</span>
+                            </span>
+                          {/if}
+                          {#if generalUsed > 0}
+                            <span class={`gear-use-indicator general ${transposeGearTable ? 'bottom-left' : 'top-right'}`} aria-label={`${generalUsed} general ${itemType} blueprints used`}>
+                              <span>{formatAmount(generalUsed)}</span>
+                              <img src={`/planner/icons/Gear/G_${itemType}.png`} alt="" draggable="false" />
+                            </span>
+                          {/if}
+                        {/if}
+                      </div>
+                    {/if}</td>
                   {/each}
                 </tr>
               {/each}</tbody>
@@ -377,20 +698,6 @@
         {/each}
       </div>
     {/if}
-    {#if gear}
-      <details>
-        <summary>{t('ui-weapon-xp')}</summary>
-        <div class="table-scroll"><table class="weapon-table">
-          <thead><tr><th scope="col" aria-label={t('ui-weapon-xp')}></th><th scope="col">{t('label-owned')}</th><th scope="col">{t('label-totalneeded')}</th><th scope="col">{t('label-remainingneeded')}</th></tr></thead>
-          <tbody>{#each weapons.rows as row}
-            <tr><th scope="row"><img class="weapon-xp-icon" src={`/planner/icons/LevelPart/${row.type}_All.png`} alt={row.type} draggable="false" /></th>
-              <td>{formatAmount(row.owned)}</td><td>{formatAmount(row.required)}</td><td>{formatAmount(row.remaining)}</td></tr>
-          {/each}
-          </tbody>
-        </table></div>
-        <p class="note">{t('ui-weapon-xp-help')}</p>
-      </details>
-    {/if}
   </div>
     <div class="inventory-side">
       {#if pairedGroups.length}
@@ -440,9 +747,29 @@
           </section>
         {/each}
       </div>
-      {#if gear && mode === 'needed'}<GearFarming {dataset} {totals} {metadata} {savedServer} {setServer} bind:multiplier={campaignMultiplier} {t} />{/if}
+      {#if gear && mode === 'needed'}
+        <GearFarming {dataset} {totals} {metadata} {savedServer} {setServer} bind:multiplier={campaignMultiplier}
+          result={gearFarmResult} busy={gearFarmBusy} {t} />
+      {/if}
     </div>
   </div>
+  {#if gear && mode === 'needed' && gearFarmResult}
+    <GearBlueprintUsage data={dataset.context.data} {metadata} result={gearFarmResult} {t} />
+  {/if}
+  {#if gear}
+    <details>
+      <summary>{t('ui-weapon-xp')}</summary>
+      <div class="table-scroll"><table class="weapon-table">
+        <thead><tr><th scope="col" aria-label={t('ui-weapon-xp')}></th><th scope="col">{t('label-owned')}</th><th scope="col">{t('label-totalneeded')}</th><th scope="col">{t('label-remainingneeded')}</th></tr></thead>
+        <tbody>{#each weapons.rows as row}
+          <tr><th scope="row"><img class="weapon-xp-icon" src={`/planner/icons/LevelPart/${row.type}_All.png`} alt={row.type} draggable="false" /></th>
+            <td>{formatAmount(row.owned)}</td><td>{formatAmount(row.required)}</td><td>{formatAmount(row.remaining)}</td></tr>
+        {/each}
+        </tbody>
+      </table></div>
+      <p class="note">{t('ui-weapon-xp-help')}</p>
+    </details>
+  {/if}
   {#if !gear && remainingSummaryTiles.length}
     <h3>{t('ui-group-currencies')}</h3>
     <div class="summary-tiles" role="group" aria-label={t('ui-group-currencies')}>
@@ -455,6 +782,15 @@
     </div>
   {/if}
   {#if panels.length === 0 && summaryTiles.length === 0 && extras.length === 0}<p>{t('ui-no-resource-rows')}</p>{/if}
+  {#if gearEnterDebugEnabled}
+    <aside class="gear-enter-debug" aria-label="Gear input event debug log">
+      <header>
+        <strong>Gear input events</strong>
+        <button type="button" onclick={() => gearEnterDebugEvents = []}>Clear</button>
+      </header>
+      <pre>{gearEnterDebugEvents.length ? gearEnterDebugEvents.join('\n') : 'Tap a gear input, press Enter, and inspect the event log.'}</pre>
+    </aside>
+  {/if}
 </PlannerDialog>
 
 {#if selectedResource}
@@ -462,9 +798,22 @@
 {/if}
 
 <style>
+  .gear-enter-debug {
+    position: fixed; z-index: 10000; inset: 4rem 0.5rem auto; display: flex; flex-direction: column;
+    width: min(36rem, calc(100vw - 1rem)); max-height: 34vh; margin-inline: auto;
+    overflow: hidden; border: 1px solid #7c5b7d; border-radius: 0.4rem;
+    background: var(--background); color: var(--text); box-shadow: 0 0.2rem 1rem #0008;
+  }
+  .gear-enter-debug header { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.3rem 0.5rem; }
+  .gear-enter-debug pre {
+    min-height: 2.5rem; max-height: 30vh; margin: 0; padding: 0.4rem 0.5rem; overflow: auto;
+    border-top: 1px solid #7c5b7d66; font: 0.68rem/1.3 monospace; white-space: pre-wrap; overflow-wrap: anywhere;
+    user-select: text; -webkit-user-select: text; touch-action: pan-y; -webkit-overflow-scrolling: touch;
+  }
   .controls { display: flex; flex-wrap: wrap; align-items: end; gap: 0.4rem 0.75rem; margin-bottom: 0.2rem; align-items: center; }
   .controls-summary { flex-wrap: nowrap !important; }
   .controls-summary.gear-controls-summary { flex: 1 1 36rem; flex-wrap: wrap !important; }
+  .gear-balance-summary-slot { display: contents; }
   .controls label[hidden] { display: none; }
   .display-modes { display: flex; flex-wrap: wrap; gap: 0.3rem; }
   .display-modes button { color: #252530; padding: 0.45rem 0.6rem; border: 2px solid transparent; }
@@ -491,7 +840,11 @@
   tbody th { text-align: left; font-size: 0.75rem; font-weight: normal; width: 22%; overflow-wrap: anywhere; }
   .gear .table-scroll { overflow-x: hidden; }
   .gear table { table-layout: fixed; max-width: var(--gear-table-max-width); margin-inline: auto; }
-  .gear tbody tr:nth-child(even) { background-color: #84848436; }
+  .gear:not(.show-universal) .gear-special-header,
+  .gear:not(.show-universal) .gear-special-cell { visibility: hidden; }
+  .gear:not(.show-universal) .gear-special-row { display: none; }
+  .gear tbody tr:nth-child(even) > th,
+  .gear tbody tr:nth-child(even) > td { background-color: #84848436; }
   .gear thead th:first-child, .gear tbody th { width: 40px; }
   .gear thead th:not(:first-child) { overflow-wrap: anywhere; line-height: 1.1; }
   .gear-transpose-button { display: grid; width: 1.5rem; height: 1.5rem; margin: auto; padding: 0.2rem; place-items: center; border: 0; border-radius: 0.25rem; background: transparent; color: inherit; cursor: pointer; }
@@ -501,9 +854,22 @@
   .gear-transposed-header { display: block; white-space: nowrap; text-align: center; }
   .gear-row-image { display: block; width: 2rem; height: 2rem; margin: auto; object-fit: contain; }
   .gear-header-image { display: none; width: 100%; height: 2.25rem; object-fit: contain; }
+  .gear-special-name { display: block; font-size: 0.58rem; line-height: 1; overflow-wrap: anywhere; }
   .gear tbody th { text-align: center; }
   .gear td { min-width: 0; padding: 0; }
   .gear td :global(.resource-cell) { min-width: 0; min-height: 0; aspect-ratio: 1; }
+  .gear-cell { position: relative; width: 100%; aspect-ratio: 1; }
+  .gear-cell :global(.resource-cell) { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .gear-use-indicator {
+    position: absolute; z-index: 3; display: flex; align-items: center; gap: 0.08rem;
+    max-width: calc(100% - 0.12rem); padding: 0.04rem 0.08rem; border: 1px solid #7c5b7d66;
+    border-radius: 0.2rem; background: color-mix(in srgb, var(--background) 82%, transparent);
+    color: var(--text); font: 700 0.65rem/1 sans-serif; font-variant-numeric: tabular-nums;
+    white-space: nowrap; pointer-events: none;
+  }
+  .gear-use-indicator img { display: block; flex: 0 0 1.05rem; width: 1.05rem; height: 1.05rem; object-fit: contain; }
+  .gear-use-indicator.top-right { top: 0.04rem; right: 0.04rem; }
+  .gear-use-indicator.bottom-left { bottom: 0.04rem; left: 0.04rem; }
   .matrices:not(.gear) .table-scroll { overflow: hidden; }
   .matrices:not(.gear) table { width: max-content; table-layout: auto; }
   .school-matrices table, .artifact-pair table { max-width: var(--matrix-max-width); margin-inline: auto; }
@@ -540,6 +906,11 @@
   .error { color: var(--error); }
   @media (max-width: 800px) {
     .gear td :global(.amount) { font-size: 0.9rem; }
+    .gear-use-indicator { gap: 0.04rem; padding: 0.02rem 0.04rem; font-size: 0.42rem; }
+    .gear-use-indicator img { flex-basis: 0.48rem; width: 0.48rem; height: 0.48rem; }
+    .gear:not(.show-universal) .gear-special-header,
+    .gear:not(.show-universal) .gear-special-cell { display: none; }
+    .gear-general-header, .gear-special-name { visibility: hidden; }
     .matrices:not(.gear) td :global(.amount) { font-size: 0.9rem; }
     .gear-header-name { display: none; }
     .gear-header-image { display: block; }
@@ -601,6 +972,11 @@
       align-items: start;
       gap: 0 1rem;
     }
+    :global(dialog:has(.inventory-sections.gear-layout)) {
+      width: min(var(--dialog-width), calc(100vw - 1rem));
+      height: 88dvh; box-sizing: border-box; inset-block: 0; margin-block: auto;
+    }
+    .gear-balance-summary-slot { display: block; box-sizing: border-box; flex: 0 0 180px; width: 180px; min-height: 44px; }
     .gear-layout > .matrices { grid-area: gear; }
     .gear-layout > .inventory-side { grid-area: side; display: flex; flex-direction: column; gap: 0.5rem; }
     .gear-layout .xp-book-groups { flex-direction: column; margin-bottom: 0; }

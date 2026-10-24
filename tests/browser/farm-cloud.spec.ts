@@ -4,7 +4,10 @@ import type { BrowserContext, Page, Route } from '@playwright/test';
 import { metadata } from '../../.generated-content/planner';
 import { decodePlannerDataset } from '../../src/lib/services/planner-data';
 import { createCharacter } from '../../src/lib/domain/planner/defaults';
-import { createLegacyContext, readJson, readSource } from '../unit/legacy-harness';
+import { readJson, readSource } from '../unit/legacy-harness';
+import { aggregateResources } from '../../src/lib/domain/planner/aggregates';
+import { farmedGeneralConversions, optimiseGearFarm, type FarmServer, type GearSolver } from '../../src/lib/domain/planner/gear-farm';
+import type { Resources } from '../../src/lib/domain/resources/types';
 
 const misc = readJson('planner', 'json', 'misc_data.json');
 const students = readJson('planner', 'json', 'skillinfo', 'en.json');
@@ -18,6 +21,15 @@ function saved() {
     owned_materials: {}, groups: { Retained: [] }, events_data: { event: { target: 42 } },
     language: 'EN', site_version: '1.4.23', futureField: { keep: true }
   };
+}
+function expectedGear(owned: Resources = {}, server: FarmServer = 'Global', multiplier = 1) {
+  const source = saved();
+  const totals = aggregateResources(dataset, source.characters, source.disabled_characters, owned, metadata.maxLevel);
+  const needed = Object.fromEntries<number>(metadata.equipment.flatMap((key) => (totals.needed[key] ?? 0) > 0 ? [[key, totals.needed[key]]] : []));
+  const context = createContext({ self: {} });
+  runInContext(readSource('planner', 'packages', 'javascript-lp-solver', 'solver.js'), context);
+  const solver: GearSolver = { Solve(model) { context.model = model; return runInContext('self.solver.Solve(model)', context); } };
+  return optimiseGearFarm({ data: dataset.context.data, needed, owned, server, multiplier, caps: metadata.worldCaps }, solver);
 }
 async function open(page: Page, account = false) {
   await page.addInitScript(({ source, credentials, account }) => {
@@ -56,7 +68,7 @@ async function api(context: BrowserContext, handler: (route: Route) => Promise<v
   });
 }
 
-test('gear recommendations use a real worker and match legacy AP/run rounding', async ({ page }) => {
+test('gear recommendations use a real worker with the shared blueprint allocation', async ({ page }) => {
   await open(page);
   await page.evaluate(() => {
     const OriginalWorker = window.Worker;
@@ -71,25 +83,45 @@ test('gear recommendations use a real worker and match legacy AP/run rounding', 
       }
     };
   });
-  await page.getByRole('button', { name: 'Gear', exact: true }).click();
-  await page.getByText('Farming recommendations', { exact: true }).click();
+  await page.getByRole('button', { name: /^Gear\b/ }).click();
+  await expect(page.getByRole('heading', { name: /^Farming recommendations\b/ })).toBeVisible();
   await expect(page.locator('[data-farm-energy]')).toBeVisible();
-  const reference = createLegacyContext(['config.js', 'common.js', 'pageLogic.js'], {
-    charlist: students, data: saved(), fixture: { misc }
-  });
-  runInContext(readSource('tests', 'fixtures', 'resource-calculations.legacy.js'), reference);
-  runInContext(readSource('tests', 'fixtures', 'resource-aggregates.legacy.js'), reference);
-  runInContext(readSource('tests', 'fixtures', 'gear-farming.legacy.js'), reference);
-  runInContext(readSource('planner', 'packages', 'javascript-lp-solver', 'solver.js'), reference);
-  runInContext(`misc_data = fixture.misc; disabledChars = []; data.server = 'Global';
-    for (const character of data.characters) calculateCharResources(character, false);
-    updateAggregateCount(); SolveGearFarm();`, reference);
-  const expected = runInContext('OptimalStageRuns', reference);
+  const expected = expectedGear();
   const actual = await page.locator('[data-farm-stage]').evaluateAll((rows) => rows.map((row) => ({
     stage: row.getAttribute('data-farm-stage'), runs: Number.parseInt(row.querySelector('[data-farm-runs]')!.textContent!.replaceAll(',', ''))
   })));
-  expect(actual).toEqual(expected);
-  await expect(page.locator('[data-farm-energy]')).toContainText(String(runInContext('document.getElementById("gear-farm-energy").innerText', reference)));
+  expect(actual).toEqual(expected.runs);
+  await expect(page.locator('[data-farm-energy]')).toContainText(expected.energy.toLocaleString('en-US'));
+  const conversions = farmedGeneralConversions(expected, dataset.context.data);
+  expect(conversions.length).toBeGreaterThan(0);
+  await expect(page.getByRole('region', { name: 'Farmed General Blueprint use', exact: true })).toBeVisible();
+  const generalTypes = [...new Set(conversions.map((conversion) => conversion.general))];
+  await expect(page.locator('[data-farm-conversion-type]')).toHaveCount(generalTypes.length);
+  for (const general of generalTypes) {
+    const group = page.locator(`[data-farm-conversion-type="${general.slice(2)}"]`);
+    const amount = conversions.filter((conversion) => conversion.general === general)
+      .reduce((sum, conversion) => sum + conversion.farmed + conversion.owned, 0);
+    await expect(group.locator('[data-farm-general-used]')).toHaveText(amount.toLocaleString('en-US'));
+    await expect(group.locator('img').first()).toHaveAttribute('src', `/planner/icons/Gear/${general}.png`);
+  }
+  await expect(page.locator('[data-farm-conversion]')).toHaveCount(conversions.length);
+  for (const conversion of conversions) {
+    const row = page.locator(`[data-farm-conversion="${conversion.gear}"]`);
+    await expect(row.locator('[data-farm-converted-blueprints]')).toHaveText(conversion.blueprints.toLocaleString('en-US'));
+    await expect(row.locator('img')).toHaveAttribute('src', metadata.images[conversion.gear]);
+  }
+  const originalViewport = page.viewportSize()!;
+  for (const viewport of [{ width: 1440, height: 1000 }, { width: 375, height: 812 }]) {
+    await page.setViewportSize(viewport);
+    const usage = await page.getByRole('region', { name: 'Farmed General Blueprint use', exact: true }).boundingBox();
+    const inventory = await page.locator('.inventory-sections.gear-layout').boundingBox();
+    expect(usage).not.toBeNull();
+    expect(inventory).not.toBeNull();
+    expect(Math.abs(usage!.x - inventory!.x)).toBeLessThanOrEqual(1);
+    expect(Math.abs(usage!.width - inventory!.width)).toBeLessThanOrEqual(1);
+    expect(usage!.y).toBeGreaterThanOrEqual(inventory!.y + inventory!.height);
+  }
+  await page.setViewportSize(originalViewport);
   expect(await page.locator('html').getAttribute('data-farm-workers')).toBe('1');
   expect(await page.locator('html').getAttribute('data-farm-terminated')).toBe('1');
   expect(await page.evaluate(() => 'solver' in window)).toBe(false);
@@ -100,8 +132,7 @@ test('gear recommendations use a real worker and match legacy AP/run rounding', 
   await expect.poll(() => page.locator('html').getAttribute('data-farm-workers')).toBe('3');
   await expect(page.locator('[data-farm-energy]')).toBeVisible();
   await page.getByRole('button', { name: 'Close Gear', exact: true }).click();
-  await page.getByRole('button', { name: 'Gear', exact: true }).click();
-  await page.getByText('Farming recommendations', { exact: true }).click();
+  await page.getByRole('button', { name: /^Gear\b/ }).click();
   await expect(page.getByRole('combobox', { name: 'Normal mission campaign', exact: true })).toHaveValue('3');
   await expect(page.locator('[data-farm-energy]')).toBeVisible();
 });
@@ -109,13 +140,49 @@ test('gear recommendations use a real worker and match legacy AP/run rounding', 
 test('gear worker failures are visible and retry does not fall back to blocking calculations', async ({ page, context }) => {
   await context.route('**/js/shared/gear-farm-worker.js', (route) => route.abort());
   await open(page);
-  await page.getByRole('button', { name: 'Gear', exact: true }).click();
-  await page.getByText('Farming recommendations', { exact: true }).click();
+  await page.getByRole('button', { name: /^Gear\b/ }).click();
   await expect(page.getByRole('dialog').getByRole('alert')).toContainText('Worker');
   expect(await page.evaluate(() => 'solver' in window)).toBe(false);
   await context.unroute('**/js/shared/gear-farm-worker.js');
   await page.getByRole('dialog').getByRole('button', { name: 'Retry', exact: true }).click();
   await expect(page.locator('[data-farm-energy]')).toBeVisible();
+});
+
+test('gear stock edits recalculate the same allocation displayed by the table in both orientations', async ({ page }) => {
+  await open(page);
+  await page.getByRole('button', { name: /^Gear\b/ }).click();
+  await expect(page.locator('.matrices.gear')).toHaveAttribute('aria-busy', 'false');
+  await page.getByRole('group', { name: 'Display', exact: true }).getByRole('button', { name: /^Owned\b/ }).click();
+  await page.locator('input[data-resource-key="G_Hat"]').fill('200');
+  await page.locator('input[data-resource-key="Choice_T2"]').fill('100');
+  await page.locator('input[data-resource-key="Choice_T2"]').blur();
+  await page.getByRole('group', { name: 'Display', exact: true }).getByRole('button', { name: /^Remaining needed\b/i }).click();
+  await expect(page.locator('.matrices.gear')).toHaveAttribute('aria-busy', 'false');
+  const expected = expectedGear({ G_Hat: 200, Choice_T2: 100 });
+  await expect(page.locator('[data-farm-energy]')).toContainText(expected.energy.toLocaleString('en-US'));
+  for (let orientation = 0; orientation < 2; orientation++) {
+    const actual = await page.locator('.matrices.gear table').first().evaluate((table) => {
+      const remaining: Record<string, number> = {};
+      const general: Record<string, number> = {};
+      const choice: Record<string, number> = {};
+      table.querySelectorAll<HTMLElement>('[data-resource]').forEach((cell) => {
+        const key = cell.dataset.resource!;
+        remaining[key] = Number(cell.querySelector('.amount')!.textContent!.replaceAll(',', ''));
+        const parent = cell.closest('td')!;
+        for (const [kind, result] of [['general', general], ['choice', choice]] as const) {
+          const indicator = parent.querySelector(`.gear-use-indicator.${kind}`);
+          if (indicator) result[key] = Number(indicator.textContent!.replaceAll(',', '').trim());
+        }
+      });
+      return { remaining, general, choice };
+    });
+    for (const [key, amount] of Object.entries(expected.allocation.remainingByGear)) expect(actual.remaining[key]).toBe(amount);
+    expect(actual.general).toEqual(expected.allocation.generalUsedByGear);
+    expect(actual.choice).toEqual(expected.allocation.choiceUsedByGear);
+    if (orientation === 0) await page.getByRole('button', { name: 'Transpose gear table', exact: true }).click();
+  }
+  await page.getByRole('group', { name: 'Display', exact: true }).getByRole('button', { name: /^Leftover\b/ }).click();
+  await expect(page.locator('.matrices.gear [data-resource="G_Hat"] .amount')).toHaveText(String(expected.allocation.specialLeftover.G_Hat));
 });
 
 test('registration uses the existing API and uploads byte-identical level-nine compression', async ({ page, context }) => {

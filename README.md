@@ -320,15 +320,32 @@ Unreadable saves are surfaced rather than overwritten.
 
 ### Gear farming
 
-The Gear modal's Remaining Needed view includes **Farming recommendations**.
-Opening it runs the original bundled LP solver in a dedicated worker. Server and
-1x/2x/3x campaign controls preserve the legacy rates (including CN old rates),
-world limits, upward run rounding and 10-AP-per-run calculation. World caps are
-generated from the legacy planner source. Server selection uses the existing
-`server` save field; the campaign multiplier remains a session setting.
+The Gear modal's Remaining Needed view includes an always-visible
+**Farming recommendations** section.
+Opening the Gear modal runs the bundled LP solver in a dedicated worker. The
+model jointly allocates owned Choice boxes and General Blueprints alongside
+ordinary and General stage drops. General pools are shared by equipment type;
+conversions consume the tier costs in `universal_bp_cost`. The table uses the
+same result for its owned-blueprint usage indicators, remaining needs and
+unused blueprint stocks. Expected future drops do not reduce the table's
+current remaining amounts.
+Below the gear table and recommended stages, a full-width breakdown groups
+conversions by equipment type, with the General Blueprint total above the
+resulting tier icons and counts.
+Totals include any partial owned stock combined with those drops.
+
+Server and 1x/2x/3x campaign controls use the configured rates (including CN old
+rates) and world caps. Recommended runs are rounded up at 10 AP each, checked
+against whole blueprint conversions, and repaired if rounding leaves a shortage.
+Redundant runs are removed while preserving coverage. These remain expected-drop
+estimates rather than guaranteed random-drop outcomes. World caps are generated
+from the legacy planner source. Server selection uses the existing `server`
+save field; the campaign multiplier remains a session setting.
 
 Pending calculations are cancelled when inputs change or the modal closes, and
-completed results are invalidated when their inputs change.
+completed results are invalidated when their inputs change, including edits to
+owned General/Choice stock. Changing display modes does not start a separate
+calculation or change the allocation.
 Unavailable equipment is explicitly listed rather than treated as farmable.
 The worker has no blocking main-thread fallback. Leftover blueprint XP uses the
 same legacy blueprint values.
