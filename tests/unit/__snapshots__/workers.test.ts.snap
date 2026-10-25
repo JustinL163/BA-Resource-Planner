@@ -1,0 +1,174 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`legacy simulation worker baseline > cardGachaWorker.js handles no affordable pulls 1`] = `
+[
+  {
+    "Artifact": [
+      0,
+      0,
+      0,
+    ],
+    "Credit": [
+      0,
+      0,
+      0,
+    ],
+    "Eligma": [
+      0,
+      0,
+      0,
+    ],
+  },
+]
+`;
+
+exports[`legacy simulation worker baseline > omikujiGachaWorker.js handles no affordable pulls 1`] = `
+[
+  {
+    "Eleph": [
+      0,
+      0,
+      0,
+    ],
+  },
+]
+`;
+
+exports[`legacy simulation worker baseline > pins card rewards with a controlled random sequence 1`] = `
+[
+  {
+    "Artifact": [
+      1,
+      2,
+      0,
+      3,
+      2,
+      2,
+      0,
+      3,
+      4,
+      4,
+      4,
+      3,
+    ],
+    "Credit": [
+      307,
+      292,
+      661,
+      296,
+      372,
+      513,
+      166,
+      178,
+      182,
+      182,
+      323,
+      555,
+    ],
+    "Eligma": [
+      4,
+      4,
+      12,
+      4,
+      6,
+      10,
+      2,
+      2,
+      2,
+      2,
+      6,
+      10,
+    ],
+  },
+]
+`;
+
+exports[`legacy simulation worker baseline > pins dice movement, tickets and lap rewards 1`] = `
+[
+  {
+    "Artifact": [
+      5,
+      3,
+      5,
+      9,
+      7,
+      3,
+      5,
+      5,
+      7,
+      5,
+      7,
+      3,
+    ],
+    "Credit": [
+      320,
+      321,
+      243,
+      193,
+      231,
+      330,
+      290,
+      242,
+      321,
+      243,
+      193,
+      352,
+    ],
+  },
+]
+`;
+
+exports[`legacy simulation worker baseline > pins omikuji rewards and escalating pull probabilities 1`] = `
+[
+  {
+    "Artifact": [
+      5,
+      5,
+      7,
+      10,
+      6,
+      4,
+      3,
+      5,
+      5,
+      7,
+      4,
+      4,
+    ],
+    "Eleph": [
+      37,
+      29,
+      47,
+      42,
+      38,
+      36,
+      47,
+      33,
+      45,
+      31,
+      44,
+      44,
+    ],
+  },
+]
+`;
+
+exports[`legacy simulation worker baseline > preserves reusable dice-worker messages and explicit shutdown 1`] = `
+[
+  [
+    {
+      "Artifact": [
+        3,
+        5,
+        3,
+      ],
+      "Credit": [
+        181,
+        102,
+        240,
+      ],
+    },
+    0,
+  ],
+]
+`;

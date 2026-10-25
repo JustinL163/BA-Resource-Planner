@@ -1,5 +1,5 @@
 let student_info;
-let studentSearchKeys;
+let studentSearchIndex;
 let charlist;
 
 let borrowMode = false;
@@ -30,6 +30,7 @@ $.getJSON('json/student_info.json?2').done(function (json) {
 
 $.getJSON('json/skillinfo/en.json?2').done(function (json) {
     charlist = json;
+    LoadStudentInfo();
 });
 
 function Loaded() {
@@ -80,21 +81,8 @@ function Loaded() {
 }
 
 function LoadStudentInfo() {
-
-    studentSearchMapping = {};
-    studentSearchKeys = [];
-
-    let studentIds = Object.keys(student_info);
-
-    for (let i = 0; i < studentIds.length; i++) {
-
-        let student = student_info[studentIds[i]];
-
-        for (let ii = 0; ii < student["EN"].length; ii++) {
-            studentSearchMapping[student["EN"][ii].toLowerCase()] = studentIds[i];
-            studentSearchKeys.push(student["EN"][ii].toLowerCase());
-        }
-    }
+    if (!charlist || !student_info) return;
+    studentSearchIndex = BAStudentSearch.createStudentSearchIndex(charlist, {}, student_info);
 }
 
 function handleKeydown(e, keyPressed) {
@@ -297,59 +285,12 @@ function CreateStudentSearch() {
 }
 
 function SearchStudent(searchString, maxMatches) {
-
-    if (!maxMatches) {
-        maxMatches = 5;
+    if (!studentSearchIndex) {
+        basicAlert("Character search data is still loading.");
+        return [];
     }
-
-    let comparisons = [];
-
-    for (let i = 0; i < studentSearchKeys.length; i++) {
-        if (borrowMode || !usedStudents.includes(studentSearchMapping[studentSearchKeys[i]])) {
-            comparisons.push({ "Name": studentSearchKeys[i], "Similarity": stringSimilarity(searchString, studentSearchKeys[i], 2) });
-        }
-    }
-
-    comparisons.sort(function (a, b) { return parseFloat(b.Similarity) - parseFloat(a.Similarity); })
-
-    let bestMatches = [];
-
-    for (let i = 0; i < comparisons.length; i++) {
-
-        if (searchString.length >= 4) {
-            if (comparisons[i].Similarity <= 0.1 || !comparisons[i].Name.includes(searchString)) {
-                continue;
-            }
-        }
-        else {
-            if (comparisons[i].Similarity <= 0.1 || comparisons[i].Name.substring(0, searchString.length) != searchString) {
-                continue;
-            }
-        }
-
-        let studentId = studentSearchMapping[comparisons[i].Name];
-        if (!bestMatches.includes(studentId)) {
-            bestMatches.push(studentId);
-        }
-
-        if (bestMatches.length >= maxMatches) {
-            break;
-        }
-    }
-
-    for (let i = 0; i < comparisons.length; i++) {
-
-        let studentId = studentSearchMapping[comparisons[i].Name];
-        if (!bestMatches.includes(studentId)) {
-            bestMatches.push(studentId);
-        }
-
-        if (bestMatches.length >= maxMatches) {
-            break;
-        }
-    }
-
-    return bestMatches;
+    const allowed = borrowMode ? undefined : new Set(Object.keys(charlist).filter(id => !usedStudents.includes(id)));
+    return BAStudentSearch.searchStudents(studentSearchIndex, searchString, allowed, maxMatches || 5);
 }
 
 function UpdateStudentSearch() {
@@ -366,7 +307,7 @@ function UpdateStudentSearch() {
 
         let el = document.getElementById("student-searched-" + i);
 
-        if (bestMatches.length >= i) {
+        if (i < bestMatches.length) {
             el.src = "icons/Portrait/Icon_" + bestMatches[i] + ".webp";
             el.setAttribute("character-id", bestMatches[i]);
         }
@@ -378,34 +319,7 @@ function UpdateStudentSearch() {
 }
 
 // https://stackoverflow.com/a/62216738
-function stringSimilarity(str1, str2, gramSize) {
-    function getNGrams(s, len) {
-        s = ' '.repeat(len - 1) + s.toLowerCase() + ' '.repeat(len - 1);
-        let v = new Array(s.length - len + 1);
-        for (let i = 0; i < v.length; i++) {
-            v[i] = s.slice(i, i + len);
-        }
-        return v;
-    }
 
-    if (!str1?.length || !str2?.length) { return 0.0; }
-
-    let s1 = str1.length < str2.length ? str1 : str2;
-    let s2 = str1.length < str2.length ? str2 : str1;
-
-    let pairs1 = getNGrams(s1, gramSize);
-    let pairs2 = getNGrams(s2, gramSize);
-    let set = new Set(pairs1);
-
-    let total = pairs2.length;
-    let hits = 0;
-    for (let item of pairs2) {
-        if (set.delete(item)) {
-            hits++;
-        }
-    }
-    return hits / total;
-}
 
 function SearchSelection(id) {
 

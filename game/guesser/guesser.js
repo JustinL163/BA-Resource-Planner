@@ -507,7 +507,7 @@
                     let halo = haloOrder[i];
 
                     if (gameContent == "Halos") {
-                        preloadImage.src = "halo/" + halo.id + ".webp";
+                        preloadImage.src = "/planner/icons/Halo/" + halo.id + ".webp";
                     }
                     else if (gameContent == "Weapons") {
                         preloadImage.src = "../planner/icons/UE/weapon_icon_" + halo.weapon + ".webp";
@@ -663,7 +663,7 @@
         document.getElementById("guess-picture").style.filter = "";
 
         if (gameContent == "Halos") {
-            document.getElementById("guess-picture").src = "halo/" + halo.id + ".webp";
+            document.getElementById("guess-picture").src = "/planner/icons/Halo/" + halo.id + ".webp";
         }
         else if (gameContent == "Weapons") {
             document.getElementById("guess-picture").src = "../planner/icons/UE/weapon_icon_" + halo.weapon + ".webp";

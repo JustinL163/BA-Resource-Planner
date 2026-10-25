@@ -143,6 +143,10 @@ const matLookup = new TwoWayMap({
     3101: "BD_2_Wildhunt",
     3102: "BD_3_Wildhunt",
     3103: "BD_4_Wildhunt",
+    3120: "BD_1_Odyssey",
+    3121: "BD_2_Odyssey",
+    3122: "BD_3_Odyssey",
+    3123: "BD_4_Odyssey",
 
     4000: "TN_1_Hyakkiyako",
     4001: "TN_2_Hyakkiyako",
@@ -188,6 +192,10 @@ const matLookup = new TwoWayMap({
     4101: "TN_2_Wildhunt",
     4102: "TN_3_Wildhunt",
     4103: "TN_4_Wildhunt",
+    4120: "TN_1_Odyssey",
+    4121: "TN_2_Odyssey",
+    4122: "TN_3_Odyssey",
+    4123: "TN_4_Odyssey",
 
     5000: "Wavecat_Pillow",
     5001: "Peroro_Wheel",
@@ -254,7 +262,7 @@ const propertyColours = {
     "Striker": "#cc1a2587", "Special": "#006aff87",
     "Abydos": "#9ce4fc66", "Gehenna": "#ec7d7966", "Millennium": "#9ebdfa66", "Trinity": "#fcd19c66", "Hyakkiyako": "#f0a8c466",
     "Arius": "#dbdad85e", "Shanhaijing": "#b4feca66", "RedWinter": "#d98c9e66", "Valkyrie": "#a1a9e166", "Highlander": "#9fff8561",
-    "WildHunt": "#4f307659",
+    "WildHunt": "#4f307659", "Odyssey": "#34467294",
 }
 
 const exportDataVersion = 2;

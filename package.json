@@ -1,0 +1,38 @@
+{
+  "name": "ba-resource-planner",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "scripts": {
+    "prepare:site": "svelte-kit sync && node scripts/prepare-site.mjs",
+    "prepare:metadata": "node scripts/prepare-planner-metadata.mjs",
+    "dev": "npm run prepare:site && vite",
+    "build": "npm run prepare:site && vite build",
+    "preview": "node scripts/serve-static.mjs",
+    "check": "npm run prepare:site && svelte-check --tsconfig ./tsconfig.json",
+    "test": "npm run prepare:metadata && vitest run",
+    "test:browser": "playwright test",
+    "test:dev": "playwright test --config=playwright.dev.config.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@sveltejs/adapter-static": "^3.0.10",
+    "@sveltejs/kit": "^2.37.0",
+    "@sveltejs/vite-plugin-svelte": "^6.1.0",
+    "@types/node": "^22.18.0",
+    "@types/sortablejs": "^1.15.9",
+    "parse5": "^7.3.0",
+    "sharp": "^0.35.5",
+    "svelte": "^5.38.0",
+    "svelte-check": "^4.3.0",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.0",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "sortablejs": "^1.15.7"
+  }
+}

@@ -60,6 +60,8 @@ let diceGachaProcessed = false;
 let cardGachaProcessing = false;
 let omikujiGachaProcessing = false;
 let diceGachaProcessing = false;
+const simulationJobs = new Map();
+window.addEventListener('pagehide', CancelEventSimulations);
 
 let midEvent = false;
 let resets_left = 0;
@@ -318,10 +320,6 @@ function InitTippies() {
 
 function LoadEvent(eventId) {
 
-    if (cardGachaProcessing || omikujiGachaProcessing) {
-        return;
-    }
-
     if (!current_event) {
         document.getElementById("info-select-event").style.display = "none";
     }
@@ -332,6 +330,7 @@ function LoadEvent(eventId) {
         return;
     }
 
+    CancelEventSimulations();
     document.getElementById('event-list-button-label').innerText = "Event List - " + event_config.events[eventId].display_name;
 
     eventLoading = true;
@@ -392,6 +391,8 @@ function LoadEvent(eventId) {
         event_data.currency_needed = {};
         event_data.cafe_rank = cafeDefault;
     }
+
+    events_data[current_event] = event_data;
 
     if (current_event === "new-year-68-rerun") {
         currencyNeededPre["Lucky_Bag"] = 14400;
@@ -745,49 +746,25 @@ function ToggleBonusChar(id) {
     RefreshDropsDisplay();
 }
 
+function EventCoreCalculation(calculate) {
+    try {
+        return calculate();
+    }
+    catch (error) {
+        console.error("Event calculation failed.", error);
+        Swal.fire({
+            icon: "error",
+            title: GetLanguageString("ui-event-calculation-failed"),
+            text: error instanceof Error ? error.message : String(error)
+        });
+        throw error;
+    }
+}
+
 function CalculateBonuses() {
-
-    if (current_event == "aha-conquest") {
-        currencyBonuses = { "Computation_Circuit": 1.2, "Engine_Parts": 1.2, "Chocolate_Burger": 1.2 };
-        return;
-    }
-    else if (current_event == "momoyodou-beach-house") {
-        currencyBonuses = { "Momoyodou_Glitter_Coin": 1.2, "Turban_Shell": 1.2, "Summer_Ninjutsu_Instructions_Scroll": 1.2, "Local_Currency": 1.2 }
-        return;
-    }
-
-    currencyBonuses = {};
-
-    let currencies = event_config.events[current_event].currencies;
-    let currencyNames = Object.keys(currencies);
-
-    for (let i = 0; i < currencyNames.length; i++) {
-
-        let strikersUsed = 0, specialsUsed = 0;
-        let currencyBonus = 0;
-
-        let bonus_units = currencies[currencyNames[i]].bonus_units;
-        for (let ii = 0; ii < bonus_units.length; ii++) {
-
-            if (!enabledBonusUnits.includes(bonus_units[ii].id)) {
-                continue;
-            }
-
-            let type = GetOldTypeFromSquadType(charlist[bonus_units[ii].id].SquadType);
-
-            if (type == "Striker" && strikersUsed < 4) {
-                strikersUsed++;
-                currencyBonus += bonus_units[ii].bonus;
-            }
-            if (type == "Special" && specialsUsed < 2) {
-                specialsUsed++;
-                currencyBonus += bonus_units[ii].bonus;
-            }
-        }
-
-        currencyBonuses[currencyNames[i]] = currencyBonus;
-
-    }
+    currencyBonuses = EventCoreCalculation(() => BAEventEngine.calculateEventBonuses(
+        current_event, event_config.events[current_event], enabledBonusUnits, charlist
+    ));
 }
 
 function UpdateBonuses() {
@@ -965,57 +942,17 @@ async function EnergySourceClicked(source) {
 }
 
 function CalculateEnergyAvailable() {
+    const budget = EventCoreCalculation(() => BAEventEngine.calculateEventEnergy(
+        current_event, event_config.events[current_event], event_data, event_misc.cafe_energy,
+        midEvent, initialClearCost, Date.now(), cafeDefault
+    ));
+    const {
+        natural: energy_natural, daily: energy_dailytask, club: energy_club,
+        pyro: energy_pyrorefresh, pvp: energy_pvprefresh, cafe: energy_cafe, pack: energy_energypack
+    } = budget.sources;
 
-    let energyByDay = [];
-    let energy_natural = 0, energy_dailytask = 0, energy_club = 0, energy_weeklytask = 0, energy_aronalogin = 0,
-        energy_pyrorefresh = 0, energy_pvprefresh = 0, energy_cafe = 0, energy_energypack = 0;
-
-    let eventObject = event_config.events[current_event];
-
-    let daysPassed = 0;
-    if (midEvent) {
-        daysPassed = Math.floor((Date.now() / 1000 - eventObject.reset_time) / 86400) + 1;
-    }
-
-    let resets = daysPassed;
-
-    for (let i = eventObject.reset_time + (daysPassed * 86400); i < eventObject.end_time; i += 86400) {
-
-        let dayLength = 24;
-
-        let natural = 0, cafe = 0, dailytask = 0, club = 0, pyrorefresh = 0, pvprefresh = 0,
-            energypack = 0, weeklytask = 0, aronalogin = 0;
-
-        let carryover = 0;
-
-        if (resets == 0) {
-            dayLength = (((eventObject.reset_time + 86400) - eventObject.start_time) / 3600) - eventObject.maint_hours;
-            if (!midEvent) {
-                carryover = event_data.energy_carryover ?? 0;
-            }
-        }
-        else if (i + 86400 > eventObject.end_time) {
-            dayLength = (eventObject.end_time - eventObject.reset_time - (86400 * resets)) / 3600;
-        }
-
-        energy_natural += natural = (10 * dayLength);
-        energy_cafe += cafe = Math.floor(event_misc.cafe_energy[event_data.cafe_rank ?? cafeDefault] * dayLength)
-        energy_dailytask += dailytask = 150;
-        energy_club += club = 10;
-        energy_pyrorefresh += pyrorefresh = 120 * (event_data.pyro_refreshes ?? 0);
-        energy_pvprefresh += pvprefresh = 90 * (event_data.pvp_refreshes ?? 0);
-
-        if (event_data.energy_pack) {
-            energy_energypack += energypack = 150;
-        }
-
-        energyByDay[resets] = natural + cafe + dailytask + club + pyrorefresh + pvprefresh + energypack + carryover;
-
-        resets++;
-    }
-
-    resets_left = Math.max(resets - daysPassed, 0);
-    resets_total = resets;
+    resets_left = budget.resetsLeft;
+    resets_total = budget.resetsTotal;
 
     document.getElementById('energy-natural-total').innerText = energy_natural;
     document.getElementById('energy-dailytask-total').innerText = energy_dailytask;
@@ -1045,17 +982,8 @@ function CalculateEnergyAvailable() {
     }
     document.getElementById("energy-energypack-total").innerText = energy_energypack;
 
-    energyAvailable = (energyByDay.reduce((t, c) => t + c) + 500 + 150)
-
-    document.getElementById("energy-total").innerText = energyAvailable;
-
-    // TEMP
-    if (current_event == "momoyodou-beach-house" && !midEvent) {
-        energyAvailable = Math.max(energyAvailable - 900 - initialClearCost, 0);
-    }
-    else {
-        energyAvailable = Math.max(energyAvailable - 100 - initialClearCost, 0);
-    }
+    document.getElementById("energy-total").innerText = budget.total;
+    energyAvailable = budget.available;
 
     /////
     document.getElementById('energy-weeklytask-total').innerText = 500;
@@ -1744,34 +1672,9 @@ function CalculateItemPurchases() {
 }
 
 function CalculateInitalClear() {
-
-    initialClearRewards = {};
-    initialClearCost = 0;
-
-    let stages = event_config.events[current_event].stages;
-
-    for (let i = 0; i < stages.length; i++) {
-
-        if (stages[i].initial) {
-
-            let rewards = Object.keys(stages[i].initial);
-
-            rewards.forEach((item) => {
-
-                if (!initialClearRewards[item]) {
-                    initialClearRewards[item] = 0;
-                }
-
-                initialClearRewards[item] += stages[i].initial[item];
-                if (stages[i].drops && stages[i].drops[item]) {
-                    initialClearRewards[item] += stages[i].drops[item];
-                }
-            })
-        }
-
-        initialClearCost += stages[i].cost;
-    }
-
+    const result = EventCoreCalculation(() => BAEventEngine.calculateInitialClear(event_config.events[current_event]));
+    initialClearRewards = result.rewards;
+    initialClearCost = result.cost;
 }
 
 function CalculateNeededFinal() {
@@ -2136,86 +2039,24 @@ function CreateRunsDiv(stage) {
 }
 
 function GetStagesLinearModelVariables() {
+    return EventCoreCalculation(() => BAEventEngine.buildStageVariables(
+        event_config.events[current_event], currencyBonuses, [stageGroup1, stageGroup2, stageGroup3]
+    ));
+}
 
-    let currencies = event_config.events[current_event].currencies;
-    let currencyNames = Object.keys(currencies);
-    let stages = event_config.events[current_event].stages;
-
-    let modelVariables = {};
-
-    for (let i = 0; i < stages.length; i++) {
-
-        let stage = stages[i];
-
-        if (stage.type == "Quest") {
-
-            modelVariables[stage.number] = {};
-
-            if (!stageGroup1 && stage.group == 1) {
-                continue;
-            }
-            else if (!stageGroup2 && stage.group == 2) {
-                continue;
-            }
-            else if (!stageGroup3 && stage.group == 3) {
-                continue;
-            }
-
-            Object.assign(modelVariables[stage.number], stage.drops);
-
-            let drops = Object.keys(stage.drops);
-
-            drops.forEach((drop) => {
-
-                if (currencyNames.includes(drop)) {
-
-                    modelVariables[stage.number][drop] = Math.ceil((stage.drops[drop] + (stage.drops[drop] * (currencyBonuses[drop] ?? 0))).toFixed(5));
-                }
-            })
-
-            modelVariables[stages[i].number].Energy_Cost = stages[i].cost;
-        }
-    }
-
-    return modelVariables;
+function GetEventModelInputs() {
+    return {
+        eventId: current_event, bonuses: currencyBonuses, needed: currencyNeeded,
+        energyAvailable, pointTarget: event_point_target,
+        enabledGroups: [stageGroup1, stageGroup2, stageGroup3],
+        upgradeBases: document.getElementById("upgrade-bases").checked
+    };
 }
 
 function GetStagesLinearModel(optimise, opType, energyConstrained) {
-
-    let model = {};
-    model.optimize = optimise;
-    if (opType) {
-        model.opType = opType;
-    }
-    model.variables = GetStagesLinearModelVariables();
-    model.constraints = {};
-
-    let currencyNames = Object.keys(currencyNeeded);
-
-    let basesChecked = document.getElementById("upgrade-bases").checked;
-
-    currencyNames.forEach((name) => {
-        if (optimise != name && event_config.events[current_event]?.currencies[name]?.source == "StageDrop") {
-            // TEMP
-            if (current_event == "momoyodou-beach-house" && basesChecked) {
-                let tempCurrency = { "Momoyodou_Glitter_Coin": 4200, "Turban_Shell": 4200, "Summer_Ninjutsu_Instructions_Scroll": 4110 };
-                model.constraints[name] = { "min": (currencyNeeded[name] + tempCurrency[name]) };
-            }
-            else {
-                model.constraints[name] = { "min": currencyNeeded[name] };
-            }
-        }
-    })
-
-    if (energyConstrained) {
-        model.constraints["Energy_Cost"] = { "max": energyAvailable };
-    }
-
-    if (event_point_target && optimise != "Event_Point") {
-        model.constraints["Event_Point"] = { "min": Math.max(event_point_target, currencyNeeded["Event_Point"] ?? 0) };
-    }
-
-    return model;
+    return EventCoreCalculation(() => BAEventEngine.buildStageModel(
+        event_config.events[current_event], GetEventModelInputs(), optimise, opType, energyConstrained
+    ));
 }
 
 function SetOptimise(optimisation) {
@@ -2282,35 +2123,7 @@ function SetOptimise(optimisation) {
 }
 
 function GetMatDropOptions() {
-
-    let currencies = event_config.events[current_event].currencies;
-    let currencyNames = Object.keys(currencies);
-    let stages = event_config.events[current_event].stages;
-
-    let matDrops = [];
-
-    for (let i = 0; i < stages.length; i++) {
-
-        let stage = stages[i];
-
-        if (stage.type == "Quest") {
-
-            let drops = Object.keys(stage.drops);
-
-            drops.forEach((drop) => {
-
-                if (!currencyNames.includes(drop) && !matDrops.includes(drop)) {
-
-                    matDrops.push(drop);
-                }
-            })
-        }
-    }
-
-    matDrops.sort();
-
-    return matDrops;
-
+    return EventCoreCalculation(() => BAEventEngine.materialDropOptions(event_config.events[current_event]));
 }
 
 function GenerateMaterialSelections() {
@@ -2401,19 +2214,9 @@ function ToggleTargetMat(divId) {
 }
 
 function GetStagesMaterialsTargetModel() {
-
-    let materials = Object.keys(targetedMaterials);
-    let optimise = {};
-
-    materials.forEach((mat) => {
-
-        if (targetedMaterials[mat]) {
-
-            optimise[mat] = "max"
-        }
-    });
-
-    return GetStagesLinearModel(optimise, "", true);
+    return EventCoreCalculation(() => BAEventEngine.buildMaterialTargetModel(
+        event_config.events[current_event], GetEventModelInputs(), targetedMaterials
+    ));
 }
 
 function RefreshDropsDisplay() {
@@ -5263,51 +5066,18 @@ function SimulateCardGacha() {
         return;
     }
 
-    cardGachaSimResults = {};
-    completedWorkers = [];
-
-    let card_drop_event = current_event + "";
-
-    // startsTime = new Date();
-    const worker1 = new Worker("js/cardGachaWorker.js");
-    const worker2 = new Worker("js/cardGachaWorker.js");
-    const worker3 = new Worker("js/cardGachaWorker.js");
-    const worker4 = new Worker("js/cardGachaWorker.js");
-
-    worker1.onmessage = (e) => {
-        completedWorkers.push(1);
-        CombineObjectArrays(e.data, cardGachaSimResults);
-        ProcessSimResults(card_drop_event);
-    }
-    worker2.onmessage = (e) => {
-        completedWorkers.push(2);
-        CombineObjectArrays(e.data, cardGachaSimResults);
-        ProcessSimResults(card_drop_event);
-    }
-    worker3.onmessage = (e) => {
-        completedWorkers.push(3);
-        CombineObjectArrays(e.data, cardGachaSimResults);
-        ProcessSimResults(card_drop_event);
-    }
-    worker4.onmessage = (e) => {
-        completedWorkers.push(4);
-        CombineObjectArrays(e.data, cardGachaSimResults);
-        ProcessSimResults(card_drop_event);
-    }
-
-    let cardDrops = event_config.events[current_event].card_drops;
-
-    worker1.postMessage([cardDrops, cardGachaChances, 3000, 100000, cardPullCurrencyOwned]);
-    worker2.postMessage([cardDrops, cardGachaChances, 3000, 100000, cardPullCurrencyOwned]);
-    worker3.postMessage([cardDrops, cardGachaChances, 3000, 100000, cardPullCurrencyOwned]);
-    worker4.postMessage([cardDrops, cardGachaChances, 3000, 100000, cardPullCurrencyOwned]);
+    RunEventSimulation('card', {
+        kind: 'card',
+        rewards: event_config.events[current_event].card_drops,
+        chances: cardGachaChances,
+        currencyOwned: cardPullCurrencyOwned
+    }, (results, eventName) => {
+        cardGachaSimResults = results;
+        ProcessSimResults(eventName);
+    });
 }
 
 function ProcessSimResults(eventName) {
-
-    if (completedWorkers.length != 4) {
-        return;
-    }
 
     if (eventName != current_event) {
         cardGachaSimResults = {};
@@ -5348,16 +5118,55 @@ function ProcessSimResults(eventName) {
     Save(5);
 }
 
-function CombineObjectArrays(source, target) {
+function SetSimulationProcessing(kind, processing) {
+    if (kind === 'card') cardGachaProcessing = processing;
+    else if (kind === 'omikuji') omikujiGachaProcessing = processing;
+    else diceGachaProcessing = processing;
+}
 
-    let sourceKeys = Object.keys(source);
+function GetSimulationCurrency(kind) {
+    if (kind === 'card') return cardPullCurrencyOwned ?? 0;
+    if (kind === 'omikuji') return omikujiPullCurrencyOwned ?? 0;
+    return diceRollCurrencyOwned ?? 0;
+}
 
-    for (i = 0; i < sourceKeys.length; i++) {
-        if (!target[sourceKeys[i]]) {
-            target[sourceKeys[i]] = source[sourceKeys[i]];
+function ClearSimulationButton(kind) {
+    const id = { card: 'gacha-sim-button', omikuji: 'omikuji-sim-button', dice: 'dice-sim-button' }[kind];
+    document.getElementById(id)?.classList.remove('active');
+}
+
+function CancelEventSimulations() {
+    for (const [kind, controller] of simulationJobs) {
+        controller.abort();
+        SetSimulationProcessing(kind, false);
+        ClearSimulationButton(kind);
+    }
+    simulationJobs.clear();
+}
+
+async function RunEventSimulation(kind, request, receiveResults) {
+    simulationJobs.get(kind)?.abort();
+    const controller = new AbortController();
+    simulationJobs.set(kind, controller);
+    SetSimulationProcessing(kind, true);
+    const eventName = current_event;
+    try {
+        const results = await BAEventSimulations.run(request, { signal: controller.signal });
+        if (simulationJobs.get(kind) !== controller || current_event !== eventName) return;
+        if (Number(GetSimulationCurrency(kind)) !== Number(request.currencyOwned)) {
+            Swal.fire({ icon: 'info', text: GetLanguageString('text-simulationinputschanged'), color: alertColour });
+            return;
         }
-        else {
-            target[sourceKeys[i]] = target[sourceKeys[i]].concat(source[sourceKeys[i]]);
+        receiveResults(results, eventName);
+    } catch (error) {
+        if (error?.name === 'AbortError') return;
+        console.error('Event simulation failed.', error);
+        Swal.fire({ icon: 'error', title: GetLanguageString('error-simulationfailed'), color: alertColour });
+    } finally {
+        if (simulationJobs.get(kind) === controller) {
+            simulationJobs.delete(kind);
+            SetSimulationProcessing(kind, false);
+            ClearSimulationButton(kind);
         }
     }
 }
@@ -5451,53 +5260,21 @@ function SimulateOmikujiGacha() {
         return;
     }
 
-    omikujiGachaSimResults = {};
-    completedWorkers = [];
-
-    let omikuji_drop_event = current_event + "";
-
-    // startsTime = new Date();
-    const worker1 = new Worker("js/omikujiGachaWorker.js?1");
-    const worker2 = new Worker("js/omikujiGachaWorker.js?1");
-    const worker3 = new Worker("js/omikujiGachaWorker.js?1");
-    const worker4 = new Worker("js/omikujiGachaWorker.js?1");
-
-    worker1.onmessage = (e) => {
-        completedWorkers.push(1);
-        CombineObjectArrays(e.data, omikujiGachaSimResults);
-        ProcessOmikujiResults(omikuji_drop_event);
-    }
-    worker2.onmessage = (e) => {
-        completedWorkers.push(2);
-        CombineObjectArrays(e.data, omikujiGachaSimResults);
-        ProcessOmikujiResults(omikuji_drop_event);
-    }
-    worker3.onmessage = (e) => {
-        completedWorkers.push(3);
-        CombineObjectArrays(e.data, omikujiGachaSimResults);
-        ProcessOmikujiResults(omikuji_drop_event);
-    }
-    worker4.onmessage = (e) => {
-        completedWorkers.push(4);
-        CombineObjectArrays(e.data, omikujiGachaSimResults);
-        ProcessOmikujiResults(omikuji_drop_event);
-    }
-
-    omikujiPullCurrencyOwned = event_data.omikuji_pull_currency_owned;
-    let pullCost = event_config.events[current_event].omikuji.pull_cost;
-    let targetGrade = event_config.events[current_event].omikuji.TargetGrade;
-
-    worker1.postMessage([omikujiRewards, omikujiChances, 3000, 100000, omikujiPullCurrencyOwned, pullCost, targetGrade]);
-    worker2.postMessage([omikujiRewards, omikujiChances, 3000, 100000, omikujiPullCurrencyOwned, pullCost, targetGrade]);
-    worker3.postMessage([omikujiRewards, omikujiChances, 3000, 100000, omikujiPullCurrencyOwned, pullCost, targetGrade]);
-    worker4.postMessage([omikujiRewards, omikujiChances, 3000, 100000, omikujiPullCurrencyOwned, pullCost, targetGrade]);
+    omikujiPullCurrencyOwned = event_data.omikuji_pull_currency_owned ?? 0;
+    RunEventSimulation('omikuji', {
+        kind: 'omikuji',
+        rewards: omikujiRewards,
+        chances: omikujiChances,
+        currencyOwned: omikujiPullCurrencyOwned,
+        pullCost: event_config.events[current_event].omikuji.pull_cost,
+        targetGrade: event_config.events[current_event].omikuji.TargetGrade
+    }, (results, eventName) => {
+        omikujiGachaSimResults = results;
+        ProcessOmikujiResults(eventName);
+    });
 }
 
 function ProcessOmikujiResults(eventName) {
-
-    if (completedWorkers.length != 4) {
-        return;
-    }
 
     if (eventName != current_event) {
         omikujiGachaSimResults = {};
@@ -5544,50 +5321,19 @@ function SimulateDiceGacha() {
         return;
     }
 
-    diceGachaSimResults = {};
-    completedWorkers = [];
-
-    let dice_drop_event = current_event + "";
-
-    const worker1 = new Worker("js/diceGachaWorker.js?2");
-    const worker2 = new Worker("js/diceGachaWorker.js?2");
-    const worker3 = new Worker("js/diceGachaWorker.js?2");
-    const worker4 = new Worker("js/diceGachaWorker.js?2");
-
-    worker1.onmessage = (e) => {
-        completedWorkers.push(1);
-        CombineObjectArrays(e.data, diceGachaSimResults);
-        ProcessDiceResults(dice_drop_event);
-    }
-    worker2.onmessage = (e) => {
-        completedWorkers.push(2);
-        CombineObjectArrays(e.data, diceGachaSimResults);
-        ProcessDiceResults(dice_drop_event);
-    }
-    worker3.onmessage = (e) => {
-        completedWorkers.push(3);
-        CombineObjectArrays(e.data, diceGachaSimResults);
-        ProcessDiceResults(dice_drop_event);
-    }
-    worker4.onmessage = (e) => {
-        completedWorkers.push(4);
-        CombineObjectArrays(e.data, diceGachaSimResults);
-        ProcessDiceResults(dice_drop_event);
-    }
-
-    let diceRace = event_config.events[current_event].dice_race;
-
-    worker1.postMessage([diceRace, [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []], 3000, 100000, diceRollCurrencyOwned, [1, 1, 1, 1, 1, 1]]);
-    worker2.postMessage([diceRace, [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []], 3000, 100000, diceRollCurrencyOwned, [1, 1, 1, 1, 1, 1]]);
-    worker3.postMessage([diceRace, [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []], 3000, 100000, diceRollCurrencyOwned, [1, 1, 1, 1, 1, 1]]);
-    worker4.postMessage([diceRace, [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []], 3000, 100000, diceRollCurrencyOwned, [1, 1, 1, 1, 1, 1]]);
+    RunEventSimulation('dice', {
+        kind: 'dice',
+        race: event_config.events[current_event].dice_race,
+        targets: Array.from({ length: 18 }, () => []),
+        currencyOwned: diceRollCurrencyOwned,
+        tickets: [1, 1, 1, 1, 1, 1]
+    }, (results, eventName) => {
+        diceGachaSimResults = results;
+        ProcessDiceResults(eventName);
+    });
 }
 let test;
 function ProcessDiceResults(eventName) {
-
-    if (completedWorkers.length != 4) {
-        return;
-    }
 
     if (eventName != current_event) {
         diceGachaSimResults = {};

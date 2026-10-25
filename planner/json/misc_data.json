@@ -663,6 +663,7 @@
         "20012": "RareEliminationRaidToken",
         "20015": "RareEliminationRaidToken",
         "10038": "ArenaCoin",
+        "10039": "ArenaCoin",
         "23001": "ArenaCoin",
         "20002": "ArenaCoin",
         "20003": "ArenaCoin",
@@ -671,6 +672,7 @@
         "10001": "JECoin",
         "10012": "JECoin",
         "10013": "JECoin",
+        "10040": "JECoin",
         "20010": "JECoin",
         "10021": "MasteryCertificate",
         "10022": "MasteryCertificate",
@@ -699,11 +701,17 @@
         "10118": "MasteryCertificate",
         "10123": "MasteryCertificate",
         "10124": "MasteryCertificate",
+        "10129": "MasteryCertificate",
+        "10133": "MasteryCertificate",
+        "10148": "MasteryCertificate",
         "20004": "MasteryCertificate",
         "20022": "MasteryCertificate",
         "20024": "MasteryCertificate",
         "20028": "MasteryCertificate",
         "20033": "MasteryCertificate",
+        "20051": "MasteryCertificate",
+        "20054": "MasteryCertificate",
+        "20060": "MasteryCertificate",
         "10033": {
             "currency": "MasteryCertificate",
             "amount": 5,
@@ -770,6 +778,18 @@
             "cost": 2400,
             "times": 2
         },
+        "10134": {
+            "currency": "MasteryCertificate",
+            "amount": 5,
+            "cost": 2400,
+            "times": 2
+        },
+        "10135": {
+            "currency": "MasteryCertificate",
+            "amount": 5,
+            "cost": 2400,
+            "times": 2
+        },
         "13004": {
             "currency": "MasteryCertificate",
             "amount": 5,
@@ -830,6 +850,30 @@
             "cost": 1800,
             "times": 6
         },
+        "16014": {
+            "currency": "MasteryCertificate",
+            "amount": 5,
+            "cost": 1800,
+            "times": 6
+        },
+        "16015": {
+            "currency": "MasteryCertificate",
+            "amount": 5,
+            "cost": 1800,
+            "times": 6
+        },
+        "16019": {
+            "currency": "MasteryCertificate",
+            "amount": 5,
+            "cost": 1800,
+            "times": 6
+        },
+        "16020": {
+            "currency": "MasteryCertificate",
+            "amount": 5,
+            "cost": 1800,
+            "times": 6
+        },
         "26006": {
             "currency": "MasteryCertificate",
             "amount": 5,
@@ -859,7 +903,41 @@
             "amount": 5,
             "cost": 1800,
             "times": 6
+        },
+        "26012": {
+            "currency": "MasteryCertificate",
+            "amount": 5,
+            "cost": 1800,
+            "times": 6
+        },
+        "26013": {
+            "currency": "MasteryCertificate",
+            "amount": 5,
+            "cost": 1800,
+            "times": 6
         }
+    },
+    "additional_shop_characters": {
+        "16005": ["BountyCoin"],
+        "16006": ["BountyCoin"],
+        "16007": ["BountyCoin"],
+        "16008": ["BountyCoin"],
+        "16009": ["BountyCoin"],
+        "16010": ["BountyCoin"],
+        "16011": ["BountyCoin"],
+        "16012": ["BountyCoin"],
+        "16013": ["BountyCoin"],
+        "16014": ["BountyCoin"],
+        "16015": ["BountyCoin"],
+        "16019": ["BountyCoin"],
+        "16020": ["BountyCoin"],
+        "26006": ["BountyCoin"],
+        "26007": ["BountyCoin"],
+        "26008": ["BountyCoin"],
+        "26009": ["BountyCoin"],
+        "26010": ["BountyCoin"],
+        "26012": ["BountyCoin"],
+        "26013": ["BountyCoin"]
     },
     "shop_eleph": {
         "RaidToken": {
@@ -896,6 +974,11 @@
             "amount": 5,
             "cost": 1800,
             "times": 2
+        },
+        "BountyCoin": {
+            "amount": 5,
+            "cost": 50,
+            "times": 16
         }
     },
     "unlock_cost": {
@@ -1364,6 +1447,14 @@
                     0.9,
                     0.9
                 ]
+            },
+            {
+                "Tier": "general",
+                "Rates": [
+                    1.0,
+                    0.75,
+                    0.75
+                ]
             }
         ],
         "5": [
@@ -1373,6 +1464,14 @@
                     1.2,
                     0.9,
                     0.9
+                ]
+            },
+            {
+                "Tier": "general",
+                "Rates": [
+                    1.0,
+                    0.75,
+                    0.75
                 ]
             }
         ],
@@ -1389,6 +1488,14 @@
                     0.75,
                     0.75
                 ]
+            },
+            {
+                "Tier": "general",
+                "Rates": [
+                    2.0,
+                    1.5,
+                    1.5
+                ]
             }
         ],
         "8": [
@@ -1403,6 +1510,14 @@
                     1.0,
                     0.75,
                     0.75
+                ]
+            },
+            {
+                "Tier": "general",
+                "Rates": [
+                    2.0,
+                    1.5,
+                    1.5
                 ]
             }
         ],
@@ -1427,6 +1542,14 @@
                     0.15,
                     0.15
                 ]
+            },
+            {
+                "Tier": "general",
+                "Rates": [
+                    3.0,
+                    2.25,
+                    2.25
+                ]
             }
         ],
         "11": [
@@ -1449,6 +1572,14 @@
                     0.2,
                     0.15,
                     0.15
+                ]
+            },
+            {
+                "Tier": "general",
+                "Rates": [
+                    3.0,
+                    2.25,
+                    2.25
                 ]
             }
         ],
@@ -1481,6 +1612,14 @@
                     0.075,
                     0.075
                 ]
+            },
+            {
+                "Tier": "general",
+                "Rates": [
+                    5.0,
+                    3.75,
+                    3.75
+                ]
             }
         ],
         "14": [
@@ -1511,6 +1650,14 @@
                     0.1,
                     0.075,
                     0.075
+                ]
+            },
+            {
+                "Tier": "general",
+                "Rates": [
+                    5.0,
+                    3.75,
+                    3.75
                 ]
             }
         ],
@@ -1543,6 +1690,14 @@
                     0.075,
                     0.075
                 ]
+            },
+            {
+                "Tier": "general",
+                "Rates": [
+                    7.0,
+                    5.25,
+                    5.25
+                ]
             }
         ],
         "17": [
@@ -1574,6 +1729,14 @@
                     0.075,
                     0.075
                 ]
+            },
+            {
+                "Tier": "general",
+                "Rates": [
+                    7.0,
+                    5.25,
+                    5.25
+                ]
             }
         ],
         "19": [
@@ -1599,6 +1762,14 @@
                     0.1,
                     0.075,
                     0.075
+                ]
+            },
+            {
+                "Tier": "general",
+                "Rates": [
+                    9.0,
+                    6.75,
+                    6.75
                 ]
             }
         ],
@@ -1626,6 +1797,14 @@
                     0.075,
                     0.075
                 ]
+            },
+            {
+                "Tier": "general",
+                "Rates": [
+                    9.0,
+                    6.75,
+                    6.75
+                ]
             }
         ],
         "22": [
@@ -1651,6 +1830,14 @@
                     0.1,
                     0.075,
                     0.075
+                ]
+            },
+            {
+                "Tier": "general",
+                "Rates": [
+                    11.0,
+                    8.25,
+                    8.25
                 ]
             }
         ],
@@ -1678,6 +1865,14 @@
                     0.075,
                     0.075
                 ]
+            },
+            {
+                "Tier": "general",
+                "Rates": [
+                    11.0,
+                    8.25,
+                    8.25
+                ]
             }
         ],
         "25": [
@@ -1703,6 +1898,14 @@
                     0.1,
                     0.075,
                     0.075
+                ]
+            },
+            {
+                "Tier": "general",
+                "Rates": [
+                    13.0,
+                    9.75,
+                    9.75
                 ]
             }
         ],
@@ -1730,6 +1933,14 @@
                     0.075,
                     0.075
                 ]
+            },
+            {
+                "Tier": "general",
+                "Rates": [
+                    13.0,
+                    9.75,
+                    9.75
+                ]
             }
         ],
         "28": [
@@ -1755,6 +1966,14 @@
                     0.1,
                     0.075,
                     0.075
+                ]
+            },
+            {
+                "Tier": "general",
+                "Rates": [
+                    15.0,
+                    11.25,
+                    11.25
                 ]
             }
         ],
@@ -1782,6 +2001,14 @@
                     0.075,
                     0.075
                 ]
+            },
+            {
+                "Tier": "general",
+                "Rates": [
+                    15.0,
+                    11.25,
+                    11.25
+                ]
             }
         ]
     },
@@ -1795,5 +2022,16 @@
         "T8": 150,
         "T9": 175,
         "T10": 200
+    },
+    "universal_bp_cost": {
+        "T2": 2,
+        "T3": 3,
+        "T4": 5,
+        "T5": 7,
+        "T6": 10,
+        "T7": 15,
+        "T8": 20,
+        "T9": 30,
+        "T10": 50
     }
 }
