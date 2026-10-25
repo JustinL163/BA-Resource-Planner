@@ -1,9 +1,9 @@
-import { checkLocation, emptyTeam, groupFingerprint, readTeams, reorderGroup, swapSlots, validateGroupName, validateTeams, type SlotLocation, type Team } from '../domain/planner/groups';
+import { checkLocation, emptyTeam, groupFingerprint, isTenStudentGroup, readTeams, reorderGroup, swapSlots, validateGroupName, validateTeams, type SlotLocation, type Team } from '../domain/planner/groups';
 import type { PlannerDataset, PlannerSave } from '../domain/planner/types';
 
 export type PlannerCommit = (change: (data: PlannerSave, dataset: PlannerDataset) => void) => boolean;
 export type GroupCommand =
-  | { type: 'create'; name: string }
+  | { type: 'create'; name: string; tenStudentTeams: boolean }
   | { type: 'rename'; name: string; newName: string; expected: string }
   | { type: 'delete'; name: string; expected: string }
   | { type: 'order'; name: string; position: number; expectedOrder: string };
@@ -14,11 +14,16 @@ export function createGroupActions(commit: PlannerCommit) {
       if (!Object.hasOwn(data.groups, name) || groupFingerprint(data.groups[name]) !== expected) {
         throw new Error('This group changed in another window. Refresh the group before saving.');
       }
-      const teams = readTeams(data.groups[name]);
-      if (!teams.length) teams.push(emptyTeam());
+      const storedGroup = data.groups[name];
+      const tenStudent = isTenStudentGroup(storedGroup);
+      const teams = readTeams(storedGroup);
+      if (!teams.length) teams.push(emptyTeam(tenStudent ? 10 : 6));
       change(teams);
       validateTeams(teams, dataset.students);
-      data.groups = { ...data.groups, [name]: teams.length ? teams : null };
+      const storedTeams = teams.length ? teams : null;
+      data.groups = { ...data.groups, [name]: tenStudent
+        ? { ...(storedGroup as Record<string, unknown>), teams: storedTeams }
+        : storedTeams };
     });
   }
   return {
@@ -26,7 +31,9 @@ export function createGroupActions(commit: PlannerCommit) {
       return commit((data) => {
         if (command.type === 'create') {
           validateGroupName(data.groups, command.name);
-          data.groups = { ...data.groups, [command.name]: null };
+          data.groups = { ...data.groups, [command.name]: command.tenStudentTeams
+            ? { ten_student_teams: true, teams: null }
+            : null };
         } else if (command.type === 'order') {
           if (JSON.stringify(Object.keys(data.groups)) !== command.expectedOrder) {
             throw new Error('Group ordering changed in another window. Please retry.');
@@ -55,13 +62,13 @@ export function createGroupActions(commit: PlannerCommit) {
       return changeTeams(name, expected, (teams) => swapSlots(teams, from, to));
     },
     addTeam(name: string, expected: string) {
-      return changeTeams(name, expected, (teams) => { teams.push(emptyTeam()); });
+      return changeTeams(name, expected, (teams) => { teams.push(emptyTeam(teams[0]?.length === 10 ? 10 : 6)); });
     },
     addTeamAfter(name: string, expected: string, index: number) {
       return changeTeams(name, expected, (teams) => {
         checkLocation(teams, { team: index, slot: 0 });
         if (teams.length >= 50) throw new Error('A group can contain at most 50 teams.');
-        teams.splice(index + 1, 0, emptyTeam());
+        teams.splice(index + 1, 0, emptyTeam(teams[0]?.length === 10 ? 10 : 6));
       });
     },
     removeTeam(name: string, expected: string, index: number) {

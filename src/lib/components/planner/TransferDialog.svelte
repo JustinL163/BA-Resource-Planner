@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { onMount, tick } from 'svelte';
-  import { page } from '$app/state';
+  import { tick } from 'svelte';
   import PlannerDialog from './PlannerDialog.svelte';
   import CloudTransfer from './CloudTransfer.svelte';
   import type { CloudCredentials } from '$lib/services/cloud-credentials';
@@ -15,11 +14,6 @@
   let importing = $state(false);
   let localError = $state('');
   let cloudBusy = $state(false);
-  let showCloudTransfer = $state(false);
-
-  onMount(() => {
-    showCloudTransfer = page.url.searchParams.get('show-cloud-save') === '1';
-  });
 
   function download() {
     try {
@@ -57,9 +51,7 @@
 
 <PlannerDialog title={t('footer-transfer')} {close} {t} busy={cloudBusy || importing} width="640px">
   {#if localError || error}<p class="error" role="alert">{localError || error}</p>{/if}
-  {#if showCloudTransfer}
-    <CloudTransfer {ready} {canImport} {currentSource} {importCloud} bind:busy={cloudBusy} {t} />
-  {/if}
+  <CloudTransfer {ready} {canImport} {currentSource} {importCloud} bind:busy={cloudBusy} {t} />
   <fieldset disabled={cloudBusy || importing}>
   <h3>{t('ui-local-transfer')}</h3>
   <div class="local-transfer-actions">

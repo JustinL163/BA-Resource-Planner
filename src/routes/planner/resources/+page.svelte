@@ -565,6 +565,12 @@
     }
     if (activateLetterShortcut(event)) return;
 
+    if (event.key === 'Escape' && mainView === 'characters' && search && !editing && !adding && !dialog && !bulkOpen) {
+      event.preventDefault();
+      search = '';
+      return;
+    }
+
     if (isEditable) return;
     if ((event.ctrlKey || event.metaKey) && !event.altKey && key === 'a' && mainView === 'characters' &&
       !editing && !adding && !dialog && !bulkOpen) {

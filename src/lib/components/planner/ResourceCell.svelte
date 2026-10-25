@@ -41,7 +41,11 @@
       const padding = Number.parseFloat(style.paddingLeft) + Number.parseFloat(style.paddingRight);
       const gap = Number.parseFloat(style.columnGap) || Number.parseFloat(style.gap) || 0;
       const occupied = siblings.reduce((sum, child) => sum + child.getBoundingClientRect().width, 0) + gap * siblings.length;
-      const availableWidth = Math.max(0, (layout === 'name' ? node.clientWidth : container.clientWidth) - padding - occupied - 2);
+      const configuredRatio = Number.parseFloat(style.getPropertyValue('--overlay-number-fit-ratio'));
+      const fitRatio = layout === 'name' || !Number.isFinite(configuredRatio)
+        ? 1
+        : Math.min(1, Math.max(0, configuredRatio));
+      const availableWidth = Math.max(0, ((layout === 'name' ? node.clientWidth : container.clientWidth) - padding - occupied - 2) * fitRatio);
       const availableHeight = layout === 'name' ? Math.max(0, container.clientHeight * 0.4) : Number.POSITIVE_INFINITY;
       node.style.removeProperty('font-size');
       range.selectNodeContents(node);
@@ -128,11 +132,11 @@
 {/if}
 
 <style>
-  .resource-cell { position: relative; display: block; box-sizing: border-box; width: 100%; min-width: 52px; min-height: 54px; padding: 0; overflow: hidden; }
+  .resource-cell { --overlay-number-fit-ratio: 0.9; position: relative; display: block; box-sizing: border-box; width: 100%; min-width: 52px; min-height: 54px; padding: 0; overflow: hidden; }
   .resource-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; transition: opacity 120ms ease; }
   .resource-cell.zero .resource-image { opacity: 0.2; }
   .resource-cell.zero .amount { visibility: hidden; }
-  .amount { position: absolute; z-index: 1; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 100%; color: #17151a; font: 700 1.5rem/1.1 sans-serif; font-variant-numeric: tabular-nums; white-space: nowrap; text-align: center; text-shadow: -1px -1px 0 #fff, 0 -1px 0 #fff, 1px -1px 0 #fff, -1px 0 0 #fff, 1px 0 0 #fff, -1px 1px 0 #fff, 0 1px 0 #fff, 1px 1px 0 #fff; pointer-events: none; }
+  .amount { position: absolute; z-index: 1; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 100%; color: #17151a; font: 700 1.8rem/1.1 sans-serif; font-variant-numeric: tabular-nums; white-space: nowrap; text-align: center; text-shadow: -1px -1px 0 #fff, 0 -1px 0 #fff, 1px -1px 0 #fff, -1px 0 0 #fff, 1px 0 0 #fff, -1px 1px 0 #fff, 0 1px 0 #fff, 1px 1px 0 #fff; pointer-events: none; }
   .resource-name { position: absolute; z-index: 1; inset: 2px 2px auto; overflow: hidden; color: #17151a; font-size: 0.65rem; line-height: 1.05; text-align: center; text-overflow: ellipsis; white-space: nowrap; overflow-wrap: normal; text-shadow: -1px -1px 0 #fff, 0 -1px 0 #fff, 1px -1px 0 #fff, -1px 0 0 #fff, 1px 0 0 #fff, -1px 1px 0 #fff, 0 1px 0 #fff, 1px 1px 0 #fff; pointer-events: none; }
   .resource-input { position: absolute; z-index: 2; top: 50%; left: 50%; width: 82%; min-width: 40px; max-width: calc(100% - 4px); height: 52%; min-height: 1.5rem; box-sizing: border-box; padding: 0.1rem; transform: translate(-50%, -50%); border: 1px solid #5e5263; border-radius: 0.2rem; background: var(--surface); color: var(--text); text-align: center; font: 600 0.85rem/1 monospace; opacity: 0; }
   .resource-input[type="number"] { appearance: textfield; -moz-appearance: textfield; }

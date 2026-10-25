@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onDestroy, tick } from 'svelte';
-  import { isBorrowed, slotId, type SlotLocation, type Team } from '$lib/domain/planner/groups';
+  import { isBorrowed, slotId, strikerSlotCount, type SlotLocation, type Team } from '$lib/domain/planner/groups';
   import type { PlannerDataset, PlannerMetadata } from '$lib/domain/planner/types';
   import { createStudentSearchIndex } from '$lib/domain/planner/student-search';
   import { preferences } from '$lib/stores/preferences';
@@ -19,6 +19,7 @@
   let restoreFocus = true;
   let other = $derived(teams.flatMap((team, index) => team.filter((_slot, slot) => index !== location.team || slot !== location.slot)));
   let used = $derived(new Set(other.filter((slot) => !isBorrowed(slot)).map(slotId)));
+  let strikers = $derived(strikerSlotCount(teams[location.team] ?? []));
   let usedInTeam = $derived(new Set(teams[location.team]
     .filter((_slot, slot) => slot !== location.slot)
     .map(slotId)));
@@ -27,7 +28,7 @@
   let effectiveBorrow = $derived(borrowed && !hasOtherBorrow);
   let index = $derived(createStudentSearchIndex(dataset.students, names, aliases, $preferences.language));
   let allowed = $derived(new Set(Object.entries(dataset.students).filter(([id, info]) =>
-    info.SquadType === (location.slot < 4 ? 'Main' : 'Support') &&
+    info.SquadType === (location.slot < strikers ? 'Main' : 'Support') &&
     (effectiveBorrow || !used.has(id)) && !usedInTeam.has(id)
   ).map(([id]) => id)));
   $effect(() => { borrowed = isBorrowed(teams[location.team]?.[location.slot] ?? null); });
@@ -48,7 +49,7 @@
 <dialog open aria-modal="false" aria-label={t('ui-pick-team-character')} bind:this={panel}
   use:anchoredPicker={{ anchor, slots, dismiss }} class="team-picker" data-html2canvas-ignore>
   <header>
-    <span>{t('ui-team')} {location.team + 1} &middot; {location.slot < 4 ? 'Striker' : 'Special'} {(location.slot < 4 ? location.slot : location.slot - 4) + 1}</span>
+    <span>{t('ui-team')} {location.team + 1} &middot; {t(location.slot < strikers ? 'type-striker' : 'type-special')} {(location.slot < strikers ? location.slot : location.slot - strikers) + 1}</span>
     <div>
       <button aria-label={t('ui-remove')} onclick={() => { if (assign(null, false)) dismiss(); }}>{t('ui-remove')}</button>
       <button aria-label={`${t('ui-close')} ${t('ui-pick-team-character')}`} onclick={() => dismiss()}>&times;</button>

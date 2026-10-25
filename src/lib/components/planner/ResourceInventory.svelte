@@ -13,7 +13,7 @@
   import GearBlueprintUsage from './GearBlueprintUsage.svelte';
   import type { PlannerDataset } from '$lib/domain/planner/types';
   import { farmServer, type FarmServer, type GearFarmPlan } from '$lib/domain/planner/gear-farm';
-  import { recommendGear } from '$lib/services/gear-farm';
+import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/services/gear-farm';
   import ResourceUsersDialog, { type ResourceUserRow } from './ResourceUsersDialog.svelte';
 
   let { totals, metadata, dataset, savedServer, setServer, setOwned, gear, close, error, levelCap, setCap,
@@ -82,6 +82,13 @@
     const key = gearFarmKey;
     gearFarmRetry;
     if (!key) return;
+    const cachedPlan = getCachedGearFarmPlan(key);
+    if (cachedPlan) {
+      gearFarmCompleted = { key, plan: cachedPlan };
+      gearFarmFailure = null;
+      gearFarmBusy = false;
+      return;
+    }
     const input = untrack(() => ({
       data: dataset.context.data, needed: gearFarmNeeded, owned: gearFarmOwned,
       server: savedServer, multiplier: campaignMultiplier, caps: metadata.worldCaps
@@ -93,7 +100,11 @@
     try {
       const server = farmServer(input.server);
       void recommendGear(input.data, input.needed, input.owned, server, input.multiplier, input.caps, { signal: controller.signal })
-        .then((plan) => { if (!controller.signal.aborted) gearFarmCompleted = { key, plan }; })
+        .then((plan) => {
+          if (controller.signal.aborted) return;
+          cacheGearFarmPlan(key, plan);
+          gearFarmCompleted = { key, plan };
+        })
         .catch((problem) => {
           if (controller.signal.aborted) return;
           console.error('Gear farming failed.', problem);

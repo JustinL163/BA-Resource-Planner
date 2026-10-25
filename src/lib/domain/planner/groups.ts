@@ -3,9 +3,11 @@ import type { CharacterInfo, PlannerCharacter } from './types';
 import { formatInvestment } from './card-display';
 
 export type TeamSlot = string | ({ id: string } & Record<string, unknown>) | null;
-export type Team = [TeamSlot, TeamSlot, TeamSlot, TeamSlot, TeamSlot, TeamSlot];
+export type Team = TeamSlot[];
 export interface SlotLocation { team: number; slot: number }
-export const emptyTeam = (): Team => [null, null, null, null, null, null];
+export const emptyTeam = (slotCount: 6 | 10 = 6): Team => Array.from({ length: slotCount }, () => null);
+export const isTenStudentGroup = (value: unknown): boolean => isRecord(value) && value.ten_student_teams === true;
+export const strikerSlotCount = (team: Team): number => team.length === 10 ? 6 : 4;
 export const slotId = (slot: TeamSlot): string => slot === null ? '' : typeof slot === 'string' ? slot : slot.id;
 export const isBorrowed = (slot: TeamSlot): boolean => slot !== null && typeof slot === 'object';
 export const groupFingerprint = (value: unknown): string => JSON.stringify(value) ?? 'undefined';
@@ -22,11 +24,19 @@ export function teamHasDuplicateMembers(team: readonly TeamSlot[]): boolean {
 }
 
 export function readTeams(value: unknown): Team[] {
+  const tenStudent = isTenStudentGroup(value);
+  if (tenStudent) {
+    if (!isRecord(value) || !Object.hasOwn(value, 'teams')) {
+      throw new Error('This 10-student group has an unsupported format. Other groups and saved data have not been changed.');
+    }
+    value = value.teams;
+  }
   if (value === null) return [];
   if (!Array.isArray(value)) throw new Error('This group has an unsupported format. Other groups and saved data have not been changed.');
+  const slotCount = tenStudent ? 10 : 6;
   return value.map((entry: unknown) => {
-    if (!Array.isArray(entry) || entry.length > 6) throw new Error('A team must contain at most six slots.');
-    const team = emptyTeam();
+    if (!Array.isArray(entry) || entry.length > slotCount) throw new Error(`A team must contain at most ${slotCount} slots.`);
+    const team = emptyTeam(slotCount);
     for (let index = 0; index < entry.length; index++) {
       const slot: unknown = entry[index];
       if (slot === null) team[index] = null;
@@ -40,10 +50,15 @@ export function readTeams(value: unknown): Team[] {
 
 export function validateTeams(teams: Team[], students: Record<string, CharacterInfo>): void {
   if (teams.length > 50) throw new Error('A group can contain at most 50 teams.');
+  const slotCount = teams[0]?.length ?? 6;
+  if ((slotCount !== 6 && slotCount !== 10) || teams.some((team) => team.length !== slotCount)) {
+    throw new Error('All teams in a group must use the same supported slot format.');
+  }
   const members = new Set<string>();
   let borrowed = 0;
   for (const team of teams) {
     const teamMembers = new Set<string>();
+    const strikers = strikerSlotCount(team);
     for (let index = 0; index < team.length; index++) {
       const slot = team[index];
       if (slot === null) continue;
@@ -52,7 +67,7 @@ export function validateTeams(teams: Team[], students: Record<string, CharacterI
       teamMembers.add(id);
       const info = students[id];
       if (!info) throw new Error(`Student data is missing for team member ${id}.`);
-      if (info.SquadType !== (index < 4 ? 'Main' : 'Support')) throw new Error('Strikers and Specials must stay in their respective slots.');
+      if (info.SquadType !== (index < strikers ? 'Main' : 'Support')) throw new Error('Strikers and Specials must stay in their respective slots.');
       if (isBorrowed(slot)) borrowed++;
       else if (members.has(id)) throw new Error('A non-borrowed character can only appear once in a group.');
       else members.add(id);
@@ -72,17 +87,18 @@ export function memberIds(groups: Record<string, unknown>, selected: string, upT
 
 export function checkLocation(teams: Team[], location: SlotLocation): void {
   if (!Number.isInteger(location.team) || location.team < 0 || location.team >= teams.length ||
-      !Number.isInteger(location.slot) || location.slot < 0 || location.slot >= 6) {
+      !Number.isInteger(location.slot) || location.slot < 0 || location.slot >= (teams[location.team]?.length ?? 0)) {
     throw new Error('This team slot no longer exists. Reopen the picker.');
   }
 }
 
 export function nextEmptySlot(teams: Team[], from: SlotLocation): SlotLocation | null {
-  const count = teams.length * 6;
-  const start = from.team * 6 + from.slot;
+  const slotCount = teams[0]?.length ?? 6;
+  const count = teams.length * slotCount;
+  const start = from.team * slotCount + from.slot;
   for (let offset = 1; offset <= count; offset++) {
     const index = (start + offset) % count;
-    const team = Math.floor(index / 6), slot = index % 6;
+    const team = Math.floor(index / slotCount), slot = index % slotCount;
     if (teams[team][slot] === null) return { team, slot };
   }
   return null;
@@ -90,7 +106,9 @@ export function nextEmptySlot(teams: Team[], from: SlotLocation): SlotLocation |
 
 export function swapSlots(teams: Team[], from: SlotLocation, to: SlotLocation): void {
   checkLocation(teams, from); checkLocation(teams, to);
-  if ((from.slot < 4) !== (to.slot < 4)) throw new Error('Only slots with the same role can be swapped.');
+  if ((from.slot < strikerSlotCount(teams[from.team]!)) !== (to.slot < strikerSlotCount(teams[to.team]!))) {
+    throw new Error('Only slots with the same role can be swapped.');
+  }
   if (!canSwapSlots(teams, from, to)) {
     throw new Error('The same character cannot appear twice in one team, including as a borrowed copy.');
   }
@@ -99,7 +117,7 @@ export function swapSlots(teams: Team[], from: SlotLocation, to: SlotLocation): 
 
 export function canSwapSlots(teams: Team[], from: SlotLocation, to: SlotLocation): boolean {
   checkLocation(teams, from); checkLocation(teams, to);
-  if ((from.slot < 4) !== (to.slot < 4)) return false;
+  if ((from.slot < strikerSlotCount(teams[from.team]!)) !== (to.slot < strikerSlotCount(teams[to.team]!))) return false;
 
   const sourceTeam = teams[from.team].slice();
   const targetTeam = from.team === to.team ? sourceTeam : teams[to.team].slice();

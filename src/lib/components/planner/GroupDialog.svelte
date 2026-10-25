@@ -13,8 +13,9 @@
   let name = $state(untrack(() => action === 'rename' ? selected : ''));
   let position = $state(untrack(() => Object.keys(groups).indexOf(selected) + 1));
   let confirmed = $state(false);
+  let tenStudentTeams = $state(false);
   function submit() {
-    const command: GroupCommand = action === 'create' ? { type: action, name } :
+    const command: GroupCommand = action === 'create' ? { type: action, name, tenStudentTeams } :
       action === 'rename' ? { type: action, name: snapshot.name, newName: name, expected: snapshot.expected } :
       action === 'delete' ? { type: action, name: snapshot.name, expected: snapshot.expected } :
       { type: action, name: snapshot.name, position, expectedOrder: snapshot.order };
@@ -26,6 +27,9 @@
   <form onsubmit={(event) => { event.preventDefault(); submit(); }}>
     {#if action === 'create' || action === 'rename'}
       <label>{t('ui-group-name')}<input type="text" required maxlength="35" bind:value={name} /></label>
+      {#if action === 'create'}
+        <label class="ten-student-option"><input type="checkbox" bind:checked={tenStudentTeams} />{t('ui-ten-student-teams')}</label>
+      {/if}
     {:else if action === 'order'}
       <label>{t('ui-group-position')}<input use:sanitizeIntegerInput type="number" required min="1" max={Object.keys(groups).length} step="1" bind:value={position} /></label>
     {:else}
@@ -42,7 +46,8 @@
   form { max-width: 500px; margin: auto; }
   label { display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0; }
   input { padding: 0.5rem; }
-  .confirm { flex-direction: row; align-items: center; }
+  label.ten-student-option, .confirm { flex-direction: row; align-items: center; }
+  label.ten-student-option input { flex: none; padding: 0; }
   footer { display: flex; gap: 0.5rem; justify-content: flex-end; }
   .error { color: var(--error); }
 </style>

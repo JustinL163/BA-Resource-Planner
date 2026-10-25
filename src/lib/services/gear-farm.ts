@@ -1,7 +1,28 @@
-import { decodeGearFarmPlan, type FarmServer, type GearFarmData, type WorldCaps } from '../domain/planner/gear-farm';
+import { decodeGearFarmPlan, type FarmServer, type GearFarmData, type GearFarmPlan, type WorldCaps } from '../domain/planner/gear-farm';
 import type { Resources } from '../domain/resources/types';
 import { isRecord } from '../domain/planner/save';
 import { workerRequest, type WorkerRequestOptions } from './worker-request';
+
+const completedPlans = new Map<string, GearFarmPlan>();
+const maxCachedPlans = 8;
+
+export function getCachedGearFarmPlan(key: string) {
+  const plan = completedPlans.get(key);
+  if (plan) {
+    completedPlans.delete(key);
+    completedPlans.set(key, plan);
+  }
+  return plan ?? null;
+}
+
+export function cacheGearFarmPlan(key: string, plan: GearFarmPlan) {
+  completedPlans.delete(key);
+  completedPlans.set(key, plan);
+  if (completedPlans.size > maxCachedPlans) {
+    const oldestKey = completedPlans.keys().next().value;
+    if (oldestKey !== undefined) completedPlans.delete(oldestKey);
+  }
+}
 
 export function recommendGear(
   data: GearFarmData, needed: Resources, owned: Resources, server: FarmServer, multiplier: number, caps: WorldCaps,

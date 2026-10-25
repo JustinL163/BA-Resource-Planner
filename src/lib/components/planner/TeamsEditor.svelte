@@ -2,7 +2,7 @@
   import { tick, onDestroy, onMount } from 'svelte';
   import type { PlannerDataset, PlannerMetadata, PlannerSave } from '$lib/domain/planner/types';
   import type { createResourcePlanner } from '$lib/stores/resource-planner';
-  import { canSwapSlots, emptyTeam, groupFingerprint, groupText, isBorrowed, nextEmptySlot, readTeams, slotId, type SlotLocation } from '$lib/domain/planner/groups';
+  import { canSwapSlots, emptyTeam, groupFingerprint, groupText, isBorrowed, isTenStudentGroup, nextEmptySlot, readTeams, slotId, strikerSlotCount, type SlotLocation } from '$lib/domain/planner/groups';
   import { sortable, sortableTeams, type DragState } from './sortable';
   import CharacterPortrait from './CharacterPortrait.svelte';
   import TeamSlotPicker from './TeamSlotPicker.svelte';
@@ -48,12 +48,17 @@
   let view = $derived.by(() => {
     try {
       if (!selected || !Object.hasOwn(data.groups, selected)) return { teams: [], error: '' };
-      const teams = readTeams(data.groups[selected]);
-      return { teams: teams.length ? teams : [emptyTeam()], error: '' };
+      const group = data.groups[selected];
+      const teams = readTeams(group);
+      return { teams: teams.length ? teams : [emptyTeam(isTenStudentGroup(group) ? 10 : 6)], error: '' };
     } catch (problem) {
       return { teams: [], error: problem instanceof Error ? problem.message : t('ui-team-invalid') };
     }
   });
+  let tenStudentTeams = $derived(isTenStudentGroup(data.groups[selected]));
+  let roles = $derived(tenStudentTeams
+    ? [{ start: 0, end: 6, label: t('type-striker') }, { start: 6, end: 10, label: t('type-special') }]
+    : [{ start: 0, end: 4, label: t('type-striker') }, { start: 4, end: 6, label: t('type-special') }]);
   let expected = $derived(groupFingerprint(data.groups[selected]));
   let text = $derived(view.error ? '' : groupText(view.teams, data.characters, names, monospaced));
   let textColumns = $derived(Math.max(1, ...text.split('\n').map((line) => line.length)) + 2);
@@ -132,7 +137,8 @@
     if (!event.altKey || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
     event.preventDefault();
     const slot = at.slot + (event.key === 'ArrowRight' ? 1 : -1);
-    if (slot < 0 || slot >= 6 || (slot < 4) !== (at.slot < 4)) return;
+    const team = view.teams[at.team];
+    if (!team || slot < 0 || slot >= team.length || (slot < strikerSlotCount(team)) !== (at.slot < strikerSlotCount(team))) return;
     const destination = { ...at, slot };
     if (canSwapSlots(view.teams, at, destination) && actions.swapTeamSlots(selected, expected, at, destination)) {
       await tick();
@@ -235,8 +241,8 @@
                 onclick={() => removeTeam(teamIndex)}>{t(removing === teamIndex ? 'ui-confirm' : 'ui-remove')}</button>
             </span>
           </div>
-          <div class="roles">
-            {#each [{ start: 0, end: 4, label: 'Striker' }, { start: 4, end: 6, label: 'Special' }] as role}
+          <div class="roles" class:ten-student={tenStudentTeams}>
+            {#each roles as role}
               <div><span class="role-label">{role.label}</span><div class="slots">
                 {#each team.slice(role.start, role.end) as slot, local}
                   {@const index = local + role.start}
@@ -330,6 +336,9 @@
     .capture { --card-size: 80px; padding: 0.25rem; }
     .team { padding: 0.25rem; }
     .roles { gap: 0.25rem; }
+    .roles.ten-student { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+    .roles.ten-student > div { width: fit-content; }
+    .roles.ten-student .slots { display: grid; grid-template-columns: repeat(4, var(--card-size)); }
     .role-label { margin-bottom: 0.25rem; }
     .slots { gap: 0.3rem; }
     .slot, .team-drag-handle { touch-action: pan-y; }

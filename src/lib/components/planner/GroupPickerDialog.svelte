@@ -1,6 +1,6 @@
 <script lang="ts">
   import { tick } from 'svelte';
-  import { groupFingerprint } from '$lib/domain/planner/groups';
+  import { groupFingerprint, isTenStudentGroup } from '$lib/domain/planner/groups';
   import type { GroupCommand } from '$lib/services/planner-groups';
   import { sortableReorder, type DragState } from './sortable';
   import GroupDialog from './GroupDialog.svelte';
@@ -83,7 +83,10 @@
               </form>
             {:else}
               <button class="group-choice" aria-current={selected === name ? 'true' : undefined}
-                onclick={() => choose(name)}><span class="group-index">{index + 1}.</span><span class="group-name">{name}</span></button>
+                aria-label={isTenStudentGroup(groups[name]) ? `${name}, ${t('ui-ten-student-teams')}` : name}
+                onclick={() => choose(name)}><span class="group-index">{index + 1}.</span><span class="group-name">{name}</span>
+                {#if isTenStudentGroup(groups[name])}<span class="team-size-badge" title={t('ui-ten-student-teams')} aria-hidden="true">10</span>{/if}
+              </button>
             {/if}
             <div class="row-actions">
               <button class="icon-button" aria-label={`${t('ui-group-rename')} ${name}`} title={t('ui-group-rename')}
@@ -136,6 +139,7 @@
   .group-choice[aria-current="true"] { color: var(--text); font-weight: 700; }
   .group-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .group-index { flex: none; opacity: 0.65; font-variant-numeric: tabular-nums; }
+  .team-size-badge { flex: none; padding: 0.1rem 0.35rem; border: 1px solid #82dafb88; border-radius: 999px; background: #82dafb24; font-size: 0.7rem; line-height: 1.2; }
   .row-actions { display: flex; align-items: center; gap: 0.2rem; }
   .icon-button { display: grid; place-items: center; width: 2.15rem; height: 2.15rem; padding: 0.45rem; }
   .icon { display: block; width: 100%; height: 100%; background: currentColor; }
