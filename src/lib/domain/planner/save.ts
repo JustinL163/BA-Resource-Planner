@@ -14,9 +14,9 @@ function scalar(value: unknown): value is number | string {
 export interface PlannerSaveRepair {
   characterId: string;
   characterName: string;
-  field: typeof investmentKeys[number];
-  side: 'current' | 'target';
-  kind: 'blank-current-minimum' | 'target-from-current' | 'clamped';
+  field: typeof investmentKeys[number] | 'owned';
+  side: 'current' | 'target' | 'eleph';
+  kind: 'blank-current-minimum' | 'target-from-current' | 'clamped' | 'invalid-owned-eleph';
 }
 
 function investment(
@@ -60,13 +60,20 @@ function investment(
   return result;
 }
 
-function eleph(value: unknown, characterLabel: string): ElephState {
-  const context = `${characterLabel} eleph`;
+function eleph(value: unknown, characterId: string, characterName: string, repairs?: PlannerSaveRepair[]): ElephState {
+  const context = characterName + ' (ID ' + characterId + ') eleph';
   if (value !== undefined && !isRecord(value)) throw new Error(`${context} settings are not an object.`);
   const result = { ...defaultEleph(), ...value };
   for (const key of ['owned', 'cost', 'purchasable', 'farm_nodes'] as const) {
-    const item = value?.[key] === undefined ? result[key] : value[key];
-    if (!scalar(item) || Number(item) < 0) throw new Error(`${context} ${key} must be finite and non-negative.`);
+    let item = value?.[key] === undefined ? result[key] : value[key];
+    if (!scalar(item) || Number(item) < 0 || (key === 'owned' && !Number.isInteger(Number(item)))) {
+      if (key === 'owned') {
+        item = 0;
+        repairs?.push({ characterId, characterName, field: 'owned', side: 'eleph', kind: 'invalid-owned-eleph' });
+      } else {
+        throw new Error(context + ' ' + key + ' must be finite and non-negative.');
+      }
+    }
     result[key] = item;
   }
   for (const key of ['unlocked', 'node_refresh', 'use_eligma', 'use_shop'] as const) {
@@ -117,7 +124,7 @@ export function parsePlannerSave(
       ...value, id, name: characterName,
       current: currentInvestment,
       target: targetInvestment,
-      eleph: eleph(value.eleph, `${characterName} (ID ${id})`),
+      eleph: eleph(value.eleph, id, characterName, repairs),
       enabled: typeof value.enabled === 'boolean' ? value.enabled : true,
       hasBondGear: defaults.hasBondGear
     };
