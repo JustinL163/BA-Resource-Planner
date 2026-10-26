@@ -15,7 +15,8 @@ export interface PlannerSaveRepair {
   characterId: string;
   characterName: string;
   field: typeof investmentKeys[number];
-  side: 'target';
+  side: 'current' | 'target';
+  kind: 'blank-current-minimum' | 'target-from-current' | 'clamped';
 }
 
 function investment(
@@ -26,16 +27,33 @@ function investment(
   if (value !== undefined && !isRecord(value)) throw new Error(`${context} investments are not an object.`);
   const result = { ...defaults, ...value };
   for (const key of investmentKeys) {
+    const rule = metadata.fields.find((field) => field.key === key);
+    if (!rule) throw new Error(context + ' ' + key + ' has no investment metadata.');
     let item = value?.[key] === undefined ? defaults[key] : value[key];
     const isBlank = item === null || (typeof item === 'string' && item.trim() === '');
-    if (side === 'target' && fallback && value?.[key] !== undefined && isBlank) {
-      item = fallback[key];
-      repairs?.push({ characterId, characterName, field: key, side });
+    const wasProvided = value?.[key] !== undefined;
+    if (wasProvided && isBlank) {
+      if (side === 'target' && fallback) {
+        item = fallback[key];
+        repairs?.push({ characterId, characterName, field: key, side, kind: 'target-from-current' });
+      } else if (side === 'current') {
+        item = key === 'star' ? Math.max(rule.min, Number(defaults.star)) : rule.min;
+        repairs?.push({ characterId, characterName, field: key, side, kind: 'blank-current-minimum' });
+      }
     }
-    if (!scalar(item)) throw new Error(`${context} ${key} is not a finite number.`);
-    const rule = metadata.fields.find((field) => field.key === key);
-    if (!rule || !Number.isInteger(Number(item)) || Number(item) < rule.min || Number(item) > rule.max) {
-      throw new Error(`${context} ${key} must be an integer within the investment limits.`);
+    if (!scalar(item)) throw new Error(context + ' ' + key + ' is not a finite number.');
+    const minimum = Math.max(
+      rule.min,
+      key === 'star' ? Number(defaults.star) : rule.min,
+      side === 'target' && fallback ? Number(fallback[key]) : rule.min
+    );
+    const clamped = Math.min(rule.max, Math.max(minimum, Number(item)));
+    if (clamped !== Number(item)) {
+      item = clamped;
+      repairs?.push({ characterId, characterName, field: key, side, kind: 'clamped' });
+    }
+    if (!Number.isInteger(Number(item))) {
+      throw new Error(context + ' ' + key + ' must be an integer within the investment limits.');
     }
     result[key] = item;
   }
