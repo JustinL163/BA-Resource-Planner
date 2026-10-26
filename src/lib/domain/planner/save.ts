@@ -11,36 +11,53 @@ function scalar(value: unknown): value is number | string {
     String(value).trim() !== '' && Number.isFinite(Number(value));
 }
 
-function investment(value: unknown, defaults: FullInvestment, label: string, metadata: PlannerMetadata): FullInvestment {
-  if (value !== undefined && !isRecord(value)) throw new Error(`${label} investments are not an object.`);
+export interface PlannerSaveRepair {
+  characterId: string;
+  characterName: string;
+  field: typeof investmentKeys[number];
+  side: 'target';
+}
+
+function investment(
+  value: unknown, defaults: FullInvestment, characterId: string, characterName: string,
+  side: 'current' | 'target', metadata: PlannerMetadata, fallback?: FullInvestment, repairs?: PlannerSaveRepair[]
+): FullInvestment {
+  const context = `${characterName} (ID ${characterId}) ${side}`;
+  if (value !== undefined && !isRecord(value)) throw new Error(`${context} investments are not an object.`);
   const result = { ...defaults, ...value };
   for (const key of investmentKeys) {
-    const item = value?.[key] === undefined ? defaults[key] : value[key];
-    if (!scalar(item)) throw new Error(`${label} ${key} is not a finite number.`);
+    let item = value?.[key] === undefined ? defaults[key] : value[key];
+    const isBlank = item === null || (typeof item === 'string' && item.trim() === '');
+    if (side === 'target' && fallback && value?.[key] !== undefined && isBlank) {
+      item = fallback[key];
+      repairs?.push({ characterId, characterName, field: key, side });
+    }
+    if (!scalar(item)) throw new Error(`${context} ${key} is not a finite number.`);
     const rule = metadata.fields.find((field) => field.key === key);
     if (!rule || !Number.isInteger(Number(item)) || Number(item) < rule.min || Number(item) > rule.max) {
-      throw new Error(`${label} ${key} is outside the investment limits.`);
+      throw new Error(`${context} ${key} must be an integer within the investment limits.`);
     }
     result[key] = item;
   }
   return result;
 }
 
-function eleph(value: unknown): ElephState {
-  if (value !== undefined && !isRecord(value)) throw new Error('Eleph settings are not an object.');
+function eleph(value: unknown, characterLabel: string): ElephState {
+  const context = `${characterLabel} eleph`;
+  if (value !== undefined && !isRecord(value)) throw new Error(`${context} settings are not an object.`);
   const result = { ...defaultEleph(), ...value };
   for (const key of ['owned', 'cost', 'purchasable', 'farm_nodes'] as const) {
     const item = value?.[key] === undefined ? result[key] : value[key];
-    if (!scalar(item) || Number(item) < 0) throw new Error(`Eleph ${key} must be finite and non-negative.`);
+    if (!scalar(item) || Number(item) < 0) throw new Error(`${context} ${key} must be finite and non-negative.`);
     result[key] = item;
   }
   for (const key of ['unlocked', 'node_refresh', 'use_eligma', 'use_shop'] as const) {
     const item = value?.[key] === undefined ? result[key] : value[key];
-    if (typeof item !== 'boolean') throw new Error(`Eleph ${key} is not a boolean.`);
+    if (typeof item !== 'boolean') throw new Error(`${context} ${key} is not a boolean.`);
     result[key] = item;
   }
   if (value?.shop_currency !== undefined && typeof value.shop_currency !== 'string') {
-    throw new Error('Eleph shop currency is not a string.');
+    throw new Error(`${context} shop currency is not a string.`);
   }
   return result;
 }
@@ -54,7 +71,7 @@ function strings(value: unknown, label: string): string[] {
 
 export function parsePlannerSave(
   source: string | null, students: Record<string, CharacterInfo>, metadata: PlannerMetadata,
-  names: Record<string, string> = {}
+  names: Record<string, string> = {}, repairs: PlannerSaveRepair[] = []
 ): PlannerSave {
   const raw: unknown = source === null ? createDefaultSave() : JSON.parse(source);
   if (!isRecord(raw)) throw new Error('Saved planner data is not an object.');
@@ -73,13 +90,16 @@ export function parsePlannerSave(
     const defaults = createCharacter(students[id], metadata);
     if (value.name !== undefined && typeof value.name !== 'string') throw new Error(`Invalid saved name for ${id}.`);
     if (value.enabled !== undefined && typeof value.enabled !== 'boolean') throw new Error(`Invalid enabled flag for ${id}.`);
+    const characterName = typeof value.name === 'string' ? value.name : defaults.name;
     const current = version === 1 ? Object.fromEntries(investmentKeys.map((key) => [key, value[key]])) : value.current;
     const target = version === 1 ? Object.fromEntries(investmentKeys.map((key) => [key, value[`${key}_target`]])) : value.target;
+    const currentInvestment = investment(current, defaults.current, id, characterName, 'current', metadata);
+    const targetInvestment = investment(target, defaults.target, id, characterName, 'target', metadata, currentInvestment, repairs);
     return {
-      ...value, id, name: typeof value.name === 'string' ? value.name : defaults.name,
-      current: investment(current, defaults.current, 'Current', metadata),
-      target: investment(target, defaults.target, 'Target', metadata),
-      eleph: eleph(value.eleph),
+      ...value, id, name: characterName,
+      current: currentInvestment,
+      target: targetInvestment,
+      eleph: eleph(value.eleph, `${characterName} (ID ${id})`),
       enabled: typeof value.enabled === 'boolean' ? value.enabled : true,
       hasBondGear: defaults.hasBondGear
     };

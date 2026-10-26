@@ -3,7 +3,7 @@ import { calculateStudentResources } from '../domain/resources/calculator';
 import { aggregateResources } from '../domain/planner/aggregates';
 import { characterFingerprint, createCharacter } from '../domain/planner/defaults';
 import { reorderVisibleCharacters } from '../domain/planner/card-display';
-import { isRecord, parsePlannerSave, validateCharacterEdit } from '../domain/planner/save';
+import { isRecord, parsePlannerSave, validateCharacterEdit, type PlannerSaveRepair } from '../domain/planner/save';
 import type { PlannerCharacter, PlannerDataset, PlannerMetadata, PlannerSave, ResourceTotals } from '../domain/planner/types';
 import type { Resources } from '../domain/resources/types';
 import { loadCharacterNames, loadPlannerDataset, savedLanguage } from '../services/planner-data';
@@ -129,11 +129,12 @@ export function createResourcePlanner(metadata: PlannerMetadata, storageProvider
       // Re-read after asynchronous localization so another tab's newer save wins.
       const latest = storage.getItem('save-data');
       if (latest !== source) { await reload(); return; }
-      const data = parsePlannerSave(source, current.dataset.students, metadata, names);
+      const repairs: PlannerSaveRepair[] = [];
+      const data = parsePlannerSave(source, current.dataset.students, metadata, names, repairs);
       aggregateResources(current.dataset, data.characters, data.disabled_characters, data.owned_materials, metadata.maxLevel);
       const original: unknown = source === null ? null : JSON.parse(source);
       const migrated = isRecord(original) && original.exportVersion !== 2;
-      if (migrated && source !== null) {
+      if ((migrated || repairs.length > 0) && source !== null) {
         writing = true;
         try {
           storage.setItem('data-backup-modern', source);
