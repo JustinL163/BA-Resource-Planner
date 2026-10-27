@@ -95,10 +95,11 @@ purchases convert to Route Maps, whose rewards apply at 15, 30, 50, 70, 95 and
 The Descent of the Five Senses rerun is also supported there. Its Firecracker
 shop spend converts to farmable Moonlight Festival Vouchers at 270:1; Firecrackers
 remain a shop input and are not treated as a stage or Owned currency.
-Highlander Railroad Runaway is also available in the supported archive. Its
-Sticker thresholds add Highlander Hikari Eleph and Iron Pipes; Iron Pipe remains
-a minigame reward outside solver and Owned controls, matching the legacy
-feasibility timing. I’ve aLIVE rerun is also supported there. Its summary derives
+The original Highlander Railroad Runaway is available in the supported archive,
+and its rerun is supported as a current event. Both apply the Sticker thresholds
+that add Highlander Hikari Eleph and Iron Pipes; Iron Pipe remains a minigame
+reward outside solver and Owned controls, matching the legacy feasibility timing.
+I’ve aLIVE rerun is also supported there. Its summary derives
 Event Points as `floor(Countdown Calendar / 720) * 400` after first clears or
 Owned balances are added, matching the legacy calculation. The legacy point
 target does not constrain its stage solver. Its uncapped 16016 Eleph row accepts
@@ -126,7 +127,7 @@ Pandemic Hazard, 0068 Opera with Love rerun, Say-Bing rerun, Kivotos Unsolved
 Mysteries, both BOX Shadow Looming IDs, Secret Midnight Party with its rerun,
 Fair and Square Aquatic Showdown, the Serenade Promenade rerun, Winter Skies
 Renaissance, original Lore Pursuit, the Descent of the Five Senses rerun,
-Highlander Railroad Runaway, I’ve aLIVE rerun, Summer Sky’s Promise, and
+the original Highlander Railroad Runaway, I’ve aLIVE rerun, Summer Sky’s Promise, and
 Sheside Outside rerun.
 Cycle tabs retain the original
 alternating sets and repeating final set, with per-draw amount and stock shown

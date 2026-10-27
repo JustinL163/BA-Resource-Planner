@@ -4,6 +4,7 @@ import { calculateInitialClear } from './budget';
 import { boxPullCurrencyNeeded, boxRewards } from './boxes';
 import { cardPullRequirement } from './cards';
 import { lessonProgress } from './lessons';
+import { isRailroadRunawayEvent } from './standard-save';
 import type { EventAmounts } from './types';
 import type { EventPlan, EventRequirements, EventSummary, ShopItem, StandardEvent } from './standard-types';
 
@@ -154,7 +155,7 @@ export function eventRequirements(event: StandardEvent, plan: EventPlan, invasio
       setOwn(needed, source.pull_currency, Math.max(cardPullRequirement(amount,
         positiveOwned(plan.currency_owned, source.pull_currency), initial.rewards[source.pull_currency] ?? 0) -
         invasionAmount(currency), 0));
-    } else if ((event.eventId === 'railroad-runaway' && source.source === 'MinigameDrop') ||
+    } else if ((isRailroadRunawayEvent(event.eventId) && source.source === 'MinigameDrop') ||
       (event.eventId === 'sheside-outside-rerun' && currency === 'Tournament_Water_Gun' && source.source === 'MinigameDrop')) {
       // The legacy planner subtracts a missing invasion amount for these
       // MinigameDrop currencies, leaving NaN outside the stage model.
@@ -347,7 +348,7 @@ export function summarizeEventRuns(
     (!Number.isFinite(requirements.pointTarget) && !Number.isNaN(requirements.pointTarget))) throw new Error('Invalid event point requirement.');
   for (const [name, amount] of Object.entries(requirements.needed)) {
     if ((['BoxPull', 'CardPull'].includes(event.currencies[name]?.source ?? '') ||
-      (event.eventId === 'railroad-runaway' && event.currencies[name]?.source === 'MinigameDrop') ||
+      (isRailroadRunawayEvent(event.eventId) && event.currencies[name]?.source === 'MinigameDrop') ||
       (event.eventId === 'sheside-outside-rerun' && name === 'Tournament_Water_Gun' &&
         event.currencies[name]?.source === 'MinigameDrop') ||
       (event.eventId === 'ive-alive-rerun' && name === 'Event_Point') ||
@@ -427,7 +428,7 @@ export function summarizeEventRuns(
     setOwn(currencies, 'Event_Point', Math.floor(calendar / 720) * 400);
   }
 
-  if (event.eventId === 'railroad-runaway') {
+  if (isRailroadRunawayEvent(event.eventId)) {
     const stickers = finite(currencies.Highlander_Commemorative_Sticker ?? 0, 'Highlander Commemorative Stickers');
     const thresholds = [2250, 7200, 11850, 16050, 19350, 21900];
     if (stickers >= thresholds[0]) {

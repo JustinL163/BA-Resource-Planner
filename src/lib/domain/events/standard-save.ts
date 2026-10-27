@@ -11,13 +11,17 @@ import type { EventEnergySettings } from './types';
 import type { BoxCycle, DerivedCurrencyRule, EventMode, EventPlan, PointReward, SavedAmounts, ShopItem, StandardEvent } from './standard-types';
 
 export interface EventEntry { id: string; name: string; icon: string; comingSoon: boolean; event: StandardEvent | null; archived?: boolean }
-export const standardEventIds = ['lore-pursuit-s2', 'lore-pursuit', 'box-shadow-looming-rerun', 'box-shadow-looming', 'secret-midnight-party', 'secret-midnight-party-rerun', 'honorable-sea-showdown', 'serenade-promenade-rerun', 'winter-skies-renaissance', 'descent-of-five-senses-rerun', 'railroad-runaway', 'ive-alive-rerun', "summer-sky's-promise", 'sheside-outside-rerun'];
+export const standardEventIds = ['lore-pursuit-s2', 'lore-pursuit', 'box-shadow-looming-rerun', 'box-shadow-looming', 'secret-midnight-party', 'secret-midnight-party-rerun', 'honorable-sea-showdown', 'serenade-promenade-rerun', 'winter-skies-renaissance', 'descent-of-five-senses-rerun', 'railroad-runaway', 'railroad-runaway-rerun', 'ive-alive-rerun', "summer-sky's-promise", 'sheside-outside-rerun'];
 export const boxEventIds = ['moonlight-dream', 'pandemic-hazard', '0068-opera-with-love-rerun', 'say-bing-rerun', 'kivotos-unsolved-mysteries'];
 export const cardEventIds = ['get-hyped-and-march-on-rerun', 'art-for-whom', 'calm-after-the-storm'];
 export const diceEventIds = ['occult-research-society'];
 export const omikujiEventIds = ['magical-girl-trinity', 'new-year-march-rerun', 'pray-ball', 'an-unconcealed-path', 'pray-ball-rerun'];
 export const lessonEventIds = ['on-your-mark', 'hot-spring-rerun', 'restoration-project', 'on-your-mark-rerun'];
 export const invasionEventIds = ['valentine-rerun'];
+
+export function isRailroadRunawayEvent(eventId: string | undefined): boolean {
+  return eventId === 'railroad-runaway' || eventId === 'railroad-runaway-rerun';
+}
 const modes: EventMode[] = ['', 'Shop', 'Materials', 'Currency', 'Manual'];
 const secretMidnightPartyCurrencyRule: DerivedCurrencyRule = {
   from: 'BOOM_Classic_Collection', to: 'Youkai_MAX_Umeboshi_Flavor', multiplier: 270
@@ -140,7 +144,7 @@ export function decodeStandardEvent(value: unknown, eventId?: string): StandardE
     if (!isRecord(currency) || typeof currency.shortname !== 'string') throw new Error('This currency requires the legacy planner.');
     const supportedDerivedCurrencySource = derivedCurrencyRules?.some((rule) =>
       rule.from === key && currency.source === (rule.source ?? ''));
-    const supportedRailroadMinigameCurrency = eventId === 'railroad-runaway' &&
+    const supportedRailroadMinigameCurrency = isRailroadRunawayEvent(eventId) &&
       key === 'Iron_Pipe' && currency.source === 'MinigameDrop';
     const supportedIveAliveEventPoint = eventId === 'ive-alive-rerun' &&
       key === 'Event_Point' && currency.source === '';
@@ -222,7 +226,7 @@ export function decodeStandardEvent(value: unknown, eventId?: string): StandardE
       return item;
     });
   }
-  if (eventId === 'railroad-runaway' &&
+  if (isRailroadRunawayEvent(eventId) &&
     (currencies.Highlander_Commemorative_Sticker?.source !== 'StageDrop' ||
       !value.currency_targets.includes('Highlander_Commemorative_Sticker') ||
       currencies.Iron_Pipe?.source !== 'MinigameDrop' || !shops.Iron_Pipe?.length)) {

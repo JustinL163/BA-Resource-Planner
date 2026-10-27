@@ -623,6 +623,10 @@
   .reward-fallback { max-width: 100%; padding: 0.15rem; font-size: 0.65rem; line-height: 1; text-align: center; overflow-wrap: anywhere; }
   .reward-item.without-image strong { top: auto; bottom: 0.15rem; font-size: 0.9rem; }
   .reward-item strong { position: absolute; top: 50%; left: 50%; max-width: 100%; transform: translate(-50%, -50%); color: #111; font-size: 1.5rem; line-height: 1; text-align: center; white-space: nowrap; text-shadow: -1px -1px 0 #fff, 0 -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 0 1px 0 #fff, 1px 1px 0 #fff; pointer-events: none; }
+  .reward-item { transition: transform 120ms ease; }
+  .reward-item strong { transition: opacity 120ms ease; }
+  .reward-item:hover { z-index: 1; transform: scale(1.5); }
+  .reward-item:hover strong { opacity: 0; }
   @media (max-width: 800px) {
     .event-layout { grid-template-columns: minmax(0, 1fr); }
     .event-layout.event-selection .event-content { display: none; }

@@ -313,6 +313,18 @@
       return;
     }
     const target = event.target;
+    if (event.key.toLowerCase() === 'm' && !event.ctrlKey && !event.altKey && !event.metaKey &&
+      !event.repeat && target instanceof HTMLInputElement && target.type === 'number' &&
+      target.closest('dialog[aria-labelledby="editor-title"]') && target.max.trim() !== '') {
+      const maximum = Number(target.max);
+      if (Number.isFinite(maximum)) {
+        event.preventDefault();
+        const value = String(Math.floor(maximum));
+        target.value = value;
+        target.dispatchEvent(new InputEvent('input', { bubbles: true, inputType: 'insertText', data: value }));
+        return;
+      }
+    }
     if (event.key === 'Tab' && target instanceof HTMLInputElement && target.hasAttribute('data-investment-tab-order') &&
       !event.ctrlKey && !event.altKey && !event.metaKey) {
       moveCharacterInvestmentTab(target, event);
