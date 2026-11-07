@@ -671,7 +671,7 @@
                 <KeyboardShortcutLabel label={t('label-cancel')} shortcut="Esc" />
               </button>
               <button type="submit" class="save-button" data-key-shortcut="s" data-key-shortcut-allow-number-input
-                aria-keyshortcuts="S" disabled={Boolean(validation.error)}>
+                aria-keyshortcuts="S">
                 <KeyboardShortcutLabel label={t('label-save').trim()} shortcut="s" />
               </button>
             </div>
@@ -914,7 +914,7 @@
       <h2 id="discard-title">{t('text-unsavedchanges')}</h2>
       <div class="discard-actions">
         <button type="button" onclick={cancelDiscard}>{t('button-goback')}</button>
-        <button type="button" class="save-continue-button" disabled={Boolean(validation.error)} onclick={saveAndProceed}>{t('button-saveandcontinue')}</button>
+        <button type="button" class="save-continue-button" onclick={saveAndProceed}>{t('button-saveandcontinue')}</button>
         <button type="button" class="discard-button" onclick={discardAndProceed}>{t('button-discardchanges')}</button>
       </div>
     </dialog>
