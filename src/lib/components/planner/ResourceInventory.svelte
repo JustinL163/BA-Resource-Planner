@@ -1277,9 +1277,9 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
   .weapon-xp-summary-section { margin-top: 0.65rem; }
   .weapon-xp-summary-section .note { margin-bottom: 0; }
   .weapon-xp-displays { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.35rem; width: 100%; max-width: 36rem; }
-  .weapon-xp-display { --overlay-number-fit-ratio: 0.9; display: flex; align-items: center; justify-content: center; gap: 0.3rem; min-width: 0; height: 44px; padding: 0.2rem 0.35rem; overflow: hidden; border: 1px solid #7c5b7d66; border-radius: 0.4rem; background: var(--background); }
-  .weapon-xp-display img { display: block; flex: 0 0 2.2rem; width: 2.2rem; height: 2.2rem; object-fit: contain; }
-  .weapon-xp-display-amount { min-width: 0; overflow: hidden; color: var(--text); font-size: 1.1rem; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .weapon-xp-display { --overlay-number-fit-ratio: 1; display: flex; align-items: center; justify-content: center; gap: 0.12rem; min-width: 0; height: 44px; padding: 0.2rem 0.15rem; overflow: hidden; border: 1px solid #7c5b7d66; border-radius: 0.4rem; background: var(--background); }
+  .weapon-xp-display img { display: block; flex: 0 0 1.5rem; width: 1.5rem; height: 1.5rem; object-fit: contain; }
+  .weapon-xp-display-amount { flex: 1; min-width: 0; overflow: hidden; color: var(--text); font-size: 1.1rem; font-weight: 700; font-variant-numeric: tabular-nums; text-align: center; white-space: nowrap; }
 
   .note { font-size: 0.8rem; line-height: 1.4; opacity: 0.85; }
   .error { color: var(--error); }
