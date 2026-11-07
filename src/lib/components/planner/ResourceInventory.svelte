@@ -1234,16 +1234,17 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
   .gear tbody th { text-align: center; }
   .gear td { min-width: 0; padding: 0; }
   .gear td :global(.resource-cell) { min-width: 0; min-height: 0; aspect-ratio: 1; }
-  .gear-cell { position: relative; width: 100%; aspect-ratio: 1; }
+  .gear-cell { position: relative; width: 100%; aspect-ratio: 1; container-type: inline-size; }
   .gear-cell :global(.resource-cell) { position: absolute; inset: 0; width: 100%; height: 100%; }
   .gear-use-indicator {
-    position: absolute; z-index: 3; display: flex; align-items: center; gap: 0.2rem;
-    max-width: calc(100% - 0.12rem); padding: 0.04rem 0.08rem; border: 1px solid #7c5b7d66;
+    position: absolute; z-index: 3; display: flex; align-items: center;
+    gap: clamp(0.04rem, 2cqi, 0.2rem); max-width: calc(100% - 0.12rem);
+    padding: clamp(0.01rem, 0.8cqi, 0.04rem) clamp(0.02rem, 1.6cqi, 0.08rem); border: 1px solid #7c5b7d66;
     border-radius: 0.2rem; background: color-mix(in srgb, var(--background) 82%, transparent);
-    color: var(--text); font: 700 0.65rem/1 sans-serif; font-variant-numeric: tabular-nums;
+    color: var(--text); font: 700 0.65rem/1 sans-serif; font-size: clamp(0.34rem, 12cqi, 0.65rem); font-variant-numeric: tabular-nums;
     white-space: nowrap; pointer-events: none;
   }
-  .gear-use-indicator img { display: block; flex: 0 0 1.05rem; width: 1.05rem; height: 1.05rem; object-fit: contain; }
+  .gear-use-indicator img { display: block; flex: 0 0 clamp(0.4rem, 20cqi, 1.05rem); width: clamp(0.4rem, 20cqi, 1.05rem); height: clamp(0.4rem, 20cqi, 1.05rem); object-fit: contain; }
   .gear-use-indicator.top-right { top: 0.04rem; right: 0.04rem; }
   .gear-use-indicator.bottom-left { bottom: 0.04rem; left: 0.04rem; }
   .matrices:not(.gear) .table-scroll { overflow: hidden; }
@@ -1284,8 +1285,6 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
   .error { color: var(--error); }
   @media (max-width: 800px) {
     .gear td :global(.amount) { font-size: 0.9rem; }
-    .gear-use-indicator { gap: 0.2rem; padding: 0.02rem 0.04rem; font-size: 0.42rem; }
-    .gear-use-indicator img { flex-basis: 0.48rem; width: 0.48rem; height: 0.48rem; }
     .gear:not(.show-universal):not(.show-universal-placeholders) .gear-special-header,
     .gear:not(.show-universal):not(.show-universal-placeholders) .gear-special-cell { display: none; }
     .gear-general-header, .gear-special-name { visibility: hidden; }

@@ -78,3 +78,17 @@ export function matchesSearchText(index: StudentSearchIndex, id: string, query: 
   const text = query.toLowerCase().trim();
   return index.find((entry) => entry.id === id)?.terms.some((term) => term.includes(text)) ?? false;
 }
+
+export function studentSearchRank(
+  indexedTerms: readonly string[] | undefined, input: string, extraTerms: string[] = []
+): number {
+  const query = input.toLowerCase().trim();
+  if (!query) return 1;
+  const terms = [
+    ...(indexedTerms ?? []),
+    ...extraTerms.map((term) => term.toLowerCase().trim())
+  ];
+  if (terms.some((term) => term.startsWith(query))) return 2;
+  if (terms.some((term) => term.includes(query))) return 1;
+  return 0;
+}

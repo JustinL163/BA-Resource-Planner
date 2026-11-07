@@ -17,6 +17,7 @@
   } = $props();
   let groupPickerOpen = $state(false);
   let picking = $state<{ name: string; expected: string; location: SlotLocation } | null>(null);
+  let pickerGridOpen = $state(false);
   let drag = $state<DragState | null>(null);
   let teamDrag = $state<number | null>(null);
   let removing = $state<number | null>(null);
@@ -121,8 +122,17 @@
     }, 3000);
   }
   function activate(at: SlotLocation) {
-    if (picking?.location.team === at.team && picking.location.slot === at.slot) { picking = null; return; }
+    if (picking?.location.team === at.team && picking.location.slot === at.slot) {
+      picking = null;
+      pickerGridOpen = false;
+      return;
+    }
     picking = { name: selected, expected, location: at };
+    pickerGridOpen = false;
+  }
+  function activateGrid(at: SlotLocation) {
+    picking = { name: selected, expected, location: at };
+    pickerGridOpen = true;
   }
   async function chooseNext(id: string, borrowed: boolean): Promise<boolean> {
     const selection = picking;
@@ -256,7 +266,7 @@
                     aria-label={`${t('ui-team')} ${teamIndex + 1}, ${role.label} ${local + 1}, ${id ? names[id] ?? id : t('ui-empty-slot')}${isBorrowed(slot) ? ', ' + t('label-borrowed') : ''}`}
                     onclick={() => activate({ team: teamIndex, slot: index })}
                     onkeydown={(event) => { void keyMove(event, { team: teamIndex, slot: index }); }}
-                    oncontextmenu={(event) => event.preventDefault()}>
+                    oncontextmenu={(event) => { event.preventDefault(); activateGrid({ team: teamIndex, slot: index }); }}>
                     {#if id}
                       <CharacterPortrait {id} name={names[id] ?? id} {metadata} {scribble} borrowed={isBorrowed(slot)}
                         borrowedLabel={t('label-borrowed')} {displayedInfo}
@@ -290,9 +300,10 @@
 {#if picking && pickerAnchor && capture}
   <TeamSlotPicker teams={view.teams} location={picking.location} {dataset} {names} {metadata}
     anchor={pickerAnchor} slots={capture}
+    bind:gridOpen={pickerGridOpen}
     assign={(id, borrowed) => picking !== null && actions.teamSlot(picking.name, picking.expected, picking.location, id, borrowed)}
     choose={chooseNext}
-    close={() => picking = null} {error} {t} />
+    close={() => { picking = null; pickerGridOpen = false; }} {error} {t} />
 {/if}
 
 <style>

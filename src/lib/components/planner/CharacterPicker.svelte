@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
   import type { CharacterInfo, PlannerMetadata } from '$lib/domain/planner/types';
-  import { createStudentSearchIndex, matchesSearchText } from '$lib/domain/planner/student-search';
+  import { createStudentSearchIndex, studentSearchRank } from '$lib/domain/planner/student-search';
   import { localizedSchoolName } from '$lib/domain/planner/localized-labels';
   import { preferences } from '$lib/stores/preferences';
   import aliases from '$content/search-aliases.json';
@@ -20,6 +20,7 @@
   let gridSearch = $state<HTMLInputElement>();
   let message = $state('');
   let index = $derived(createStudentSearchIndex(students, names, aliases, $preferences.language));
+  let termsByStudent = $derived(new Map(index.map(({ id, terms }) => [id, terms] as const)));
   const searchSchoolName = (name: string) => localizedSchoolName(name, t);
   const academyIconFiles: Record<string, string> = {
     Abydos: 'Abydos', Arius: 'Arius', ETC: 'ETC', Gehenna: 'Gehenna', Highlander: 'Highlander',
@@ -29,21 +30,23 @@
   };
   const schoolIconPath = (school: string) => `/planner/icons/Academies/${academyIconFiles[school] ?? 'ETC'}.png`;
   let allowed = $derived(new Set(Object.keys(students).filter((id) => !added.includes(id) && !['10099', '10144'].includes(id))));
-  let available = $derived(Object.entries(students).filter(([id, info]) =>
-    allowed.has(id) && (matchesSearchText(index, id, query) ||
-      `${info.School} ${searchSchoolName(info.School)} ${id}`.toLowerCase().includes(query.toLowerCase().trim()))
-  ).sort(([a, first], [b, second]) => (names[a] ?? first.Name).localeCompare(names[b] ?? second.Name)));
+  let available = $derived(Object.entries(students)
+    .map(([id, info]) => ({ id, info, rank: studentSearchRank(termsByStudent.get(id), query, [info.School, searchSchoolName(info.School), id]) }))
+    .filter(({ id, rank }) => allowed.has(id) && rank > 0)
+    .sort((a, b) => b.rank - a.rank || (names[a.id] ?? a.info.Name).localeCompare(names[b.id] ?? b.info.Name))
+    .map(({ id, info }) => [id, info] as const));
   let pending = $derived(selected.filter((id) => allowed.has(id)));
   onMount(() => {
     try { grid = localStorage.getItem(pickerModePreferenceKey) === 'grid'; }
     catch { /* Keep search mode when local storage is unavailable. */ }
   });
-  async function switchView() {
+  $effect(() => {
+    if (grid) void tick().then(() => gridSearch?.focus({ preventScroll: true }));
+  });
+  function switchView() {
     grid = !grid;
     try { localStorage.setItem(pickerModePreferenceKey, grid ? 'grid' : 'search'); }
     catch { /* Keep the selected mode for this session if local storage is unavailable. */ }
-    await tick();
-    gridSearch?.focus();
   }
   function add(id: string) {
     if (!save([id])) return false;
