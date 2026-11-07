@@ -19,11 +19,13 @@
   import { availableExMaterialFilterOptions, matchesExMaterialFilter } from '$lib/domain/planner/ex-material-filter';
   import { localizedAttackTypeName, localizedDefenseTypeName, localizedSchoolName } from '$lib/domain/planner/localized-labels';
   import { legacySortPresetKeys, sortPlannerCharacters, type LegacySortPresetKey } from '$lib/domain/planner/legacy-sort';
+  import { createStudentSearchIndex, matchesSearchText } from '$lib/domain/planner/student-search';
   import TeamsEditor from '$lib/components/planner/TeamsEditor.svelte';
   import BulkEditor from '$lib/components/planner/BulkEditor.svelte';
   import KeyboardShortcutLabel from '$lib/components/planner/KeyboardShortcutLabel.svelte';
   import { memberIds } from '$lib/domain/planner/groups';
   import strings from '$content/strings.json';
+  import searchAliases from '$content/search-aliases.json';
   import { styleEditorActive, styleEditorAvailable } from '$lib/stores/style-editor';
 
   const planner = createResourcePlanner(metadata);
@@ -60,13 +62,16 @@
   let dialog = $state<'' | 'resources' | 'gear' | 'transfer'>('');
   let cardSize = $state(5);
   let cardDisplaySettings = $state<CharacterCardDisplaySettings>({ ...defaultCharacterCardDisplaySettings });
+  let switchFlashing = $state(true);
   let shiftCardInfoPreview = $state(false);
   const cardDisplaySettingsStorageKey = 'planner-character-card-display';
-  const cardDisplaySettingKeys = ['name', 'level', 'limitBreak', 'skills', 'gear', 'bond', 'stars', 'schoolBorder'] as const;
-  const allCharacterCardDisplaySettings: CharacterCardDisplaySettings = {
+  const switchFlashingStorageKey = 'planner-character-switch-flashing';
+  const cardDisplaySettingKeys = ['name', 'level', 'limitBreak', 'skills', 'gear', 'bond', 'stars', 'schoolBorder', 'hideDisabledMark', 'grayscaleDisabled'] as const;
+  let allCharacterCardDisplaySettings = $derived({
+    ...cardDisplaySettings,
     name: true, level: true, limitBreak: true, skills: true, gear: true,
     bond: true, stars: true, schoolBorder: true
-  };
+  } satisfies CharacterCardDisplaySettings);
   let effectiveCardDisplaySettings = $derived(shiftCardInfoPreview && mainView === 'characters' &&
     !editing && !adding && !dialog && !bulkOpen ? allCharacterCardDisplaySettings : cardDisplaySettings);
   let selectedStyleCardId = $state('');
@@ -92,6 +97,9 @@
   let totals = $derived($planner.data ? planner.totals(levelCap) : null);
   let selected = $derived($planner.data?.characters.find((character) => character.id === editing));
   let definitions = $derived(Object.values($planner.dataset?.students ?? {}));
+  let characterSearchIndex = $derived($planner.dataset
+    ? createStudentSearchIndex($planner.dataset.students, $planner.names, searchAliases, $preferences.language)
+    : []);
   let schools = $derived([...new Set(definitions.map((info) => info.School))].sort());
   let attacks = $derived([...new Set(definitions.map((info) => info.BulletType))].sort());
   let armours = $derived([...new Set(definitions.map((info) => info.ArmorType))].sort());
@@ -122,7 +130,10 @@
     const disabled = new Set(data.disabled_characters);
     const filtered = data.characters.filter((character) => {
       const info = dataset.students[character.id];
-      return `${names[character.id] ?? info.Name} ${info.Name} ${character.id}`.toLowerCase().includes(search.toLowerCase()) &&
+      const searchTerm = search.trim().toLowerCase();
+      const matchesSearch = matchesSearchText(characterSearchIndex, character.id, search) ||
+        character.id.toLowerCase().includes(searchTerm);
+      return matchesSearch &&
         (!school || info.School === school) && (!role || info.SquadType === role) &&
         (!attack || info.BulletType === attack) && (!armour || info.ArmorType === armour) &&
         (!weapon || info.WeaponType === weapon) && (!rarity || info.StarGrade === Number(rarity)) &&
@@ -171,6 +182,17 @@
       uiError = '';
     } catch (error) {
       console.error('Could not save character card display settings.', error);
+      uiError = error instanceof Error ? error.message : t('ui-preference-failed');
+    }
+  }
+
+  function updateSwitchFlashing(value: boolean) {
+    switchFlashing = value;
+    try {
+      localStorage.setItem(switchFlashingStorageKey, String(value));
+      uiError = '';
+    } catch (error) {
+      console.error('Could not save character switch flashing preference.', error);
       uiError = error instanceof Error ? error.message : t('ui-preference-failed');
     }
   }
@@ -281,7 +303,11 @@
     const adjacent = visible[selectedVisibleIndex + direction];
     if (!adjacent) return;
 
-    const flash = characterCardFlash(adjacent.id);
+    const flash = switchFlashing ? characterCardFlash(adjacent.id) : null;
+    if (!switchFlashing) {
+      const nextCard = listCharacterCard(adjacent.id);
+      if (nextCard) keepCharacterCardOnscreen(nextCard);
+    }
     editing = adjacent.id;
     if (!flash) return;
 
@@ -347,6 +373,7 @@
     }
     try {
       cardDisplaySettings = readCardDisplaySettings(localStorage.getItem(cardDisplaySettingsStorageKey));
+      switchFlashing = localStorage.getItem(switchFlashingStorageKey) !== 'false';
     } catch (error) {
       console.error('Could not read character card display settings.', error);
       uiError = error instanceof Error ? error.message : t('ui-preference-failed');
@@ -355,6 +382,9 @@
     const storage = (event: StorageEvent) => {
       if (event.key === cardDisplaySettingsStorageKey || event.key === null) {
         cardDisplaySettings = readCardDisplaySettings(event.key === null ? null : event.newValue);
+      }
+      if (event.key === switchFlashingStorageKey || event.key === null) {
+        switchFlashing = event.key === null || event.newValue !== 'false';
       }
       if (event.key === 'save-data' || event.key === 'image-style' || event.key === null) refresh();
     };
@@ -806,6 +836,12 @@
           onchange={(event) => updateCardDisplaySetting('stars', event.currentTarget.checked)} />{t('label-stars')}</label>
         <label><input type="checkbox" checked={cardDisplaySettings.schoolBorder}
           onchange={(event) => updateCardDisplaySetting('schoolBorder', event.currentTarget.checked)} />{t('ui-school-border')}</label>
+        <label class="full-row-option"><input type="checkbox" checked={cardDisplaySettings.hideDisabledMark}
+          onchange={(event) => updateCardDisplaySetting('hideDisabledMark', event.currentTarget.checked)} /><span>{t('ui-hide-disabled-mark')}</span></label>
+        <label class="full-row-option"><input type="checkbox" checked={cardDisplaySettings.grayscaleDisabled}
+          onchange={(event) => updateCardDisplaySetting('grayscaleDisabled', event.currentTarget.checked)} /><span>{t('ui-grayscale-disabled-characters')}</span></label>
+        <label class="full-row-option"><input type="checkbox" checked={switchFlashing}
+          onchange={(event) => updateSwitchFlashing(event.currentTarget.checked)} /><span>{t('ui-switch-flashing')}</span></label>
       </div>
     {/if}
     {#if selectionBox?.moved}
@@ -913,6 +949,8 @@
     box-shadow: 0 3px 14px #0008;
   }
   .card-style-options label { display: flex; min-width: 0; flex-direction: row; align-items: center; gap: 0.3rem; margin: 0; font-size: 0.78rem; white-space: nowrap; }
+  .card-style-options label.full-row-option { grid-column: 1 / -1; white-space: normal; }
+  .card-style-options label.full-row-option span { min-width: 0; overflow-wrap: anywhere; }
   .card-style-options input { flex: 0 0 auto; width: 0.9rem; height: 0.9rem; margin: 0; accent-color: #82dafb; }
   .empty-state { margin: 1rem 0 0; text-align: center; }
   .sort-warning-toast { position: fixed; z-index: 1001; top: max(0.75rem, env(safe-area-inset-top)); left: max(0.75rem, env(safe-area-inset-left)); max-width: min(24rem, calc(100vw - 1.5rem)); margin: 0; padding: 0.65rem 1rem; border: 1px solid #7c5b7d66; border-radius: 0.45rem; background: var(--background); color: var(--text); box-shadow: 0 2px 12px #0005; transform-origin: 12% 0; animation: sort-warning-shake 520ms ease-in-out; }

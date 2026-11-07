@@ -2,6 +2,7 @@
   import { tick } from 'svelte';
   import PlannerDialog from './PlannerDialog.svelte';
   import CloudTransfer from './CloudTransfer.svelte';
+  import { isRecord } from '$lib/domain/planner/save';
   import type { CloudCredentials } from '$lib/services/cloud-credentials';
   let { ready, canImport, exportData, currentSource, importCloud, importData, close, error, t }: {
     ready: boolean; canImport: boolean; exportData: () => string;
@@ -11,6 +12,7 @@
   } = $props();
   let source = $state('');
   let confirmingImport = $state(false);
+  let confirmingPartialImport = $state(false);
   let importing = $state(false);
   let localError = $state('');
   let cloudBusy = $state(false);
@@ -40,9 +42,24 @@
     }
   }
 
+  function requestImportConfirmation() {
+    try {
+      const incoming: unknown = JSON.parse(source);
+      confirmingPartialImport = isRecord(incoming) && incoming.import_type === 'partial';
+    } catch {
+      confirmingPartialImport = false;
+    }
+    confirmingImport = true;
+  }
+
+  function cancelImportConfirmation() {
+    confirmingImport = false;
+    confirmingPartialImport = false;
+  }
   async function confirmImport() {
     importing = true;
     confirmingImport = false;
+    confirmingPartialImport = false;
     await tick();
     try { if (await importData(source)) close(); }
     finally { importing = false; }
@@ -56,7 +73,7 @@
   <h3>{t('ui-local-transfer')}</h3>
   <div class="local-transfer-actions">
     <button disabled={!ready} onclick={download}>{t('ui-export-save')}</button>
-    <button disabled={!canImport || !source.trim() || importing} onclick={() => confirmingImport = true}>{t('ui-import-save')}</button>
+    <button disabled={!canImport || !source.trim() || importing} onclick={requestImportConfirmation}>{t('ui-import-save')}</button>
   </div>
   <label>{t('ui-import-file')}<input type="file" accept=".json,application/json" onchange={async (event) => {
     try {
@@ -79,12 +96,12 @@
 </PlannerDialog>
 
 {#if confirmingImport}
-  <PlannerDialog title={t('label-areyousure')} close={() => confirmingImport = false} {t} width="440px" showClose={false}>
+  <PlannerDialog title={t(confirmingPartialImport ? 'ui-partial-import-title' : 'label-areyousure')} close={cancelImportConfirmation} {t} width="440px" showClose={false}>
     <div class="confirmation">
-      <p>{t('ui-import-warning')}</p>
+      <p>{t(confirmingPartialImport ? 'ui-partial-import-warning' : 'ui-import-warning')}</p>
       <footer>
-        <button onclick={() => confirmingImport = false}>{t('label-cancel')}</button>
-        <button class="import-button" onclick={() => void confirmImport()}>{t('ui-import-save')}</button>
+        <button onclick={cancelImportConfirmation}>{t('label-cancel')}</button>
+        <button class="import-button" onclick={() => void confirmImport()}>{t(confirmingPartialImport ? 'ui-apply-partial-import' : 'ui-import-save')}</button>
       </footer>
     </div>
   </PlannerDialog>

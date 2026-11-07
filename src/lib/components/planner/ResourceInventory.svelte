@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { onMount, untrack } from 'svelte';
+  import { onMount, tick, untrack } from 'svelte';
+  import { fitResourceText } from '$lib/actions/fit-resource-text';
   import { sanitizeIntegerInput } from '$lib/actions/sanitize-integer-input';
   import type { PlannerCharacter, PlannerMetadata, ResourceTotals } from '$lib/domain/planner/types';
   import { formatAmount, shopCurrencyKeys, type ResourceItem } from '$lib/domain/planner/catalog';
@@ -12,7 +13,7 @@
   import GearFarming from './GearFarming.svelte';
   import GearBlueprintUsage from './GearBlueprintUsage.svelte';
   import type { PlannerDataset } from '$lib/domain/planner/types';
-  import { farmServer, type FarmServer, type GearFarmPlan } from '$lib/domain/planner/gear-farm';
+  import { farmedGeneralConversions, farmServer, type FarmServer, type GearFarmPlan } from '$lib/domain/planner/gear-farm';
 import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/services/gear-farm';
   import ResourceUsersDialog, { type ResourceUserRow } from './ResourceUsersDialog.svelte';
 
@@ -27,9 +28,28 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
     campaignMultiplier?: number;
   } = $props();
   const gearTransposePreferenceKey = 'planner-gear-table-transposed';
+  const gearFarmingSortPreferenceKey = 'planner-gear-farming-sort-by-stage-number';
+  const resourceLayoutPreferenceKey = 'planner-resource-table-stacked';
+  const resourceZeroVisibilityPreferenceKey = 'planner-resource-zero-visibility';
+  type ResourceZeroVisibilityType = 'currencies' | 'limit-break-books' | 'gifts';
+  type ResourceStyleSection = ResourceZeroVisibilityType | 'tables';
   let capError = $state('');
   let selectedResource = $state<ResourceItem | null>(null);
   let transposeGearTable = $state(true);
+  let sortGearFarmingStagesByNumber = $state(false);
+  let gearFarmingStyleActive = $state(false);
+  let gearFarmingStylePanelOpen = $state(false);
+  let gearFarmingStylePanel = $state<HTMLDivElement>();
+  let gearFarmingStylePosition = $state({ left: 8, top: 8 });
+  let forceStackedMaterials = $state(false);
+  let resourceTableStyleActive = $state(false);
+  let resourceTableStylePanelOpen = $state(false);
+  let resourceTableStylePanel = $state<HTMLDivElement>();
+  let resourceTableStylePosition = $state({ left: 8, top: 8 });
+  let resourceTableStyleSection = $state<ResourceStyleSection>('tables');
+  let visibleWithZeroQuantity = $state<Record<ResourceZeroVisibilityType, boolean>>({
+    currencies: false, 'limit-break-books': false, gifts: false
+  });
   let gearEnterDebugEnabled = $state(false);
   let gearEnterDebugEvents = $state<string[]>([]);
   let lastGearFocusedInput: HTMLInputElement | null = null;
@@ -68,15 +88,26 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
   let gearFarmCompleted = $state<{ key: string; plan: GearFarmPlan } | null>(null);
   let gearFarmFailure = $state<{ key: string; message: string } | null>(null);
   let gearFarmBusy = $state(false);
+  let excludeOwnedChoiceBlueprints = $state(false);
+  let excludeOwnedGeneralBlueprints = $state(false);
   let gearFarmRetry = $state(0);
+  $effect(() => {
+    if (gear && mode === 'needed') return;
+    gearFarmingStyleActive = false;
+    gearFarmingStylePanelOpen = false;
+  });
   let gearFarmNeeded = $derived(Object.fromEntries<number>(metadata.equipment.flatMap((key) => (totals.needed[key] ?? 0) > 0 ? [[key, totals.needed[key]]] : [])));
   let gearFarmOwned = $derived(Object.fromEntries<number>(Object.entries(totals.owned)
-    .filter(([key]) => key.startsWith('G_') || key.startsWith('Choice_T')).map(([key, amount]) => [key, Number(amount)])));
+    .filter(([key]) => (key.startsWith('Choice_T') && !excludeOwnedChoiceBlueprints) ||
+      (key.startsWith('G_') && !excludeOwnedGeneralBlueprints))
+    .map(([key, amount]) => [key, Number(amount)])));
   let gearFarmKey = $derived(gear ? JSON.stringify([
     savedServer, campaignMultiplier, gearFarmNeeded, gearFarmOwned,
     dataset.context.data.gear_rates, dataset.context.data.gear_drops, dataset.context.data.universal_bp_cost, metadata.worldCaps
   ]) : '');
-  let gearFarmResult = $derived(gearFarmCompleted?.key === gearFarmKey ? gearFarmCompleted.plan : null);
+  let gearFarmResult = $derived(
+    gearFarmFailure?.key === gearFarmKey ? null : gearFarmCompleted?.plan ?? null
+  );
   let gearFarmError = $derived(gearFarmFailure?.key === gearFarmKey ? gearFarmFailure.message : '');
   $effect(() => {
     const key = gearFarmKey;
@@ -94,7 +125,6 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
       server: savedServer, multiplier: campaignMultiplier, caps: metadata.worldCaps
     }));
     const controller = new AbortController();
-    gearFarmCompleted = null;
     gearFarmFailure = null;
     gearFarmBusy = true;
     try {
@@ -188,7 +218,15 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
     needed: { ...totals.needed, ...gearUsage.remainingByGear },
     leftover: { ...totals.leftover, ...gearUsage.specialLeftover }
   });
+  let gearPlaceholderTotals: ResourceTotals = $derived({
+    ...gearDisplayTotals,
+    needed: Object.fromEntries(Object.entries(gearDisplayTotals.needed).map(([key, amount]) =>
+      [key, key.startsWith('Choice_') || key.startsWith('G_') ? 0 : amount])),
+    required: Object.fromEntries(Object.entries(gearDisplayTotals.required).map(([key, amount]) =>
+      [key, key.startsWith('Choice_') || key.startsWith('G_') ? 0 : amount]))
+  });
   let showUniversalInventory = $derived(mode === 'owned' || mode === 'leftover');
+  let showUniversalPlaceholders = $derived(mode === 'needed' || mode === 'required');
   let panels = $derived.by(() => {
     if (!gear) return layout.panels;
     const source = layout.panels[0];
@@ -201,6 +239,28 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
     const panel = { ...source, columns, rows };
     return [transposeGearTable ? transposeGearPanel(panel) : panel];
   });
+  let matrixFitRows = $derived.by(() => {
+    if (gear) {
+      const gearRows = panels[0]?.rows ?? [];
+      const visibleRows = showUniversalInventory ? gearRows : gearRows.filter((row) => row.name !== 'Choice' && row.name !== 'General');
+      return Math.max(1, visibleRows.length);
+    }
+    const schoolRows = panels.find((panel) => panel.columnGroups)?.rows.length ?? 0;
+    const artifactRows = panels.filter((panel) => panel.title === 'ui-artifacts')
+      .reduce((max, panel) => Math.max(max, panel.rows.length), 0);
+    return Math.max(1, Math.max(schoolRows, artifactRows));
+  });
+  let hasFarmedBlueprintUses = $derived.by(() => gear && !!gearFarmResult &&
+    farmedGeneralConversions(gearFarmResult, dataset.context.data).length > 0);
+  let gearReferenceRows = $derived.by(() => {
+    if (!gear) return matrixFitRows;
+    const neededModeRows = (panels[0]?.rows ?? []).filter((row) => row.name !== 'Choice' && row.name !== 'General');
+    return Math.max(1, neededModeRows.length);
+  });
+  // Keep the cell size anchored to Remaining Needed, including farmed-blueprint space when present.
+  let gearSizingRows = $derived(gearReferenceRows + 1 + (hasFarmedBlueprintUses ? 6 : 0));
+  let gearTableWidthTerms = $derived(Array.from({ length: panels[0]?.columns.length ?? 0 }, () =>
+    'var(--inventory-cell-size, 75px)').join(' + '));
   let summaryTiles = $derived(layout.extra.filter((item) => inlineAmount(item.key)));
   const leadingSummaryKeys = ['Credit', 'Xp', '9999'];
   let leadingSummaryTiles = $derived(leadingSummaryKeys.flatMap((key) => summaryTiles.filter((item) => item.key === key)));
@@ -208,16 +268,20 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
     !leadingSummaryKeys.includes(item.key) && (
       item.key === 'GearXp' ||
       (mode === 'owned' && !['Xp', 'GearXp', 'Eleph', 'ShopResets'].includes(item.key) && !item.key.endsWith('Cost')) ||
-      Number(totals[mode][item.key] ?? 0) !== 0
+      Number(totals[mode][item.key] ?? 0) !== 0 ||
+      (!gear && shouldShowZeroQuantity('currencies'))
     )));
   let gearXpSummaryItem: ResourceItem = $derived(
     remainingSummaryTiles.find((item) => item.key === 'GearXp') ?? layout.extra.find((item) => item.key === 'GearXp')!
   );
   let remainingCurrencyTiles = $derived(remainingSummaryTiles.filter((item) => item.key !== 'GearXp'));
+  let matrixCurrencyTiles = $derived(gear ? remainingCurrencyTiles : remainingSummaryTiles);
   let allExtras = $derived(layout.extra.filter((item) => !inlineAmount(item.key)));
   let extras = $derived(allExtras.filter((item) => {
     if (mode === 'owned') return true;
     if (item.group === 'XP items' || item.group === 'Weapon items') return false;
+    if (!gear && item.group === 'Limit break books' && shouldShowZeroQuantity('limit-break-books')) return true;
+    if (!gear && item.group === 'Gifts' && shouldShowZeroQuantity('gifts')) return true;
     return Number(totals[mode][item.key] ?? 0) !== 0;
   }));
   const weaponMaterialTiers = ['T1', 'T2', 'T3', 'T4'];
@@ -234,6 +298,11 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
   let hasWeaponItems = $derived(groups.includes('Weapon items'));
   let otherGroups = $derived(groups.filter((group) => !pairedExtraGroupNames.has(group) && group !== 'Weapon items'));
   let weapons = $derived(weaponXpSummary(totals));
+  let weaponXpDisplayRows = $derived(weapons.rows.map((row) => ({
+    ...row,
+    displayAmount: mode === 'owned' ? row.owned : mode === 'required' ? row.required :
+      mode === 'leftover' ? Math.max(row.owned - row.required, 0) : row.remaining
+  })));
   const weaponXpBalanceKey = 'WeaponXpBalance';
   let weaponXpBalanceItem: ResourceItem = $derived({
     key: weaponXpBalanceKey, name: t('ui-weapon-xp'), group: 'Currency', image: '/planner/icons/LevelPart/All_All.png'
@@ -320,6 +389,57 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
       : entries.sort(comparePosition).map((entry) => entry.input);
   }
 
+  function inventorySideInputOrder(inventoryRoot: HTMLElement, isGearMatrix: boolean): HTMLInputElement[] {
+    const inventorySide = inventoryRoot.querySelector<HTMLElement>('.inventory-side');
+    if (!inventorySide) return [];
+    const inputs = [...inventorySide.querySelectorAll<HTMLInputElement>('input.resource-input')];
+    if (!isGearMatrix) return inputs;
+
+    const weaponGridInputs = [...inventorySide.querySelectorAll<HTMLInputElement>('.weapon-material-grid input.resource-input')];
+    if (!weaponGridInputs.length) return inputs;
+    const firstGridIndex = inputs.indexOf(weaponGridInputs[0]);
+    if (firstGridIndex < 0) return inputs;
+    const rowCount = Math.ceil(weaponGridInputs.length / 4);
+    const columnMajorWeaponInputs = Array.from({ length: 4 }, (_, column) =>
+      Array.from({ length: rowCount }, (_, row) => weaponGridInputs[row * 4 + column])
+        .filter((input): input is HTMLInputElement => input !== undefined)
+    ).flat();
+    return [
+      ...inputs.slice(0, firstGridIndex),
+      ...columnMajorWeaponInputs,
+      ...inputs.slice(firstGridIndex + weaponGridInputs.length)
+    ];
+  }
+
+  function directionalMatrixInput(input: HTMLInputElement, matrix: HTMLElement, direction: 'ArrowUp' | 'ArrowDown' | 'ArrowLeft' | 'ArrowRight') {
+    const current = input.getBoundingClientRect();
+    const horizontal = direction === 'ArrowLeft' || direction === 'ArrowRight';
+    const sign = direction === 'ArrowLeft' || direction === 'ArrowUp' ? -1 : 1;
+    const currentPrimary = horizontal ? current.left + current.width / 2 : current.top + current.height / 2;
+    const currentCrossStart = horizontal ? current.top : current.left;
+    const currentCrossEnd = horizontal ? current.bottom : current.right;
+    const inputs = [...matrix.querySelectorAll<HTMLInputElement>('input.resource-input')]
+      .filter((candidate) => candidate !== input && !candidate.disabled &&
+        getComputedStyle(candidate).visibility !== 'hidden' && candidate.getClientRects().length > 0)
+      .map((candidate) => {
+        const rect = candidate.getBoundingClientRect();
+        const primary = horizontal ? rect.left + rect.width / 2 : rect.top + rect.height / 2;
+        const crossStart = horizontal ? rect.top : rect.left;
+        const crossEnd = horizontal ? rect.bottom : rect.right;
+        const primaryDelta = (primary - currentPrimary) * sign;
+        const overlap = Math.max(0, Math.min(currentCrossEnd, crossEnd) - Math.max(currentCrossStart, crossStart));
+        const crossDistance = Math.abs((crossStart + crossEnd) / 2 - (currentCrossStart + currentCrossEnd) / 2);
+        return { input: candidate, primaryDelta, overlap, crossDistance };
+      })
+      .filter((candidate) => candidate.primaryDelta > 1);
+    const aligned = inputs.filter((candidate) => candidate.overlap > 0);
+    const candidates = aligned.length ? aligned : inputs;
+    candidates.sort((first, second) => aligned.length
+      ? first.primaryDelta - second.primaryDelta || first.crossDistance - second.crossDistance
+      : first.crossDistance - second.crossDistance || first.primaryDelta - second.primaryDelta);
+    return candidates[0]?.input;
+  }
+
   function handleGearPointerDown(event: PointerEvent) {
     gearFocusRedirectToken += 1;
     lastGearPointerType = event.pointerType;
@@ -404,13 +524,38 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
   }
 
   onMount(() => {
+    if (gear) return;
+    try {
+      forceStackedMaterials = localStorage.getItem(resourceLayoutPreferenceKey) === 'true';
+      loadVisibleWithZeroQuantity(localStorage.getItem(resourceZeroVisibilityPreferenceKey));
+    }
+    catch { /* Keep the default resource table layout if storage is unavailable. */ }
+    const storage = (event: StorageEvent) => {
+      if (event.key === resourceLayoutPreferenceKey || event.key === null) {
+        forceStackedMaterials = event.key !== null && event.newValue === 'true';
+      }
+      if (event.key === resourceZeroVisibilityPreferenceKey || event.key === null) {
+        loadVisibleWithZeroQuantity(event.key === null ? null : event.newValue);
+      }
+    };
+    window.addEventListener('storage', storage);
+    window.addEventListener('pointerdown', closeResourceTableStyleOnOutsideClick, true);
+    return () => {
+      window.removeEventListener('storage', storage);
+      window.removeEventListener('pointerdown', closeResourceTableStyleOnOutsideClick, true);
+    };
+  });
+
+  onMount(() => {
     if (!gear) return;
     try {
       const savedPreference = localStorage.getItem(gearTransposePreferenceKey);
       if (savedPreference !== null) transposeGearTable = savedPreference === 'true';
+      sortGearFarmingStagesByNumber = localStorage.getItem(gearFarmingSortPreferenceKey) === 'true';
     }
-    catch { /* Keep the default orientation if storage is unavailable. */ }
+    catch { /* Keep the default gear table preferences if storage is unavailable. */ }
 
+    document.addEventListener('pointerdown', closeGearFarmingStyleOnOutsideClick, true);
     gearEnterDebugEnabled = new URLSearchParams(window.location.search).get('gearenterdebug') === '1';
     const debugEventTypes = ['keydown', 'keyup', 'keypress', 'focusin', 'focusout', 'beforeinput', 'input', 'change', 'pointerdown', 'pointerup'] as const;
     if (gearEnterDebugEnabled) {
@@ -421,6 +566,7 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
     document.addEventListener('focusin', handleGearFocusIn, true);
     document.addEventListener('focusout', handleGearFocusOut, true);
     return () => {
+      document.removeEventListener('pointerdown', closeGearFarmingStyleOnOutsideClick, true);
       if (gearEnterDebugEnabled) {
         for (const type of debugEventTypes) document.removeEventListener(type, recordGearEnterDebugEvent, true);
       }
@@ -436,48 +582,169 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
     catch { /* Keep the current orientation for this session if storage is unavailable. */ }
   }
 
+  function toggleGearFarmingStyleMode() {
+    gearFarmingStyleActive = !gearFarmingStyleActive;
+    gearFarmingStylePanelOpen = false;
+  }
+
+  async function openGearFarmingStylePanel(event: PointerEvent) {
+    if (!gearFarmingStyleActive || !(event.target instanceof Element) || !event.target.closest('.stage-runs [data-farm-stage]')) return;
+    event.preventDefault();
+    event.stopPropagation();
+    gearFarmingStylePanelOpen = true;
+    await tick();
+    if (!gearFarmingStyleActive || !gearFarmingStylePanelOpen) return;
+    const panelBounds = gearFarmingStylePanel?.getBoundingClientRect();
+    const width = Math.min(panelBounds?.width || 260, window.innerWidth - 16);
+    const height = panelBounds?.height || 54;
+    const rightSpace = window.innerWidth - event.clientX;
+    const left = rightSpace >= width + 12 ? event.clientX + 12 : event.clientX - width - 12;
+    gearFarmingStylePosition = {
+      left: Math.max(8, Math.min(left, window.innerWidth - width - 8)),
+      top: Math.max(8, Math.min(event.clientY - height / 2, window.innerHeight - height - 8))
+    };
+  }
+
+  function closeGearFarmingStyleOnOutsideClick(event: PointerEvent) {
+    if (!gearFarmingStyleActive) return;
+    const target = event.target instanceof Element ? event.target : null;
+    if (target?.closest('[data-gear-farming-style-toggle], .gear-farming-style-panel, .stage-runs.style-editable [data-farm-stage]')) return;
+    gearFarmingStyleActive = false;
+    gearFarmingStylePanelOpen = false;
+  }
+
+  function updateSortGearFarmingStages(value: boolean) {
+    sortGearFarmingStagesByNumber = value;
+    try { localStorage.setItem(gearFarmingSortPreferenceKey, String(value)); }
+    catch { /* Keep the setting for this session if storage is unavailable. */ }
+  }
+
+  function toggleResourceTableStyleMode() {
+    resourceTableStyleActive = !resourceTableStyleActive;
+    if (!resourceTableStyleActive) resourceTableStylePanelOpen = false;
+  }
+
+  function openResourceTableStylePanel(event: PointerEvent) {
+    if (gear || !resourceTableStyleActive) return;
+    const target = event.target instanceof Element ? event.target : null;
+    const section = target?.closest<HTMLElement>('[data-resource-zero-style-type]')?.dataset.resourceZeroStyleType;
+    if (section === 'currencies' || section === 'limit-break-books' || section === 'gifts') {
+      resourceTableStyleSection = section;
+    } else if (target?.closest('.matrices:not(.gear)')) {
+      resourceTableStyleSection = 'tables';
+    } else {
+      return;
+    }
+    const width = Math.min(260, window.innerWidth - 16);
+    const height = Math.min(resourceTableStylePanel?.getBoundingClientRect().height ?? 64, window.innerHeight - 16);
+    const rightSpace = window.innerWidth - event.clientX;
+    const left = rightSpace >= width + 12 ? event.clientX + 12 : event.clientX - width - 12;
+    resourceTableStylePosition = {
+      left: Math.max(8, Math.min(left, window.innerWidth - width - 8)),
+      top: Math.max(8, Math.min(event.clientY - height / 2, window.innerHeight - height - 8))
+    };
+    resourceTableStylePanelOpen = true;
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  function closeResourceTableStyleOnOutsideClick(event: PointerEvent) {
+    if (!resourceTableStyleActive) return;
+    const target = event.target instanceof Element ? event.target : null;
+    if (target?.closest('[data-resource-table-style-toggle], .resource-table-style-panel, .matrices:not(.gear), [data-resource-zero-style-type]')) return;
+    resourceTableStyleActive = false;
+    resourceTableStylePanelOpen = false;
+  }
+
+  function updateForceStackedMaterials(value: boolean) {
+    forceStackedMaterials = value;
+    try { localStorage.setItem(resourceLayoutPreferenceKey, String(value)); }
+    catch { /* Keep the current layout for this session if storage is unavailable. */ }
+  }
+
+  function loadVisibleWithZeroQuantity(value: string | null) {
+    try {
+      const saved = value ? JSON.parse(value) as Partial<Record<ResourceZeroVisibilityType, unknown>> : {};
+      visibleWithZeroQuantity = {
+        currencies: saved.currencies === true,
+        'limit-break-books': saved['limit-break-books'] === true,
+        gifts: saved.gifts === true
+      };
+    } catch {
+      visibleWithZeroQuantity = { currencies: false, 'limit-break-books': false, gifts: false };
+    }
+  }
+
+  function shouldShowZeroQuantity(section: ResourceZeroVisibilityType) {
+    return resourceTableStyleActive || visibleWithZeroQuantity[section];
+  }
+
+  function updateVisibleWithZeroQuantity(section: ResourceZeroVisibilityType, value: boolean) {
+    visibleWithZeroQuantity = { ...visibleWithZeroQuantity, [section]: value };
+    try { localStorage.setItem(resourceZeroVisibilityPreferenceKey, JSON.stringify(visibleWithZeroQuantity)); }
+    catch { /* Keep the setting for this session if storage is unavailable. */ }
+  }
+
   function openUsers(item: ResourceItem) {
     if (mode !== 'owned' && usersByResource[item.key]?.length) selectedResource = item;
   }
 
-  function handleMatrixKeydown(event: KeyboardEvent) {
+  function handleInventoryKeydown(event: KeyboardEvent) {
     const isEnterNavigation = event.key === 'Enter' || ['Go', 'Next', 'Done'].includes(event.key) || event.keyCode === 13;
+    const isCtrlArrowNavigation = event.ctrlKey && ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key);
     if (gearEnterDebugEnabled && event.target instanceof HTMLInputElement) {
-      addGearEnterDebugEvent(`matrix keydown key=${JSON.stringify(event.key)} target=${describeInput(event.target)} recognized=${isEnterNavigation || event.key === 'Tab'}`);
+      addGearEnterDebugEvent(`matrix keydown key=${JSON.stringify(event.key)} target=${describeInput(event.target)} recognized=${isEnterNavigation || event.key === 'Tab' || isCtrlArrowNavigation}`);
     }
     if (
-      (!isEnterNavigation && event.key !== 'Tab') || !(event.target instanceof HTMLInputElement) || !event.target.matches('.resource-input')
+      (!isEnterNavigation && event.key !== 'Tab' && !isCtrlArrowNavigation) ||
+      !(event.target instanceof HTMLInputElement) || !event.target.matches('.resource-input')
     ) return;
 
-    const matrixRoot = event.currentTarget as HTMLElement;
+    if (isCtrlArrowNavigation) {
+      const matrix = event.target.closest<HTMLElement>('.matrices.gear, .school-pair, .artifact-pair, .weapon-material-grid');
+      if (!matrix) return;
+      event.preventDefault();
+      const nextInput = directionalMatrixInput(event.target, matrix, event.key as 'ArrowUp' | 'ArrowDown' | 'ArrowLeft' | 'ArrowRight');
+      if (nextInput) focusMatrixInput(nextInput);
+      return;
+    }
+
+    const inventoryRoot = event.currentTarget as HTMLElement;
+    const matrixRoot = inventoryRoot.querySelector<HTMLElement>('.matrices');
+    if (!matrixRoot) return;
     const isGearMatrix = matrixRoot.classList.contains('gear');
-    if (event.key === 'Tab' && !isGearMatrix) return;
-    const mobileEnterUsesTabOrder = isEnterNavigation && isGearMatrix &&
+    const isMatrixInput = matrixRoot.contains(event.target);
+    if (event.key === 'Tab') {
+      if (!isGearMatrix || !isMatrixInput || !(event.target instanceof HTMLInputElement)) return;
+      const inputs = matrixInputOrder(matrixRoot, true, true);
+      const currentIndex = inputs.findIndex((input) => input === event.target);
+      if (currentIndex < 0) return;
+      const nextInput = inputs[currentIndex + (event.shiftKey ? -1 : 1)];
+      if (nextInput) {
+        event.preventDefault();
+        focusMatrixInput(nextInput);
+      } else if (focusOutsideMatrix(matrixRoot, event.target, event.shiftKey ? -1 : 1)) {
+        event.preventDefault();
+      }
+      return;
+    }
+
+    const mobileEnterUsesTabOrder = isEnterNavigation && isGearMatrix && isMatrixInput &&
       (event.location === KeyboardEvent.DOM_KEY_LOCATION_MOBILE || navigator.maxTouchPoints > 0 ||
         window.matchMedia('(pointer: coarse)').matches);
-    const rowMajorOrder = event.key === 'Tab' || mobileEnterUsesTabOrder;
-    const inputs = matrixInputOrder(matrixRoot, rowMajorOrder, isGearMatrix);
-
+    const matrixInputs = matrixInputOrder(matrixRoot, mobileEnterUsesTabOrder, isGearMatrix);
+    const inputs = [...matrixInputs, ...inventorySideInputOrder(inventoryRoot, isGearMatrix)];
     const currentIndex = inputs.findIndex((input) => input === event.target);
     if (currentIndex < 0) return;
 
     const nextInput = inputs[currentIndex + (event.shiftKey ? -1 : 1)];
     if (gearEnterDebugEnabled && isGearMatrix && isEnterNavigation) {
-      addGearEnterDebugEvent(`navigation order=${rowMajorOrder ? 'row' : 'column'} from=${describeInput(event.target)} to=${describeInput(nextInput ?? null)}`);
-    }
-    if (isEnterNavigation) {
-      event.preventDefault();
-      if (nextInput) focusMatrixInput(nextInput);
-      return;
-    }
-    if (!nextInput) {
-      if (event.key === 'Tab' && isGearMatrix && focusOutsideMatrix(matrixRoot, event.target, event.shiftKey ? -1 : 1)) {
-        event.preventDefault();
-      }
-      return;
+      const order = isMatrixInput && mobileEnterUsesTabOrder ? 'row' : isMatrixInput ? 'column' :
+        event.target instanceof Element && event.target.closest('.weapon-material-grid') ? 'weapon-column' : 'tab';
+      addGearEnterDebugEvent(`navigation order=${order} from=${describeInput(event.target)} to=${describeInput(nextInput ?? null)}`);
     }
     event.preventDefault();
-    focusMatrixInput(nextInput);
+    if (nextInput) focusMatrixInput(nextInput);
   }
 
   function fitRowName(node: HTMLElement, _initialValue: string) {
@@ -532,8 +799,21 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
     <span class={`selected-mode-chip ${mode}`}>
       {t(modes.find((item) => item.key === mode)!.label)}
     </span>
+    {#if !gear}
+      <button class="resource-table-style-toggle" data-resource-table-style-toggle type="button"
+        aria-label={t('ui-customize-resource-tables')} title={t('ui-customize-resource-tables')}
+        aria-pressed={resourceTableStyleActive} onclick={toggleResourceTableStyleMode}>
+        <span class="resource-table-style-icon" aria-hidden="true"></span>
+      </button>
+    {:else if mode === 'needed'}
+      <button class="resource-table-style-toggle" data-gear-farming-style-toggle type="button"
+        aria-label={t('ui-customize-gear-farming')} title={t('ui-customize-gear-farming')}
+        aria-pressed={gearFarmingStyleActive} onclick={toggleGearFarmingStyleMode}>
+        <span class="resource-table-style-icon" aria-hidden="true"></span>
+      </button>
+    {/if}
   {/snippet}
-  <div class="controls">
+  <div class="controls" class:resource-controls={!gear}>
     <div class="display-modes" role="group" aria-label={t('ui-display')}>
       {#each modes as option}
         <button class={option.key} data-key-shortcut={option.shortcut} data-key-shortcut-allow-number-input
@@ -574,10 +854,30 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
       {#if gearFarmError}<button onclick={() => gearFarmRetry++}>{t('ui-retry')}</button>{/if}
     </p>
   {/if}
-  <div class="inventory-sections" class:gear-layout={gear}
-    style={gear ? `--gear-table-max-width: ${40 + (panels[0]?.columns.length ?? 0) * 75}px` : undefined}>
-  <div class="matrices" class:gear class:show-universal={gear && showUniversalInventory} role="group" aria-label={t(gear ? 'footer-gear' : 'footer-resources')}
-    aria-busy={gear && gearFarmBusy} onkeydown={handleMatrixKeydown}>
+  {#if matrixCurrencyTiles.length}
+    <section class="resource-zero-group" class:matrix-currency-section={!gear}
+      class:zero-visibility-editable={!gear && resourceTableStyleActive}
+      data-resource-zero-style-type={!gear ? 'currencies' : undefined} onpointerdown={openResourceTableStylePanel}>
+      {#if !gear}<h3 class="resource-currency-title">{t('ui-group-currencies')}</h3>{/if}
+      <div class="summary-tiles matrix-currencies" role="group" aria-label={t('ui-group-currencies')}>
+        {#each matrixCurrencyTiles as item (item.key)}
+          <ResourceCell {item} {totals} {mode} {setOwned} {t}
+            userCount={usersByResource[item.key]?.length ?? 0}
+            inlineAmount={inlineAmount(item.key)}
+            showUsers={mode === 'owned' ? undefined : () => openUsers(item)} />
+        {/each}
+      </div>
+    </section>
+  {/if}
+  <div class="inventory-sections" class:gear-layout={gear} class:stacked-materials={!gear && forceStackedMaterials}
+    style={`--matrix-row-count: ${gearSizingRows};--matrix-column-count: ${panels[0]?.columns.length ?? 1};${gear ? `--gear-table-max-width: calc(40px + ${gearTableWidthTerms})` : ''}`}
+    onkeydown={handleInventoryKeydown}>
+  <div class="matrices" class:gear class:show-universal={gear && showUniversalInventory}
+    class:show-universal-placeholders={gear && showUniversalPlaceholders} class:needed-mode={gear && mode === 'needed'}
+    class:force-stacked-materials={!gear && forceStackedMaterials}
+    class:table-style-editable={!gear && resourceTableStyleActive}
+    role="group" aria-label={t(gear ? 'footer-gear' : 'footer-resources')}
+    aria-busy={gear && gearFarmBusy} onpointerdown={openResourceTableStylePanel}>
     {#if gear}
       {#each panels as panel, index}
         <section>
@@ -621,10 +921,11 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
                   </th>
                   {#each row.cells as item, cellIndex}
                     <td class:gear-special-cell={isUniversalGearItem(item) || (!transposeGearTable && cellIndex === panel.columns.length - 1)}>{#if item}
+                      {@const placeholderOnly = showUniversalPlaceholders && isUniversalGearItem(item)}
                       <div class="gear-cell">
-                        {#if showUniversalInventory || !isUniversalGearItem(item)}
-                          <ResourceCell {item} totals={gearDisplayTotals} {mode} {setOwned} {t}
-                            userCount={usersByResource[item.key]?.length ?? 0}
+                        {#if showUniversalInventory || !isUniversalGearItem(item) || showUniversalPlaceholders}
+                          <ResourceCell {item} totals={placeholderOnly ? gearPlaceholderTotals : gearDisplayTotals} {mode} {setOwned} {t}
+                            userCount={placeholderOnly ? 0 : usersByResource[item.key]?.length ?? 0}
                             showUsers={mode === 'owned' ? undefined : () => openUsers(item)} />
                         {/if}
                         {#if mode === 'needed' && item.group === 'Equipment'}
@@ -725,22 +1026,57 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
         {/if}
       {/each}
     {/if}
-    {#if gear && remainingCurrencyTiles.length}
-      <div class="summary-tiles" role="group" aria-label={t('ui-group-currencies')}>
-        {#each remainingCurrencyTiles as item (item.key)}
-          <ResourceCell {item} {totals} {mode} {setOwned} {t}
-            userCount={usersByResource[item.key]?.length ?? 0}
-            inlineAmount={inlineAmount(item.key)}
-            showUsers={mode === 'owned' ? undefined : () => openUsers(item)} />
-        {/each}
-      </div>
-    {/if}
+
   </div>
+  {#if !gear && resourceTableStyleActive && resourceTableStylePanelOpen}
+    <div class="resource-table-style-panel" bind:this={resourceTableStylePanel} role="group"
+      aria-label={t(resourceTableStyleSection === 'tables' ? 'ui-resource-table-layout' : 'ui-visible-with-zero-quantity')}
+      style:left={`${resourceTableStylePosition.left}px`} style:top={`${resourceTableStylePosition.top}px`}>
+      {#if resourceTableStyleSection === 'tables'}
+        <label><input type="checkbox" checked={forceStackedMaterials}
+          onchange={(event) => updateForceStackedMaterials(event.currentTarget.checked)} />
+          {t('ui-stack-artifacts-below-school-materials')}</label>
+      {:else}
+        <label><input type="checkbox" checked={visibleWithZeroQuantity[resourceTableStyleSection]}
+          onchange={(event) => updateVisibleWithZeroQuantity(resourceTableStyleSection as ResourceZeroVisibilityType, event.currentTarget.checked)} />
+          {t('ui-visible-with-zero-quantity')}</label>
+      {/if}
+    </div>
+  {/if}
+  {#if gear && mode === 'needed' && gearFarmingStyleActive && gearFarmingStylePanelOpen}
+    <div class="resource-table-style-panel gear-farming-style-panel" bind:this={gearFarmingStylePanel} role="group"
+      aria-label={t('ui-customize-gear-farming')} style:left={`${gearFarmingStylePosition.left}px`}
+      style:top={`${gearFarmingStylePosition.top}px`}>
+      <label><input type="checkbox" checked={sortGearFarmingStagesByNumber}
+        onchange={(event) => updateSortGearFarmingStages(event.currentTarget.checked)} />
+        {t('ui-sort-by-stage-number')}</label>
+    </div>
+  {/if}
     <div class="inventory-side">
+      {#if gear}
+        <section class="weapon-xp-summary-section" aria-label={t('ui-weapon-xp')}>
+          <div class="weapon-xp-displays" role="group" aria-label={t('ui-weapon-xp')}>
+            {#each weaponXpDisplayRows as row (row.type)}
+              {@const amountText = formatAmount(row.displayAmount)}
+              <div class="weapon-xp-display" data-weapon-xp={row.type}
+                title={`${row.type}: ${amountText}`}
+                aria-label={`${row.type}, ${t(modes.find((item) => item.key === mode)!.label)}: ${amountText}`}>
+                <img src={`/planner/icons/LevelPart/${row.type}_All.png`} alt="" draggable="false" />
+                <span class="weapon-xp-display-amount"
+                  use:fitResourceText={{ text: amountText, layout: 'inline-amount' }}>{amountText}</span>
+              </div>
+            {/each}
+          </div>
+          <p class="note">{t('ui-weapon-xp-help')}</p>
+        </section>
+      {/if}
       {#if pairedGroups.length}
         <div class="xp-book-groups">
           {#each pairedGroups as group}
-            <section>
+            <section class:resource-zero-group={group === 'Limit break books' || group === 'Gifts'}
+              class:zero-visibility-editable={!gear && resourceTableStyleActive && (group === 'Limit break books' || group === 'Gifts')}
+              data-resource-zero-style-type={group === 'Limit break books' ? 'limit-break-books' : group === 'Gifts' ? 'gifts' : undefined}
+              onpointerdown={openResourceTableStylePanel}>
               <h3>{t(`ui-group-${group.toLowerCase().replaceAll(' ', '-')}`)}</h3>
               <div class="tiles">
                 {#each extras.filter((item) => item.group === group) as item (item.key)}
@@ -786,6 +1122,9 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
       </div>
       {#if gear && mode === 'needed'}
         <GearFarming {dataset} {totals} {metadata} {savedServer} {setServer} bind:multiplier={campaignMultiplier}
+          bind:excludeOwnedChoiceBlueprints bind:excludeOwnedGeneralBlueprints
+          bind:sortByStageNumber={sortGearFarmingStagesByNumber} styleActive={gearFarmingStyleActive}
+          onStyleTilePointerDown={openGearFarmingStylePanel}
           result={gearFarmResult} busy={gearFarmBusy} {t} />
       {/if}
     </div>
@@ -793,31 +1132,7 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
   {#if gear && mode === 'needed' && gearFarmResult}
     <GearBlueprintUsage data={dataset.context.data} {metadata} result={gearFarmResult} {t} />
   {/if}
-  {#if gear}
-    <details>
-      <summary>{t('ui-weapon-xp')}</summary>
-      <div class="table-scroll"><table class="weapon-table">
-        <thead><tr><th scope="col" aria-label={t('ui-weapon-xp')}></th><th scope="col">{t('label-owned')}</th><th scope="col">{t('label-totalneeded')}</th><th scope="col">{t('label-remainingneeded')}</th></tr></thead>
-        <tbody>{#each weapons.rows as row}
-          <tr><th scope="row"><img class="weapon-xp-icon" src={`/planner/icons/LevelPart/${row.type}_All.png`} alt={row.type} draggable="false" /></th>
-            <td>{formatAmount(row.owned)}</td><td>{formatAmount(row.required)}</td><td>{formatAmount(row.remaining)}</td></tr>
-        {/each}
-        </tbody>
-      </table></div>
-      <p class="note">{t('ui-weapon-xp-help')}</p>
-    </details>
-  {/if}
-  {#if !gear && remainingSummaryTiles.length}
-    <h3>{t('ui-group-currencies')}</h3>
-    <div class="summary-tiles" role="group" aria-label={t('ui-group-currencies')}>
-      {#each remainingSummaryTiles as item (item.key)}
-        <ResourceCell {item} {totals} {mode} {setOwned} {t}
-          userCount={usersByResource[item.key]?.length ?? 0}
-          inlineAmount={inlineAmount(item.key)}
-          showUsers={mode === 'owned' ? undefined : () => openUsers(item)} />
-      {/each}
-    </div>
-  {/if}
+
   {#if panels.length === 0 && summaryTiles.length === 0 && extras.length === 0}<p>{t('ui-no-resource-rows')}</p>{/if}
   {#if gearEnterDebugEnabled}
     <aside class="gear-enter-debug" aria-label="Gear input event debug log">
@@ -852,19 +1167,42 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
   .controls-summary.gear-controls-summary { flex: 1 1 36rem; flex-wrap: wrap !important; }
   .gear-balance-summary-slot { display: contents; }
   .controls label[hidden] { display: none; }
+  .resource-table-style-toggle { display: grid; width: 2rem; height: 2rem; padding: 0.35rem; place-items: center; border: 1px solid #7c5b7d66; border-radius: 0.35rem; background: transparent; color: var(--text); cursor: pointer; }
+  .resource-table-style-toggle:hover, .resource-table-style-toggle[aria-pressed="true"] { border-color: #82dafb; background: #82dafb4d; }
+  .resource-table-style-icon { display: block; width: 100%; height: 100%; background: currentColor; -webkit-mask: url('/planner/icons/UI/brush-solid-full.svg') center / contain no-repeat; mask: url('/planner/icons/UI/brush-solid-full.svg') center / contain no-repeat; }
   .display-modes { display: flex; flex-wrap: wrap; gap: 0.3rem; }
   .display-modes button { color: #252530; padding: 0.45rem 0.6rem; border: 2px solid transparent; }
-  .display-modes button[aria-pressed="true"] { border-color: #7c5b7d; box-shadow: 0 0 0 1px var(--text); font-weight: bold; }
+  .display-modes button[aria-pressed="true"] { background-color: color-mix(in srgb, var(--mode-color) 20%, white); box-shadow: 0 0 0 3px var(--mode-color); }
   .selected-mode-chip {
     flex: 0 0 auto; color: #252530; padding: 0.35rem 0.5rem;
     border-radius: 0.35rem; font-size: 0.8rem;
     font-weight: bold; line-height: 1.1; white-space: nowrap;
   }
-  .needed { background: #f5c8dd; } .owned { background: #c8e6f5; } .required { background: #c8f5e0; } .leftover { background: #f5efc8; }
+  .needed { --mode-color: #f5c8dd; background: var(--mode-color); } .owned { --mode-color: #c8e6f5; background: var(--mode-color); } .required { --mode-color: #c8f5e0; background: var(--mode-color); } .leftover { --mode-color: #f5efc8; background: var(--mode-color); }
   label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.85rem; }
   input { padding: 0.35rem; min-width: 0; } input[type="number"] { width: 80px; }
   .matrices { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 285px), 1fr)); align-items: start; gap: 0.75rem; }
   .matrices.gear { display: block; }
+  .matrices.table-style-editable, .resource-zero-group.zero-visibility-editable { position: relative; isolation: isolate; }
+  .matrix-currency-section { margin-bottom: 0.2rem; }
+  .matrices.table-style-editable::before, .matrices.table-style-editable::after,
+  .resource-zero-group.zero-visibility-editable::before, .resource-zero-group.zero-visibility-editable::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+  }
+  .matrices.table-style-editable::after, .resource-zero-group.zero-visibility-editable::after {
+    z-index: 20; background: #82dafb4d; pointer-events: auto; cursor: crosshair;
+  }
+  .matrices.table-style-editable::before, .resource-zero-group.zero-visibility-editable::before {
+    z-index: 21; background: linear-gradient(135deg, transparent 43%, #bfeaff9c 50%, transparent 57%);
+    background-size: 300% 300%; background-repeat: no-repeat; animation: resource-table-style-shine 2.8s ease-in-out infinite;
+  }
+  @keyframes resource-table-style-shine { 0% { background-position: 140% 140%; } 24% { background-position: -140% -140%; } 24.01%, 100% { background-position: 140% 140%; } }
+  @media (prefers-reduced-motion: reduce) {
+    .matrices.table-style-editable::before, .resource-zero-group.zero-visibility-editable::before { animation: none; }
+  }
+  .resource-table-style-panel { position: fixed; z-index: 30; width: max-content; max-width: min(260px, calc(100vw - 1rem)); padding: 0.55rem 0.7rem; border: 1px solid #82dafb; border-radius: 0.45rem; background: var(--surface); color: var(--text); box-shadow: 0 3px 14px #0008; }
+  .resource-table-style-panel label { display: flex; flex-direction: row; align-items: center; gap: 0.45rem; margin: 0; font-size: 0.8rem; white-space: normal; }
+  .resource-table-style-panel input { flex: 0 0 auto; width: 1rem; height: 1rem; margin: 0; accent-color: #82dafb; }
   .matrices:not(.gear) { display: flex; flex-direction: column; gap: 0.75rem; }
   .inventory-sections { min-width: 0; }
   .inventory-sections:not(.gear-layout) { min-width: 800px; }
@@ -877,9 +1215,10 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
   tbody th { text-align: left; font-size: 0.75rem; font-weight: normal; width: 22%; overflow-wrap: anywhere; }
   .gear .table-scroll { overflow-x: hidden; }
   .gear table { table-layout: fixed; max-width: var(--gear-table-max-width); margin-inline: auto; }
-  .gear:not(.show-universal) .gear-special-header,
-  .gear:not(.show-universal) .gear-special-cell { visibility: hidden; }
-  .gear:not(.show-universal) .gear-special-row { display: none; }
+  .gear:not(.show-universal):not(.show-universal-placeholders) .gear-special-header,
+  .gear:not(.show-universal):not(.show-universal-placeholders) .gear-special-cell { visibility: hidden; }
+  .gear:not(.show-universal):not(.show-universal-placeholders) .gear-special-row,
+  .gear.needed-mode .gear-special-row { display: none; }
   .gear tbody tr:nth-child(even) > th,
   .gear tbody tr:nth-child(even) > td { background-color: #84848436; }
   .gear thead th:first-child, .gear tbody th { width: 40px; }
@@ -898,7 +1237,7 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
   .gear-cell { position: relative; width: 100%; aspect-ratio: 1; }
   .gear-cell :global(.resource-cell) { position: absolute; inset: 0; width: 100%; height: 100%; }
   .gear-use-indicator {
-    position: absolute; z-index: 3; display: flex; align-items: center; gap: 0.08rem;
+    position: absolute; z-index: 3; display: flex; align-items: center; gap: 0.2rem;
     max-width: calc(100% - 0.12rem); padding: 0.04rem 0.08rem; border: 1px solid #7c5b7d66;
     border-radius: 0.2rem; background: color-mix(in srgb, var(--background) 82%, transparent);
     color: var(--text); font: 700 0.65rem/1 sans-serif; font-variant-numeric: tabular-nums;
@@ -934,19 +1273,21 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
   .summary-tiles :global(.resource-cell) { flex: 0 0 180px; width: 180px; min-width: 120px; min-height: 44px; height: 44px; border: 1px solid #7c5b7d66; border-radius: 0.4rem; background: var(--background); padding-right: 0.3rem; }
   .summary-tiles :global(.resource-cell.zero .resource-image) { opacity: 1; }
   .summary-tiles :global(.resource-cell.zero .amount) { visibility: visible; }
-  .weapon-table { width: fit-content; max-width: 100%; table-layout: auto; }
-  .weapon-table th, .weapon-table td { padding: 0.4rem; text-align: right; }
-  .weapon-table th:first-child { width: 2.75rem; text-align: center; }
-  .weapon-xp-icon { display: block; width: 2.4rem; height: 2.4rem; margin: auto; object-fit: contain; }
-  details { margin-top: 1rem; } summary { cursor: pointer; }
+  .weapon-xp-summary-section { margin-top: 0.65rem; }
+  .weapon-xp-summary-section .note { margin-bottom: 0; }
+  .weapon-xp-displays { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.35rem; width: 100%; max-width: 36rem; }
+  .weapon-xp-display { --overlay-number-fit-ratio: 0.9; display: flex; align-items: center; justify-content: center; gap: 0.3rem; min-width: 0; height: 44px; padding: 0.2rem 0.35rem; overflow: hidden; border: 1px solid #7c5b7d66; border-radius: 0.4rem; background: var(--background); }
+  .weapon-xp-display img { display: block; flex: 0 0 2.2rem; width: 2.2rem; height: 2.2rem; object-fit: contain; }
+  .weapon-xp-display-amount { min-width: 0; overflow: hidden; color: var(--text); font-size: 1.1rem; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
   .note { font-size: 0.8rem; line-height: 1.4; opacity: 0.85; }
   .error { color: var(--error); }
   @media (max-width: 800px) {
     .gear td :global(.amount) { font-size: 0.9rem; }
-    .gear-use-indicator { gap: 0.04rem; padding: 0.02rem 0.04rem; font-size: 0.42rem; }
+    .gear-use-indicator { gap: 0.2rem; padding: 0.02rem 0.04rem; font-size: 0.42rem; }
     .gear-use-indicator img { flex-basis: 0.48rem; width: 0.48rem; height: 0.48rem; }
-    .gear:not(.show-universal) .gear-special-header,
-    .gear:not(.show-universal) .gear-special-cell { display: none; }
+    .gear:not(.show-universal):not(.show-universal-placeholders) .gear-special-header,
+    .gear:not(.show-universal):not(.show-universal-placeholders) .gear-special-cell { display: none; }
     .gear-general-header, .gear-special-name { visibility: hidden; }
     .matrices:not(.gear) td :global(.amount) { font-size: 0.9rem; }
     .gear-header-name { display: none; }
@@ -987,21 +1328,62 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
       position: static; flex: 0 0 1.25rem; width: 1.25rem; height: 1.25rem; transform: none;
     }
     .controls-summary :global(.inline-amount .amount) { width: auto; font-size: 0.85rem; }
+    .matrix-currencies :global(.inline-amount .resource-image) {
+      position: static; flex: 0 0 1.25rem; width: 1.25rem; height: 1.25rem; transform: none;
+    }
+    .matrix-currencies :global(.inline-amount .resource-input) { max-width: calc(100% - 1.5rem); }
     .tiles :global(.resource-cell) { flex: 0 0 48px; width: 48px; min-width: 48px; min-height: 48px;}
   }
+  @media (min-width: 601px) and (max-width: 1200px) {
+    .inventory-sections { display: flex; flex-direction: column; align-items: center; width: fit-content; max-width: calc(100vw - 3rem); margin-inline: auto; }
+    .controls.resource-controls { width: fit-content; max-width: 100%; flex-direction: column; align-items: center; margin-inline: auto; }
+    .controls.resource-controls .display-modes, .controls.resource-controls .controls-summary { justify-content: center; }
+    .inventory-sections:not(.gear-layout) { min-width: 0; width: fit-content; }
+    .inventory-sections > .matrices { width: fit-content; max-width: 100%; margin-inline: auto; }
+    .inventory-sections > .inventory-side { width: fit-content; max-width: min(100%, 42rem); margin-inline: auto; }
+    .matrix-currencies { width: fit-content; max-width: calc(100vw - 3rem); margin-inline: auto; }
+    .resource-currency-title { width: fit-content; margin-inline: auto; }
+  }
+  @media (min-width: 601px) {
+    .inventory-sections:not(.gear-layout) {
+      --inventory-cell-size: clamp(40px, min(calc((88dvh - 13rem) / var(--matrix-row-count)), calc((min(1300px, calc(100vw - 1rem)) - 14.5rem) / 8)), 75px);
+    }
+    .inventory-sections.gear-layout {
+      --inventory-cell-size: clamp(40px, min(calc((122dvh - 13rem) / var(--matrix-row-count)), calc((min(1300px, calc(100vw - 1rem)) - 4.5rem) / var(--matrix-column-count))), 75px);
+    }
+    .inventory-sections.stacked-materials {
+      --inventory-cell-size: clamp(40px, min(calc((88dvh - 13rem) / var(--matrix-row-count)), calc((min(1300px, calc(100vw - 1rem)) - 14.5rem) / 8)), 75px);
+    }
+    .matrices:not(.gear) .school-pair { display: flex; width: max-content; max-width: 100%; margin-inline: auto; gap: 0; }
+    .matrices:not(.gear) .school-pair table.school-blu-ray-table {
+      width: calc(var(--inventory-cell-size) + var(--inventory-cell-size) + var(--inventory-cell-size) + var(--inventory-cell-size) + var(--inventory-cell-size));
+      max-width: 100%; table-layout: fixed; margin: 0;
+    }
+    .matrices:not(.gear) .school-pair table.school-tech-note-table {
+      width: calc(var(--inventory-cell-size) + var(--inventory-cell-size) + var(--inventory-cell-size) + var(--inventory-cell-size));
+      max-width: 100%; table-layout: fixed; margin: 0;
+    }
+    .matrices:not(.gear) .school-pair td { width: var(--inventory-cell-size); }
+    .school-row-header { width: var(--inventory-cell-size); }
+    .artifact-pair { display: grid; width: max-content; max-width: 100%; margin-inline: auto; grid-template-columns: repeat(2, max-content); gap: 0; }
+    .matrices:not(.gear) .artifact-pair table {
+      width: calc(100px + var(--inventory-cell-size) + var(--inventory-cell-size) + var(--inventory-cell-size) + var(--inventory-cell-size));
+      max-width: 100%; table-layout: fixed; margin: 0;
+    }
+    .artifact-pair th:first-child { width: 100px; }
+    .matrices:not(.gear) .artifact-pair td { width: var(--inventory-cell-size); }
+  }
   @media (min-width: 1201px) {
+    .inventory-sections:not(.gear-layout):not(.stacked-materials) {
+      --inventory-cell-size: clamp(40px, min(calc((88dvh - 13rem) / var(--matrix-row-count)), calc((min(1300px, calc(100vw - 1rem)) - 200px - 0.75rem - 2rem) / 17)), 75px);
+    }
     .matrices:not(.gear) {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      align-items: start;
-      gap: 0.75rem;
+      display: grid; grid-template-columns: max-content max-content; justify-content: center;
+      align-items: start; gap: 0.75rem;
     }
+    .matrices:not(.gear).force-stacked-materials { grid-template-columns: max-content; }
     .matrices:not(.gear) > section { min-width: 0; }
-    .matrices:not(.gear) .school-matrices table {
-      width: 100%; max-width: 100%; table-layout: fixed; margin: 0;
-    }
-    .matrices:not(.gear) .artifact-matrices .artifact-pair { max-width: none; }
-    .artifact-pair th:first-child { width: clamp(90px, 35%, 120px); }
+
     .inventory-sections.gear-layout {
       display: grid;
       grid-template-columns: minmax(0, var(--gear-table-max-width)) minmax(0, 1fr);

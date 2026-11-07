@@ -8,7 +8,7 @@ export interface MaterialPanel {
 }
 
 export function inventoryLayout(metadata: PlannerMetadata, totals: ResourceTotals, gear: boolean) {
-  const catalog = inventoryCatalog(metadata, totals);
+  const catalog = inventoryCatalog(metadata);
   const matrices = new Set<string>();
   const panels: MaterialPanel[] = [];
   if (gear) {
@@ -77,7 +77,7 @@ export function inventoryLayout(metadata: PlannerMetadata, totals: ResourceTotal
       });
     }
   }
-  const keys = new Set([...catalog.map((item) => item.key), ...Object.keys(totals.needed), ...Object.keys(totals.required), 'GearXp']);
+  const keys = new Set([...catalog.map((item) => item.key), 'GearXp', 'Xp']);
   const extra = [...keys].filter((key) => {
     if (matrices.has(key) || ['Eleph', 'ShopResets', 'Spring_Xp', 'Hammer_Xp', 'Barrel_Xp'].includes(key)) return false;
     const item = resourceItem(key, metadata);

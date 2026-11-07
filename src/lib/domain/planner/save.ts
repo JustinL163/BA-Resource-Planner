@@ -1,6 +1,6 @@
 import { createDefaultSave } from '../../services/preferences';
 import { createCharacter, defaultEleph } from './defaults';
-import { investmentKeys, type CharacterInfo, type ElephState, type FullInvestment, type PlannerCharacter, type PlannerMetadata, type PlannerSave } from './types';
+import { investmentKeys, type CharacterInfo, type ElephState, type FullInvestment, type InvestmentValue, type PlannerCharacter, type PlannerMetadata, type PlannerSave } from './types';
 
 export function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -150,6 +150,83 @@ export function parsePlannerSave(
     ...raw, exportVersion: 2, characters, character_order: order, disabled_characters: disabled,
     owned_materials: owned, groups, language: typeof raw.language === 'string' ? raw.language : 'EN'
   };
+}
+
+export function mergePartialPlannerSave(
+  current: PlannerSave, source: string, students: Record<string, CharacterInfo>, metadata: PlannerMetadata,
+  names: Record<string, string> = {}
+): PlannerSave {
+  const raw: unknown = JSON.parse(source);
+  if (!isRecord(raw) || raw.import_type !== 'partial') throw new Error('This is not a partial planner import.');
+  const version = raw.exportVersion ?? 2;
+  if (version !== 1 && version !== 2) throw new Error(`Unsupported save version: ${String(version)}.`);
+  if (!Array.isArray(raw.characters)) throw new Error('Partial import characters are not a list.');
+
+  const next: PlannerSave = {
+    ...current,
+    characters: current.characters.map((character) => ({
+      ...character, current: { ...character.current }, target: { ...character.target }, eleph: { ...character.eleph }
+    })),
+    character_order: [...current.character_order],
+    disabled_characters: [...current.disabled_characters],
+    owned_materials: { ...current.owned_materials }
+  };
+  const characters = next.characters;
+  const characterIndex = new Map(characters.map((character, index) => [character.id, index]));
+  const seen = new Set<string>();
+
+  for (const value of raw.characters) {
+    if (!isRecord(value) || (typeof value.id !== 'string' && typeof value.id !== 'number')) {
+      throw new Error('A partial-import character has no valid ID.');
+    }
+    const id = String(value.id);
+    if (!students[id]) throw new Error(`Student data is missing for ${id}. Use the legacy planner or correct the import.`);
+    if (seen.has(id)) throw new Error(`Duplicate partial-import character: ${id}.`);
+    seen.add(id);
+    if (value.current !== undefined && !isRecord(value.current)) {
+      throw new Error(`Partial-import current values for ${id} are not an object.`);
+    }
+    if (value.eleph !== undefined && !isRecord(value.eleph)) {
+      throw new Error(`Partial-import eleph data for ${id} is not an object.`);
+    }
+
+    const incomingCurrent = isRecord(value.current) ? value.current : null;
+    const incomingEleph = isRecord(value.eleph) ? value.eleph : null;
+    const currentKeys = incomingCurrent ? investmentKeys.filter((key) => Object.hasOwn(incomingCurrent, key)) : [];
+    const hasCurrentValues = currentKeys.length > 0;
+    const hasOwned = Boolean(incomingEleph && Object.hasOwn(incomingEleph, 'owned'));
+
+    let index = characterIndex.get(id);
+    if (index === undefined && !hasCurrentValues) continue;
+    const isNew = index === undefined;
+    if (index === undefined) {
+      characters.push(createCharacter(students[id], metadata));
+      index = characters.length - 1;
+      characterIndex.set(id, index);
+      next.character_order.push(id);
+    }
+    const character = characters[index];
+
+    const currentInvestment: FullInvestment = { ...character.current };
+    for (const key of currentKeys) currentInvestment[key] = incomingCurrent![key] as InvestmentValue;
+    const targetInvestment: FullInvestment = isNew ? { ...currentInvestment } : { ...character.target };
+    for (const key of investmentKeys) {
+      if (Number(targetInvestment[key]) < Number(currentInvestment[key])) targetInvestment[key] = currentInvestment[key];
+    }
+    const elephState: ElephState = { ...character.eleph };
+    if (hasOwned) elephState.owned = incomingEleph!.owned as number | string;
+    characters[index] = { ...character, current: currentInvestment, target: targetInvestment, eleph: elephState };
+  }
+
+  if (raw.owned_materials !== undefined) {
+    if (!isRecord(raw.owned_materials)) throw new Error('Partial-import owned materials are not an object.');
+    const ownedMaterials = next.owned_materials;
+    for (const [key, amount] of Object.entries(raw.owned_materials)) {
+      ownedMaterials[key] = amount as number | string;
+    }
+  }
+
+  return parsePlannerSave(JSON.stringify(next), students, metadata, names);
 }
 
 export function validateCharacterEdit(character: PlannerCharacter, info: CharacterInfo, metadata: PlannerMetadata): void {

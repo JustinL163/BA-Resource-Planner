@@ -21,7 +21,7 @@
   }
 </script>
 
-<span class="portrait" class:excluded style:--portrait-radius={radius}>
+<span class="portrait" class:excluded class:full-grayscale={excluded && displaySettings.grayscaleDisabled} style:--portrait-radius={radius}>
   <span class="portrait-content">
     {#if portrait}<img class="portrait-image character-image" src={portrait} alt="" loading="lazy" draggable="false" width="160" height="180" />{/if}
     {#if character && !borrowed}
@@ -35,7 +35,7 @@
     </span>
     {/if}
     {#if showInfo('bond')}
-    <span class="bond" aria-hidden="true">
+    <span class="bond" class:two-lines={displayedInfo === 'all' && Number(character.target.bond) !== Number(character.current.bond)} aria-hidden="true">
       <img src="/planner/icons/Misc/bondheart.png" alt="" draggable="false" />
       <span>{character.current.bond}{#if displayedInfo === 'all' && Number(character.target.bond) !== Number(character.current.bond)}<span class="target">{character.target.bond}</span>{/if}</span>
     </span>
@@ -50,7 +50,7 @@
   {/if}
   {#if displaySettings.name}<span class="name" aria-hidden="true">{name}</span>{/if}
   {#if borrowed}<span class="borrowed" aria-hidden="true">{borrowedLabel}</span>{/if}
-  {#if excluded}<span class="excluded-mark" aria-hidden="true"></span>{/if}
+  {#if excluded && !displaySettings.hideDisabledMark}<span class="excluded-mark" aria-hidden="true"></span>{/if}
   </span>
   {#if character && !borrowed && showInfo('stars')}
     <span class="stars" aria-hidden="true">
@@ -81,8 +81,10 @@
   .stars img, .ue-stars img { width: 20%; height: auto; object-fit: contain; pointer-events: none; }
   .bond { position: absolute; top: 22%; left: 3%; width: 20%; }
   .bond img { width: 100%; pointer-events: none; }
-  .bond > span { position: absolute; inset: 10% 0 auto; font: bold max(8px, calc(var(--card-size) * 0.085))/1.1 monospace; text-shadow: -1px -1px black, 1px 1px black; }
+  .bond > span { position: absolute; inset: 15% 0 auto; font: bold max(8px, calc(var(--card-size) * 0.085))/1.1 monospace; text-shadow: -1px -1px 0 black, 0 -1px 0 black, 1px -1px 0 black, -1px 0 0 black, 1px 0 0 black, -1px 1px 0 black, 0 1px 0 black, 1px 1px 0 black; }
+  .bond.two-lines > span { inset: -15% 0 auto; }
   .excluded { filter: grayscale(0.8) brightness(0.55); }
+  .portrait.excluded.full-grayscale { filter: grayscale(1) brightness(0.55); }
   .excluded-mark { position: absolute; top: 25%; left: 38%; display: grid; width: 24%; min-width: 0; aspect-ratio: 1; box-sizing: border-box; place-items: center; border: 2px solid white; border-radius: 50%; background: #672b39; }
   .excluded-mark::after { content: ''; width: 55%; height: 2px; border-radius: 999px; background: white; }
 

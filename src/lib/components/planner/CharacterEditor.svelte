@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount, untrack } from 'svelte';
+  import { onMount, tick, untrack } from 'svelte';
   import { sanitizeIntegerInput } from '$lib/actions/sanitize-integer-input';
   import type { Language } from '$lib/domain/localisation';
   import type { CharacterInfo, PlannerCharacter, PlannerDataset, PlannerMetadata, ResourceTotals } from '$lib/domain/planner/types';
@@ -35,6 +35,12 @@
   let deleting = $state(false);
   let presetOpen = $state(false);
   let presetServer = $state<FarmServer>('Global');
+  const inputLabelsPreferenceKey = 'planner-character-inputs-hide-current-target-labels';
+  let inputStyleActive = $state(false);
+  let inputStylePanelOpen = $state(false);
+  let hideCurrentTargetLabels = $state(false);
+  let inputStylePanel = $state<HTMLDivElement>();
+  let inputStylePosition = $state({ left: 8, top: 8 });
   let mounted = $state(false);
   let touchDebugEnabled = $state(false);
   let touchDebugVisible = $state(true);
@@ -88,6 +94,8 @@
     pendingNavigation = null;
     deleting = false;
     presetOpen = false;
+    inputStyleActive = false;
+    inputStylePanelOpen = false;
   });
   let activeServer = $derived.by(() => {
     try { return farmServer(savedServer); }
@@ -194,6 +202,15 @@
     pendingNavigation = null;
   }
   function discardAndProceed() {
+    const direction = pendingNavigation;
+    discardPrompt = false;
+    pendingNavigation = null;
+    if (direction) navigate(direction);
+    else close();
+  }
+  function saveAndProceed() {
+    if (validation.error || !save(draft, expected)) return;
+    expected = characterFingerprint(draft);
     const direction = pendingNavigation;
     discardPrompt = false;
     pendingNavigation = null;
@@ -352,7 +369,47 @@
       requestNavigation(1);
     }
   }
+  function toggleInputStyleMode() {
+    inputStyleActive = !inputStyleActive;
+    inputStylePanelOpen = false;
+  }
+
+  async function openInputStylePanel(event: PointerEvent) {
+    if (!inputStyleActive || !(event.target instanceof Element) || !event.target.closest('.skill-tile')) return;
+    event.preventDefault();
+    event.stopPropagation();
+    inputStylePanelOpen = true;
+    await tick();
+    if (!inputStyleActive || !inputStylePanelOpen) return;
+    const panelBounds = inputStylePanel?.getBoundingClientRect();
+    const width = Math.min(panelBounds?.width || 260, window.innerWidth - 16);
+    const height = panelBounds?.height || 54;
+    const rightSpace = window.innerWidth - event.clientX;
+    const left = rightSpace >= width + 12 ? event.clientX + 12 : event.clientX - width - 12;
+    inputStylePosition = {
+      left: Math.max(8, Math.min(left, window.innerWidth - width - 8)),
+      top: Math.max(8, Math.min(event.clientY - height / 2, window.innerHeight - height - 8))
+    };
+  }
+
+  function closeInputStyleModeOnOutsidePointer(event: PointerEvent) {
+    if (!inputStyleActive) return;
+    const target = event.target instanceof Element ? event.target : null;
+    if (target?.closest('[data-character-input-style-toggle], .character-input-style-panel, .skill-details .skill-tile')) return;
+    inputStyleActive = false;
+    inputStylePanelOpen = false;
+  }
+
+  function updateHideCurrentTargetLabels(value: boolean) {
+    hideCurrentTargetLabels = value;
+    try { window.localStorage.setItem(inputLabelsPreferenceKey, String(value)); }
+    catch { /* Keep the setting for this session if storage is unavailable. */ }
+  }
+
   onMount(() => {
+    try { hideCurrentTargetLabels = window.localStorage.getItem(inputLabelsPreferenceKey) === 'true'; }
+    catch { /* Use the default when storage is unavailable. */ }
+    document.addEventListener('pointerdown', closeInputStyleModeOnOutsidePointer, true);
     try {
       const lastPresetServer = window.localStorage.getItem(presetServerPreferenceKey);
       if (lastPresetServer !== null) presetServer = farmServer(lastPresetServer);
@@ -374,6 +431,7 @@
       for (const type of touchDebugEvents) window.addEventListener(type, logCharacterEditorTouchEvent, true);
     }
     return () => {
+      document.removeEventListener('pointerdown', closeInputStyleModeOnOutsidePointer, true);
       window.removeEventListener('keydown', interceptEditorKeys, true);
       if (touchDebugEnabled) {
         for (const type of touchDebugEvents) window.removeEventListener(type, logCharacterEditorTouchEvent, true);
@@ -443,14 +501,16 @@
     const resources = validation.resources;
     if (!resources) return null;
     if (draft.eleph.use_eligma) {
-      return { image: metadata.images.Eligma ?? '/planner/icons/Misc/Eligma.png', value: Number(resources.Eligma ?? 0), label: t('label-eligma') };
+      const value = Number(resources.Eligma ?? 0);
+      return value > 0 ? { image: metadata.images.Eligma ?? '/planner/icons/Misc/Eligma.png', value, label: t('label-eligma') } : null;
     }
     if (draft.eleph.use_shop && selectedShopCurrency) {
-      return {
+      const value = Number(resources[`${selectedShopCurrency}Cost`] ?? 0);
+      return value > 0 ? {
         image: metadata.images[selectedShopCurrency] ?? `/planner/icons/Misc/${selectedShopCurrency}.png`,
-        value: Number(resources[`${selectedShopCurrency}Cost`] ?? 0),
+        value,
         label: shopCurrencyName(selectedShopCurrency)
-      };
+      } : null;
     }
     return null;
   });
@@ -546,6 +606,11 @@
                 aria-label={t('ui-next-character')} onclick={() => requestNavigation(1)}>&rarr;</button>
             </div>
             <div class="header-actions">
+              <button type="button" class="input-style-toggle" data-character-input-style-toggle
+                aria-label={t('ui-customize-character-inputs')} title={t('ui-customize-character-inputs')}
+                aria-pressed={inputStyleActive} onclick={toggleInputStyleMode}>
+                <span class="input-style-icon" aria-hidden="true"></span>
+              </button>
               <button type="button" class="cancel-button" aria-keyshortcuts="Escape" onclick={requestClose}>
                 <KeyboardShortcutLabel label={t('label-cancel')} shortcut="Esc" />
               </button>
@@ -558,6 +623,8 @@
         </header>
         <div class="editor-primary">
       <SkillDetails skills={skillViews.skills} character={draft} {info} {name} {metadata} {scribble} {included} {t}
+        {inputStyleActive} {hideCurrentTargetLabels}
+        onInputStyleTilePointerDown={openInputStylePanel}
         onInvestmentChange={(key, side, value) => { draft[side][key] = value; }} />
       {#if error || (validation.error && !numberInputFocused)}<p class="error" role="alert">{error || validation.error}</p>{/if}
       {#if skillLoading}<p role="status">{t('ui-skill-loading')}</p>{/if}
@@ -580,9 +647,9 @@
             <img class="eleph-icon" src="/planner/icons/Misc/Eligma.png" alt="" draggable="false" />
             <div class="eleph-fields">
               <label>{t('label-eligmacost')}<input use:sanitizeIntegerInput class="eleph-number-input" type="number" min="1" max="5" step="1" required bind:value={draft.eleph.cost} /></label>
-              {#if Number(draft.eleph.cost) < 5}
-                <label>{t('ui-eligma-remaining')}<input use:sanitizeIntegerInput class="eleph-number-input" type="number" min="0" max="20" step="1" required bind:value={draft.eleph.purchasable} /></label>
-              {/if}
+              <label class:reserved-hidden={Number(draft.eleph.cost) >= 5} aria-hidden={Number(draft.eleph.cost) >= 5}>
+                {t('ui-eligma-remaining')}<input use:sanitizeIntegerInput class="eleph-number-input" type="number" min="0" max="20" step="1" required disabled={Number(draft.eleph.cost) >= 5} bind:value={draft.eleph.purchasable} />
+              </label>
             </div>
           </div>
           <div class="eleph-options">
@@ -635,7 +702,7 @@
           {/if}
         </div>
       </fieldset>
-      <footer>
+      <footer class="editor-footer">
         <button type="button" class="danger" data-key-shortcut="r" aria-keyshortcuts="R" onclick={() => deleting = true}>
           <KeyboardShortcutLabel label={t('ui-remove')} shortcut="r" />
         </button>
@@ -709,6 +776,15 @@
       </div>
     </div>
   </form>
+  {#if inputStyleActive && inputStylePanelOpen}
+    <div class="character-input-style-panel" bind:this={inputStylePanel} role="group"
+      aria-label={t('ui-customize-character-inputs')} style:left={`${inputStylePosition.left}px`}
+      style:top={`${inputStylePosition.top}px`}>
+      <label><input type="checkbox" checked={hideCurrentTargetLabels}
+        onchange={(event) => updateHideCurrentTargetLabels(event.currentTarget.checked)} />
+        {t('ui-hide-current-target-labels')}</label>
+    </div>
+  {/if}
   {#if touchDebugEnabled}
     <aside class="touch-debug-popup" data-touch-debug-panel aria-label="Touch event debug information" aria-live="polite">
       {#if touchDebugVisible}
@@ -774,10 +850,12 @@
   {/if}
   {#if discardPrompt}
     <dialog use:modal={{ blurPreviousOnClose: false }} class="discard-confirmation" role="alertdialog" aria-labelledby="discard-title"
+      onclick={(event) => closeOnBackdrop(event, cancelDiscard)}
       oncancel={(event) => { event.preventDefault(); event.stopPropagation(); cancelDiscard(); }}>
       <h2 id="discard-title">{t('text-unsavedchanges')}</h2>
       <div class="discard-actions">
         <button type="button" onclick={cancelDiscard}>{t('button-goback')}</button>
+        <button type="button" class="save-continue-button" disabled={Boolean(validation.error)} onclick={saveAndProceed}>{t('button-saveandcontinue')}</button>
         <button type="button" class="discard-button" onclick={discardAndProceed}>{t('button-discardchanges')}</button>
       </div>
     </dialog>
@@ -806,21 +884,31 @@
   .editor-navigation button.boundary-hidden { visibility: hidden; }
   .header-actions { display: flex; align-items: center; gap: 0.5rem; }
   .header-actions button { white-space: nowrap; }
+  .header-actions .input-style-toggle { display: grid; box-sizing: border-box; width: 2rem; height: 2rem; flex: 0 0 2rem; padding: 0.35rem; place-items: center; border: 1px solid #7c5b7d66; border-radius: 0.35rem; background: transparent; color: var(--text); cursor: pointer; }
+  .header-actions .input-style-toggle:hover, .header-actions .input-style-toggle[aria-pressed="true"] { border-color: #82dafb; background: #82dafb4d; }
+  .input-style-icon { display: block; width: 100%; height: 100%; background: currentColor; -webkit-mask: url('/planner/icons/UI/brush-solid-full.svg') center / contain no-repeat; mask: url('/planner/icons/UI/brush-solid-full.svg') center / contain no-repeat; }
+  .character-input-style-panel { position: fixed; z-index: 30; width: max-content; max-width: min(260px, calc(100vw - 1rem)); padding: 0.55rem 0.7rem; border: 1px solid #82dafb; border-radius: 0.45rem; background: var(--surface); color: var(--text); box-shadow: 0 3px 14px #0008; }
+  .character-input-style-panel label { display: flex; flex-direction: row; align-items: center; gap: 0.45rem; margin: 0; font-size: 0.8rem; white-space: normal; }
+  .character-input-style-panel input { flex: 0 0 auto; width: 1rem; height: 1rem; margin: 0; accent-color: #82dafb; }
   .header-actions .cancel-button { background: #333333d9; }
   .header-actions .save-button { background: #42a4f84d; }
   :global(.site[data-theme="light"]) .header-actions .cancel-button { color: white; }
   .danger { background: #dd33334f; }
   .preset-button { background: #837f67; color: white; }
   :global(.site[data-theme="light"]) .preset-button { background: #f5efc8de; color: #292929; }
-  .editor-content { padding: 0 1rem 1rem; }
+  .editor-content { padding: 0 1rem 0; }
   .editor-layout { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 1rem; }
   .editor-main-column { min-width: 0; }
   .editor-primary { width: 100%; max-width: 700px; min-width: 0; padding-top: 0.75rem; }
   .live-cost-preview { min-width: 0; }
   dialog.discard-confirmation, dialog.editor-confirmation, dialog.preset-dialog { width: min(27rem, calc(100vw - 2rem)); max-height: none; padding: 1.25rem; background: var(--surface); color: var(--text); border: 1px solid #7c5b7d; border-radius: 0.75rem; box-shadow: 0 1rem 3rem #0008; }
+  dialog.discard-confirmation { box-sizing: border-box; }
   .discard-confirmation h2, .editor-confirmation h2, .preset-dialog h2 { margin: 0; font-size: 1.15rem; }
   .editor-confirmation p { margin: 0.75rem 0 0; }
   .discard-actions, .dialog-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.2rem; }
+  .discard-actions { flex-wrap: nowrap; }
+  .discard-actions button { box-sizing: border-box; flex: 1 1 0; min-width: 0; padding: 0.4rem 0.3rem; font-size: 0.8rem; line-height: 1.1; white-space: normal; overflow-wrap: anywhere; }
+  .discard-actions .save-continue-button { background: #42a4f84d; }
   .preset-server-label { display: grid; gap: 0.3rem; margin-top: 1rem; }
   .preset-server-label select { width: 100%; }
   .preset-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; margin-top: 1rem; }
@@ -837,6 +925,7 @@
   .eleph-icon { width: 3.1rem; height: 3.1rem; flex: 0 0 3.1rem; object-fit: contain; }
   .eleph-fields { display: grid; flex: 1; gap: 0.35rem; min-width: 0; }
   .eleph-fields label, .farm-daily > label:not(.eleph-check) { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; font-size: 0.82rem; }
+  .eleph-fields label.reserved-hidden { visibility: hidden; }
   .eleph-options { display: grid; align-content: center; gap: 0.65rem; min-width: 0; }
   .eleph-check { display: flex !important; flex-direction: row !important; align-items: center; gap: 0.35rem !important; margin: 0 !important; font-size: 0.82rem; line-height: 1.2; }
   .eleph-check input { width: auto; flex: 0 0 auto; margin: 0; }
@@ -854,7 +943,11 @@
   .eleph-cost-display { display: flex; flex: 0 0 auto; align-items: center; align-self: center; gap: 0.4rem; min-width: 0; justify-self: start; white-space: nowrap; }
   .eleph-cost-display img { width: 2.2rem; height: 2.2rem; flex: 0 0 2.2rem; object-fit: contain; }
   .eleph-cost-display strong { font-size: 1rem; font-variant-numeric: tabular-nums; }
-  footer { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: flex-start; margin-top: 1rem; }
+  .editor-footer {
+    position: sticky; bottom: 0; z-index: 21; display: flex; box-sizing: border-box;
+    width: 100%; flex-wrap: wrap; gap: 0.5rem; justify-content: flex-start;
+    margin-top: 1rem; padding: 0.7rem 0; border-top: 1px solid #7c5b7d66; background: var(--surface);
+  }
   .error { color: var(--error); }
   .cost-preview-content { display: grid; gap: 0.65rem; }
   .cost-preview-materials { display: grid; gap: 0.45rem; padding: 0.2rem; }
@@ -889,11 +982,13 @@
     .editor-header { width: calc(100% + 1rem); margin-left: -1rem; padding-left: 1rem; }
     .editor-header-main { box-sizing: border-box; padding-right: 1rem; }
     .editor-primary { box-sizing: border-box; padding-right: 1rem; }
+    .editor-footer { width: calc(100% + 2rem); margin-left: -1rem; padding-inline: 1rem; }
     .live-cost-preview { padding: 1rem 0 0 1rem; }
   }
   @media (max-width: 600px) {
+    .discard-actions button { padding: 0.35rem 0.15rem; font-size: 0.7rem; }
     dialog:not(.discard-confirmation):not(.editor-confirmation):not(.preset-dialog) { width: 100vw; max-width: 100vw; margin-inline: 0; }
-    .editor-content { padding: 0 0.6rem 0.6rem; }
+    .editor-content { padding: 0 0.6rem 0; }
     .editor-main-column { display: contents; }
     .eleph-layout { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: minmax(2.55rem, auto) minmax(1.8rem, auto) minmax(7.5rem, auto); gap: 0.8rem 0.55rem; }
     .eleph-icon { width: 2.55rem; height: 2.55rem; flex-basis: 2.55rem; }

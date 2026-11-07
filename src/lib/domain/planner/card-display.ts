@@ -12,6 +12,8 @@ export interface CharacterCardDisplaySettings {
   bond: boolean;
   stars: boolean;
   schoolBorder: boolean;
+  hideDisabledMark: boolean;
+  grayscaleDisabled: boolean;
 }
 
 export const defaultCharacterCardDisplaySettings: CharacterCardDisplaySettings = {
@@ -22,7 +24,9 @@ export const defaultCharacterCardDisplaySettings: CharacterCardDisplaySettings =
   gear: true,
   bond: true,
   stars: true,
-  schoolBorder: true
+  schoolBorder: true,
+  hideDisabledMark: false,
+  grayscaleDisabled: false
 };
 
 export function formatInvestment(type: string, value: InvestmentValue): string {

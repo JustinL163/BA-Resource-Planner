@@ -3,7 +3,7 @@ import { calculateStudentResources } from '../domain/resources/calculator';
 import { aggregateResources } from '../domain/planner/aggregates';
 import { characterFingerprint, createCharacter } from '../domain/planner/defaults';
 import { reorderVisibleCharacters } from '../domain/planner/card-display';
-import { isRecord, parsePlannerSave, validateCharacterEdit, type PlannerSaveRepair } from '../domain/planner/save';
+import { isRecord, mergePartialPlannerSave, parsePlannerSave, validateCharacterEdit, type PlannerSaveRepair } from '../domain/planner/save';
 import type { PlannerCharacter, PlannerDataset, PlannerMetadata, PlannerSave, ResourceTotals } from '../domain/planner/types';
 import type { Resources } from '../domain/resources/types';
 import { loadCharacterNames, loadPlannerDataset, savedLanguage } from '../services/planner-data';
@@ -344,15 +344,20 @@ export function createResourcePlanner(metadata: PlannerMetadata, storageProvider
       const current = get(state);
       if (!current.dataset) { report(new Error('Planner data is not ready.')); return false; }
       try {
-        const names = await namesFor(source, current.dataset);
+        const incoming: unknown = JSON.parse(source);
+        const partialImport = isRecord(incoming) && incoming.import_type === 'partial';
+        const names = partialImport ? current.names : await namesFor(source, current.dataset);
         if (signal?.aborted) return false;
-        const data = parsePlannerSave(source, current.dataset.students, metadata, names);
-        aggregateResources(current.dataset, data.characters, data.disabled_characters, data.owned_materials, metadata.maxLevel);
         const storage = storageProvider();
         const previous = storage.getItem('save-data');
         if (Object.hasOwn(options, 'expectedSource') && previous !== options.expectedSource) {
           throw new Error('The local plan changed while loading. Nothing was replaced; download a backup and try again.');
         }
+        const before = parsePlannerSave(previous, current.dataset.students, metadata, current.names);
+        const data = partialImport
+          ? mergePartialPlannerSave(before, source, current.dataset.students, metadata, current.names)
+          : parsePlannerSave(source, current.dataset.students, metadata, names);
+        aggregateResources(current.dataset, data.characters, data.disabled_characters, data.owned_materials, metadata.maxLevel);
         if (options.credentials) validateCredentials(options.credentials);
         const writes: Record<string, string> = {};
         if (previous !== null) writes['data-backup-modern'] = previous;
@@ -361,12 +366,11 @@ export function createResourcePlanner(metadata: PlannerMetadata, storageProvider
           writes.authkey = options.credentials.authkey;
         }
         writes['save-data'] = JSON.stringify(data);
-        const before = parsePlannerSave(previous, current.dataset.students, metadata, current.names);
         writing = true;
         writeStorageTransaction(storage, writes);
         generation++;
         costsCache.clear();
-        state.set({ ...current, data, names, error: '', loading: false, saved: true, migrated: false });
+        state.set({ ...current, data, names: partialImport ? current.names : names, error: '', loading: false, saved: true, migrated: false });
         recordSaveChange(cloneSave(before), cloneSave(data));
         announceLocalSave();
         announceSaveChange();
