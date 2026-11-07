@@ -43,6 +43,7 @@
   let swapTabEnterNavigation = $state(false);
   let inputStylePanel = $state<HTMLDivElement>();
   let inputStylePosition = $state({ left: 8, top: 8 });
+  let inputStyleOpeningGesture: { pointerId: number; clientX: number; clientY: number } | null = null;
   let mounted = $state(false);
   let touchDebugEnabled = $state(false);
   let touchDebugVisible = $state(true);
@@ -393,6 +394,7 @@
     if (!inputStyleActive || !(event.target instanceof Element) || !event.target.closest('.skill-tile')) return;
     event.preventDefault();
     event.stopPropagation();
+    rememberInputStyleOpeningGesture(event);
     inputStylePanelOpen = true;
     await tick();
     if (!inputStyleActive || !inputStylePanelOpen) return;
@@ -415,6 +417,33 @@
     inputStylePanelOpen = false;
   }
 
+  function rememberInputStyleOpeningGesture(event: PointerEvent) {
+    inputStyleOpeningGesture = {
+      pointerId: event.pointerId,
+      clientX: event.clientX,
+      clientY: event.clientY
+    };
+  }
+
+  function clearInputStyleOpeningGesture() {
+    inputStyleOpeningGesture = null;
+  }
+
+  function suppressInputStyleOpeningClick(event: MouseEvent) {
+    const gesture = inputStyleOpeningGesture;
+    if (!gesture) return;
+    const pointerId = event instanceof PointerEvent ? event.pointerId : null;
+    const samePointer = pointerId === gesture.pointerId;
+    const sameFallbackPoint = event.detail > 0 &&
+      Math.abs(event.clientX - gesture.clientX) < 8 && Math.abs(event.clientY - gesture.clientY) < 8;
+    if (!samePointer && !sameFallbackPoint) return;
+    inputStyleOpeningGesture = null;
+    const target = event.target instanceof Element ? event.target : null;
+    if (!target?.closest('.character-input-style-panel')) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }
+
   function updateHideCurrentTargetLabels(value: boolean) {
     hideCurrentTargetLabels = value;
     try { window.localStorage.setItem(inputLabelsPreferenceKey, String(value)); }
@@ -432,6 +461,8 @@
     catch { /* Use the default when storage is unavailable. */ }
     try { swapTabEnterNavigation = window.localStorage.getItem(inputNavigationPreferenceKey) === 'true'; }
     catch { /* Use the default when storage is unavailable. */ }
+    window.addEventListener('pointerdown', clearInputStyleOpeningGesture, true);
+    window.addEventListener('click', suppressInputStyleOpeningClick, true);
     document.addEventListener('pointerdown', closeInputStyleModeOnOutsidePointer, true);
     try {
       const lastPresetServer = window.localStorage.getItem(presetServerPreferenceKey);
@@ -454,6 +485,8 @@
       for (const type of touchDebugEvents) window.addEventListener(type, logCharacterEditorTouchEvent, true);
     }
     return () => {
+      window.removeEventListener('pointerdown', clearInputStyleOpeningGesture, true);
+      window.removeEventListener('click', suppressInputStyleOpeningClick, true);
       document.removeEventListener('pointerdown', closeInputStyleModeOnOutsidePointer, true);
       window.removeEventListener('keydown', interceptEditorKeys, true);
       if (touchDebugEnabled) {

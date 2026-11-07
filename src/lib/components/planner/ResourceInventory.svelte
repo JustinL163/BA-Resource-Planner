@@ -50,6 +50,7 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
   let resourceTableStylePanelOpen = $state(false);
   let resourceTableStylePanel = $state<HTMLDivElement>();
   let resourceTableStylePosition = $state({ left: 8, top: 8 });
+  let brushPanelOpeningGesture: { pointerId: number; clientX: number; clientY: number } | null = null;
   let resourceTableStyleSection = $state<ResourceStyleSection>('tables');
   let visibleWithZeroQuantity = $state<Record<ResourceZeroVisibilityType, boolean>>({
     currencies: false, 'limit-break-books': false, gifts: false
@@ -554,9 +555,13 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
       }
     };
     window.addEventListener('storage', storage);
+    window.addEventListener('pointerdown', clearBrushPanelOpeningGesture, true);
+    window.addEventListener('click', suppressBrushPanelOpeningClick, true);
     window.addEventListener('click', closeResourceTableStyleOnOutsideClick);
     return () => {
       window.removeEventListener('storage', storage);
+      window.removeEventListener('pointerdown', clearBrushPanelOpeningGesture, true);
+      window.removeEventListener('click', suppressBrushPanelOpeningClick, true);
       window.removeEventListener('click', closeResourceTableStyleOnOutsideClick);
     };
   });
@@ -570,6 +575,8 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
     }
     catch { /* Keep the default gear table preferences if storage is unavailable. */ }
 
+    window.addEventListener('pointerdown', clearBrushPanelOpeningGesture, true);
+    window.addEventListener('click', suppressBrushPanelOpeningClick, true);
     document.addEventListener('pointerdown', closeGearFarmingStyleOnOutsideClick, true);
     gearEnterDebugEnabled = new URLSearchParams(window.location.search).get('gearenterdebug') === '1';
     const debugEventTypes = ['keydown', 'keyup', 'keypress', 'focusin', 'focusout', 'beforeinput', 'input', 'change', 'pointerdown', 'pointerup'] as const;
@@ -581,6 +588,8 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
     document.addEventListener('focusin', handleGearFocusIn, true);
     document.addEventListener('focusout', handleGearFocusOut, true);
     return () => {
+      window.removeEventListener('pointerdown', clearBrushPanelOpeningGesture, true);
+      window.removeEventListener('click', suppressBrushPanelOpeningClick, true);
       document.removeEventListener('pointerdown', closeGearFarmingStyleOnOutsideClick, true);
       if (gearEnterDebugEnabled) {
         for (const type of debugEventTypes) document.removeEventListener(type, recordGearEnterDebugEvent, true);
@@ -606,6 +615,7 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
     if (!gearFarmingStyleActive || !(event.target instanceof Element) || !event.target.closest('.stage-runs [data-farm-stage]')) return;
     event.preventDefault();
     event.stopPropagation();
+    rememberBrushPanelOpeningGesture(event);
     gearFarmingStylePanelOpen = true;
     await tick();
     if (!gearFarmingStyleActive || !gearFarmingStylePanelOpen) return;
@@ -658,9 +668,37 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
       left: Math.max(8, Math.min(left, window.innerWidth - width - 8)),
       top: Math.max(8, Math.min(event.clientY - height / 2, window.innerHeight - height - 8))
     };
+    rememberBrushPanelOpeningGesture(event);
     resourceTableStylePanelOpen = true;
     event.preventDefault();
     event.stopPropagation();
+  }
+
+  function rememberBrushPanelOpeningGesture(event: PointerEvent) {
+    brushPanelOpeningGesture = {
+      pointerId: event.pointerId,
+      clientX: event.clientX,
+      clientY: event.clientY
+    };
+  }
+
+  function clearBrushPanelOpeningGesture() {
+    brushPanelOpeningGesture = null;
+  }
+
+  function suppressBrushPanelOpeningClick(event: MouseEvent) {
+    const gesture = brushPanelOpeningGesture;
+    if (!gesture) return;
+    const pointerId = event instanceof PointerEvent ? event.pointerId : null;
+    const samePointer = pointerId === gesture.pointerId;
+    const sameFallbackPoint = event.detail > 0 &&
+      Math.abs(event.clientX - gesture.clientX) < 8 && Math.abs(event.clientY - gesture.clientY) < 8;
+    if (!samePointer && !sameFallbackPoint) return;
+    brushPanelOpeningGesture = null;
+    const target = event.target instanceof Element ? event.target : null;
+    if (!target?.closest('.resource-table-style-panel')) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
   }
 
   function closeResourceTableStyleOnOutsideClick(event: MouseEvent) {
