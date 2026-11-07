@@ -30,6 +30,8 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
   const gearTransposePreferenceKey = 'planner-gear-table-transposed';
   const gearFarmingSortPreferenceKey = 'planner-gear-farming-sort-by-stage-number';
   const resourceLayoutPreferenceKey = 'planner-resource-table-stacked';
+  const resourceArtifactsAbovePreferenceKey = 'planner-resource-table-artifacts-above';
+  const resourceLargeIconPreferenceKey = 'planner-resource-table-large-icons';
   const resourceZeroVisibilityPreferenceKey = 'planner-resource-zero-visibility';
   type ResourceZeroVisibilityType = 'currencies' | 'limit-break-books' | 'gifts';
   type ResourceStyleSection = ResourceZeroVisibilityType | 'tables';
@@ -42,6 +44,8 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
   let gearFarmingStylePanel = $state<HTMLDivElement>();
   let gearFarmingStylePosition = $state({ left: 8, top: 8 });
   let forceStackedMaterials = $state(false);
+  let forceArtifactsAbove = $state(false);
+  let displayLargerIcons = $state(false);
   let resourceTableStyleActive = $state(false);
   let resourceTableStylePanelOpen = $state(false);
   let resourceTableStylePanel = $state<HTMLDivElement>();
@@ -527,22 +531,33 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
     if (gear) return;
     try {
       forceStackedMaterials = localStorage.getItem(resourceLayoutPreferenceKey) === 'true';
+      forceArtifactsAbove = localStorage.getItem(resourceArtifactsAbovePreferenceKey) === 'true';
+      if (forceArtifactsAbove) forceStackedMaterials = false;
+      displayLargerIcons = localStorage.getItem(resourceLargeIconPreferenceKey) === 'true';
       loadVisibleWithZeroQuantity(localStorage.getItem(resourceZeroVisibilityPreferenceKey));
     }
     catch { /* Keep the default resource table layout if storage is unavailable. */ }
     const storage = (event: StorageEvent) => {
       if (event.key === resourceLayoutPreferenceKey || event.key === null) {
         forceStackedMaterials = event.key !== null && event.newValue === 'true';
+        if (forceStackedMaterials) forceArtifactsAbove = false;
+      }
+      if (event.key === resourceArtifactsAbovePreferenceKey || event.key === null) {
+        forceArtifactsAbove = event.key !== null && event.newValue === 'true';
+        if (forceArtifactsAbove) forceStackedMaterials = false;
+      }
+      if (event.key === resourceLargeIconPreferenceKey || event.key === null) {
+        displayLargerIcons = event.key !== null && event.newValue === 'true';
       }
       if (event.key === resourceZeroVisibilityPreferenceKey || event.key === null) {
         loadVisibleWithZeroQuantity(event.key === null ? null : event.newValue);
       }
     };
     window.addEventListener('storage', storage);
-    window.addEventListener('pointerdown', closeResourceTableStyleOnOutsideClick, true);
+    window.addEventListener('click', closeResourceTableStyleOnOutsideClick);
     return () => {
       window.removeEventListener('storage', storage);
-      window.removeEventListener('pointerdown', closeResourceTableStyleOnOutsideClick, true);
+      window.removeEventListener('click', closeResourceTableStyleOnOutsideClick);
     };
   });
 
@@ -648,7 +663,7 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
     event.stopPropagation();
   }
 
-  function closeResourceTableStyleOnOutsideClick(event: PointerEvent) {
+  function closeResourceTableStyleOnOutsideClick(event: MouseEvent) {
     if (!resourceTableStyleActive) return;
     const target = event.target instanceof Element ? event.target : null;
     if (target?.closest('[data-resource-table-style-toggle], .resource-table-style-panel, .matrices:not(.gear), [data-resource-zero-style-type]')) return;
@@ -658,8 +673,28 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
 
   function updateForceStackedMaterials(value: boolean) {
     forceStackedMaterials = value;
-    try { localStorage.setItem(resourceLayoutPreferenceKey, String(value)); }
+    if (value) forceArtifactsAbove = false;
+    try {
+      localStorage.setItem(resourceLayoutPreferenceKey, String(value));
+      if (value) localStorage.setItem(resourceArtifactsAbovePreferenceKey, 'false');
+    }
     catch { /* Keep the current layout for this session if storage is unavailable. */ }
+  }
+
+  function updateForceArtifactsAbove(value: boolean) {
+    forceArtifactsAbove = value;
+    if (value) forceStackedMaterials = false;
+    try {
+      localStorage.setItem(resourceArtifactsAbovePreferenceKey, String(value));
+      if (value) localStorage.setItem(resourceLayoutPreferenceKey, 'false');
+    }
+    catch { /* Keep the current layout for this session if storage is unavailable. */ }
+  }
+
+  function updateDisplayLargerIcons(value: boolean) {
+    displayLargerIcons = value;
+    try { localStorage.setItem(resourceLargeIconPreferenceKey, String(value)); }
+    catch { /* Keep the current icon size preference for this session if storage is unavailable. */ }
   }
 
   function loadVisibleWithZeroQuantity(value: string | null) {
@@ -869,12 +904,14 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
       </div>
     </section>
   {/if}
-  <div class="inventory-sections" class:gear-layout={gear} class:stacked-materials={!gear && forceStackedMaterials}
+  <div class="inventory-sections" class:gear-layout={gear} class:stacked-materials={!gear && (forceStackedMaterials || forceArtifactsAbove)}
+    class:large-icons={!gear && displayLargerIcons}
     style={`--matrix-row-count: ${gearSizingRows};--matrix-column-count: ${panels[0]?.columns.length ?? 1};${gear ? `--gear-table-max-width: calc(40px + ${gearTableWidthTerms})` : ''}`}
     onkeydown={handleInventoryKeydown}>
   <div class="matrices" class:gear class:show-universal={gear && showUniversalInventory}
     class:show-universal-placeholders={gear && showUniversalPlaceholders} class:needed-mode={gear && mode === 'needed'}
-    class:force-stacked-materials={!gear && forceStackedMaterials}
+    class:force-stacked-materials={!gear && (forceStackedMaterials || forceArtifactsAbove)}
+    class:artifacts-first={!gear && forceArtifactsAbove}
     class:table-style-editable={!gear && resourceTableStyleActive}
     role="group" aria-label={t(gear ? 'footer-gear' : 'footer-resources')}
     aria-busy={gear && gearFarmBusy} onpointerdown={openResourceTableStylePanel}>
@@ -1036,6 +1073,12 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
         <label><input type="checkbox" checked={forceStackedMaterials}
           onchange={(event) => updateForceStackedMaterials(event.currentTarget.checked)} />
           {t('ui-stack-artifacts-below-school-materials')}</label>
+        <label><input type="checkbox" checked={forceArtifactsAbove}
+          onchange={(event) => updateForceArtifactsAbove(event.currentTarget.checked)} />
+          {t('ui-stack-artifacts-above-school-materials')}</label>
+        <label class="large-layout-only"><input type="checkbox" checked={displayLargerIcons}
+          onchange={(event) => updateDisplayLargerIcons(event.currentTarget.checked)} />
+          {t('ui-display-larger-icons')}</label>
       {:else}
         <label><input type="checkbox" checked={visibleWithZeroQuantity[resourceTableStyleSection]}
           onchange={(event) => updateVisibleWithZeroQuantity(resourceTableStyleSection as ResourceZeroVisibilityType, event.currentTarget.checked)} />
@@ -1202,6 +1245,7 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
   }
   .resource-table-style-panel { position: fixed; z-index: 30; width: max-content; max-width: min(260px, calc(100vw - 1rem)); padding: 0.55rem 0.7rem; border: 1px solid #82dafb; border-radius: 0.45rem; background: var(--surface); color: var(--text); box-shadow: 0 3px 14px #0008; }
   .resource-table-style-panel label { display: flex; flex-direction: row; align-items: center; gap: 0.45rem; margin: 0; font-size: 0.8rem; white-space: normal; }
+  .resource-table-style-panel label.large-layout-only { display: none; }
   .resource-table-style-panel input { flex: 0 0 auto; width: 1rem; height: 1rem; margin: 0; accent-color: #82dafb; }
   .matrices:not(.gear) { display: flex; flex-direction: column; gap: 0.75rem; }
   .inventory-sections { min-width: 0; }
@@ -1248,9 +1292,12 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
   .gear-use-indicator.top-right { top: 0.04rem; right: 0.04rem; }
   .gear-use-indicator.bottom-left { bottom: 0.04rem; left: 0.04rem; }
   .matrices:not(.gear) .table-scroll { overflow: hidden; }
+  .matrices:not(.gear).artifacts-first > .artifact-matrices { order: -1; }
   .matrices:not(.gear) table { width: max-content; table-layout: auto; }
   .school-matrices table, .artifact-pair table { max-width: var(--matrix-max-width); margin-inline: auto; }
-  .artifact-pair tbody th:first-child { width: max-content; white-space: nowrap; }
+  .artifact-pair { --artifact-name-cell-size: clamp(40px, calc(var(--inventory-cell-size, 75px) * 0.66), 50px); min-width: 0; }
+  .artifact-pair th:first-child { width: var(--artifact-name-cell-size); }
+  .artifact-pair tbody th:first-child { box-sizing: border-box; width: var(--artifact-name-cell-size); min-width: 0; white-space: nowrap; }
   .school-matrices tbody th, .artifact-pair tbody th { overflow: hidden; font-size: 0.7rem; white-space: nowrap; }
   .school-pair { display: grid; width: 100%; max-width: var(--matrix-max-width); margin-inline: auto; grid-template-columns: minmax(0, 5fr) minmax(0, 4fr); gap: 0; }
   .school-pair > .table-scroll { min-width: 0; overflow: hidden; }
@@ -1295,7 +1342,6 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
     .matrices:not(.gear) { width: 100%; }
     .matrices:not(.gear) table { width: 100%; max-width: 100%; table-layout: fixed; }
     .matrices:not(.gear) td { width: auto; }
-    .artifact-pair th:first-child { width: clamp(90px, 45%, 120px); }
     .school-matrices tbody th, .artifact-pair tbody th { font-size: 0.55rem; line-height: 1.05; }
     .summary-tiles { gap: 0.1rem;}
     .tiles :global(.resource-cell) { flex: 0 0 58px; width: 58px; min-width: 58px; min-height: 58px;}
@@ -1345,13 +1391,13 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
   }
   @media (min-width: 601px) {
     .inventory-sections:not(.gear-layout) {
-      --inventory-cell-size: clamp(40px, min(calc((88dvh - 13rem) / var(--matrix-row-count)), calc((min(1300px, calc(100vw - 1rem)) - 14.5rem) / 8)), 75px);
+      --inventory-cell-size: clamp(var(--inventory-cell-min-size, 40px), min(calc((88dvh - 13rem) / var(--matrix-row-count)), calc((min(1300px, calc(100vw - 1rem)) - 14.5rem) / 8)), 75px);
     }
     .inventory-sections.gear-layout {
       --inventory-cell-size: clamp(40px, min(calc((122dvh - 13rem) / var(--matrix-row-count)), calc((min(1300px, calc(100vw - 1rem)) - 4.5rem) / var(--matrix-column-count))), 75px);
     }
     .inventory-sections.stacked-materials {
-      --inventory-cell-size: clamp(40px, min(calc((88dvh - 13rem) / var(--matrix-row-count)), calc((min(1300px, calc(100vw - 1rem)) - 14.5rem) / 8)), 75px);
+      --inventory-cell-size: clamp(var(--inventory-cell-min-size, 40px), min(calc((88dvh - 13rem) / var(--matrix-row-count)), calc((min(1300px, calc(100vw - 1rem)) - 14.5rem) / 8)), 75px);
     }
     .matrices:not(.gear) .school-pair { display: flex; width: max-content; max-width: 100%; margin-inline: auto; gap: 0; }
     .matrices:not(.gear) .school-pair table.school-blu-ray-table {
@@ -1366,15 +1412,16 @@ import { cacheGearFarmPlan, getCachedGearFarmPlan, recommendGear } from '$lib/se
     .school-row-header { width: var(--inventory-cell-size); }
     .artifact-pair { display: grid; width: max-content; max-width: 100%; margin-inline: auto; grid-template-columns: repeat(2, max-content); gap: 0; }
     .matrices:not(.gear) .artifact-pair table {
-      width: calc(100px + var(--inventory-cell-size) + var(--inventory-cell-size) + var(--inventory-cell-size) + var(--inventory-cell-size));
+      width: calc(var(--artifact-name-cell-size) + var(--inventory-cell-size) + var(--inventory-cell-size) + var(--inventory-cell-size) + var(--inventory-cell-size));
       max-width: 100%; table-layout: fixed; margin: 0;
     }
-    .artifact-pair th:first-child { width: 100px; }
     .matrices:not(.gear) .artifact-pair td { width: var(--inventory-cell-size); }
   }
   @media (min-width: 1201px) {
+    .resource-table-style-panel label.large-layout-only { display: flex; }
+    .inventory-sections.large-icons { --inventory-cell-min-size: 60px; }
     .inventory-sections:not(.gear-layout):not(.stacked-materials) {
-      --inventory-cell-size: clamp(40px, min(calc((88dvh - 13rem) / var(--matrix-row-count)), calc((min(1300px, calc(100vw - 1rem)) - 200px - 0.75rem - 2rem) / 17)), 75px);
+      --inventory-cell-size: clamp(var(--inventory-cell-min-size, 40px), min(calc((88dvh - 13rem) / var(--matrix-row-count)), calc((min(1300px, calc(100vw - 1rem)) - 200px - 0.75rem - 2rem) / 17)), 75px);
     }
     .matrices:not(.gear) {
       display: grid; grid-template-columns: max-content max-content; justify-content: center;

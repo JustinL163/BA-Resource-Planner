@@ -36,9 +36,11 @@
   let presetOpen = $state(false);
   let presetServer = $state<FarmServer>('Global');
   const inputLabelsPreferenceKey = 'planner-character-inputs-hide-current-target-labels';
+  const inputNavigationPreferenceKey = 'planner-character-inputs-swap-tab-enter-navigation';
   let inputStyleActive = $state(false);
   let inputStylePanelOpen = $state(false);
   let hideCurrentTargetLabels = $state(false);
+  let swapTabEnterNavigation = $state(false);
   let inputStylePanel = $state<HTMLDivElement>();
   let inputStylePosition = $state({ left: 8, top: 8 });
   let mounted = $state(false);
@@ -288,21 +290,32 @@
     const level = typeof value === 'number' ? value : typeof value === 'string' && value.trim() ? Number(value) : NaN;
     return Number.isInteger(level) && level >= 0 && level <= (key === 'ex' ? 5 : 10) ? level : 0;
   }
-  function moveCharacterInvestmentFocus(target: HTMLInputElement, reverse: boolean) {
+  type InvestmentNavigationOrder = 'tab' | 'enter';
+  function investmentOrderAttribute(order: InvestmentNavigationOrder) {
+    return order === 'tab' ? 'data-investment-tab-order' : 'data-investment-enter-order';
+  }
+  function investmentOrderDatasetKey(order: InvestmentNavigationOrder) {
+    return order === 'tab' ? 'investmentTabOrder' : 'investmentEnterOrder';
+  }
+  function orderedInvestmentInputs(dialog: HTMLDialogElement, order: InvestmentNavigationOrder) {
+    const attribute = investmentOrderAttribute(order);
+    const datasetKey = investmentOrderDatasetKey(order);
+    return Array.from(dialog.querySelectorAll<HTMLInputElement>(`input[${attribute}]:not(:disabled)`))
+      .sort((left, right) => Number(left.dataset[datasetKey]) - Number(right.dataset[datasetKey]));
+  }
+  function moveCharacterInvestmentFocus(target: HTMLInputElement, reverse: boolean, order: InvestmentNavigationOrder) {
     const dialog = target.closest('dialog[aria-labelledby="editor-title"]');
     if (!(dialog instanceof HTMLDialogElement)) return;
-    const inputs = Array.from(dialog.querySelectorAll<HTMLInputElement>('input[data-investment-enter-order]:not(:disabled)'))
-      .sort((left, right) => Number(left.dataset.investmentEnterOrder) - Number(right.dataset.investmentEnterOrder));
+    const inputs = orderedInvestmentInputs(dialog, order);
     const currentIndex = inputs.indexOf(target);
     const nextInput = inputs[currentIndex + (reverse ? -1 : 1)];
     if (nextInput) nextInput.focus();
     else target.blur();
   }
-  function moveCharacterInvestmentTab(target: HTMLInputElement, event: KeyboardEvent) {
+  function moveCharacterInvestmentTab(target: HTMLInputElement, event: KeyboardEvent, order: InvestmentNavigationOrder) {
     const dialog = target.closest('dialog[aria-labelledby="editor-title"]');
     if (!(dialog instanceof HTMLDialogElement)) return;
-    const inputs = Array.from(dialog.querySelectorAll<HTMLInputElement>('input[data-investment-tab-order]:not(:disabled)'))
-      .sort((left, right) => Number(left.dataset.investmentTabOrder) - Number(right.dataset.investmentTabOrder));
+    const inputs = orderedInvestmentInputs(dialog, order);
     const currentIndex = inputs.indexOf(target);
     const nextInput = inputs[currentIndex + (event.shiftKey ? -1 : 1)];
     if (nextInput) {
@@ -342,17 +355,19 @@
         return;
       }
     }
-    if (event.key === 'Tab' && target instanceof HTMLInputElement && target.hasAttribute('data-investment-tab-order') &&
+    const tabOrder = swapTabEnterNavigation ? 'enter' : 'tab';
+    const enterOrder = swapTabEnterNavigation ? 'tab' : 'enter';
+    if (event.key === 'Tab' && target instanceof HTMLInputElement && target.hasAttribute(investmentOrderAttribute(tabOrder)) &&
       !event.ctrlKey && !event.altKey && !event.metaKey) {
-      moveCharacterInvestmentTab(target, event);
+      moveCharacterInvestmentTab(target, event, tabOrder);
       return;
     }
     if (event.key === 'Enter' && target instanceof HTMLInputElement && target.closest('dialog[aria-labelledby="editor-title"]')) {
       event.preventDefault();
       if (discardPrompt || event.repeat) return;
       if (event.ctrlKey && !event.metaKey && !event.altKey && !event.shiftKey) target.form?.requestSubmit();
-      else if (!event.ctrlKey && !event.metaKey && !event.altKey && target.hasAttribute('data-investment-enter-order')) {
-        moveCharacterInvestmentFocus(target, event.shiftKey);
+      else if (!event.ctrlKey && !event.metaKey && !event.altKey && target.hasAttribute(investmentOrderAttribute(enterOrder))) {
+        moveCharacterInvestmentFocus(target, event.shiftKey, enterOrder);
       }
       else target.blur();
       return;
@@ -406,8 +421,16 @@
     catch { /* Keep the setting for this session if storage is unavailable. */ }
   }
 
+  function updateSwapTabEnterNavigation(value: boolean) {
+    swapTabEnterNavigation = value;
+    try { window.localStorage.setItem(inputNavigationPreferenceKey, String(value)); }
+    catch { /* Keep the setting for this session if storage is unavailable. */ }
+  }
+
   onMount(() => {
     try { hideCurrentTargetLabels = window.localStorage.getItem(inputLabelsPreferenceKey) === 'true'; }
+    catch { /* Use the default when storage is unavailable. */ }
+    try { swapTabEnterNavigation = window.localStorage.getItem(inputNavigationPreferenceKey) === 'true'; }
     catch { /* Use the default when storage is unavailable. */ }
     document.addEventListener('pointerdown', closeInputStyleModeOnOutsidePointer, true);
     try {
@@ -783,6 +806,9 @@
       <label><input type="checkbox" checked={hideCurrentTargetLabels}
         onchange={(event) => updateHideCurrentTargetLabels(event.currentTarget.checked)} />
         {t('ui-hide-current-target-labels')}</label>
+      <label><input type="checkbox" checked={swapTabEnterNavigation}
+        onchange={(event) => updateSwapTabEnterNavigation(event.currentTarget.checked)} />
+        {t('ui-swap-tab-enter-navigation')}</label>
     </div>
   {/if}
   {#if touchDebugEnabled}

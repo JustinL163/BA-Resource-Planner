@@ -365,6 +365,14 @@
     }
   }
 
+  function handleSkillStripFocusOut(event: FocusEvent) {
+    const strip = event.currentTarget;
+    const next = event.relatedTarget;
+    if (strip instanceof Element && next instanceof Node && strip.contains(next)) return;
+    focusKey = null;
+    pointerKey = null;
+  }
+
   function closeDescription(key: SkillKey) {
     suppressedFocusKey = key;
     skillButtons[key]?.focus();
@@ -535,7 +543,7 @@
         {/each}
       </div>
     </div>
-    <div class="skill-strip" data-skill-details>
+    <div class="skill-strip" data-skill-details onfocusout={handleSkillStripFocusOut}>
       {#each skills as skill (skill.key)}
         {@const rule = metadata.fields.find((field) => field.key === skill.key)}
         <div class="skill-tile" class:active={selected?.key === skill.key}>
