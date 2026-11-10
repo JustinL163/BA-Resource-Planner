@@ -47,8 +47,6 @@
     window.addEventListener('storage', refreshPreferences);
     const refreshLocalPreferences = () => preferences.initialise();
     window.addEventListener(saveChangedEvent, refreshLocalPreferences);
-    window.dataLayer ??= [];
-    window.dataLayer.push(['js', new Date()]);
     return () => {
       window.removeEventListener('storage', refreshPreferences);
       window.removeEventListener(saveChangedEvent, refreshLocalPreferences);
@@ -66,7 +64,11 @@
 
   $effect(() => {
     const path = page.url.pathname;
-    if (window.dataLayer) window.dataLayer.push(['config', 'G-3XZ18739WF', { page_path: path }]);
+    window.gtag?.('event', 'page_view', {
+      page_path: path,
+      page_location: window.location.href,
+      page_title: document.title
+    });
   });
 </script>
 
@@ -74,7 +76,6 @@
   <link rel="manifest" href={standaloneGame ? '/game/manifest.json' : '/planner/manifest.json'} />
   <meta name="theme-color" content={themeColor} />
   <script src="/planner/js/no-image-drag.js" defer></script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3XZ18739WF"></script>
 </svelte:head>
 
 <div class="site" class:game-shell={standaloneGame} data-theme={$preferences.theme}>

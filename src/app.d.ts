@@ -8,6 +8,7 @@ import type { studentSearch } from './lib/legacy/student-search';
 declare global {
   interface Window {
     dataLayer?: unknown[];
+    gtag?: (...args: unknown[]) => void;
     html2canvas?: Html2Canvas;
     BAStudentSearch: typeof studentSearch;
     BAResourceEngine: typeof resourceEngine;
