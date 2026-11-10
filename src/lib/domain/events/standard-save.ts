@@ -6,6 +6,7 @@ import { decodeDiceRace, diceRewardNames } from './dice';
 import { decodeOmikuji, omikujiRewardNames } from './omikuji';
 import { decodeLessonDefinition } from './lessons';
 import { decodeInvasion } from './invasion';
+import { summerRetreatEventId, summerRetreatSandTarget } from './summer-retreat';
 import { decodeCardStatistics, validateStandardDeviation } from './card-statistics';
 import type { EventEnergySettings } from './types';
 import type { BoxCycle, DerivedCurrencyRule, EventMode, EventPlan, PointReward, SavedAmounts, ShopItem, StandardEvent } from './standard-types';
@@ -18,6 +19,7 @@ export const diceEventIds = ['occult-research-society'];
 export const omikujiEventIds = ['magical-girl-trinity', 'new-year-march-rerun', 'pray-ball', 'an-unconcealed-path', 'pray-ball-rerun'];
 export const lessonEventIds = ['on-your-mark', 'hot-spring-rerun', 'restoration-project', 'on-your-mark-rerun'];
 export const invasionEventIds = ['valentine-rerun'];
+export const minigameEventIds = [summerRetreatEventId];
 
 export function isRailroadRunawayEvent(eventId: string | undefined): boolean {
   return eventId === 'railroad-runaway' || eventId === 'railroad-runaway-rerun';
@@ -154,13 +156,15 @@ export function decodeStandardEvent(value: unknown, eventId?: string): StandardE
       key === "Shanhaijing_Tea_Garden's_Fine_Tea" && currency.source === '';
     const supportedSheSideMinigameCurrency = eventId === 'sheside-outside-rerun' &&
       key === 'Tournament_Water_Gun' && currency.source === 'MinigameDrop';
+    const supportedSummerRetreatPebbles = eventId === summerRetreatEventId &&
+      key === 'Sea_Pebble' && currency.source === 'MinigameDrop';
     if ((currency.source !== 'StageDrop' &&
       // The legacy Lessons/Invasion definitions omit the source on Event_Point.
       !((lessons || invasion) && key === 'Event_Point' && currency.source === undefined) &&
       !(boxes && currency.source === 'BoxPull') && !(cards && currency.source === 'CardPull') &&
       !(omikuji && (currency.source === 'ShopPurchase' || currency.source === 'ShopBuy')) &&
       !supportedDerivedCurrencySource && !supportedRailroadMinigameCurrency && !supportedIveAliveEventPoint &&
-      !supportedSummerSkyTea && !supportedSheSideMinigameCurrency && !supportedLorePursuitCurrency)) {
+      !supportedSummerSkyTea && !supportedSheSideMinigameCurrency && !supportedLorePursuitCurrency && !supportedSummerRetreatPebbles)) {
       throw new Error('This currency requires the legacy planner.');
     }
     const currencyIcon = currency.icon ?? ((lessons || invasion) && key === 'Event_Point' ? 'Event_Point.png' : undefined);
@@ -258,6 +262,13 @@ export function decodeStandardEvent(value: unknown, eventId?: string): StandardE
       currencies.Tournament_Water_Gun?.source !== 'MinigameDrop' ||
       currencies.Tournament_Water_Gun.clear !== 152 || !shops.Tournament_Water_Gun?.length)) {
     throw new Error('Invalid SheSide Outside minigame currency configuration.');
+  }
+  if (eventId === summerRetreatEventId &&
+    (currencies.Dream_Sand?.source !== 'StageDrop' || currencies.Dream_Sand.clear !== 5000 ||
+      value.currency_targets.length !== 1 || value.currency_targets[0] !== 'Dream_Sand' ||
+      currencies.Sea_Pebble?.source !== 'MinigameDrop' || !shops.Sea_Pebble?.length ||
+      boxes || cards || dice || omikuji || lessons || invasion)) {
+    throw new Error('Invalid Summer Retreat minigame currency configuration.');
   }
   if (eventId === 'lore-pursuit') {
     const eventPointItems = shops.Event_Point ?? [];
@@ -410,7 +421,7 @@ export function decodeEventCatalog(value: unknown, includeSupportedArchives = fa
   const order: unknown[] = [...value.event_order];
   if (includeSupportedArchives) {
     const listed = new Set(order.filter((key): key is string => typeof key === 'string').map((key) => key.replace(/^\|/, '')));
-    for (const id of [...standardEventIds, ...boxEventIds, ...cardEventIds, ...diceEventIds, ...omikujiEventIds, ...lessonEventIds, ...invasionEventIds]) {
+    for (const id of [...standardEventIds, ...boxEventIds, ...cardEventIds, ...diceEventIds, ...omikujiEventIds, ...lessonEventIds, ...invasionEventIds, ...minigameEventIds]) {
       if (!listed.has(id) && (Object.hasOwn(events, id) || Object.hasOwn(archivedEvents, id))) order.push(id);
     }
   }
@@ -421,7 +432,7 @@ export function decodeEventCatalog(value: unknown, includeSupportedArchives = fa
     if (!isRecord(event) || typeof event.display_name !== 'string') throw new Error(`Missing event ${id}.`);
     return {
       id, name: event.display_name, icon: asset(event.icon), comingSoon: key.startsWith('|'),
-      event: [...standardEventIds, ...boxEventIds, ...cardEventIds, ...diceEventIds, ...omikujiEventIds, ...lessonEventIds, ...invasionEventIds].includes(id) ? decodeStandardEvent(event, id) : null,
+      event: [...standardEventIds, ...boxEventIds, ...cardEventIds, ...diceEventIds, ...omikujiEventIds, ...lessonEventIds, ...invasionEventIds, ...minigameEventIds].includes(id) ? decodeStandardEvent(event, id) : null,
       ...(index >= listedCount ? { archived: true } : {})
     };
   });
@@ -618,6 +629,20 @@ export function decodeEventPlan(value: unknown, event: StandardEvent): EventPlan
       }
       result.lesson_post_runs = postRuns;
     }
+  }
+  if (event.eventId === summerRetreatEventId) {
+    purchases.Sea_Pebble ??= Object.create(null);
+    let pebbles = 0;
+    for (const item of event.shops.Sea_Pebble) {
+      const key = String(item.id);
+      const count = purchases.Sea_Pebble[key] ?? item.default ?? item.count;
+      purchases.Sea_Pebble[key] = eventInteger(count, 'Sea Pebble purchase count', item.count);
+      pebbles += Number(count) * item.cost;
+    }
+    const midEvent = Object.values(result.currency_owned).some((amount) => Number(amount) > 0);
+    result.currency_needed.Sea_Pebble = pebbles;
+    result.currency_needed.Dream_Sand = summerRetreatSandTarget(pebbles,
+      Number(result.currency_owned.Sea_Pebble ?? 0), !midEvent);
   }
   return result;
 }

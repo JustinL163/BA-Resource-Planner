@@ -5,6 +5,7 @@ import { boxPullCurrencyNeeded, boxRewards } from './boxes';
 import { cardPullRequirement } from './cards';
 import { lessonProgress } from './lessons';
 import { isRailroadRunawayEvent } from './standard-save';
+import { summerRetreatEventId, summerRetreatRewards, summerRetreatSandTarget } from './summer-retreat';
 import type { EventAmounts } from './types';
 import type { EventPlan, EventRequirements, EventSummary, ShopItem, StandardEvent } from './standard-types';
 
@@ -128,6 +129,10 @@ export function eventRequirements(event: StandardEvent, plan: EventPlan, invasio
     return amount;
   };
   const midEvent = Object.values(plan.currency_owned).some((value) => parseLegacyInt(value) > 0);
+  if (event.eventId === summerRetreatEventId) {
+    currencyNeeded.Dream_Sand = summerRetreatSandTarget(Number(currencyNeeded.Sea_Pebble ?? 0),
+      positiveOwned(plan.currency_owned, 'Sea_Pebble'), !midEvent);
+  }
   const needed: EventAmounts = {};
   for (const [currency, rawAmount] of Object.entries(currencyNeeded)) {
     if (!Object.hasOwn(event.currencies, currency)) throw new Error(`Unknown required event currency "${currency}".`);
@@ -140,6 +145,8 @@ export function eventRequirements(event: StandardEvent, plan: EventPlan, invasio
       throw new Error(`Required amount for "${currency}" must be finite and non-negative.`);
     }
     const source = event.currencies[currency];
+    // The Sea Pebble shop is constrained through its Dream Sand entry cost instead.
+    if (event.eventId === summerRetreatEventId && currency === 'Sea_Pebble') continue;
     if (event.derivedCurrencyRules?.some((rule) => rule.from === currency)) continue;
     if (source.source === 'BoxPull') {
       if (!event.boxes || event.box_clear_cost === undefined || !source.pull_currency) throw new Error('Missing box currency configuration.');
@@ -607,6 +614,19 @@ export function summarizeEventRuns(
   }
   if (event.eventId === 'lore-pursuit') {
     credit = finite(credit + applyLorePursuitRouteRewards(currencies, artifacts, schoolMats, eleph, xps), 'Event Credit total');
+  }
+  if (event.eventId === summerRetreatEventId) {
+    const rewards = summerRetreatRewards(currencies.Dream_Sand ?? 0, !requirements.midEvent);
+    addAmount(currencies, 'Sea_Pebble', rewards.pebbles, 'Summer Retreat Sea Pebbles');
+    addAmount(eleph, '26016', rewards.eleph, 'Summer Retreat Chiaki (Swimsuit) Eleph');
+    addRewardBundle(artifacts, rewards.artifacts, 'Summer Retreat artifacts');
+    addRewardBundle(schoolMats, rewards.schoolMats, 'Summer Retreat score school materials');
+    addRewardBundle(xps, rewards.xps, 'Summer Retreat score XP');
+    credit = finite(credit + rewards.credit, 'Event Credit total');
+    // Combine the initial, repeated, quest and shop rewards before rounding each item.
+    for (const key of Object.keys(rewards.artifacts)) artifacts[key] = Math.floor(artifacts[key] + 1e-9);
+    currencies.Sea_Pebble = Math.floor(currencies.Sea_Pebble + 1e-9);
+    eleph['26016'] = Math.floor(eleph['26016'] + 1e-9);
   }
   if (event.lessons) {
     const progress = lessonProgress(event.lessons, plan.lesson_pre_runs ?? [], plan.lesson_post_runs ?? {}, currencies.Event_Point ?? 0);

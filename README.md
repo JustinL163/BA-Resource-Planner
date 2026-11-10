@@ -111,11 +111,20 @@ source-less Fine Tea farming requirement retains the legacy NaN behavior and
 stays out of solver and Owned controls. The Sheside Outside rerun uses Game
 Corner Ticket as its only stage target; Tournament Water Gun remains an
 unconstrained MinigameDrop with an editable shop and no Owned control.
+Set Sail! Chairman Makoto's Summer Retreat converts the selected Sea Pebble shop
+cost into a Dream Sand target (at least 5,000). Its minigame reserves 2,350 Sand
+for the five Story stages, Normal 1–4 and Challenge 1, including first-clear and
+default Eleph/Pebble rewards plus the complete score reward bundle. Remaining
+Sand buys whole Normal 4 runs at 400 each. Artifact group probabilities include
+the 25% per-item roll; expected drops are summed before each final item count is
+floored. Owned mode uses the entered balances without repeating the one-time
+clear/score rewards. The constants and source are in
+`src/lib/domain/events/summer-retreat.ts`.
 Unreviewed special event mechanics remain on the deferred event backlog and show
 an unavailable notice in the event planner until they are implemented;
 `standardEventIds`,
 `boxEventIds`, `cardEventIds`, `diceEventIds`, `omikujiEventIds`,
-`lessonEventIds`, and `invasionEventIds` are reviewed allowlists rather than
+`lessonEventIds`, `invasionEventIds`, and `minigameEventIds` are reviewed allowlists rather than
 assuming an unfamiliar event is generic. The four reviewed archived Lessons
 events and the reviewed Invasion event are loaded from a generated, bounded
 archive bundle rather than fetching the full older-event catalog.
