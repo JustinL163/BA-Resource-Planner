@@ -128,6 +128,12 @@ describe('Summer Retreat Crab Martial Arts minigame', () => {
     expect(summary.schoolMats).toEqual({});
   });
 
+  it.each([[135, 800, 400], [138, 0, 0]])('uses the remaining shop cost with %i owned Sea Pebbles', (pebbles, target, needed) => {
+    const plan = decodeEventPlan({ currency_owned: { Dream_Sand: 400, Sea_Pebble: pebbles } }, event);
+    expect(plan.currency_needed.Dream_Sand).toBe(target);
+    expect(eventRequirements(event, plan).needed.Dream_Sand).toBe(needed);
+  });
+
   it('rejects invalid minigame budgets and targets', () => {
     expect(() => summerRetreatRewards(NaN)).toThrow('Dream Sand');
     expect(() => summerRetreatRewards(-1)).toThrow('Dream Sand');

@@ -93,12 +93,12 @@ The original archived Lore Pursuit is also supported there. Event Point shop
 purchases convert to Route Maps, whose rewards apply at 15, 30, 50, 70, 95 and
 120 maps, then repeat for each additional full 25 maps.
 The Descent of the Five Senses rerun is also supported there. Its Firecracker
-shop spend converts to farmable Moonlight Festival Vouchers at 270:1; Firecrackers
-remain a shop input and are not treated as a stage or Owned currency.
+shop spend converts to farmable Moonlight Festival Vouchers at 270:1, after
+subtracting any Firecrackers entered in Owned.
 The original Highlander Railroad Runaway is available in the supported archive,
 and its rerun is supported as a current event. Both apply the Sticker thresholds
-that add Highlander Hikari Eleph and Iron Pipes; Iron Pipe remains a minigame
-reward outside solver and Owned controls, matching the legacy feasibility timing.
+that add Highlander Hikari Eleph and Iron Pipes. Iron Pipes can also be entered
+in Owned and remain outside the stage solver.
 I’ve aLIVE rerun is also supported there. Its summary derives
 Event Points as `floor(Countdown Calendar / 720) * 400` after first clears or
 Owned balances are added, matching the legacy calculation. The legacy point
@@ -109,10 +109,10 @@ Summer Sky’s Promise is also supported there. Every 2,000 Armbands adds five
 Miyako Eleph and sets the Fine Tea shop requirement to ten per milestone; its
 source-less Fine Tea farming requirement retains the legacy NaN behavior and
 stays out of solver and Owned controls. The Sheside Outside rerun uses Game
-Corner Ticket as its only stage target; Tournament Water Gun remains an
-unconstrained MinigameDrop with an editable shop and no Owned control.
+Corner Ticket as its only stage target. Tournament Water Guns can be entered in
+Owned and used in their shop.
 Set Sail! Chairman Makoto's Summer Retreat converts the selected Sea Pebble shop
-cost into a Dream Sand target (at least 5,000). Its minigame reserves 2,350 Sand
+cost into a Dream Sand target, with a 5,000 minimum for full event plans. Its minigame reserves 2,350 Sand
 for the five Story stages, Normal 1–4 and Challenge 1, including first-clear and
 default Eleph/Pebble rewards plus the complete score reward bundle. Remaining
 Sand buys whole Normal 4 runs at 400 each. Artifact group probabilities include

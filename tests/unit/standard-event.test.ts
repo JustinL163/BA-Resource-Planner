@@ -351,6 +351,10 @@ describe('standard event compatibility and frozen reward outputs', () => {
       Special_Nutritional_Supplement: 15450
     });
     expect(owned.needed).not.toHaveProperty(rule.from);
+    const ownedFirecrackers = eventRequirements(event, {
+      ...edited, currency_owned: { [rule.from]: 5, [rule.to]: 500 }
+    });
+    expect(ownedFirecrackers.needed[rule.to]).toBe(8950);
     expect(decodeEventCatalog(config, true).find((entry) => entry.id === id)).toMatchObject({
       name: 'Descent of the Five Senses', archived: true, comingSoon: false
     });
@@ -440,6 +444,10 @@ describe('standard event compatibility and frozen reward outputs', () => {
     expect(summary.currencies.Iron_Pipe).toBe(215);
     expect(summary.feasible).toBe(true);
     expect(summary.feasible).toBe(!legacy.infeasible);
+    const ownedPipes = { ...editedTarget, currency_owned: { ...editedTarget.currency_owned, Iron_Pipe: 10 } };
+    const ownedSummary = summarizeEventRuns(event, ownedPipes, eventRequirements(event, ownedPipes), {}, legacy.energy,
+      {}, true, true, metadata);
+    expect(ownedSummary.currencies.Iron_Pipe).toBe(225);
   });
 
   it('preserves SheSide Outside stage farming and the inactive Tournament Water Gun minigame currency', async () => {

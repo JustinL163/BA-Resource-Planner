@@ -2,6 +2,7 @@
   import { sanitizeIntegerInput } from '$lib/actions/sanitize-integer-input';
   import CharacterPortrait from '$lib/components/planner/CharacterPortrait.svelte';
   import { formatAmount } from '$lib/domain/planner/catalog';
+  import { isOwnedEventCurrency } from '$lib/domain/events/standard-save';
   import type { EventEnergySettings } from '$lib/domain/events/types';
   import type { EventMode, EventSettingsProps } from '$lib/domain/events/standard-types';
 
@@ -271,7 +272,7 @@
   {:else if tab === 'Owned'}
     <section class="owned">
       <div class="owned-grid">
-        {#each currencies.filter(([id, currency]) => currency.source === 'StageDrop' || id === 'Event_Point') as [currencyId, currency] (currencyId)}
+        {#each currencies.filter(([id]) => isOwnedEventCurrency(event, id)) as [currencyId, currency] (currencyId)}
           <label class="owned-item">
             <img src={`/planner/icons/EventIcon/CurrencyIcon/${currency.icon}`} alt="" draggable="false" />
             <input

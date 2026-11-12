@@ -4,7 +4,7 @@ import { announceLocalSave, announceSaveChange } from '../services/save-events';
 import { fetchJson, loadCharacterNames, loadPlannerDataset, savedLanguage } from '../services/planner-data';
 import { isRecord } from '../domain/planner/save';
 import type { PlannerDataset, PlannerMetadata } from '../domain/planner/types';
-import { decodeEventCatalog, decodeEventPlan, eventInteger, validateEventEnergy, type EventEntry } from '../domain/events/standard-save';
+import { decodeEventCatalog, decodeEventPlan, eventInteger, isOwnedEventCurrency, validateEventEnergy, type EventEntry } from '../domain/events/standard-save';
 import type { EventActions, EventPlan, StandardEvent } from '../domain/events/standard-types';
 import { materialDropOptions } from '../domain/events/models';
 import { boxPullCurrencyNeeded } from '../domain/events/boxes';
@@ -177,8 +177,7 @@ export function createEventPlanner(
       plan.enabled_bonus_units = [...new Set(ids)];
     }); },
     setOwnedCurrency(currency, value) { return commit((plan, entry) => {
-      if (!entry.event?.active || !entry.event.currencies[currency] ||
-        (entry.event.currencies[currency].source !== 'StageDrop' && currency !== 'Event_Point')) throw new Error('Owned currency is unavailable for this event.');
+      if (!entry.event?.active || !isOwnedEventCurrency(entry.event, currency)) throw new Error('Owned currency is unavailable for this event.');
       plan.currency_owned[currency] = eventInteger(value, 'owned currency', 200000);
     }); },
     setPointTarget(value) { return commit((plan) => { plan.point_target = eventInteger(value, 'point target'); }); },

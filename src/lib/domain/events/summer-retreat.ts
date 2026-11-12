@@ -28,7 +28,8 @@ export function summerRetreatSandTarget(pebbles: number, ownedPebbles = 0, inclu
     throw new Error('Sea Pebble targets and balances must be finite and non-negative.');
   }
   const remainingTenths = Math.max(0, (pebbles - ownedPebbles) * 10 - (includeInitial ? initialPebbleTenths : 0));
-  return Math.max(5000, (includeInitial ? firstClearCost : 0) + Math.ceil(remainingTenths / 20) * repeatCost);
+  const repeatSand = Math.ceil(remainingTenths / 20) * repeatCost;
+  return includeInitial ? Math.max(5000, firstClearCost + repeatSand) : repeatSand;
 }
 
 export function summerRetreatRewards(sand: number, includeInitial = true) {

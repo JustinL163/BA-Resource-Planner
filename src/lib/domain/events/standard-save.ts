@@ -448,6 +448,13 @@ function amounts(value: unknown, label: string): SavedAmounts {
   return result;
 }
 
+export function isOwnedEventCurrency(event: StandardEvent, id: string): boolean {
+  if (!Object.hasOwn(event.currencies, id)) return false;
+  const { source } = event.currencies[id];
+  return source === 'StageDrop' || id === 'Event_Point' ||
+    (source === 'MinigameDrop' && Object.hasOwn(event.shops, id) && event.shops[id].length > 0);
+}
+
 export function validateEventEnergy(key: keyof EventEnergySettings, value: unknown): number | boolean {
   if (key === 'energy_pack') {
     if (typeof value !== 'boolean') throw new Error('Invalid event energy pack setting.');

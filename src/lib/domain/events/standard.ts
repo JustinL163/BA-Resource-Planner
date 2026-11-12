@@ -116,7 +116,8 @@ export function eventRequirements(event: StandardEvent, plan: EventPlan, invasio
   for (const rule of event.derivedCurrencyRules ?? []) {
     if (!Object.hasOwn(currencyNeeded, rule.from)) throw new Error(`Missing source currency requirement "${rule.from}".`);
     const sourceAmount = Number(currencyNeeded[rule.from]);
-    const derivedAmount = sourceAmount * rule.multiplier;
+    const owned = rule.source === 'MinigameDrop' ? positiveOwned(plan.currency_owned, rule.from) : 0;
+    const derivedAmount = Math.max(0, sourceAmount - owned) * rule.multiplier;
     if (!Number.isFinite(sourceAmount) || sourceAmount < 0 || !Number.isFinite(derivedAmount)) {
       throw new Error(`Invalid derived currency requirement for "${rule.to}".`);
     }
@@ -442,7 +443,7 @@ export function summarizeEventRuns(
       // Railroad Runaway's legacy minigame converts Sticker milestones into
       // Iron Pipes and Highlander Hikari Eleph after farm feasibility is checked.
       setOwn(eleph, '16017', 40);
-      setOwn(currencies, 'Iron_Pipe', 15);
+      addAmount(currencies, 'Iron_Pipe', 15, 'Railroad Runaway Iron Pipe milestone');
       for (const threshold of thresholds.slice(1)) {
         if (stickers < threshold) continue;
         addAmount(eleph, '16017', 40, 'Railroad Runaway Eleph milestone');

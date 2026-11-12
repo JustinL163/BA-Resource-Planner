@@ -1,5 +1,6 @@
 import { test, expect } from './fixtures';
 import { decodeEventPlan, decodeStandardEvent } from '../../src/lib/domain/events/standard-save';
+import { summerRetreatEventId } from '../../src/lib/domain/events/summer-retreat';
 import { isRecord } from '../../src/lib/domain/planner/save';
 import { readJson } from '../unit/legacy-harness';
 
@@ -363,7 +364,7 @@ test('Winter Skies preserves point thresholds and derives Event Points from its 
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('save-data')!).events_data['winter-skies-renaissance'].currency_owned.Event_Point)).toBe(1000);
 });
 
-test('Descent rerun derives its Voucher target from Firecracker purchases and keeps Firecrackers out of Owned', async ({ page }) => {
+test('Descent rerun accepts owned Firecrackers alongside the Voucher shop target', async ({ page }) => {
   const plan = decodeEventPlan(undefined, descentEvent);
   const save = { exportVersion: 2, events_data: { [descentId]: plan } };
   await page.clock.setFixedTime(descentTime);
@@ -388,7 +389,7 @@ test('Descent rerun derives its Voucher target from Firecracker purchases and ke
   expect(stored.currency_needed.Moonlight_Festival_Voucher).toBe(10800);
 
   await page.locator('[data-event-tab="Owned"]').click();
-  await expect(page.locator('input[data-event-currency="Moonlight_Festival_Firecrackers"]')).toHaveCount(0);
+  await expect(page.locator('input[data-event-currency="Moonlight_Festival_Firecrackers"]')).toBeVisible();
 
   await page.reload();
   await page.getByRole('checkbox', { name: 'Show earlier supported events', exact: true }).check();
@@ -411,7 +412,7 @@ test('Railroad Runaway is available in the supported archive', async ({ page }) 
   await page.locator('[data-event-tab="Shop"]').click();
   await expect(page.locator('[data-event-shop-tab="Iron_Pipe"]')).toBeVisible();
   await page.locator('[data-event-tab="Owned"]').click();
-  await expect(page.locator('input[data-event-currency="Iron_Pipe"]')).toHaveCount(0);
+  await expect(page.locator('input[data-event-currency="Iron_Pipe"]')).toBeVisible();
   await expect(page.locator('input[data-event-currency="Highlander_Commemorative_Sticker"]')).toBeVisible();
 });
 
@@ -477,7 +478,7 @@ test("Summer Sky's Promise keeps its milestone currency out of solver and Owned 
   expect(stored.currency_needed["Shanhaijing_Tea_Garden's_Fine_Tea"]).toBe(141);
 });
 
-test('SheSide Outside keeps Tournament Water Gun outside solver and Owned controls while saving shop edits', async ({ page }) => {
+test('SheSide Outside accepts owned Tournament Water Guns without making them a solver target', async ({ page }) => {
   const plan = decodeEventPlan(undefined, sheSideEvent);
   const save = { exportVersion: 2, events_data: { [sheSideId]: plan } };
   await page.clock.setFixedTime(sheSideTime);
@@ -497,7 +498,7 @@ test('SheSide Outside keeps Tournament Water Gun outside solver and Owned contro
 
   await page.locator('[data-event-tab="Owned"]').click();
   await expect(page.locator('input[data-event-currency="Game_Corner_Ticket"]')).toBeVisible();
-  await expect(page.locator('input[data-event-currency="Tournament_Water_Gun"]')).toHaveCount(0);
+  await expect(page.locator('input[data-event-currency="Tournament_Water_Gun"]')).toBeVisible();
 
   await page.locator('[data-event-tab="Shop"]').click();
   await page.locator('[data-event-shop-tab="Tournament_Water_Gun"]').click();
@@ -512,6 +513,30 @@ test('SheSide Outside keeps Tournament Water Gun outside solver and Owned contro
   await page.locator(`[data-event-id="${sheSideId}"]`).click();
   stored = await page.evaluate(() => JSON.parse(localStorage.getItem('save-data')!).events_data['sheside-outside-rerun']);
   expect(stored.currency_needed.Tournament_Water_Gun).toBe(132);
+});
+
+test('Summer Retreat saves Sea Pebbles from the fourth Owned input and updates the Dream Sand target', async ({ page }) => {
+  const retreat = decodeStandardEvent(currentEvents[summerRetreatEventId], summerRetreatEventId);
+  await page.clock.setFixedTime((retreat.reset_time + 3 * 86400 + 3600) * 1000);
+  await page.goto('/planner/event-planner/?show-earlier-events=1');
+  const eventButton = page.locator(`[data-event-id="${summerRetreatEventId}"]`);
+  await eventButton.click();
+  const ownedTab = page.locator('[data-event-tab="Owned"]');
+  await ownedTab.click();
+  const inputs = page.locator('input[data-event-currency]');
+  await expect(inputs).toHaveCount(4);
+  const pebbles = inputs.nth(3);
+  await expect(pebbles).toHaveAttribute('data-event-currency', 'Sea_Pebble');
+  await pebbles.fill('135');
+  await pebbles.press('Tab');
+  const saved = await page.evaluate((id) => JSON.parse(localStorage.getItem('save-data')!).events_data[id], summerRetreatEventId);
+  expect(saved.currency_owned.Sea_Pebble).toBe(135);
+  expect(saved.currency_needed.Dream_Sand).toBe(800);
+
+  await page.reload();
+  await eventButton.click();
+  await ownedTab.click();
+  await expect(pebbles).toHaveValue('135');
 });
 
 test('cross-tab event changes block stale edits but unrelated save changes are retained', async ({ context }) => {
