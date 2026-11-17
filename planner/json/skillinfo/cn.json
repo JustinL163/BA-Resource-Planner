@@ -778,7 +778,7 @@
             },
             "Ex": {
                 "Name": "优雅地贯穿",
-                "Desc": "对直线范围内的敌方单位造成以下效果：\n- 造成自身攻击力<?1>的伤害.\n※ 该次EX技能每贯穿1名目标，后续对其他目标造成的伤害衰减10%，最多衰减30%.",
+                "Desc": "对直线范围内的敌方单位造成以下效果：\n- 造成自身攻击力<?1>的伤害.\n※ 该次EX技能每贯穿1名目标，后续对其他目标造成的伤害减少10%，最多减少30%.",
                 "Parameters": [
                     [
                         "506%",
@@ -31169,7 +31169,7 @@
                     {
                         "Id": "CH0230Ex02",
                         "Name": "旋律第一音",
-                        "Desc": "自身使用EX技能“开演：伊施波设”后改为使用该EX技能.\n\n对直线范围内的敌方单位造成以下效果：\n- 造成自身攻击力<?1>的伤害.\n&nbsp;&nbsp;※ 该次攻击每贯穿1名目标，后续对其他目标造成的伤害衰减45%，最多衰减90%.\n&nbsp;&nbsp;※ 该次攻击不受伤害浮动区间影响.\n对自身造成以下效果：\n- 重置自身<s:FormChange='集中射击架势'>的持续时间(持续10秒).\n- 使用该技能结束后：切换至后续EX技能使用.",
+                        "Desc": "自身使用EX技能“开演：伊施波设”后改为使用该EX技能.\n\n对直线范围内的敌方单位造成以下效果：\n- 造成自身攻击力<?1>的伤害.\n&nbsp;&nbsp;※ 该次攻击每贯穿1名目标，后续对其他目标造成的伤害减少45%，最多减少90%.\n&nbsp;&nbsp;※ 该次攻击不受伤害浮动区间影响.\n对自身造成以下效果：\n- 重置自身<s:FormChange='集中射击架势'>的持续时间(持续10秒).\n- 使用该技能结束后：切换至后续EX技能使用.",
                         "Parameters": [
                             [
                                 "324%",
@@ -31222,7 +31222,7 @@
                     {
                         "Id": "CH0230Ex03",
                         "Name": "旋律第二音",
-                        "Desc": "自身使用EX技能“旋律第一音”后改为使用该EX技能.\n\n对直线范围内的敌方单位造成以下效果：\n- 造成自身攻击力<?1>的伤害.\n&nbsp;&nbsp;※ 该次攻击每贯穿1名目标，后续对其他目标造成的伤害衰减45%，最多衰减90%.\n&nbsp;&nbsp;※ 该次攻击不受伤害浮动区间影响.\n对自身造成以下效果：\n- 重置自身<s:FormChange='集中射击架势'>的持续时间(持续10秒).\n- 使用该技能结束后：切换至后续EX技能使用.",
+                        "Desc": "自身使用EX技能“旋律第一音”后改为使用该EX技能.\n\n对直线范围内的敌方单位造成以下效果：\n- 造成自身攻击力<?1>的伤害.\n&nbsp;&nbsp;※ 该次攻击每贯穿1名目标，后续对其他目标造成的伤害减少45%，最多减少90%.\n&nbsp;&nbsp;※ 该次攻击不受伤害浮动区间影响.\n对自身造成以下效果：\n- 重置自身<s:FormChange='集中射击架势'>的持续时间(持续10秒).\n- 使用该技能结束后：切换至后续EX技能使用.",
                         "Parameters": [
                             [
                                 "324%",
@@ -31275,7 +31275,7 @@
                     {
                         "Id": "CH0230Ex04",
                         "Name": "终演的旋律",
-                        "Desc": "自身使用EX技能“旋律第二音”后改为使用该EX技能.\n\n对直线范围内的敌方单位造成以下效果：\n- 造成自身攻击力<?1>的伤害.\n&nbsp;&nbsp;※ 该次攻击每贯穿1名目标，后续对其他目标造成的伤害衰减45%，最多衰减90%.\n&nbsp;&nbsp;※ 该次攻击不受伤害浮动区间影响.\n对自身造成以下效果：\n- 使用该技能结束后：解除<s:FormChange='集中射击架势'>.",
+                        "Desc": "自身使用EX技能“旋律第二音”后改为使用该EX技能.\n\n对直线范围内的敌方单位造成以下效果：\n- 造成自身攻击力<?1>的伤害.\n&nbsp;&nbsp;※ 该次攻击每贯穿1名目标，后续对其他目标造成的伤害减少45%，最多减少90%.\n&nbsp;&nbsp;※ 该次攻击不受伤害浮动区间影响.\n对自身造成以下效果：\n- 使用该技能结束后：解除<s:FormChange='集中射击架势'>.",
                         "Parameters": [
                             [
                                 "680.4%",
@@ -44995,7 +44995,7 @@
                 ]
             },
             "Passive": {
-                "Name": "愿你平安",
+                "Name": "愿你平安(Pax Vobiscum)",
                 "Desc": "<b>战术入场时：</b>\n立即对自身造成以下效果(持续至退场)：\n- <b:Range>增加100.\n- <b:ATK>增加<?1>.",
                 "Parameters": [
                     [
@@ -45060,7 +45060,7 @@
                 ]
             },
             "WeaponPassive": {
-                "Name": "愿你平安＋",
+                "Name": "愿你平安(Pax Vobiscum)＋",
                 "Desc": "<b>战术入场时：</b>\n立即对自身造成以下效果(持续至退场)：\n- <b:CriticalDamage>增加<?1>.\n- <b:Range>增加100.\n- <b:ATK>增加<?2>.",
                 "Parameters": [
                     [
@@ -45115,7 +45115,7 @@
                 ]
             },
             "ExtraPassive": {
-                "Name": "高举你心",
+                "Name": "高举你心(Sursum Corda)",
                 "Desc": "<b>战术入场时：</b>\n立即对自身造成以下效果(持续至退场)：\n- 所有攻击必定暴击.\n- <b:EnhanceSonicRate>加算<?1>.",
                 "Parameters": [
                     [
@@ -55573,7 +55573,7 @@
                     3,
                     3
                 ],
-                "Duration": 284,
+                "Duration": 302,
                 "Range": 550,
                 "Radius": [
                     {
@@ -55869,6 +55869,509 @@
                         ],
                         "Stat": "AccuracyPoint_Base",
                         "Channel": 5
+                    }
+                ]
+            }
+        }
+    },
+    "10153": {
+        "Name": "ヒフミ（レーシング）",
+        "Skills": {
+            "Normal": {
+                "Effects": [
+                    {
+                        "Type": "Damage",
+                        "Hits": [
+                            3333,
+                            3333,
+                            3334
+                        ],
+                        "Scale": [
+                            10000
+                        ],
+                        "Block": 1
+                    }
+                ],
+                "Frames": {
+                    "AttackEnterDuration": 49,
+                    "AttackStartDuration": 21,
+                    "AttackEndDuration": 24,
+                    "AttackBurstRoundOverDelay": 60,
+                    "AttackIngDuration": 35,
+                    "AttackReloadDuration": 94
+                }
+            },
+            "Ex": {
+                "Name": "十字军酱，要上了！",
+                "Desc": "对自身造成以下效果：\n- 消耗自身拥有的所有<s:CH0379_ExtraPassive>层数.\n对1名敌方单位造成以下效果：\n造成自身攻击力<?1>×(100%+本次技能消耗的<s:CH0379_ExtraPassive>层数×50%)的伤害.\n&nbsp;&nbsp;※ 最多计数3层.\n&nbsp;&nbsp;※ 若本次EX技能消耗了4层<s:CH0379_ExtraPassive>，则造成的伤害在现有基础上变为1.2倍(即造成基础倍率3倍的伤害).",
+                "Parameters": [
+                    [
+                        "643%",
+                        "739%",
+                        "932%",
+                        "1028%",
+                        "1221%"
+                    ]
+                ],
+                "Cost": [
+                    5,
+                    5,
+                    5,
+                    5,
+                    5
+                ],
+                "Duration": 220,
+                "Range": 850,
+                "Icon": "COMMON_SKILLICON_TARGET",
+                "Effects": [
+                    {
+                        "Type": "Damage",
+                        "Group": 0,
+                        "Block": 0,
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            3333,
+                            3333,
+                            3334
+                        ],
+                        "DescParamId": 1,
+                        "Scale": [
+                            64302,
+                            73947,
+                            93235,
+                            102879,
+                            122168
+                        ]
+                    },
+                    {
+                        "Type": "Damage",
+                        "Group": 1,
+                        "Block": 0,
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            3333,
+                            3333,
+                            3334
+                        ],
+                        "DescParamId": 2,
+                        "Scale": [
+                            64302,
+                            73947,
+                            93235,
+                            102879,
+                            122168
+                        ]
+                    },
+                    {
+                        "Type": "Damage",
+                        "Group": 1,
+                        "Block": 0,
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            3333,
+                            3333,
+                            3334
+                        ],
+                        "DescParamId": 3,
+                        "Scale": [
+                            32151,
+                            36976,
+                            46620,
+                            51440,
+                            61084
+                        ]
+                    },
+                    {
+                        "Type": "Damage",
+                        "Group": 2,
+                        "Block": 0,
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            3333,
+                            3333,
+                            3334
+                        ],
+                        "DescParamId": 4,
+                        "Scale": [
+                            64302,
+                            73947,
+                            93235,
+                            102879,
+                            122168
+                        ]
+                    },
+                    {
+                        "Type": "Damage",
+                        "Group": 2,
+                        "Block": 0,
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            3333,
+                            3333,
+                            3334,
+                            3333,
+                            3333,
+                            3334
+                        ],
+                        "DescParamId": 5,
+                        "Scale": [
+                            32151,
+                            36976,
+                            46620,
+                            51440,
+                            61084
+                        ]
+                    },
+                    {
+                        "Type": "Damage",
+                        "Group": 3,
+                        "Block": 0,
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            3333,
+                            3333,
+                            3334
+                        ],
+                        "DescParamId": 6,
+                        "Scale": [
+                            64302,
+                            73947,
+                            93235,
+                            102879,
+                            122168
+                        ]
+                    },
+                    {
+                        "Type": "Damage",
+                        "Group": 3,
+                        "Block": 0,
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            3333,
+                            3333,
+                            3334,
+                            3333,
+                            3333,
+                            3334,
+                            3333,
+                            3333,
+                            3334
+                        ],
+                        "DescParamId": 7,
+                        "Scale": [
+                            32151,
+                            36976,
+                            46620,
+                            51440,
+                            61084
+                        ]
+                    },
+                    {
+                        "Type": "Damage",
+                        "Group": 4,
+                        "Block": 0,
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            3333,
+                            3333,
+                            3334
+                        ],
+                        "DescParamId": 8,
+                        "Scale": [
+                            77160,
+                            88736,
+                            111883,
+                            123454,
+                            146601
+                        ]
+                    },
+                    {
+                        "Type": "Damage",
+                        "Group": 4,
+                        "Block": 0,
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            3333,
+                            3333,
+                            3334,
+                            3333,
+                            3333,
+                            3334,
+                            3333,
+                            3333,
+                            3334
+                        ],
+                        "DescParamId": 9,
+                        "Scale": [
+                            38583,
+                            44368,
+                            55944,
+                            61730,
+                            73301
+                        ]
+                    }
+                ],
+                "GroupLabel": {
+                    "0": {
+                        "Icon": "buff/Special_CH0379_ExtraPassive.webp",
+                        "Label": "&times;0"
+                    },
+                    "1": {
+                        "Icon": "buff/Special_CH0379_ExtraPassive.webp",
+                        "Label": "&times;1"
+                    },
+                    "2": {
+                        "Icon": "buff/Special_CH0379_ExtraPassive.webp",
+                        "Label": "&times;2"
+                    },
+                    "3": {
+                        "Icon": "buff/Special_CH0379_ExtraPassive.webp",
+                        "Label": "&times;3"
+                    },
+                    "4": {
+                        "Icon": "buff/Special_CH0379_ExtraPassive.webp",
+                        "Label": "&times;4"
+                    }
+                }
+            },
+            "Public": {
+                "Name": "装填穿甲弹！",
+                "Desc": "<b>每32秒：</b>\n对1名敌方单位造成以下效果：\n- 目标防御属性为<b class='ba-col-explosion'>轻型护甲</b>时：<d:ReduceWeakDamagedRate>加算<?2>(持续30秒).\n- 造成自身攻击力<?1>的伤害.",
+                "Parameters": [
+                    [
+                        "223%",
+                        "234%",
+                        "246%",
+                        "290%",
+                        "302%",
+                        "313%",
+                        "358%",
+                        "369%",
+                        "380%",
+                        "425%"
+                    ],
+                    [
+                        "8.3%",
+                        "8.7%",
+                        "9.1%",
+                        "10.8%",
+                        "11.2%",
+                        "11.6%",
+                        "13.3%",
+                        "13.7%",
+                        "14.1%",
+                        "15.8%"
+                    ]
+                ],
+                "Duration": 185,
+                "Range": 850,
+                "Icon": "COMMON_SKILLICON_STATDEBUFF",
+                "Effects": [
+                    {
+                        "Type": "Damage",
+                        "Block": 0,
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            10000
+                        ],
+                        "DescParamId": 1,
+                        "Scale": [
+                            22376,
+                            23494,
+                            24612,
+                            29091,
+                            30209,
+                            31327,
+                            35800,
+                            36918,
+                            38037,
+                            42515
+                        ]
+                    },
+                    {
+                        "Type": "Buff",
+                        "Restrictions": [
+                            {
+                                "Property": "ArmorType",
+                                "Operand": "Equal",
+                                "Value": "LightArmor"
+                            }
+                        ],
+                        "Target": [
+                            "Enemy"
+                        ],
+                        "Value": [
+                            [
+                                -832,
+                                -873,
+                                -915,
+                                -1081,
+                                -1123,
+                                -1164,
+                                -1331,
+                                -1372,
+                                -1414,
+                                -1580
+                            ]
+                        ],
+                        "Stat": "ReduceWeakDamagedRate_Base",
+                        "Channel": 646,
+                        "Duration": 30000,
+                        "ApplyFrame": 46
+                    }
+                ]
+            },
+            "Passive": {
+                "Name": "赛车手的潜力",
+                "Desc": "<b>战术入场时：</b>\n立即对自身造成以下效果(持续至退场)：\n- <b:CriticalDamage>增加<?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "CriticalDamageRate_Coefficient",
+                        "Channel": 11,
+                        "Value": [
+                            [
+                                1400,
+                                1470,
+                                1540,
+                                1820,
+                                1890,
+                                1960,
+                                2240,
+                                2310,
+                                2380,
+                                2660
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "WeaponPassive": {
+                "Name": "赛车手的潜力＋",
+                "Desc": "<b>战术入场时：</b>\n立即对自身造成以下效果(持续至退场)：\n- <b:ATK>增加<?1>.\n- <b:CriticalDamage>增加<?2>.",
+                "Parameters": [
+                    [
+                        "491",
+                        "516",
+                        "540",
+                        "639",
+                        "663",
+                        "688",
+                        "786",
+                        "810",
+                        "835",
+                        "933"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "AttackPower_Base",
+                        "Channel": 1702,
+                        "Value": [
+                            [
+                                491,
+                                516,
+                                540,
+                                639,
+                                663,
+                                688,
+                                786,
+                                810,
+                                835,
+                                933
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "ExtraPassive": {
+                "Name": "才敏的赛车手",
+                "Desc": "<b>除自身外战术类别为输出的我方前锋学生使用EX技能时：</b>\n立即对该单位造成以下效果：\n- <b:CriticalDamage>增加<?1>(持续7秒).\n立即对自身造成以下效果：\n- 获得1层<s:CH0379_ExtraPassive>.\n&nbsp;&nbsp;※ 最多叠加4层.",
+                "Parameters": [
+                    [
+                        "5.7%",
+                        "6%",
+                        "6.3%",
+                        "7.4%",
+                        "7.7%",
+                        "8%",
+                        "9.2%",
+                        "9.4%",
+                        "9.7%",
+                        "10.9%"
+                    ]
+                ],
+                "Icon": "SKILLICON_CH0379_EXTRAPASSIVESKILL",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Restrictions": [
+                            {
+                                "Property": "SquadType",
+                                "Operand": "Equal",
+                                "Value": "Main"
+                            },
+                            {
+                                "Property": "TacticRole",
+                                "Operand": "Equal",
+                                "Value": "DamageDealer"
+                            }
+                        ],
+                        "Target": [
+                            "AllyMain"
+                        ],
+                        "Value": [
+                            [
+                                576,
+                                605,
+                                633,
+                                748,
+                                777,
+                                805,
+                                920,
+                                949,
+                                978,
+                                1093
+                            ]
+                        ],
+                        "Stat": "CriticalDamageRate_Coefficient",
+                        "Channel": 111,
+                        "Duration": 7000
                     }
                 ]
             }
@@ -62731,7 +63234,7 @@
             },
             "Ex": {
                 "Name": "凉凉的椰汁！",
-                "Desc": "对1名敌方单位投掷椰子，造成以下效果：\n- 造成自身攻击力<?1>的伤害.\n- 施加<c:Stunned>(持续<?2>).\n※ 以该单位为中心的圆形范围内存在未被该次技能作用的其他敌方单位时，椰子继续弹跳至该目标，造成相同效果，但伤害衰减10%；椰子最多作用于5名敌方单位.",
+                "Desc": "对1名敌方单位投掷椰子，造成以下效果：\n- 造成自身攻击力<?1>的伤害.\n- 施加<c:Stunned>(持续<?2>).\n※ 以该单位为中心的圆形范围内存在未被该次技能作用的其他敌方单位时，椰子继续弹跳至该目标，造成相同效果，但伤害减少10%；椰子最多作用于5名敌方单位.",
                 "Parameters": [
                     [
                         "332%",
@@ -68368,7 +68871,7 @@
             },
             "GearPublic": {
                 "Name": "火力应该充足吧+",
-                "Desc": "<b>每20秒：</b>\n对以1名生命值百分比最低的敌方单位为中心的5个圆形范围内的敌方单位各造成以下效果：\n- 造成(自身攻击力<?1>×100%~200%)的伤害.\n&nbsp;&nbsp;※ 目标生命值百分比越低，取值越高\n※ 目标每受到1次该次技能的伤害，后续受到的伤害衰减45%，最多衰减至10%.",
+                "Desc": "<b>每20秒：</b>\n对以1名生命值百分比最低的敌方单位为中心的5个圆形范围内的敌方单位各造成以下效果：\n- 造成(自身攻击力<?1>×100%~200%)的伤害.\n&nbsp;&nbsp;※ 目标生命值百分比越低，取值越高\n※ 目标每受到1次该次技能的伤害，后续受到的伤害减少45%，最多减少至10%.",
                 "Parameters": [
                     [
                         "158%",
@@ -87031,7 +87534,7 @@
             },
             "Public": {
                 "Name": "「特别」的礼物",
-                "Desc": "每35秒：\n对1名敌方单位造成以下效果：\n- 目标防御属性为<b class='ba-col-pierce'>重型装甲</b> 时：<d:ReduceWeakDamagedRate>加算<?2>(持续27秒).\n- 造成自身攻击力<?1>的伤害.",
+                "Desc": "<b>每35秒：</b>\n对1名敌方单位造成以下效果：\n- 目标防御属性为<b class='ba-col-pierce'>重型装甲</b> 时：<d:ReduceWeakDamagedRate>加算<?2>(持续27秒).\n- 造成自身攻击力<?1>的伤害.",
                 "Parameters": [
                     [
                         "126%",
@@ -87521,6 +88024,383 @@
                         ],
                         "Stat": "AttackPower_Coefficient",
                         "Channel": 302
+                    }
+                ]
+            }
+        }
+    },
+    "20063": {
+        "Name": "アズサ（レーシング）",
+        "Skills": {
+            "Ex": {
+                "Name": "祝颂勇气(Macte Virtute)",
+                "Desc": "在圆形范围的中心造成以下效果：\n- 召唤梓(赛车)(持续45秒).\n对自身造成以下效果：\n- <b:CostRegen>增加<?1>(持续25秒).\n对上述范围内的我方单位造成以下效果：\n- 回复自身治愈力<?2>的生命值.",
+                "Parameters": [
+                    [
+                        "519",
+                        "597",
+                        "753",
+                        "831",
+                        "986"
+                    ],
+                    [
+                        "22.4%",
+                        "25.7%",
+                        "32.4%",
+                        "35.8%",
+                        "42.5%"
+                    ]
+                ],
+                "Cost": [
+                    4,
+                    4,
+                    4,
+                    4,
+                    4
+                ],
+                "Duration": 112,
+                "Range": 1000,
+                "Radius": [
+                    {
+                        "Type": "Circle",
+                        "Radius": 350
+                    }
+                ],
+                "Icon": "SKILLICON_CH0380_EXSKILL",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Value": [
+                            [
+                                519,
+                                597,
+                                753,
+                                831,
+                                986
+                            ]
+                        ],
+                        "Stat": "RegenCost_Base",
+                        "Channel": 30,
+                        "Duration": 25000,
+                        "ApplyFrame": 87
+                    },
+                    {
+                        "Type": "Heal",
+                        "Target": "Ally",
+                        "Scale": [
+                            2240,
+                            2578,
+                            3248,
+                            3585,
+                            4258
+                        ]
+                    }
+                ],
+                "ExtraSkills": [
+                    {
+                        "Id": "SM038001Public01",
+                        "Name": "为之喝彩！(Plaudite)",
+                        "Desc": "<b>自身入场时及以后每12秒：</b>\n对以自身为中心的圆形范围内的我方单位造成以下效果：\n- <b:EnhanceExplosionRate>加算<?1>(持续11秒).",
+                        "Parameters": [
+                            [
+                                "68%",
+                                "71.4%",
+                                "74.8%",
+                                "88.4%",
+                                "91.8%",
+                                "95.2%",
+                                "108%",
+                                "112%",
+                                "115%",
+                                "129%"
+                            ]
+                        ],
+                        "Duration": 85,
+                        "Range": 350,
+                        "Radius": [
+                            {
+                                "Type": "Circle",
+                                "Radius": 350
+                            }
+                        ],
+                        "Icon": "COMMON_SKILLICON_BULLETTYPEBUFF",
+                        "Effects": [
+                            {
+                                "Type": "Buff",
+                                "Target": [
+                                    "AllyMain"
+                                ],
+                                "Value": [
+                                    [
+                                        6804,
+                                        7145,
+                                        7485,
+                                        8846,
+                                        9186,
+                                        9526,
+                                        10887,
+                                        11227,
+                                        11567,
+                                        12928
+                                    ]
+                                ],
+                                "Stat": "EnhanceExplosionRate_Base",
+                                "Channel": 132,
+                                "Duration": 11000
+                            }
+                        ],
+                        "Type": "Public"
+                    },
+                    {
+                        "Id": "SM038001Passive01",
+                        "Name": "大家加油",
+                        "Desc": "<b>自身入场时：</b>\n立即对以自身为中心的圆形范围内的我方单位造成以下效果：\n- <b:ATK>增加<?1>(持续44秒).",
+                        "Parameters": [
+                            [
+                                "16.4%",
+                                "17.2%",
+                                "18%",
+                                "21.3%",
+                                "22.2%",
+                                "23%",
+                                "26.3%",
+                                "27.1%",
+                                "27.9%",
+                                "31.2%"
+                            ]
+                        ],
+                        "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                        "Effects": [
+                            {
+                                "Type": "Buff",
+                                "Target": [
+                                    "AllyMain"
+                                ],
+                                "Value": [
+                                    [
+                                        1645,
+                                        1727,
+                                        1809,
+                                        2138,
+                                        2220,
+                                        2302,
+                                        2631,
+                                        2713,
+                                        2796,
+                                        3124
+                                    ]
+                                ],
+                                "Stat": "AttackPower_Coefficient",
+                                "Channel": 102,
+                                "Duration": 44000
+                            }
+                        ],
+                        "Type": "Passive"
+                    }
+                ]
+            },
+            "Public": {
+                "Name": "英勇无畏(Fortiter)",
+                "Desc": "<b>每30秒：</b>\n对战术类别为输出的我方前锋学生造成以下效果：\n- <b:CriticalChance>增加<?1>(持续25秒).",
+                "Parameters": [
+                    [
+                        "9.9%",
+                        "10.4%",
+                        "10.9%",
+                        "12.9%",
+                        "13.4%",
+                        "13.9%",
+                        "15.9%",
+                        "16.4%",
+                        "16.9%",
+                        "18.9%"
+                    ]
+                ],
+                "Duration": 60,
+                "Range": 1000,
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Restrictions": [
+                            {
+                                "Property": "SquadType",
+                                "Operand": "Equal",
+                                "Value": "Main"
+                            },
+                            {
+                                "Property": "TacticRole",
+                                "Operand": "Equal",
+                                "Value": "DamageDealer"
+                            }
+                        ],
+                        "Target": [
+                            "AllyMain"
+                        ],
+                        "Value": [
+                            [
+                                995,
+                                1045,
+                                1095,
+                                1293,
+                                1343,
+                                1393,
+                                1592,
+                                1642,
+                                1692,
+                                1890
+                            ]
+                        ],
+                        "Stat": "CriticalPoint_Coefficient",
+                        "Channel": 109,
+                        "Duration": 25000,
+                        "ApplyFrame": 30
+                    }
+                ]
+            },
+            "Passive": {
+                "Name": "摸摸",
+                "Desc": "<b>战术入场时：</b>\n立即对自身造成以下效果(持续至退场)：\n- <b:HealPower>增加<?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_STATBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "HealPower_Coefficient",
+                        "Channel": 4,
+                        "Value": [
+                            [
+                                1400,
+                                1470,
+                                1540,
+                                1820,
+                                1890,
+                                1960,
+                                2240,
+                                2310,
+                                2380,
+                                2660
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "WeaponPassive": {
+                "Name": "摸摸＋",
+                "Desc": "<b>战术入场时：</b>\n立即对自身造成以下效果(持续至退场)：\n- <b:ExtendBuffDuration>增加<?1>.\n- <b:HealPower>增加<?2>.",
+                "Parameters": [
+                    [
+                        "1000",
+                        "1050",
+                        "1100",
+                        "1300",
+                        "1350",
+                        "1400",
+                        "1600",
+                        "1650",
+                        "1700",
+                        "1900"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_STATBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "ExtendBuffDuration_Base",
+                        "Channel": 1738,
+                        "Value": [
+                            [
+                                1000,
+                                1050,
+                                1100,
+                                1300,
+                                1350,
+                                1400,
+                                1600,
+                                1650,
+                                1700,
+                                1900
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "ExtraPassive": {
+                "Name": "按照训练一样",
+                "Desc": "<b>战术入场时：</b>\n立即对我方全体学生造成以下效果(持续至退场)：\n- <b:EnhanceExplosionRate>加算<?1>.",
+                "Parameters": [
+                    [
+                        "15.9%",
+                        "16.7%",
+                        "17.5%",
+                        "20.7%",
+                        "21.5%",
+                        "22.3%",
+                        "25.5%",
+                        "26.3%",
+                        "27%",
+                        "30.2%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_BULLETTYPEBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self",
+                            "AllyMain",
+                            "AllySupport"
+                        ],
+                        "Value": [
+                            [
+                                1594,
+                                1674,
+                                1753,
+                                2073,
+                                2152,
+                                2232,
+                                2550,
+                                2630,
+                                2709,
+                                3029
+                            ]
+                        ],
+                        "Stat": "EnhanceExplosionRate_Base",
+                        "Channel": 332
                     }
                 ]
             }
@@ -95003,6 +95883,308 @@
                         ],
                         "Stat": "EnhancePierceRate_Base",
                         "Channel": 333
+                    }
+                ]
+            }
+        }
+    },
+    "26017": {
+        "Name": "ラナ",
+        "Skills": {
+            "Ex": {
+                "Name": "鸟载互联网协议欺骗",
+                "Desc": "对1名敌方单位造成以下效果：\n- 造成自身攻击力<?1>的伤害.",
+                "Parameters": [
+                    [
+                        "145%",
+                        "189%",
+                        "276%",
+                        "320%",
+                        "407%"
+                    ]
+                ],
+                "Cost": [
+                    5,
+                    5,
+                    5,
+                    5,
+                    5
+                ],
+                "Duration": 330,
+                "Range": 1000,
+                "Radius": [
+                    {
+                        "Type": "Circle",
+                        "Radius": 75
+                    }
+                ],
+                "Icon": "COMMON_SKILLICON_TARGET",
+                "Effects": [
+                    {
+                        "Type": "Damage",
+                        "Block": 1,
+                        "CriticalCheck": "Check",
+                        "Hits": [
+                            10000
+                        ],
+                        "DescParamId": 1,
+                        "Scale": [
+                            14572,
+                            18945,
+                            27683,
+                            32055,
+                            40793
+                        ]
+                    }
+                ],
+                "ExtraSkills": [
+                    {
+                        "Id": "SM032201Ex01",
+                        "Name": "1字节突发",
+                        "Desc": "技能从属主体(EX技能牌)：拉娜\n技能执行主体(自身)：载具-幼犬号\n幼犬号在场时改为使用该EX技能.\n\n对最多8名敌方单位按顺序造成以下效果：\n- 造成自身攻击力<?1>的伤害共计8次.\n&nbsp;&nbsp;※ 本次EX技能对同一目标重复造成的伤害减少90%.",
+                        "Parameters": [
+                            [
+                                "161%",
+                                "210%",
+                                "307%",
+                                "356%",
+                                "453%"
+                            ]
+                        ],
+                        "Cost": [
+                            5,
+                            5,
+                            5,
+                            5,
+                            5
+                        ],
+                        "Duration": 330,
+                        "Range": 1500,
+                        "Icon": "COMMON_SKILLICON_TARGET",
+                        "Effects": [
+                            {
+                                "Type": "Damage",
+                                "Block": 1,
+                                "CriticalCheck": "Check",
+                                "Hits": [
+                                    10000
+                                ],
+                                "DescParamId": 1,
+                                "Scale": [
+                                    16191,
+                                    21049,
+                                    30758,
+                                    35616,
+                                    45325
+                                ]
+                            },
+                            {
+                                "Type": "Damage",
+                                "Block": 1,
+                                "CriticalCheck": "Check",
+                                "Hits": [
+                                    10000
+                                ],
+                                "DescParamId": 2,
+                                "Scale": [
+                                    1620,
+                                    2105,
+                                    3076,
+                                    3562,
+                                    4533
+                                ]
+                            }
+                        ],
+                        "SummonId": 36002,
+                        "Type": "Ex"
+                    }
+                ]
+            },
+            "Public": {
+                "Name": "看门狗计时器",
+                "Desc": "<b>战斗开始时及以后每60秒：</b>\n造成以下效果：\n- 召唤幼犬号(持续50秒).\n&nbsp;&nbsp;※ 幼犬号额外拥有拉娜攻击力<?1>的攻击力.\n\n※ 幼犬号的普通攻击效果：\n对以1名敌方单位为中心的圆形范围内的敌方单位造成以下效果：\n- 造成自身攻击力100%的伤害.\n&nbsp;&nbsp;※ 目标附近存在其他敌方单位时，额外对最多1名其他敌方单位造成自身攻击力50%的伤害.\n※ 战场上仅可同时存在1台战术支援载具.",
+                "Parameters": [
+                    [
+                        "9.4%",
+                        "9.9%",
+                        "10.3%",
+                        "12.2%",
+                        "12.7%",
+                        "13.2%",
+                        "15.1%",
+                        "15.5%",
+                        "16%",
+                        "17.9%"
+                    ]
+                ],
+                "Duration": 115,
+                "Range": 1000,
+                "Icon": "SKILLICON_CH0322_PUBLICSKILL",
+                "Effects": [
+                    {
+                        "Type": "Summon",
+                        "SummonId": 36002,
+                        "Value": [
+                            [
+                                945,
+                                992,
+                                1039,
+                                1228,
+                                1275,
+                                1322,
+                                1511,
+                                1558,
+                                1605,
+                                1794
+                            ]
+                        ],
+                        "Stat": "AttackPower_Base",
+                        "CasterStat": "AttackPower",
+                        "Channel": 2,
+                        "Duration": 50000
+                    }
+                ]
+            },
+            "Passive": {
+                "Name": "超频",
+                "Desc": "<b>战术入场时：</b>\n立即对自身造成以下效果(持续至退场)：\n- <b:ATK>增加<?1>.",
+                "Parameters": [
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 2,
+                        "Value": [
+                            [
+                                1400,
+                                1470,
+                                1540,
+                                1820,
+                                1890,
+                                1960,
+                                2240,
+                                2310,
+                                2380,
+                                2660
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "WeaponPassive": {
+                "Name": "超频＋",
+                "Desc": "<b>战术入场时：</b>\n立即对自身造成以下效果(持续至退场)：\n- <b:ATK>增加<?1>.\n- <b:ATK>增加<?2>.",
+                "Parameters": [
+                    [
+                        "330",
+                        "347",
+                        "363",
+                        "429",
+                        "446",
+                        "462",
+                        "528",
+                        "545",
+                        "561",
+                        "627"
+                    ],
+                    [
+                        "14%",
+                        "14.7%",
+                        "15.4%",
+                        "18.2%",
+                        "18.9%",
+                        "19.6%",
+                        "22.4%",
+                        "23.1%",
+                        "23.8%",
+                        "26.6%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self"
+                        ],
+                        "Stat": "AttackPower_Base",
+                        "Channel": 1702,
+                        "Value": [
+                            [
+                                330,
+                                347,
+                                363,
+                                429,
+                                446,
+                                462,
+                                528,
+                                545,
+                                561,
+                                627
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "ExtraPassive": {
+                "Name": "多播",
+                "Desc": "<b>战术入场时：</b>\n立即对自身造成以下效果(持续至退场)：\n- <b:ATK>增加<?1>.",
+                "Parameters": [
+                    [
+                        "9.1%",
+                        "9.5%",
+                        "10%",
+                        "11.8%",
+                        "12.3%",
+                        "12.7%",
+                        "14.5%",
+                        "15%",
+                        "15.5%",
+                        "17.3%"
+                    ]
+                ],
+                "Icon": "COMMON_SKILLICON_WEAPONBUFF",
+                "Effects": [
+                    {
+                        "Type": "Buff",
+                        "Target": [
+                            "Self",
+                            "AllyMain",
+                            "AllySupport"
+                        ],
+                        "Value": [
+                            [
+                                912,
+                                957,
+                                1003,
+                                1186,
+                                1231,
+                                1277,
+                                1459,
+                                1504,
+                                1550,
+                                1732
+                            ]
+                        ],
+                        "Stat": "AttackPower_Coefficient",
+                        "Channel": 302
                     }
                 ]
             }
